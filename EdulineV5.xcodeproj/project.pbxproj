@@ -1,0 +1,590 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
+		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
+		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
+		7879561B240DE7A50013F95F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78795619240DE7A50013F95F /* Main.storyboard */; };
+		7879561D240DE7AE0013F95F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7879561C240DE7AE0013F95F /* Assets.xcassets */; };
+		78795620240DE7AE0013F95F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7879561E240DE7AE0013F95F /* LaunchScreen.storyboard */; };
+		78795623240DE7AE0013F95F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795622240DE7AE0013F95F /* main.m */; };
+		7879562D240DE7AE0013F95F /* EdulineV5Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7879562C240DE7AE0013F95F /* EdulineV5Tests.m */; };
+		78795638240DE7AE0013F95F /* EdulineV5UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795637240DE7AE0013F95F /* EdulineV5UITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		78795629240DE7AE0013F95F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78795605240DE7A50013F95F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7879560C240DE7A50013F95F;
+			remoteInfo = EdulineV5;
+		};
+		78795634240DE7AE0013F95F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78795605240DE7A50013F95F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7879560C240DE7A50013F95F;
+			remoteInfo = EdulineV5;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		78795613240DE7A50013F95F /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		78795614240DE7A50013F95F /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		78795616240DE7A50013F95F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		78795617240DE7A50013F95F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		7879561A240DE7A50013F95F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		7879561C240DE7AE0013F95F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7879561F240DE7AE0013F95F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		78795621240DE7AE0013F95F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78795622240DE7AE0013F95F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		78795628240DE7AE0013F95F /* EdulineV5Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EdulineV5Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7879562C240DE7AE0013F95F /* EdulineV5Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EdulineV5Tests.m; sourceTree = "<group>"; };
+		7879562E240DE7AE0013F95F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78795633240DE7AE0013F95F /* EdulineV5UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EdulineV5UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		78795637240DE7AE0013F95F /* EdulineV5UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EdulineV5UITests.m; sourceTree = "<group>"; };
+		78795639240DE7AF0013F95F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7879560A240DE7A50013F95F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78795625240DE7AE0013F95F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78795630240DE7AE0013F95F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		78795604240DE7A50013F95F = {
+			isa = PBXGroup;
+			children = (
+				7879560F240DE7A50013F95F /* EdulineV5 */,
+				7879562B240DE7AE0013F95F /* EdulineV5Tests */,
+				78795636240DE7AE0013F95F /* EdulineV5UITests */,
+				7879560E240DE7A50013F95F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7879560E240DE7A50013F95F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7879560D240DE7A50013F95F /* EdulineV5.app */,
+				78795628240DE7AE0013F95F /* EdulineV5Tests.xctest */,
+				78795633240DE7AE0013F95F /* EdulineV5UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7879560F240DE7A50013F95F /* EdulineV5 */ = {
+			isa = PBXGroup;
+			children = (
+				78795610240DE7A50013F95F /* AppDelegate.h */,
+				78795611240DE7A50013F95F /* AppDelegate.m */,
+				78795613240DE7A50013F95F /* SceneDelegate.h */,
+				78795614240DE7A50013F95F /* SceneDelegate.m */,
+				78795616240DE7A50013F95F /* ViewController.h */,
+				78795617240DE7A50013F95F /* ViewController.m */,
+				78795619240DE7A50013F95F /* Main.storyboard */,
+				7879561C240DE7AE0013F95F /* Assets.xcassets */,
+				7879561E240DE7AE0013F95F /* LaunchScreen.storyboard */,
+				78795621240DE7AE0013F95F /* Info.plist */,
+				78795622240DE7AE0013F95F /* main.m */,
+			);
+			path = EdulineV5;
+			sourceTree = "<group>";
+		};
+		7879562B240DE7AE0013F95F /* EdulineV5Tests */ = {
+			isa = PBXGroup;
+			children = (
+				7879562C240DE7AE0013F95F /* EdulineV5Tests.m */,
+				7879562E240DE7AE0013F95F /* Info.plist */,
+			);
+			path = EdulineV5Tests;
+			sourceTree = "<group>";
+		};
+		78795636240DE7AE0013F95F /* EdulineV5UITests */ = {
+			isa = PBXGroup;
+			children = (
+				78795637240DE7AE0013F95F /* EdulineV5UITests.m */,
+				78795639240DE7AF0013F95F /* Info.plist */,
+			);
+			path = EdulineV5UITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7879560C240DE7A50013F95F /* EdulineV5 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7879563C240DE7AF0013F95F /* Build configuration list for PBXNativeTarget "EdulineV5" */;
+			buildPhases = (
+				78795609240DE7A50013F95F /* Sources */,
+				7879560A240DE7A50013F95F /* Frameworks */,
+				7879560B240DE7A50013F95F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EdulineV5;
+			productName = EdulineV5;
+			productReference = 7879560D240DE7A50013F95F /* EdulineV5.app */;
+			productType = "com.apple.product-type.application";
+		};
+		78795627240DE7AE0013F95F /* EdulineV5Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7879563F240DE7AF0013F95F /* Build configuration list for PBXNativeTarget "EdulineV5Tests" */;
+			buildPhases = (
+				78795624240DE7AE0013F95F /* Sources */,
+				78795625240DE7AE0013F95F /* Frameworks */,
+				78795626240DE7AE0013F95F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7879562A240DE7AE0013F95F /* PBXTargetDependency */,
+			);
+			name = EdulineV5Tests;
+			productName = EdulineV5Tests;
+			productReference = 78795628240DE7AE0013F95F /* EdulineV5Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		78795632240DE7AE0013F95F /* EdulineV5UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 78795642240DE7AF0013F95F /* Build configuration list for PBXNativeTarget "EdulineV5UITests" */;
+			buildPhases = (
+				7879562F240DE7AE0013F95F /* Sources */,
+				78795630240DE7AE0013F95F /* Frameworks */,
+				78795631240DE7AE0013F95F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				78795635240DE7AE0013F95F /* PBXTargetDependency */,
+			);
+			name = EdulineV5UITests;
+			productName = EdulineV5UITests;
+			productReference = 78795633240DE7AE0013F95F /* EdulineV5UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		78795605240DE7A50013F95F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1120;
+				ORGANIZATIONNAME = "刘邦海";
+				TargetAttributes = {
+					7879560C240DE7A50013F95F = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
+					78795627240DE7AE0013F95F = {
+						CreatedOnToolsVersion = 11.2.1;
+						TestTargetID = 7879560C240DE7A50013F95F;
+					};
+					78795632240DE7AE0013F95F = {
+						CreatedOnToolsVersion = 11.2.1;
+						TestTargetID = 7879560C240DE7A50013F95F;
+					};
+				};
+			};
+			buildConfigurationList = 78795608240DE7A50013F95F /* Build configuration list for PBXProject "EdulineV5" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 78795604240DE7A50013F95F;
+			productRefGroup = 7879560E240DE7A50013F95F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7879560C240DE7A50013F95F /* EdulineV5 */,
+				78795627240DE7AE0013F95F /* EdulineV5Tests */,
+				78795632240DE7AE0013F95F /* EdulineV5UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7879560B240DE7A50013F95F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78795620240DE7AE0013F95F /* LaunchScreen.storyboard in Resources */,
+				7879561D240DE7AE0013F95F /* Assets.xcassets in Resources */,
+				7879561B240DE7A50013F95F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78795626240DE7AE0013F95F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78795631240DE7AE0013F95F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		78795609240DE7A50013F95F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78795618240DE7A50013F95F /* ViewController.m in Sources */,
+				78795612240DE7A50013F95F /* AppDelegate.m in Sources */,
+				78795623240DE7AE0013F95F /* main.m in Sources */,
+				78795615240DE7A50013F95F /* SceneDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78795624240DE7AE0013F95F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7879562D240DE7AE0013F95F /* EdulineV5Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7879562F240DE7AE0013F95F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78795638240DE7AE0013F95F /* EdulineV5UITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7879562A240DE7AE0013F95F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7879560C240DE7A50013F95F /* EdulineV5 */;
+			targetProxy = 78795629240DE7AE0013F95F /* PBXContainerItemProxy */;
+		};
+		78795635240DE7AE0013F95F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7879560C240DE7A50013F95F /* EdulineV5 */;
+			targetProxy = 78795634240DE7AE0013F95F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		78795619240DE7A50013F95F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7879561A240DE7A50013F95F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		7879561E240DE7AE0013F95F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7879561F240DE7AE0013F95F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7879563A240DE7AF0013F95F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7879563B240DE7AF0013F95F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7879563D240DE7AF0013F95F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
+				INFOPLIST_FILE = EdulineV5/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = demo.EdulineV5;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7879563E240DE7AF0013F95F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
+				INFOPLIST_FILE = EdulineV5/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = demo.EdulineV5;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		78795640240DE7AF0013F95F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
+				INFOPLIST_FILE = EdulineV5Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = demo.EdulineV5Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EdulineV5.app/EdulineV5";
+			};
+			name = Debug;
+		};
+		78795641240DE7AF0013F95F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
+				INFOPLIST_FILE = EdulineV5Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = demo.EdulineV5Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EdulineV5.app/EdulineV5";
+			};
+			name = Release;
+		};
+		78795643240DE7AF0013F95F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
+				INFOPLIST_FILE = EdulineV5UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = demo.EdulineV5UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EdulineV5;
+			};
+			name = Debug;
+		};
+		78795644240DE7AF0013F95F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
+				INFOPLIST_FILE = EdulineV5UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = demo.EdulineV5UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = EdulineV5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		78795608240DE7A50013F95F /* Build configuration list for PBXProject "EdulineV5" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7879563A240DE7AF0013F95F /* Debug */,
+				7879563B240DE7AF0013F95F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7879563C240DE7AF0013F95F /* Build configuration list for PBXNativeTarget "EdulineV5" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7879563D240DE7AF0013F95F /* Debug */,
+				7879563E240DE7AF0013F95F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7879563F240DE7AF0013F95F /* Build configuration list for PBXNativeTarget "EdulineV5Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78795640240DE7AF0013F95F /* Debug */,
+				78795641240DE7AF0013F95F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		78795642240DE7AF0013F95F /* Build configuration list for PBXNativeTarget "EdulineV5UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78795643240DE7AF0013F95F /* Debug */,
+				78795644240DE7AF0013F95F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 78795605240DE7A50013F95F /* Project object */;
+}
