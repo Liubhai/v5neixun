@@ -15,6 +15,10 @@
 #import "Net_API.h"
 #import "Api_Config.h"
 #import "ZLPhoto.h"
+#import <TZImagePickerController/TZImagePickerController.h>
+#import "MBProgressHUD+Add.h"
+#import "UIViewController+HUD.h"
+#import "UIView+HUD.h"
 
 #ifndef V5_Constant_h
 #define V5_Constant_h
@@ -28,6 +32,12 @@
 #define SWNOTEmptyDictionary(X) (NOTNULL(X)&&[X isKindOfClass:[NSDictionary class]]&&[[X allKeys]count])
 #define SWNOTEmptyStr(X) (NOTNULL(X)&&[X isKindOfClass:[NSString class]]&&((NSString *)X).length)
 #define NOTNULL(x) ((![x isKindOfClass:[NSNull class]])&&x)
+
+#define ShowNetError    [self showHudInView:self.view showHint:TEXT_NETWORK_ERROR]
+#define ShowHud(X) [self showHudInView:self.view hint:(X)]
+#define ShowMissHid(X) [self showHudInView:self.view showHint:(X)]
+#define ShowInViewHud(X) [self showHudInView:self hint:(X)]
+#define ShowInViewMiss(X) [self showHint:(X)]
 
 #define Image(name) [UIImage imageNamed:name]
 #define BasidColor [UIColor colorWithRed:32.f / 255 green:105.f / 255 blue:207.f / 255 alpha:1]

@@ -10,6 +10,7 @@
 #import "ZLPhotoPickerBrowserViewController.h"
 #import "UIImage+ZLPhotoLib.h"
 #import "ZLPhotoRect.h"
+#import "V5_Constant.h"
 
 static NSString *_cellIdentifier = @"collectionViewCell";
 
@@ -378,7 +379,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
             originalFrame.origin.y += weakSelf.navigationHeight;
         }
         if (isHomeImg) {
-            originalFrame.origin.y += shareUser.homeImgOffset;
+            originalFrame.origin.y += 64;//shareUser.homeImgOffset;
         }
 
         [UIView animateWithDuration:0.35 animations:^{

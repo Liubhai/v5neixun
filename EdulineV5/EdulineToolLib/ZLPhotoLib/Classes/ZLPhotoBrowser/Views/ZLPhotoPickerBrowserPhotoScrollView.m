@@ -12,6 +12,7 @@
 #import "ZLPhotoPickerCommon.h"
 #import "ZLPhotoRect.h"
 #import "UIImageView+WebCache.h"
+#import "V5_Constant.h"
 
 // Private methods and properties
 @interface ZLPhotoPickerBrowserPhotoScrollView ()<UIActionSheetDelegate> {
@@ -153,7 +154,7 @@
             }
             
             // 网络URL
-            [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            [_photoImageView sd_setImageWithURL:photo.photoURL placeholderImage:thumbImage options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
                 [self setProgress:(double)receivedSize / expectedSize];
             } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 if (image) {
