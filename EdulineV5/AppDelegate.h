@@ -7,9 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RootV5VC.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+    UIWindow * window;
+}
 
+@property (strong, nonatomic) UIWindow *window;
+
+@property (assign, nonatomic) BOOL _allowRotation;
+@property (nonatomic, strong) RootV5VC * tabbar;
+
++(AppDelegate *)delegate;
+
+- (RootV5VC *)rootVC;
 
 @end
 

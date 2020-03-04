@@ -17,6 +17,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    self.tabbar = [RootV5VC sharedBaseTabBarViewController];
+    self.window.rootViewController = self.tabbar;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
@@ -37,5 +43,15 @@
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 }
 
+
++(AppDelegate *)delegate
+{
+    return (AppDelegate *)([UIApplication sharedApplication].delegate);
+}
+
+- (RootV5VC *)rootVC
+{
+    return (RootV5VC *)window.rootViewController;
+}
 
 @end
