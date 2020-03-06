@@ -58,7 +58,7 @@ static RootV5VC *sharedBaseTabBar;
     
     //添加线
     UILabel *XLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5)];
-    XLabel.backgroundColor = [UIColor colorWithRed:143.f / 255 green:143.f / 255 blue:143.f / 255 alpha:0.5];
+    XLabel.backgroundColor = EdlineV5_Color.layarLineColor;//[UIColor colorWithRed:143.f / 255 green:143.f / 255 blue:143.f / 255 alpha:0.5];
     [_imageView addSubview:XLabel];
     
     NSArray *imageArray = @[@"tab_home",@"tab_course",@"tab_found",@"tab_my"];

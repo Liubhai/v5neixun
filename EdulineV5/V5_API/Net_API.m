@@ -14,7 +14,7 @@
  
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain",@"charset=UTF-8", nil];
-   
+
     // 设置请求头
     [manager.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -140,7 +140,7 @@
                        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure{
   
     NSMutableDictionary* mutaDic = [[NSMutableDictionary alloc]initWithDictionary:parameters];
-    
+
     // 增加API分类和版本号
 //    [mutaDic setObject:API_TYPE forKey:@"api_type"];
 //    [mutaDic setObject:API_VERSION forKey:@"api_version"];

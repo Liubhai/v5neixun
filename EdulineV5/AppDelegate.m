@@ -97,22 +97,26 @@
         if ([AppDelegate delegate].hasPhone) {
             QuickLoginVC *vc = [[QuickLoginVC alloc] init];
             UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
             [currentViewController presentViewController:Nav animated:YES completion:nil];
         } else {
             LoginViewController *vc = [[LoginViewController alloc] init];
             vc.dissOrPop = YES;
             UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
             [currentViewController presentViewController:Nav animated:YES completion:nil];
         }
     } else if ([currentViewController isKindOfClass:[UIViewController class]]) {
         if ([AppDelegate delegate].hasPhone) {
             QuickLoginVC *vc = [[QuickLoginVC alloc] init];
             UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
             [currentViewController presentViewController:Nav animated:YES completion:nil];
         } else {
             LoginViewController *vc = [[LoginViewController alloc] init];
             vc.dissOrPop = YES;
             UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
             [currentViewController presentViewController:Nav animated:YES completion:nil];
         }
     }

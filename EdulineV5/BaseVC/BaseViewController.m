@@ -51,7 +51,7 @@
     
     _titleImage = [[UIImageView alloc]init];
     _titleImage.frame = CGRectMake(0, 0, MainScreenWidth, 44);
-    _titleImage.backgroundColor = BasidColor;//[UIColor whiteColor];
+    _titleImage.backgroundColor = EdlineV5_Color.baseColor;
     _titleImage.userInteractionEnabled = YES;
     [self.view addSubview:_titleImage];
     

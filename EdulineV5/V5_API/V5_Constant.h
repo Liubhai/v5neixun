@@ -18,6 +18,7 @@
 #import "MBProgressHUD+Add.h"
 #import "UIViewController+HUD.h"
 #import "UIView+HUD.h"
+#import "EdlineV5_Color.h"
 
 #ifndef V5_Constant_h
 #define V5_Constant_h

@@ -31,7 +31,7 @@
     _accountIcon.centerY = _accountTextField.centerY;
     
     _line1 = [[UIView alloc] initWithFrame:CGRectMake(48 * WidthRatio, _accountTextField.bottom, MainScreenWidth - 48 * 2 * WidthRatio, 0.5)];
-    _line1.backgroundColor = HEXCOLOR(0xEBEEF5);
+    _line1.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_line1];
     
     /// 这个过度的 UITextField 是为了解决 12系统上 当手机只有搜狗输入法的时候,页面有两个或者两个以上的 UITextField 设置了 secureTextEntry 之后,相邻的 UITextField 也会被系统判定成 secureTextEntry 从而导致切换不到搜狗输入法
@@ -50,7 +50,7 @@
     _pwIcon.centerY = _pwTextField.centerY;
     
     _line2 = [[UIView alloc] initWithFrame:CGRectMake(48 * WidthRatio, _pwTextField.bottom, MainScreenWidth - 48 * 2 * WidthRatio, 0.5)];
-    _line2.backgroundColor = HEXCOLOR(0xEBEEF5);
+    _line2.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_line2];
 }
 

@@ -38,7 +38,7 @@
     [self.view addSubview:_logImageView];
     
     _phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _logImageView.bottom + phoneNumSpace, MainScreenWidth, 30)];
-    _phoneLabel.textColor = HEXCOLOR(0x303133);
+    _phoneLabel.textColor = EdlineV5_Color.textFirstColor;//HEXCOLOR(0x303133);
     _phoneLabel.font = SYSTEMFONT(16);
     _phoneLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_phoneLabel];
@@ -48,14 +48,14 @@
     _loginBtn.layer.cornerRadius = 5;
     [_loginBtn setTitle:@"本机号码登录" forState:0];
     [_loginBtn setTitleColor:[UIColor whiteColor] forState:0];
-    [_loginBtn setBackgroundColor:HEXCOLOR(0x5191FF)];
+    [_loginBtn setBackgroundColor:EdlineV5_Color.themeColor];
     _loginBtn.titleLabel.font = SYSTEMFONT(18);
     _loginBtn.centerX = MainScreenWidth / 2.0;
     [self.view addSubview:_loginBtn];
     
     _otherBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, MainScreenHeight - loginBtnSpace - 30, 100, 30)];
     [_otherBtn setTitle:@"其他方式登录" forState:0];
-    [_otherBtn setTitleColor:HEXCOLOR(0x5191FF) forState:0];
+    [_otherBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
     _otherBtn.titleLabel.font = SYSTEMFONT(14);
     _otherBtn.centerX = MainScreenWidth / 2.0;
     [self.view addSubview:_otherBtn];

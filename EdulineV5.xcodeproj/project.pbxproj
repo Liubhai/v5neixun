@@ -68,6 +68,9 @@
 		787957622410E1F40013F95F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957612410E1F40013F95F /* LoginViewController.m */; };
 		787957672410E7700013F95F /* LoginPwView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957662410E7700013F95F /* LoginPwView.m */; };
 		7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957692410F96A0013F95F /* ThirdLoginView.m */; };
+		78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548262411F34100A33FC4 /* LoginMsgView.m */; };
+		78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548292412229900A33FC4 /* AreaNumListVC.m */; };
+		78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -215,6 +218,12 @@
 		787957662410E7700013F95F /* LoginPwView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginPwView.m; sourceTree = "<group>"; };
 		787957682410F96A0013F95F /* ThirdLoginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThirdLoginView.h; sourceTree = "<group>"; };
 		787957692410F96A0013F95F /* ThirdLoginView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdLoginView.m; sourceTree = "<group>"; };
+		78C548252411F34100A33FC4 /* LoginMsgView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginMsgView.h; sourceTree = "<group>"; };
+		78C548262411F34100A33FC4 /* LoginMsgView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginMsgView.m; sourceTree = "<group>"; };
+		78C548282412229900A33FC4 /* AreaNumListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaNumListVC.h; sourceTree = "<group>"; };
+		78C548292412229900A33FC4 /* AreaNumListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AreaNumListVC.m; sourceTree = "<group>"; };
+		78C5482B2412259C00A33FC4 /* EdlineV5_Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EdlineV5_Color.h; sourceTree = "<group>"; };
+		78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EdlineV5_Color.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -378,6 +387,8 @@
 			children = (
 				7879566C240F39200013F95F /* BaseViewController.h */,
 				7879566B240F39200013F95F /* BaseViewController.m */,
+				78C5482B2412259C00A33FC4 /* EdlineV5_Color.h */,
+				78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */,
 			);
 			path = BaseVC;
 			sourceTree = "<group>";
@@ -612,6 +623,8 @@
 				7879575E2410A1650013F95F /* QuickLoginVC.m */,
 				787957602410E1F40013F95F /* LoginViewController.h */,
 				787957612410E1F40013F95F /* LoginViewController.m */,
+				78C548282412229900A33FC4 /* AreaNumListVC.h */,
+				78C548292412229900A33FC4 /* AreaNumListVC.m */,
 				787957632410E72F0013F95F /* LoginRegisterViews */,
 			);
 			path = LoginAndRegister;
@@ -622,6 +635,8 @@
 			children = (
 				787957652410E7700013F95F /* LoginPwView.h */,
 				787957662410E7700013F95F /* LoginPwView.m */,
+				78C548252411F34100A33FC4 /* LoginMsgView.h */,
+				78C548262411F34100A33FC4 /* LoginMsgView.m */,
 				787957682410F96A0013F95F /* ThirdLoginView.h */,
 				787957692410F96A0013F95F /* ThirdLoginView.m */,
 			);
@@ -826,6 +841,7 @@
 				78795722240FA3840013F95F /* ZLCameraImageView.m in Sources */,
 				78795727240FA3840013F95F /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.m in Sources */,
 				78795752240FAA7A0013F95F /* UIViewController+HUD.m in Sources */,
+				78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */,
 				7879575F2410A1650013F95F /* QuickLoginVC.m in Sources */,
 				7879564D240E36FA0013F95F /* EdulineV5Client.m in Sources */,
 				7879572C240FA3840013F95F /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
@@ -836,6 +852,7 @@
 				78795733240FA3840013F95F /* ZLPhotoPickerAssetsViewController.m in Sources */,
 				78795738240FA3840013F95F /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
 				78795730240FA3840013F95F /* ZLPhotoPickerGroup.m in Sources */,
+				78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */,
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
@@ -843,6 +860,7 @@
 				78795612240DE7A50013F95F /* AppDelegate.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
 				7879572F240FA3840013F95F /* ZLPhotoPickerDatas.m in Sources */,
+				78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */,
 				78795723240FA3840013F95F /* ZLCamera.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
