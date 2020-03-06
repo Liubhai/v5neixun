@@ -10,17 +10,20 @@
 #import "RootV5VC.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate> {
-    UIWindow * window;
+    
 }
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property (assign, nonatomic) BOOL _allowRotation;
 @property (nonatomic, strong) RootV5VC * tabbar;
+@property (assign, nonatomic) BOOL hasPhone;
 
 +(AppDelegate *)delegate;
 
 - (RootV5VC *)rootVC;
+
++(void)presentLoginNav:(UIViewController *)currentViewController;
 
 @end
 

@@ -7,8 +7,8 @@
 //
 
 #import "BaseViewController.h"
-#import "V5_Constant.h"
 #import "AppDelegate.h"
+#import "V5_Constant.h"
 
 @interface BaseViewController ()
 
@@ -56,7 +56,7 @@
     [self.view addSubview:_titleImage];
     
     _lineTL = [[UIView alloc]initWithFrame:CGRectMake(0, 43.5, MainScreenWidth, 0.5)];
-    _lineTL.backgroundColor = BasidColor;
+    _lineTL.backgroundColor = [UIColor whiteColor];
     [_titleImage addSubview:_lineTL];
     
     _titleLabel = [[UILabel alloc]init];
@@ -70,7 +70,7 @@
     _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _leftButton.frame = CGRectMake(0, 11, 44, 44);
     [_leftButton setTitleColor:BackColor forState:0];
-    [_leftButton setImage:[UIImage imageNamed:@"ic_back@2x"] forState:0];
+    [_leftButton setImage:[UIImage imageNamed:@"login-back"] forState:0];
     [_leftButton addTarget:self action:@selector(leftButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_leftButton];
     

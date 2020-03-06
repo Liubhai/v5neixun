@@ -13,6 +13,7 @@
 #import "FindRootViewController.h"
 #import "MyRootViewController.h"
 #import "V5_Constant.h"
+#import "AppDelegate.h"
 
 @interface RootV5VC ()
 
@@ -97,6 +98,9 @@ static RootV5VC *sharedBaseTabBar;
     self.seledButton.selected = NO;
     btn.selected = YES;
     self.seledButton = btn;
+    if (btn.tag == 4) {
+        [AppDelegate presentLoginNav:sharedBaseTabBar.viewControllers.lastObject];
+    }
 }
 
 -(void)isHiddenCustomTabBarByBoolean:(BOOL)boolean

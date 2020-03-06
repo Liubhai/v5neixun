@@ -11,7 +11,6 @@
 #import <YYKit.h>
 #import <MJRefresh.h>
 #import <SDWebImage.h>
-#import "BaseViewController.h"
 #import "Net_API.h"
 #import "Api_Config.h"
 #import "ZLPhoto.h"
@@ -25,6 +24,8 @@
 
 #define MainScreenHeight [EdulineV5_Tool sharedInstance].tsShowWindowsHeight
 #define MainScreenWidth [EdulineV5_Tool sharedInstance].tsShowWindowsWidth
+#define HeightRatio MainScreenHeight / 667.0
+#define WidthRatio MainScreenWidth / 375.0
 
 #define SYSTEMFONT(FONTSIZE)    [UIFont systemFontOfSize:FONTSIZE]
 
@@ -42,12 +43,15 @@
 #define Image(name) [UIImage imageNamed:name]
 #define BasidColor [UIColor colorWithRed:32.f / 255 green:105.f / 255 blue:207.f / 255 alpha:1]
 #define BackColor [UIColor colorWithRed:240.f / 255 green:240.f / 255 blue:240.f / 255 alpha:1]
+#define RGBA(r,g,b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1.0]
+#define HEXCOLOR(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
-//#define ShowNetError    [self showHudInView:self.view showHint:TEXT_NETWORK_ERROR]
-//#define ShowHud(X) [self showHudInView:self.view hint:(X)]
-//#define ShowMissHid(X) [self showHudInView:self.view showHint:(X)]
-//#define ShowInViewHud(X) [self showHudInView:self hint:(X)]
-//#define ShowInViewMiss(X) [self showHint:(X)]
+
+#define ShowNetError    [self showHudInView:self.view showHint:TEXT_NETWORK_ERROR]
+#define ShowHud(X) [self showHudInView:self.view hint:(X)]
+#define ShowMissHid(X) [self showHudInView:self.view showHint:(X)]
+#define ShowInViewHud(X) [self showHudInView:self hint:(X)]
+#define ShowInViewMiss(X) [self showHint:(X)]
 
 // iPhoneX状态栏增加的高度
 #define MACRO_UI_STATUSBAR_ADD_HEIGHT [EdulineV5_Tool statusBarAddHeightWithIPhoneX]
