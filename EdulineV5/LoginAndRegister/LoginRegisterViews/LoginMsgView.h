@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *senderCodeBtn;
 @property (strong, nonatomic) UIView *line2;
 
+- (void)setAreaNumLabelText:(NSString *)num;
+
 @end
 
 NS_ASSUME_NONNULL_END

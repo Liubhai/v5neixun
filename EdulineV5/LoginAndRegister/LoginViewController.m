@@ -11,6 +11,7 @@
 #import "LoginPwView.h"
 #import "ThirdLoginView.h"
 #import "LoginMsgView.h"
+#import "AreaNumListVC.h"
 
 @interface LoginViewController ()<LoginMsgViewDelegate>
 
@@ -119,7 +120,12 @@
 
 // MARK: - LoginMsgViewDelegate(验证码登录号码归属地选择)
 - (void)jumpAreaNumList {
-    
+    AreaNumListVC *vc = [[AreaNumListVC alloc] init];
+    __typeof (self) __weak weakSelf = self;
+    vc.areaNumCodeBlock = ^(NSString *codeNum){
+        [weakSelf.loginMsg setAreaNumLabelText:codeNum];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

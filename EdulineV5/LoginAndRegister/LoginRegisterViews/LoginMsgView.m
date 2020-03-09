@@ -81,4 +81,13 @@
     }
 }
 
+- (void)setAreaNumLabelText:(NSString *)num {
+    
+    CGFloat numWidth = [num sizeWithFont:_areaNumLabel.font].width + 4;
+    [_areaNumLabel setWidth: (numWidth<=33) ? 33 : numWidth];
+    _areaNumLabel.text = num;
+    [_jiantouImage setLeft:_areaNumLabel.right];
+    [_phoneNumTextField setLeft:_jiantouImage.right + 15 * WidthRatio];
+}
+
 @end

@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^areaCodeBlock)(NSString *);
+
 @interface AreaNumListVC : BaseViewController
+
+@property (copy, nonatomic) areaCodeBlock areaNumCodeBlock;
 
 @end
 
