@@ -28,7 +28,7 @@
     
     _jiantouImage = [[UIImageView alloc] initWithFrame:CGRectMake(_areaNumLabel.right, 0, 11, 6)];
     _jiantouImage.centerY = _areaNumLabel.centerY;
-    _jiantouImage.backgroundColor = [UIColor redColor];
+    _jiantouImage.image = Image(@"login-down");
     [self addSubview:_jiantouImage];
     
     _areaBtn = [[UIButton alloc] initWithFrame:CGRectMake(_areaNumLabel.left, 0, _jiantouImage.right - _areaNumLabel.left, 50)];

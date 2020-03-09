@@ -12,6 +12,7 @@
 #import "ThirdLoginView.h"
 #import "LoginMsgView.h"
 #import "AreaNumListVC.h"
+#import "RegisterAndForgetPwVC.h"
 
 @interface LoginViewController ()<LoginMsgViewDelegate>
 
@@ -67,14 +68,14 @@
     [_forgetPwBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
     [_forgetPwBtn setTitle:@"忘记密码?" forState:0];
     _forgetPwBtn.titleLabel.font = SYSTEMFONT(14);
-    [_forgetPwBtn addTarget:self action:@selector(topButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_forgetPwBtn addTarget:self action:@selector(registerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_forgetPwBtn];
     
     _registerBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (48 + 28) * WidthRatio, _loginPw.bottom + 8, 30, 30)];
     [_registerBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
     [_registerBtn setTitle:@"注册" forState:0];
     _registerBtn.titleLabel.font = SYSTEMFONT(14);
-    [_registerBtn addTarget:self action:@selector(topButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_registerBtn addTarget:self action:@selector(registerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_registerBtn];
     
     _loginBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, _forgetPwBtn.bottom + 40, 280, 40)];
@@ -125,6 +126,12 @@
     vc.areaNumCodeBlock = ^(NSString *codeNum){
         [weakSelf.loginMsg setAreaNumLabelText:codeNum];
     };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)registerButtonClick:(UIButton *)sender {
+    RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
+    vc.registerOrForget = ((sender == _registerBtn) ? YES : NO);
     [self.navigationController pushViewController:vc animated:YES];
 }
 
