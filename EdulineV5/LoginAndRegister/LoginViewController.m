@@ -13,6 +13,7 @@
 #import "LoginMsgView.h"
 #import "AreaNumListVC.h"
 #import "RegisterAndForgetPwVC.h"
+#import "Net_Path.h"
 
 @interface LoginViewController ()<LoginMsgViewDelegate>
 
@@ -34,6 +35,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _titleImage.backgroundColor = [UIColor whiteColor];
     [self makeSubViews];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 // MARK: - 子视图创建
@@ -85,8 +87,8 @@
     [_loginBtn setTitleColor:[UIColor whiteColor] forState:0];
     [_loginBtn setTitle:@"登录" forState:0];
     _loginBtn.titleLabel.font = SYSTEMFONT(18);
-    _loginBtn.backgroundColor = EdlineV5_Color.themeColor;
-    [_loginBtn addTarget:self action:@selector(topButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _loginBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+    [_loginBtn addTarget:self action:@selector(loginRequest) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_loginBtn];
     
     _thirdLoginView = [[ThirdLoginView alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 32, MainScreenWidth, 90)];
@@ -111,11 +113,25 @@
         _msgLoginBtn.selected = NO;
         _loginPw.hidden = NO;
         _loginMsg.hidden = YES;
+        if (_loginPw.accountTextField.text.length>0 && _loginPw.pwTextField.text.length>0) {
+            _loginBtn.enabled = YES;
+            _loginBtn.backgroundColor = EdlineV5_Color.buttonNormalColor;
+        } else {
+            _loginBtn.enabled = NO;
+            _loginBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
     } else {
         _pwLoginBtn.selected = NO;
         _msgLoginBtn.selected = YES;
         _loginPw.hidden = YES;
         _loginMsg.hidden = NO;
+        if (_loginMsg.phoneNumTextField.text.length>0 && _loginMsg.codeTextField.text.length>0) {
+            _loginBtn.enabled = YES;
+            _loginBtn.backgroundColor = EdlineV5_Color.buttonNormalColor;
+        } else {
+            _loginBtn.enabled = NO;
+            _loginBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
     }
 }
 
@@ -133,6 +149,45 @@
     RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
     vc.registerOrForget = ((sender == _registerBtn) ? YES : NO);
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)textFieldDidChanged:(NSNotification *)notice {
+    if (_pwLoginBtn.selected) {
+        if (_loginPw.accountTextField.text.length>0 && _loginPw.pwTextField.text.length>0) {
+            _loginBtn.enabled = YES;
+            _loginBtn.backgroundColor = EdlineV5_Color.buttonNormalColor;
+        } else {
+            _loginBtn.enabled = NO;
+            _loginBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
+    } else if(_msgLoginBtn.selected) {
+        if (_loginMsg.phoneNumTextField.text.length>0 && _loginMsg.codeTextField.text.length>0) {
+            _loginBtn.enabled = YES;
+            _loginBtn.backgroundColor = EdlineV5_Color.buttonNormalColor;
+        } else {
+            _loginBtn.enabled = NO;
+            _loginBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
+    }
+}
+
+- (void)loginRequest {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    if (_pwLoginBtn.selected) {
+        [dict setObject:@"user" forKey:@"logintype"];
+        [dict setObject:_loginPw.accountTextField.text forKey:@"user"];
+        [dict setObject:_loginPw.pwTextField.text forKey:@"password"];
+    }
+    if (_msgLoginBtn.selected) {
+        [dict setObject:@"verify" forKey:@"logintype"];
+        [dict setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+        [dict setObject:_loginMsg.codeTextField.text forKey:@"verify"];
+    }
+    [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+    } enError:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 @end

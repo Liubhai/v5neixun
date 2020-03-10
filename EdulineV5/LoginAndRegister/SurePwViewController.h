@@ -13,5 +13,10 @@
 
 @property (assign, nonatomic) BOOL registerOrForget;
 
+@property (strong, nonatomic) NSString *phoneNum;
+
+@property (strong, nonatomic) NSString *msgCode;
+
+
 @end
 

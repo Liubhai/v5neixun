@@ -39,6 +39,7 @@
     _phoneNumTextField = [[UITextField alloc] initWithFrame:CGRectMake(_jiantouImage.right + 15 * WidthRatio, 0, MainScreenWidth - 48 * WidthRatio - (_jiantouImage.right + 15 * WidthRatio), 50)];
     _phoneNumTextField.font = SYSTEMFONT(14);
     _phoneNumTextField.textColor = EdlineV5_Color.textFirstColor;
+    _phoneNumTextField.keyboardType = UIKeyboardTypeNumberPad;
     _phoneNumTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入手机号" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     [self addSubview:_phoneNumTextField];
     
@@ -60,6 +61,7 @@
     _codeTextField.font = SYSTEMFONT(14);
     _codeTextField.textColor = EdlineV5_Color.textFirstColor;
     _codeTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+    _codeTextField.keyboardType = UIKeyboardTypeNumberPad;
     [self addSubview:_codeTextField];
     
     _senderCodeBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 48 * WidthRatio - 80, 0, 80, 20)];

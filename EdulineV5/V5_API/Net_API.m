@@ -11,15 +11,8 @@
 @implementation Net_API
 
 + (void)requestGETSuperAPIWithURLStr:(NSString *)urlStr WithAuthorization:(NSString *)authorization paramDic:(NSDictionary *)paramDic finish:(void(^)(id responseObject))finish enError:(void(^)(NSError *error))enError{
- 
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain",@"charset=UTF-8", nil];
-
-    // 设置请求头
-    [manager.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
    
-    [manager GET:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[EdulineV5Client sharedClient] GET:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
         NSLog(@"EdulineV4 GET request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
@@ -38,24 +31,17 @@
 }
 
 + (void)requestPOSTWithURLStr:(NSString *)urlStr WithAuthorization:(NSString *)authorization paramDic:(NSDictionary *)paramDic finish:(void(^)(id responseObject))finish enError:(void(^)(NSError *error))enError{
-   
-   AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-   
-   manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain",@"charset=UTF-8", nil];
- 
-   // 设置请求头
-   [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-   [manager.requestSerializer setValue:authorization forHTTPHeaderField:@"Authorization"];
-   [manager POST:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    
+   [[EdulineV5Client sharedClient] POST:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
        NSLog(@"EdulineV4 POST request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
-       NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"errcode"]];
+       NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
        if ([errcode isEqualToString:@"0"]) {
            finish(responseObject);
        }else {
            #ifdef DEBUG
-               NSString *errmsg = [responseObject objectForKey:@"errmsg"];
+               NSString *errmsg = [responseObject objectForKey:@"msg"];
                NSLog(@"EdulineV4 DELETE request failure \n%@\n",errmsg);
            #endif
        }
@@ -69,18 +55,12 @@
 }
 
 + (void)requestPUTWithURLStr:(NSString *)urlStr paramDic:(NSDictionary *)paramDic Api_key:(NSString *)api_key finish:(void(^)(id responseObject))finish enError:(void(^)(NSError *error))enError{
- 
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain", nil];
-    
-    // 设置请求头
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [manager.requestSerializer setValue:api_key forHTTPHeaderField:@"api_key"];
-    [manager PUT:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+
+    [[EdulineV5Client sharedClient] PUT:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
        NSLog(@"EdulineV4 PUT request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
-        NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"errcode"]];
+        NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
         
         if ([errcode isEqualToString:@"0"]) {
             
@@ -88,7 +68,7 @@
             
         }else{
             #ifdef DEBUG
-                NSString *errmsg = [responseObject objectForKey:@"errmsg"];
+                NSString *errmsg = [responseObject objectForKey:@"msg"];
                 NSLog(@"EdulineV4 DELETE request failure \n%@\n",errmsg);
             #endif
         }
@@ -102,17 +82,11 @@
 
 + (void)requestDeleteWithURLStr:(NSString *)urlStr paramDic:(NSDictionary *)paramDic Api_key:(NSString *)api_key finish:(void(^)(id responseObject))finish enError:(void(^)(NSError *error))enError{
  
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain", nil];
-    
-    // 设置请求头
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [manager.requestSerializer setValue:api_key forHTTPHeaderField:@"api_key"];
-    [manager DELETE:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[EdulineV5Client sharedClient] DELETE:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
        NSLog(@"EdulineV4 DELETE request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
-        NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"errcode"]];
+        NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
         
         if ([errcode isEqualToString:@"0"]) {
             
@@ -120,7 +94,7 @@
             
         }else{
             #ifdef DEBUG
-                NSString *errmsg = [responseObject objectForKey:@"errmsg"];
+                NSString *errmsg = [responseObject objectForKey:@"msg"];
                 NSLog(@"EdulineV4 DELETE request failure \n%@\n",errmsg);
             #endif
         }

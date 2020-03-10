@@ -11,7 +11,15 @@
 
 #pragma mark --- 基本配置
 
-#define HeaderUrl_V5 @"https://t.v4.51eduline.com"
+#define HeaderUrl_V5 @"http://v5.51eduline.com"
+
+// 用户相关
+#define User_Create @"user/account/create"
+#define User_Login @"user/account/login"
+#define User_Edit @"user/account/edit"
+#define User_Delete @"user/account/delete"
+#define User_ResetPw @"user/account/pwd/reset"
+#define User_MsgVerified @"user/account/pwd/verify"
 
 //首页
 #define YunKeTang_App_Home @"Home"

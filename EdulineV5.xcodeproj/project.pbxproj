@@ -76,6 +76,7 @@
 		78C548372416212300A33FC4 /* RegisterAndForgetPwVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548362416212300A33FC4 /* RegisterAndForgetPwVC.m */; };
 		78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548392416213700A33FC4 /* SurePwViewController.m */; };
 		78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5483C24162BA300A33FC4 /* SurePassWordView.m */; };
+		78C54840241743DE00A33FC4 /* Net_Path.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5483F241743DE00A33FC4 /* Net_Path.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -238,6 +239,8 @@
 		78C548392416213700A33FC4 /* SurePwViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurePwViewController.m; sourceTree = "<group>"; };
 		78C5483B24162BA300A33FC4 /* SurePassWordView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SurePassWordView.h; sourceTree = "<group>"; };
 		78C5483C24162BA300A33FC4 /* SurePassWordView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurePassWordView.m; sourceTree = "<group>"; };
+		78C5483E241743DE00A33FC4 /* Net_Path.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Net_Path.h; sourceTree = "<group>"; };
+		78C5483F241743DE00A33FC4 /* Net_Path.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Net_Path.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -343,6 +346,8 @@
 				78795647240E319F0013F95F /* V5_Constant.h */,
 				78795648240E35CE0013F95F /* Net_API.h */,
 				78795649240E35CE0013F95F /* Net_API.m */,
+				78C5483E241743DE00A33FC4 /* Net_Path.h */,
+				78C5483F241743DE00A33FC4 /* Net_Path.m */,
 				7879564B240E36FA0013F95F /* EdulineV5Client.h */,
 				7879564C240E36FA0013F95F /* EdulineV5Client.m */,
 				7879564E240E3FB60013F95F /* EdulineV5_Tool.h */,
@@ -921,6 +926,7 @@
 				7879572E240FA3840013F95F /* UIView+ZLExtension.m in Sources */,
 				78795734240FA3840013F95F /* ZLNavigationController.m in Sources */,
 				78795731240FA3840013F95F /* ZLPhotoAssets.m in Sources */,
+				78C54840241743DE00A33FC4 /* Net_Path.m in Sources */,
 				78795756240FAA7A0013F95F /* UIViewController+DismissKeyboard.m in Sources */,
 				78795754240FAA7A0013F95F /* NSString+Valid.m in Sources */,
 				7879575A240FAA7A0013F95F /* UIResponder+Router.m in Sources */,

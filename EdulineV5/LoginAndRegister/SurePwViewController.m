@@ -9,6 +9,7 @@
 #import "SurePwViewController.h"
 #import "SurePassWordView.h"
 #import "V5_Constant.h"
+#import "Net_Path.h"
 
 @interface SurePwViewController ()
 
@@ -29,6 +30,7 @@
         _titleLabel.text = @"找回密码";
     }
     [self makeSubViews];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)makeSubViews {
@@ -42,7 +44,9 @@
     _sureButton.layer.cornerRadius = 5;
     [_sureButton setTitle:_titleLabel.text forState:0];
     _sureButton.titleLabel.font = SYSTEMFONT(18);
+    [_sureButton addTarget:self action:@selector(sureButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
+    
     [self.view addSubview:_sureButton];
     
     if (_registerOrForget) {
@@ -51,25 +55,31 @@
         _agreementLabel.font = SYSTEMFONT(13);
         _agreementLabel.textColor = EdlineV5_Color.textThirdColor;
         _agreementLabel.textAlignment = NSTextAlignmentCenter;
-        NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleDisplayName"];
+        NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
         NSString *atr = [NSString stringWithFormat:@"《%@服务协议》",appName];
         NSString *final = [NSString stringWithFormat:@"注册即表示阅读并同意%@",atr];
         NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:final];
-        [mut addAttributes:@{@"NSForegroundColorAttributeName":EdlineV5_Color.themeColor} range:[final rangeOfString:atr]];
+        [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.themeColor} range:[final rangeOfString:atr]];
         _agreementLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
         [self.view addSubview:_agreementLabel];
     }
     
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)sureButtonClick:(UIButton *)sender {
+    
 }
-*/
+
+- (void)textFieldDidChanged:(NSNotification *)notice {
+    UITextField *pass = (UITextField *)notice.object;
+    if (_passWordView.firstPwTextField.text.length>=6 && _passWordView.surePwTextField.text.length>=6) {
+        _sureButton.enabled = YES;
+        [_sureButton setBackgroundColor:EdlineV5_Color.themeColor];
+    } else {
+        _sureButton.enabled = NO;
+        [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
+    }
+}
+
 
 @end
