@@ -20,6 +20,7 @@
 @property (strong, nonatomic) UIButton *loginBtn;
 @property (strong, nonatomic) UIButton *otherBtn;
 
+
 @end
 
 @implementation QuickLoginVC
@@ -46,14 +47,14 @@
     _loginBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, _phoneLabel.bottom + loginBtnSpace, 280, 40)];
     _loginBtn.layer.masksToBounds = YES;
     _loginBtn.layer.cornerRadius = 5;
-    [_loginBtn setTitle:@"本机号码登录" forState:0];
+    [_loginBtn setTitle:@"本机号码一键登录" forState:0];
     [_loginBtn setTitleColor:[UIColor whiteColor] forState:0];
     [_loginBtn setBackgroundColor:EdlineV5_Color.themeColor];
     _loginBtn.titleLabel.font = SYSTEMFONT(18);
     _loginBtn.centerX = MainScreenWidth / 2.0;
     [self.view addSubview:_loginBtn];
     
-    _otherBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, MainScreenHeight - loginBtnSpace - 30, 100, 30)];
+    _otherBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 30, 100, 30)];
     [_otherBtn setTitle:@"其他方式登录" forState:0];
     [_otherBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
     _otherBtn.titleLabel.font = SYSTEMFONT(14);

@@ -14,6 +14,8 @@
 #import "AreaNumListVC.h"
 #import "RegisterAndForgetPwVC.h"
 #import "Net_Path.h"
+#import "UserModel.h"
+#import "SurePwViewController.h"
 
 @interface LoginViewController ()<LoginMsgViewDelegate>
 
@@ -172,6 +174,7 @@
 }
 
 - (void)loginRequest {
+    [self.view endEditing:YES];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     if (_pwLoginBtn.selected) {
         [dict setObject:@"user" forKey:@"logintype"];
@@ -185,6 +188,28 @@
     }
     [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
         NSLog(@"%@",responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSString *ak = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"ak"]];
+                NSString *sk = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"sk"]];
+                [UserModel saveUserPassportToken:ak andTokenSecret:sk];
+                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]]];
+                [UserModel saveAuth_scope:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"auth_scope"]]];
+                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"user_name"]]];
+                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
+                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
+                [UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
+                if ([[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue] && self.msgLoginBtn.selected) {
+                    SurePwViewController *vc = [[SurePwViewController alloc] init];
+                    vc.phoneNum = self.loginMsg.phoneNumTextField.text;
+                    vc.msgCode = self.loginMsg.codeTextField.text;
+                    vc.registerOrForget = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                }
+            }
+        }
     } enError:^(NSError * _Nonnull error) {
         NSLog(@"%@",error);
     }];

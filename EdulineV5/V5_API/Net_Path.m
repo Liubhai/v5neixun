@@ -35,6 +35,10 @@
     return [Net_Path fullPath:@"user/account/pwd/reset" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userSetPwPath:(NSString *)userId {
+    return [Net_Path fullPath:@"user/account/pwd/set" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userVerifyPath:(NSString *)userId {
     return [Net_Path fullPath:@"user/account/pwd/verify" repalce:@"" byReplece:@""];
 }

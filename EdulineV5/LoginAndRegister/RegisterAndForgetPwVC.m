@@ -30,7 +30,7 @@
         _titleLabel.text = @"找回密码";
     }
     [self makeSubViews];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)makeSubViews {
@@ -46,7 +46,7 @@
     [_nextButton setTitleColor:[UIColor whiteColor] forState:0];
     [_nextButton setTitle:@"下一步" forState:0];
     _nextButton.titleLabel.font = SYSTEMFONT(18);
-    _nextButton.backgroundColor = EdlineV5_Color.themeColor;
+    _nextButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     [_nextButton addTarget:self action:@selector(nextButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_nextButton];
     
@@ -65,7 +65,20 @@
 - (void)nextButtonClick:(UIButton *)sender {
     SurePwViewController *vc = [[SurePwViewController alloc] init];
     vc.registerOrForget = _registerOrForget;
+    vc.phoneNum = _loginMsg.phoneNumTextField.text;
+    vc.msgCode = _loginMsg.codeTextField.text;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)textFieldDidChanged:(NSNotification *)notice {
+    UITextField *pass = (UITextField *)notice.object;
+    if (_loginMsg.phoneNumTextField.text.length>=0 && _loginMsg.codeTextField.text>=0) {
+        _nextButton.enabled = YES;
+        [_nextButton setBackgroundColor:EdlineV5_Color.buttonNormalColor];
+    } else {
+        _nextButton.enabled = NO;
+        [_nextButton setBackgroundColor:EdlineV5_Color.buttonDisableColor];
+    }
 }
 
 @end

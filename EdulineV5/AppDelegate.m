@@ -58,6 +58,7 @@
     self.tabbar = [RootV5VC sharedBaseTabBarViewController];
     self.window.rootViewController = self.tabbar;
     [self.window makeKeyAndVisible];
+    _hasPhone = YES;
     return YES;
 }
 

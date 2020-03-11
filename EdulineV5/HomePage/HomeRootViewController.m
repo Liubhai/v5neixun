@@ -18,11 +18,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor redColor];
     _titleLabel.text = @"首页";
-    [Net_API requestGETSuperAPIWithURLStr:@"https://t.v4.51eduline.com/service/config.indexConfig" WithAuthorization:@"aouth" paramDic:@{@"user":@"9"} finish:^(id  _Nonnull responseObject) {
-        NSLog(@"%@",responseObject);
-    } enError:^(NSError * _Nonnull error) {
-        NSLog(@"%@",error);
-    }];
 }
 
 /*

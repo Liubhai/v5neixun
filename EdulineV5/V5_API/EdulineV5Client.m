@@ -8,6 +8,7 @@
 
 #import "EdulineV5Client.h"
 #import "Api_Config.h"
+#import "UserModel.h"
 
 @implementation EdulineV5Client
 
@@ -25,6 +26,14 @@
     
     _sharedClient.responseSerializer = responseSerializer;
     _sharedClient.requestSerializer = requestSerializer;
+    
+    if (SWNOTEmptyStr([UserModel oauthToken])) {
+        [_sharedClient.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [_sharedClient.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+    }
+    if (SWNOTEmptyStr([UserModel userAuth_scope])) {
+        [_sharedClient.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    }
 
     return _sharedClient;
 }

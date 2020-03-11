@@ -77,6 +77,7 @@
 		78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548392416213700A33FC4 /* SurePwViewController.m */; };
 		78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5483C24162BA300A33FC4 /* SurePassWordView.m */; };
 		78C54840241743DE00A33FC4 /* Net_Path.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5483F241743DE00A33FC4 /* Net_Path.m */; };
+		78C54845241873EB00A33FC4 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C54844241873EB00A33FC4 /* UserModel.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -241,6 +242,8 @@
 		78C5483C24162BA300A33FC4 /* SurePassWordView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurePassWordView.m; sourceTree = "<group>"; };
 		78C5483E241743DE00A33FC4 /* Net_Path.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Net_Path.h; sourceTree = "<group>"; };
 		78C5483F241743DE00A33FC4 /* Net_Path.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Net_Path.m; sourceTree = "<group>"; };
+		78C54843241873EB00A33FC4 /* UserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		78C54844241873EB00A33FC4 /* UserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -297,6 +300,7 @@
 		7879560F240DE7A50013F95F /* EdulineV5 */ = {
 			isa = PBXGroup;
 			children = (
+				78C54841241873CF00A33FC4 /* AnyModel */,
 				7879566A240F39200013F95F /* BaseVC */,
 				78795645240E274A0013F95F /* V5_API */,
 				78795651240E5A8D0013F95F /* RootViewController */,
@@ -679,6 +683,15 @@
 			path = AreaCodeListPlist;
 			sourceTree = "<group>";
 		};
+		78C54841241873CF00A33FC4 /* AnyModel */ = {
+			isa = PBXGroup;
+			children = (
+				78C54843241873EB00A33FC4 /* UserModel.h */,
+				78C54844241873EB00A33FC4 /* UserModel.m */,
+			);
+			path = AnyModel;
+			sourceTree = "<group>";
+		};
 		7B328A11FE82EEC19F082C22 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -891,6 +904,7 @@
 				78795730240FA3840013F95F /* ZLPhotoPickerGroup.m in Sources */,
 				78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */,
 				78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */,
+				78C54845241873EB00A33FC4 /* UserModel.m in Sources */,
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,

@@ -37,7 +37,7 @@
        NSLog(@"EdulineV4 POST request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
        NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
-       if ([errcode isEqualToString:@"0"]) {
+       if ([errcode isEqualToString:@"1"]) {
            finish(responseObject);
        }else {
            #ifdef DEBUG
@@ -62,7 +62,7 @@
     #endif
         NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
         
-        if ([errcode isEqualToString:@"0"]) {
+        if ([errcode isEqualToString:@"1"]) {
             
             finish(responseObject);
             
@@ -88,7 +88,7 @@
     #endif
         NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
         
-        if ([errcode isEqualToString:@"0"]) {
+        if ([errcode isEqualToString:@"1"]) {
             
             finish(responseObject);
             

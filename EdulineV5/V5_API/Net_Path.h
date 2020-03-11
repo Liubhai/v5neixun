@@ -37,6 +37,9 @@ struct NetWorkUrl {
 /** 重置密码 */
 + (NSString *)userResetPwPath:(NSString *)userId;
 
+/** 设置密码 */
++ (NSString *)userSetPwPath:(NSString *)userId;
+
 /** 短信验证 */
 + (NSString *)userVerifyPath:(NSString *)userId;
 

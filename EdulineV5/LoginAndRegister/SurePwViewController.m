@@ -67,7 +67,16 @@
 }
 
 - (void)sureButtonClick:(UIButton *)sender {
-    
+    [self.view endEditing:YES];
+    if ([_passWordView.firstPwTextField.text isEqualToString:_passWordView.surePwTextField.text]) {
+        if (_registerOrForget) {
+            [self setPassWordRequest];
+        } else {
+            [self reSetPassWordRequest];
+        }
+    } else {
+        [self showHudInView:self.view showHint:@"请确认两次密码一致"];
+    }
 }
 
 - (void)textFieldDidChanged:(NSNotification *)notice {
@@ -81,5 +90,30 @@
     }
 }
 
+- (void)setPassWordRequest {
+    [Net_API requestPUTWithURLStr:[Net_Path userSetPwPath:nil] paramDic:@{@"password":_passWordView.surePwTextField.text} Api_key:nil finish:^(id  _Nonnull responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)reSetPassWordRequest {
+    [Net_API requestPOSTWithURLStr:[Net_Path userResetPwPath:nil] WithAuthorization:nil paramDic:@{@"phone":_phoneNum,@"password":_passWordView.surePwTextField.text} finish:^(id  _Nonnull responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
 
 @end
