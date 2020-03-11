@@ -8,6 +8,8 @@
 
 #import "QuickLoginVC.h"
 #import "LoginViewController.h"
+#import "UserModel.h"
+#import "Net_Path.h"
 
 #define topspace 111.0 * HeightRatio
 #define phoneNumSpace 67 * HeightRatio
@@ -55,6 +57,7 @@
     [_loginBtn setBackgroundColor:EdlineV5_Color.themeColor];
     _loginBtn.titleLabel.font = SYSTEMFONT(18);
     _loginBtn.centerX = MainScreenWidth / 2.0;
+    [_loginBtn addTarget:self action:@selector(loginBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_loginBtn];
     
     _otherBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 30, 100, 30)];
@@ -117,6 +120,35 @@
     LoginViewController *vc = [[LoginViewController alloc] init];
     vc.dissOrPop = NO;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)loginBtnClick:(UIButton *)sender {
+    if (!SWNOTEmptyStr(_phoneLabel.text)) {
+        [self showHudInView:self.view showHint:@"暂未获取本机号码"];
+        return;
+    }
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:@"phone" forKey:@"logintype"];
+    [dict setObject:_phoneLabel.text forKey:@"phone"];
+    [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSString *ak = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"ak"]];
+                NSString *sk = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"sk"]];
+                [UserModel saveUserPassportToken:ak andTokenSecret:sk];
+                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]]];
+                [UserModel saveAuth_scope:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"auth_scope"]]];
+                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"user_name"]]];
+                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
+                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
+                [UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 - (void)attributedLabel:(TYAttributedLabel *)attributedLabel textStorageClicked:(id<TYTextStorageProtocol>)textStorage atPoint:(CGPoint)point {
