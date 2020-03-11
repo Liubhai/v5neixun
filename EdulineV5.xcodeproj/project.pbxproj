@@ -78,6 +78,16 @@
 		78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5483C24162BA300A33FC4 /* SurePassWordView.m */; };
 		78C54840241743DE00A33FC4 /* Net_Path.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5483F241743DE00A33FC4 /* Net_Path.m */; };
 		78C54845241873EB00A33FC4 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C54844241873EB00A33FC4 /* UserModel.m */; };
+		78C548772418CC7400A33FC4 /* TYLinkTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548642418CC7400A33FC4 /* TYLinkTextStorage.m */; };
+		78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548652418CC7400A33FC4 /* TYDrawStorage.m */; };
+		78C548792418CC7400A33FC4 /* TYViewStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548662418CC7400A33FC4 /* TYViewStorage.m */; };
+		78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548672418CC7400A33FC4 /* TYImageStorage.m */; };
+		78C5487B2418CC7400A33FC4 /* NSMutableAttributedString+TY.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548692418CC7400A33FC4 /* NSMutableAttributedString+TY.m */; };
+		78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5486A2418CC7400A33FC4 /* TYImageCache.m */; };
+		78C5487D2418CC7400A33FC4 /* TYTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5486B2418CC7400A33FC4 /* TYTextStorage.m */; };
+		78C5487E2418CC7400A33FC4 /* TYAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5486C2418CC7400A33FC4 /* TYAttributedLabel.m */; };
+		78C5487F2418CC7400A33FC4 /* TYTextContainer+Extended.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548732418CC7400A33FC4 /* TYTextContainer+Extended.m */; };
+		78C548802418CC7400A33FC4 /* TYTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548762418CC7400A33FC4 /* TYTextContainer.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -244,6 +254,26 @@
 		78C5483F241743DE00A33FC4 /* Net_Path.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Net_Path.m; sourceTree = "<group>"; };
 		78C54843241873EB00A33FC4 /* UserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		78C54844241873EB00A33FC4 /* UserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		78C548632418CC7400A33FC4 /* TYAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYAttributedLabel.h; sourceTree = "<group>"; };
+		78C548642418CC7400A33FC4 /* TYLinkTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYLinkTextStorage.m; sourceTree = "<group>"; };
+		78C548652418CC7400A33FC4 /* TYDrawStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYDrawStorage.m; sourceTree = "<group>"; };
+		78C548662418CC7400A33FC4 /* TYViewStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYViewStorage.m; sourceTree = "<group>"; };
+		78C548672418CC7400A33FC4 /* TYImageStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYImageStorage.m; sourceTree = "<group>"; };
+		78C548682418CC7400A33FC4 /* TYTextContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYTextContainer.h; sourceTree = "<group>"; };
+		78C548692418CC7400A33FC4 /* NSMutableAttributedString+TY.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TY.m"; sourceTree = "<group>"; };
+		78C5486A2418CC7400A33FC4 /* TYImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYImageCache.m; sourceTree = "<group>"; };
+		78C5486B2418CC7400A33FC4 /* TYTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYTextStorage.m; sourceTree = "<group>"; };
+		78C5486C2418CC7400A33FC4 /* TYAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYAttributedLabel.m; sourceTree = "<group>"; };
+		78C5486D2418CC7400A33FC4 /* TYLinkTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYLinkTextStorage.h; sourceTree = "<group>"; };
+		78C5486E2418CC7400A33FC4 /* TYTextStorageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYTextStorageProtocol.h; sourceTree = "<group>"; };
+		78C5486F2418CC7400A33FC4 /* TYViewStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYViewStorage.h; sourceTree = "<group>"; };
+		78C548702418CC7400A33FC4 /* TYImageStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYImageStorage.h; sourceTree = "<group>"; };
+		78C548712418CC7400A33FC4 /* TYDrawStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYDrawStorage.h; sourceTree = "<group>"; };
+		78C548722418CC7400A33FC4 /* TYTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYTextStorage.h; sourceTree = "<group>"; };
+		78C548732418CC7400A33FC4 /* TYTextContainer+Extended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TYTextContainer+Extended.m"; sourceTree = "<group>"; };
+		78C548742418CC7400A33FC4 /* TYImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYImageCache.h; sourceTree = "<group>"; };
+		78C548752418CC7400A33FC4 /* NSMutableAttributedString+TY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+TY.h"; sourceTree = "<group>"; };
+		78C548762418CC7400A33FC4 /* TYTextContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYTextContainer.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -419,6 +449,7 @@
 		7879566E240F929A0013F95F /* EdulineToolLib */ = {
 			isa = PBXGroup;
 			children = (
+				78C548622418CC7400A33FC4 /* TYAttributedLabel */,
 				7879573F240FAA7A0013F95F /* Categories */,
 				7879573B240FA9B00013F95F /* MBHUD */,
 				787956D7240FA3830013F95F /* ZLPhotoLib */,
@@ -692,6 +723,33 @@
 			path = AnyModel;
 			sourceTree = "<group>";
 		};
+		78C548622418CC7400A33FC4 /* TYAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				78C548632418CC7400A33FC4 /* TYAttributedLabel.h */,
+				78C548642418CC7400A33FC4 /* TYLinkTextStorage.m */,
+				78C548652418CC7400A33FC4 /* TYDrawStorage.m */,
+				78C548662418CC7400A33FC4 /* TYViewStorage.m */,
+				78C548672418CC7400A33FC4 /* TYImageStorage.m */,
+				78C548682418CC7400A33FC4 /* TYTextContainer.h */,
+				78C548692418CC7400A33FC4 /* NSMutableAttributedString+TY.m */,
+				78C5486A2418CC7400A33FC4 /* TYImageCache.m */,
+				78C5486B2418CC7400A33FC4 /* TYTextStorage.m */,
+				78C5486C2418CC7400A33FC4 /* TYAttributedLabel.m */,
+				78C5486D2418CC7400A33FC4 /* TYLinkTextStorage.h */,
+				78C5486E2418CC7400A33FC4 /* TYTextStorageProtocol.h */,
+				78C5486F2418CC7400A33FC4 /* TYViewStorage.h */,
+				78C548702418CC7400A33FC4 /* TYImageStorage.h */,
+				78C548712418CC7400A33FC4 /* TYDrawStorage.h */,
+				78C548722418CC7400A33FC4 /* TYTextStorage.h */,
+				78C548732418CC7400A33FC4 /* TYTextContainer+Extended.m */,
+				78C548742418CC7400A33FC4 /* TYImageCache.h */,
+				78C548752418CC7400A33FC4 /* NSMutableAttributedString+TY.h */,
+				78C548762418CC7400A33FC4 /* TYTextContainer.m */,
+			);
+			path = TYAttributedLabel;
+			sourceTree = "<group>";
+		};
 		7B328A11FE82EEC19F082C22 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -894,6 +952,7 @@
 				78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */,
 				7879575F2410A1650013F95F /* QuickLoginVC.m in Sources */,
 				7879564D240E36FA0013F95F /* EdulineV5Client.m in Sources */,
+				78C548792418CC7400A33FC4 /* TYViewStorage.m in Sources */,
 				7879572C240FA3840013F95F /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
 				78795736240FA3840013F95F /* ZLPhotoPickerCollectionView.m in Sources */,
 				78795669240E606F0013F95F /* MyRootViewController.m in Sources */,
@@ -908,12 +967,14 @@
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
+				78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */,
 				78795753240FAA7A0013F95F /* NSDate+Category.m in Sources */,
 				78795612240DE7A50013F95F /* AppDelegate.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
 				7879572F240FA3840013F95F /* ZLPhotoPickerDatas.m in Sources */,
 				78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */,
 				78C548372416212300A33FC4 /* RegisterAndForgetPwVC.m in Sources */,
+				78C5487D2418CC7400A33FC4 /* TYTextStorage.m in Sources */,
 				78795723240FA3840013F95F /* ZLCamera.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
@@ -926,19 +987,26 @@
 				7879566D240F39200013F95F /* BaseViewController.m in Sources */,
 				787957622410E1F40013F95F /* LoginViewController.m in Sources */,
 				78795655240E5B1C0013F95F /* RootV5VC.m in Sources */,
+				78C5487B2418CC7400A33FC4 /* NSMutableAttributedString+TY.m in Sources */,
 				78795615240DE7A50013F95F /* SceneDelegate.m in Sources */,
 				78795720240FA3840013F95F /* DACircularProgressView.m in Sources */,
+				78C548772418CC7400A33FC4 /* TYLinkTextStorage.m in Sources */,
+				78C5487F2418CC7400A33FC4 /* TYTextContainer+Extended.m in Sources */,
+				78C548802418CC7400A33FC4 /* TYTextContainer.m in Sources */,
 				78795726240FA3840013F95F /* ZLPhotoRect.m in Sources */,
 				78795732240FA3840013F95F /* ZLPhotoPickerGroupViewController.m in Sources */,
+				78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */,
 				7879573E240FA9B00013F95F /* MBProgressHUD+Add.m in Sources */,
 				78795757240FAA7A0013F95F /* UIView+HUD.m in Sources */,
 				787956D6240F9FCC0013F95F /* STRIAPManager.m in Sources */,
 				78C5483424124B4000A33FC4 /* AreaTableViewCell.m in Sources */,
 				7879572B240FA3840013F95F /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				78795721240FA3840013F95F /* ZLCameraViewController.m in Sources */,
+				78C5487E2418CC7400A33FC4 /* TYAttributedLabel.m in Sources */,
 				78795739240FA3840013F95F /* ZLPhotoPickerImageView.m in Sources */,
 				7879572E240FA3840013F95F /* UIView+ZLExtension.m in Sources */,
 				78795734240FA3840013F95F /* ZLNavigationController.m in Sources */,
+				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
 				78795731240FA3840013F95F /* ZLPhotoAssets.m in Sources */,
 				78C54840241743DE00A33FC4 /* Net_Path.m in Sources */,
 				78795756240FAA7A0013F95F /* UIViewController+DismissKeyboard.m in Sources */,

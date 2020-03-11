@@ -11,6 +11,8 @@
 #import "V5_Constant.h"
 #import "AreaNumListVC.h"
 #import "SurePwViewController.h"
+#import "Net_Path.h"
+#import "UserModel.h"
 
 @interface RegisterAndForgetPwVC ()<LoginMsgViewDelegate>
 
@@ -47,6 +49,7 @@
     [_nextButton setTitle:@"下一步" forState:0];
     _nextButton.titleLabel.font = SYSTEMFONT(18);
     _nextButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+    _nextButton.enabled = NO;
     [_nextButton addTarget:self action:@selector(nextButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_nextButton];
     
@@ -63,6 +66,25 @@
 }
 
 - (void)nextButtonClick:(UIButton *)sender {
+    if (_registerOrForget) {
+        [self loginRequest];
+    } else {
+        [self jumpPassWordSetVc];
+    }
+}
+
+- (void)textFieldDidChanged:(NSNotification *)notice {
+    UITextField *pass = (UITextField *)notice.object;
+    if (_loginMsg.phoneNumTextField.text.length>0 && _loginMsg.codeTextField.text.length>0) {
+        _nextButton.enabled = YES;
+        [_nextButton setBackgroundColor:EdlineV5_Color.buttonNormalColor];
+    } else {
+        _nextButton.enabled = NO;
+        [_nextButton setBackgroundColor:EdlineV5_Color.buttonDisableColor];
+    }
+}
+
+- (void)jumpPassWordSetVc {
     SurePwViewController *vc = [[SurePwViewController alloc] init];
     vc.registerOrForget = _registerOrForget;
     vc.phoneNum = _loginMsg.phoneNumTextField.text;
@@ -70,15 +92,35 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)textFieldDidChanged:(NSNotification *)notice {
-    UITextField *pass = (UITextField *)notice.object;
-    if (_loginMsg.phoneNumTextField.text.length>=0 && _loginMsg.codeTextField.text>=0) {
-        _nextButton.enabled = YES;
-        [_nextButton setBackgroundColor:EdlineV5_Color.buttonNormalColor];
-    } else {
-        _nextButton.enabled = NO;
-        [_nextButton setBackgroundColor:EdlineV5_Color.buttonDisableColor];
-    }
+- (void)loginRequest {
+    [self.view endEditing:YES];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:@"verify" forKey:@"logintype"];
+    [dict setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    [dict setObject:_loginMsg.codeTextField.text forKey:@"verify"];
+    [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSString *ak = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"ak"]];
+                NSString *sk = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"sk"]];
+                [UserModel saveUserPassportToken:ak andTokenSecret:sk];
+                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]]];
+                [UserModel saveAuth_scope:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"auth_scope"]]];
+                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"user_name"]]];
+                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
+                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
+                [UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
+                SurePwViewController *vc = [[SurePwViewController alloc] init];
+                vc.phoneNum = self.loginMsg.phoneNumTextField.text;
+                vc.msgCode = self.loginMsg.codeTextField.text;
+                vc.registerOrForget = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 @end
