@@ -14,7 +14,10 @@
 #import "Net_Path.h"
 #import "UserModel.h"
 
-@interface RegisterAndForgetPwVC ()<LoginMsgViewDelegate>
+@interface RegisterAndForgetPwVC ()<LoginMsgViewDelegate> {
+    NSTimer *codeTimer;
+    int remainTime;
+}
 
 @property (strong, nonatomic) LoginMsgView *loginMsg;
 @property (strong, nonatomic) UIButton *nextButton;
@@ -63,6 +66,14 @@
         [weakSelf.loginMsg setAreaNumLabelText:codeNum];
     };
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)getMsgCode:(UIButton *)sender {
+    [self.view endEditing:YES];
+    [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
+    remainTime = 59;
+    sender.enabled = NO;
+    codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
 }
 
 - (void)nextButtonClick:(UIButton *)sender {
@@ -140,6 +151,24 @@
     } enError:^(NSError * _Nonnull error) {
         NSLog(@"%@",error);
     }];
+}
+
+- (void)timerBegin:(NSTimer *)timer
+{
+    self.loginMsg.senderCodeBtn.enabled = NO;
+    [self.loginMsg.senderCodeBtn setTitle:[NSString stringWithFormat:@"重新获取(%ds)",remainTime] forState:UIControlStateDisabled];//注意此处状态为UIControlStateDisabled
+    
+    remainTime -= 1;
+    
+    if (remainTime == -1)
+    {
+        [codeTimer invalidate];
+        codeTimer = nil;
+        
+        remainTime = 59;
+        self.loginMsg.senderCodeBtn.enabled = YES;
+        [self.loginMsg.senderCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
+    }
 }
 
 @end

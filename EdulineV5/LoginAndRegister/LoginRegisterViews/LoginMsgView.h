@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol LoginMsgViewDelegate <NSObject>
 
+- (void)getMsgCode:(UIButton *)sender;
+
 - (void)jumpAreaNumList;
 
 @end

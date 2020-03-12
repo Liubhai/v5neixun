@@ -17,7 +17,10 @@
 #import "UserModel.h"
 #import "SurePwViewController.h"
 
-@interface LoginViewController ()<LoginMsgViewDelegate>
+@interface LoginViewController ()<LoginMsgViewDelegate> {
+    NSTimer *codeTimer;
+    int remainTime;
+}
 
 @property (strong, nonatomic) UIButton *pwLoginBtn;
 @property (strong, nonatomic) UIButton *msgLoginBtn;
@@ -139,6 +142,7 @@
 
 // MARK: - LoginMsgViewDelegate(验证码登录号码归属地选择)
 - (void)jumpAreaNumList {
+    [self.view endEditing:YES];
     AreaNumListVC *vc = [[AreaNumListVC alloc] init];
     __typeof (self) __weak weakSelf = self;
     vc.areaNumCodeBlock = ^(NSString *codeNum){
@@ -147,7 +151,16 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)getMsgCode:(UIButton *)sender {
+    [self.view endEditing:YES];
+    [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
+    remainTime = 59;
+    sender.enabled = NO;
+    codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+}
+
 - (void)registerButtonClick:(UIButton *)sender {
+    [self.view endEditing:YES];
     RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
     vc.registerOrForget = ((sender == _registerBtn) ? YES : NO);
     [self.navigationController pushViewController:vc animated:YES];
@@ -217,6 +230,24 @@
     } enError:^(NSError * _Nonnull error) {
         NSLog(@"%@",error);
     }];
+}
+
+- (void)timerBegin:(NSTimer *)timer
+{
+    self.loginMsg.senderCodeBtn.enabled = NO;
+    [self.loginMsg.senderCodeBtn setTitle:[NSString stringWithFormat:@"重新获取(%ds)",remainTime] forState:UIControlStateDisabled];//注意此处状态为UIControlStateDisabled
+    
+    remainTime -= 1;
+    
+    if (remainTime == -1)
+    {
+        [codeTimer invalidate];
+        codeTimer = nil;
+        
+        remainTime = 59;
+        self.loginMsg.senderCodeBtn.enabled = YES;
+        [self.loginMsg.senderCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
+    }
 }
 
 @end

@@ -64,12 +64,13 @@
     _codeTextField.keyboardType = UIKeyboardTypeNumberPad;
     [self addSubview:_codeTextField];
     
-    _senderCodeBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 48 * WidthRatio - 80, 0, 80, 20)];
+    _senderCodeBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 48 * WidthRatio - 100, 0, 100, 20)];
     [_senderCodeBtn setTitle:@"获取验证码" forState:0];
     _senderCodeBtn.titleLabel.font = SYSTEMFONT(14);
     [_senderCodeBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
     [_senderCodeBtn setTitleColor:EdlineV5_Color.textThirdColor forState:UIControlStateDisabled];
     _senderCodeBtn.centerY = _codeTextField.centerY;
+    [_senderCodeBtn addTarget:self action:@selector(senderCodeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_senderCodeBtn];
     
     _line2 = [[UIView alloc] initWithFrame:CGRectMake(48 * WidthRatio, _codeTextField.bottom, MainScreenWidth - 48 * 2 * WidthRatio, 0.5)];
@@ -90,6 +91,12 @@
     _areaNumLabel.text = num;
     [_jiantouImage setLeft:_areaNumLabel.right];
     [_phoneNumTextField setLeft:_jiantouImage.right + 15 * WidthRatio];
+}
+
+- (void)senderCodeButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(getMsgCode:)]) {
+        [_delegate getMsgCode:sender];
+    }
 }
 
 @end
