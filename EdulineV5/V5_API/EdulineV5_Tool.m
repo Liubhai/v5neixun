@@ -442,5 +442,29 @@ static EdulineV5_Tool *_sharedInstance;
     return outPutStr;
 }
 
++ (BOOL)validatePassWord:(NSString *)pw {
+    NSString *emailRegex = @"^[^ \u4e00-\u9fa5]{6,20}$";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:pw];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @end

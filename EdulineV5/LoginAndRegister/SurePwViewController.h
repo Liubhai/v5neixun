@@ -17,6 +17,8 @@
 
 @property (strong, nonatomic) NSString *msgCode;
 
+@property (strong, nonatomic) NSString *pkString;
+
 
 @end
 

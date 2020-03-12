@@ -10,6 +10,7 @@
 #import "SurePassWordView.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "EdulineV5_Tool.h"
 
 @interface SurePwViewController ()<TYAttributedLabelDelegate>
 
@@ -99,6 +100,16 @@
 
 - (void)sureButtonClick:(UIButton *)sender {
     [self.view endEditing:YES];
+    if (_registerOrForget) {
+        if (!_seleteBtn.selected) {
+            [self showHudInView:self.view showHint:@"请阅读协议并勾选"];
+            return;
+        }
+    }
+    if (![EdulineV5_Tool validatePassWord:_passWordView.firstPwTextField.text] || ![EdulineV5_Tool validatePassWord:_passWordView.surePwTextField.text]) {
+        [self showHudInView:self.view showHint:@"密码格式不正确"];
+        return;
+    }
     if ([_passWordView.firstPwTextField.text isEqualToString:_passWordView.surePwTextField.text]) {
         if (_registerOrForget) {
             [self setPassWordRequest];
@@ -135,7 +146,7 @@
 }
 
 - (void)reSetPassWordRequest {
-    [Net_API requestPOSTWithURLStr:[Net_Path userResetPwPath:nil] WithAuthorization:nil paramDic:@{@"phone":_phoneNum,@"password":_passWordView.surePwTextField.text} finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPUTWithURLStr:[Net_Path userResetPwPath:nil] paramDic:@{@"phone":_phoneNum,@"password":_passWordView.surePwTextField.text,@"pk":_pkString} Api_key:nil finish:^(id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {

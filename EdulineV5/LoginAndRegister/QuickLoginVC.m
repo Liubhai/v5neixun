@@ -135,6 +135,10 @@
         [self showHudInView:self.view showHint:@"暂未获取本机号码"];
         return;
     }
+    if (!_seleteBtn.selected) {
+        [self showHudInView:self.view showHint:@"请阅读协议并勾选"];
+        return;
+    }
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:@"phone" forKey:@"logintype"];
     [dict setObject:_phoneLabel.text forKey:@"phone"];

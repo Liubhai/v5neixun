@@ -85,11 +85,7 @@
 }
 
 - (void)jumpPassWordSetVc {
-    SurePwViewController *vc = [[SurePwViewController alloc] init];
-    vc.registerOrForget = _registerOrForget;
-    vc.phoneNum = _loginMsg.phoneNumTextField.text;
-    vc.msgCode = _loginMsg.codeTextField.text;
-    [self.navigationController pushViewController:vc animated:YES];
+    [self verifyPhone];
 }
 
 - (void)loginRequest {
@@ -115,6 +111,29 @@
                 vc.phoneNum = self.loginMsg.phoneNumTextField.text;
                 vc.msgCode = self.loginMsg.codeTextField.text;
                 vc.registerOrForget = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
+}
+
+- (void)verifyPhone {
+    [self.view endEditing:YES];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:@"verify" forKey:@"logintype"];
+    [dict setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    [dict setObject:_loginMsg.codeTextField.text forKey:@"verify"];
+    [Net_API requestPOSTWithURLStr:[Net_Path userVerifyPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                SurePwViewController *vc = [[SurePwViewController alloc] init];
+                vc.registerOrForget = self.registerOrForget;
+                vc.phoneNum = self.loginMsg.phoneNumTextField.text;
+                vc.msgCode = self.loginMsg.codeTextField.text;
+                vc.pkString = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"pk"]];
                 [self.navigationController pushViewController:vc animated:YES];
             }
         }

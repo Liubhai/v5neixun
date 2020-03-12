@@ -58,4 +58,6 @@
 // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
 + (NSString *)getSignFourthString;
 
++ (BOOL)validatePassWord:(NSString *)pw;
+
 @end

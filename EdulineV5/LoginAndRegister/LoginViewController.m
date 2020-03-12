@@ -155,7 +155,7 @@
 
 - (void)textFieldDidChanged:(NSNotification *)notice {
     if (_pwLoginBtn.selected) {
-        if (_loginPw.accountTextField.text.length>0 && _loginPw.pwTextField.text.length>0) {
+        if (_loginPw.accountTextField.text.length>0 && _loginPw.pwTextField.text.length>=6) {
             _loginBtn.enabled = YES;
             _loginBtn.backgroundColor = EdlineV5_Color.buttonNormalColor;
         } else {
@@ -177,6 +177,10 @@
     [self.view endEditing:YES];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     if (_pwLoginBtn.selected) {
+        if (![EdulineV5_Tool validatePassWord:_loginPw.pwTextField.text]) {
+            [self showHudInView:self.view showHint:@"请输入正确格式的密码"];
+            return;
+        }
         [dict setObject:@"user" forKey:@"logintype"];
         [dict setObject:_loginPw.accountTextField.text forKey:@"user"];
         [dict setObject:_loginPw.pwTextField.text forKey:@"password"];
