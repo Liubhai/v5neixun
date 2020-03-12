@@ -9,6 +9,11 @@
 #import "EdulineV5_Tool.h"
 #import <sys/utsname.h>
 
+#import <CommonCrypto/CommonCrypto.h>
+#define CC_MD5_DIGEST_LENGTH 16
+
+#define kRandomLength 10
+
 @implementation EdulineV5_Tool
 
 static EdulineV5_Tool *_sharedInstance;
@@ -346,5 +351,96 @@ static EdulineV5_Tool *_sharedInstance;
     }
     return [theDay substringToIndex:10];
 }
+
++ (NSString *)currentdateInterval {
+    NSDate *datenow = [NSDate date];
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)([datenow timeIntervalSince1970])];
+    return timeSp;
+}
+
++ (NSString *)getRandomString {
+    //3.随机字符串kRandomLength位
+    static const NSString *kRandomAlphabet = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    NSMutableString *randomString = [NSMutableString stringWithCapacity: kRandomLength];
+    for (int i = 0; i < kRandomLength; i++) {
+        [randomString appendFormat: @"%C", [kRandomAlphabet characterAtIndex:arc4random_uniform((u_int32_t)[kRandomAlphabet length])]];
+    }
+    return randomString;
+}
+
++ (NSString *)sortedDictionary:(NSDictionary *)dict {
+    //将所有的key放进数组
+    NSArray *allKeyArray = [dict allKeys];
+    
+    //序列化器对数组进行排序的block 返回值为排序后的数组
+    NSArray *afterSortKeyArray = [allKeyArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id
+                                                                                             _Nonnull obj2) {
+        /**
+         In the compare: methods, the range argument specifies the
+         subrange, rather than the whole, of the receiver to use in the
+         comparison. The range is not applied to the search string.  For
+         example, [@"AB" compare:@"ABC" options:0 range:NSMakeRange(0,1)]
+         compares "A" to "ABC", not "A" to "A", and will return
+         NSOrderedAscending. It is an error to specify a range that is
+         outside of the receiver's bounds, and an exception may be raised.
+         
+         - (NSComparisonResult)compare:(NSString *)string;
+         
+         compare方法的比较原理为,依次比较当前字符串的第一个字母:
+         如果不同,按照输出排序结果
+         如果相同,依次比较当前字符串的下一个字母(这里是第二个)
+         以此类推
+         
+         排序结果
+         NSComparisonResult resuest = [obj1 compare:obj2];为从小到大,即升序;
+         NSComparisonResult resuest = [obj2 compare:obj1];为从大到小,即降序;
+         
+         注意:compare方法是区分大小写的,即按照ASCII排序
+         */
+        //排序操作
+        NSComparisonResult resuest = [obj1 compare:obj2];
+        return resuest;
+    }];
+    //排序好的字典
+    NSLog(@"afterSortKeyArray:%@",afterSortKeyArray);
+    NSString *tempStr = @"";
+    //通过排列的key值获取value
+    NSMutableArray *valueArray = [NSMutableArray array];
+    for (NSString *sortsing in afterSortKeyArray) {
+        //格式化一下 防止有些value不是string
+        NSString *valueString = [NSString stringWithFormat:@"%@",[dict objectForKey:sortsing]];
+        if(valueString.length>0){
+            [valueArray addObject:valueString];
+            tempStr=[NSString stringWithFormat:@"%@%@=%@&",tempStr,sortsing,valueString];
+        }
+    }
+    //去除最后一个&符号
+    if(tempStr.length>0){
+        tempStr=[tempStr substringToIndex:([tempStr length]-1)];
+    }
+    //排序好的对应值
+    //  NSLog(@"valueArray:%@",valueArray);
+    //最终参数
+    NSLog(@"tempStr:%@",tempStr);
+    //md5加密
+    // NSLog(@"tempStr:%@",[self getmd5WithString:tempStr]);
+    return tempStr;
+}
+
+
+//字符串MD5加密
++ (NSString*)getmd5WithString:(NSString *)string
+{
+    const char* original_str=[string UTF8String];
+    unsigned char digist[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(original_str, (uint)strlen(original_str), digist);
+    NSMutableString* outPutStr = [NSMutableString stringWithCapacity:10];
+    for(int  i =0; i<CC_MD5_DIGEST_LENGTH;i++){
+        [outPutStr appendFormat:@"%02X", digist[i]];
+    }
+   // return [outPutStr lowercaseString];
+    return outPutStr;
+}
+
 
 @end

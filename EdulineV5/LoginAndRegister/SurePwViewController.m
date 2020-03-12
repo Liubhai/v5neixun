@@ -11,11 +11,12 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 
-@interface SurePwViewController ()
+@interface SurePwViewController ()<TYAttributedLabelDelegate>
 
 @property (strong, nonatomic) UIButton *sureButton;
 @property (strong, nonatomic) SurePassWordView *passWordView;
-@property (strong, nonatomic) UILabel *agreementLabel;
+@property (strong, nonatomic) TYAttributedLabel *agreementTyLabel;
+@property (strong, nonatomic) UIButton *seleteBtn;
 
 @end
 
@@ -50,18 +51,48 @@
     [self.view addSubview:_sureButton];
     
     if (_registerOrForget) {
+        
         _passWordView.firstPwLabel.text = @"设置密码";
-        _agreementLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _sureButton.bottom + 15, MainScreenWidth, 20)];
-        _agreementLabel.font = SYSTEMFONT(13);
-        _agreementLabel.textColor = EdlineV5_Color.textThirdColor;
-        _agreementLabel.textAlignment = NSTextAlignmentCenter;
+        
         NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
         NSString *atr = [NSString stringWithFormat:@"《%@服务协议》",appName];
-        NSString *final = [NSString stringWithFormat:@"注册即表示阅读并同意%@",atr];
-        NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:final];
-        [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.themeColor} range:[final rangeOfString:atr]];
-        _agreementLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
-        [self.view addSubview:_agreementLabel];
+        NSString *fullString = [NSString stringWithFormat:@"   注册即表示阅读并同意%@",atr];
+        NSRange atrRange = [fullString rangeOfString:atr];
+        
+        _agreementTyLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(15 * WidthRatio, _sureButton.bottom + 15, MainScreenWidth - 30 * WidthRatio, 20)];
+        _agreementTyLabel.font = SYSTEMFONT(13);
+        _agreementTyLabel.textAlignment = kCTTextAlignmentCenter;
+        _agreementTyLabel.textColor = EdlineV5_Color.textSecendColor;
+        _agreementTyLabel.delegate = self;
+        _agreementTyLabel.numberOfLines = 0;
+        
+        TYLinkTextStorage *textStorage = [[TYLinkTextStorage alloc]init];
+        textStorage.textColor = EdlineV5_Color.themeColor;
+        textStorage.font = SYSTEMFONT(13);
+        textStorage.linkData = @{@"type":@"service"};
+        textStorage.underLineStyle = kCTUnderlineStyleNone;
+        textStorage.range = atrRange;
+        textStorage.text = atr;
+        
+        // 属性文本生成器
+        TYTextContainer *attStringCreater = [[TYTextContainer alloc]init];
+        attStringCreater.text = fullString;
+        _agreementTyLabel.textContainer = attStringCreater;
+        _agreementTyLabel.textContainer.linesSpacing = 4;
+        attStringCreater.font = SYSTEMFONT(13);
+        attStringCreater.textAlignment = kCTTextAlignmentCenter;
+        attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30 * WidthRatio, 1))];
+        [_agreementTyLabel setHeight:_agreementTyLabel.textContainer.textHeight];
+        [_agreementTyLabel setTop:_sureButton.bottom + 15];
+        [attStringCreater addTextStorageArray:@[textStorage]];
+        [self.view addSubview:_agreementTyLabel];
+        
+        _seleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+        [_seleteBtn setImage:Image(@"checkbox_nor") forState:0];
+        [_seleteBtn setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
+        [_seleteBtn addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_agreementTyLabel addView:_seleteBtn range:NSMakeRange(0, 2) alignment:TYDrawAlignmentCenter];
+        
     }
     
 }
@@ -114,6 +145,26 @@
     } enError:^(NSError * _Nonnull error) {
         
     }];
+}
+
+- (void)seleteButtonClick:(UIButton *)sender {
+    _seleteBtn.selected = !_seleteBtn.selected;
+}
+
+- (void)attributedLabel:(TYAttributedLabel *)attributedLabel textStorageClicked:(id<TYTextStorageProtocol>)textStorage atPoint:(CGPoint)point {
+    //非文本/比如表情什么的
+    if (![textStorage isKindOfClass:[TYLinkTextStorage class]]) {
+        return;
+    }
+    id linkContain = ((TYLinkTextStorage *)textStorage).linkData;
+    if ([linkContain isKindOfClass:[NSDictionary class]]) {
+        NSString *typeS = [linkContain objectForKey:@"type"];
+        if ([typeS isEqualToString:@"service"]) {
+            NSLog(@"TYLinkTouch = service");
+        } else if ([typeS isEqualToString:@"netservice"]) {
+            NSLog(@"TYLinkTouch = netservice");
+        }
+    }
 }
 
 @end

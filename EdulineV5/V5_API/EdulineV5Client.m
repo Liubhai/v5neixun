@@ -9,8 +9,13 @@
 #import "EdulineV5Client.h"
 #import "Api_Config.h"
 #import "UserModel.h"
+#import "Net_Path.h"
 
 @implementation EdulineV5Client
+
+// `APP_ID`:`WASD123456`
+
+// `APP_KEY`:`7WFDuCGYa1XEBj6Y`
 
 + (instancetype)sharedClient {
     static EdulineV5Client *_sharedClient = nil;
@@ -30,6 +35,7 @@
     if (SWNOTEmptyStr([UserModel oauthToken])) {
         [_sharedClient.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [_sharedClient.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+        [_sharedClient.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     }
     if (SWNOTEmptyStr([UserModel userAuth_scope])) {
         [_sharedClient.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];

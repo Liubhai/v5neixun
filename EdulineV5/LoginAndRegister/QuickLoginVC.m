@@ -22,6 +22,7 @@
 @property (strong, nonatomic) UILabel *phoneLabel;
 @property (strong, nonatomic) UIButton *loginBtn;
 @property (strong, nonatomic) UIButton *otherBtn;
+@property (strong, nonatomic) UIButton *seleteBtn;
 
 @property (strong, nonatomic) TYAttributedLabel *agreementTyLabel;
 
@@ -35,6 +36,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _titleImage.backgroundColor = [UIColor whiteColor];
     [self makeSubViews];
+//    [self testRequest];
 }
 
 - (void)makeSubViews {
@@ -71,7 +73,7 @@
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
     NSString *atr = [NSString stringWithFormat:@"《%@服务协议》",appName];
     NSString *netName = @"《中国移动认证服务条款》";
-    NSString *fullString = [NSString stringWithFormat:@"使用手机号码一键登录即代表您已同意%@和%@并使用本机号码登录",atr,netName];
+    NSString *fullString = [NSString stringWithFormat:@"   使用手机号码一键登录即代表您已同意%@和%@并使用本机号码登录",atr,netName];
     NSRange atrRange = [fullString rangeOfString:atr];
     NSRange netRange = [fullString rangeOfString:netName];
     
@@ -110,6 +112,12 @@
     [_agreementTyLabel setTop:MainScreenHeight - _agreementTyLabel.textContainer.textHeight - 30];
     [attStringCreater addTextStorageArray:@[textStorage,netTextStorage]];
     [self.view addSubview:_agreementTyLabel];
+    
+    _seleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+    [_seleteBtn setImage:Image(@"checkbox_nor") forState:0];
+    [_seleteBtn setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
+    [_seleteBtn addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_agreementTyLabel addView:_seleteBtn range:NSMakeRange(0, 2) alignment:TYDrawAlignmentCenter];
 }
 
 - (void)leftButtonClick:(id)sender {
@@ -166,4 +174,17 @@
         }
     }
 }
+
+- (void)seleteButtonClick:(UIButton *)sender {
+    _seleteBtn.selected = !_seleteBtn.selected;
+}
+
+- (void)testRequest {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path testApiPath] WithAuthorization:nil paramDic:@{@"phone":@"123456"} finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+    } enError:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
+}
+
 @end

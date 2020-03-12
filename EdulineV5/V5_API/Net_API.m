@@ -7,12 +7,49 @@
 //
 
 #import "Net_API.h"
+#import "EdulineV5_Tool.h"
+#import "UserModel.h"
+
+#define HeaderUrl_V5_Api @"http://v5.51eduline.com"
+
+#define SWNOTEmptyArr_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSArray class]]&&[X count])
+#define SWNOTEmptyDictionary_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSDictionary class]]&&[[X allKeys]count])
+#define SWNOTEmptyStr_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSString class]]&&((NSString *)X).length)
+#define NOTNULL_Api(x) ((![x isKindOfClass:[NSNull class]])&&x)
 
 @implementation Net_API
 
 + (void)requestGETSuperAPIWithURLStr:(NSString *)urlStr WithAuthorization:(NSString *)authorization paramDic:(NSDictionary *)paramDic finish:(void(^)(id responseObject))finish enError:(void(^)(NSError *error))enError{
    
-    [[EdulineV5Client sharedClient] GET:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    NSString *randomString = [EdulineV5_Tool getRandomString];
+    NSString *currentTime = [EdulineV5_Tool currentdateInterval];
+    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
+    NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
+    NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
+    
+    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+    responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain",@"charset=UTF-8", nil];
+    AFJSONRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
+    requestSerializer.timeoutInterval = 10.0;
+    
+    manager.responseSerializer = responseSerializer;
+    manager.requestSerializer = requestSerializer;
+    
+    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    }
+    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
+        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    }
+    
+    [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
+    [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
+    [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    
+    [manager GET:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
         NSLog(@"EdulineV4 GET request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
@@ -32,7 +69,36 @@
 
 + (void)requestPOSTWithURLStr:(NSString *)urlStr WithAuthorization:(NSString *)authorization paramDic:(NSDictionary *)paramDic finish:(void(^)(id responseObject))finish enError:(void(^)(NSError *error))enError{
     
-   [[EdulineV5Client sharedClient] POST:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
+    NSString *randomString = [EdulineV5_Tool getRandomString];
+    NSString *currentTime = [EdulineV5_Tool currentdateInterval];
+    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
+    NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
+    NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
+    
+    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+    responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain",@"charset=UTF-8", nil];
+    AFJSONRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
+    requestSerializer.timeoutInterval = 10.0;
+    
+    manager.responseSerializer = responseSerializer;
+    manager.requestSerializer = requestSerializer;
+    
+    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    }
+    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
+        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    }
+    
+    [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
+    [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
+    [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    
+   [manager POST:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
        NSLog(@"EdulineV4 POST request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
@@ -56,7 +122,36 @@
 
 + (void)requestPUTWithURLStr:(NSString *)urlStr paramDic:(NSDictionary *)paramDic Api_key:(NSString *)api_key finish:(void(^)(id responseObject))finish enError:(void(^)(NSError *error))enError{
 
-    [[EdulineV5Client sharedClient] PUT:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
+    NSString *randomString = [EdulineV5_Tool getRandomString];
+    NSString *currentTime = [EdulineV5_Tool currentdateInterval];
+    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
+    NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
+    NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
+    
+    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+    responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain",@"charset=UTF-8", nil];
+    AFJSONRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
+    requestSerializer.timeoutInterval = 10.0;
+    
+    manager.responseSerializer = responseSerializer;
+    manager.requestSerializer = requestSerializer;
+    
+    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    }
+    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
+        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    }
+    
+    [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
+    [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
+    [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    
+    [manager PUT:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
        NSLog(@"EdulineV4 PUT request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
@@ -81,8 +176,37 @@
 }
 
 + (void)requestDeleteWithURLStr:(NSString *)urlStr paramDic:(NSDictionary *)paramDic Api_key:(NSString *)api_key finish:(void(^)(id responseObject))finish enError:(void(^)(NSError *error))enError{
+    
+    // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
+    NSString *randomString = [EdulineV5_Tool getRandomString];
+    NSString *currentTime = [EdulineV5_Tool currentdateInterval];
+    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
+    NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
+    NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
+    
+    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+    responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain",@"charset=UTF-8", nil];
+    AFJSONRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
+    requestSerializer.timeoutInterval = 10.0;
+    
+    manager.responseSerializer = responseSerializer;
+    manager.requestSerializer = requestSerializer;
+    
+    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    }
+    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
+        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    }
+    
+    [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
+    [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
+    [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
  
-    [[EdulineV5Client sharedClient] DELETE:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager DELETE:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
        NSLog(@"EdulineV4 DELETE request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
@@ -119,7 +243,36 @@
 //    [mutaDic setObject:API_TYPE forKey:@"api_type"];
 //    [mutaDic setObject:API_VERSION forKey:@"api_version"];
     
-    return  [[EdulineV5Client sharedClient] POST:URLString parameters:mutaDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
+    NSString *randomString = [EdulineV5_Tool getRandomString];
+    NSString *currentTime = [EdulineV5_Tool currentdateInterval];
+    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:parameters],currentTime,randomString];
+    NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
+    NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
+    
+    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+    responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json",@"text/javascript",@"text/json",@"text/plain",@"charset=UTF-8", nil];
+    AFJSONRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
+    requestSerializer.timeoutInterval = 10.0;
+    
+    manager.responseSerializer = responseSerializer;
+    manager.requestSerializer = requestSerializer;
+    
+    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    }
+    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
+        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    }
+    
+    [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
+    [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
+    [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    
+    return  [manager POST:URLString parameters:mutaDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         //
         block(formData);
         

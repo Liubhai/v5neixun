@@ -43,6 +43,9 @@ struct NetWorkUrl {
 /** 短信验证 */
 + (NSString *)userVerifyPath:(NSString *)userId;
 
+/** 测试接口 */
++ (NSString *)testApiPath;
+
 @end
 
 NS_ASSUME_NONNULL_END

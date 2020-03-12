@@ -48,4 +48,14 @@
 + (NSString *)timeForHHmm:(NSString *)time;
 + (NSString *)timeForYYYYMMDD:(NSString *)time;
 
++ (NSString *)currentdateInterval;
++ (NSString *)getRandomString;
+
++ (NSString *)sortedDictionary:(NSDictionary *)dict;
+
++ (NSString *)getmd5WithString:(NSString *)string;
+
+// > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
++ (NSString *)getSignFourthString;
+
 @end

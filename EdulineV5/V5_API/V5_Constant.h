@@ -87,4 +87,8 @@
 #define WIDTH(v)                (v).frame.size.width
 #define HEIGHT(v)               (v).frame.size.height
 
+// `APP_ID`:`WASD123456`
+
+// `APP_KEY`:`7WFDuCGYa1XEBj6Y`
+
 #endif /* V5_Constant_h */

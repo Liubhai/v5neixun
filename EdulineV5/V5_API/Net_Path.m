@@ -43,4 +43,8 @@
     return [Net_Path fullPath:@"user/account/pwd/verify" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)testApiPath {
+    return [Net_Path fullPath:@"/user/admin/account" repalce:@"" byReplece:@""];
+}
+
 @end
