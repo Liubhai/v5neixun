@@ -14,6 +14,7 @@
 #import "MyRootViewController.h"
 #import "V5_Constant.h"
 #import "AppDelegate.h"
+#import "AVC_VP_VideoPlayViewController.h"
 
 @interface RootV5VC ()
 
