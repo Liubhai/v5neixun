@@ -9,6 +9,7 @@
 #import "HomeRootViewController.h"
 #import "AliyunVodPlayerView.h"
 #import "AliyunUtil.h"
+#import "CourseMainViewController.h"
 
 @interface HomeRootViewController ()
 
@@ -23,53 +24,63 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"首页";
     [self.view addSubview:self.playerView];
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(100, 350, 50, 30)];
+    [btn setTitle:@"课程" forState:0];
+    [btn setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [btn addTarget:self action:@selector(gotoCourseDetail) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn];
+}
+
+- (void)gotoCourseDetail {
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)configBaseDataSuccess:(void(^)(void))success{
     
-    //加载默认的STS数据
-    self.config = [[AVCVideoConfig alloc]init];
-    self.config.playMethod = AliyunPlayMedthodSTS;
-    __weak typeof(self)weakself = self;
-    
-    [AlivcAppServer getStsDataSucess:^(NSString *accessKeyId, NSString *accessKeySecret, NSString *securityToken) {
-        weakself.config.stsAccessKeyId = accessKeyId;
-        weakself.config.stsAccessSecret = accessKeySecret;
-        weakself.config.stsSecurityToken = securityToken;
-        //查询视频列表
-        [AlivcVideoPlayManager requestPlayListVodPlayWithCateId:@"1000063702" sucess:^(NSArray *ary, long total) {
-            
-            self.listView.dataAry = ary;
-            AlivcVideoPlayListModel *model = ary.firstObject;
-            weakself.config.videoId = model.videoId;
-            weakself.config.playMethod = AliyunPlayMedthodSTS;
-            //赋值
-            _currentPlayVideoModel = [ary objectAtIndex:0];
-            
-            NSArray *waterMarkArray = @[[NSNumber numberWithBool:NO],[NSNumber numberWithBool:NO],[NSNumber numberWithBool:NO],[NSNumber numberWithBool:YES]];
-            NSMutableArray *dataArray  = [[NSMutableArray alloc]initWithCapacity:self.listView.dataAry.count];
-            for (int i=0; i<ary.count; ++i) {
-                AlivcVideoPlayListModel *itemModel = [ary objectAtIndex:i];
-                itemModel.stsAccessKeyId = weakself.config.stsAccessKeyId;
-                itemModel.stsAccessSecret = weakself.config.stsAccessSecret;
-                itemModel.stsSecurityToken = weakself.config.stsSecurityToken;
-                
-                if (waterMarkArray.count > i) {
-                    itemModel.waterMark = [[waterMarkArray objectAtIndex:i] boolValue];
-                }
-                [dataArray addObject:itemModel];
-            }
-             self.listView.dataAry = dataArray;
-            
-            if (success) {
-                success();
-            }
-        } failure:^(NSString *errString) {
-            //
-        }];
-    } failure:^(NSString *errorString) {
-        [MBProgressHUD showMessage:errorString inView:self.view];
-    }];
+//    //加载默认的STS数据
+//    self.config = [[AVCVideoConfig alloc]init];
+//    self.config.playMethod = AliyunPlayMedthodSTS;
+//    __weak typeof(self)weakself = self;
+//
+//    [AlivcAppServer getStsDataSucess:^(NSString *accessKeyId, NSString *accessKeySecret, NSString *securityToken) {
+//        weakself.config.stsAccessKeyId = accessKeyId;
+//        weakself.config.stsAccessSecret = accessKeySecret;
+//        weakself.config.stsSecurityToken = securityToken;
+//        //查询视频列表
+//        [AlivcVideoPlayManager requestPlayListVodPlayWithCateId:@"1000063702" sucess:^(NSArray *ary, long total) {
+//
+//            self.listView.dataAry = ary;
+//            AlivcVideoPlayListModel *model = ary.firstObject;
+//            weakself.config.videoId = model.videoId;
+//            weakself.config.playMethod = AliyunPlayMedthodSTS;
+//            //赋值
+//            _currentPlayVideoModel = [ary objectAtIndex:0];
+//
+//            NSArray *waterMarkArray = @[[NSNumber numberWithBool:NO],[NSNumber numberWithBool:NO],[NSNumber numberWithBool:NO],[NSNumber numberWithBool:YES]];
+//            NSMutableArray *dataArray  = [[NSMutableArray alloc]initWithCapacity:self.listView.dataAry.count];
+//            for (int i=0; i<ary.count; ++i) {
+//                AlivcVideoPlayListModel *itemModel = [ary objectAtIndex:i];
+//                itemModel.stsAccessKeyId = weakself.config.stsAccessKeyId;
+//                itemModel.stsAccessSecret = weakself.config.stsAccessSecret;
+//                itemModel.stsSecurityToken = weakself.config.stsSecurityToken;
+//
+//                if (waterMarkArray.count > i) {
+//                    itemModel.waterMark = [[waterMarkArray objectAtIndex:i] boolValue];
+//                }
+//                [dataArray addObject:itemModel];
+//            }
+//             self.listView.dataAry = dataArray;
+//
+//            if (success) {
+//                success();
+//            }
+//        } failure:^(NSString *errString) {
+//            //
+//        }];
+//    } failure:^(NSString *errorString) {
+//        [MBProgressHUD showMessage:errorString inView:self.view];
+//    }];
 }
 
 - (AliyunVodPlayerView *__nullable)playerView{

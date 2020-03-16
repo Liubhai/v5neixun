@@ -20,6 +20,7 @@
 #import "UIView+HUD.h"
 #import "EdlineV5_Color.h"
 #import "TYAttributedLabel.h"
+#import "LBHTableView.h"
 
 #ifndef V5_Constant_h
 #define V5_Constant_h

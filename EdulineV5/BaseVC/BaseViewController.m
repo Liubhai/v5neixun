@@ -70,13 +70,14 @@
     _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _leftButton.frame = CGRectMake(0, 11, 44, 44);
     [_leftButton setTitleColor:BackColor forState:0];
-    [_leftButton setImage:[UIImage imageNamed:@"login-back"] forState:0];
+    [_leftButton setImage:[UIImage imageNamed:@"nav_back_white"] forState:0];
     [_leftButton addTarget:self action:@selector(leftButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_leftButton];
     
     _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _rightButton.frame = CGRectMake(MainScreenWidth-52, 11, 44, 44);
     [_rightButton setTitleColor:[UIColor blueColor] forState:0];
+    [_rightButton setImage:Image(@"nav_more_white") forState:0];
     [_rightButton addTarget:self action:@selector(rightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_rightButton];
     

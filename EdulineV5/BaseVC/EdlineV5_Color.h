@@ -71,6 +71,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** 按钮弱化颜色 */
 + (UIColor *)buttonWeakeColor;
 
+/**星星评分颜色*/
++ (UIColor *)starPreColor;
+
++ (UIColor *)starNoColor;
 
 @end
 

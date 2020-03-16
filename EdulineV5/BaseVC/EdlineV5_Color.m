@@ -107,4 +107,11 @@
     return HEXCOLORV5(0x5191FF);
 }
 
++ (UIColor *)starPreColor {
+    return HEXCOLORV5(0xFF8A52);
+}
+
++ (UIColor *)starNoColor {
+    return HEXCOLORV5(0xDCDFE6);
+}
 @end

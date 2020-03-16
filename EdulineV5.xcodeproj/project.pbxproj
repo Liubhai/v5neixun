@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
+		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
+		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
+		7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C974241F5C57002F6595 /* StarEvaluator.m */; };
+		7839C97A241F7B3E002F6595 /* CourseDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C979241F7B3E002F6595 /* CourseDownView.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -239,6 +244,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
+		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
+		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
+		7839C96E241F174D002F6595 /* LBHProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBHProgressView.m; sourceTree = "<group>"; };
+		7839C96F241F174D002F6595 /* LBHTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBHTableView.m; sourceTree = "<group>"; };
+		7839C970241F174D002F6595 /* LBHProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHProgressView.h; sourceTree = "<group>"; };
+		7839C973241F5C57002F6595 /* StarEvaluator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StarEvaluator.h; sourceTree = "<group>"; };
+		7839C974241F5C57002F6595 /* StarEvaluator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StarEvaluator.m; sourceTree = "<group>"; };
+		7839C978241F7B3E002F6595 /* CourseDownView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseDownView.h; sourceTree = "<group>"; };
+		7839C979241F7B3E002F6595 /* CourseDownView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseDownView.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -639,6 +654,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7839C968241F154B002F6595 /* Course */ = {
+			isa = PBXGroup;
+			children = (
+				7839C96A241F1571002F6595 /* CourseMainViewController.h */,
+				7839C96B241F1571002F6595 /* CourseMainViewController.m */,
+				7839C976241F7B25002F6595 /* courseView */,
+			);
+			path = Course;
+			sourceTree = "<group>";
+		};
+		7839C976241F7B25002F6595 /* courseView */ = {
+			isa = PBXGroup;
+			children = (
+				7839C978241F7B3E002F6595 /* CourseDownView.h */,
+				7839C979241F7B3E002F6595 /* CourseDownView.m */,
+			);
+			path = courseView;
+			sourceTree = "<group>";
+		};
 		78795604240DE7A50013F95F = {
 			isa = PBXGroup;
 			children = (
@@ -674,6 +708,7 @@
 				7879565A240E5FC80013F95F /* FindPage */,
 				7879565C240E5FEB0013F95F /* MyCenterPage */,
 				7879575B24109F690013F95F /* LoginAndRegister */,
+				7839C968241F154B002F6595 /* Course */,
 				7879566E240F929A0013F95F /* EdulineToolLib */,
 				78795610240DE7A50013F95F /* AppDelegate.h */,
 				78795611240DE7A50013F95F /* AppDelegate.m */,
@@ -778,6 +813,12 @@
 				7879566B240F39200013F95F /* BaseViewController.m */,
 				78C5482B2412259C00A33FC4 /* EdlineV5_Color.h */,
 				78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */,
+				7839C970241F174D002F6595 /* LBHProgressView.h */,
+				7839C96E241F174D002F6595 /* LBHProgressView.m */,
+				7839C96D241F174D002F6595 /* LBHTableView.h */,
+				7839C96F241F174D002F6595 /* LBHTableView.m */,
+				7839C973241F5C57002F6595 /* StarEvaluator.h */,
+				7839C974241F5C57002F6595 /* StarEvaluator.m */,
 			);
 			path = BaseVC;
 			sourceTree = "<group>";
@@ -1804,6 +1845,7 @@
 				78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */,
 				78C54947241B642B00A33FC4 /* AliyunPlayerViewGestureView.m in Sources */,
 				78C54944241B642B00A33FC4 /* AliyunPlayerViewTopView.m in Sources */,
+				7839C97A241F7B3E002F6595 /* CourseDownView.m in Sources */,
 				7879575F2410A1650013F95F /* QuickLoginVC.m in Sources */,
 				7879564D240E36FA0013F95F /* EdulineV5Client.m in Sources */,
 				78C549D3241B674F00A33FC4 /* AlivcImage.m in Sources */,
@@ -1859,6 +1901,7 @@
 				78C548372416212300A33FC4 /* RegisterAndForgetPwVC.m in Sources */,
 				78C5487D2418CC7400A33FC4 /* TYTextStorage.m in Sources */,
 				78C5497C241B642B00A33FC4 /* _AlivcLiveBeautifyLevelView.m in Sources */,
+				7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */,
 				78C549C8241B674E00A33FC4 /* AlivcScanViewController.m in Sources */,
 				78C54946241B642B00A33FC4 /* AliyunPlayerViewSeekPopupView.m in Sources */,
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
@@ -1868,11 +1911,14 @@
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
 				78795724240FA3840013F95F /* ZLCameraView.m in Sources */,
 				78C549E0241B674F00A33FC4 /* UIImage+AlivcHelper.m in Sources */,
+				7839C972241F174D002F6595 /* LBHTableView.m in Sources */,
 				78C54951241B642B00A33FC4 /* AliyunPlayerViewSpeedView.m in Sources */,
+				7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */,
 				78795650240E3FB60013F95F /* EdulineV5_Tool.m in Sources */,
 				78C5496D241B642B00A33FC4 /* AlivcUserInfoManager.m in Sources */,
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
 				78C54965241B642B00A33FC4 /* AVCVideoConfig.m in Sources */,
+				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
 				78795725240FA3840013F95F /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */,

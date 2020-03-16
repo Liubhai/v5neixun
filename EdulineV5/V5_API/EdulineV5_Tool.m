@@ -448,8 +448,21 @@ static EdulineV5_Tool *_sharedInstance;
     return [emailTest evaluateWithObject:pw];
 }
 
-
-
++ (void)adapterOfIOS11With:(UITableView *)tableView {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    if (@available(iOS 11.0, *)) {
+        tableView.estimatedRowHeight = 0;
+        tableView.estimatedSectionHeaderHeight = 0;
+        tableView.estimatedSectionFooterHeight = 0;
+    }
+    if (@available(iOS 11.0, *)) {
+        tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        tableView.scrollIndicatorInsets = tableView.contentInset;
+    }
+#else
+#endif
+}
 
 
 

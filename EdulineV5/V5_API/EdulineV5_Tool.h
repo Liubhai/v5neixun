@@ -60,4 +60,5 @@
 
 + (BOOL)validatePassWord:(NSString *)pw;
 
++ (void)adapterOfIOS11With:(UITableView *)tableView;
 @end
