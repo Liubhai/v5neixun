@@ -45,6 +45,7 @@
     }
     _serviceButton.imageEdgeInsets = UIEdgeInsetsMake(-labelHeight-0/2.0, 0, 0, -labelWidth);
     _serviceButton.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith, -imageHeight-0/2.0, 0);
+    [_serviceButton addTarget:self action:@selector(serviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_serviceButton];
     
     _shopCarButton = [[UIButton alloc] initWithFrame:CGRectMake(_serviceButton.right + 10, 5, 40, 40)];
@@ -68,6 +69,7 @@
     }
     _shopCarButton.imageEdgeInsets = UIEdgeInsetsMake(-shoplabelHeight-0/2.0, 0, 0, -shoplabelWidth);
     _shopCarButton.titleEdgeInsets = UIEdgeInsetsMake(0, -shopimageWith, -shopimageHeight-0/2.0, 0);
+    [_shopCarButton addTarget:self action:@selector(shopCarButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_shopCarButton];
     
     _shopCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_shopCarButton.centerX, _shopCarButton.top + 3, 18, 12)];
@@ -88,6 +90,7 @@
     [_joinShopCarButton setTitle:@"加入购物车" forState:0];
     _joinShopCarButton.titleLabel.font = SYSTEMFONT(16);
     [_joinShopCarButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [_joinShopCarButton addTarget:self action:@selector(joinShopCarButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_joinShopCarButton];
     
     _joinStudyButton = [[UIButton alloc] initWithFrame:CGRectMake(_joinShopCarButton.right + 10, 5, 120, 40)];
@@ -97,7 +100,32 @@
     _joinStudyButton.titleLabel.font = SYSTEMFONT(16);
     [_joinStudyButton setTitleColor:[UIColor whiteColor] forState:0];
     _joinStudyButton.backgroundColor = EdlineV5_Color.themeColor;
+    [_joinStudyButton addTarget:self action:@selector(joinStudyButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_joinStudyButton];
+}
+
+- (void)serviceButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(jumpServiceVC:)]) {
+        [_delegate jumpServiceVC:self];
+    }
+}
+
+- (void)shopCarButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(jumpToShopCarVC:)]) {
+        [_delegate jumpToShopCarVC:self];
+    }
+}
+
+- (void)joinShopCarButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(joinShopCarEvent:)]) {
+        [_delegate joinShopCarEvent:self];
+    }
+}
+
+- (void)joinStudyButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(joinStudyEvent:)]) {
+        [_delegate joinStudyEvent:self];
+    }
 }
 
 @end

@@ -15,6 +15,10 @@
 		7839C97D24206AD1002F6595 /* CourseContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C97C24206AD1002F6595 /* CourseContentView.m */; };
 		7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C97F24206B1F002F6595 /* CourseTeacherAndOrganizationView.m */; };
 		7839C98324206B72002F6595 /* CourseCouponView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C98224206B72002F6595 /* CourseCouponView.m */; };
+		7839C98624209FAF002F6595 /* CourseCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C98524209FAF002F6595 /* CourseCommentViewController.m */; };
+		7839C9892420CA15002F6595 /* CourseCommentTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9882420CA15002F6595 /* CourseCommentTopView.m */; };
+		7839C98E2420D089002F6595 /* CourseCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C98D2420D089002F6595 /* CourseCommentCell.m */; };
+		7839C9912420DEC9002F6595 /* CourseCommentListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9902420DEC9002F6595 /* CourseCommentListVC.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -263,6 +267,14 @@
 		7839C97F24206B1F002F6595 /* CourseTeacherAndOrganizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTeacherAndOrganizationView.m; sourceTree = "<group>"; };
 		7839C98124206B72002F6595 /* CourseCouponView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCouponView.h; sourceTree = "<group>"; };
 		7839C98224206B72002F6595 /* CourseCouponView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCouponView.m; sourceTree = "<group>"; };
+		7839C98424209FAF002F6595 /* CourseCommentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCommentViewController.h; sourceTree = "<group>"; };
+		7839C98524209FAF002F6595 /* CourseCommentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCommentViewController.m; sourceTree = "<group>"; };
+		7839C9872420CA15002F6595 /* CourseCommentTopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCommentTopView.h; sourceTree = "<group>"; };
+		7839C9882420CA15002F6595 /* CourseCommentTopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCommentTopView.m; sourceTree = "<group>"; };
+		7839C98C2420D089002F6595 /* CourseCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCommentCell.h; sourceTree = "<group>"; };
+		7839C98D2420D089002F6595 /* CourseCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCommentCell.m; sourceTree = "<group>"; };
+		7839C98F2420DEC9002F6595 /* CourseCommentListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCommentListVC.h; sourceTree = "<group>"; };
+		7839C9902420DEC9002F6595 /* CourseCommentListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCommentListVC.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -668,6 +680,11 @@
 			children = (
 				7839C96A241F1571002F6595 /* CourseMainViewController.h */,
 				7839C96B241F1571002F6595 /* CourseMainViewController.m */,
+				7839C98424209FAF002F6595 /* CourseCommentViewController.h */,
+				7839C98524209FAF002F6595 /* CourseCommentViewController.m */,
+				7839C98F2420DEC9002F6595 /* CourseCommentListVC.h */,
+				7839C9902420DEC9002F6595 /* CourseCommentListVC.m */,
+				7839C98A2420D036002F6595 /* CourseCell */,
 				7839C976241F7B25002F6595 /* courseView */,
 			);
 			path = Course;
@@ -684,8 +701,19 @@
 				7839C97F24206B1F002F6595 /* CourseTeacherAndOrganizationView.m */,
 				7839C98124206B72002F6595 /* CourseCouponView.h */,
 				7839C98224206B72002F6595 /* CourseCouponView.m */,
+				7839C9872420CA15002F6595 /* CourseCommentTopView.h */,
+				7839C9882420CA15002F6595 /* CourseCommentTopView.m */,
 			);
 			path = courseView;
+			sourceTree = "<group>";
+		};
+		7839C98A2420D036002F6595 /* CourseCell */ = {
+			isa = PBXGroup;
+			children = (
+				7839C98C2420D089002F6595 /* CourseCommentCell.h */,
+				7839C98D2420D089002F6595 /* CourseCommentCell.m */,
+			);
+			path = CourseCell;
 			sourceTree = "<group>";
 		};
 		78795604240DE7A50013F95F = {
@@ -1889,6 +1917,7 @@
 				78C54845241873EB00A33FC4 /* UserModel.m in Sources */,
 				78C54962241B642B00A33FC4 /* DownloadManager.m in Sources */,
 				78C549C6241B674E00A33FC4 /* AlivcKeyboardManager.m in Sources */,
+				7839C98E2420D089002F6595 /* CourseCommentCell.m in Sources */,
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				78C549DD241B674F00A33FC4 /* UIResponder+AlivcHelper.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
@@ -1937,6 +1966,7 @@
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
 				78795725240FA3840013F95F /* ZLPhotoPickerBrowserPhoto.m in Sources */,
+				7839C98624209FAF002F6595 /* CourseCommentViewController.m in Sources */,
 				78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */,
 				78795759240FAA7A0013F95F /* NSDateFormatter+Category.m in Sources */,
 				78C549C3241B674E00A33FC4 /* AlivcStringDrawing.m in Sources */,
@@ -1946,6 +1976,7 @@
 				787957622410E1F40013F95F /* LoginViewController.m in Sources */,
 				78C54972241B642B00A33FC4 /* AlivcVideoPlayListModel.m in Sources */,
 				78C549D6241B674F00A33FC4 /* AlivcBaseNavigationController.m in Sources */,
+				7839C9892420CA15002F6595 /* CourseCommentTopView.m in Sources */,
 				78C54939241B642B00A33FC4 /* AlivcPlayListsView.m in Sources */,
 				78795655240E5B1C0013F95F /* RootV5VC.m in Sources */,
 				78C549C7241B674E00A33FC4 /* AlivcLiveUserCountTool.m in Sources */,
@@ -1988,6 +2019,7 @@
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
 				78C549D1241B674E00A33FC4 /* AlivcBaseViewController.m in Sources */,
 				78795731240FA3840013F95F /* ZLPhotoAssets.m in Sources */,
+				7839C9912420DEC9002F6595 /* CourseCommentListVC.m in Sources */,
 				78C54961241B642B00A33FC4 /* AlivcVideoDataBase.m in Sources */,
 				78C54840241743DE00A33FC4 /* Net_Path.m in Sources */,
 				78C5496C241B642B00A33FC4 /* AlivcQuUserManager.m in Sources */,

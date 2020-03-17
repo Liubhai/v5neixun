@@ -14,13 +14,20 @@
 #import "CourseContentView.h"
 #import "CourseCouponView.h"
 #import "CourseTeacherAndOrganizationView.h"
+#import "CourseCommentListVC.h"
+
+// ceshi
+#import "CourseCommentViewController.h"
 
 #define FaceImageHeight 207
 
-@interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate> {
+@interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate> {
     // 新增内容
     CGFloat sectionHeight;
 }
+
+/**三大子页面*/
+@property (strong, nonatomic) CourseCommentListVC *commentVC;
 
 /**封面*/
 @property (strong, nonatomic) UIImageView *faceImageView;
@@ -134,6 +141,7 @@
 // MARK: - 底部视图(咨询、加入购物车、加入学习)
 - (void)makeDownView {
     _courseDownView = [[CourseDownView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - 50, MainScreenWidth, 50)];
+    _courseDownView.delegate = self;
     [self.view addSubview:_courseDownView];
 }
 
@@ -216,6 +224,20 @@
             [_bg addSubview:self.mainScroll];
         } else {
             self.mainScroll.frame = CGRectMake(0,47, MainScreenWidth, sectionHeight - 47);
+        }
+        
+        if (_commentVC == nil) {
+            _commentVC = [[CourseCommentListVC alloc] init];
+            _commentVC.tabelHeight = sectionHeight - 47;
+            _commentVC.vc = self;
+            _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+            [self.mainScroll addSubview:_commentVC.view];
+            [self addChildViewController:_commentVC];
+        } else {
+            _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+            _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
     }
     return _bg;
@@ -379,6 +401,24 @@
 // MARK: - 更多视图背景图点击事件
 - (void)allWindowViewClick:(UITapGestureRecognizer *)tap {
     [_allWindowView removeFromSuperview];
+}
+
+// MARK: - 底部按钮点击事件
+- (void)jumpServiceVC:(CourseDownView *)downView {
+    CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToShopCarVC:(CourseDownView *)downView {
+    
+}
+
+- (void)joinShopCarEvent:(CourseDownView *)downView {
+    
+}
+
+- (void)joinStudyEvent:(CourseDownView *)downView {
+    
 }
 
 @end
