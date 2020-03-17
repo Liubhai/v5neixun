@@ -12,6 +12,9 @@
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
 		7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C974241F5C57002F6595 /* StarEvaluator.m */; };
 		7839C97A241F7B3E002F6595 /* CourseDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C979241F7B3E002F6595 /* CourseDownView.m */; };
+		7839C97D24206AD1002F6595 /* CourseContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C97C24206AD1002F6595 /* CourseContentView.m */; };
+		7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C97F24206B1F002F6595 /* CourseTeacherAndOrganizationView.m */; };
+		7839C98324206B72002F6595 /* CourseCouponView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C98224206B72002F6595 /* CourseCouponView.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -254,6 +257,12 @@
 		7839C974241F5C57002F6595 /* StarEvaluator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StarEvaluator.m; sourceTree = "<group>"; };
 		7839C978241F7B3E002F6595 /* CourseDownView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseDownView.h; sourceTree = "<group>"; };
 		7839C979241F7B3E002F6595 /* CourseDownView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseDownView.m; sourceTree = "<group>"; };
+		7839C97B24206AD1002F6595 /* CourseContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseContentView.h; sourceTree = "<group>"; };
+		7839C97C24206AD1002F6595 /* CourseContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseContentView.m; sourceTree = "<group>"; };
+		7839C97E24206B1F002F6595 /* CourseTeacherAndOrganizationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseTeacherAndOrganizationView.h; sourceTree = "<group>"; };
+		7839C97F24206B1F002F6595 /* CourseTeacherAndOrganizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTeacherAndOrganizationView.m; sourceTree = "<group>"; };
+		7839C98124206B72002F6595 /* CourseCouponView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCouponView.h; sourceTree = "<group>"; };
+		7839C98224206B72002F6595 /* CourseCouponView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCouponView.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -669,6 +678,12 @@
 			children = (
 				7839C978241F7B3E002F6595 /* CourseDownView.h */,
 				7839C979241F7B3E002F6595 /* CourseDownView.m */,
+				7839C97B24206AD1002F6595 /* CourseContentView.h */,
+				7839C97C24206AD1002F6595 /* CourseContentView.m */,
+				7839C97E24206B1F002F6595 /* CourseTeacherAndOrganizationView.h */,
+				7839C97F24206B1F002F6595 /* CourseTeacherAndOrganizationView.m */,
+				7839C98124206B72002F6595 /* CourseCouponView.h */,
+				7839C98224206B72002F6595 /* CourseCouponView.m */,
 			);
 			path = courseView;
 			sourceTree = "<group>";
@@ -1858,6 +1873,7 @@
 				78795669240E606F0013F95F /* MyRootViewController.m in Sources */,
 				78C5496F241B642B00A33FC4 /* AlivcProfile.m in Sources */,
 				78C549DB241B674F00A33FC4 /* UIApplication+AlivcHelper.m in Sources */,
+				7839C98324206B72002F6595 /* CourseCouponView.m in Sources */,
 				78795618240DE7A50013F95F /* ViewController.m in Sources */,
 				7879571F240FA3840013F95F /* DALabeledCircularProgressView.m in Sources */,
 				78795733240FA3840013F95F /* ZLPhotoPickerAssetsViewController.m in Sources */,
@@ -1944,6 +1960,7 @@
 				78C549DE241B674F00A33FC4 /* UIButton+AliyunBlock.m in Sources */,
 				78795726240FA3840013F95F /* ZLPhotoRect.m in Sources */,
 				78795732240FA3840013F95F /* ZLPhotoPickerGroupViewController.m in Sources */,
+				7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */,
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,
 				78C54955241B642B00A33FC4 /* AVC_VP_VideoPlayViewController.m in Sources */,
 				78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */,
@@ -1962,6 +1979,7 @@
 				78795739240FA3840013F95F /* ZLPhotoPickerImageView.m in Sources */,
 				78C54945241B642B00A33FC4 /* AliyunPlayerViewControlView.m in Sources */,
 				78C5494E241B642B00A33FC4 /* AliyunPlayerViewGifView.m in Sources */,
+				7839C97D24206AD1002F6595 /* CourseContentView.m in Sources */,
 				78C5494A241B642B00A33FC4 /* AliyunPlayerViewBottomView.m in Sources */,
 				7879572E240FA3840013F95F /* UIView+ZLExtension.m in Sources */,
 				78795734240FA3840013F95F /* ZLNavigationController.m in Sources */,
