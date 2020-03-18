@@ -12,8 +12,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class CourseCommentCell;
+
+@protocol CourseCommentCellDelegate <NSObject>
+
+@optional
+- (void)replayComment:(CourseCommentCell *)cell;
+- (void)zanComment:(CourseCommentCell *)cell;
+
+@end
+
 @interface CourseCommentCell : UITableViewCell
 
+@property (assign, nonatomic) id<CourseCommentCellDelegate> delegate;
 @property (strong, nonatomic) UIImageView *userFace;
 @property (strong, nonatomic) UILabel *nameLabel;
 @property (strong, nonatomic) StarEvaluator *scoreStar;

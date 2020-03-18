@@ -44,7 +44,6 @@
     _commentButton.layer.borderWidth = 1.0;
     [self addSubview:_commentButton];
     
-    
     _showLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 58, 22, 58, 20)];
     _showLabel.text = @"只看我的";
     _showLabel.font = SYSTEMFONT(14);
@@ -63,6 +62,10 @@
     
     _showLabel.hidden = YES;
     _showOwnButton.hidden = YES;
+}
+
+- (void)setCourseCommentInfo:(NSDictionary *)info {
+    
 }
 
 - (void)seleteButtonClick:(UIButton *)sender {

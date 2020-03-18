@@ -88,6 +88,11 @@
 #define WIDTH(v)                (v).frame.size.width
 #define HEIGHT(v)               (v).frame.size.height
 
+// 输入框之类的
+#define CommenViewHeight 50
+#define CommentInputHeight 36
+#define CommentViewMaxHeight 180
+
 // `APP_ID`:`WASD123456`
 
 // `APP_KEY`:`7WFDuCGYa1XEBj6Y`

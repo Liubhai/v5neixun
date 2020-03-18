@@ -64,6 +64,7 @@
     _zanCountButton.titleLabel.font = SYSTEMFONT(12);
     _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+    [_zanCountButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_zanCountButton];
     
     _commentCountButton = [[UIButton alloc] initWithFrame:CGRectMake(_zanCountButton.left - 18 - commentWidth, _timeLabel.top, commentWidth, 20)];
@@ -73,6 +74,7 @@
     _commentCountButton.titleLabel.font = SYSTEMFONT(12);
     _commentCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _commentCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+    [_commentCountButton addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_commentCountButton];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left, _timeLabel.bottom + 10, _contentLabel.width, 0.5)];
@@ -82,6 +84,18 @@
 
 - (void)setCommentInfo:(NSDictionary *)info {
     [self setHeight:_lineView.bottom];
+}
+
+- (void)commentButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(replayComment:)]) {
+        [_delegate replayComment:self];
+    }
+}
+
+- (void)zanButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(zanComment:)]) {
+        [_delegate zanComment:self];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

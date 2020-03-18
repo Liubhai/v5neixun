@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *showOwnButton;
 @property (strong, nonatomic) UILabel *showLabel;
 
+- (void)setCourseCommentInfo:(NSDictionary *)info;
+
 @end
 
 NS_ASSUME_NONNULL_END
