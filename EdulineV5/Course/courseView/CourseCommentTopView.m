@@ -42,6 +42,7 @@
     _commentButton.layer.cornerRadius = 12;
     _commentButton.layer.borderColor = EdlineV5_Color.textzanColor.CGColor;
     _commentButton.layer.borderWidth = 1.0;
+    [_commentButton addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_commentButton];
     
     _showLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 58, 22, 58, 20)];
@@ -70,6 +71,12 @@
 
 - (void)seleteButtonClick:(UIButton *)sender {
     _showOwnButton.selected = !_showOwnButton.selected;
+}
+
+- (void)commentButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(jumpToCommentVC)]) {
+        [_delegate jumpToCommentVC];
+    }
 }
 
 @end

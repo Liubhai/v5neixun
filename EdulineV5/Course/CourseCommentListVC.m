@@ -10,8 +10,9 @@
 #import "CourseCommentTopView.h"
 #import "CourseCommentCell.h"
 #import "CourseCommentDetailVC.h"
+#import "CourseCommentViewController.h"
 
-@interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate>
+@interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate>
 
 @property (strong, nonatomic) CourseCommentTopView *headerView;
 
@@ -28,6 +29,7 @@
     
     _headerView = [[CourseCommentTopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 42)];
     _headerView.backgroundColor = [UIColor whiteColor];
+    _headerView.delegate = self;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _tabelHeight)];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -61,6 +63,11 @@
 
 - (void)replayComment:(CourseCommentCell *)cell {
     CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)jumpToCommentVC {
+    CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

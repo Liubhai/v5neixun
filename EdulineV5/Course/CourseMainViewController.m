@@ -405,8 +405,7 @@
 
 // MARK: - 底部按钮点击事件
 - (void)jumpServiceVC:(CourseDownView *)downView {
-    CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 - (void)jumpToShopCarVC:(CourseDownView *)downView {

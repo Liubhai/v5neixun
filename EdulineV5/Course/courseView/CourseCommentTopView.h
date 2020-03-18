@@ -12,8 +12,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol CourseCommentTopViewDelegate <NSObject>
+
+@optional
+- (void)jumpToCommentVC;
+
+@end
+
 @interface CourseCommentTopView : UIView
 
+@property (assign, nonatomic) id<CourseCommentTopViewDelegate> delegate;
 @property (strong, nonatomic) UILabel *courseScore;
 @property (strong, nonatomic) StarEvaluator *courseStar;
 @property (strong, nonatomic) UIButton *commentButton;
