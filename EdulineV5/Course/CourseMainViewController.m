@@ -18,6 +18,7 @@
 #import "CourseCommentListVC.h"
 #import "CourseCommentViewController.h"
 #import "CourseIntroductionVC.h"
+#import "CourseListVC.h"
 
 #define FaceImageHeight 207
 
@@ -28,6 +29,7 @@
 
 /**三大子页面*/
 @property (strong, nonatomic) CourseIntroductionVC *courseIntroduce;
+@property (strong, nonatomic) CourseListVC *courseListVC;
 @property (strong, nonatomic) CourseCommentListVC *commentVC;
 
 /**封面*/
@@ -74,7 +76,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    _isClassNew = YES;
     /// 新增内容
     self.canScroll = YES;
     self.canScrollAfterVideoPlay = YES;
@@ -249,6 +251,24 @@
             [_courseIntroduce changeMainScrollViewHeight:sectionHeight - 47];
         }
         
+        if (_courseListVC == nil) {
+            _courseListVC = [[CourseListVC alloc] init];
+            _courseListVC.isClassCourse = _isClassNew;
+            _courseListVC.sid = _sid;
+            _courseListVC.tabelHeight = sectionHeight - 47;
+            _courseListVC.vc = self;
+            _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _courseListVC.videoInfoDict = _dataSource;
+            _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+            [self.mainScroll addSubview:_courseListVC.view];
+            [self addChildViewController:_courseListVC];
+//            [self addBlockCategory:_courseListVC];
+        } else {
+            _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+            _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+        }
+        
         if (_commentVC == nil) {
             _commentVC = [[CourseCommentListVC alloc] init];
             _commentVC.tabelHeight = sectionHeight - 47;
@@ -327,8 +347,6 @@
     } if (scrollView == self.tableView) {
         CGFloat bottomCellOffset = self.headerView.height - MACRO_UI_UPHEIGHT;
         if (scrollView.contentOffset.y > bottomCellOffset - 0.5) {
-//            _navigationView.backgroundColor = BasidColor;
-//            _videoTitleLabel.hidden = NO;
             _titleImage.backgroundColor = EdlineV5_Color.themeColor;
             _titleLabel.hidden = NO;
             scrollView.contentOffset = CGPointMake(0, bottomCellOffset);
@@ -336,10 +354,10 @@
                 self.canScroll = NO;
                 for (UIViewController *vc in self.childViewControllers) {
                     if (self.courseButton.selected) {
-//                        if ([vc isKindOfClass:[Good_ClassCatalogViewController class]]) {
-//                            Good_ClassCatalogViewController *vccomment = (Good_ClassCatalogViewController *)vc;
-//                            vccomment.cellTabelCanScroll = YES;
-//                        }
+                        if ([vc isKindOfClass:[CourseListVC class]]) {
+                            CourseListVC *vccomment = (CourseListVC *)vc;
+                            vccomment.cellTabelCanScroll = YES;
+                        }
                     }
                     if (self.introButton.selected) {
                         if ([vc isKindOfClass:[CourseIntroductionVC class]]) {
@@ -368,8 +386,6 @@
                 }
             }
         }else{
-//            _navigationView.backgroundColor = [UIColor clearColor];
-//            _videoTitleLabel.hidden = YES;
             _titleImage.backgroundColor = [UIColor clearColor];
             _titleLabel.hidden = YES;
             if (!self.canScroll) {//子视图没到顶部
