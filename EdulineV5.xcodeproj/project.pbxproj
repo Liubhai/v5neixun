@@ -21,6 +21,8 @@
 		7839C9912420DEC9002F6595 /* CourseCommentListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9902420DEC9002F6595 /* CourseCommentListVC.m */; };
 		7839C9942421B996002F6595 /* CourseCommentDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9932421B996002F6595 /* CourseCommentDetailVC.m */; };
 		7839C9972421CB1C002F6595 /* CommentBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9962421CB1C002F6595 /* CommentBaseView.m */; };
+		7839C99D2423044A002F6595 /* CourseRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C99C2423044A002F6595 /* CourseRecordCell.m */; };
+		7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C99F242313F6002F6595 /* CourseIntroductionVC.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -281,6 +283,10 @@
 		7839C9932421B996002F6595 /* CourseCommentDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCommentDetailVC.m; sourceTree = "<group>"; };
 		7839C9952421CB1C002F6595 /* CommentBaseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommentBaseView.h; sourceTree = "<group>"; };
 		7839C9962421CB1C002F6595 /* CommentBaseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommentBaseView.m; sourceTree = "<group>"; };
+		7839C99B2423044A002F6595 /* CourseRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseRecordCell.h; sourceTree = "<group>"; };
+		7839C99C2423044A002F6595 /* CourseRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseRecordCell.m; sourceTree = "<group>"; };
+		7839C99E242313F6002F6595 /* CourseIntroductionVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseIntroductionVC.h; sourceTree = "<group>"; };
+		7839C99F242313F6002F6595 /* CourseIntroductionVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseIntroductionVC.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -692,6 +698,8 @@
 				7839C9902420DEC9002F6595 /* CourseCommentListVC.m */,
 				7839C9922421B996002F6595 /* CourseCommentDetailVC.h */,
 				7839C9932421B996002F6595 /* CourseCommentDetailVC.m */,
+				7839C99E242313F6002F6595 /* CourseIntroductionVC.h */,
+				7839C99F242313F6002F6595 /* CourseIntroductionVC.m */,
 				7839C98A2420D036002F6595 /* CourseCell */,
 				7839C976241F7B25002F6595 /* courseView */,
 			);
@@ -720,6 +728,8 @@
 			children = (
 				7839C98C2420D089002F6595 /* CourseCommentCell.h */,
 				7839C98D2420D089002F6595 /* CourseCommentCell.m */,
+				7839C99B2423044A002F6595 /* CourseRecordCell.h */,
+				7839C99C2423044A002F6595 /* CourseRecordCell.m */,
 			);
 			path = CourseCell;
 			sourceTree = "<group>";
@@ -1948,6 +1958,7 @@
 				78C5496B241B642B00A33FC4 /* AliVideoClientUser.m in Sources */,
 				78C54936241B642B00A33FC4 /* AlivcVideoPlayThumbnailView.m in Sources */,
 				78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */,
+				7839C99D2423044A002F6595 /* CourseRecordCell.m in Sources */,
 				78C54933241B642B00A33FC4 /* AVCSlider.m in Sources */,
 				78C5494F241B642B00A33FC4 /* AliyunViewMoreView.m in Sources */,
 				78C54979241B642B00A33FC4 /* _AlivcLiveBeautifySliderView.m in Sources */,
@@ -1962,6 +1973,7 @@
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
 				78795723240FA3840013F95F /* ZLCamera.m in Sources */,
 				78C54973241B642B00A33FC4 /* AlivcSplicingRequestParameter.m in Sources */,
+				7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
 				78795724240FA3840013F95F /* ZLCameraView.m in Sources */,
@@ -2251,7 +2263,7 @@
 				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.seition.eduline-V5";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2292,7 +2304,7 @@
 				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.seition.eduline-V5";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

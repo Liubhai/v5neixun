@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)jumpToShopCarVC:(CourseDownView *)downView;
 - (void)joinShopCarEvent:(CourseDownView *)downView;
 - (void)joinStudyEvent:(CourseDownView *)downView;
+- (void)jumpToCommentVC;
 
 @end
 
@@ -31,6 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *shopCountLabel;
 @property (strong, nonatomic) UIButton *joinShopCarButton;
 @property (strong, nonatomic) UIButton *joinStudyButton;
+
+@property (strong, nonatomic) UIButton *recordButton;
+
+@property (assign, nonatomic) BOOL isRecord;// yes 播放详情页 底部 no 课程详情页底部
+
+- (instancetype)initWithFrame:(CGRect)frame isRecord:(BOOL)isRecord;
 
 @end
 

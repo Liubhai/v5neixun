@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
+@property (assign, nonatomic) BOOL cellType;// yes 是点评 no 是笔记
 
 @end
 

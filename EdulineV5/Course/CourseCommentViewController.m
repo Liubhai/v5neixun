@@ -12,6 +12,7 @@
 
 @interface CourseCommentViewController ()<UITextViewDelegate,StarEvaluatorDelegate> {
     CGFloat keyHeight;
+    NSInteger wordMax;
 }
 
 @property (strong, nonatomic) UIScrollView *mainView;
@@ -20,6 +21,7 @@
 @property (strong, nonatomic) UILabel *scoreLabel;
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) UITextView *commentTextView;
+@property (strong, nonatomic) UIButton *openButton;
 @property (strong, nonatomic) UILabel *textCountLabel;
 @property (strong, nonatomic) UILabel *placeLabel;
 
@@ -32,8 +34,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
 //    UITapGestureRecognizer *viewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backViewTap:)];
 //    [self.view addGestureRecognizer:viewTap];
+    wordMax = _isComment ? 200 : 400;
     _titleImage.backgroundColor = [UIColor whiteColor];
-    _titleLabel.text = @"点评";
+    _titleLabel.text = _isComment ? @"点评" : @"笔记";
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
     [_leftButton setImage:Image(@"nav_back_grey") forState:0];
     [_rightButton setImage:nil forState:0];
@@ -52,34 +55,34 @@
     _mainView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_SAFEAREA)];
     [self.view addSubview:_mainView];
     
-    _pingfenLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 42, 60)];
+    _pingfenLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 42, _isComment ? 60 : 0)];
     _pingfenLabel.text = @"评分";
     _pingfenLabel.textColor = EdlineV5_Color.textFirstColor;
     _pingfenLabel.font = SYSTEMFONT(15);
     [_mainView addSubview:_pingfenLabel];
     
-    _starEva = [[StarEvaluator alloc] initWithFrame:CGRectMake(_pingfenLabel.right, (60 - 20) / 2.0, 116, 20)];
+    _starEva = [[StarEvaluator alloc] initWithFrame:CGRectMake(_pingfenLabel.right, (60 - 20) / 2.0, 116, _isComment ? 20 : 0)];
     _starEva.delegate = self;
     _starEva.userInteractionEnabled = YES;
     [_mainView addSubview:_starEva];
     
-    _scoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(_starEva.right + 20, 0, 100, 60)];
+    _scoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(_starEva.right + 20, 0, 100, _isComment ? 60 : 0)];
     _scoreLabel.font = SYSTEMFONT(14);
     _scoreLabel.textColor = EdlineV5_Color.textThirdColor;
     [_mainView addSubview:_scoreLabel];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _scoreLabel.bottom, MainScreenWidth, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _scoreLabel.bottom, MainScreenWidth, _isComment ? 0.5 : 0)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_mainView addSubview:_lineView];
     
-    _commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, _lineView.bottom + 15, MainScreenWidth - 30, 400)];
+    _commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, _isComment ? (_lineView.bottom + 15) : 0, MainScreenWidth - 30, 400)];
     _commentTextView.font = SYSTEMFONT(14);
     _commentTextView.textColor = EdlineV5_Color.textFirstColor;
     _commentTextView.delegate = self;
     [_mainView addSubview:_commentTextView];
     
     _placeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_commentTextView.left, _commentTextView.top + 1, _commentTextView.width, 30)];
-    _placeLabel.text = @" 您可以分享学习体验、课程内容、老师讲课的风格等";
+    _placeLabel.text = _isComment ? @" 您可以分享学习体验、课程内容、老师讲课的风格等" : @" 笔记内容";
     _placeLabel.textColor = EdlineV5_Color.textThirdColor;
     _placeLabel.font = SYSTEMFONT(14);
     _placeLabel.userInteractionEnabled = YES;
@@ -90,9 +93,32 @@
     _textCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, _mainView.height - 35, 100, 20)];
     _textCountLabel.font = SYSTEMFONT(14);
     _textCountLabel.textColor = EdlineV5_Color.textThirdColor;
-    _textCountLabel.text = @"0/200";
+    _textCountLabel.text = [NSString stringWithFormat:@"0/%@",@(wordMax)];
     _textCountLabel.textAlignment = NSTextAlignmentRight;
     [_mainView addSubview:_textCountLabel];
+    
+    NSString *openText = @"公开";
+    CGFloat openWidth = [openText sizeWithFont:SYSTEMFONT(14)].width + 4 + 20;
+    CGFloat space = 2.0;
+    
+    _openButton = [[UIButton alloc] initWithFrame:CGRectMake(15, _textCountLabel.top, openWidth, 20)];
+    [_openButton setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
+    [_openButton setImage:Image(@"checkbox_nor") forState:0];
+    [_openButton setTitle:openText forState:0];
+    [_openButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    _openButton.titleLabel.font = SYSTEMFONT(14);
+    _openButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+    _openButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+    [_openButton addTarget:self action:@selector(openButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_mainView addSubview:_openButton];
+    
+    _openButton.hidden = _isComment;
+    if (!_isComment) {
+        _pingfenLabel.hidden = YES;
+        _starEva.hidden = YES;
+        _scoreLabel.hidden = YES;
+        _lineView.hidden = YES;
+    }
 }
 
 - (void)placeLabelTap:(UIGestureRecognizer *)tap {
@@ -107,8 +133,8 @@
     } else {
         _placeLabel.hidden = YES;
     }
-    _textCountLabel.text = [NSString stringWithFormat:@"%@/200",@(textView.text.length)];
-    if (textView.text.length>200) {
+    _textCountLabel.text = [NSString stringWithFormat:@"%@/%@",@(textView.text.length),@(wordMax)];
+    if (textView.text.length>wordMax) {
         NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_textCountLabel.text];
         [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor} range:NSMakeRange(0, _textCountLabel.text.length - 4)];
         _textCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
@@ -136,12 +162,18 @@
 - (void)keyboardWillHide:(NSNotification *)notification{
 //    [_mainView setContentOffset:CGPointMake(0, 0)];
     [_textCountLabel setTop:_mainView.height - 35];
+    [_openButton setTop:_textCountLabel.top];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification{
     NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     keyHeight = [endValue CGRectValue].size.height;
     [_textCountLabel setTop:_mainView.height - keyHeight - 35];
+    [_openButton setTop:_textCountLabel.top];
+}
+
+- (void)openButtonClick:(UIButton *)sender {
+    sender.selected = !sender.selected;
 }
 
 @end

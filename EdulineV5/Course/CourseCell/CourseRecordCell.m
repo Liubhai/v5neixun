@@ -1,20 +1,19 @@
 //
-//  CourseCommentCell.m
+//  CourseRecordCell.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2020/3/17.
+//  Created by 刘邦海 on 2020/3/19.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
-#import "CourseCommentCell.h"
+#import "CourseRecordCell.h"
 
-@implementation CourseCommentCell
+@implementation CourseRecordCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(BOOL)cellType {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        _cellType = cellType;
         [self makeSubView];
     }
     return self;
@@ -39,24 +38,16 @@
     _scoreStar.userInteractionEnabled = NO;
     _scoreStar.centerY = _userFace.centerY;
     [self addSubview:_scoreStar];
+    _scoreStar.hidden = YES;
     
-    if (_cellType) {
-        _tokenLabel = [[YYLabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 64)];
-        _tokenLabel.font = SYSTEMFONT(14);
-        _tokenLabel.text = @"我们可以使用以下方式来指定切断文本; 收起 我们可以使用以下方式来指定切断文本,弄啥呢大哥,一起上呀打死那个龟孙,我们可以使用以下方式来指定切断文本; 收起 我们可以使用以下方式来指定切断文本";
-        _tokenLabel.numberOfLines = 4;
-        [self addSeeMoreButtonInLabel:_tokenLabel];
-        [self addSubview:_tokenLabel];
-    } else {
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50)];
-        _contentLabel.text = @"但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦";
-        _contentLabel.textColor = EdlineV5_Color.textFirstColor;
-        _contentLabel.font = SYSTEMFONT(14);
-        _contentLabel.numberOfLines = 0;
-        [self addSubview:_contentLabel];
-    }
+    _tokenLabel = [[YYLabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 64)];
+    _tokenLabel.font = SYSTEMFONT(14);
+    _tokenLabel.text = @"我们可以使用以下方式来指定切断文本; 收起 我们可以使用以下方式来指定切断文本,弄啥呢大哥,一起上呀打死那个龟孙,我们可以使用以下方式来指定切断文本; 收起 我们可以使用以下方式来指定切断文本";
+    _tokenLabel.numberOfLines = 4;
+    [self addSeeMoreButtonInLabel:_tokenLabel];
+    [self addSubview:_tokenLabel];
     
-    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, (_cellType ? _tokenLabel.bottom : _contentLabel.bottom) + 15, 100, 20)];
+    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _tokenLabel.bottom + 15, 100, 20)];
     _timeLabel.text = @"18:23";
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
@@ -87,12 +78,12 @@
     [_commentCountButton addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_commentCountButton];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left, _timeLabel.bottom + 10, MainScreenWidth - _nameLabel.left - 15, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left, _timeLabel.bottom + 10, _tokenLabel.width, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView];
 }
 
-- (void)setCommentInfo:(NSDictionary *)info {
+- (void)setRecordInfo:(NSDictionary *)info {
     [self setHeight:_lineView.bottom];
 }
 
@@ -201,6 +192,5 @@
         self.tokenLabel.frame = CGRectMake(20, 100, [UIScreen mainScreen].bounds.size.width - 40, 30);
     }
 }
-
 
 @end

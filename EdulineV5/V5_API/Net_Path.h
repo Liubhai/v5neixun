@@ -46,6 +46,9 @@ struct NetWorkUrl {
 /** 测试接口 */
 + (NSString *)testApiPath;
 
+/** 课程详情数据接口 */
++ (NSString *)courseInfo:(NSString *)courseId;
+
 @end
 
 NS_ASSUME_NONNULL_END

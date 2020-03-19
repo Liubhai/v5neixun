@@ -73,7 +73,7 @@
         static NSString *reuse = @"CourseCommentCell";
         CourseCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
-            cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
         }
         cell.commentCountButton.hidden = YES;
         [cell setCommentInfo:nil];
@@ -82,7 +82,7 @@
         static NSString *reuse = @"CourseCommentReplayCell";
         CourseCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
-            cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
         }
         cell.scoreStar.hidden = YES;
         cell.commentCountButton.hidden = YES;

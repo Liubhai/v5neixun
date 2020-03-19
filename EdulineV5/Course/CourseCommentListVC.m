@@ -12,7 +12,7 @@
 #import "CourseCommentDetailVC.h"
 #import "CourseCommentViewController.h"
 
-@interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate>
+@interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate,UIScrollViewDelegate>
 
 @property (strong, nonatomic) CourseCommentTopView *headerView;
 
@@ -49,11 +49,24 @@
     static NSString *reuse = @"CourseCommentCell";
     CourseCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
     }
     cell.delegate = self;
     [cell setCommentInfo:nil];
     return cell;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (!self.cellTabelCanScroll) {
+        scrollView.contentOffset = CGPointZero;
+    }
+    if (scrollView.contentOffset.y <= 0) {
+        if (self.vc.canScrollAfterVideoPlay == YES) {
+            self.cellTabelCanScroll = NO;
+            scrollView.contentOffset = CGPointZero;
+            self.vc.canScroll = YES;
+        }
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -63,11 +76,13 @@
 
 - (void)replayComment:(CourseCommentCell *)cell {
     CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
+    vc.cellType = _cellType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)jumpToCommentVC {
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+    vc.isComment = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

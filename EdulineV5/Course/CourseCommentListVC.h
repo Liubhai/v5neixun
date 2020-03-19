@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL canScrollAfterVideoPlay;
 @property (assign, nonatomic) BOOL cellTabelCanScroll;
 
+@property (assign, nonatomic) BOOL cellType;// yes 是点评 no 是笔记
+
 
 @end
 

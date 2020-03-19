@@ -47,4 +47,8 @@
     return [Net_Path fullPath:@"/user/admin/account" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)courseInfo:(NSString *)courseId {
+    return [Net_Path fullPath:@"/course/base/1" repalce:@"" byReplece:@""];
+}
+
 @end

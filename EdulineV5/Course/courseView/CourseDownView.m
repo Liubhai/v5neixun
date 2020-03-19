@@ -11,9 +11,10 @@
 
 @implementation CourseDownView
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame isRecord:(BOOL)isRecord {
     self = [super initWithFrame:frame];
     if (self) {
+        _isRecord = isRecord;
         [self makeSubView];
     }
     return self;
@@ -102,6 +103,32 @@
     _joinStudyButton.backgroundColor = EdlineV5_Color.themeColor;
     [_joinStudyButton addTarget:self action:@selector(joinStudyButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_joinStudyButton];
+    
+    _recordButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 7, 120, 36)];
+    _recordButton.layer.masksToBounds = YES;
+    _recordButton.layer.cornerRadius = 18;
+    [_recordButton setTitle:@"记笔记" forState:0];
+    _recordButton.backgroundColor = EdlineV5_Color.themeColor;
+    _recordButton.centerX = MainScreenWidth / 2.0;
+    [_recordButton addTarget:self action:@selector(recordButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_recordButton];
+    
+    if (_isRecord) {
+        _recordButton.hidden = NO;
+        _serviceButton.hidden = YES;
+        _shopCarButton.hidden = YES;
+        _shopCountLabel.hidden = YES;
+        _joinShopCarButton.hidden = YES;
+        _joinStudyButton.hidden = YES;
+    } else {
+        _recordButton.hidden = YES;
+        _serviceButton.hidden = NO;
+        _shopCarButton.hidden = NO;
+        _shopCountLabel.hidden = NO;
+        _joinShopCarButton.hidden = NO;
+        _joinStudyButton.hidden = NO;
+    }
+    
 }
 
 - (void)serviceButtonClick:(UIButton *)sender {
@@ -125,6 +152,12 @@
 - (void)joinStudyButtonClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(joinStudyEvent:)]) {
         [_delegate joinStudyEvent:self];
+    }
+}
+
+- (void)recordButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(jumpToCommentVC)]) {
+        [_delegate jumpToCommentVC];
     }
 }
 

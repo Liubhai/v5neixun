@@ -10,14 +10,14 @@
 #import "V5_Constant.h"
 #import "StarEvaluator.h"
 #import "EdulineV5_Tool.h"
+#import "Net_Path.h"
 #import "CourseDownView.h"
 #import "CourseContentView.h"
 #import "CourseCouponView.h"
 #import "CourseTeacherAndOrganizationView.h"
 #import "CourseCommentListVC.h"
-
-// ceshi
 #import "CourseCommentViewController.h"
+#import "CourseIntroductionVC.h"
 
 #define FaceImageHeight 207
 
@@ -27,6 +27,7 @@
 }
 
 /**三大子页面*/
+@property (strong, nonatomic) CourseIntroductionVC *courseIntroduce;
 @property (strong, nonatomic) CourseCommentListVC *commentVC;
 
 /**封面*/
@@ -74,6 +75,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    /// 新增内容
+    self.canScroll = YES;
+    self.canScrollAfterVideoPlay = YES;
+    
     _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评"]];
     
     self.canScroll = YES;
@@ -82,13 +87,14 @@
     
     [self makeHeaderView];
     [self makeSubViews];
-    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - self.headerView.height;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
     [self makeTableView];
     [self.view bringSubviewToFront:_titleImage];
     _titleImage.backgroundColor = [UIColor clearColor];
     _titleLabel.hidden = YES;
     _lineTL.hidden = YES;
     [self makeDownView];
+    [self getCourseInfo];
     
 }
 
@@ -140,7 +146,7 @@
 
 // MARK: - 底部视图(咨询、加入购物车、加入学习)
 - (void)makeDownView {
-    _courseDownView = [[CourseDownView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - 50, MainScreenWidth, 50)];
+    _courseDownView = [[CourseDownView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - 50, MainScreenWidth, 50) isRecord:NO];
     _courseDownView.delegate = self;
     [self.view addSubview:_courseDownView];
 }
@@ -183,7 +189,7 @@
         _bg.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight);
     }
     if (sectionHeight>1) {
-        if (_recordButton == nil) {
+        if (_introButton == nil) {
             for (int i = 0; i < _tabClassArray.count; i++) {
                 UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth*i/_tabClassArray.count * 1.0, 0, MainScreenWidth/_tabClassArray.count * 1.0, 47)];
                 [btn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -224,6 +230,23 @@
             [_bg addSubview:self.mainScroll];
         } else {
             self.mainScroll.frame = CGRectMake(0,47, MainScreenWidth, sectionHeight - 47);
+        }
+        
+        if (_courseIntroduce == nil) {
+            _courseIntroduce = [[CourseIntroductionVC alloc] init];
+            _courseIntroduce.dataSource = _dataSource;
+            _courseIntroduce.tabelHeight = sectionHeight - 47;
+            _courseIntroduce.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _courseIntroduce.vc = self;
+            _courseIntroduce.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
+            [self.mainScroll addSubview:_courseIntroduce.view];
+            [self addChildViewController:_courseIntroduce];
+        } else {
+            _courseIntroduce.dataSource = _dataSource;
+            _courseIntroduce.tabelHeight = sectionHeight - 47;
+            _courseIntroduce.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _courseIntroduce.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
+            [_courseIntroduce changeMainScrollViewHeight:sectionHeight - 47];
         }
         
         if (_commentVC == nil) {
@@ -304,22 +327,57 @@
     } if (scrollView == self.tableView) {
         CGFloat bottomCellOffset = self.headerView.height - MACRO_UI_UPHEIGHT;
         if (scrollView.contentOffset.y > bottomCellOffset - 0.5) {
+//            _navigationView.backgroundColor = BasidColor;
+//            _videoTitleLabel.hidden = NO;
             _titleImage.backgroundColor = EdlineV5_Color.themeColor;
             _titleLabel.hidden = NO;
             scrollView.contentOffset = CGPointMake(0, bottomCellOffset);
             if (self.canScroll) {
                 self.canScroll = NO;
+                for (UIViewController *vc in self.childViewControllers) {
+                    if (self.courseButton.selected) {
+//                        if ([vc isKindOfClass:[Good_ClassCatalogViewController class]]) {
+//                            Good_ClassCatalogViewController *vccomment = (Good_ClassCatalogViewController *)vc;
+//                            vccomment.cellTabelCanScroll = YES;
+//                        }
+                    }
+                    if (self.introButton.selected) {
+                        if ([vc isKindOfClass:[CourseIntroductionVC class]]) {
+                            CourseIntroductionVC *vccomment = (CourseIntroductionVC *)vc;
+                            vccomment.cellTabelCanScroll = YES;
+                        }
+                    }
+                    if (self.commentButton.selected) {
+                        if ([vc isKindOfClass:[CourseCommentListVC class]]) {
+                            CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
+                            vccomment.cellTabelCanScroll = YES;
+                        }
+                    }
+//                    if (self.recordButton.selected) {
+//                        if ([vc isKindOfClass:[Good_ClassNotesViewController class]]) {
+//                            Good_ClassNotesViewController *vccomment = (Good_ClassNotesViewController *)vc;
+//                            vccomment.cellTabelCanScroll = YES;
+//                        }
+//                    }
+//                    if (self.questionButton.selected) {
+//                        if ([vc isKindOfClass:[Good_ClassAskQuestionsViewController class]]) {
+//                            Good_ClassAskQuestionsViewController *vccomment = (Good_ClassAskQuestionsViewController *)vc;
+//                            vccomment.cellTabelCanScroll = YES;
+//                        }
+//                    }
+                }
             }
         }else{
+//            _navigationView.backgroundColor = [UIColor clearColor];
+//            _videoTitleLabel.hidden = YES;
             _titleImage.backgroundColor = [UIColor clearColor];
             _titleLabel.hidden = YES;
             if (!self.canScroll) {//子视图没到顶部
-                scrollView.contentOffset = CGPointMake(0, 0);
-//                if (self.canScrollAfterVideoPlay) {
-//                    scrollView.contentOffset = CGPointMake(0, bottomCellOffset);
-//                } else {
-//                    scrollView.contentOffset = CGPointMake(0, 0);
-//                }
+                if (self.canScrollAfterVideoPlay) {
+                    scrollView.contentOffset = CGPointMake(0, bottomCellOffset);
+                } else {
+                    scrollView.contentOffset = CGPointMake(0, 0);
+                }
             }
         }
     }
@@ -418,6 +476,26 @@
 
 - (void)joinStudyEvent:(CourseDownView *)downView {
     
+}
+
+- (void)jumpToCommentVC {
+    CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+    vc.isComment = NO;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)getCourseInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseInfo:nil] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        NSLog(@"课程详情 = %@",responseObject);
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                [self.tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        NSLog(@"课程详情请求失败 = %@",error);
+    }];
 }
 
 @end

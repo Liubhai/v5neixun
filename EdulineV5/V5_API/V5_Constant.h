@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EdulineV5_Tool.h"
 #import <YYKit.h>
+#import <WebKit/WebKit.h>
 #import <MJRefresh.h>
 #import <SDWebImage.h>
 #import "Net_API.h"
