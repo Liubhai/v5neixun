@@ -37,6 +37,7 @@
 #define SWNOTEmptyDictionary(X) (NOTNULL(X)&&[X isKindOfClass:[NSDictionary class]]&&[[X allKeys]count])
 #define SWNOTEmptyStr(X) (NOTNULL(X)&&[X isKindOfClass:[NSString class]]&&((NSString *)X).length)
 #define NOTNULL(x) ((![x isKindOfClass:[NSNull class]])&&x)
+#define EdulineUrlString(X) [NSURL URLWithString:[NSString stringWithFormat:@"%@",X]]
 
 #define ShowNetError    [self showHudInView:self.view showHint:TEXT_NETWORK_ERROR]
 #define ShowHud(X) [self showHudInView:self.view hint:(X)]
@@ -45,6 +46,7 @@
 #define ShowInViewMiss(X) [self showHint:(X)]
 
 #define Image(name) [UIImage imageNamed:name]
+#define DefaultImage [UIImage imageNamed:@"lesson_img"]
 #define BasidColor [UIColor colorWithRed:32.f / 255 green:105.f / 255 blue:207.f / 255 alpha:1]
 #define BackColor [UIColor colorWithRed:240.f / 255 green:240.f / 255 blue:240.f / 255 alpha:1]
 #define RGBA(r,g,b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1.0]

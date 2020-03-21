@@ -506,12 +506,26 @@
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
-                [self.tableView reloadData];
+                [self setCourseInfoData];
             }
         }
     } enError:^(NSError * _Nonnull error) {
         NSLog(@"课程详情请求失败 = %@",error);
     }];
+}
+
+- (void)setCourseInfoData {
+    if (SWNOTEmptyDictionary(_dataSource)) {
+        NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover"]];
+        if ([faceUrlString containsString:@"http"]) {
+            [_faceImageView sd_setImageWithURL:EdulineUrlString([_dataSource objectForKey:@"cover"]) placeholderImage:DefaultImage];
+        } else {
+            _faceImageView.image = DefaultImage;
+        }
+        [_courseContentView setCourseContentInfo:_dataSource];
+        _tableView.tableHeaderView = _headerView;
+        [self.tableView reloadData];
+    }
 }
 
 @end

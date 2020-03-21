@@ -49,16 +49,44 @@
     _courseLearn.text = @"12人在学";
     [self addSubview:_courseLearn];
     
-    _coursePrice = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 75, _courseScore.top, 75, 34)];
+    _coursePrice = [[UILabel alloc] initWithFrame:CGRectMake(_courseLearn.right, _courseScore.top, MainScreenWidth - 15 - _courseLearn.right, 34)];
     _coursePrice.textAlignment = NSTextAlignmentRight;
-    _coursePrice.text = @"¥1,199";
-    _coursePrice.textColor = EdlineV5_Color.faildColor;
-    _coursePrice.font = SYSTEMFONT(18);
+    _coursePrice.textColor = EdlineV5_Color.textThirdColor;
+    _coursePrice.font = SYSTEMFONT(13);
     [self addSubview:_coursePrice];
+    
     _lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4)];
     _lineView1.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView1];
     [self setHeight:_lineView1.bottom];
+}
+
+- (void)setCourseContentInfo:(NSDictionary *)contentInfo {
+    _courseInfo = [NSDictionary dictionaryWithDictionary:contentInfo];
+    // 【0连载完成1连载中】
+    if ([[contentInfo objectForKey:@"update_status"] integerValue]) {
+        _lianzaiIcon.hidden = NO;
+        [_lianzaiIcon setWidth:32];
+        [_courseTitleLabel setLeft:_lianzaiIcon.right + 8];
+        [_courseTitleLabel setWidth:MainScreenWidth - _courseTitleLabel.left - 15];
+    } else {
+        _lianzaiIcon.hidden = YES;
+        [_lianzaiIcon setWidth:0];
+        [_courseTitleLabel setLeft:_lianzaiIcon.left];
+        [_courseTitleLabel setWidth:MainScreenWidth - _courseTitleLabel.left - 15];
+    }
+    _courseScore.text = [NSString stringWithFormat:@"%@分",[contentInfo objectForKey:@"score_average"]];
+    [_courseStar setStarValue:[[NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"score_average"]] floatValue]];
+    
+    NSString *price = [NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"price"]];
+    NSString *scribing_price = [NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"scribing_price"]];
+    NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
+    NSRange rangNow = NSMakeRange(scribing_price.length, price.length);
+    NSRange rangOld = NSMakeRange(0, scribing_price.length);
+    NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+    [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangOld];
+    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:rangNow];
+    _coursePrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
 }
 
 @end

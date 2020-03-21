@@ -50,6 +50,23 @@
     [_courseRightBtn setImage:Image(@"contents_up") forState:UIControlStateSelected];
     [self addSubview:_courseRightBtn];
     
+    _isLearningIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 16, 0, 16, 17)];
+    _isLearningIcon.centerY = 50 / 2.0;
+    _isLearningIcon.image = Image(@"comment_play");
+    [self addSubview:_isLearningIcon];
+    
+    _learnTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 80, 0, 80, 50)];
+    _learnTimeLabel.text = @"学习至00:32:23";
+    _learnTimeLabel.font = SYSTEMFONT(11);
+    _learnTimeLabel.textAlignment = NSTextAlignmentRight;
+    _learnTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+    [self addSubview:_learnTimeLabel];
+    
+    _learnIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14)];
+    _learnIcon.centerY = 50 / 2.0;
+    _learnIcon.image = Image(@"comment_his_icon");
+    [self addSubview:_learnIcon];
+    
     if (_isClassNew) {
         
         _typeIcon.hidden = YES;
@@ -83,15 +100,9 @@
         cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:cellReuse isClassNew:NO cellSection:0 cellRow:0];
     }
 //    NSDictionary *dic = [_dataSource objectAtIndex:indexPath.row];
+    cell.courseRightBtn.hidden = YES;
     return cell;
 }
-
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [_cellTableView deselectRowAtIndexPath:indexPath animated:YES];
-//    if (_delegate && [_delegate respondsToSelector:@selector(classCourseCellTableViewCellSelected:cellSection:cellRow:classCellRow:)]) {
-//        [_delegate classCourseCellTableViewCellSelected:[_dataSource objectAtIndex:indexPath.row] cellSection:_cellSection cellRow:_cellRow classCellRow:indexPath.row];
-//    }
-//}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

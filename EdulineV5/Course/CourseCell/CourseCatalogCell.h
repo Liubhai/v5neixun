@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UIButton *courseRightBtn;
+@property (strong, nonatomic) UIImageView *learnIcon;
+@property (strong, nonatomic) UILabel *learnTimeLabel;
+@property (strong, nonatomic) UIImageView *isLearningIcon;
 
 
 
