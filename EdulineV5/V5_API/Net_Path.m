@@ -51,4 +51,8 @@
     return [Net_Path fullPath:@"/course/base/1" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)courseList:(NSString *)courseId {
+    return [Net_Path fullPath:@"course/base/1/section/1" repalce:@"" byReplece:@""];
+}
+
 @end

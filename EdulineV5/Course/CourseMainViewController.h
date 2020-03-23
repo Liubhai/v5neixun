@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong ,nonatomic)UIView   *videoView;//视频的地方
 
+@property (strong, nonatomic) NSString *courselayer; // 1 一层 2 二层 3 三层(涉及到目录布局)
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -39,7 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) NSInteger cellRow;
 @property (assign, nonatomic) NSInteger cellSection;
 
--(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow;
+@property (strong, nonatomic) NSString *courselayer; // 1 一层 2 二层 3 三层(涉及到目录布局)
+@property (assign, nonatomic) BOOL *isMainPage; // yes 详情页面目录 no 播放页面目录
+
+-(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow courselayer:(NSString *)courselayer isMainPage:(BOOL)isMainPage;
 
 @end
 

@@ -76,6 +76,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _courselayer = @"1";
     _isClassNew = YES;
     /// 新增内容
     self.canScroll = YES;
@@ -253,6 +254,8 @@
         
         if (_courseListVC == nil) {
             _courseListVC = [[CourseListVC alloc] init];
+            _courseListVC.courselayer = _courselayer;
+            _courseListVC.isMainPage = YES;
             _courseListVC.isClassCourse = _isClassNew;
             _courseListVC.sid = _sid;
             _courseListVC.tabelHeight = sectionHeight - 47;

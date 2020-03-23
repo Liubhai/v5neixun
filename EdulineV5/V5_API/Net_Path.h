@@ -49,6 +49,9 @@ struct NetWorkUrl {
 /** 课程详情数据接口 */
 + (NSString *)courseInfo:(NSString *)courseId;
 
+/** 课程目录列表 */
++ (NSString *)courseList:(NSString *)courseId;
+
 @end
 
 NS_ASSUME_NONNULL_END

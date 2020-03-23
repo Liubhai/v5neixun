@@ -10,12 +10,14 @@
 
 @implementation CourseCatalogCell
 
--(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow {
+-(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow courselayer:(NSString *)courselayer isMainPage:(BOOL)isMainPage {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
         _isClassNew = isClassNew;
         _cellSection = cellSection;
         _cellRow = cellRow;
+        _courselayer = courselayer;
+        _isMainPage = isMainPage;
         [self makeSubView];
     }
     return self;
@@ -67,11 +69,16 @@
     _learnIcon.image = Image(@"comment_his_icon");
     [self addSubview:_learnIcon];
     
-    if (_isClassNew) {
-        
+    // 当目录为3层的时候 这个实际上是二层视图 table是三层视图
+    // 当目录为2层的时候 这个实际上是二层视图 没有table
+    // 当目录为1层的时候 这个实际上是一层视图 没有table是三层视图
+    if ([_courselayer isEqualToString:@"3"]) {
         _typeIcon.hidden = YES;
         _lockIcon.hidden = YES;
         _priceLabel.hidden = YES;
+        _learnIcon.hidden = YES;
+        _learnTimeLabel.hidden = YES;
+        _isLearningIcon.hidden = YES;
         [_titleLabel setLeft:15 + 3 + 8];
         
         _cellTableViewSpace = [[UIView alloc] initWithFrame:CGRectMake(0, 49.5, MainScreenWidth, 0.5)];
@@ -86,6 +93,16 @@
         _cellTableView.bounces = NO;
         _cellTableView.rowHeight = 50;
         [self addSubview:_cellTableView];
+    } else if ([_courselayer isEqualToString:@"1"]) {
+        _courseRightBtn.hidden = YES;
+    } else if ([_courselayer isEqualToString:@"2"]) {
+        _courseRightBtn.hidden = YES;
+    }
+    
+    if (_isMainPage) {
+        _isLearningIcon.hidden = YES;
+        _learnIcon.hidden = YES;
+        _learnTimeLabel.hidden = YES;
     }
 }
 
@@ -94,13 +111,11 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellReuse = @"classnew";
+    static NSString *cellReuse = @"classnew2";
     CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuse];
     if (!cell) {
-        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:cellReuse isClassNew:NO cellSection:0 cellRow:0];
+        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:cellReuse isClassNew:NO cellSection:0 cellRow:0 courselayer:@"1" isMainPage:_isMainPage];
     }
-//    NSDictionary *dic = [_dataSource objectAtIndex:indexPath.row];
-    cell.courseRightBtn.hidden = YES;
     return cell;
 }
 

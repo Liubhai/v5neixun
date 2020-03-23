@@ -8,6 +8,8 @@
 
 #import "CourseListVC.h"
 #import "CourseCatalogCell.h"
+#import "Net_Path.h"
+#import "CourseListModel.h"
 
 @interface CourseListVC () {
     NSInteger indexPathSection;//
@@ -21,8 +23,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _courseListArray = [NSMutableArray new];
     _canPlayRecordVideo = YES;
+    _courseId = @"1";
     [self addTableView];
+    [self getCourseListData];
 }
 
 - (void)addTableView {
@@ -37,10 +42,20 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if ([_courselayer isEqualToString:@"1"]) {
+        return 0.001;
+    } else if ([_courselayer isEqualToString:@"2"]) {
+        return 50;
+    } else if ([_courselayer isEqualToString:@"3"]) {
+        return 50;
+    }
     return 50;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if ([_courselayer isEqualToString:@"1"]) {
+        return nil;
+    }
     UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 50)];
     tableHeadView.backgroundColor = [UIColor whiteColor];
     tableHeadView.tag = section;
@@ -62,14 +77,13 @@
     [courseRightBtn setImage:Image(@"contents_down") forState:0];
     [courseRightBtn setImage:Image(@"contents_up") forState:UIControlStateSelected];
     [tableHeadView addSubview:courseRightBtn];
-    if (_isClassCourse) {
-        [sectionTitle setLeft:blueView.right + 8];
-        blueView.hidden = NO;
-    } else {
+    if ([_courselayer isEqualToString:@"2"]) {
         blueView.hidden = YES;
         [sectionTitle setLeft:15];
+    } else if ([_courselayer isEqualToString:@"3"]) {
+        [sectionTitle setLeft:blueView.right + 8];
+        blueView.hidden = NO;
     }
-    
     //给整个View添加手势
 //    [tableHeadView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableHeadViewClick:)]];
     
@@ -81,6 +95,13 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if ([_courselayer isEqualToString:@"1"]) {
+        return 1;
+    } else if ([_courselayer isEqualToString:@"2"]) {
+        return 3;
+    } else if ([_courselayer isEqualToString:@"3"]) {
+        return 3;
+    }
     return 3;
 }
 
@@ -89,6 +110,13 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([_courselayer isEqualToString:@"1"]) {
+        return 50;
+    } else if ([_courselayer isEqualToString:@"2"]) {
+        return 50;
+    } else if ([_courselayer isEqualToString:@"3"]) {
+        return 50 + 3 * 50;
+    }
     return 50 + 3 * 50;
 }
 
@@ -96,7 +124,7 @@
     static NSString *reuse = @"CourseCatalogCell";
     CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row];
+        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:_courselayer isMainPage:_isMainPage];
     }
     return cell;
 }
@@ -118,5 +146,21 @@
     }
 }
 
+- (void)getCourseListData {
+    if (SWNOTEmptyStr(_courseId)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:nil] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [_courseListArray removeAllObjects];
+//                    [_courseListArray addObjectsFromArray:[responseObject objectForKey:@"data"]];
+                    [_courseListArray addObjectsFromArray:[CourseListModel mj_keyValuesArrayWithObjectArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            NSLog(@"课程目录请求失败 = %@",error);
+        }];
+    }
+}
 
 @end
