@@ -114,4 +114,9 @@
 + (UIColor *)starNoColor {
     return HEXCOLORV5(0xDCDFE6);
 }
+
++ (UIColor *)courseTipBackColor1 {
+    return HEXCOLORV5(0xDCDFE6);
+}
+
 @end

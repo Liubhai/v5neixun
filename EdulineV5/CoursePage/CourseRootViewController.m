@@ -7,6 +7,7 @@
 //
 
 #import "CourseRootViewController.h"
+#import "CourseSearchListVC.h"
 
 @interface CourseRootViewController ()
 
@@ -18,7 +19,13 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blueColor];
     _titleLabel.text = @"课程";
+    _rightButton.hidden = NO;
     // Do any additional setup after loading the view.
+}
+
+- (void)rightButtonClick:(id)sender {
+    CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /*
