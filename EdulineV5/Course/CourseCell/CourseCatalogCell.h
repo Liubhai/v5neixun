@@ -8,10 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "V5_Constant.h"
+#import "CourseListModel.h"
+#import "CourseListModelFinal.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CourseCatalogCell : UITableViewCell<UITableViewDelegate, UITableViewDataSource>
+@protocol CourseCatalogCellDelegate <NSObject>
+
+@optional
+- (void)listChangeUpAndDown:(UIButton *)sender listModel:(CourseListModelFinal *)model panrentListModel:(CourseListModelFinal *)panrentModel;
+
+@end
+
+@interface CourseCatalogCell : UITableViewCell<UITableViewDelegate, UITableViewDataSource,CourseCatalogCellDelegate>
 
 //@property (strong, nonatomic) UIView *blueView;
 //@property (strong, nonatomic) UILabel *firstTitle;
@@ -21,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (strong, nonatomic) UILabel *secondTitle;
 //@property (strong, nonatomic) UIButton *secondRightBtn;
 
+@property (assign, nonatomic) id<CourseCatalogCellDelegate> delegate;
+
+@property (strong, nonatomic) UIView *blueView;
 @property (strong, nonatomic) UIImageView *typeIcon;
 @property (strong, nonatomic) UIImageView *lockIcon;
 @property (strong, nonatomic) UILabel *titleLabel;
@@ -39,10 +51,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) NSInteger cellRow;
 @property (assign, nonatomic) NSInteger cellSection;
 
-@property (strong, nonatomic) NSString *courselayer; // 1 一层 2 二层 3 三层(涉及到目录布局)
-@property (assign, nonatomic) BOOL *isMainPage; // yes 详情页面目录 no 播放页面目录
+@property (strong, nonatomic) NSString *courselayer; // 1 一层 2 二层 3 三层(涉及到目录布局) 自己属于第几层样式
+@property (strong, nonatomic) NSString *allLayar;// 总共有几层
+@property (assign, nonatomic) BOOL isMainPage; // yes 详情页面目录 no 播放页面目录
+@property (strong, nonatomic) CourseListModel *listModel;
+@property (strong, nonatomic) CourseListModelFinal *listFinalModel;//CourseListModelFinal
 
--(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow courselayer:(NSString *)courselayer isMainPage:(BOOL)isMainPage;
+-(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow courselayer:(NSString *)courselayer isMainPage:(BOOL)isMainPage allLayar:(NSString *)allLayar;
+
+- (void)setListInfo:(CourseListModelFinal *)model;
 
 @end
 

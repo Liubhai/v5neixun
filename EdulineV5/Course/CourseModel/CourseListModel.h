@@ -25,14 +25,14 @@ NS_ASSUME_NONNULL_BEGIN
  "child": []
  //
  {
-     "id": 1,
-     "name": "测试章节1",
-     "pid": 0,
-     "course_id": 1,
-     "is_charge": 1,
-     "price": "0.00",
-     "status": 1,
-     "has_child": 1
+     "course_id" = 1;
+     "has_child" = 1;
+     id = 1;
+     "is_charge" = 1;
+     name = "\U6d4b\U8bd5\U7ae0\U82821";
+     pid = 0;
+     price = "0.00";
+     status = 1;
  }
  */
 
@@ -43,8 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL is_charge;
 @property (strong, nonatomic) NSString *price;
 @property (assign, nonatomic) BOOL status;
-@property (assign, nonatomic) BOOL *has_child;
-@property (assign, nonatomic) BOOL showNext;
+@property (assign, nonatomic) BOOL has_child;
 
 @end
 

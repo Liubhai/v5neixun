@@ -320,7 +320,7 @@
 }
 
 - (void)getCourseInfo {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseInfo:nil] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseInfo:_courseId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         NSLog(@"课程详情 = %@",responseObject);
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {

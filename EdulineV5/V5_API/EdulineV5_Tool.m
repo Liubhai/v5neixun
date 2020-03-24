@@ -10,6 +10,7 @@
 #import <sys/utsname.h>
 
 #import <CommonCrypto/CommonCrypto.h>
+#import "V5_Constant.h"
 #define CC_MD5_DIGEST_LENGTH 16
 
 #define kRandomLength 10
@@ -464,20 +465,13 @@ static EdulineV5_Tool *_sharedInstance;
 #endif
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
++ (void)dealButtonImageAndTitleUI:(UIButton *)sender {
+    CGFloat labelWidth = [sender.titleLabel.text sizeWithFont:sender.titleLabel.font].width;
+    if (labelWidth>(sender.size.width - sender.currentImage.size.width)) {
+        labelWidth = 71.5 * WidthRatio;
+    }
+    [sender setTitleEdgeInsets:UIEdgeInsetsMake(0, -sender.currentImage.size.width, 0, sender.currentImage.size.width)];
+    [sender setImageEdgeInsets:UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth)];
+}
 
 @end

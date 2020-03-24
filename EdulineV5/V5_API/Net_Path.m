@@ -11,6 +11,15 @@
 
 @implementation Net_Path
 
++ (NSString *)fullPath:(NSString *)path repalceArray:(NSArray *)replace byRepleceArray:(NSArray *)byReplace {
+    if (replace.count == byReplace.count) {
+        for (int i = 0; i<replace.count; i++) {
+            path = [[NSString stringWithFormat:@"%@",path] stringByReplacingOccurrencesOfString:replace[i] withString:byReplace[i]];
+        }
+    }
+    return path;
+}
+
 + (NSString *)fullPath:(NSString *)path repalce:(NSString *)replace byReplece:(NSString *)byReplace {
     return [[NSString stringWithFormat:@"%@",path] stringByReplacingOccurrencesOfString:replace withString:byReplace];
 }
@@ -48,11 +57,15 @@
 }
 
 + (NSString *)courseInfo:(NSString *)courseId {
-    return [Net_Path fullPath:@"/course/base/1" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"/course/base/{id}" repalce:@"{id}" byReplece:courseId];
 }
 
-+ (NSString *)courseList:(NSString *)courseId {
-    return [Net_Path fullPath:@"course/base/1/section/1" repalce:@"" byReplece:@""];
++ (NSString *)courseList:(NSString *)courseId pid:(nonnull NSString *)pid {
+    return [Net_Path fullPath:@"/course/base/{id}/section/{pid}" repalceArray:@[@"{id}",@"{pid}"] byRepleceArray:@[courseId,pid]];
+}
+
++ (NSString *)courseMainList {
+    return [Net_Path fullPath:@"/course/base/list" repalce:@"" byReplece:@""];
 }
 
 @end

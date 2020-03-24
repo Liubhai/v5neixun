@@ -237,6 +237,7 @@
         
         if (_courseIntroduce == nil) {
             _courseIntroduce = [[CourseIntroductionVC alloc] init];
+            _courseIntroduce.courseId = _ID;
             _courseIntroduce.dataSource = _dataSource;
             _courseIntroduce.tabelHeight = sectionHeight - 47;
             _courseIntroduce.cellTabelCanScroll = !_canScrollAfterVideoPlay;
@@ -254,6 +255,7 @@
         
         if (_courseListVC == nil) {
             _courseListVC = [[CourseListVC alloc] init];
+            _courseListVC.courseId = _ID;
             _courseListVC.courselayer = _courselayer;
             _courseListVC.isMainPage = YES;
             _courseListVC.isClassCourse = _isClassNew;
@@ -504,17 +506,19 @@
 }
 
 - (void)getCourseInfo {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseInfo:nil] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
-        NSLog(@"课程详情 = %@",responseObject);
-        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
-            if ([[responseObject objectForKey:@"code"] integerValue]) {
-                _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
-                [self setCourseInfoData];
+    if (SWNOTEmptyStr(_ID)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseInfo:_ID] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+            NSLog(@"课程详情 = %@",responseObject);
+            if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                    [self setCourseInfoData];
+                }
             }
-        }
-    } enError:^(NSError * _Nonnull error) {
-        NSLog(@"课程详情请求失败 = %@",error);
-    }];
+        } enError:^(NSError * _Nonnull error) {
+            NSLog(@"课程详情请求失败 = %@",error);
+        }];
+    }
 }
 
 - (void)setCourseInfoData {

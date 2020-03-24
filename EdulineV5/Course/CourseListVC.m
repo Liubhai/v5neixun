@@ -9,9 +9,10 @@
 #import "CourseListVC.h"
 #import "CourseCatalogCell.h"
 #import "Net_Path.h"
-#import "CourseListModel.h"
+//#import "CourseListModel.h"
+//#import "CourseListModelFinal.h"
 
-@interface CourseListVC () {
+@interface CourseListVC ()<CourseCatalogCellDelegate> {
     NSInteger indexPathSection;//
     NSInteger indexPathRow;//记录当前数据的相关
 }
@@ -34,60 +35,62 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _tabelHeight) style:UITableViewStyleGrouped];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [self.view addSubview:_tableView];
     
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if ([_courselayer isEqualToString:@"1"]) {
-        return 0.001;
-    } else if ([_courselayer isEqualToString:@"2"]) {
-        return 50;
-    } else if ([_courselayer isEqualToString:@"3"]) {
-        return 50;
-    }
-    return 50;
+    return 0.001;
+//    if ([_courselayer isEqualToString:@"1"]) {
+//        return 0.001;
+//    } else if ([_courselayer isEqualToString:@"2"]) {
+//        return 50;
+//    } else if ([_courselayer isEqualToString:@"3"]) {
+//        return 50;
+//    }
+//    return 50;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if ([_courselayer isEqualToString:@"1"]) {
-        return nil;
-    }
-    UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 50)];
-    tableHeadView.backgroundColor = [UIColor whiteColor];
-    tableHeadView.tag = section;
-    
-    UIView *blueView = [[UIView alloc] initWithFrame:CGRectMake(15, 17, 3, 16)];
-    blueView.backgroundColor = EdlineV5_Color.themeColor;
-    blueView.layer.masksToBounds = YES;
-    blueView.layer.cornerRadius = 2;
-    [tableHeadView addSubview:blueView];
-    
-    //添加标题
-    UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 50, 50)];
-    sectionTitle.text = @"课程第几章";
-    sectionTitle.textColor = EdlineV5_Color.textFirstColor;
-    sectionTitle.font = SYSTEMFONT(15);
-    [tableHeadView addSubview:sectionTitle];
-    
-    UIButton *courseRightBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, 0, 30, 50)];
-    [courseRightBtn setImage:Image(@"contents_down") forState:0];
-    [courseRightBtn setImage:Image(@"contents_up") forState:UIControlStateSelected];
-    [tableHeadView addSubview:courseRightBtn];
-    if ([_courselayer isEqualToString:@"2"]) {
-        blueView.hidden = YES;
-        [sectionTitle setLeft:15];
-    } else if ([_courselayer isEqualToString:@"3"]) {
-        [sectionTitle setLeft:blueView.right + 8];
-        blueView.hidden = NO;
-    }
-    //给整个View添加手势
-//    [tableHeadView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableHeadViewClick:)]];
-    
-    return tableHeadView;
+    return nil;
+//    if ([_courselayer isEqualToString:@"1"]) {
+//        return nil;
+//    }
+//    UIView *tableHeadView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 50)];
+//    tableHeadView.backgroundColor = [UIColor whiteColor];
+//    tableHeadView.tag = section;
+//
+//    UIView *blueView = [[UIView alloc] initWithFrame:CGRectMake(15, 17, 3, 16)];
+//    blueView.backgroundColor = EdlineV5_Color.themeColor;
+//    blueView.layer.masksToBounds = YES;
+//    blueView.layer.cornerRadius = 2;
+//    [tableHeadView addSubview:blueView];
+//
+//    //添加标题
+//    UILabel *sectionTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 50, 50)];
+//    sectionTitle.text = @"课程第几章";
+//    sectionTitle.textColor = EdlineV5_Color.textFirstColor;
+//    sectionTitle.font = SYSTEMFONT(15);
+//    [tableHeadView addSubview:sectionTitle];
+//
+//    UIButton *courseRightBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, 0, 30, 50)];
+//    [courseRightBtn setImage:Image(@"contents_down") forState:0];
+//    [courseRightBtn setImage:Image(@"contents_up") forState:UIControlStateSelected];
+//    [tableHeadView addSubview:courseRightBtn];
+//    if ([_courselayer isEqualToString:@"2"]) {
+//        blueView.hidden = YES;
+//        [sectionTitle setLeft:15];
+//    } else if ([_courselayer isEqualToString:@"3"]) {
+//        [sectionTitle setLeft:blueView.right + 8];
+//        blueView.hidden = NO;
+//    }
+//    //给整个View添加手势
+////    [tableHeadView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableHeadViewClick:)]];
+//
+//    return tableHeadView;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -95,42 +98,51 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if ([_courselayer isEqualToString:@"1"]) {
-        return 1;
-    } else if ([_courselayer isEqualToString:@"2"]) {
-        return 3;
-    } else if ([_courselayer isEqualToString:@"3"]) {
-        return 3;
-    }
-    return 3;
+    return 1;
+//    if ([_courselayer isEqualToString:@"1"]) {
+//        return 1;
+//    } else if ([_courselayer isEqualToString:@"2"]) {
+//        return 3;
+//    } else if ([_courselayer isEqualToString:@"3"]) {
+//        return 3;
+//    }
+//    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return _courseListArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([_courselayer isEqualToString:@"1"]) {
-        return 50;
-    } else if ([_courselayer isEqualToString:@"2"]) {
-        return 50;
-    } else if ([_courselayer isEqualToString:@"3"]) {
-        return 50 + 3 * 50;
-    }
-    return 50 + 3 * 50;
+    UITableViewCell *cell = [self tableView:self.tableView cellForRowAtIndexPath:indexPath];
+    return cell.frame.size.height;
+//    if ([_courselayer isEqualToString:@"1"]) {
+//        return 50;
+//    } else if ([_courselayer isEqualToString:@"2"]) {
+//        return 50;
+//    } else if ([_courselayer isEqualToString:@"3"]) {
+//        return 50 + 3 * 50;
+//    }
+//    return 50 + 3 * 50;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *reuse = @"CourseCatalogCell";
     CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:_courselayer isMainPage:_isMainPage];
+        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:@"1" isMainPage:YES allLayar:@"3"];
     }
+    cell.delegate = self;
+    CourseListModelFinal *model = _courseListArray[indexPath.row];
+    model.cellIndex = indexPath;
+    model.courselayer = @"1";
+    model.allLayar = @"3";
+    [cell setListInfo:model];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -148,12 +160,16 @@
 
 - (void)getCourseListData {
     if (SWNOTEmptyStr(_courseId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:nil] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:@"0"] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_courseListArray removeAllObjects];
-//                    [_courseListArray addObjectsFromArray:[responseObject objectForKey:@"data"]];
-                    [_courseListArray addObjectsFromArray:[CourseListModel mj_keyValuesArrayWithObjectArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
+                    NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
+                    for (CourseListModel *object in pass) {
+                        CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:@"3" isMainPage:YES];
+                        [_courseListArray addObject:model];
+                    }
+                    _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
                     [_tableView reloadData];
                 }
             }
@@ -162,5 +178,100 @@
         }];
     }
 }
+
+- (void)listChangeUpAndDown:(UIButton *)sender listModel:(CourseListModelFinal *)model panrentListModel:(nonnull CourseListModelFinal *)panrentModel {
+    if (panrentModel) {
+        if (model.isExpanded) {
+            if (SWNOTEmptyArr(_courseListArray)) {
+                CourseListModelFinal *modelpass1 = _courseListArray[panrentModel.cellIndex.row];
+                CourseListModelFinal *modelpass2 = modelpass1.child[model.cellIndex.row];
+                modelpass2.isExpanded = NO;
+                [modelpass1.child replaceObjectAtIndex:model.cellIndex.row withObject:modelpass2];
+                [_courseListArray replaceObjectAtIndex:panrentModel.cellIndex.row withObject:modelpass1];
+            }
+            [_tableView reloadData];
+        } else {
+            if (model.child) {
+                if (SWNOTEmptyArr(_courseListArray)) {
+                    CourseListModelFinal *modelpass1 = _courseListArray[panrentModel.cellIndex.row];
+                    CourseListModelFinal *modelpass2 = modelpass1.child[model.cellIndex.row];
+                    modelpass2.isExpanded = YES;
+                    [modelpass1.child replaceObjectAtIndex:model.cellIndex.row withObject:modelpass2];
+                    [_courseListArray replaceObjectAtIndex:panrentModel.cellIndex.row withObject:modelpass1];
+                }
+                [_tableView reloadData];
+                return;
+            }
+            if (SWNOTEmptyStr(_courseId) && SWNOTEmptyStr(model.model.classHourId)) {
+                [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:model.model.classHourId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+                    if (SWNOTEmptyDictionary(responseObject)) {
+                        if ([[responseObject objectForKey:@"code"] integerValue]) {
+                            NSMutableArray *passOrigin = [NSMutableArray new];
+                            NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
+                            for (CourseListModel *object in pass) {
+                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:@"3" isMainPage:YES];
+                                [passOrigin addObject:model];
+                            }
+                            if (SWNOTEmptyArr(_courseListArray)) {
+                                CourseListModelFinal *modelpass1 = _courseListArray[panrentModel.cellIndex.row];
+                                CourseListModelFinal *modelpass2 = modelpass1.child[model.cellIndex.row];
+                                modelpass2.isExpanded = YES;
+                                modelpass2.child = [NSMutableArray arrayWithArray:passOrigin];
+                                [modelpass1.child replaceObjectAtIndex:model.cellIndex.row withObject:modelpass2];
+                                [_courseListArray replaceObjectAtIndex:panrentModel.cellIndex.row withObject:modelpass1];
+                            }
+                            [_tableView reloadData];
+                        }
+                    }
+                } enError:^(NSError * _Nonnull error) {
+                    NSLog(@"课程目录请求失败 = %@",error);
+                }];
+            }
+        }
+    } else {
+        if (model.isExpanded) {
+            if (SWNOTEmptyArr(_courseListArray)) {
+                CourseListModelFinal *modelpass = _courseListArray[model.cellIndex.row];
+                modelpass.isExpanded = NO;
+                [_courseListArray replaceObjectAtIndex:model.cellIndex.row withObject:modelpass];
+            }
+            [_tableView reloadData];
+        } else {
+            if (model.child) {
+                if (SWNOTEmptyArr(_courseListArray)) {
+                    CourseListModelFinal *modelpass = _courseListArray[model.cellIndex.row];
+                    modelpass.isExpanded = YES;
+                    [_courseListArray replaceObjectAtIndex:model.cellIndex.row withObject:modelpass];
+                }
+                [_tableView reloadData];
+                return;
+            }
+            if (SWNOTEmptyStr(_courseId) && SWNOTEmptyStr(model.model.classHourId)) {
+                [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:model.model.classHourId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+                    if (SWNOTEmptyDictionary(responseObject)) {
+                        if ([[responseObject objectForKey:@"code"] integerValue]) {
+                            NSMutableArray *passOrigin = [NSMutableArray new];
+                            NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
+                            for (CourseListModel *object in pass) {
+                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:@"3" isMainPage:YES];
+                                [passOrigin addObject:model];
+                            }
+                            if (SWNOTEmptyArr(_courseListArray)) {
+                                CourseListModelFinal *modelpass = _courseListArray[model.cellIndex.row];
+                                modelpass.isExpanded = YES;
+                                modelpass.child = [NSMutableArray arrayWithArray:passOrigin];
+                                [_courseListArray replaceObjectAtIndex:model.cellIndex.row withObject:modelpass];
+                            }
+                            [_tableView reloadData];
+                        }
+                    }
+                } enError:^(NSError * _Nonnull error) {
+                    NSLog(@"课程目录请求失败 = %@",error);
+                }];
+            }
+        }
+    }
+}
+
 
 @end

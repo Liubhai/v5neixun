@@ -59,6 +59,17 @@
 
 - (void)setCourseListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex cellType:(BOOL)cellType {
     _cellType = cellType;
+    // 1 点播 2 直播 3 面授 4 专辑
+    NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+    if ([courseType isEqualToString:@"1"]) {
+        _courseTypeImage.image = Image(@"dianbo");
+    } else if ([courseType isEqualToString:@"2"]) {
+        _courseTypeImage.image = Image(@"live");
+    } else if ([courseType isEqualToString:@"3"]) {
+        _courseTypeImage.image = Image(@"mianshou");
+    } else if ([courseType isEqualToString:@"4"]) {
+        _courseTypeImage.image = Image(@"album_icon");
+    }
     if (_cellType) {
         if (_cellType) {
             _courseFace.frame = CGRectMake(singleLeftSpace, topSpace, MainScreenWidth/2.0 - singleRightSpace - singleLeftSpace, faceImageHeight);
@@ -85,6 +96,15 @@
             _priceLabel.frame = CGRectMake(_courseFace.right - priceWidth, 0, priceWidth, 21);
             _priceLabel.centerY = _learnCountLabel.centerY;
         }
+    }
+    _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
+    _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+    
+    if (!_cellType) {
+        _titleL.frame = CGRectMake(0, 0, _titleL.width, 100);
+        [_titleL sizeToFit];
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
     }
 }
 

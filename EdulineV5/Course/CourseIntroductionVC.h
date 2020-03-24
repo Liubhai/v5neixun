@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL isZhibo;
 
 @property (strong ,nonatomic)NSDictionary   *dataSource;
+@property (strong, nonatomic) NSString *courseId;
 
 - (void)changeMainScrollViewHeight:(CGFloat)changeHeight;
 

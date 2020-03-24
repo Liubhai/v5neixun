@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (strong, nonatomic) NSString *cateStr;// 首页各种分类跳转过来的时候会传递参数
 @property (nonatomic, assign) BOOL cellType;// 一排两个还是一排一个
 
 @end

@@ -19,6 +19,8 @@ struct NetWorkUrl {
     NSString *replace;
 };
 
++ (NSString *)fullPath:(NSString *)path repalceArray:(NSArray *)replace byRepleceArray:(NSArray *)byReplace;
+
 + (NSString *)fullPath:(NSString *)path repalce:(NSString *)replace byReplece:(NSString *)byReplace;
 
 /** 创建账号 */
@@ -49,8 +51,11 @@ struct NetWorkUrl {
 /** 课程详情数据接口 */
 + (NSString *)courseInfo:(NSString *)courseId;
 
-/** 课程目录列表 */
-+ (NSString *)courseList:(NSString *)courseId;
+/** 课程课时目录列表 */
++ (NSString *)courseList:(NSString *)courseId pid:(NSString *)pid;
+
+/** 课程主页课程列表 */
++ (NSString *)courseMainList;
 
 @end
 

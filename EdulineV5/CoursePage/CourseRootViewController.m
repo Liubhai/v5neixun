@@ -25,6 +25,7 @@
 
 - (void)rightButtonClick:(id)sender {
     CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
+    vc.isSearch = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

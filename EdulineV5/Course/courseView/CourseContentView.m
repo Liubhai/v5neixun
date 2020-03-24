@@ -75,6 +75,7 @@
         [_courseTitleLabel setLeft:_lianzaiIcon.left];
         [_courseTitleLabel setWidth:MainScreenWidth - _courseTitleLabel.left - 15];
     }
+    _courseTitleLabel.text = [NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"title"]];
     _courseScore.text = [NSString stringWithFormat:@"%@分",[contentInfo objectForKey:@"score_average"]];
     [_courseStar setStarValue:[[NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"score_average"]] floatValue]];
     

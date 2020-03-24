@@ -15,6 +15,7 @@
 #import "V5_Constant.h"
 #import "AppDelegate.h"
 #import "AVC_VP_VideoPlayViewController.h"
+#import "CourseSearchListVC.h"
 
 @interface RootV5VC ()
 
@@ -39,8 +40,9 @@ static RootV5VC *sharedBaseTabBar;
     homeVc.notHiddenNav = YES;
     UINavigationController *homeNav = [[UINavigationController alloc] initWithRootViewController:homeVc];
     
-    CourseRootViewController *courseVC = [[CourseRootViewController alloc] init];
+    CourseSearchListVC *courseVC = [[CourseSearchListVC alloc] init];
     courseVC.notHiddenNav = YES;
+    courseVC.isSearch = NO;
     UINavigationController *courseNav = [[UINavigationController alloc] initWithRootViewController:courseVC];
     
     FindRootViewController *findVC = [[FindRootViewController alloc] init];
