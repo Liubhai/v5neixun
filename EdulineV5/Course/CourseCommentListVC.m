@@ -27,7 +27,7 @@
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
     
-    _headerView = [[CourseCommentTopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 42)];
+    _headerView = [[CourseCommentTopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 42) commentOrRecord:_cellType];
     _headerView.backgroundColor = [UIColor whiteColor];
     _headerView.delegate = self;
     
@@ -61,10 +61,18 @@
         scrollView.contentOffset = CGPointZero;
     }
     if (scrollView.contentOffset.y <= 0) {
-        if (self.vc.canScrollAfterVideoPlay == YES) {
-            self.cellTabelCanScroll = NO;
-            scrollView.contentOffset = CGPointZero;
-            self.vc.canScroll = YES;
+        if (self.vc) {
+            if (self.vc.canScrollAfterVideoPlay == YES) {
+                self.cellTabelCanScroll = NO;
+                scrollView.contentOffset = CGPointZero;
+                self.vc.canScroll = YES;
+            }
+        } else {
+            if (self.detailVC.canScrollAfterVideoPlay == YES) {
+                self.cellTabelCanScroll = NO;
+                scrollView.contentOffset = CGPointZero;
+                self.detailVC.canScroll = YES;
+            }
         }
     }
 }
@@ -82,7 +90,7 @@
 
 - (void)jumpToCommentVC {
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-    vc.isComment = YES;
+    vc.isComment = _cellType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

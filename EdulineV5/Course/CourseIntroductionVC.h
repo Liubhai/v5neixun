@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 #import "CourseMainViewController.h"
 #import "V5_Constant.h"
+#import "CourseDetailPlayVC.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong ,nonatomic) WKWebView *ClassIntroWeb;
 @property (assign, nonatomic) CGFloat tabelHeight;
 @property (strong, nonatomic) CourseMainViewController *vc;
+@property (strong, nonatomic) CourseDetailPlayVC *detailVC;
 @property (assign, nonatomic) BOOL cellTabelCanScroll;
 @property (assign, nonatomic) BOOL isZhibo;
 

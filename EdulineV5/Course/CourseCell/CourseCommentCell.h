@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *zanCountButton;
 @property (strong, nonatomic) UIView *lineView;
 
-@property (assign, nonatomic) BOOL cellType;// yes 是点评 no 是笔记
+@property (assign, nonatomic) BOOL cellType;// yes 是笔记 no 是点评
 
 - (void)setCommentInfo:(NSDictionary *)info;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(BOOL)cellType;

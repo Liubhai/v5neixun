@@ -67,6 +67,7 @@
 
 @interface AliyunPlayerViewControlView : UIView
 @property (nonatomic, weak  ) id<AliyunControlViewDelegate>delegate;
+@property (nonatomic, strong) AliyunPlayerViewTopView *topView;
 @property (nonatomic, strong) AVPMediaInfo *videoInfo;      //播放数据
 @property (nonatomic, assign) AVPStatus state;           //播放器播放状态
 @property (nonatomic, assign) AliyunVodPlayerViewSkin skin;         //界面皮肤

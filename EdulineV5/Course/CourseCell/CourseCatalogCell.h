@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)listChangeUpAndDown:(UIButton *)sender listModel:(CourseListModelFinal *)model panrentListModel:(CourseListModelFinal *)panrentModel;
 
+- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex;
+
 @end
 
 @interface CourseCatalogCell : UITableViewCell<UITableViewDelegate, UITableViewDataSource,CourseCatalogCellDelegate>

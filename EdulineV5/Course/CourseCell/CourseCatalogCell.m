@@ -156,6 +156,26 @@
     return cell.frame.size.height;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([_courselayer isEqualToString:@"1"]) {
+        
+    } else if ([_courselayer isEqualToString:@"2"]) {
+        // 当前cell 类型是第二层样式 那么这个 table 就是最后一层 方可点击
+        if ([_allLayar isEqualToString:@"2"]) {
+            if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:)]) {
+                [_delegate playCellVideo:_listFinalModel.child[indexPath.row] currentCellIndex:indexPath panrentCellIndex:_listFinalModel.cellIndex superCellIndex:nil];
+            }
+        } else if ([_allLayar isEqualToString:@"3"]) {
+            CourseCatalogCell *cell = (CourseCatalogCell *)self.superview.superview;
+            if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:)]) {
+                [_delegate playCellVideo:_listFinalModel.child[indexPath.row] currentCellIndex:indexPath panrentCellIndex:_listFinalModel.cellIndex superCellIndex:cell.listFinalModel.cellIndex];
+            }
+        }
+    } else if ([_courselayer isEqualToString:@"3"]) {
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([_courselayer isEqualToString:@"1"]) {
         static NSString *cellReuse = @"classnew1";
@@ -220,13 +240,6 @@
                         } else {
                             cellHeight = cellHeight + 50;
                         }
-//                        for (CourseListModelFinal *object2 in object.child) {
-//                            if (object2.isExpanded) {
-//                                cellHeight = cellHeight + (object2.child.count + 1) * 50;
-//                            } else {
-//                                cellHeight = cellHeight + 50;
-//                            }
-//                        }
                     } else {
                         cellHeight = cellHeight + 50;
                     }
@@ -277,6 +290,12 @@
         } else {
             [_delegate listChangeUpAndDown:sender listModel:cell.listFinalModel panrentListModel:nil];
         }
+    }
+}
+
+- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
+    if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:)]) {
+        [_delegate playCellVideo:model currentCellIndex:cellIndex panrentCellIndex:panrentCellIndex superCellIndex:superIndex];
     }
 }
 

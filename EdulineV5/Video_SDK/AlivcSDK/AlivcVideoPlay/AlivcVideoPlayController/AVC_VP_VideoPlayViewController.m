@@ -1567,7 +1567,7 @@ static NSInteger alertViewTag_delete_video = 1004; //删除本地视频
 - (void)aliyunVodPlayerView:(AliyunVodPlayerView *)playerView fullScreen:(BOOL)isFullScreen{
     NSLog(@"isfullScreen --%d",isFullScreen);
     
-    self.isStatusHidden = isFullScreen  ;
+    self.isStatusHidden = isFullScreen;
     [self refreshUIWhenScreenChanged:isFullScreen];
     [self setNeedsStatusBarAppearanceUpdate];
 }

@@ -61,7 +61,7 @@
     [self setHeight:_lineView1.bottom];
 }
 
-- (void)setCourseContentInfo:(NSDictionary *)contentInfo {
+- (void)setCourseContentInfo:(NSDictionary *)contentInfo showTitleOnly:(BOOL)showTitleOnly {
     _courseInfo = [NSDictionary dictionaryWithDictionary:contentInfo];
     // 【0连载完成1连载中】
     if ([[contentInfo objectForKey:@"update_status"] integerValue]) {
@@ -88,6 +88,14 @@
     [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangOld];
     [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:rangNow];
     _coursePrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+    if (showTitleOnly) {
+        _courseTitleLabel.frame = CGRectMake(15, 0, MainScreenWidth - 30, 86);
+        _lianzaiIcon.hidden = YES;
+        _courseStar.hidden = YES;
+        _coursePrice.hidden = YES;
+        _courseScore.hidden = YES;
+        _courseLearn.hidden = YES;
+    }
 }
 
 @end

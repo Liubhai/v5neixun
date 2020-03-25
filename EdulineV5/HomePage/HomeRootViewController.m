@@ -10,6 +10,7 @@
 #import "AliyunVodPlayerView.h"
 #import "AliyunUtil.h"
 #import "CourseMainViewController.h"
+#import "AVC_VP_VideoPlayViewController.h"
 
 @interface HomeRootViewController ()
 
@@ -32,7 +33,7 @@
 }
 
 - (void)gotoCourseDetail {
-    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    AVC_VP_VideoPlayViewController *vc = [[AVC_VP_VideoPlayViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

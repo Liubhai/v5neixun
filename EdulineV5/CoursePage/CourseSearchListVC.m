@@ -137,7 +137,7 @@
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     CourseMainViewController *vc = [[CourseMainViewController alloc] init];
     vc.ID = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"id"]];
-    vc.courselayer = @"2";
+    vc.courselayer = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"section_level"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

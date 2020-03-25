@@ -94,9 +94,19 @@
         scrollView.contentOffset = CGPointZero;
     }
     if (scrollView.contentOffset.y <= 0) {
-        self.cellTabelCanScroll = NO;
-        scrollView.contentOffset = CGPointZero;
-        self.vc.canScroll = YES;
+        if (self.vc) {
+            if (self.vc.canScrollAfterVideoPlay == YES) {
+                self.cellTabelCanScroll = NO;
+                scrollView.contentOffset = CGPointZero;
+                self.vc.canScroll = YES;
+            }
+        } else {
+            if (self.detailVC.canScrollAfterVideoPlay == YES) {
+                self.cellTabelCanScroll = NO;
+                scrollView.contentOffset = CGPointZero;
+                self.detailVC.canScroll = YES;
+            }
+        }
     }
 }
 

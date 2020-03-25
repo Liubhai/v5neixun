@@ -123,4 +123,11 @@
     }
 }
 
+-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    if (__allowRotation == YES) {
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 @end

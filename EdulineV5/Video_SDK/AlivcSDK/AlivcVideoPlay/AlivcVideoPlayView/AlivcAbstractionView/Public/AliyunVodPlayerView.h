@@ -10,6 +10,7 @@
 #import <AliyunPlayer/AliyunPlayer.h>
 #import "AliyunVodPlayerViewDefine.h"
 #import "AlivcVideoPlayListModel.h"
+#import "AliyunPlayerViewControlView.h"
 /*
  当视频返回的时候的消息响应代理，此处可以进行一些销毁操作
  */
@@ -107,6 +108,8 @@
  */
 @interface AliyunVodPlayerView : UIView
 
+@property (nonatomic, strong) AliyunPlayerViewControlView *controlView;
+
 /**
  * 功能：当前播放视频的model。
  */
@@ -194,6 +197,8 @@ self.isLock时来判定UIViewController 是否支持物理旋转。如果viewcon
  * 功能：封面图片。
  */
 @property (nonatomic, strong) NSURL *coverUrl;
+
+@property (nonatomic, strong) UIImageView *coverImageView;              //封面
 
 
 /**

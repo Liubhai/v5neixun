@@ -16,7 +16,7 @@
 #import "AliyunDataSource.h"
 
 //view
-#import "AliyunPlayerViewControlView.h"
+//#import "AliyunPlayerViewControlView.h"
 #import "AliyunViewMoreView.h"
 #import "AliyunPlayerViewFirstStartGuideView.h"
 
@@ -48,8 +48,8 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 @property (nonatomic, strong) UIButton *downloadButton;               //下载按钮
 @property (nonatomic, strong) AliPlayer *aliPlayer;               //点播播放器
 @property (nonatomic, strong) UIView *playerView;
-@property (nonatomic, strong) UIImageView *coverImageView;              //封面
-@property (nonatomic, strong) AliyunPlayerViewControlView *controlView;
+//@property (nonatomic, strong) UIImageView *coverImageView;              //封面
+//@property (nonatomic, strong) AliyunPlayerViewControlView *controlView;
 @property (nonatomic, strong) AliyunViewMoreView *moreView;             //更多界面
 @property (nonatomic, strong) AliyunPlayerViewFirstStartGuideView *guideView;     //导航
 @property (nonatomic, strong) AliyunPlayerViewPopLayer *popLayer;               //弹出的提示界面

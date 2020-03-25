@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 #import "V5_Constant.h"
 #import "CourseMainViewController.h"
+#import "CourseDetailPlayVC.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,7 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
-@property (strong, nonatomic) CourseMainViewController *vc;
+@property (weak, nonatomic) CourseMainViewController *vc;
+@property (weak, nonatomic) CourseDetailPlayVC *detailVC;
 
 @property (assign, nonatomic) CGFloat tabelHeight;
 @property (assign, nonatomic) BOOL canScroll;
@@ -26,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL canScrollAfterVideoPlay;
 @property (assign, nonatomic) BOOL cellTabelCanScroll;
 
-@property (assign, nonatomic) BOOL cellType;// yes 是点评 no 是笔记
+@property (assign, nonatomic) BOOL cellType;// yes 是笔记 no 是点评
 
 
 @end

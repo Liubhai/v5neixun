@@ -40,7 +40,7 @@
     RootV5VC * nv = (RootV5VC *)app.window.rootViewController;
     [nv isHiddenCustomTabBarByBoolean:NO];
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)viewDidLoad

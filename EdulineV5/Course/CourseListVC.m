@@ -7,7 +7,6 @@
 //
 
 #import "CourseListVC.h"
-#import "CourseCatalogCell.h"
 #import "Net_Path.h"
 //#import "CourseListModel.h"
 //#import "CourseListModelFinal.h"
@@ -130,19 +129,24 @@
     static NSString *reuse = @"CourseCatalogCell";
     CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:@"1" isMainPage:YES allLayar:@"3"];
+        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:@"1" isMainPage:_isMainPage allLayar:_courselayer];
     }
     cell.delegate = self;
     CourseListModelFinal *model = _courseListArray[indexPath.row];
     model.cellIndex = indexPath;
     model.courselayer = @"1";
-    model.allLayar = @"3";
+    model.allLayar = _courselayer;
     [cell setListInfo:model];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([_courselayer isEqualToString:@"1"]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(playVideo:cellIndex:panrentCellIndex:superCellIndex:)]) {
+            [_delegate playVideo:_courseListArray[indexPath.row] cellIndex:indexPath panrentCellIndex:nil superCellIndex:nil];
+        }
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -150,10 +154,18 @@
         scrollView.contentOffset = CGPointZero;
     }
     if (scrollView.contentOffset.y <= 0) {
-        if (self.vc.canScrollAfterVideoPlay == YES) {
-            self.cellTabelCanScroll = NO;
-            scrollView.contentOffset = CGPointZero;
-            self.vc.canScroll = YES;
+        if (self.vc) {
+            if (self.vc.canScrollAfterVideoPlay == YES) {
+                self.cellTabelCanScroll = NO;
+                scrollView.contentOffset = CGPointZero;
+                self.vc.canScroll = YES;
+            }
+        } else {
+            if (self.detailVC.canScrollAfterVideoPlay == YES) {
+                self.cellTabelCanScroll = NO;
+                scrollView.contentOffset = CGPointZero;
+                self.detailVC.canScroll = YES;
+            }
         }
     }
 }
@@ -166,7 +178,7 @@
                     [_courseListArray removeAllObjects];
                     NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
                     for (CourseListModel *object in pass) {
-                        CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:@"3" isMainPage:YES];
+                        CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:_courselayer isMainPage:_isMainPage];
                         [_courseListArray addObject:model];
                     }
                     _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
@@ -209,7 +221,7 @@
                             NSMutableArray *passOrigin = [NSMutableArray new];
                             NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
                             for (CourseListModel *object in pass) {
-                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:@"3" isMainPage:YES];
+                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:_courselayer isMainPage:_isMainPage];
                                 [passOrigin addObject:model];
                             }
                             if (SWNOTEmptyArr(_courseListArray)) {
@@ -253,7 +265,7 @@
                             NSMutableArray *passOrigin = [NSMutableArray new];
                             NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
                             for (CourseListModel *object in pass) {
-                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:@"3" isMainPage:YES];
+                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:_courselayer isMainPage:_isMainPage];
                                 [passOrigin addObject:model];
                             }
                             if (SWNOTEmptyArr(_courseListArray)) {
@@ -273,5 +285,10 @@
     }
 }
 
+- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
+    if (_delegate && [_delegate respondsToSelector:@selector(playVideo:cellIndex:panrentCellIndex:superCellIndex:)]) {
+        [_delegate playVideo:model cellIndex:cellIndex panrentCellIndex:panrentCellIndex superCellIndex:superIndex];
+    }
+}
 
 @end

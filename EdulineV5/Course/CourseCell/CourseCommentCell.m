@@ -41,6 +41,8 @@
     [self addSubview:_scoreStar];
     
     if (_cellType) {
+        _scoreStar.hidden = YES;
+        _commentCountButton.hidden = YES;
         _tokenLabel = [[YYLabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 64)];
         _tokenLabel.font = SYSTEMFONT(14);
         _tokenLabel.text = @"我们可以使用以下方式来指定切断文本; 收起 我们可以使用以下方式来指定切断文本,弄啥呢大哥,一起上呀打死那个龟孙,我们可以使用以下方式来指定切断文本; 收起 我们可以使用以下方式来指定切断文本";

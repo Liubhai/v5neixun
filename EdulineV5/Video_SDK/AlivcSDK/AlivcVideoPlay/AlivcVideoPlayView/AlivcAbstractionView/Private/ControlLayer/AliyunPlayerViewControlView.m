@@ -11,7 +11,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
 
 @interface AliyunPlayerViewControlView()<AliyunPVTopViewDelegate,AliyunVodBottomViewDelegate,AliyunPVGestureViewDelegate,AliyunPVQualityListViewDelegate>
 
-@property (nonatomic, strong) AliyunPlayerViewTopView *topView;             //topView
+//@property (nonatomic, strong) AliyunPlayerViewTopView *topView;             //topView
 @property (nonatomic, strong) AliyunPlayerViewBottomView *bottomView;       //bottomView
 @property (nonatomic, strong) AliyunPlayerViewGestureView *guestureView;    //手势view
 

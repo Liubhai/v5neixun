@@ -29,6 +29,7 @@
 		7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBB2428A14500F096EC /* CourseSearchListVC.m */; };
 		7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBE2428A43D00F096EC /* CourseSearchListCell.m */; };
 		7853BDC52429F4FC00F096EC /* CourseListModelFinal.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDC42429F4FC00F096EC /* CourseListModelFinal.m */; };
+		7853BDC8242AEB1E00F096EC /* CourseDetailPlayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDC7242AEB1E00F096EC /* CourseDetailPlayVC.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -305,6 +306,8 @@
 		7853BDBE2428A43D00F096EC /* CourseSearchListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseSearchListCell.m; sourceTree = "<group>"; };
 		7853BDC32429F4FC00F096EC /* CourseListModelFinal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseListModelFinal.h; sourceTree = "<group>"; };
 		7853BDC42429F4FC00F096EC /* CourseListModelFinal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListModelFinal.m; sourceTree = "<group>"; };
+		7853BDC6242AEB1E00F096EC /* CourseDetailPlayVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseDetailPlayVC.h; sourceTree = "<group>"; };
+		7853BDC7242AEB1E00F096EC /* CourseDetailPlayVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseDetailPlayVC.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -710,6 +713,8 @@
 			children = (
 				7839C96A241F1571002F6595 /* CourseMainViewController.h */,
 				7839C96B241F1571002F6595 /* CourseMainViewController.m */,
+				7853BDC6242AEB1E00F096EC /* CourseDetailPlayVC.h */,
+				7853BDC7242AEB1E00F096EC /* CourseDetailPlayVC.m */,
 				7839C98424209FAF002F6595 /* CourseCommentViewController.h */,
 				7839C98524209FAF002F6595 /* CourseCommentViewController.m */,
 				7839C98F2420DEC9002F6595 /* CourseCommentListVC.h */,
@@ -2036,6 +2041,7 @@
 				7879566D240F39200013F95F /* BaseViewController.m in Sources */,
 				78C5494B241B642B00A33FC4 /* AliyunPlayerViewQualityListView.m in Sources */,
 				787957622410E1F40013F95F /* LoginViewController.m in Sources */,
+				7853BDC8242AEB1E00F096EC /* CourseDetailPlayVC.m in Sources */,
 				78C54972241B642B00A33FC4 /* AlivcVideoPlayListModel.m in Sources */,
 				78C549D6241B674F00A33FC4 /* AlivcBaseNavigationController.m in Sources */,
 				7839C9A32423655B002F6595 /* CourseListVC.m in Sources */,

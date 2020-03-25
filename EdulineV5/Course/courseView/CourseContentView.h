@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *lineView1;
 @property (strong, nonatomic) NSDictionary *courseInfo;
 
-- (void)setCourseContentInfo:(NSDictionary *)contentInfo;
+- (void)setCourseContentInfo:(NSDictionary *)contentInfo showTitleOnly:(BOOL)showTitleOnly;
 
 @end
 

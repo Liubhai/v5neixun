@@ -11,9 +11,10 @@
 // 24 + 18 = 42
 @implementation CourseCommentTopView
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame commentOrRecord:(BOOL)commentOrRecord{
     self = [super initWithFrame:frame];
     if (self) {
+        _commentOrRecord = commentOrRecord;
         [self makeSubViews];
     }
     return self;
@@ -63,10 +64,27 @@
     
     _showLabel.hidden = YES;
     _showOwnButton.hidden = YES;
+    if (_commentOrRecord) {
+        _commentButton.hidden = YES;
+        _courseStar.hidden = YES;
+        _courseScore.hidden = YES;
+        [_showOwnButton setLeft:15];
+        [_showLabel setLeft:_showOwnButton.right + 8];
+        _showLabel.hidden = NO;
+        _showOwnButton.hidden = NO;
+    }
 }
 
-- (void)setCourseCommentInfo:(NSDictionary *)info {
-    
+- (void)setCourseCommentInfo:(NSDictionary *)info commentOrRecord:(BOOL)commentOrRecord {
+    if (commentOrRecord) {
+        _commentButton.hidden = YES;
+        _courseStar.hidden = YES;
+        _courseScore.hidden = YES;
+        [_showOwnButton setLeft:15];
+        [_showLabel setLeft:_showOwnButton.right + 8];
+        _showLabel.hidden = NO;
+        _showOwnButton.hidden = NO;
+    }
 }
 
 - (void)seleteButtonClick:(UIButton *)sender {

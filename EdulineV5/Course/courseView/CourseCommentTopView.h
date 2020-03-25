@@ -27,8 +27,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *commentButton;
 @property (strong, nonatomic) UIButton *showOwnButton;
 @property (strong, nonatomic) UILabel *showLabel;
+@property (assign, nonatomic) BOOL commentOrRecord;
 
-- (void)setCourseCommentInfo:(NSDictionary *)info;
+/**
+ 初始化方法
+ */
+- (instancetype)initWithFrame:(CGRect)frame commentOrRecord:(BOOL)commentOrRecord;
+
+
+/**
+ commentOrRecord: no 点评 yes 笔记
+ */
+- (void)setCourseCommentInfo:(NSDictionary *)info commentOrRecord:(BOOL)commentOrRecord;
 
 @end
 

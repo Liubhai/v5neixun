@@ -1,12 +1,12 @@
 //
-//  CourseMainViewController.m
+//  CourseDetailPlayVC.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2020/3/16.
+//  Created by 刘邦海 on 2020/3/25.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
-#import "CourseMainViewController.h"
+#import "CourseDetailPlayVC.h"
 #import "V5_Constant.h"
 #import "StarEvaluator.h"
 #import "EdulineV5_Tool.h"
@@ -19,18 +19,23 @@
 #import "CourseCommentViewController.h"
 #import "CourseIntroductionVC.h"
 #import "CourseListVC.h"
-#import "CourseDetailPlayVC.h"
 
-#define FaceImageHeight 207
+//播放器
+#import "AliyunVodPlayerView.h"
+#import "AliyunUtil.h"
+#import "AlivcVideoPlayListModel.h"
+#import "AppDelegate.h"
 
-@interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate> {
+#define FacePlayImageHeight 207
+
+@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate> {
     // 新增内容
     CGFloat sectionHeight;
 }
 
 /**三大子页面*/
-@property (strong, nonatomic) CourseIntroductionVC *courseIntroduce;
 @property (strong, nonatomic) CourseListVC *courseListVC;
+@property (strong, nonatomic) CourseCommentListVC *recordVC;
 @property (strong, nonatomic) CourseCommentListVC *commentVC;
 
 /**封面*/
@@ -70,26 +75,62 @@
 
 @property (strong, nonatomic) CourseDownView *courseDownView;
 
+// 播放器
+@property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
+
 @end
 
-@implementation CourseMainViewController
+@implementation CourseDetailPlayVC
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    AppDelegate *app = [AppDelegate delegate];
+    app._allowRotation = NO;
+    [super viewWillAppear:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    AppDelegate *app = [AppDelegate delegate];
+    app._allowRotation = NO;
+    [super viewWillDisappear:animated];
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [self destroyPlayVideo];
+
+}
+
+- (void)destroyPlayVideo{
+    if (_playerView != nil) {
+        [_playerView stop];
+        [_playerView releasePlayer];
+        [_playerView removeFromSuperview];
+        _playerView = nil;
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _courselayer = @"1";
     _isClassNew = YES;
     /// 新增内容
     self.canScroll = YES;
     self.canScrollAfterVideoPlay = YES;
     
-    _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评"]];
-    
+    _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"笔记",@"点评"]];
+
     self.canScroll = YES;
     _titleLabel.text = @"课程详情";
     _titleImage.backgroundColor = BasidColor;
-    
+
     [self makeHeaderView];
     [self makeSubViews];
+//    self.playerView.hidden = YES;
+    self.playerView.coverImageView.image = DefaultImage;
+    [_headerView addSubview:self.playerView];
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
     [self makeTableView];
     [self.view bringSubviewToFront:_titleImage];
@@ -98,7 +139,84 @@
     _lineTL.hidden = YES;
     [self makeDownView];
     [self getCourseInfo];
+    /**************************************/
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(becomeActive)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(resignActive)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willResignActive)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+}
+
+- (void)willResignActive {
+    if (_playerView &&  self.playerView.playerViewState == AVPStatusStarted){
+        [self.playerView pause];
+    }
+}
+
+- (void)becomeActive{
+    if (self.playerView && [self.playerView getPopLayerIsHidden] == YES){
+        [self.playerView resume];
+    }
+//    if (self.isPresent == NO) {
+//        self.isBecome = NO;
+//        NSLog(@"%@%ld",NSLocalizedString(@"播放器状态:", nil),(long)self.playerView.playerViewState);
+//        if (self.playerView && [self.playerView getPopLayerIsHidden] == YES){
+//            [self.playerView resume];
+//        }
+//    }
+   
+}
+
+- (void)resignActive{
+//    if (self.isPresent) {
+//        self.isBecome = YES;
+//    }
     
+    if (_playerView &&  self.playerView.playerViewState == AVPStatusStarted){
+        [self.playerView pause];
+    }
+}
+
+- (AliyunVodPlayerView *__nullable)playerView{
+    if (!_playerView) {
+        CGFloat width = 0;
+        CGFloat height = 0;
+        CGFloat topHeight = 0;
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (orientation == UIInterfaceOrientationPortrait ) {
+            width = ScreenWidth;
+            height = ScreenWidth * 9 / 16.0;
+            topHeight = 0;
+        }else{
+            width = ScreenWidth;
+            height = ScreenHeight;
+            topHeight = 0;
+        }
+        /****************UI播放器集成内容**********************/
+        _playerView = [[AliyunVodPlayerView alloc] initWithFrame:CGRectMake(0,topHeight, width, height) andSkin:AliyunVodPlayerViewSkinRed];
+        _playerView.backgroundColor = [UIColor whiteColor];
+//        AlivcVideoPlayListModel *currentModel = [[AlivcVideoPlayListModel alloc] init];
+//        currentModel.videoUrl = @"https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8";
+//        currentModel.playMethod = AliyunPlayMedthodSTS;
+//        _playerView.currentModel = currentModel;
+        _playerView.circlePlay = YES;
+        [_playerView setDelegate:self];
+        [_playerView setAutoPlay:YES];
+        
+        [_playerView setPrintLog:YES];
+        _playerView.controlView.topView.hidden = YES;
+        _playerView.isScreenLocked = false;
+        _playerView.fixedPortrait = false;
+    
+    }
+    return _playerView;
 }
 
 // MARK: - tableview 的 headerview
@@ -124,7 +242,7 @@
 
 // MARK: - headerview的子视图
 - (void)makeSubViews {
-    _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, FaceImageHeight)];
+    _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight)];
     _faceImageView.image = Image(@"lesson_img");
     [_headerView addSubview:_faceImageView];
     
@@ -132,24 +250,24 @@
     [_headerView addSubview:_courseContentView];
     
     /**优惠卷*/
-    _couponContentView = [[CourseCouponView alloc] initWithFrame:CGRectMake(0, _courseContentView.bottom, MainScreenWidth, 52)];
-    _couponContentView.delegate = self;
-    [_headerView addSubview:_couponContentView];
-    /**机构讲师*/
-    if (_teachersHeaderBackView == nil) {
-        _teachersHeaderBackView = [[CourseTeacherAndOrganizationView alloc] initWithFrame:CGRectMake(0, _couponContentView.bottom, MainScreenWidth, 59)];
-        [_headerView addSubview:_teachersHeaderBackView];
-        
-        [_teachersHeaderBackView setHeight:0];
-        _teachersHeaderBackView.hidden = YES;
-        _teachersHeaderBackView.delegate = self;
-    }
-    [_headerView setHeight:_teachersHeaderBackView.bottom];
+//    _couponContentView = [[CourseCouponView alloc] initWithFrame:CGRectMake(0, _courseContentView.bottom, MainScreenWidth, 52)];
+//    _couponContentView.delegate = self;
+//    [_headerView addSubview:_couponContentView];
+//    /**机构讲师*/
+//    if (_teachersHeaderBackView == nil) {
+//        _teachersHeaderBackView = [[CourseTeacherAndOrganizationView alloc] initWithFrame:CGRectMake(0, _couponContentView.bottom, MainScreenWidth, 59)];
+//        [_headerView addSubview:_teachersHeaderBackView];
+//
+//        [_teachersHeaderBackView setHeight:0];
+//        _teachersHeaderBackView.hidden = YES;
+//        _teachersHeaderBackView.delegate = self;
+//    }
+    [_headerView setHeight:_courseContentView.bottom];
 }
 
 // MARK: - 底部视图(咨询、加入购物车、加入学习)
 - (void)makeDownView {
-    _courseDownView = [[CourseDownView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - 50, MainScreenWidth, 50) isRecord:NO];
+    _courseDownView = [[CourseDownView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - 50, MainScreenWidth, 50) isRecord:YES];
     _courseDownView.delegate = self;
     [self.view addSubview:_courseDownView];
 }
@@ -234,51 +352,49 @@
         } else {
             self.mainScroll.frame = CGRectMake(0,47, MainScreenWidth, sectionHeight - 47);
         }
-        
-        if (_courseIntroduce == nil) {
-            _courseIntroduce = [[CourseIntroductionVC alloc] init];
-            _courseIntroduce.courseId = _ID;
-            _courseIntroduce.dataSource = _dataSource;
-            _courseIntroduce.tabelHeight = sectionHeight - 47;
-            _courseIntroduce.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-            _courseIntroduce.vc = self;
-            _courseIntroduce.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
-            [self.mainScroll addSubview:_courseIntroduce.view];
-            [self addChildViewController:_courseIntroduce];
-        } else {
-            _courseIntroduce.dataSource = _dataSource;
-            _courseIntroduce.tabelHeight = sectionHeight - 47;
-            _courseIntroduce.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-            _courseIntroduce.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
-            [_courseIntroduce changeMainScrollViewHeight:sectionHeight - 47];
-        }
-        
+        __weak typeof(self) weakself = self;
         if (_courseListVC == nil) {
             _courseListVC = [[CourseListVC alloc] init];
-            _courseListVC.courseId = _ID;
-            _courseListVC.courselayer = _courselayer;
-            _courseListVC.isMainPage = YES;
-            _courseListVC.isClassCourse = _isClassNew;
-            _courseListVC.sid = _sid;
+            _courseListVC.courseId = weakself.ID;
+            _courseListVC.courselayer = weakself.courselayer;
+            _courseListVC.isMainPage = NO;
+            _courseListVC.isClassCourse = weakself.isClassNew;
+            _courseListVC.sid = weakself.sid;
             _courseListVC.tabelHeight = sectionHeight - 47;
-            _courseListVC.vc = self;
-            _courseListVC.delegate = self;
-            _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _courseListVC.detailVC = weakself;
+            _courseListVC.delegate = weakself;
+            _courseListVC.cellTabelCanScroll = weakself.canScrollAfterVideoPlay;
             _courseListVC.videoInfoDict = _dataSource;
-            _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
-            [self.mainScroll addSubview:_courseListVC.view];
-            [self addChildViewController:_courseListVC];
+            _courseListVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
+            [weakself.mainScroll addSubview:weakself.courseListVC.view];
+            [weakself addChildViewController:weakself.courseListVC];
 //            [self addBlockCategory:_courseListVC];
         } else {
-            _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-            _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+            _courseListVC.cellTabelCanScroll = weakself.canScrollAfterVideoPlay;
+            _courseListVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
             _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
         
+        if (_recordVC == nil) {
+            _recordVC = [[CourseCommentListVC alloc] init];
+            _recordVC.tabelHeight = sectionHeight - 47;
+            _recordVC.detailVC = weakself;
+            _recordVC.cellType = YES;
+            _recordVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _recordVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+            [self.mainScroll addSubview:_recordVC.view];
+            [self addChildViewController:_recordVC];
+        } else {
+            _recordVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _recordVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+            _recordVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+        }
+
         if (_commentVC == nil) {
             _commentVC = [[CourseCommentListVC alloc] init];
             _commentVC.tabelHeight = sectionHeight - 47;
-            _commentVC.vc = self;
+            _commentVC.detailVC = weakself;
+            _commentVC.cellType = NO;
             _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
             [self.mainScroll addSubview:_commentVC.view];
@@ -294,12 +410,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([_courselayer isEqualToString:@"1"]) {
-        CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
-        vc.courselayer = _courselayer;
-        vc.ID = _ID;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
 }
 
 // MARK: - 子视图导航按钮点击事件
@@ -365,22 +475,27 @@
             if (self.canScroll) {
                 self.canScroll = NO;
                 for (UIViewController *vc in self.childViewControllers) {
-                    if (self.courseButton.selected) {
+                    if (self.introButton.selected) {
                         if ([vc isKindOfClass:[CourseListVC class]]) {
                             CourseListVC *vccomment = (CourseListVC *)vc;
                             vccomment.cellTabelCanScroll = YES;
                         }
                     }
-                    if (self.introButton.selected) {
-                        if ([vc isKindOfClass:[CourseIntroductionVC class]]) {
-                            CourseIntroductionVC *vccomment = (CourseIntroductionVC *)vc;
-                            vccomment.cellTabelCanScroll = YES;
+                    if (self.courseButton.selected) {
+                        if ([vc isKindOfClass:[CourseCommentListVC class]]) {
+                            CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
+                            if (vccomment.cellType) {
+                                // 笔记
+                                vccomment.cellTabelCanScroll = YES;
+                            }
                         }
                     }
                     if (self.commentButton.selected) {
                         if ([vc isKindOfClass:[CourseCommentListVC class]]) {
                             CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
-                            vccomment.cellTabelCanScroll = YES;
+                            if (!vccomment.cellType) {
+                                vccomment.cellTabelCanScroll = YES;
+                            }
                         }
                     }
 //                    if (self.recordButton.selected) {
@@ -512,13 +627,6 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
-    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
-    vc.ID = _ID;
-    vc.courselayer = _courselayer;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)getCourseInfo {
     if (SWNOTEmptyStr(_ID)) {
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseInfo:_ID] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
@@ -543,10 +651,81 @@
         } else {
             _faceImageView.image = DefaultImage;
         }
-        [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:NO];
-        _tableView.tableHeaderView = _headerView;
-        [self.tableView reloadData];
+        [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:YES];
+//        _tableView.tableHeaderView = _headerView;
+//        [self.tableView reloadData];
     }
+}
+
+- (void)aliyunVodPlayerView:(AliyunVodPlayerView *)playerView fullScreen:(BOOL)isFullScreen{
+    NSLog(@"isfullScreen --%d",isFullScreen);
+    if (![AppDelegate delegate]._allowRotation) {
+        return;
+    }
+    if (isFullScreen) {
+        _titleImage.hidden = YES;
+        _playerView.controlView.topView.hidden = NO;
+        _playerView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
+        _headerView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
+        _tableView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
+        _tableView.contentOffset = CGPointMake(0, 0);
+        [self tableViewCanNotScroll];
+    } else {
+        _titleImage.hidden = NO;
+        _playerView.controlView.topView.hidden = YES;
+        _playerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight);
+        _headerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight + 90);
+        _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - 50);
+        [self tableViewCanScroll];
+    }
+    _tableView.tableHeaderView = _headerView;
+    [_tableView reloadData];
+//    self.isStatusHidden = isFullScreen;
+//    [self refreshUIWhenScreenChanged:isFullScreen];
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
+    [self.playerView playViewPrepareWithURL:EdulineUrlString(@"https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8")];
+    [AppDelegate delegate]._allowRotation = YES;
+    [self tableViewCanNotScroll];
+}
+
+// MARK: - 横屏权限
+#pragma mark - 默认竖屏
+//- (BOOL)shouldAutorotate{
+//    return NO;
+//}
+//
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
+//
+//
+//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+//    return UIInterfaceOrientationPortrait;
+//}
+
+- (void)tableViewCanNotScroll {
+    [self performSelector:@selector(canNotScroll) withObject:nil afterDelay:1];
+}
+
+- (void)tableViewCanScroll {
+    [self performSelector:@selector(canTableScroll) withObject:nil afterDelay:1];
+}
+
+- (void)canNotScroll {
+    _canScroll = NO;
+    _canScrollAfterVideoPlay = NO;
+//    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - self.headerView.height;
+    [_tableView reloadData];
+}
+
+- (void)canTableScroll {
+    _canScroll = YES;
+    _canScrollAfterVideoPlay = YES;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
+    [_tableView reloadData];
 }
 
 @end

@@ -37,7 +37,7 @@ static const CGFloat ALYPVTopViewDownLoadButtonWidth  = 30; //返回按钮宽度
 - (UIButton *)backButton{
     if (!_backButton){
         _backButton = [[UIButton alloc] init];
-        UIImage *backImage = [UIImage imageNamed:@"avcBackIcon"];
+        UIImage *backImage = [UIImage imageNamed:@"nav_back_white"];
         [_backButton setBackgroundImage:backImage forState:UIControlStateNormal];
         [_backButton setBackgroundImage:backImage forState:UIControlStateSelected];
         [_backButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
