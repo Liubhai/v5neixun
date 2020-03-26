@@ -21,6 +21,9 @@
 #import "CourseListVC.h"
 #import "CourseDetailPlayVC.h"
 
+//
+#import "OrderViewController.h"
+
 #define FaceImageHeight 207
 
 @interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate> {
@@ -503,7 +506,8 @@
 }
 
 - (void)joinStudyEvent:(CourseDownView *)downView {
-    
+    OrderViewController *vc = [[OrderViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)jumpToCommentVC {

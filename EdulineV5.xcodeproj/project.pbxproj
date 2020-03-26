@@ -30,6 +30,7 @@
 		7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBE2428A43D00F096EC /* CourseSearchListCell.m */; };
 		7853BDC52429F4FC00F096EC /* CourseListModelFinal.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDC42429F4FC00F096EC /* CourseListModelFinal.m */; };
 		7853BDC8242AEB1E00F096EC /* CourseDetailPlayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDC7242AEB1E00F096EC /* CourseDetailPlayVC.m */; };
+		7853BDCD242C486E00F096EC /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDCC242C486E00F096EC /* OrderViewController.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -308,6 +309,8 @@
 		7853BDC42429F4FC00F096EC /* CourseListModelFinal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListModelFinal.m; sourceTree = "<group>"; };
 		7853BDC6242AEB1E00F096EC /* CourseDetailPlayVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseDetailPlayVC.h; sourceTree = "<group>"; };
 		7853BDC7242AEB1E00F096EC /* CourseDetailPlayVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseDetailPlayVC.m; sourceTree = "<group>"; };
+		7853BDCB242C486E00F096EC /* OrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
+		7853BDCC242C486E00F096EC /* OrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -775,6 +778,15 @@
 			path = CourseModel;
 			sourceTree = "<group>";
 		};
+		7853BDC9242C485700F096EC /* OrderPage */ = {
+			isa = PBXGroup;
+			children = (
+				7853BDCB242C486E00F096EC /* OrderViewController.h */,
+				7853BDCC242C486E00F096EC /* OrderViewController.m */,
+			);
+			path = OrderPage;
+			sourceTree = "<group>";
+		};
 		78795604240DE7A50013F95F = {
 			isa = PBXGroup;
 			children = (
@@ -809,6 +821,7 @@
 				78795658240E5FB20013F95F /* CoursePage */,
 				7879565A240E5FC80013F95F /* FindPage */,
 				7879565C240E5FEB0013F95F /* MyCenterPage */,
+				7853BDC9242C485700F096EC /* OrderPage */,
 				7879575B24109F690013F95F /* LoginAndRegister */,
 				7839C968241F154B002F6595 /* Course */,
 				7879566E240F929A0013F95F /* EdulineToolLib */,
@@ -1988,6 +2001,7 @@
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
 				78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */,
+				7853BDCD242C486E00F096EC /* OrderViewController.m in Sources */,
 				78795753240FAA7A0013F95F /* NSDate+Category.m in Sources */,
 				78795612240DE7A50013F95F /* AppDelegate.m in Sources */,
 				78C549D2241B674E00A33FC4 /* AlivcUIConfig.m in Sources */,
