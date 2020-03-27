@@ -34,6 +34,7 @@
 		7853BDD0242D8F4300F096EC /* ShitikaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDCF242D8F4300F096EC /* ShitikaViewController.m */; };
 		7853BDD3242D964300F096EC /* ShitikaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDD2242D964300F096EC /* ShitikaCell.m */; };
 		7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDD5242DD87000F096EC /* KaquanCell.m */; };
+		7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDD8242DF82800F096EC /* ShopCarCell.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -320,6 +321,8 @@
 		7853BDD2242D964300F096EC /* ShitikaCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShitikaCell.m; sourceTree = "<group>"; };
 		7853BDD4242DD87000F096EC /* KaquanCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KaquanCell.h; sourceTree = "<group>"; };
 		7853BDD5242DD87000F096EC /* KaquanCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KaquanCell.m; sourceTree = "<group>"; };
+		7853BDD7242DF82800F096EC /* ShopCarCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarCell.h; sourceTree = "<group>"; };
+		7853BDD8242DF82800F096EC /* ShopCarCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarCell.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -778,6 +781,8 @@
 				7853BDD2242D964300F096EC /* ShitikaCell.m */,
 				7853BDD4242DD87000F096EC /* KaquanCell.h */,
 				7853BDD5242DD87000F096EC /* KaquanCell.m */,
+				7853BDD7242DF82800F096EC /* ShopCarCell.h */,
+				7853BDD8242DF82800F096EC /* ShopCarCell.m */,
 			);
 			path = CourseCell;
 			sourceTree = "<group>";
@@ -2045,6 +2050,7 @@
 				78C5497C241B642B00A33FC4 /* _AlivcLiveBeautifyLevelView.m in Sources */,
 				7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */,
 				78C549C8241B674E00A33FC4 /* AlivcScanViewController.m in Sources */,
+				7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */,
 				78C54946241B642B00A33FC4 /* AliyunPlayerViewSeekPopupView.m in Sources */,
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
 				78795723240FA3840013F95F /* ZLCamera.m in Sources */,

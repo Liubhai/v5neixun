@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "ShitikaCell.h"
 #import "KaquanCell.h"
+#import "ShopCarCell.h"
 
 @interface ShitikaViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,ShitikaCellDelegate>
 
@@ -100,17 +101,24 @@
 //    }
 //    cell.delegate = self;
 //    return cell;
+    
+//    static NSString *cellId = @"ShitikaCell";
+//    KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+//    if (!cell) {
+//        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:[NSString stringWithFormat:@"%@",@(indexPath.row + 1)]];
+//    }
+//    return cell;
+    
     static NSString *cellId = @"ShitikaCell";
-    KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    ShopCarCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:[NSString stringWithFormat:@"%@",@(indexPath.row + 1)]];
+        cell = [[ShopCarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:YES];
     }
-//    cell.delegate = self;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 110;//99;
+    return 92;//110;//99;
 }
 
 - (void)usercardButton:(ShitikaCell *)cell {
