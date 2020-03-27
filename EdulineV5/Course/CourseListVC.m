@@ -14,6 +14,7 @@
 @interface CourseListVC ()<CourseCatalogCellDelegate> {
     NSInteger indexPathSection;//
     NSInteger indexPathRow;//记录当前数据的相关
+    NSString *cellCouserlayar;// 当前第一个cell类型
 }
 
 @end
@@ -23,6 +24,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    if ([_courselayer isEqualToString:@"1"]) {
+        cellCouserlayar = @"3";
+    } else if ([_courselayer isEqualToString:@"2"]) {
+        cellCouserlayar = @"2";
+    } else {
+        cellCouserlayar = @"1";
+    }
     _courseListArray = [NSMutableArray new];
     _canPlayRecordVideo = YES;
     _courseId = @"1";
@@ -129,12 +137,18 @@
     static NSString *reuse = @"CourseCatalogCell";
     CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:@"1" isMainPage:_isMainPage allLayar:_courselayer];
+        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:cellCouserlayar isMainPage:_isMainPage allLayar:_courselayer];
     }
     cell.delegate = self;
     CourseListModelFinal *model = _courseListArray[indexPath.row];
     model.cellIndex = indexPath;
-    model.courselayer = @"1";
+    if ([_courselayer isEqualToString:@"1"]) {
+        model.courselayer = @"3";
+    } else if ([_courselayer isEqualToString:@"2"]) {
+        model.courselayer = @"2";
+    } else {
+        model.courselayer = @"1";
+    }
     model.allLayar = _courselayer;
     [cell setListInfo:model];
     return cell;
@@ -178,7 +192,7 @@
                     [_courseListArray removeAllObjects];
                     NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
                     for (CourseListModel *object in pass) {
-                        CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:_courselayer isMainPage:_isMainPage];
+                        CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                         [_courseListArray addObject:model];
                     }
                     _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
@@ -221,7 +235,7 @@
                             NSMutableArray *passOrigin = [NSMutableArray new];
                             NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
                             for (CourseListModel *object in pass) {
-                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:_courselayer isMainPage:_isMainPage];
+                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                                 [passOrigin addObject:model];
                             }
                             if (SWNOTEmptyArr(_courseListArray)) {
@@ -265,7 +279,7 @@
                             NSMutableArray *passOrigin = [NSMutableArray new];
                             NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
                             for (CourseListModel *object in pass) {
-                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:@"" allLayar:_courselayer isMainPage:_isMainPage];
+                                CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                                 [passOrigin addObject:model];
                             }
                             if (SWNOTEmptyArr(_courseListArray)) {

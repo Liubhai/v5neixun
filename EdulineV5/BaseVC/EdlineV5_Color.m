@@ -122,4 +122,17 @@
 + (UIColor *)enterLayerBorderColor {
     return HEXCOLORV5(0xE4E7ED);
 }
+
+/** 优惠卷内文字颜色 */
++ (UIColor *)youhuijuanColor {
+    return HEXCOLORV5(0xFF8A52);
+}
+/** 打折卡内文字颜色 */
++ (UIColor *)dazhekaColor {
+    return HEXCOLORV5(0xFF9431);
+}
+/** 课程卡内文字颜色 */
++ (UIColor *)kechengkaColor {
+    return HEXCOLORV5(0x67C23A);
+}
 @end

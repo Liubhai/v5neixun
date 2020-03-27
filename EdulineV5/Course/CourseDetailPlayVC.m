@@ -114,7 +114,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _courselayer = @"1";
     _isClassNew = YES;
     /// 新增内容
     self.canScroll = YES;

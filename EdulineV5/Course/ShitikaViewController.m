@@ -9,6 +9,7 @@
 #import "ShitikaViewController.h"
 #import "V5_Constant.h"
 #import "ShitikaCell.h"
+#import "KaquanCell.h"
 
 @interface ShitikaViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,ShitikaCellDelegate>
 
@@ -92,17 +93,24 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    static NSString *cellId = @"ShitikaCell";
+//    ShitikaCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+//    if (!cell) {
+//        cell = [[ShitikaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+//    }
+//    cell.delegate = self;
+//    return cell;
     static NSString *cellId = @"ShitikaCell";
-    ShitikaCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[ShitikaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:[NSString stringWithFormat:@"%@",@(indexPath.row + 1)]];
     }
-    cell.delegate = self;
+//    cell.delegate = self;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 99;
+    return 110;//99;
 }
 
 - (void)usercardButton:(ShitikaCell *)cell {

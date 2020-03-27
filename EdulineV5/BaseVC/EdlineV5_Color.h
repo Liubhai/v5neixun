@@ -78,6 +78,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 输入框边框颜色 */
 + (UIColor *)enterLayerBorderColor;
+
+/** 优惠卷内文字颜色 */
++ (UIColor *)youhuijuanColor;
+/** 打折卡内文字颜色 */
++ (UIColor *)dazhekaColor;
+/** 课程卡内文字颜色 */
++ (UIColor *)kechengkaColor;
+
 @end
 
 NS_ASSUME_NONNULL_END
