@@ -76,7 +76,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UIColor *)starNoColor;
 
-
+/** 输入框边框颜色 */
++ (UIColor *)enterLayerBorderColor;
 @end
 
 NS_ASSUME_NONNULL_END

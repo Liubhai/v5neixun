@@ -152,7 +152,8 @@
  */
 
 - (void)getCourseMainList {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    NSArray *pass = @[@"1",@"2"];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:@{@"a":pass} finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];

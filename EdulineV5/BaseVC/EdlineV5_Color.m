@@ -119,4 +119,7 @@
     return HEXCOLORV5(0xDCDFE6);
 }
 
++ (UIColor *)enterLayerBorderColor {
+    return HEXCOLORV5(0xE4E7ED);
+}
 @end

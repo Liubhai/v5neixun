@@ -409,7 +409,14 @@ static EdulineV5_Tool *_sharedInstance;
     NSMutableArray *valueArray = [NSMutableArray array];
     for (NSString *sortsing in afterSortKeyArray) {
         //格式化一下 防止有些value不是string
-        NSString *valueString = [NSString stringWithFormat:@"%@",[dict objectForKey:sortsing]];
+        id pass = [dict objectForKey:sortsing];
+        NSString *valueString;
+        if ([pass isKindOfClass:[NSArray class]]) {
+            valueString = @"/a";
+        } else {
+            valueString  = [NSString stringWithFormat:@"%@",[dict objectForKey:sortsing]];
+        }
+        
         if(valueString.length>0){
             [valueArray addObject:valueString];
             tempStr=[NSString stringWithFormat:@"%@%@=%@&",tempStr,sortsing,valueString];
@@ -420,9 +427,11 @@ static EdulineV5_Tool *_sharedInstance;
         tempStr=[tempStr substringToIndex:([tempStr length]-1)];
     }
     //排序好的对应值
-    //  NSLog(@"valueArray:%@",valueArray);
+//      NSLog(@"valueArray:%@",valueArray);
     //最终参数
     NSLog(@"tempStr:%@",tempStr);
+    tempStr = [tempStr stringByURLEncode];
+//    tempStr = [tempStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
     //md5加密
     // NSLog(@"tempStr:%@",[self getmd5WithString:tempStr]);
     return tempStr;

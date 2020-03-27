@@ -7,6 +7,7 @@
 //
 
 #import "OrderViewController.h"
+#import "ShitikaViewController.h"
 
 @interface OrderViewController ()
 
@@ -255,7 +256,10 @@
 }
 
 - (void)clearBtnClick:(UIButton *)sender {
-    
+    if (sender.tag == 11) {
+        ShitikaViewController *vc = [[ShitikaViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)seleteAgreementButtonClick:(UIButton *)sender {
