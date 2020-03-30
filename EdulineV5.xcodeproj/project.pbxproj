@@ -36,6 +36,15 @@
 		7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDD5242DD87000F096EC /* KaquanCell.m */; };
 		7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDD8242DF82800F096EC /* ShopCarCell.m */; };
 		7853BDDC2431A1AE00F096EC /* ShopCarManagerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDDB2431A1AE00F096EC /* ShopCarManagerVC.m */; };
+		7853BDE82431E14400F096EC /* libz.1.2.8.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7853BDE72431E14300F096EC /* libz.1.2.8.tbd */; };
+		7853BDEA2431E15000F096EC /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7853BDE92431E15000F096EC /* libc++.1.tbd */; };
+		7853BDF52431E48300F096EC /* TYRZResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7853BDEF2431E48000F096EC /* TYRZResource.bundle */; };
+		7853BDF62431E48300F096EC /* NTESQuickPass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7853BDF02431E48100F096EC /* NTESQuickPass.framework */; };
+		7853BDF72431E48300F096EC /* TYRZSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7853BDF12431E48100F096EC /* TYRZSDK.framework */; };
+		7853BDF82431E48300F096EC /* EAccountApiSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7853BDF22431E48200F096EC /* EAccountApiSDK.framework */; };
+		7853BDF92431E48300F096EC /* OAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7853BDF32431E48300F096EC /* OAuth.framework */; };
+		7853BDFA2431E48300F096EC /* sdk_oauth.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7853BDF42431E48300F096EC /* sdk_oauth.bundle */; };
+		7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -326,7 +335,18 @@
 		7853BDD8242DF82800F096EC /* ShopCarCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarCell.m; sourceTree = "<group>"; };
 		7853BDDA2431A1AE00F096EC /* ShopCarManagerVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarManagerVC.h; sourceTree = "<group>"; };
 		7853BDDB2431A1AE00F096EC /* ShopCarManagerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarManagerVC.m; sourceTree = "<group>"; };
-		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7853BDE72431E14300F096EC /* libz.1.2.8.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.8.tbd; path = usr/lib/libz.1.2.8.tbd; sourceTree = SDKROOT; };
+		7853BDE92431E15000F096EC /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
+		7853BDEF2431E48000F096EC /* TYRZResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TYRZResource.bundle; sourceTree = "<group>"; };
+		7853BDF02431E48100F096EC /* NTESQuickPass.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NTESQuickPass.framework; sourceTree = "<group>"; };
+		7853BDF12431E48100F096EC /* TYRZSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TYRZSDK.framework; sourceTree = "<group>"; };
+		7853BDF22431E48200F096EC /* EAccountApiSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EAccountApiSDK.framework; sourceTree = "<group>"; };
+		7853BDF32431E48300F096EC /* OAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OAuth.framework; sourceTree = "<group>"; };
+		7853BDF42431E48300F096EC /* sdk_oauth.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = sdk_oauth.bundle; sourceTree = "<group>"; };
+		7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESQLHomePageCustomUIModel.m; sourceTree = "<group>"; };
+		7853BDFC2432028E00F096EC /* NTESQLHomePageCustomUIModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESQLHomePageCustomUIModel.h; sourceTree = "<group>"; };
+		7879560D240DE7A50013F95F /* 
+eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "\neduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		78795613240DE7A50013F95F /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
@@ -700,11 +720,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7853BDF92431E48300F096EC /* OAuth.framework in Frameworks */,
+				7853BDEA2431E15000F096EC /* libc++.1.tbd in Frameworks */,
+				7853BDE82431E14400F096EC /* libz.1.2.8.tbd in Frameworks */,
 				78C54968241B642B00A33FC4 /* AliyunPlayer.framework in Frameworks */,
 				78C5496A241B642B00A33FC4 /* AliyunMediaDownloader.framework in Frameworks */,
+				7853BDF72431E48300F096EC /* TYRZSDK.framework in Frameworks */,
+				7853BDF82431E48300F096EC /* EAccountApiSDK.framework in Frameworks */,
 				78C54966241B642B00A33FC4 /* AlivcConan.framework in Frameworks */,
 				78C549EA241B773200A33FC4 /* alivcffmpeg.framework in Frameworks */,
 				FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */,
+				7853BDF62431E48300F096EC /* NTESQuickPass.framework in Frameworks */,
 				78C54969241B642B00A33FC4 /* artpSource.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -827,7 +853,8 @@
 		7879560E240DE7A50013F95F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7879560D240DE7A50013F95F /* EdulineV5.app */,
+				7879560D240DE7A50013F95F /* 
+eduline网校.app */,
 				78795628240DE7AE0013F95F /* EdulineV5Tests.xctest */,
 				78795633240DE7AE0013F95F /* EdulineV5UITests.xctest */,
 			);
@@ -1204,6 +1231,8 @@
 				78C548362416212300A33FC4 /* RegisterAndForgetPwVC.m */,
 				78C548382416213700A33FC4 /* SurePwViewController.h */,
 				78C548392416213700A33FC4 /* SurePwViewController.m */,
+				7853BDFC2432028E00F096EC /* NTESQLHomePageCustomUIModel.h */,
+				7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */,
 				787957632410E72F0013F95F /* LoginRegisterViews */,
 				78C5482E2412469200A33FC4 /* AreaCodeListPlist */,
 			);
@@ -1768,6 +1797,14 @@
 		EAF375583EF6AB065E8A54C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7853BDF22431E48200F096EC /* EAccountApiSDK.framework */,
+				7853BDF02431E48100F096EC /* NTESQuickPass.framework */,
+				7853BDF32431E48300F096EC /* OAuth.framework */,
+				7853BDF42431E48300F096EC /* sdk_oauth.bundle */,
+				7853BDEF2431E48000F096EC /* TYRZResource.bundle */,
+				7853BDF12431E48100F096EC /* TYRZSDK.framework */,
+				7853BDE92431E15000F096EC /* libc++.1.tbd */,
+				7853BDE72431E14300F096EC /* libz.1.2.8.tbd */,
 				9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */,
 			);
 			name = Frameworks;
@@ -1793,7 +1830,8 @@
 			);
 			name = EdulineV5;
 			productName = EdulineV5;
-			productReference = 7879560D240DE7A50013F95F /* EdulineV5.app */;
+			productReference = 7879560D240DE7A50013F95F /* 
+eduline网校.app */;
 			productType = "com.apple.product-type.application";
 		};
 		78795627240DE7AE0013F95F /* EdulineV5Tests */ = {
@@ -1895,7 +1933,9 @@
 				78C54959241B642B00A33FC4 /* results.m4a in Resources */,
 				78C5495A241B642B00A33FC4 /* question.m4a in Resources */,
 				78C549D4241B674F00A33FC4 /* readMe_Config.txt in Resources */,
+				7853BDF52431E48300F096EC /* TYRZResource.bundle in Resources */,
 				78C5495C241B642B00A33FC4 /* AVC_VP_Main.storyboard in Resources */,
+				7853BDFA2431E48300F096EC /* sdk_oauth.bundle in Resources */,
 				78C54953241B642B00A33FC4 /* AVC_VP_PlaySettingVC.xib in Resources */,
 				78C54831241246E400A33FC4 /* AreaNumCode.plist in Resources */,
 			);
@@ -2060,6 +2100,7 @@
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
 				78795723240FA3840013F95F /* ZLCamera.m in Sources */,
 				78C54973241B642B00A33FC4 /* AlivcSplicingRequestParameter.m in Sources */,
+				7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */,
 				7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
@@ -2330,6 +2371,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/EdulineV5/Video_SDK/AlivcSDK/AlivcFramework/AFNewPlayer",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/EdulineV5/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2355,8 +2397,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 5.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.seition.eduline-V5";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
+				PRODUCT_NAME = "\neduline网校";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -2371,6 +2413,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/EdulineV5/Video_SDK/AlivcSDK/AlivcFramework/AFNewPlayer",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/EdulineV5/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2396,8 +2439,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 5.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.seition.eduline-V5";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
+				PRODUCT_NAME = "\neduline网校";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

@@ -685,7 +685,9 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
-    [self.playerView playViewPrepareWithURL:EdulineUrlString(@"https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8")];
+//    http://v5.51eduline.com/test.php
+    //https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8
+    [self.playerView playViewPrepareWithURL:EdulineUrlString(@"http://v5.51eduline.com/test.php")];
     [AppDelegate delegate]._allowRotation = YES;
     [self tableViewCanNotScroll];
 }
