@@ -35,6 +35,7 @@
 		7853BDD3242D964300F096EC /* ShitikaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDD2242D964300F096EC /* ShitikaCell.m */; };
 		7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDD5242DD87000F096EC /* KaquanCell.m */; };
 		7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDD8242DF82800F096EC /* ShopCarCell.m */; };
+		7853BDDC2431A1AE00F096EC /* ShopCarManagerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDDB2431A1AE00F096EC /* ShopCarManagerVC.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -323,6 +324,8 @@
 		7853BDD5242DD87000F096EC /* KaquanCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KaquanCell.m; sourceTree = "<group>"; };
 		7853BDD7242DF82800F096EC /* ShopCarCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarCell.h; sourceTree = "<group>"; };
 		7853BDD8242DF82800F096EC /* ShopCarCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarCell.m; sourceTree = "<group>"; };
+		7853BDDA2431A1AE00F096EC /* ShopCarManagerVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarManagerVC.h; sourceTree = "<group>"; };
+		7853BDDB2431A1AE00F096EC /* ShopCarManagerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarManagerVC.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* EdulineV5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdulineV5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -742,6 +745,8 @@
 				7839C9A22423655A002F6595 /* CourseListVC.m */,
 				7853BDCE242D8F4300F096EC /* ShitikaViewController.h */,
 				7853BDCF242D8F4300F096EC /* ShitikaViewController.m */,
+				7853BDDA2431A1AE00F096EC /* ShopCarManagerVC.h */,
+				7853BDDB2431A1AE00F096EC /* ShopCarManagerVC.m */,
 				7853BDB52428956B00F096EC /* CourseModel */,
 				7839C98A2420D036002F6595 /* CourseCell */,
 				7839C976241F7B25002F6595 /* courseView */,
@@ -2136,6 +2141,7 @@
 				78C5496C241B642B00A33FC4 /* AlivcQuUserManager.m in Sources */,
 				78795756240FAA7A0013F95F /* UIViewController+DismissKeyboard.m in Sources */,
 				78C549C4241B674E00A33FC4 /* AlivcStringConvertTool.m in Sources */,
+				7853BDDC2431A1AE00F096EC /* ShopCarManagerVC.m in Sources */,
 				78795754240FAA7A0013F95F /* NSString+Valid.m in Sources */,
 				78C54935241B642B00A33FC4 /* AVCSelectSharpnessView.m in Sources */,
 				7879575A240FAA7A0013F95F /* UIResponder+Router.m in Sources */,

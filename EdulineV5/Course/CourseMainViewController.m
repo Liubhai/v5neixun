@@ -23,6 +23,7 @@
 
 //
 #import "OrderViewController.h"
+#import "ShopCarManagerVC.h"
 
 #define FaceImageHeight 207
 
@@ -498,7 +499,8 @@
 }
 
 - (void)jumpToShopCarVC:(CourseDownView *)downView {
-    
+    ShopCarManagerVC *vc = [[ShopCarManagerVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)joinShopCarEvent:(CourseDownView *)downView {

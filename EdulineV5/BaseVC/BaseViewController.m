@@ -76,6 +76,7 @@
     
     _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _rightButton.frame = CGRectMake(MainScreenWidth-52, 11, 44, 44);
+    _rightButton.titleLabel.font = SYSTEMFONT(15);
     [_rightButton setTitleColor:[UIColor blueColor] forState:0];
     [_rightButton setImage:Image(@"nav_more_white") forState:0];
     [_rightButton addTarget:self action:@selector(rightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
