@@ -202,7 +202,7 @@
         [dict setObject:@"verify" forKey:@"logintype"];
         [dict setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
         [dict setObject:_loginMsg.codeTextField.text forKey:@"verify"];
-        [dict setObject:@[@"1",@"2"] forKey:@"a"];
+//        [dict setObject:@[@"1",@"2"] forKey:@"a"];
     }
     [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
         NSLog(@"%@",responseObject);

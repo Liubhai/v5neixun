@@ -416,7 +416,6 @@ static EdulineV5_Tool *_sharedInstance;
         } else {
             valueString  = [NSString stringWithFormat:@"%@",[dict objectForKey:sortsing]];
         }
-        
         if(valueString.length>0){
             [valueArray addObject:valueString];
             tempStr=[NSString stringWithFormat:@"%@%@=%@&",tempStr,sortsing,valueString];

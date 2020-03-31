@@ -45,6 +45,7 @@
 		7853BDF92431E48300F096EC /* OAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7853BDF32431E48300F096EC /* OAuth.framework */; };
 		7853BDFA2431E48300F096EC /* sdk_oauth.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7853BDF42431E48300F096EC /* sdk_oauth.bundle */; };
 		7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */; };
+		7853BE002433352E00F096EC /* LingquanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFF2433352D00F096EC /* LingquanViewController.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -345,6 +346,8 @@
 		7853BDF42431E48300F096EC /* sdk_oauth.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = sdk_oauth.bundle; sourceTree = "<group>"; };
 		7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESQLHomePageCustomUIModel.m; sourceTree = "<group>"; };
 		7853BDFC2432028E00F096EC /* NTESQLHomePageCustomUIModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESQLHomePageCustomUIModel.h; sourceTree = "<group>"; };
+		7853BDFE2433352D00F096EC /* LingquanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LingquanViewController.h; sourceTree = "<group>"; };
+		7853BDFF2433352D00F096EC /* LingquanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LingquanViewController.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -833,6 +836,8 @@
 			children = (
 				7853BDCB242C486E00F096EC /* OrderViewController.h */,
 				7853BDCC242C486E00F096EC /* OrderViewController.m */,
+				7853BDFE2433352D00F096EC /* LingquanViewController.h */,
+				7853BDFF2433352D00F096EC /* LingquanViewController.m */,
 			);
 			path = OrderPage;
 			sourceTree = "<group>";
@@ -2146,6 +2151,7 @@
 				7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */,
 				78C54955241B642B00A33FC4 /* AVC_VP_VideoPlayViewController.m in Sources */,
 				78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */,
+				7853BE002433352E00F096EC /* LingquanViewController.m in Sources */,
 				7879573E240FA9B00013F95F /* MBProgressHUD+Add.m in Sources */,
 				78795757240FAA7A0013F95F /* UIView+HUD.m in Sources */,
 				787956D6240F9FCC0013F95F /* STRIAPManager.m in Sources */,

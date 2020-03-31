@@ -10,6 +10,7 @@
 #import "KaquanCell.h"
 #import "ShopCarCell.h"
 #import "V5_Constant.h"
+#import "LingquanViewController.h"
 
 @interface ShopCarManagerVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -130,6 +131,7 @@
     [lingquan setTitle:@"领券" forState:0];
     [lingquan setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     lingquan.titleLabel.font = SYSTEMFONT(13);
+    [lingquan addTarget:self action:@selector(lingquanButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [head addSubview:lingquan];
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 69.5, MainScreenWidth, 0.5)];
     line.backgroundColor = EdlineV5_Color.fengeLineColor;
@@ -181,6 +183,13 @@
         _finalPriceLabel.hidden = NO;
         _submitButton.hidden = NO;
     }
+}
+
+- (void)lingquanButtonClicked:(UIButton *)sender {
+    LingquanViewController *vc = [[LingquanViewController alloc] init];
+    vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+    [self.view addSubview:vc.view];
+    [self addChildViewController:vc];
 }
 
 /*

@@ -13,7 +13,9 @@
 #import "EdulineV5_Tool.h"
 #import "CourseMainViewController.h"
 
-@interface CourseSearchListVC ()
+@interface CourseSearchListVC () {
+    NSInteger page;
+}
 
 @property (strong ,nonatomic) UIView *headerView;
 @property (strong ,nonatomic)UIButton         *classOrLiveButton;
@@ -28,6 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    page = 1;
     _dataSource = [NSMutableArray new];
     _titleLabel.text = @"课程";
     _leftButton.hidden = YES;
@@ -42,7 +45,10 @@
     }
     [self addHeaderView];
     [self makeCollectionView];
-    [self getCourseMainList];
+    _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainList)];
+    _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainListMoreData)];
+    _collectionView.mj_footer.hidden = YES;
+    [_collectionView.mj_header beginRefreshing];
 }
 
 - (void)addHeaderView {
@@ -152,8 +158,23 @@
  */
 
 - (void)getCourseMainList {
-    NSArray *pass = @[@"1",@"2"];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:@{@"a":pass} finish:^(id  _Nonnull responseObject) {
+    page = 1;
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        [_collectionView.mj_header endRefreshing];
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_dataSource removeAllObjects];
+                [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+                [_collectionView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [_collectionView.mj_header endRefreshing];
+    }];
+}
+
+- (void)getCourseMainListMoreData {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];

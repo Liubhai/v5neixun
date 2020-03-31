@@ -10,6 +10,7 @@
 #import "QuickLoginVC.h"
 #import "LoginViewController.h"
 #import "NTESQLHomePageCustomUIModel.h"
+#import "UserModel.h"
 
 //
 //                       _oo0oo_
@@ -61,6 +62,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [UserModel saveAuth_scope:@"app"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     

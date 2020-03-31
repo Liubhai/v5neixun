@@ -39,11 +39,9 @@
     if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
         [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
-        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     }
-    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
-        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
-    }
+    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
@@ -88,12 +86,9 @@
     if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
         [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
-        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     }
-    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
-        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
-    }
-    
+    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
@@ -116,6 +111,8 @@
           NSLog(@"EdulineV4 POST request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
        #endif
        // 失败回调
+       NSData *errorData = [NSData dataWithData:[error.userInfo objectForKey:@"com.alamofire.serialization.response.error.data"]];
+       NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
        enError(error);
    }];
 }
@@ -141,11 +138,9 @@
     if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
         [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
-        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     }
-    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
-        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
-    }
+    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
@@ -196,11 +191,9 @@
     if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
         [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
-        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     }
-    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
-        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
-    }
+    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
@@ -262,11 +255,9 @@
     if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
         [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
-        [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     }
-    if (SWNOTEmptyStr_Api([UserModel userAuth_scope])) {
-        [manager.requestSerializer setValue:[UserModel userAuth_scope] forHTTPHeaderField:@"E-DEVICE-TYPE"];
-    }
+    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
