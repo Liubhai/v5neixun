@@ -18,6 +18,7 @@
 @property (assign, nonatomic) BOOL _allowRotation;
 @property (nonatomic, strong) RootV5VC * tabbar;
 @property (assign, nonatomic) BOOL hasPhone;
+@property (weak, nonatomic) UIViewController *currentViewController;
 
 +(AppDelegate *)delegate;
 

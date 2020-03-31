@@ -140,6 +140,14 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)otherLoginButtonClicked:(UIButton *)sender {
+    if ([NTESQuickLoginManager sharedInstance].model.currentVC) {
+        LoginViewController *vc = [[LoginViewController alloc] init];
+        vc.dissOrPop = NO;
+        [self.navigationController.presentedViewController.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 - (void)loginBtnClick:(UIButton *)sender {
     if (!SWNOTEmptyStr(_phoneLabel.text)) {
         [self showHudInView:self.view showHint:@"暂未获取本机号码"];
@@ -372,20 +380,16 @@
 - (void)setCustomUI {
     NTESQuickLoginCustomModel *model = [NTESQLHomePageCustomUIModel configCustomUIModel];
     model.currentVC = self;
-//    model.bgImage = Image(@"login_logobg");
-//    model.logBtnText = @"确认登录";
-//    model.numberColor = EdlineV5_Color.textFirstColor;
     
-//    model.customViewBlock = ^(UIView * _Nullable customView) {
-//        UIView *bottom = [[UIView alloc] initWithFrame:CGRectMake(0, 300, self.view.bounds.size.width, 100)];
-//        bottom.backgroundColor = [UIColor redColor];
-//        [customView addSubview:bottom];
-//    };
-//    model.customNavBlock = ^(UIView * _Nullable customNavView) {
-//        UIView *bottom = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 30)];
-//        bottom.backgroundColor = [UIColor redColor];
-//        [customNavView addSubview:bottom];
-//    };
+    model.customViewBlock = ^(UIView * _Nullable customView) {
+        UIButton *otherBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 300, 100, 30)];
+        [otherBtn setTitle:@"其他方式登录" forState:0];
+        [otherBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+        otherBtn.titleLabel.font = SYSTEMFONT(14);
+        otherBtn.centerX = MainScreenWidth / 2.0;
+        [otherBtn addTarget:self action:@selector(otherLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [customView addSubview:otherBtn];
+    };
     [[NTESQuickLoginManager sharedInstance] setupModel:model];
 }
 
