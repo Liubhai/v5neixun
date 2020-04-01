@@ -94,31 +94,17 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    static NSString *cellId = @"ShitikaCell";
-//    ShitikaCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-//    if (!cell) {
-//        cell = [[ShitikaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-//    }
-//    cell.delegate = self;
-//    return cell;
-    
-//    static NSString *cellId = @"ShitikaCell";
-//    KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-//    if (!cell) {
-//        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:[NSString stringWithFormat:@"%@",@(indexPath.row + 1)]];
-//    }
-//    return cell;
-    
     static NSString *cellId = @"ShitikaCell";
-    ShopCarCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    ShitikaCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[ShopCarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:YES];
+        cell = [[ShitikaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
+    cell.delegate = self;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 92;//110;//99;
+    return 99;
 }
 
 - (void)usercardButton:(ShitikaCell *)cell {

@@ -12,7 +12,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FindRootViewController : BaseViewController
+@interface FindRootViewController : BaseViewController<UICollectionViewDelegate, UICollectionViewDataSource>
+
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, assign) BOOL cellType;// 一排两个还是一排一个
 
 @end
 

@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "ShitikaViewController.h"
 #import "ShopCarCell.h"
+#import "LingquanViewController.h"
 
 @interface ShopCarManagerFinalVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -232,10 +233,17 @@
 }
 
 - (void)clearBtnClick:(UIButton *)sender {
-    if (sender.tag == 11) {
+    if (sender.tag == 10) {
         ShitikaViewController *vc = [[ShitikaViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)kaquanClearBtnClick:(UIButton *)sender {
+    LingquanViewController *vc = [[LingquanViewController alloc] init];
+    vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+    [self.view addSubview:vc.view];
+    [self addChildViewController:vc];
 }
 
 - (void)seleteAgreementButtonClick:(UIButton *)sender {
@@ -283,7 +291,51 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return nil;
+    UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 80)];
+    footer.backgroundColor = [UIColor whiteColor];
+    UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 40)];
+    youhui.text = @"卡券";
+    youhui.textColor = EdlineV5_Color.textSecendColor;
+    youhui.font = SYSTEMFONT(14);
+    [footer addSubview:youhui];
+    
+    UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
+    themelabel.font = SYSTEMFONT(14);
+    themelabel.textAlignment = NSTextAlignmentRight;
+    [footer addSubview:themelabel];
+    UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
+    icon.backgroundColor = EdlineV5_Color.faildColor;
+    icon.centerY = themelabel.centerY;
+    [footer addSubview:icon];
+    
+    UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
+    clearBtn.backgroundColor = [UIColor clearColor];
+    clearBtn.tag = section;
+    [clearBtn addTarget:self action:@selector(kaquanClearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [footer addSubview:clearBtn];
+    
+    UILabel *sectionFinalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 200 - 15, youhui.bottom, 200, 40)];
+    sectionFinalPriceLabel.textColor = EdlineV5_Color.faildColor;
+    sectionFinalPriceLabel.font = SYSTEMFONT(15);
+    sectionFinalPriceLabel.text = @"合计: ¥190.00";
+    sectionFinalPriceLabel.textAlignment = NSTextAlignmentRight;
+    [footer addSubview:sectionFinalPriceLabel];
+    
+    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:sectionFinalPriceLabel.text];
+    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+    sectionFinalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+    
+    CGFloat finalWidth = [sectionFinalPriceLabel.text sizeWithFont:sectionFinalPriceLabel.font].width + 4;
+    
+    UILabel *sectionYouhuiLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - finalWidth - 16 - 150, 0, 150, 40)];
+    sectionYouhuiLabel.text = @"优惠：¥10.00";
+    sectionYouhuiLabel.font = SYSTEMFONT(13);
+    sectionYouhuiLabel.textAlignment = NSTextAlignmentRight;
+    sectionYouhuiLabel.textColor = EdlineV5_Color.textThirdColor;
+    sectionYouhuiLabel.centerY = sectionFinalPriceLabel.centerY;
+    [footer addSubview:sectionYouhuiLabel];
+    
+    return footer;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -291,7 +343,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.001;
+    return 80.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

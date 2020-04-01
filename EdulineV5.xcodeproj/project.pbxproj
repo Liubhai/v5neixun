@@ -47,6 +47,7 @@
 		7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */; };
 		7853BE002433352E00F096EC /* LingquanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFF2433352D00F096EC /* LingquanViewController.m */; };
 		7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */; };
+		7876572324347DB2008F475D /* FindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572224347DB2008F475D /* FindListCell.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -351,6 +352,8 @@
 		7853BDFF2433352D00F096EC /* LingquanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LingquanViewController.m; sourceTree = "<group>"; };
 		7853BE0124342A0900F096EC /* ShopCarManagerFinalVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarManagerFinalVC.h; sourceTree = "<group>"; };
 		7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarManagerFinalVC.m; sourceTree = "<group>"; };
+		7876572124347DB2008F475D /* FindListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindListCell.h; sourceTree = "<group>"; };
+		7876572224347DB2008F475D /* FindListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindListCell.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -847,6 +850,15 @@
 			path = OrderPage;
 			sourceTree = "<group>";
 		};
+		7876571F24347D9F008F475D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7876572124347DB2008F475D /* FindListCell.h */,
+				7876572224347DB2008F475D /* FindListCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		78795604240DE7A50013F95F = {
 			isa = PBXGroup;
 			children = (
@@ -970,6 +982,7 @@
 			children = (
 				78795664240E605A0013F95F /* FindRootViewController.h */,
 				78795665240E605A0013F95F /* FindRootViewController.m */,
+				7876571F24347D9F008F475D /* View */,
 			);
 			path = FindPage;
 			sourceTree = "<group>";
@@ -2205,6 +2218,7 @@
 				7879573A240FA3840013F95F /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
 				78C5496E241B642B00A33FC4 /* AlivcLiveUser.m in Sources */,
 				7839C9942421B996002F6595 /* CourseCommentDetailVC.m in Sources */,
+				7876572324347DB2008F475D /* FindListCell.m in Sources */,
 				7879564A240E35CE0013F95F /* Net_API.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
