@@ -46,6 +46,7 @@
 		7853BDFA2431E48300F096EC /* sdk_oauth.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7853BDF42431E48300F096EC /* sdk_oauth.bundle */; };
 		7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */; };
 		7853BE002433352E00F096EC /* LingquanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFF2433352D00F096EC /* LingquanViewController.m */; };
+		7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795615240DE7A50013F95F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795614240DE7A50013F95F /* SceneDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
@@ -348,6 +349,8 @@
 		7853BDFC2432028E00F096EC /* NTESQLHomePageCustomUIModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESQLHomePageCustomUIModel.h; sourceTree = "<group>"; };
 		7853BDFE2433352D00F096EC /* LingquanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LingquanViewController.h; sourceTree = "<group>"; };
 		7853BDFF2433352D00F096EC /* LingquanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LingquanViewController.m; sourceTree = "<group>"; };
+		7853BE0124342A0900F096EC /* ShopCarManagerFinalVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarManagerFinalVC.h; sourceTree = "<group>"; };
+		7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarManagerFinalVC.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -775,6 +778,8 @@
 				7853BDCF242D8F4300F096EC /* ShitikaViewController.m */,
 				7853BDDA2431A1AE00F096EC /* ShopCarManagerVC.h */,
 				7853BDDB2431A1AE00F096EC /* ShopCarManagerVC.m */,
+				7853BE0124342A0900F096EC /* ShopCarManagerFinalVC.h */,
+				7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */,
 				7853BDB52428956B00F096EC /* CourseModel */,
 				7839C98A2420D036002F6595 /* CourseCell */,
 				7839C976241F7B25002F6595 /* courseView */,
@@ -2067,6 +2072,7 @@
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				78C549DD241B674F00A33FC4 /* UIResponder+AlivcHelper.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
+				7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
 				78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */,
 				7853BDCD242C486E00F096EC /* OrderViewController.m in Sources */,

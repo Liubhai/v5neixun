@@ -11,6 +11,7 @@
 #import "ShopCarCell.h"
 #import "V5_Constant.h"
 #import "LingquanViewController.h"
+#import "ShopCarManagerFinalVC.h"
 
 @interface ShopCarManagerVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -73,6 +74,7 @@
     _submitButton.layer.masksToBounds = YES;
     _submitButton.layer.cornerRadius = _submitButton.height / 2.0;
     _submitButton.centerY = _allSelectBtn.centerY;
+    [_submitButton addTarget:self action:@selector(submiteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_submitButton];
     
     _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
@@ -190,6 +192,11 @@
     vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
     [self.view addSubview:vc.view];
     [self addChildViewController:vc];
+}
+
+- (void)submiteButtonClick:(UIButton *)sender {
+    ShopCarManagerFinalVC *vc = [[ShopCarManagerFinalVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /*
