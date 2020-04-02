@@ -60,6 +60,8 @@
         NSLog(@"EdulineV4 GET request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
         // 失败回调
+        NSData *errorData = [NSData dataWithData:[error.userInfo objectForKey:@"com.alamofire.serialization.response.error.data"]];
+        NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
         enError(error);
        
    }];

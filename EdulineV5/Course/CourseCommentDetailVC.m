@@ -38,7 +38,7 @@
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     
-    _commentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight)];
+    _commentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA)];
     _commentView.delegate = self;
     [self.view addSubview:_commentView];
     
@@ -155,7 +155,7 @@
 
 - (void)keyboardWillHide:(NSNotification *)notification{
     [_commentView setTop:MainScreenHeight - MACRO_UI_SAFEAREA - CommenViewHeight];
-    [_commentView setHeight:CommenViewHeight];
+    [_commentView setHeight:CommenViewHeight + MACRO_UI_SAFEAREA];
     [_commentView.inputTextView setHeight:CommentInputHeight];
     [_commentBackView setHeight:0.001];
     _commentBackView.hidden = YES;

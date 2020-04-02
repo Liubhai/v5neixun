@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol CourseDownViewDelegate <NSObject>
 
 @optional
+
 - (void)jumpServiceVC:(CourseDownView *)downView;
 - (void)jumpToShopCarVC:(CourseDownView *)downView;
 - (void)joinShopCarEvent:(CourseDownView *)downView;

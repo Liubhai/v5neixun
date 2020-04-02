@@ -266,7 +266,7 @@
 
 // MARK: - 底部视图(咨询、加入购物车、加入学习)
 - (void)makeDownView {
-    _courseDownView = [[CourseDownView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - 50, MainScreenWidth, 50) isRecord:YES];
+    _courseDownView = [[CourseDownView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT, MainScreenWidth, MACRO_UI_TABBAR_HEIGHT) isRecord:YES];
     _courseDownView.delegate = self;
     [self.view addSubview:_courseDownView];
 }
