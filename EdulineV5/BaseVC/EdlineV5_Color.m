@@ -12,6 +12,10 @@
 
 @implementation EdlineV5_Color
 
++ (UIColor *)statebarColor {
+    return [UIColor whiteColor];
+}
+
 /** 基本色 */
 + (UIColor *)baseColor {
     return HEXCOLORV5(0x5191FF);

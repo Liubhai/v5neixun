@@ -210,7 +210,7 @@
     _listFinalModel = model;
     _listModel = model.model;
     
-    _titleLabel.text = model.model.name;
+    _titleLabel.text = model.model.title;
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.model.price];
     
     if ([_allLayar isEqualToString:@"1"]) {

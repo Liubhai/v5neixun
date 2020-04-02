@@ -19,6 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _leftButton.hidden = YES;
     _cellType = YES;
     _dataSource = [NSMutableArray new];
     if (_cellType) {

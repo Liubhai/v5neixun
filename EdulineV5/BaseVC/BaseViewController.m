@@ -51,7 +51,7 @@
     
     _titleImage = [[UIImageView alloc]init];
     _titleImage.frame = CGRectMake(0, 0, MainScreenWidth, 44);
-    _titleImage.backgroundColor = EdlineV5_Color.baseColor;
+    _titleImage.backgroundColor = EdlineV5_Color.statebarColor;
     _titleImage.userInteractionEnabled = YES;
     [self.view addSubview:_titleImage];
     
@@ -60,7 +60,7 @@
     [_titleImage addSubview:_lineTL];
     
     _titleLabel = [[UILabel alloc]init];
-    [_titleLabel setTextColor:[UIColor whiteColor]];
+    [_titleLabel setTextColor:EdlineV5_Color.textFirstColor];
     [_titleLabel setBackgroundColor:[UIColor clearColor]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
     [_titleLabel setFont:[UIFont systemFontOfSize:20.0]];
@@ -70,7 +70,7 @@
     _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _leftButton.frame = CGRectMake(0, 11, 44, 44);
     [_leftButton setTitleColor:BackColor forState:0];
-    [_leftButton setImage:[UIImage imageNamed:@"nav_back_white"] forState:0];
+    [_leftButton setImage:[UIImage imageNamed:@"nav_back_grey"] forState:0];
     [_leftButton addTarget:self action:@selector(leftButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_leftButton];
     

@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EdlineV5_Color : NSObject {
     
 }
+
++ (UIColor *)statebarColor;
+
 /** 基本色 */
 + (UIColor *)baseColor;
 

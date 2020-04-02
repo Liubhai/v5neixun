@@ -13,7 +13,7 @@
 #import "EdulineV5_Tool.h"
 #import "CourseMainViewController.h"
 
-@interface CourseSearchListVC () {
+@interface CourseSearchListVC ()<UITextFieldDelegate> {
     NSInteger page;
 }
 
@@ -22,6 +22,8 @@
 @property (strong ,nonatomic)UIButton         *classTypeButton;
 @property (strong ,nonatomic)UIButton         *moreButton;
 @property (strong ,nonatomic)UIButton         *screeningButton;
+
+@property (strong, nonatomic) UITextField *institutionSearch;
 
 @end
 
@@ -33,9 +35,10 @@
     page = 1;
     _dataSource = [NSMutableArray new];
     _titleLabel.text = @"课程";
+    _titleLabel.hidden = YES;
     _leftButton.hidden = YES;
     _cellType = NO;
-    _rightButton.hidden = NO;
+    _rightButton.hidden = YES;
     if (SWNOTEmptyStr(_themeTitle)) {
         _titleLabel.text = _themeTitle;
         _leftButton.hidden = NO;
@@ -43,12 +46,32 @@
     if (_isSearch) {
         _leftButton.hidden = NO;
     }
+    [self makeTopSearch];
     [self addHeaderView];
     [self makeCollectionView];
     _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainList)];
     _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainListMoreData)];
     _collectionView.mj_footer.hidden = YES;
     [_collectionView.mj_header beginRefreshing];
+}
+
+- (void)makeTopSearch {
+    // 顶部搜索框和 取消按钮
+    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_isSearch ? (_leftButton.right + 15) : 15, _titleLabel.top, MainScreenWidth - 30 - (_isSearch ? _leftButton.right : 0) , 36)];
+    _institutionSearch.font = SYSTEMFONT(14);
+    _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索课程" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+    _institutionSearch.delegate = self;
+    _institutionSearch.returnKeyType = UIReturnKeySearch;
+    _institutionSearch.layer.cornerRadius = 18;
+    _institutionSearch.backgroundColor = EdlineV5_Color.backColor;
+    _institutionSearch.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    _institutionSearch.leftViewMode = UITextFieldViewModeAlways;
+
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(5, 6, 15, 15)];
+    [button setImage:Image(@"home_serch_icon") forState:UIControlStateNormal];
+    [_institutionSearch.leftView addSubview:button];
+    [_titleImage addSubview:_institutionSearch];
 }
 
 - (void)addHeaderView {
@@ -215,6 +238,14 @@
     CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
     vc.isSearch = YES;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string isEqualToString:@"\n"]) {
+        [_institutionSearch resignFirstResponder];
+        return NO;
+    }
+    return YES;
 }
 
 @end
