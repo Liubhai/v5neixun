@@ -10,15 +10,18 @@
 #import "V5_Constant.h"
 #import "CourseListModel.h"
 #import "CourseListModelFinal.h"
+#import "playAnimationView.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class CourseCatalogCell;
 
 @protocol CourseCatalogCellDelegate <NSObject>
 
 @optional
 - (void)listChangeUpAndDown:(UIButton *)sender listModel:(CourseListModelFinal *)model panrentListModel:(CourseListModelFinal *)panrentModel;
 
-- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex;
+- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(CourseCatalogCell *)cell;
 
 @end
 
@@ -42,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *courseRightBtn;
 @property (strong, nonatomic) UIImageView *learnIcon;
 @property (strong, nonatomic) UILabel *learnTimeLabel;
-@property (strong, nonatomic) UIImageView *isLearningIcon;
+@property (strong, nonatomic) playAnimationView *isLearningIcon;
 
 
 

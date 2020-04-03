@@ -59,6 +59,8 @@
 
 - (void)setCourseListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex cellType:(BOOL)cellType {
     _cellType = cellType;
+    [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover"]) placeholderImage:DefaultImage];
+    _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     // 1 点播 2 直播 3 面授 4 专辑
     NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
     if ([courseType isEqualToString:@"1"]) {

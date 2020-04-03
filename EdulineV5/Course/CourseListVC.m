@@ -157,8 +157,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([_courselayer isEqualToString:@"1"]) {
-        if (_delegate && [_delegate respondsToSelector:@selector(playVideo:cellIndex:panrentCellIndex:superCellIndex:)]) {
-            [_delegate playVideo:_courseListArray[indexPath.row] cellIndex:indexPath panrentCellIndex:nil superCellIndex:nil];
+        CourseCatalogCell *cell = (CourseCatalogCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        if (_delegate && [_delegate respondsToSelector:@selector(playVideo:cellIndex:panrentCellIndex:superCellIndex:currentCell:)]) {
+            [_delegate playVideo:_courseListArray[indexPath.row] cellIndex:indexPath panrentCellIndex:nil superCellIndex:nil currentCell:cell];
         }
     }
 }
@@ -299,9 +300,9 @@
     }
 }
 
-- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
-    if (_delegate && [_delegate respondsToSelector:@selector(playVideo:cellIndex:panrentCellIndex:superCellIndex:)]) {
-        [_delegate playVideo:model cellIndex:cellIndex panrentCellIndex:panrentCellIndex superCellIndex:superIndex];
+- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
+    if (_delegate && [_delegate respondsToSelector:@selector(playVideo:cellIndex:panrentCellIndex:superCellIndex:currentCell:)]) {
+        [_delegate playVideo:model cellIndex:cellIndex panrentCellIndex:panrentCellIndex superCellIndex:superIndex currentCell:cell];
     }
 }
 

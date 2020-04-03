@@ -44,7 +44,7 @@
         schoolFace.layer.cornerRadius = 20;
         schoolFace.clipsToBounds = YES;
         schoolFace.contentMode = UIViewContentModeScaleAspectFill;
-        [schoolFace sd_setImageWithURL:[NSURL URLWithString:[_schoolInfo objectForKey:@"cover"]] placeholderImage:Image(@"站位图")];
+        [schoolFace sd_setImageWithURL:[NSURL URLWithString:SWNOTEmptyStr([_schoolInfo objectForKey:@"cover"]) ? [_schoolInfo objectForKey:@"cover"] : @""] placeholderImage:DefaultImage];
         [_teachersHeaderScrollView addSubview:schoolFace];
         UILabel *schoolName = [[UILabel alloc] initWithFrame:CGRectMake(schoolFace.right + 5, 15, 0, 14)];
         schoolName.textColor = EdlineV5_Color.textFirstColor;
@@ -69,12 +69,12 @@
             teacherFace.layer.cornerRadius = 20;
             teacherFace.clipsToBounds = YES;
             teacherFace.contentMode = UIViewContentModeScaleAspectFill;
-            [teacherFace sd_setImageWithURL:[NSURL URLWithString:[_teacherInfoDict objectForKey:@"headimg"]] placeholderImage:Image(@"站位图")];
+            [teacherFace sd_setImageWithURL:[NSURL URLWithString:[_teacherInfoDict objectForKey:@"headimg"]] placeholderImage:DefaultImage];
             [_teachersHeaderScrollView addSubview:teacherFace];
             UILabel *teacherName = [[UILabel alloc] initWithFrame:CGRectMake(teacherFace.right + 5, 15, 0, 14)];
             teacherName.textColor = EdlineV5_Color.textFirstColor;
             teacherName.font = SYSTEMFONT(13);
-            teacherName.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"name"]];
+            teacherName.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"title"]];
             [_teachersHeaderScrollView addSubview:teacherName];
             UILabel *taecherOwn = [[UILabel alloc] initWithFrame:CGRectMake(teacherFace.right + 5, teacherName.bottom, 0, 18)];
             taecherOwn.text = @"主讲老师";

@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol CourseListVCDelegate <NSObject>
 
 @optional
-- (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex;
+- (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(CourseCatalogCell *)cell;
 
 @end
 

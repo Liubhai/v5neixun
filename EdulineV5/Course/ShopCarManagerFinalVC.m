@@ -65,7 +65,7 @@
             _shitikaLabel = themelabel;
         }
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
-        icon.backgroundColor = EdlineV5_Color.faildColor;
+        icon.image = Image(@"list_more");
         icon.centerY = themelabel.centerY;;
         [_otherView addSubview:icon];
         
@@ -304,7 +304,7 @@
     themelabel.textAlignment = NSTextAlignmentRight;
     [footer addSubview:themelabel];
     UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
-    icon.backgroundColor = EdlineV5_Color.faildColor;
+    icon.image = Image(@"list_more");
     icon.centerY = themelabel.centerY;
     [footer addSubview:icon];
     

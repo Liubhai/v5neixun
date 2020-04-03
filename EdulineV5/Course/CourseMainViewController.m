@@ -518,7 +518,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
+- (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell{
     CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
     vc.ID = _ID;
     vc.courselayer = _courselayer;
@@ -550,6 +550,11 @@
             _faceImageView.image = DefaultImage;
         }
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:NO];
+        if (SWNOTEmptyDictionary([_dataSource objectForKey:@"mhm_info"]) || SWNOTEmptyDictionary([_dataSource objectForKey:@"teacher_info"])) {
+            [_teachersHeaderBackView setHeight:59];
+            [_headerView setHeight:_teachersHeaderBackView.bottom];
+        }
+        [_teachersHeaderBackView setTeacherAndOrganizationData:[_dataSource objectForKey:@"mhm_info"] teacherInfo:SWNOTEmptyDictionary([_dataSource objectForKey:@"teacher_info"]) ? [_dataSource objectForKey:@"teacher_info"] : nil];
         _tableView.tableHeaderView = _headerView;
         [self.tableView reloadData];
     }

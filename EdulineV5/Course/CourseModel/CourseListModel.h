@@ -43,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL is_charge;
 @property (strong, nonatomic) NSString *price;
 @property (assign, nonatomic) BOOL status;
+@property (strong, nonatomic) NSString *video_url;
 @property (assign, nonatomic) BOOL has_child;
 
 @end

@@ -22,7 +22,7 @@
 
 - (void)makeSubViews {
     
-    _courseScore = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 33, 22)];
+    _courseScore = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 36, 22)];
     _courseScore.text = @"4.1分";
     _courseScore.textColor = EdlineV5_Color.textzanColor;
     _courseScore.font = SYSTEMFONT(15);

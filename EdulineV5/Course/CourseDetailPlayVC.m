@@ -20,6 +20,9 @@
 #import "CourseIntroductionVC.h"
 #import "CourseListVC.h"
 
+//
+#import "CourseListModelFinal.h"
+
 //播放器
 #import "AliyunVodPlayerView.h"
 #import "AliyunUtil.h"
@@ -684,12 +687,60 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
+- (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
 //    http://v5.51eduline.com/test.php
     //https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8
-    [self.playerView playViewPrepareWithURL:EdulineUrlString(@"http://v5.51eduline.com/test.php")];
+    if (!SWNOTEmptyStr(model.model.video_url)) {
+        return;
+    }
+    for (int i = 0; i<_courseListVC.courseListArray.count; i++) {
+        CourseListModelFinal *model1 = _courseListVC.courseListArray[i];
+        for (int j = 0; j<model1.child.count; j++) {
+            CourseListModelFinal *model2 = model1.child[j];
+            for (int k = 0; k<model2.child.count; k++) {
+                CourseListModelFinal *model3 = model2.child[k];
+                model3.isPlaying = NO;
+                [model2.child replaceObjectAtIndex:k withObject:model3];
+            }
+            model2.isPlaying = NO;
+            [model1.child replaceObjectAtIndex:j withObject:model2];
+        }
+        model1.isPlaying = NO;
+        [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model1];
+    }
+    
+    //刷新数据源
+    if (superIndex) {
+        CourseListModelFinal *supermodel = _courseListVC.courseListArray[superIndex.row];
+        CourseListModelFinal *parentmodel = supermodel.child[panrentCellIndex.row];
+        CourseListModelFinal *model = parentmodel.child[cellIndex.row];
+        model.isPlaying = YES;
+        [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
+        [supermodel.child replaceObjectAtIndex:panrentCellIndex.row withObject:parentmodel];
+        [_courseListVC.courseListArray replaceObjectAtIndex:superIndex.row withObject:supermodel];
+        [_courseListVC.tableView reloadData];
+    } else {
+        if (panrentCellIndex) {
+            CourseListModelFinal *parentmodel = _courseListVC.courseListArray[panrentCellIndex.row];
+            CourseListModelFinal *model = parentmodel.child[cellIndex.row];
+            model.isPlaying = YES;
+            [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
+            [_courseListVC.courseListArray replaceObjectAtIndex:panrentCellIndex.row withObject:parentmodel];
+            [_courseListVC.tableView reloadData];
+        } else {
+            if (cellIndex) {
+                CourseListModelFinal *model = _courseListVC.courseListArray[cellIndex.row];
+                model.isPlaying = YES;
+                [_courseListVC.courseListArray replaceObjectAtIndex:cellIndex.row withObject:model];
+                [_courseListVC.tableView reloadData];
+            }
+        }
+    }
+    
+    [self.playerView playViewPrepareWithURL:EdulineUrlString(model.model.video_url)];
     [AppDelegate delegate]._allowRotation = YES;
-    [self tableViewCanNotScroll];
+//    [self tableViewCanNotScroll];
+    
 }
 
 // MARK: - 横屏权限
@@ -718,7 +769,7 @@
 - (void)canNotScroll {
     _canScroll = NO;
     _canScrollAfterVideoPlay = NO;
-//    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - self.headerView.height;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
     [_tableView reloadData];
 }
 

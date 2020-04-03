@@ -60,12 +60,15 @@
     [_courseRightBtn addTarget:self action:@selector(courseRightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_courseRightBtn];
     
-    _isLearningIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 16, 0, 16, 17)];
+    _isLearningIcon = [[playAnimationView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 16, 0, 16, 17)];
     _isLearningIcon.centerY = 50 / 2.0;
-    _isLearningIcon.image = Image(@"comment_play");
+    _isLearningIcon.image = Image(@"comment_playing");
+    _isLearningIcon.animationImages = @[Image(@"playing1"),Image(@"playing2")];
+    _isLearningIcon.highlightedAnimationImages = @[Image(@"playing1"),Image(@"playing2")];
+    _isLearningIcon.animationDuration = 0.4;
     [self addSubview:_isLearningIcon];
     
-    _learnTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 80, 0, 80, 50)];
+    _learnTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 85, 0, 85, 50)];
     _learnTimeLabel.text = @"学习至00:32:23";
     _learnTimeLabel.font = SYSTEMFONT(11);
     _learnTimeLabel.textAlignment = NSTextAlignmentRight;
@@ -101,6 +104,17 @@
             [_titleLabel setLeft:15];
         } else if ([_courselayer isEqualToString:@"3"]) {
             _courseRightBtn.hidden = YES;
+            if (!_isMainPage) {
+                if (_listFinalModel.isPlaying) {
+                    _learnIcon.hidden = YES;
+                    _learnTimeLabel.hidden = YES;
+                    _isLearningIcon.hidden = NO;
+                } else {
+                    _learnIcon.hidden = NO;
+                    _learnTimeLabel.hidden = NO;
+                    _isLearningIcon.hidden = YES;
+                }
+            }
         }
     } else if ([_allLayar isEqualToString:@"3"]) {
         if ([_courselayer isEqualToString:@"1"] || [_courselayer isEqualToString:@"2"]) {
@@ -116,6 +130,17 @@
         } else if ([_courselayer isEqualToString:@"3"]) {
             _courseRightBtn.hidden = YES;
             _blueView.hidden = YES;
+            if (!_isMainPage) {
+                if (_listFinalModel.isPlaying) {
+                    _learnIcon.hidden = YES;
+                    _learnTimeLabel.hidden = YES;
+                    _isLearningIcon.hidden = NO;
+                } else {
+                    _learnIcon.hidden = NO;
+                    _learnTimeLabel.hidden = NO;
+                    _isLearningIcon.hidden = YES;
+                }
+            }
         }
     }
     
@@ -163,13 +188,15 @@
     } else if ([_courselayer isEqualToString:@"2"]) {
         // 当前cell 类型是第二层样式 那么这个 table 就是最后一层 方可点击
         if ([_allLayar isEqualToString:@"2"]) {
-            if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:)]) {
-                [_delegate playCellVideo:_listFinalModel.child[indexPath.row] currentCellIndex:indexPath panrentCellIndex:_listFinalModel.cellIndex superCellIndex:nil];
+            CourseCatalogCell *cell = (CourseCatalogCell *)[self.cellTableView cellForRowAtIndexPath:indexPath];
+            if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:currentCell:)]) {
+                [_delegate playCellVideo:_listFinalModel.child[indexPath.row] currentCellIndex:indexPath panrentCellIndex:_listFinalModel.cellIndex superCellIndex:nil currentCell:cell];
             }
         } else if ([_allLayar isEqualToString:@"3"]) {
             CourseCatalogCell *cell = (CourseCatalogCell *)self.superview.superview;
-            if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:)]) {
-                [_delegate playCellVideo:_listFinalModel.child[indexPath.row] currentCellIndex:indexPath panrentCellIndex:_listFinalModel.cellIndex superCellIndex:cell.listFinalModel.cellIndex];
+            CourseCatalogCell *currentcell = (CourseCatalogCell *)[self.cellTableView cellForRowAtIndexPath:indexPath];
+            if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:currentCell:)]) {
+                [_delegate playCellVideo:_listFinalModel.child[indexPath.row] currentCellIndex:indexPath panrentCellIndex:_listFinalModel.cellIndex superCellIndex:cell.listFinalModel.cellIndex currentCell:currentcell];
             }
         }
     } else if ([_courselayer isEqualToString:@"3"]) {
@@ -215,6 +242,20 @@
     
     if ([_allLayar isEqualToString:@"1"]) {
         [self setHeight:50];
+        if (!_isMainPage) {
+            [_priceLabel setRight:_learnIcon.left - 5];
+            if (_listFinalModel.isPlaying) {
+                _learnIcon.hidden = YES;
+                _learnTimeLabel.hidden = YES;
+                _isLearningIcon.hidden = NO;
+                [self setAnimation:_isLearningIcon];
+            } else {
+                _learnIcon.hidden = NO;
+                _learnTimeLabel.hidden = NO;
+                _isLearningIcon.hidden = YES;
+                [_isLearningIcon stopAnimating];
+            }
+        }
     } else if ([_allLayar isEqualToString:@"2"]) {
         if ([_courselayer isEqualToString:@"2"]) {
             if (model.isExpanded) {
@@ -228,6 +269,20 @@
             }
         } else if ([_courselayer isEqualToString:@"3"]) {
             [self setHeight:50];
+            if (!_isMainPage) {
+                [_priceLabel setRight:_learnIcon.left - 5];
+                if (_listFinalModel.isPlaying) {
+                    _learnIcon.hidden = YES;
+                    _learnTimeLabel.hidden = YES;
+                    _isLearningIcon.hidden = NO;
+                    [self setAnimation:_isLearningIcon];
+                } else {
+                    _learnIcon.hidden = NO;
+                    _learnTimeLabel.hidden = NO;
+                    _isLearningIcon.hidden = YES;
+                    [_isLearningIcon stopAnimating];
+                }
+            }
         }
     } else if ([_allLayar isEqualToString:@"3"]) {
         if ([_courselayer isEqualToString:@"1"]) {
@@ -266,8 +321,28 @@
             [self setHeight:50];
             [_cellTableView setHeight:0];
             _cellTableView.hidden = YES;
+            if (!_isMainPage) {
+                [_priceLabel setRight:_learnIcon.left - 5];
+                if (_listFinalModel.isPlaying) {
+                    _learnIcon.hidden = YES;
+                    _learnTimeLabel.hidden = YES;
+                    _isLearningIcon.hidden = NO;
+                    [self setAnimation:_isLearningIcon];
+                } else {
+                    _learnIcon.hidden = NO;
+                    _learnTimeLabel.hidden = NO;
+                    _isLearningIcon.hidden = YES;
+                    [_isLearningIcon stopAnimating];
+                }
+            }
         }
     }
+//    if (!_isMainPage) {
+//        _learnIcon.hidden = YES;
+//        _learnTimeLabel.hidden = YES;
+//        _isLearningIcon.hidden = NO;
+//        [_isLearningIcon startAnimating];
+//    }
     [_cellTableView reloadData];
 }
 
@@ -293,14 +368,28 @@
     }
 }
 
-- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex {
-    if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:)]) {
-        [_delegate playCellVideo:model currentCellIndex:cellIndex panrentCellIndex:panrentCellIndex superCellIndex:superIndex];
+- (void)playCellVideo:(CourseListModelFinal *)model currentCellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
+    if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:currentCell:)]) {
+        [_delegate playCellVideo:model currentCellIndex:cellIndex panrentCellIndex:panrentCellIndex superCellIndex:superIndex currentCell:cell];
     }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+}
+
+- (void)setAnimation:(UIImageView *)sender {
+    if (sender.isAnimating) {
+        /// 先暂停再结束是因为有可能属性表现的是正在动画,但是实际上是没做动画.直接调用startAnimation是不会做动画的
+        [sender stopAnimating];
+        [sender startAnimating];
+    } else {
+        [sender startAnimating];
+    }
 }
 
 @end
