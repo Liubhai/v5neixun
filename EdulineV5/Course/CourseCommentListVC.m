@@ -90,7 +90,7 @@
 
 - (void)jumpToCommentVC {
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-    vc.isComment = _cellType;
+    vc.isComment = !_cellType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

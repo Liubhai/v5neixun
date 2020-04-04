@@ -42,6 +42,7 @@
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"提交" forState:0];
     [_rightButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    _rightButton.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     [self makeSubView];

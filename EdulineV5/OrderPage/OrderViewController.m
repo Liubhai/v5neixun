@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _timeLabel.text = @"订单详情";
+    _titleLabel.text = @"订单支付";
     [self makeScrollView];
     [self makeSubView];
     [self makeDownView];

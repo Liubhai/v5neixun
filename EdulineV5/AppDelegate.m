@@ -11,6 +11,7 @@
 #import "LoginViewController.h"
 #import "NTESQLHomePageCustomUIModel.h"
 #import "UserModel.h"
+#import <Bugly/Bugly.h>
 
 //
 //                       _oo0oo_
@@ -45,7 +46,7 @@
 //                  别人笑我忒疯癫，我笑自己命太贱；
 //                  不见满街漂亮妹，哪个归得程序员？
 
-@interface AppDelegate ()
+@interface AppDelegate ()<BuglyDelegate>
 
 @property (weak, nonatomic) NTESQuickLoginManager *quickLoginManager;
 
@@ -62,36 +63,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
     [UserModel saveAuth_scope:@"app"];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
     self.tabbar = [RootV5VC sharedBaseTabBarViewController];
     self.window.rootViewController = self.tabbar;
     [self.window makeKeyAndVisible];
+    [self configureBugly];
     _hasPhone = YES;
     self.quickLoginManager = [NTESQuickLoginManager sharedInstance];
     [self registerQuickLogin];
     return YES;
 }
-
-
-#pragma mark - UISceneSession lifecycle
-
-
-//- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
-//    // Called when a new scene session is being created.
-//    // Use this method to select a configuration to create the new scene with.
-//    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
-//}
-//
-//
-//- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
-//    // Called when the user discards a scene session.
-//    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-//    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-//}
-
 
 +(AppDelegate *)delegate
 {
@@ -153,19 +139,37 @@
     }
 }
 
--(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+
+#else
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+
+#endif
+{
     if (__allowRotation == YES) {
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }
     return UIInterfaceOrientationMaskPortrait;
 }
 
+
+//-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+//    if (__allowRotation == YES) {
+//        return UIInterfaceOrientationMaskAllButUpsideDown;
+//    }
+//    return UIInterfaceOrientationMaskPortrait;
+//}
+
 // MARK: - 手机一键登录
 /// 使用易盾提供的businessID进行初始化业务，回调中返回初始化结果
 - (void)registerQuickLogin {
     // 在使用一键登录之前，请先调用shouldQuickLogin方法，判断当前上网卡的网络环境和运营商是否可以一键登录
     self.shouldQL = [[NTESQuickLoginManager sharedInstance] shouldQuickLogin];
-    
+    NSArray *pass = @[@"1",@"2"];
+//    NSString *poooo = pass[3];
     if (self.shouldQL) {
         [[NTESQuickLoginManager sharedInstance] registerWithBusinessID:WangyiQuickLoginBusenissID timeout:3*1000 configURL:nil extData:nil completion:^(NSDictionary * _Nullable params, BOOL success) {
             if (success) {
@@ -188,7 +192,7 @@
     [[NTESQuickLoginManager sharedInstance] getPhoneNumberCompletion:^(NSDictionary * _Nonnull resultDic) {
         NSNumber *boolNum = [resultDic objectForKey:@"success"];
         BOOL success = [boolNum boolValue];
-        _hasPhone = success;
+        self->_hasPhone = success;
     }];
 }
 
@@ -355,6 +359,35 @@
             }];
         }
     }
+}
+
+//Bugly
+- (void)configureBugly {
+    BuglyConfig *config = [[BuglyConfig alloc] init];
+    
+    config.unexpectedTerminatingDetectionEnable = YES; //非正常退出事件记录开关，默认关闭
+    config.reportLogLevel = BuglyLogLevelWarn; //报告级别
+    config.deviceIdentifier = [UIDevice currentDevice].identifierForVendor.UUIDString; //设备标识
+    config.blockMonitorEnable = YES; //开启卡顿监控
+    config.blockMonitorTimeout = 5; //卡顿监控判断间隔，单位为秒
+    config.delegate = self;
+    
+#if DEBUG
+    config.debugMode = YES; //SDK Debug信息开关, 默认关闭
+    config.channel = @"debug";
+#else
+    config.channel = @"release";
+#endif
+    
+    [Bugly startWithAppId:@"433cae6801"
+#if DEBUG
+        developmentDevice:YES
+#endif
+                   config:config];
+}
+
+- (NSString * BLY_NULLABLE)attachmentForException:(NSException * BLY_NULLABLE)exception {
+    return [NSString stringWithFormat:@"exceptionInfo:\nname:%@\nreason:%@",exception.name,exception.reason];
 }
 
 @end

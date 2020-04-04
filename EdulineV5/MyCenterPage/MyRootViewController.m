@@ -20,6 +20,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor greenColor];
     _titleLabel.text = @"个人中心";
+    _leftButton.hidden = YES;
     // Do any additional setup after loading the view.
 }
 

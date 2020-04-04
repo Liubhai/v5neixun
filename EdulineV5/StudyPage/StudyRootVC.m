@@ -18,6 +18,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor redColor];
     _titleLabel.text = @"学习";
+    _leftButton.hidden = YES;
 }
 
 /*

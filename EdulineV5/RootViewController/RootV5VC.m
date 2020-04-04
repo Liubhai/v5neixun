@@ -45,20 +45,21 @@ static RootV5VC *sharedBaseTabBar;
     courseVC.notHiddenNav = YES;
     courseVC.isSearch = NO;
     UINavigationController *courseNav = [[UINavigationController alloc] initWithRootViewController:courseVC];
-    
+
     FindRootViewController *findVC = [[FindRootViewController alloc] init];
     findVC.notHiddenNav = YES;
     UINavigationController *findNav = [[UINavigationController alloc] initWithRootViewController:findVC];
-    
+
     StudyRootVC *studyVC = [[StudyRootVC alloc] init];
     studyVC.notHiddenNav = YES;
     UINavigationController *studyNav = [[UINavigationController alloc] initWithRootViewController:studyVC];
-    
+
     MyRootViewController *myVC = [[MyRootViewController alloc]init];
     myVC.notHiddenNav = YES;
     UINavigationController *myNav = [[UINavigationController alloc]initWithRootViewController:myVC];
     
     self.viewControllers = [NSArray arrayWithObjects:homeNav,courseNav,findNav,studyNav,myNav, nil];
+    
     
     _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, MainScreenHeight - 49 - MACRO_UI_SAFEAREA, self.view.frame.size.width, 49 + MACRO_UI_SAFEAREA)];
     _imageView.tag = 100;

@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - Bugly (2.5.2)
   - FMDB (2.7):
     - FMDB/standard (= 2.7)
   - FMDB/standard (2.7)
@@ -38,6 +39,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (= 3.2.1)
+  - Bugly
   - FMDB (from `https://github.com/ccgus/fmdb.git`, tag `2.7`)
   - JSONModel (~> 1.7.0)
   - LBXScan/LBXNative (~> 2.3)
@@ -54,6 +56,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
+    - Bugly
     - JSONModel
     - LBXScan
     - LXReorderableCollectionViewFlowLayout
@@ -77,6 +80,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  Bugly: dbac48b55ad469a97cc4321045cd50df8f63d44f
   FMDB: 115114e988a7c92a5191f1334c46c99b0a477700
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   LBXScan: e51449f0832d1fe17da632af0d22adeb3cfa3543
@@ -89,6 +93,6 @@ SPEC CHECKSUMS:
   TZImagePickerController: 821b81f83594a736e831a018f2a2ce31822ddf0b
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 63f773f7409bbb808f33244dd91167de345cdb3a
+PODFILE CHECKSUM: 686a887fba0322b0ea5c40fa4a25ae75c1d8fe44
 
 COCOAPODS: 1.5.3
