@@ -78,8 +78,8 @@
 #define WXAppId @"wxbbb961a0b0bf577a"
 #define WXAppSecret @"7ea0101aeabd53bc32859370cde278cc"
 // QQ分享
-#define QQAppId @"101400042"
-#define QQAppSecret @"a85c2fcd67839693d5c0bf13bec84779"
+#define QQAppId @"101864714"
+#define QQAppSecret @"a5ced4fcf5a1b8dab7404e817b31cb56"
 // 新浪分享
 #define SinaAppId @"3997129963"
 #define SinaAppSecret @"da07bcf6c9f30281e684f8abfd0b4fca"

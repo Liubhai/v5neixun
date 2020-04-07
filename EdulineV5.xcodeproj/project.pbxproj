@@ -111,6 +111,11 @@
 		787957622410E1F40013F95F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957612410E1F40013F95F /* LoginViewController.m */; };
 		787957672410E7700013F95F /* LoginPwView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957662410E7700013F95F /* LoginPwView.m */; };
 		7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957692410F96A0013F95F /* ThirdLoginView.m */; };
+		78AA1353243C211B007087F7 /* CourseTypeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA1352243C211B007087F7 /* CourseTypeVC.m */; };
+		78AA1356243C214D007087F7 /* CourseClassifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA1355243C214D007087F7 /* CourseClassifyVC.m */; };
+		78AA1359243C2278007087F7 /* CourseSortVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA1358243C2278007087F7 /* CourseSortVC.m */; };
+		78AA135C243C22B8007087F7 /* CourseScreenVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA135B243C22B8007087F7 /* CourseScreenVC.m */; };
+		78AA135F243C254B007087F7 /* CourseCommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA135E243C254B007087F7 /* CourseCommonCell.m */; };
 		78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548262411F34100A33FC4 /* LoginMsgView.m */; };
 		78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548292412229900A33FC4 /* AreaNumListVC.m */; };
 		78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */; };
@@ -487,6 +492,16 @@
 		787957662410E7700013F95F /* LoginPwView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginPwView.m; sourceTree = "<group>"; };
 		787957682410F96A0013F95F /* ThirdLoginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThirdLoginView.h; sourceTree = "<group>"; };
 		787957692410F96A0013F95F /* ThirdLoginView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdLoginView.m; sourceTree = "<group>"; };
+		78AA1351243C211B007087F7 /* CourseTypeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseTypeVC.h; sourceTree = "<group>"; };
+		78AA1352243C211B007087F7 /* CourseTypeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTypeVC.m; sourceTree = "<group>"; };
+		78AA1354243C214D007087F7 /* CourseClassifyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseClassifyVC.h; sourceTree = "<group>"; };
+		78AA1355243C214D007087F7 /* CourseClassifyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseClassifyVC.m; sourceTree = "<group>"; };
+		78AA1357243C2278007087F7 /* CourseSortVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseSortVC.h; sourceTree = "<group>"; };
+		78AA1358243C2278007087F7 /* CourseSortVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseSortVC.m; sourceTree = "<group>"; };
+		78AA135A243C22B8007087F7 /* CourseScreenVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseScreenVC.h; sourceTree = "<group>"; };
+		78AA135B243C22B8007087F7 /* CourseScreenVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseScreenVC.m; sourceTree = "<group>"; };
+		78AA135D243C254B007087F7 /* CourseCommonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCommonCell.h; sourceTree = "<group>"; };
+		78AA135E243C254B007087F7 /* CourseCommonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCommonCell.m; sourceTree = "<group>"; };
 		78C548252411F34100A33FC4 /* LoginMsgView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginMsgView.h; sourceTree = "<group>"; };
 		78C548262411F34100A33FC4 /* LoginMsgView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginMsgView.m; sourceTree = "<group>"; };
 		78C548282412229900A33FC4 /* AreaNumListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaNumListVC.h; sourceTree = "<group>"; };
@@ -882,6 +897,8 @@
 			children = (
 				7876572E2435DC81008F475D /* SearchHistoryListCell.h */,
 				7876572F2435DC81008F475D /* SearchHistoryListCell.m */,
+				78AA135D243C254B007087F7 /* CourseCommonCell.h */,
+				78AA135E243C254B007087F7 /* CourseCommonCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1000,6 +1017,14 @@
 				7876572A2435D53A008F475D /* CourseSearchHistoryVC.m */,
 				7853BDBA2428A14500F096EC /* CourseSearchListVC.h */,
 				7853BDBB2428A14500F096EC /* CourseSearchListVC.m */,
+				78AA1351243C211B007087F7 /* CourseTypeVC.h */,
+				78AA1352243C211B007087F7 /* CourseTypeVC.m */,
+				78AA1354243C214D007087F7 /* CourseClassifyVC.h */,
+				78AA1355243C214D007087F7 /* CourseClassifyVC.m */,
+				78AA1357243C2278007087F7 /* CourseSortVC.h */,
+				78AA1358243C2278007087F7 /* CourseSortVC.m */,
+				78AA135A243C22B8007087F7 /* CourseScreenVC.h */,
+				78AA135B243C22B8007087F7 /* CourseScreenVC.m */,
 				7876572C2435DC70008F475D /* View */,
 			);
 			path = CoursePage;
@@ -2112,6 +2137,7 @@
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				78C549DD241B674F00A33FC4 /* UIResponder+AlivcHelper.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
+				78AA1359243C2278007087F7 /* CourseSortVC.m in Sources */,
 				7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
 				78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */,
@@ -2121,6 +2147,7 @@
 				787657282435C79E008F475D /* StudyRootVC.m in Sources */,
 				78C549D2241B674E00A33FC4 /* AlivcUIConfig.m in Sources */,
 				78C5493D241B642B00A33FC4 /* AliyunUtil.m in Sources */,
+				78AA1353243C211B007087F7 /* CourseTypeVC.m in Sources */,
 				78C54978241B642B00A33FC4 /* AlivcLiveTransitionController.m in Sources */,
 				78C5497F241B642B00A33FC4 /* AlivcBeautySettingUIDefine.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
@@ -2136,6 +2163,7 @@
 				78C54933241B642B00A33FC4 /* AVCSlider.m in Sources */,
 				78C5494F241B642B00A33FC4 /* AliyunViewMoreView.m in Sources */,
 				78C54979241B642B00A33FC4 /* _AlivcLiveBeautifySliderView.m in Sources */,
+				78AA1356243C214D007087F7 /* CourseClassifyVC.m in Sources */,
 				7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */,
 				78C54957241B642B00A33FC4 /* AVC_VP_PlaySettingVC.m in Sources */,
 				78C5494C241B642B00A33FC4 /* AliyunPlayerViewSlider.m in Sources */,
@@ -2161,6 +2189,7 @@
 				7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */,
 				78795650240E3FB60013F95F /* EdulineV5_Tool.m in Sources */,
 				78C5496D241B642B00A33FC4 /* AlivcUserInfoManager.m in Sources */,
+				78AA135F243C254B007087F7 /* CourseCommonCell.m in Sources */,
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
 				78C54965241B642B00A33FC4 /* AVCVideoConfig.m in Sources */,
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
@@ -2240,6 +2269,7 @@
 				7879575A240FAA7A0013F95F /* UIResponder+Router.m in Sources */,
 				78C549D7241B674F00A33FC4 /* AlivcBaseNavigationController+aliyun_autorotate.m in Sources */,
 				78C54937241B642B00A33FC4 /* AVCLogView.m in Sources */,
+				78AA135C243C22B8007087F7 /* CourseScreenVC.m in Sources */,
 				78795735240FA3840013F95F /* ZLPhotoPickerViewController.m in Sources */,
 				78795755240FAA7A0013F95F /* NSString+Hashing.m in Sources */,
 				78C54954241B642B00A33FC4 /* AVC_VP_BaseViewController.m in Sources */,

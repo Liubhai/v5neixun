@@ -13,6 +13,12 @@
 #import "EdulineV5_Tool.h"
 #import "CourseMainViewController.h"
 
+//分类
+#import "CourseTypeVC.h"
+#import "CourseSortVC.h"
+#import "CourseScreenVC.h"
+#import "CourseClassifyVC.h"
+
 @interface CourseSearchListVC ()<UITextFieldDelegate> {
     NSInteger page;
 }
@@ -211,26 +217,59 @@
 }
 
 - (void)headerButtonCilck:(UIButton *)button {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
     if (button == _classOrLiveButton) {
         _classOrLiveButton.selected = !_classOrLiveButton.selected;
         _classTypeButton.selected = NO;
         _moreButton.selected = NO;
         _screeningButton.selected = NO;
+        if (_classOrLiveButton.selected) {
+            CourseTypeVC *vc = [[CourseTypeVC alloc] init];
+            vc.notHiddenNav = YES;
+            vc.isMainPage = !_isSearch;
+            vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
+            [self.view addSubview:vc.view];
+            [self addChildViewController:vc];
+        }
     } else if (button == _classTypeButton) {
         _classTypeButton.selected = !_classTypeButton.selected;
         _classOrLiveButton.selected = NO;
         _moreButton.selected = NO;
         _screeningButton.selected = NO;
+        if (_classTypeButton.selected) {
+            CourseClassifyVC *vc = [[CourseClassifyVC alloc] init];
+            vc.notHiddenNav = YES;
+            vc.isMainPage = !_isSearch;
+            vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
+            [self.view addSubview:vc.view];
+            [self addChildViewController:vc];
+        }
     } else if (button == _moreButton) {
         _moreButton.selected = !_moreButton.selected;
         _classOrLiveButton.selected = NO;
         _classTypeButton.selected = NO;
         _screeningButton.selected = NO;
+        if (_moreButton.selected) {
+            CourseSortVC *vc = [[CourseSortVC alloc] init];
+            vc.notHiddenNav = YES;
+            vc.isMainPage = !_isSearch;
+            vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
+            [self.view addSubview:vc.view];
+            [self addChildViewController:vc];
+        }
     } else if (button == _screeningButton) {
         _screeningButton.selected = !_screeningButton.selected;
         _classOrLiveButton.selected = NO;
         _classTypeButton.selected = NO;
         _moreButton.selected = NO;
+        if (_screeningButton.selected) {
+            CourseScreenVC *vc = [[CourseScreenVC alloc] init];
+            vc.notHiddenNav = YES;
+            vc.isMainPage = !_isSearch;
+            vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
+            [self.view addSubview:vc.view];
+            [self addChildViewController:vc];
+        }
     }
 }
 

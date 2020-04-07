@@ -137,8 +137,8 @@ static RootV5VC *sharedBaseTabBar;
     self.seledButton.selected = NO;
     btn.selected = YES;
     self.seledButton = btn;
-    if (btn.tag == 4) {
-//        [AppDelegate presentLoginNav:sharedBaseTabBar.viewControllers.lastObject];
+    if (btn.tag == 5) {
+        [AppDelegate presentLoginNav:sharedBaseTabBar.viewControllers.lastObject];
     }
 }
 
