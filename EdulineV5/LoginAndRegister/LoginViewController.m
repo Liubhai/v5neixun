@@ -17,7 +17,12 @@
 #import "UserModel.h"
 #import "SurePwViewController.h"
 
-@interface LoginViewController ()<LoginMsgViewDelegate> {
+#import <UMCommon/UMCommon.h>
+#import <UMShare/UMShare.h>
+#import <UMSocialQQHandler.h>
+
+
+@interface LoginViewController ()<LoginMsgViewDelegate,ThirdLoginViewDelegate> {
     NSTimer *codeTimer;
     int remainTime;
 }
@@ -97,6 +102,7 @@
     [self.view addSubview:_loginBtn];
     
     _thirdLoginView = [[ThirdLoginView alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 32, MainScreenWidth, 90)];
+    _thirdLoginView.delegate = self;
     [self.view addSubview:_thirdLoginView];
     
 }
@@ -153,10 +159,22 @@
 
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
-    [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
-    remainTime = 59;
-    sender.enabled = NO;
-    codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+    if (_loginMsg.phoneNumTextField.text.length<11) {
+        [self showHudInView:self.view showHint:@"请正确填写手机号"];
+        return;
+    }
+    [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:@{@"phone":_loginMsg.phoneNumTextField.text,@"type":@"login"} finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
+                remainTime = 59;
+                sender.enabled = NO;
+                codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 - (void)registerButtonClick:(UIButton *)sender {
@@ -190,6 +208,10 @@
     [self.view endEditing:YES];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     if (_pwLoginBtn.selected) {
+        if (_loginPw.accountTextField.text.length<=0) {
+            [self showHudInView:self.view showHint:@"用户名不能为空"];
+            return;
+        }
         if (![EdulineV5_Tool validatePassWord:_loginPw.pwTextField.text]) {
             [self showHudInView:self.view showHint:@"请输入正确格式的密码"];
             return;
@@ -199,10 +221,17 @@
         [dict setObject:_loginPw.pwTextField.text forKey:@"password"];
     }
     if (_msgLoginBtn.selected) {
+        if (_loginMsg.phoneNumTextField.text.length<11) {
+            [self showHudInView:self.view showHint:@"请正确填写手机号"];
+            return;
+        }
+        if (_loginMsg.codeTextField.text.length<=0) {
+            [self showHudInView:self.view showHint:@"请输入验证码"];
+            return;
+        }
         [dict setObject:@"verify" forKey:@"logintype"];
         [dict setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
         [dict setObject:_loginMsg.codeTextField.text forKey:@"verify"];
-//        [dict setObject:@[@"1",@"2"] forKey:@"a"];
     }
     [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
         NSLog(@"%@",responseObject);
@@ -248,6 +277,30 @@
         remainTime = 59;
         self.loginMsg.senderCodeBtn.enabled = YES;
         [self.loginMsg.senderCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
+    }
+}
+
+// MARK: - 其他login
+- (void)loginButtonClickKKK:(UIButton *)sender {
+    if (sender.tag == 10) {
+        [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_QQ currentViewController:self completion:^(id result, NSError *error) {
+            if (!error) {
+                UMSocialUserInfoResponse *resp = result;
+                // 第三方登录数据(为空表示平台未提供)
+                // 授权数据
+                NSLog(@" uid: %@", resp.uid);
+                NSLog(@" openid: %@", resp.openid);
+                NSLog(@" accessToken: %@", resp.accessToken);
+                NSLog(@" refreshToken: %@", resp.refreshToken);
+                NSLog(@" expiration: %@", resp.expiration);
+                // 用户数据
+                NSLog(@" name: %@", resp.name);
+                NSLog(@" iconurl: %@", resp.iconurl);
+                NSLog(@" gender: %@", resp.unionGender);
+                // 第三方平台SDK原始数据
+                NSLog(@" originalResponse: %@", resp.originalResponse);
+            }
+        }];
     }
 }
 

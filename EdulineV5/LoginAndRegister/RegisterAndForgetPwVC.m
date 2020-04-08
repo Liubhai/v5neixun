@@ -70,10 +70,23 @@
 
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
-    [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
-    remainTime = 59;
-    sender.enabled = NO;
-    codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+    if (_loginMsg.phoneNumTextField.text.length<11) {
+        [self showHudInView:self.view showHint:@"请正确填写手机号"];
+        return;
+    }
+    // reset 重置密码
+    [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:@{@"phone":_loginMsg.phoneNumTextField.text,@"type":(_registerOrForget ? @"login" : @"refund")} finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
+                remainTime = 59;
+                sender.enabled = NO;
+                codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 - (void)nextButtonClick:(UIButton *)sender {

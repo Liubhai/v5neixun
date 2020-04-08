@@ -68,4 +68,15 @@
     return [Net_Path fullPath:@"/course/base/list" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)smsCodeSend {
+    return [Net_Path fullPath:@"sms/verify" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)coursetypeList {
+    return [Net_Path fullPath:@"course/base/type" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)courseClassifyList {
+    return [Net_Path fullPath:@"course/base/category/tree" repalce:@"" byReplece:@""];
+}
 @end

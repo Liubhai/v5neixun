@@ -19,8 +19,14 @@
 #import "CourseScreenVC.h"
 #import "CourseClassifyVC.h"
 
-@interface CourseSearchListVC ()<UITextFieldDelegate> {
+@interface CourseSearchListVC ()<UITextFieldDelegate,CourseTypeVCDelegate,CourseClassifyVCDelegate> {
     NSInteger page;
+    
+    NSString *coursetypeString;
+    NSString *coursetypeIdString;
+    
+    NSString *courseClassifyString;
+    NSString *courseClassifyIdString;
 }
 
 @property (strong ,nonatomic) UIView *headerView;
@@ -227,6 +233,10 @@
             CourseTypeVC *vc = [[CourseTypeVC alloc] init];
             vc.notHiddenNav = YES;
             vc.isMainPage = !_isSearch;
+            vc.delegate = self;
+            if (SWNOTEmptyStr(coursetypeIdString)) {
+                vc.typeId = coursetypeIdString;
+            }
             vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
             [self.view addSubview:vc.view];
             [self addChildViewController:vc];
@@ -239,7 +249,11 @@
         if (_classTypeButton.selected) {
             CourseClassifyVC *vc = [[CourseClassifyVC alloc] init];
             vc.notHiddenNav = YES;
+            vc.delegate = self;
             vc.isMainPage = !_isSearch;
+            if (SWNOTEmptyStr(courseClassifyIdString)) {
+                vc.typeId = courseClassifyIdString;
+            }
             vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
             [self.view addSubview:vc.view];
             [self addChildViewController:vc];
@@ -285,6 +299,28 @@
         return NO;
     }
     return YES;
+}
+
+- (void)chooseCourseType:(NSDictionary *)info {
+    if (SWNOTEmptyDictionary(info)) {
+        coursetypeString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+        coursetypeIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
+        _classOrLiveButton.selected = NO;
+        [_classOrLiveButton setTitle:coursetypeString forState:0];
+        [EdulineV5_Tool dealButtonImageAndTitleUI:_classOrLiveButton];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    }
+}
+
+- (void)chooseCourseClassify:(NSDictionary *)info {
+    if (SWNOTEmptyDictionary(info)) {
+        courseClassifyString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+        courseClassifyIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
+        _classTypeButton.selected = NO;
+        [_classTypeButton setTitle:courseClassifyString forState:0];
+        [EdulineV5_Tool dealButtonImageAndTitleUI:_classTypeButton];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    }
 }
 
 @end

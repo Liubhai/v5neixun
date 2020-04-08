@@ -57,6 +57,14 @@ struct NetWorkUrl {
 /** 课程主页课程列表 */
 + (NSString *)courseMainList;
 
+/** 短信验证码 */
++ (NSString *)smsCodeSend;
+
+/** 课程种类 */
++ (NSString *)coursetypeList;
+
+/** 课程f分类 */
++ (NSString *)courseClassifyList;
 @end
 
 NS_ASSUME_NONNULL_END

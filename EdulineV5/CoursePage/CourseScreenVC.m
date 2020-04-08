@@ -37,7 +37,7 @@
 }
 
 - (void)makeSubViews {
-    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 340)];
+    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 77 + 32 + 60)];//340
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_mainScrollView];
     

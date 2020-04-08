@@ -33,7 +33,7 @@
 
 - (void)setCourseCommonCellInfo:(NSDictionary *)info searchKeyWord:(NSString *)searchKeyWord {
     _themeLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
-    if ([_themeLabel.text isEqualToString:searchKeyWord]) {
+    if ([[NSString stringWithFormat:@"%@",[info objectForKey:@"id"]] isEqualToString:searchKeyWord]) {
         _themeLabel.textColor = EdlineV5_Color.themeColor;
     } else {
         _themeLabel.textColor = EdlineV5_Color.textFirstColor;

@@ -33,6 +33,33 @@ PODS:
     - SDWebImage/Core (= 5.3.0)
   - SDWebImage/Core (5.3.0)
   - TZImagePickerController (3.2.7)
+  - UMCCommon (2.1.1)
+  - UMCShare/Core (6.9.6):
+    - UMCCommon
+  - UMCShare/Social/QQ (6.9.6):
+    - UMCCommon
+    - UMCShare/Core
+    - UMCShare/Social/ReducedQQ
+  - UMCShare/Social/ReducedQQ (6.9.6):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedSina (6.9.6):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedWeChat (6.9.6):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/Sina (6.9.6):
+    - UMCCommon
+    - UMCShare/Core
+    - UMCShare/Social/ReducedSina
+  - UMCShare/Social/WeChat (6.9.6):
+    - UMCCommon
+    - UMCShare/Core
+    - UMCShare/Social/ReducedWeChat
+  - UMCShare/UI (6.9.6):
+    - UMCCommon
+    - UMCShare/Core
   - YYKit (1.0.9):
     - YYKit/no-arc (= 1.0.9)
   - YYKit/no-arc (1.0.9)
@@ -51,6 +78,11 @@ DEPENDENCIES:
   - MJRefresh (= 3.2.2)
   - SDWebImage (= 5.3.0)
   - TZImagePickerController (= 3.2.7)
+  - UMCCommon
+  - UMCShare/Social/QQ
+  - UMCShare/Social/Sina
+  - UMCShare/Social/WeChat
+  - UMCShare/UI
   - YYKit (= 1.0.9)
 
 SPEC REPOS:
@@ -66,6 +98,8 @@ SPEC REPOS:
     - MJRefresh
     - SDWebImage
     - TZImagePickerController
+    - UMCCommon
+    - UMCShare
     - YYKit
 
 EXTERNAL SOURCES:
@@ -91,8 +125,10 @@ SPEC CHECKSUMS:
   MJRefresh: 72a46ecaa2a0feaf48fc5198dff95f25f8bb27c6
   SDWebImage: f1afa74b86587c2c63f4e80dfd39b21e3c17b45b
   TZImagePickerController: 821b81f83594a736e831a018f2a2ce31822ddf0b
+  UMCCommon: 971f324a5a99c9d662ae040a815e7e3d7ef8b2a8
+  UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 686a887fba0322b0ea5c40fa4a25ae75c1d8fe44
+PODFILE CHECKSUM: 2d886cc3e6d4f7d33942e5571c104d06ccabb26f
 
 COCOAPODS: 1.5.3

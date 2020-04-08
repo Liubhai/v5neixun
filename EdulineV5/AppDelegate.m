@@ -12,6 +12,9 @@
 #import "NTESQLHomePageCustomUIModel.h"
 #import "UserModel.h"
 #import <Bugly/Bugly.h>
+#import <UMCommon/UMCommon.h>
+#import <UMShare/UMShare.h>
+#import <UMShare/UMSocialManager.h>
 
 //
 //                       _oo0oo_
@@ -73,6 +76,11 @@
     self.window.rootViewController = self.tabbar;
     [self.window makeKeyAndVisible];
     [self configureBugly];
+    // 分享
+    // U-Share 平台设置
+    [UMConfigure initWithAppkey:@"574e8829e0f55a12f8001790" channel:@"App Store"];
+    [self confitUShareSettings];
+    [self configUSharePlatforms];
     _hasPhone = YES;
     self.quickLoginManager = [NTESQuickLoginManager sharedInstance];
     [self registerQuickLogin];
@@ -155,6 +163,32 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+//使用第三方登录需要重写下面两个方法
+
+// 支持所有iOS系统
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    //6.3的新的API调用，是为了兼容国外平台(例如:新版facebookSDK,VK等)的调用[如果用6.2的api调用会没有回调],对国内平台没有影响
+    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url sourceApplication:sourceApplication annotation:annotation];
+    if (result == FALSE) {
+        //如果极简 SDK 不可用,会跳转支付宝钱包进行支付,需要将支付宝钱包的支付结果回传给 SDK
+        if ([url.host isEqualToString:@"safepay"]) {
+            return YES;
+        }else if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
+            return YES;
+        }
+    }
+    return result;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
+    if (!result) {
+        // 其他如支付等SDK的回调
+    }
+    return result;
+}
 
 //-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
 //    if (__allowRotation == YES) {
@@ -388,6 +422,46 @@
 
 - (NSString * BLY_NULLABLE)attachmentForException:(NSException * BLY_NULLABLE)exception {
     return [NSString stringWithFormat:@"exceptionInfo:\nname:%@\nreason:%@",exception.name,exception.reason];
+}
+
+- (void)confitUShareSettings
+{
+    /*
+     * 打开图片水印
+     */
+    //[UMSocialGlobal shareInstance].isUsingWaterMark = YES;
+    /*
+     * 关闭强制验证https，可允许http图片分享，但需要在info.plist设置安全域名
+     <key>NSAppTransportSecurity</key>
+     <dict>
+     <key>NSAllowsArbitraryLoads</key>
+     <true/>
+     </dict>
+     */
+    //[UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
+        //配置微信平台的Universal Links
+    //微信和QQ完整版会校验合法的universalLink，不设置会在初始化平台失败
+    
+//    [UMSocialGlobal shareInstance].universalLinkDic = @{@(UMSocialPlatformType_WechatSession):@"https://umplus-sdk-download.oss-cn-shanghai.aliyuncs.com/", @(UMSocialPlatformType_QQ):@"https://umplus-sdk-download.oss-cn-shanghai.aliyuncs.com/qq_conn/101830139"};
+}
+- (void)configUSharePlatforms
+{
+    /* 设置微信的appKey和appSecret */
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:@"wxdc1e388c3822c80b" appSecret:@"3baf1193c85774b3fd9d18447d76cab0" redirectURL:@"http://mobile.umeng.com/social"];
+//    /*设置小程序回调app的回调*/
+//        [[UMSocialManager defaultManager] setLauchFromPlatform:(UMSocialPlatformType_WechatSession) completion:^(id userInfoResponse, NSError *error) {
+//        NSLog(@"setLauchFromPlatform:userInfoResponse:%@",userInfoResponse);
+//    }];
+    /*
+     * 移除相应平台的分享，如微信收藏
+     */
+    //[[UMSocialManager defaultManager] removePlatformProviderWithPlatformTypes:@[@(UMSocialPlatformType_WechatFavorite)]];
+    /* 设置分享到QQ互联的appID
+     * U-Share SDK为了兼容大部分平台命名，统一用appKey和appSecret进行参数设置，而QQ平台仅需将appID作为U-Share的appKey参数传进即可。
+    */
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:QQAppId  appSecret:QQAppSecret redirectURL:@"http://mobile.umeng.com/social"];
+    /* 设置新浪的appKey和appSecret */
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:@"3921700954"  appSecret:@"04b48b094faeb16683c32669824ebdad" redirectURL:@"https://sns.whalecloud.com/sina2/callback"];
 }
 
 @end

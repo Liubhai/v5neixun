@@ -50,7 +50,9 @@
 }
 
 - (void)iconButtonClick:(UIButton *)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(loginButtonClickKKK:)]) {
+        [_delegate loginButtonClickKKK:sender];
+    }
 }
 
 @end

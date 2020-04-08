@@ -10,8 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol CourseTypeVCDelegate <NSObject>
+
+@optional
+- (void)chooseCourseType:(NSDictionary *)info;
+
+@end
+
 @interface CourseTypeVC : BaseViewController
 
+@property (weak, nonatomic) id<CourseTypeVCDelegate> delegate;
 @property (assign, nonatomic) BOOL isMainPage;// 是不是课程主页
 @property (strong, nonatomic) NSString *typeId;// 当前选中的类型
 

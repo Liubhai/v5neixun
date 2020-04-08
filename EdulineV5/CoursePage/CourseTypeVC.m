@@ -9,6 +9,7 @@
 #import "CourseTypeVC.h"
 #import "CourseCommonCell.h"
 #import "V5_Constant.h"
+#import "Net_Path.h"
 
 @interface CourseTypeVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -22,11 +23,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
+    self.view.hidden = YES;
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
-    [_dataSource addObjectsFromArray:@[@{@"title":@"点播课程"},@{@"title":@"直播课程"},@{@"title":@"专辑课程"},@{@"title":@"面授课程"}]];
     [self maketableView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCourseTypeVC:) name:@"hiddenCourseAll" object:nil];
+    [self getCourseTypeList];
 }
 
 - (void)maketableView {
@@ -58,13 +60,31 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    _typeId = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"title"]];
+    _typeId = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"id"]];
     [_tableView reloadData];
+    if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseType:)]) {
+        [_delegate chooseCourseType:_dataSource[indexPath.row]];
+    }
 }
 
 - (void)hiddenCourseTypeVC:(NSNotification *)notice {
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
+}
+
+- (void)getCourseTypeList {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path coursetypeList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+                _tableView.frame = CGRectMake(0, 0, MainScreenWidth, _dataSource.count * 43.5);
+                [_tableView reloadData];
+                self.view.hidden = NO;
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 @end

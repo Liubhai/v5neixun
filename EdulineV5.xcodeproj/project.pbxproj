@@ -116,6 +116,13 @@
 		78AA1359243C2278007087F7 /* CourseSortVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA1358243C2278007087F7 /* CourseSortVC.m */; };
 		78AA135C243C22B8007087F7 /* CourseScreenVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA135B243C22B8007087F7 /* CourseScreenVC.m */; };
 		78AA135F243C254B007087F7 /* CourseCommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA135E243C254B007087F7 /* CourseCommonCell.m */; };
+		78AA1361243D6BC2007087F7 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AA1360243D6BC2007087F7 /* libsqlite3.tbd */; };
+		78AA1363243D6BD5007087F7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AA1362243D6BD5007087F7 /* CoreGraphics.framework */; };
+		78AA1365243D6BE1007087F7 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AA1364243D6BE1007087F7 /* WebKit.framework */; };
+		78AA1367243D7F88007087F7 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AA1366243D7F88007087F7 /* CoreTelephony.framework */; };
+		78AA1369243D7FA8007087F7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AA1368243D7FA8007087F7 /* SystemConfiguration.framework */; };
+		78AA136B243D7FCE007087F7 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AA136A243D7FCE007087F7 /* ImageIO.framework */; };
+		78AA136D243D7FD6007087F7 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AA136C243D7FD6007087F7 /* Photos.framework */; };
 		78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548262411F34100A33FC4 /* LoginMsgView.m */; };
 		78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548292412229900A33FC4 /* AreaNumListVC.m */; };
 		78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */; };
@@ -502,6 +509,13 @@
 		78AA135B243C22B8007087F7 /* CourseScreenVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseScreenVC.m; sourceTree = "<group>"; };
 		78AA135D243C254B007087F7 /* CourseCommonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCommonCell.h; sourceTree = "<group>"; };
 		78AA135E243C254B007087F7 /* CourseCommonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCommonCell.m; sourceTree = "<group>"; };
+		78AA1360243D6BC2007087F7 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		78AA1362243D6BD5007087F7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		78AA1364243D6BE1007087F7 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		78AA1366243D7F88007087F7 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		78AA1368243D7FA8007087F7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		78AA136A243D7FCE007087F7 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		78AA136C243D7FD6007087F7 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		78C548252411F34100A33FC4 /* LoginMsgView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginMsgView.h; sourceTree = "<group>"; };
 		78C548262411F34100A33FC4 /* LoginMsgView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginMsgView.m; sourceTree = "<group>"; };
 		78C548282412229900A33FC4 /* AreaNumListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaNumListVC.h; sourceTree = "<group>"; };
@@ -750,6 +764,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78AA136D243D7FD6007087F7 /* Photos.framework in Frameworks */,
+				78AA136B243D7FCE007087F7 /* ImageIO.framework in Frameworks */,
+				78AA1369243D7FA8007087F7 /* SystemConfiguration.framework in Frameworks */,
+				78AA1367243D7F88007087F7 /* CoreTelephony.framework in Frameworks */,
+				78AA1365243D6BE1007087F7 /* WebKit.framework in Frameworks */,
+				78AA1363243D6BD5007087F7 /* CoreGraphics.framework in Frameworks */,
+				78AA1361243D6BC2007087F7 /* libsqlite3.tbd in Frameworks */,
 				7853BDF92431E48300F096EC /* OAuth.framework in Frameworks */,
 				7853BDEA2431E15000F096EC /* libc++.1.tbd in Frameworks */,
 				7853BDE82431E14400F096EC /* libz.1.2.8.tbd in Frameworks */,
@@ -1871,6 +1892,13 @@
 		EAF375583EF6AB065E8A54C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				78AA136C243D7FD6007087F7 /* Photos.framework */,
+				78AA136A243D7FCE007087F7 /* ImageIO.framework */,
+				78AA1368243D7FA8007087F7 /* SystemConfiguration.framework */,
+				78AA1366243D7F88007087F7 /* CoreTelephony.framework */,
+				78AA1364243D6BE1007087F7 /* WebKit.framework */,
+				78AA1362243D6BD5007087F7 /* CoreGraphics.framework */,
+				78AA1360243D6BC2007087F7 /* libsqlite3.tbd */,
 				7853BDF22431E48200F096EC /* EAccountApiSDK.framework */,
 				7853BDF02431E48100F096EC /* NTESQuickPass.framework */,
 				7853BDF32431E48300F096EC /* OAuth.framework */,
@@ -2040,12 +2068,16 @@
 				"${PODS_ROOT}/LBXScan/LBXScan/UI/CodeScan.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/TZImagePickerController/TZImagePickerController/TZImagePickerController/TZImagePickerController.bundle",
+				"${PODS_ROOT}/UMCShare/UMShare/SocialLibraries/Sina/SinaSDK/WeiboSDK.bundle",
+				"${PODS_ROOT}/UMCShare/UMShare/UMSocialUI/UMSocialSDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/CodeScan.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TZImagePickerController.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WeiboSDK.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

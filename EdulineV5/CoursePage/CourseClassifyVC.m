@@ -9,6 +9,7 @@
 #import "CourseClassifyVC.h"
 #import "V5_Constant.h"
 #import "CourseCommonCell.h"
+#import "Net_Path.h"
 
 @interface CourseClassifyVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -25,17 +26,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
+    self.view.hidden = YES;
     _titleImage.hidden = YES;
     _firstArray = [NSMutableArray new];
-    [_firstArray addObjectsFromArray:@[@{@"title":@"点播课程"},@{@"title":@"直播课程"},@{@"title":@"专辑课程"},@{@"title":@"面授课程"}]];
     _secondArray = [NSMutableArray new];
     _thirdArray = [NSMutableArray new];
     [self maketableView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCourseTypeVC:) name:@"hiddenCourseAll" object:nil];
+    [self getCourseClassifyList];
 }
 
 - (void)maketableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _firstArray.count * 43.5)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MIN(MAX(_firstArray.count * 43.5, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT))];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -68,48 +70,62 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    _typeId = [NSString stringWithFormat:@"%@",[_firstArray[indexPath.row] objectForKey:@"title"]];
-    [self makeScrollViewSubView:_firstArray];
-    [UIView animateWithDuration:0.25 animations:^{
-        _tableView.frame = CGRectMake(0, 0, MainScreenWidth / 4.0, _firstArray.count * 43.5);
-        _mainScrollView.hidden = NO;
-    }];
-    [_tableView reloadData];
+    _typeId = [NSString stringWithFormat:@"%@",[_firstArray[indexPath.row] objectForKey:@"id"]];
+    if (SWNOTEmptyArr([_firstArray[indexPath.row] objectForKey:@"child"])) {
+        [self makeScrollViewSubView:_firstArray[indexPath.row]];
+            [UIView animateWithDuration:0.25 animations:^{
+                [_tableView setWidth:MainScreenWidth / 4.0];
+                _mainScrollView.hidden = NO;
+            }];
+            [_tableView reloadData];
+    } else {
+        if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
+            [_delegate chooseCourseClassify:_firstArray[indexPath.row]];
+        }
+    }
 }
 
 // MARK: - 布局右边分类视图
-- (void)makeScrollViewSubView:(NSMutableArray *)subArray {
+- (void)makeScrollViewSubView:(NSDictionary *)selectedInfo {
     if (_mainScrollView) {
         [_mainScrollView removeAllSubviews];
     }
     CGFloat hotYY = 0;
     CGFloat secondSpace = 6;
-    for (int j = 0; j < subArray.count; j++) {
+    [_secondArray removeAllObjects];
+    [_secondArray addObjectsFromArray:[NSArray arrayWithArray:[selectedInfo objectForKey:@"child"]]];
+    for (int j = 0; j < _secondArray.count; j++) {
         UIView *hotView = [[UIView alloc] initWithFrame:CGRectMake(0, hotYY, MainScreenWidth, 0)];
         hotView.backgroundColor = [UIColor whiteColor];
+        hotView.tag = 10 + j;
         [_mainScrollView addSubview:hotView];
         
-        NSString *secondTitle = @"热门搜索";
+        NSString *secondTitle = [NSString stringWithFormat:@"%@",[_secondArray[j] objectForKey:@"title"]];//@"热门搜索";
         CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(15)].width + 4 + 7;
         UIButton *secondBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 0, secondBtnWidth, 60)];
+        secondBtn.tag = 100 + j;
         [secondBtn setImage:Image(@"erji_more") forState:0];
         [secondBtn setTitle:secondTitle forState:0];
         [secondBtn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
         secondBtn.titleLabel.font = SYSTEMFONT(15);
         [secondBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -secondBtn.currentImage.size.width, 0, secondBtn.currentImage.size.width)];
         [secondBtn setImageEdgeInsets:UIEdgeInsetsMake(0, secondBtnWidth-7, 0, -(secondBtnWidth - 7))];
+        [secondBtn addTarget:self action:@selector(secondBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [hotView addSubview:secondBtn];
-        
-        if (subArray.count) {
+        [_thirdArray removeAllObjects];
+        [_thirdArray addObjectsFromArray:[NSArray arrayWithArray:[_secondArray[j] objectForKey:@"child"]]];
+        if (_thirdArray.count) {
             CGFloat topSpace = 20.0;
             CGFloat rightSpace = 15.0;
             CGFloat btnInSpace = 10.0;
             CGFloat XX = 15.0;
             CGFloat YY = 0.0 + secondBtn.bottom;
             CGFloat btnHeight = 32.0;
-            for (int i = 0; i<subArray.count; i++) {
+            for (int i = 0; i<_thirdArray.count; i++) {
                 UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, 0, btnHeight)];
-                [btn setTitle:[subArray[i] objectForKey:@"title"] forState:0];
+                btn.tag = 200 + i;
+                [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+                [btn setTitle:[NSString stringWithFormat:@"%@",[_thirdArray[i] objectForKey:@"title"]] forState:0];
                 btn.titleLabel.font = SYSTEMFONT(14);
                 [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
                 btn.backgroundColor = EdlineV5_Color.backColor;
@@ -122,7 +138,7 @@
                 }
                 btn.frame = CGRectMake(XX, YY, btnWidth, btnHeight);
                 XX = btn.right + rightSpace;
-                if (i == subArray.count - 1) {
+                if (i == _thirdArray.count - 1) {
                     [hotView setHeight:btn.bottom];
                 }
                 [hotView addSubview:btn];
@@ -131,16 +147,40 @@
             [hotView setHeight:secondBtn.bottom];
         }
         hotYY = hotView.bottom;
-        if (j == subArray.count - 1) {
+        if (j == _secondArray.count - 1) {
             _mainScrollView.contentSize = CGSizeMake(0, hotYY);
         }
     }
 }
 
-
 - (void)hiddenCourseTypeVC:(NSNotification *)notice {
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
+}
+
+- (void)getCourseClassifyList {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseClassifyList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if ([[responseObject objectForKey:@"code"] integerValue]) {
+            [_firstArray addObjectsFromArray:[responseObject objectForKey:@"data"]];
+            _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MIN(MAX(_firstArray.count * 43.5, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT));
+            [_tableView reloadData];
+            self.view.hidden = NO;
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)secondBtnClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
+        [_delegate chooseCourseClassify:_secondArray[sender.tag - 100]];
+    }
+}
+
+- (void)thirdBtnClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
+        [_delegate chooseCourseClassify:_thirdArray[sender.tag - 200]];
+    }
 }
 
 @end
