@@ -99,7 +99,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 43.5;
+    return 60;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -127,7 +127,7 @@
     
     
     if (_hotDataSource.count) {
-        CGFloat topSpace = 20.0;
+        CGFloat topSpacee = 20.0;
         CGFloat rightSpace = 15.0;
         CGFloat btnInSpace = 10.0;
         CGFloat XX = 15.0;
@@ -144,7 +144,7 @@
             CGFloat btnWidth = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2;
             if ((btnWidth + XX) > (MainScreenWidth - 15)) {
                 XX = 15.0;
-                YY = YY + topSpace + btnHeight;
+                YY = YY + topSpacee + btnHeight;
             }
             btn.frame = CGRectMake(XX, YY, btnWidth, btnHeight);
             XX = btn.right + rightSpace;
@@ -179,7 +179,7 @@
     [_historyView addSubview:clearHistoryBtn];
     
     if (_hotDataSource.count) {
-        CGFloat topSpace = 20.0;
+        CGFloat topSpacee = 20.0;
         CGFloat rightSpace = 15.0;
         CGFloat btnInSpace = 10.0;
         CGFloat XX = 15.0;
@@ -196,7 +196,7 @@
             CGFloat btnWidth = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2;
             if ((btnWidth + XX) > (MainScreenWidth - 15)) {
                 XX = 15.0;
-                YY = YY + topSpace + btnHeight;
+                YY = YY + topSpacee + btnHeight;
             }
             btn.frame = CGRectMake(XX, YY, btnWidth, btnHeight);
             XX = btn.right + rightSpace;

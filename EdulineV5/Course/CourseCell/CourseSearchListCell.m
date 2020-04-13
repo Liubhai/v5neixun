@@ -9,12 +9,6 @@
 #import "CourseSearchListCell.h"
 #import "V5_Constant.h"
 
-#define singleLeftSpace 15
-#define topSpace 10
-#define bottomSpace 7
-#define singleRightSpace 3
-#define faceImageHeight (MainScreenWidth/2.0 - singleRightSpace - singleLeftSpace) * 90 / 165.0
-
 @implementation CourseSearchListCell
 
 - (instancetype)initWithFrame:(CGRect)frame {

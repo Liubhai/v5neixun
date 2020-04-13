@@ -102,6 +102,13 @@
 #define CommentInputHeight 36
 #define CommentViewMaxHeight 180
 
+// 课程cell布局所需
+#define singleLeftSpace 15
+#define topSpace 10
+#define bottomSpace 7
+#define singleRightSpace 3
+#define faceImageHeight (MainScreenWidth/2.0 - singleRightSpace - singleLeftSpace) * 90 / 165
+
 // `APP_ID`:`WASD123456`
 
 // `APP_KEY`:`7WFDuCGYa1XEBj6Y`
