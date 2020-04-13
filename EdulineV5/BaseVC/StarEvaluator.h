@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) id<StarEvaluatorDelegate> delegate;
 
+@property (nonatomic, assign) float currentValue;
+
 - (void)setStarValue:(float)starvalue;
 
 @end

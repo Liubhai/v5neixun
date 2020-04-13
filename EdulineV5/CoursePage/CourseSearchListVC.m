@@ -19,14 +19,26 @@
 #import "CourseScreenVC.h"
 #import "CourseClassifyVC.h"
 
-@interface CourseSearchListVC ()<UITextFieldDelegate,CourseTypeVCDelegate,CourseClassifyVCDelegate> {
+@interface CourseSearchListVC ()<UITextFieldDelegate,CourseTypeVCDelegate,CourseClassifyVCDelegate,CourseSortVCDelegate,CourseScreenVCDelegate> {
     NSInteger page;
     
+    // 课程类型
     NSString *coursetypeString;
     NSString *coursetypeIdString;
     
+    // 课程小分类
     NSString *courseClassifyString;
     NSString *courseClassifyIdString;
+    
+    // 课程
+    NSString *courseSortString;
+    NSString *courseSortIdString;
+    
+    // 筛选
+    NSString *screenId;
+    NSString *screenPriceUpAndDown;
+    NSString *minPrice;
+    NSString *maxPrice;
 }
 
 @property (strong ,nonatomic) UIView *headerView;
@@ -92,9 +104,9 @@
     [self.view addSubview:_headerView];
     
     
-    NSArray *titleArray = @[@"点播课程",@"分类",@"综合条件",@"筛选"];
+    NSArray *titleArray = @[@"点播课程",@"分类",@"排序",@"筛选"];
     if (_cateStr != nil) {
-        titleArray = @[@"点播课程",_cateStr,@"综合条件",@"筛选"];
+        titleArray = @[@"点播课程",_cateStr,@"排序",@"筛选"];
     }
     CGFloat ButtonH = 45;
     CGFloat ButtonW = MainScreenWidth / titleArray.count;
@@ -183,18 +195,87 @@
 }
 
 /**
- order    popular    选填    排序【default : 综合; splendid : 推荐; popular : 畅销; latest : 最新; priceUp : 价格由低到高; priceDown : 价格由高到低;】
- course_type    1    选填    课程类型【1：点播；2：直播；3：面试；4：班级；】
- category    1    选填    课程分类
- price_min    55    选填    最小价格
- price_max    99    选填    最大价格
- update_status    1    选填    连载状态【1：连载中；0：已完结；】
- free    1    选填    试听【1：可试听；0：不可试听；】
+ 参数名
+ 示例值
+ 是否必填
+ 参数描述
+ order
+ popular
+ 选填
+ 排序【default : 综合; splendid : 推荐; popular : 畅销; latest : 最新;】
+ price_order
+ up
+ 选填
+ 价格排序【 up : 价格由低到高; down : 价格由高到低；】
+ course_type
+ 1
+ 选填
+ 课程类型【1：点播；2：直播；3：面试；4：班级；】
+ category
+ 1
+ 选填
+ 课程分类
+ price_min
+ 55
+ 选填
+ 最小价格
+ price_max
+ 99
+ 选填
+ 最大价格
+ update_status
+ 1
+ 选填
+ 连载状态【1：连载中；0：已完结；】
+ live
+ on
+ 选填
+ 直播状态【on：直播中；soon：即将直播；】
+ free
+ 1
+ 选填
+ 试听【1：可试听；0：不可试听；】
+ page
+ 1
+ 必填
+ 当前页
+ count
+ 15
+ 必填
+ 每页显示数量
  */
 
 - (void)getCourseMainList {
     page = 1;
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    // 大类型
+    if (SWNOTEmptyStr(coursetypeIdString)) {
+        [param setObject:coursetypeIdString forKey:@"course_type"];
+    }
+    // 小分类
+    if (SWNOTEmptyStr(courseClassifyIdString)) {
+        [param setObject:courseClassifyIdString forKey:@"category"];
+    }
+    // 排序
+    if (SWNOTEmptyStr(courseSortIdString)) {
+        [param setObject:courseSortIdString forKey:@"order"];
+    }
+    // 筛选
+    if (SWNOTEmptyStr(screenId)) {
+        [param setObject:screenId forKey:@""];
+    }
+    if (SWNOTEmptyStr(screenPriceUpAndDown)) {
+        [param setObject:screenPriceUpAndDown forKey:@"price_order"];
+    }
+    if (SWNOTEmptyStr(minPrice)) {
+        [param setObject:minPrice forKey:@"price_min"];
+    }
+    if (SWNOTEmptyStr(maxPrice)) {
+        [param setObject:maxPrice forKey:@"price_max"];
+    }
+    
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         [_collectionView.mj_header endRefreshing];
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -267,6 +348,10 @@
             CourseSortVC *vc = [[CourseSortVC alloc] init];
             vc.notHiddenNav = YES;
             vc.isMainPage = !_isSearch;
+            vc.delegate = self;
+            if (SWNOTEmptyStr(courseSortIdString)) {
+                vc.typeId = courseSortIdString;
+            }
             vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
             [self.view addSubview:vc.view];
             [self addChildViewController:vc];
@@ -278,8 +363,13 @@
         _moreButton.selected = NO;
         if (_screeningButton.selected) {
             CourseScreenVC *vc = [[CourseScreenVC alloc] init];
+            vc.screenId = screenId;
+            vc.upAndDown = screenPriceUpAndDown;
+            vc.priceMax = maxPrice;
+            vc.priceMin = minPrice;
             vc.notHiddenNav = YES;
             vc.isMainPage = !_isSearch;
+            vc.delegate = self;
             vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
             [self.view addSubview:vc.view];
             [self addChildViewController:vc];
@@ -309,6 +399,7 @@
         [_classOrLiveButton setTitle:coursetypeString forState:0];
         [EdulineV5_Tool dealButtonImageAndTitleUI:_classOrLiveButton];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        [self getCourseMainList];
     }
 }
 
@@ -320,8 +411,42 @@
         [_classTypeButton setTitle:courseClassifyString forState:0];
         [EdulineV5_Tool dealButtonImageAndTitleUI:_classTypeButton];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        [self getCourseMainList];
     }
 }
 
+- (void)sortTypeChoose:(NSDictionary *)info {
+    if (SWNOTEmptyDictionary(info)) {
+        courseSortString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+        courseSortIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
+        _moreButton.selected = NO;
+        [_moreButton setTitle:courseSortString forState:0];
+        [EdulineV5_Tool dealButtonImageAndTitleUI:_moreButton];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        [self getCourseMainList];
+    }
+}
+
+- (void)cleanChooseScreen:(NSDictionary *)info {
+    _screeningButton.selected = NO;
+    screenId = @"";
+    screenPriceUpAndDown = @"";
+    maxPrice = @"";
+    minPrice = @"";
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    [self getCourseMainList];
+}
+
+- (void)sureChooseScreen:(NSDictionary *)info {
+    _screeningButton.selected = NO;
+    if (SWNOTEmptyDictionary(info)) {
+        screenId = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenId"]];
+        screenPriceUpAndDown = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenUpAndDown"]];
+        maxPrice = [[NSString stringWithFormat:@"%@",[info objectForKey:@"priceMax"]] stringByReplacingOccurrencesOfString:@"¥" withString:@""];
+        minPrice = [[NSString stringWithFormat:@"%@",[info objectForKey:@"priceMin"]] stringByReplacingOccurrencesOfString:@"¥" withString:@""];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        [self getCourseMainList];
+    }
+}
 
 @end

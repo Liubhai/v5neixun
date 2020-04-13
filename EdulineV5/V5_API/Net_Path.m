@@ -79,4 +79,17 @@
 + (NSString *)courseClassifyList {
     return [Net_Path fullPath:@"course/base/category/tree" repalce:@"" byReplece:@""];
 }
+
++ (NSString *)courseCommentList:(NSString *)courseId {
+    return [Net_Path fullPath:@"course/base/{id}/comment" repalce:@"{id}" byReplece:courseId];
+}
+
++ (NSString *)courseCommentReplayList:(NSString *)commentId {
+    return [Net_Path fullPath:@"course/base/comment/{id}/reply" repalce:@"{id}" byReplece:commentId];
+}
+
++ (NSString *)courseNoteList:(NSString *)courseId {
+    return [Net_Path fullPath:@"course/base/{id}/note" repalce:@"{id}" byReplece:courseId];
+}
+
 @end

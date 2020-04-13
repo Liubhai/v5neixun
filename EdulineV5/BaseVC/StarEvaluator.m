@@ -18,7 +18,6 @@
     float   touchX;
     NSMutableArray  *fullStarArray;
 }
-@property (nonatomic, assign) float currentValue;
 
 @end
 

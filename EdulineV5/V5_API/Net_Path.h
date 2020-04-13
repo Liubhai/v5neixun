@@ -65,6 +65,15 @@ struct NetWorkUrl {
 
 /** 课程f分类 */
 + (NSString *)courseClassifyList;
+
+/** 课程点评列表或者点评l课程 */
++ (NSString *)courseCommentList:(NSString *)courseId;
+
+/** 点评的评论列表 */
++ (NSString *)courseCommentReplayList:(NSString *)commentId;
+
+/** 笔记列表 */
++ (NSString *)courseNoteList:(NSString *)courseId;
 @end
 
 NS_ASSUME_NONNULL_END

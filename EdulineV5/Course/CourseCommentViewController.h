@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CourseCommentViewController : BaseViewController
 
 @property (assign, nonatomic) BOOL isComment;// yes 评论 no 笔记
+@property (strong, nonatomic) NSString *courseId;
 
 @end
 

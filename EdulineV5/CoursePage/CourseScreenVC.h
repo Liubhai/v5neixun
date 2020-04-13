@@ -10,10 +10,25 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol CourseScreenVCDelegate <NSObject>
+
+@optional
+- (void)cleanChooseScreen:(NSDictionary *)info;
+- (void)sureChooseScreen:(NSDictionary *)info;
+
+@end
+
 @interface CourseScreenVC : BaseViewController
 
+@property (weak, nonatomic) id<CourseScreenVCDelegate> delegate;
+
 @property (assign, nonatomic) BOOL isMainPage;// 是不是课程主页
-@property (strong, nonatomic) NSString *typeId;// 当前选中的类型
+@property (strong, nonatomic) NSString *screenId;// 当前选中的类型
+
+@property (assign, nonatomic) NSString *upAndDown;
+
+@property (assign, nonatomic) NSString *priceMin;
+@property (assign, nonatomic) NSString *priceMax;
 
 @end
 

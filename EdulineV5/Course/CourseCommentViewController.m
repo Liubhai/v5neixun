@@ -9,6 +9,7 @@
 #import "CourseCommentViewController.h"
 #import "V5_Constant.h"
 #import "StarEvaluator.h"
+#import "Net_Path.h"
 
 @interface CourseCommentViewController ()<UITextViewDelegate,StarEvaluatorDelegate> {
     CGFloat keyHeight;
@@ -154,6 +155,24 @@
 
 - (void)rightButtonClick:(id)sender {
     [_commentTextView resignFirstResponder];
+    if (_commentTextView.text.length<=0) {
+        [self showHudInView:self.view showHint:@"内容不能为空"];
+        return;
+    }
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (_isComment) {
+        [param setObject:_commentTextView.text forKey:@"description"];
+        [param setObject:[_scoreLabel.text stringByReplacingOccurrencesOfString:@"分" withString:@""] forKey:@"star"];
+    } else {
+        [param setObject:_commentTextView.text forKey:@"description"];
+    }
+    
+    [Net_API requestPOSTWithURLStr:[Net_Path courseCommentList:_courseId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+    
 }
 
 - (void)backViewTap:(UIGestureRecognizer *)tap {

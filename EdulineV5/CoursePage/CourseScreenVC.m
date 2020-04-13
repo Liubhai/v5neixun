@@ -15,6 +15,8 @@
 @property (strong, nonatomic) UIView *screenBackView;
 
 @property (strong, nonatomic) UIView *priceBackView;
+@property (strong, nonatomic) UIButton *lowBtn;
+@property (strong, nonatomic) UIButton *highBtn;
 @property (strong, nonatomic) UITextField *lowPriceTextField;
 @property (strong, nonatomic) UITextField *highPriceTextField;
 
@@ -37,15 +39,20 @@
 }
 
 - (void)makeSubViews {
-    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 77 + 32 + 60)];//340
-    _mainScrollView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:_mainScrollView];
+    if (!_mainScrollView) {
+        _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 77 + 32 + 60)];//340
+        _mainScrollView.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:_mainScrollView];
+    }
     
     [self makePriceBackView];
     
 }
 
 - (void)makePriceBackView {
+    
+    [_mainScrollView removeAllSubviews];
+    
     _priceBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _mainScrollView.height - (77 + 32 + 60), MainScreenWidth, 77 + 32 + 60)];
     _priceBackView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_priceBackView];
@@ -56,27 +63,29 @@
     themeTitle.textColor = EdlineV5_Color.textThirdColor;
     [_priceBackView addSubview:themeTitle];
     
-    UIButton *lowBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, themeTitle.bottom, 90, 32)];
-    [lowBtn setTitle:@"价格降序" forState:0];
-    [lowBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
-    [lowBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
-    lowBtn.titleLabel.font = SYSTEMFONT(14);
-    lowBtn.backgroundColor = EdlineV5_Color.backColor;
-    lowBtn.layer.masksToBounds = YES;
-    lowBtn.layer.cornerRadius = lowBtn.height / 2.0;
-    [_priceBackView addSubview:lowBtn];
+    _lowBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, themeTitle.bottom, 90, 32)];
+    [_lowBtn setTitle:@"价格降序" forState:0];
+    [_lowBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+    [_lowBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
+    _lowBtn.titleLabel.font = SYSTEMFONT(14);
+    _lowBtn.backgroundColor = EdlineV5_Color.backColor;
+    _lowBtn.layer.masksToBounds = YES;
+    _lowBtn.layer.cornerRadius = _lowBtn.height / 2.0;
+    [_lowBtn addTarget:self action:@selector(upAndDownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_priceBackView addSubview:_lowBtn];
     
-    UIButton *highBtn = [[UIButton alloc] initWithFrame:CGRectMake(lowBtn.right + 15, themeTitle.bottom, 90, 32)];
-    [highBtn setTitle:@"价格升序" forState:0];
-    [highBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
-    [highBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
-    highBtn.titleLabel.font = SYSTEMFONT(14);
-    highBtn.backgroundColor = EdlineV5_Color.backColor;
-    highBtn.layer.masksToBounds = YES;
-    highBtn.layer.cornerRadius = highBtn.height / 2.0;
-    [_priceBackView addSubview:highBtn];
+    _highBtn = [[UIButton alloc] initWithFrame:CGRectMake(_lowBtn.right + 15, themeTitle.bottom, 90, 32)];
+    [_highBtn setTitle:@"价格升序" forState:0];
+    [_highBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+    [_highBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
+    _highBtn.titleLabel.font = SYSTEMFONT(14);
+    _highBtn.backgroundColor = EdlineV5_Color.backColor;
+    _highBtn.layer.masksToBounds = YES;
+    _highBtn.layer.cornerRadius = _highBtn.height / 2.0;
+    [_highBtn addTarget:self action:@selector(upAndDownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_priceBackView addSubview:_highBtn];
     
-    _lowPriceTextField = [[UITextField alloc] initWithFrame:CGRectMake(15, lowBtn.bottom + 12, 115, 32)];
+    _lowPriceTextField = [[UITextField alloc] initWithFrame:CGRectMake(15, _lowBtn.bottom + 12, 115, 32)];
     _lowPriceTextField.font = SYSTEMFONT(14);
     _lowPriceTextField.textAlignment = NSTextAlignmentCenter;
     _lowPriceTextField.textColor = EdlineV5_Color.textSecendColor;
@@ -95,7 +104,7 @@
     line.centerY = _lowPriceTextField.centerY;
     [_priceBackView addSubview:line];
     
-    _highPriceTextField = [[UITextField alloc] initWithFrame:CGRectMake(line.right + 4, lowBtn.bottom + 12, 115, 32)];
+    _highPriceTextField = [[UITextField alloc] initWithFrame:CGRectMake(line.right + 4, _lowBtn.bottom + 12, 115, 32)];
     _highPriceTextField.font = SYSTEMFONT(14);
     _highPriceTextField.textAlignment = NSTextAlignmentCenter;
     _highPriceTextField.textColor = EdlineV5_Color.textSecendColor;
@@ -119,6 +128,7 @@
     [_clearBtn setTitle:@"清空筛选" forState:0];
     [_clearBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
     _clearBtn.titleLabel.font = SYSTEMFONT(16);
+    [_clearBtn addTarget:self action:@selector(cleanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_clearBtn];
     
     _sureBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth/2.0, 0, MainScreenWidth/2.0, _bottomView.height)];
@@ -126,6 +136,7 @@
     [_sureBtn setTitleColor:[UIColor whiteColor] forState:0];
     _sureBtn.backgroundColor = EdlineV5_Color.themeColor;
     _sureBtn.titleLabel.font = SYSTEMFONT(16);
+    [_sureBtn addTarget:self action:@selector(sureButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_sureBtn];
 }
 
@@ -146,6 +157,45 @@
         } else {
             textF.text = [NSString stringWithFormat:@"¥%@",textF.text];
         }
+    }
+}
+
+- (void)upAndDownButtonClick:(UIButton *)sender {
+    if (sender == _lowBtn) {
+        _lowBtn.selected = YES;
+        _highBtn.selected = NO;
+        _upAndDown = @"down";
+    } else {
+        _lowBtn.selected = NO;
+        _highBtn.selected = YES;
+        _upAndDown = @"up";
+    }
+    if (_lowBtn.selected) {
+        _lowBtn.layer.backgroundColor = [UIColor colorWithRed:44/255.0 green:146/255.0 blue:248/255.0 alpha:0.05].CGColor;
+    } else {
+        _lowBtn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
+    }
+    
+    if (_highBtn.selected) {
+        _highBtn.layer.backgroundColor = [UIColor colorWithRed:44/255.0 green:146/255.0 blue:248/255.0 alpha:0.05].CGColor;
+    } else {
+        _highBtn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
+    }
+}
+
+- (void)cleanButtonClick:(UIButton *)sender {
+    _screenId = @"";
+    _upAndDown = @"";
+    _priceMax = @"";
+    _priceMin = @"";
+    [self makeSubViews];
+}
+
+- (void)sureButtonClicked:(UIButton *)sender {
+    _priceMin = [NSString stringWithFormat:@"%@",_lowPriceTextField.text];
+    _priceMax = [NSString stringWithFormat:@"%@",_highPriceTextField.text];
+    if (_delegate && [_delegate respondsToSelector:@selector(cleanChooseScreen:)]) {
+        [_delegate sureChooseScreen:@{@"screenId":(SWNOTEmptyStr(_screenId) ? _screenId : @""),@"screenUpAndDown":(SWNOTEmptyStr(_upAndDown) ? _upAndDown : @""),@"priceMin":(SWNOTEmptyStr(_priceMin) ? _priceMin : @""),@"priceMax":(SWNOTEmptyStr(_priceMax) ? _priceMax : @"")}];
     }
 }
 

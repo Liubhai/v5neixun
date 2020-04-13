@@ -379,6 +379,7 @@
         
         if (_recordVC == nil) {
             _recordVC = [[CourseCommentListVC alloc] init];
+            _recordVC.courseId = _ID;
             _recordVC.tabelHeight = sectionHeight - 47;
             _recordVC.detailVC = weakself;
             _recordVC.cellType = YES;
@@ -387,6 +388,7 @@
             [self.mainScroll addSubview:_recordVC.view];
             [self addChildViewController:_recordVC];
         } else {
+            _recordVC.courseId = _ID;
             _recordVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
             _recordVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
             _recordVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
@@ -394,6 +396,7 @@
 
         if (_commentVC == nil) {
             _commentVC = [[CourseCommentListVC alloc] init];
+            _commentVC.courseId = _ID;
             _commentVC.tabelHeight = sectionHeight - 47;
             _commentVC.detailVC = weakself;
             _commentVC.cellType = NO;
@@ -402,6 +405,7 @@
             [self.mainScroll addSubview:_commentVC.view];
             [self addChildViewController:_commentVC];
         } else {
+            _commentVC.courseId = _ID;
             _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
             _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
@@ -626,6 +630,7 @@
 - (void)jumpToCommentVC {
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
     vc.isComment = NO;
+    vc.courseId = _ID;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

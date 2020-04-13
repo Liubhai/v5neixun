@@ -11,6 +11,7 @@
 #import "CourseCommentCell.h"
 #import "CourseCommentDetailVC.h"
 #import "CourseCommentViewController.h"
+#import "Net_Path.h"
 
 @interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate,UIScrollViewDelegate>
 
@@ -38,6 +39,7 @@
     _tableView.tableHeaderView = _headerView;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
+    [self getCourseCommentList];
     
 }
 
@@ -91,7 +93,18 @@
 - (void)jumpToCommentVC {
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
     vc.isComment = !_cellType;
+    vc.courseId = _courseId;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)getCourseCommentList {
+    if (SWNOTEmptyStr(_courseId)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseCommentList:_courseId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 @end

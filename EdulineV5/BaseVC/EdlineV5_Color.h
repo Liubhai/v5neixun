@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 主题色 */
 + (UIColor *)themeColor;
 
+/** 主题色弱化 */
++ (UIColor *)themeWeakColor;
+
 /** 不可操作时候颜色 */
 + (UIColor *)disableColor;
 

@@ -24,7 +24,7 @@
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
-    [_dataSource addObjectsFromArray:@[@{@"title":@"综合排序"},@{@"title":@"推荐"},@{@"title":@"畅销"},@{@"title":@"最新"}]];
+    [_dataSource addObjectsFromArray:@[@{@"title":@"综合排序",@"id":@"default"},@{@"title":@"推荐",@"id":@"splendid"},@{@"title":@"畅销",@"id":@"popular"},@{@"title":@"最新",@"id":@"latest"}]];
     [self maketableView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCourseTypeVC:) name:@"hiddenCourseAll" object:nil];
 }
@@ -60,6 +60,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     _typeId = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"title"]];
     [_tableView reloadData];
+    if (_delegate && [_delegate respondsToSelector:@selector(sortTypeChoose:)]) {
+        [_delegate sortTypeChoose:_dataSource[indexPath.row]];
+    }
 }
 
 - (void)hiddenCourseTypeVC:(NSNotification *)notice {

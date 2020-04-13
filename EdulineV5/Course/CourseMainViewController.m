@@ -282,6 +282,7 @@
         
         if (_commentVC == nil) {
             _commentVC = [[CourseCommentListVC alloc] init];
+            _commentVC.courseId = _ID;
             _commentVC.tabelHeight = sectionHeight - 47;
             _commentVC.vc = self;
             _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
@@ -545,6 +546,7 @@
 - (void)jumpToCommentVC {
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
     vc.isComment = NO;
+    vc.courseId = _ID;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

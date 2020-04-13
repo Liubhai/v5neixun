@@ -26,6 +26,10 @@
     return HEXCOLORV5(0x5191FF);
 }
 
++ (UIColor *)themeWeakColor {
+    return HEXCOLORV5(0x2C92F8);
+}
+
 /** 不可操作时候颜色 */
 + (UIColor *)disableColor {
     return HEXCOLORV5(0x97BDFF);

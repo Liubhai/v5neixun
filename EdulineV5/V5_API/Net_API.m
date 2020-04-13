@@ -49,7 +49,7 @@
     
     [manager GET:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
-        NSLog(@"EdulineV4 GET request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
+        NSLog(@"EdulineV4 GET request succece \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
         // 成功回调
         finish(responseObject);
@@ -97,7 +97,7 @@
     
    [manager POST:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
-       NSLog(@"EdulineV4 POST request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
+       NSLog(@"EdulineV4 POST request succece \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
        NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
        if ([errcode isEqualToString:@"1"]) {
@@ -150,7 +150,7 @@
     
     [manager PUT:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
-       NSLog(@"EdulineV4 PUT request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
+       NSLog(@"EdulineV4 PUT request succece \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
         NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
         
@@ -203,7 +203,7 @@
  
     [manager DELETE:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
-       NSLog(@"EdulineV4 DELETE request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
+       NSLog(@"EdulineV4 DELETE request succece \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
         NSString *errcode = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"code"]];
         
@@ -281,7 +281,7 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //
     #ifdef DEBUG
-       NSLog(@"EdulineV4 POSTFILE request failure \n%@\n%@",task.currentRequest.URL.absoluteString,parameters);
+       NSLog(@"EdulineV4 POSTFILE request succece \n%@\n%@",task.currentRequest.URL.absoluteString,parameters);
     #endif
         dispatch_async(dispatch_get_main_queue(), ^{
            
