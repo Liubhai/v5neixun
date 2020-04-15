@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 //页面跳转
 #import "PersonalInformationVC.h"
+#import "SetingViewController.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -55,7 +56,7 @@
     _rightButton.hidden = NO;
     _setButton = [[UIButton alloc] initWithFrame:CGRectMake(_rightButton.left - 44, _rightButton.top, 44, 44)];
     [_setButton setImage:Image(@"pre_nav_set_blue") forState:0];
-    [_setButton addTarget:self action:@selector(goToUserInfoVC) forControlEvents:UIControlEventTouchUpInside];
+    [_setButton addTarget:self action:@selector(setingButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_setButton];
     
     [self makeHeaderView];
@@ -159,6 +160,11 @@
 
 - (void)leftButtonClick:(id)sender {
     NSLog(@"返回按钮被点击了");
+}
+
+- (void)setingButtonClick:(UIButton *)sender {
+    SetingViewController *vc = [[SetingViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 // MARK: - MyCenterUserInfoViewDelegate(进入个人信息页面)

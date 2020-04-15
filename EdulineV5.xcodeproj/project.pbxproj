@@ -140,6 +140,8 @@
 		78AA13A024469D04007087F7 /* MyCenterTypeOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA139F24469D04007087F7 /* MyCenterTypeOneCell.m */; };
 		78AA13A32446AB00007087F7 /* MyCenterTypeTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */; };
 		78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */; };
+		78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A8244708B4007087F7 /* SetingViewController.m */; };
+		78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13AB24470EB2007087F7 /* SetingCell.m */; };
 		78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548262411F34100A33FC4 /* LoginMsgView.m */; };
 		78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548292412229900A33FC4 /* AreaNumListVC.m */; };
 		78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */; };
@@ -567,6 +569,10 @@
 		78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCenterTypeTwoCell.m; sourceTree = "<group>"; };
 		78AA13A42446B7EB007087F7 /* PersonalInformationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalInformationVC.h; sourceTree = "<group>"; };
 		78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalInformationVC.m; sourceTree = "<group>"; };
+		78AA13A7244708B4007087F7 /* SetingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetingViewController.h; sourceTree = "<group>"; };
+		78AA13A8244708B4007087F7 /* SetingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetingViewController.m; sourceTree = "<group>"; };
+		78AA13AA24470EB2007087F7 /* SetingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetingCell.h; sourceTree = "<group>"; };
+		78AA13AB24470EB2007087F7 /* SetingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetingCell.m; sourceTree = "<group>"; };
 		78C548252411F34100A33FC4 /* LoginMsgView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginMsgView.h; sourceTree = "<group>"; };
 		78C548262411F34100A33FC4 /* LoginMsgView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginMsgView.m; sourceTree = "<group>"; };
 		78C548282412229900A33FC4 /* AreaNumListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaNumListVC.h; sourceTree = "<group>"; };
@@ -1122,6 +1128,8 @@
 				78795668240E606F0013F95F /* MyRootViewController.m */,
 				78AA13A42446B7EB007087F7 /* PersonalInformationVC.h */,
 				78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */,
+				78AA13A7244708B4007087F7 /* SetingViewController.h */,
+				78AA13A8244708B4007087F7 /* SetingViewController.m */,
 				78AA13932445967E007087F7 /* View */,
 			);
 			path = MyCenterPage;
@@ -1464,6 +1472,8 @@
 				78AA139F24469D04007087F7 /* MyCenterTypeOneCell.m */,
 				78AA13A12446AB00007087F7 /* MyCenterTypeTwoCell.h */,
 				78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */,
+				78AA13AA24470EB2007087F7 /* SetingCell.h */,
+				78AA13AB24470EB2007087F7 /* SetingCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2339,6 +2349,7 @@
 				7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */,
 				78AA137F2440543D007087F7 /* UIView+SDExtension.m in Sources */,
 				7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */,
+				78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
 				78795724240FA3840013F95F /* ZLCameraView.m in Sources */,
@@ -2415,6 +2426,7 @@
 				78C5494A241B642B00A33FC4 /* AliyunPlayerViewBottomView.m in Sources */,
 				7879572E240FA3840013F95F /* UIView+ZLExtension.m in Sources */,
 				7839C9972421CB1C002F6595 /* CommentBaseView.m in Sources */,
+				78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */,
 				78795734240FA3840013F95F /* ZLNavigationController.m in Sources */,
 				7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */,
 				78C54942241B642B00A33FC4 /* AliyunPlayerViewPopLayer.m in Sources */,
