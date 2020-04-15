@@ -92,4 +92,8 @@
     return [Net_Path fullPath:@"course/base/{id}/note" repalce:@"{id}" byReplece:courseId];
 }
 
++ (NSString *)userInfoEdition {
+    return [Net_Path fullPath:@"user/account/edit" repalce:@"" byReplece:@""];
+}
+
 @end

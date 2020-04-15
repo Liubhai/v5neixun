@@ -159,7 +159,8 @@
     }
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:@"phone" forKey:@"logintype"];
-    [dict setObject:_phoneLabel.text forKey:@"phone"];
+    [dict setObject:_phoneLabel.text forKey:@"token"];
+    [dict setObject:_phoneLabel.text forKey:@"accessToken"];
     [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
         NSLog(@"%@",responseObject);
         if ([responseObject isKindOfClass:[NSDictionary class]]) {

@@ -15,6 +15,9 @@
 #import <UMCommon/UMCommon.h>
 #import <UMShare/UMShare.h>
 #import <UMShare/UMSocialManager.h>
+//
+#import "Net_Path.h"
+#import "SurePwViewController.h"
 
 //
 //                       _oo0oo_
@@ -202,8 +205,6 @@
 - (void)registerQuickLogin {
     // 在使用一键登录之前，请先调用shouldQuickLogin方法，判断当前上网卡的网络环境和运营商是否可以一键登录
     self.shouldQL = [[NTESQuickLoginManager sharedInstance] shouldQuickLogin];
-    NSArray *pass = @[@"1",@"2"];
-//    NSString *poooo = pass[3];
     if (self.shouldQL) {
         [[NTESQuickLoginManager sharedInstance] registerWithBusinessID:WangyiQuickLoginBusenissID timeout:3*1000 configURL:nil extData:nil completion:^(NSDictionary * _Nullable params, BOOL success) {
             if (success) {
@@ -296,62 +297,67 @@
 
 /// 调用服务端接口进行校验
 - (void)startCheckWithText:(NSString *)title {
-    NSDictionary *dict = @{
-        @"accessToken":self.accessToken?:@"",
-        @"token":self.token?:@"",
-    };
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&error];
-    if (error) {
+    if (!SWNOTEmptyStr(self.token)) {
         return;
     }
+    if (!SWNOTEmptyStr(self.accessToken)) {
+        return;
+    }
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:self.token forKey:@"token"];
+    [param setObject:self.accessToken forKey:@"accessToken"];
+    [param setObject:@"phone" forKey:@"logintype"];
+    [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSString *ak = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"ak"]];
+                NSString *sk = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"sk"]];
+                [UserModel saveUserPassportToken:ak andTokenSecret:sk];
+                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]]];
+                [UserModel saveAuth_scope:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"auth_scope"]]];
+                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"user_name"]]];
+                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
+                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
+                [UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
+                if ([[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]) {
+                    
+                    if ([NTESQuickLoginManager sharedInstance].model.currentVC) {
+                        if ([[NTESQuickLoginManager sharedInstance].model.currentVC isKindOfClass:[UINavigationController class]]) {
+                            [[NTESQuickLoginManager sharedInstance].model.currentVC.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                                SurePwViewController *vc = [[SurePwViewController alloc] init];
+                                vc.registerOrForget = YES;
+                                UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                                Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                                [_currentViewController presentViewController:Nav animated:YES completion:nil];
+                            }];
+                        } else if ([[NTESQuickLoginManager sharedInstance].model.currentVC isKindOfClass:[UIViewController class]]) {
+                            [[NTESQuickLoginManager sharedInstance].model.currentVC.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                                SurePwViewController *vc = [[SurePwViewController alloc] init];
+                                vc.registerOrForget = YES;
+                                UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                                Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                                [_currentViewController.navigationController presentViewController:Nav animated:YES completion:nil];
+                            }];
+                        }
+                    }
+                } else {
+                    if ([NTESQuickLoginManager sharedInstance].model.currentVC) {
+                        if ([[NTESQuickLoginManager sharedInstance].model.currentVC isKindOfClass:[UINavigationController class]]) {
+                            [[NTESQuickLoginManager sharedInstance].model.currentVC.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                            }];
+                        } else if ([[NTESQuickLoginManager sharedInstance].model.currentVC isKindOfClass:[UIViewController class]]) {
+                            [[NTESQuickLoginManager sharedInstance].model.currentVC.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                            }];
+                        }
+                    }
+                }
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
     
-//    [NTESDemoHttpRequest startRequestWithURL:API_LOGIN_TOKEN_QLCHECK httpMethod:@"POST" requestData:jsonData finishBlock:^(NSData *data, NSError *error, NSInteger statusCode) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self dismissViewControllerAnimated:YES completion:nil];
-//            if (data) {
-//                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-//                NSNumber *code = [dict objectForKey:@"code"];
-//
-//                if ([code integerValue] == 200) {
-//                    NSDictionary *data = [dict objectForKey:@"data"];
-//                    NSString *phoneNum = [data objectForKey:@"phone"];
-//                    if (phoneNum && phoneNum.length > 0) {
-//                        NTESQPLoginSuccessViewController *vc = [[NTESQPLoginSuccessViewController alloc] init];
-//                        vc.themeTitle = title;
-//                        vc.type = NTESQuickLoginType;
-//                        [self.navigationController pushViewController:vc animated:YES];
-//                    } else {
-//                        [self.navigationController pushViewController:self.loginViewController animated:YES];
-//                        [self.loginViewController updateView];
-//
-//                        #ifdef TEST_MODE_QA
-//                        [self.loginViewController showToastWithMsg:@"一键登录失败"];
-//                        #endif
-//                    }
-//                } else if ([code integerValue] == 1003){
-//                    [self.navigationController pushViewController:self.loginViewController animated:YES];
-//                    [self.loginViewController updateView];
-//                } else {
-//                    [self.navigationController pushViewController:self.loginViewController animated:YES];
-//                    [self.loginViewController updateView];
-//
-//                    #ifdef TEST_MODE_QA
-//                    [self.loginViewController showToastWithMsg:[NSString stringWithFormat:@"错误，code=%@", code]];
-//                    #endif
-//                }
-//            } else {
-//                [self.navigationController pushViewController:self.loginViewController animated:YES];
-//                [self.loginViewController updateView];
-//
-//                #ifdef TEST_MODE_QA
-//                [self.loginViewController showToastWithMsg:[NSString stringWithFormat:@"服务器错误-%ld", (long)statusCode]];
-//                #endif
-//            }
-//        });
-//    }];
 }
 
 /// 授权页面自定义

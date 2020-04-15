@@ -134,6 +134,12 @@
 		78AA138C2440710B007087F7 /* HomePageCourseTypeOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA138B2440710B007087F7 /* HomePageCourseTypeOneCell.m */; };
 		78AA138F24407197007087F7 /* HomePageCourseTypeTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA138E24407197007087F7 /* HomePageCourseTypeTwoCell.m */; };
 		78AA139224441083007087F7 /* IntendedCourseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA139124441082007087F7 /* IntendedCourseVC.m */; };
+		78AA1397244596B0007087F7 /* MyCenterOrderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA1396244596AE007087F7 /* MyCenterOrderView.m */; };
+		78AA139A2445A702007087F7 /* MyCenterBalanceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13992445A702007087F7 /* MyCenterBalanceView.m */; };
+		78AA139D2445AE58007087F7 /* MyCenterUserInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA139C2445AE58007087F7 /* MyCenterUserInfoView.m */; };
+		78AA13A024469D04007087F7 /* MyCenterTypeOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA139F24469D04007087F7 /* MyCenterTypeOneCell.m */; };
+		78AA13A32446AB00007087F7 /* MyCenterTypeTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */; };
+		78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */; };
 		78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548262411F34100A33FC4 /* LoginMsgView.m */; };
 		78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548292412229900A33FC4 /* AreaNumListVC.m */; };
 		78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */; };
@@ -549,6 +555,18 @@
 		78AA138E24407197007087F7 /* HomePageCourseTypeTwoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageCourseTypeTwoCell.m; sourceTree = "<group>"; };
 		78AA139024441082007087F7 /* IntendedCourseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntendedCourseVC.h; sourceTree = "<group>"; };
 		78AA139124441082007087F7 /* IntendedCourseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntendedCourseVC.m; sourceTree = "<group>"; };
+		78AA1395244596AE007087F7 /* MyCenterOrderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCenterOrderView.h; sourceTree = "<group>"; };
+		78AA1396244596AE007087F7 /* MyCenterOrderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCenterOrderView.m; sourceTree = "<group>"; };
+		78AA13982445A702007087F7 /* MyCenterBalanceView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCenterBalanceView.h; sourceTree = "<group>"; };
+		78AA13992445A702007087F7 /* MyCenterBalanceView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCenterBalanceView.m; sourceTree = "<group>"; };
+		78AA139B2445AE58007087F7 /* MyCenterUserInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCenterUserInfoView.h; sourceTree = "<group>"; };
+		78AA139C2445AE58007087F7 /* MyCenterUserInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCenterUserInfoView.m; sourceTree = "<group>"; };
+		78AA139E24469D04007087F7 /* MyCenterTypeOneCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCenterTypeOneCell.h; sourceTree = "<group>"; };
+		78AA139F24469D04007087F7 /* MyCenterTypeOneCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCenterTypeOneCell.m; sourceTree = "<group>"; };
+		78AA13A12446AB00007087F7 /* MyCenterTypeTwoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCenterTypeTwoCell.h; sourceTree = "<group>"; };
+		78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCenterTypeTwoCell.m; sourceTree = "<group>"; };
+		78AA13A42446B7EB007087F7 /* PersonalInformationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonalInformationVC.h; sourceTree = "<group>"; };
+		78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonalInformationVC.m; sourceTree = "<group>"; };
 		78C548252411F34100A33FC4 /* LoginMsgView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginMsgView.h; sourceTree = "<group>"; };
 		78C548262411F34100A33FC4 /* LoginMsgView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginMsgView.m; sourceTree = "<group>"; };
 		78C548282412229900A33FC4 /* AreaNumListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaNumListVC.h; sourceTree = "<group>"; };
@@ -1102,6 +1120,9 @@
 			children = (
 				78795667240E606F0013F95F /* MyRootViewController.h */,
 				78795668240E606F0013F95F /* MyRootViewController.m */,
+				78AA13A42446B7EB007087F7 /* PersonalInformationVC.h */,
+				78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */,
+				78AA13932445967E007087F7 /* View */,
 			);
 			path = MyCenterPage;
 			sourceTree = "<group>";
@@ -1426,6 +1447,23 @@
 				78AA138B2440710B007087F7 /* HomePageCourseTypeOneCell.m */,
 				78AA138D24407197007087F7 /* HomePageCourseTypeTwoCell.h */,
 				78AA138E24407197007087F7 /* HomePageCourseTypeTwoCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		78AA13932445967E007087F7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				78AA1395244596AE007087F7 /* MyCenterOrderView.h */,
+				78AA1396244596AE007087F7 /* MyCenterOrderView.m */,
+				78AA13982445A702007087F7 /* MyCenterBalanceView.h */,
+				78AA13992445A702007087F7 /* MyCenterBalanceView.m */,
+				78AA139B2445AE58007087F7 /* MyCenterUserInfoView.h */,
+				78AA139C2445AE58007087F7 /* MyCenterUserInfoView.m */,
+				78AA139E24469D04007087F7 /* MyCenterTypeOneCell.h */,
+				78AA139F24469D04007087F7 /* MyCenterTypeOneCell.m */,
+				78AA13A12446AB00007087F7 /* MyCenterTypeTwoCell.h */,
+				78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2201,6 +2239,7 @@
 				78C54960241B642B00A33FC4 /* AVCDownloadVideo.m in Sources */,
 				78C549CA241B674E00A33FC4 /* AlivcAppServer.m in Sources */,
 				78C5497A241B642B00A33FC4 /* AlivcPushBeautyDataManager.m in Sources */,
+				78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */,
 				78795660240E60320013F95F /* HomeRootViewController.m in Sources */,
 				78C54949241B642B00A33FC4 /* AliyunPlayerViewProgressView.m in Sources */,
 				78795722240FA3840013F95F /* ZLCameraImageView.m in Sources */,
@@ -2227,6 +2266,7 @@
 				78795669240E606F0013F95F /* MyRootViewController.m in Sources */,
 				78C5496F241B642B00A33FC4 /* AlivcProfile.m in Sources */,
 				78C549DB241B674F00A33FC4 /* UIApplication+AlivcHelper.m in Sources */,
+				78AA1397244596B0007087F7 /* MyCenterOrderView.m in Sources */,
 				7839C98324206B72002F6595 /* CourseCouponView.m in Sources */,
 				78795618240DE7A50013F95F /* ViewController.m in Sources */,
 				7879571F240FA3840013F95F /* DALabeledCircularProgressView.m in Sources */,
@@ -2326,6 +2366,7 @@
 				78C54972241B642B00A33FC4 /* AlivcVideoPlayListModel.m in Sources */,
 				7876573324370560008F475D /* playAnimationView.m in Sources */,
 				78C549D6241B674F00A33FC4 /* AlivcBaseNavigationController.m in Sources */,
+				78AA13A32446AB00007087F7 /* MyCenterTypeTwoCell.m in Sources */,
 				7839C9A32423655B002F6595 /* CourseListVC.m in Sources */,
 				7853BDD0242D8F4300F096EC /* ShitikaViewController.m in Sources */,
 				7839C9892420CA15002F6595 /* CourseCommentTopView.m in Sources */,
@@ -2356,6 +2397,7 @@
 				78C5483424124B4000A33FC4 /* AreaTableViewCell.m in Sources */,
 				78C54932241B642B00A33FC4 /* AlivcVideoPlayerListsTableViewCell.m in Sources */,
 				78C549CD241B674E00A33FC4 /* AlivcAlertView.m in Sources */,
+				78AA139D2445AE58007087F7 /* MyCenterUserInfoView.m in Sources */,
 				7853BDB92428957600F096EC /* CourseListModel.m in Sources */,
 				7879572B240FA3840013F95F /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				78C5493B241B642B00A33FC4 /* AliyunVodPlayerView.m in Sources */,
@@ -2363,6 +2405,7 @@
 				78795721240FA3840013F95F /* ZLCameraViewController.m in Sources */,
 				78C5493E241B642B00A33FC4 /* AliyunLog.m in Sources */,
 				78C5487E2418CC7400A33FC4 /* TYAttributedLabel.m in Sources */,
+				78AA139A2445A702007087F7 /* MyCenterBalanceView.m in Sources */,
 				78795739240FA3840013F95F /* ZLPhotoPickerImageView.m in Sources */,
 				787657302435DC81008F475D /* SearchHistoryListCell.m in Sources */,
 				78C54945241B642B00A33FC4 /* AliyunPlayerViewControlView.m in Sources */,
@@ -2396,6 +2439,7 @@
 				78795755240FAA7A0013F95F /* NSString+Hashing.m in Sources */,
 				78C54954241B642B00A33FC4 /* AVC_VP_BaseViewController.m in Sources */,
 				78C549E2241B674F00A33FC4 /* NSData+AlivcHelper.m in Sources */,
+				78AA13A024469D04007087F7 /* MyCenterTypeOneCell.m in Sources */,
 				78C5493C241B642B00A33FC4 /* AliyunDataSource.m in Sources */,
 				7879573A240FA3840013F95F /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
 				78C5496E241B642B00A33FC4 /* AlivcLiveUser.m in Sources */,

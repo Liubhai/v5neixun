@@ -17,4 +17,6 @@
  */
 - (UIImage *)converToMainColor;
 
+- (UIImage *)converToOtherColor:(UIColor *)color;
+
 @end

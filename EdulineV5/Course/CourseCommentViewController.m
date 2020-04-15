@@ -42,8 +42,10 @@
     [_leftButton setImage:Image(@"nav_back_grey") forState:0];
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"提交" forState:0];
-    [_rightButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.textThirdColor forState:UIControlStateDisabled];
     _rightButton.hidden = NO;
+    _rightButton.enabled = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     [self makeSubView];
@@ -132,8 +134,10 @@
     UITextView *textView = (UITextView *)notice.object;
     if (textView.text.length<=0) {
         _placeLabel.hidden = NO;
+        _rightButton.enabled = NO;
     } else {
         _placeLabel.hidden = YES;
+        _rightButton.enabled = YES;
     }
     _textCountLabel.text = [NSString stringWithFormat:@"%@/%@",@(textView.text.length),@(wordMax)];
     if (textView.text.length>wordMax) {

@@ -74,6 +74,9 @@ struct NetWorkUrl {
 
 /** 笔记列表 */
 + (NSString *)courseNoteList:(NSString *)courseId;
+
+/** 用户信息编辑 */
++ (NSString *)userInfoEdition;
 @end
 
 NS_ASSUME_NONNULL_END
