@@ -22,7 +22,7 @@
 
 - (void)makeSubViews {
     
-    _courseScore = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 36, 22)];
+    _courseScore = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 40, 22)];
     _courseScore.text = @"4.1分";
     _courseScore.textColor = EdlineV5_Color.textzanColor;
     _courseScore.font = SYSTEMFONT(15);
@@ -84,17 +84,31 @@
         [_showLabel setLeft:_showOwnButton.right + 8];
         _showLabel.hidden = NO;
         _showOwnButton.hidden = NO;
+    } else {
+        NSString *scoreCount = [NSString stringWithFormat:@"%@",[info objectForKey:@"star"]];
+        _courseScore.text = [NSString stringWithFormat:@"%@分",scoreCount];
+        [_courseStar setStarValue:[scoreCount floatValue]];
     }
 }
 
 - (void)seleteButtonClick:(UIButton *)sender {
     _showOwnButton.selected = !_showOwnButton.selected;
+    if (_delegate && [_delegate respondsToSelector:@selector(showOwnCommentList:)]) {
+        [_delegate showOwnCommentList:sender];
+    }
 }
 
 - (void)commentButtonClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(jumpToCommentVC)]) {
         [_delegate jumpToCommentVC];
     }
+}
+
+- (void)changeCommentStatus:(BOOL)hasComment {
+    _commentButton.hidden = hasComment;
+    _showLabel.hidden = !hasComment;
+    _showOwnButton.hidden = !hasComment;
+
 }
 
 @end

@@ -39,6 +39,7 @@
     _setBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _setBtn.frame = CGRectMake(_rightBtn.left - 44, _rightBtn.top, 44, 44);
     [_setBtn setImage:Image(@"pre_nav_set") forState:0];
+    [_setBtn addTarget:self action:@selector(setBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_setBtn];
     
     _userFaceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _leftBtn.bottom + 15, 64, 64)];
@@ -84,6 +85,12 @@
 - (void)faceTapClick {
     if (_delegate && [_delegate respondsToSelector:@selector(goToUserInfoVC)]) {
         [_delegate goToUserInfoVC];
+    }
+}
+
+- (void)setBtnClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(goToSetingVC)]) {
+        [_delegate goToSetingVC];
     }
 }
 

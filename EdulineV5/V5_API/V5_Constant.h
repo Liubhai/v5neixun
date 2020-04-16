@@ -49,6 +49,7 @@
 
 #define Image(name) [UIImage imageNamed:name]
 #define DefaultImage [UIImage imageNamed:@"lesson_img"]
+#define DefaultUserImage [UIImage imageNamed:@"pre_touxaing"]
 #define BasidColor [UIColor colorWithRed:32.f / 255 green:105.f / 255 blue:207.f / 255 alpha:1]
 #define BackColor [UIColor colorWithRed:240.f / 255 green:240.f / 255 blue:240.f / 255 alpha:1]
 #define RGBA(r,g,b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1.0]

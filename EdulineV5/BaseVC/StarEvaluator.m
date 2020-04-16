@@ -45,10 +45,10 @@
     
     int t = (int)(touchPoint.x/aWidth);
     float f = (touchPoint.x - t*Space - t*aStarWidth)/aStarWidth;
-    f = f>1.0?1.0:f;
+    f = f>1.0?1.0:(f>0.5?1.0:0.5);
     self.currentValue = t + f;
     
-    touchX = touchPoint.x;
+    touchX = f * aStarWidth + t * Space + t * aStarWidth;//touchPoint.x;
     [self setNeedsDisplay];
     
     return YES;
@@ -60,10 +60,10 @@
     
     int t = (int)(touchPoint.x/aWidth);
     float f = (touchPoint.x - t*Space - t*aStarWidth)/aStarWidth;
-    f = f>1.0?1.0:f;
+    f = f>1.0?1.0:(f>0.5?1.0:0.5);
     self.currentValue = t + f;
     
-    touchX = touchPoint.x;
+    touchX = f * aStarWidth + t * Space + t * aStarWidth;//touchPoint.x;
     [self setNeedsDisplay];
     
     return YES;

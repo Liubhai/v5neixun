@@ -172,7 +172,12 @@
     }
     
     [Net_API requestPOSTWithURLStr:[Net_Path courseCommentList:_courseId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-        
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
     } enError:^(NSError * _Nonnull error) {
         
     }];

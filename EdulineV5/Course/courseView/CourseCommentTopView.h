@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 - (void)jumpToCommentVC;
+- (void)showOwnCommentList:(UIButton *)sender;
 
 @end
 
@@ -40,6 +41,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setCourseCommentInfo:(NSDictionary *)info commentOrRecord:(BOOL)commentOrRecord;
 
+/**
+ 判断是不是已经点评过了
+ */
+- (void)changeCommentStatus:(BOOL)hasComment;
 @end
 
 NS_ASSUME_NONNULL_END

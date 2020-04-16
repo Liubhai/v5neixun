@@ -72,7 +72,7 @@
     _zanCountButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - zanWidth, _timeLabel.top, zanWidth, 20)];
     [_zanCountButton setImage:Image(@"dianzan_icon") forState:0];
     [_zanCountButton setTitle:zanCount forState:0];
-    [_zanCountButton setTitleColor:EdlineV5_Color.textzanColor forState:0];
+    [_zanCountButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
     _zanCountButton.titleLabel.font = SYSTEMFONT(12);
     _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
@@ -95,6 +95,50 @@
 }
 
 - (void)setCommentInfo:(NSDictionary *)info {
+    _userCommentInfo = info;
+    if (_cellType) {
+    } else {
+        if (SWNOTEmptyDictionary(info)) {
+            _nameLabel.text = [NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"nick_name"]];
+            if (SWNOTEmptyStr([[info objectForKey:@"user"] objectForKey:@"avatar_url"])) {
+                [_userFace sd_setImageWithURL:EdulineUrlString([[info objectForKey:@"user"] objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
+            } else {
+                _userFace.image = DefaultUserImage;
+            }
+            CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+            [_nameLabel setWidth:nameWidth];
+            [_scoreStar setLeft:_nameLabel.right + 10];
+            [_scoreStar setStarValue:[[NSString stringWithFormat:@"%@",[info objectForKey:@"star"]] floatValue]];
+            _contentLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"description"]];
+            _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
+            _contentLabel.numberOfLines = 0;
+            [_contentLabel sizeToFit];
+            [_contentLabel setHeight:_contentLabel.height];
+            
+            [_timeLabel setTop:_contentLabel.bottom + 15];
+            _timeLabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",[info objectForKey:@"create_time"]]];
+            
+            NSString *commentCount = [NSString stringWithFormat:@"%@",[info objectForKey:@"reply_count"]];
+            NSString *zanCount = [NSString stringWithFormat:@"%@",[info objectForKey:@"like_count"]];
+            CGFloat commentWidth = [commentCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
+            CGFloat zanWidth = [zanCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
+            BOOL isZan = [[NSString stringWithFormat:@"%@",[info objectForKey:@"like"]] boolValue];
+            CGFloat space = 2.0;
+            _zanCountButton.frame = CGRectMake(MainScreenWidth - 15 - zanWidth, _timeLabel.top, zanWidth, 20);
+            [_zanCountButton setImage:isZan ? Image(@"dianzan_icon") : Image(@"dianzan_icon_norm") forState:0];
+            [_zanCountButton setTitle:zanCount forState:0];
+            [_zanCountButton setTitleColor:isZan ? EdlineV5_Color.textzanColor : EdlineV5_Color.textThirdColor forState:0];
+            _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+            _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+            
+            _commentCountButton.frame = CGRectMake(_zanCountButton.left - 18 - commentWidth, _timeLabel.top, commentWidth, 20);
+            [_commentCountButton setTitle:commentCount forState:0];
+            _commentCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+            _commentCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+            
+            [_lineView setTop:_timeLabel.bottom + 10];
+        }
+    }
     [self setHeight:_lineView.bottom];
 }
 

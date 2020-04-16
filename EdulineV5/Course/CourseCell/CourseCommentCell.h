@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *commentCountButton;
 @property (strong, nonatomic) UIButton *zanCountButton;
 @property (strong, nonatomic) UIView *lineView;
+@property (strong, nonatomic) NSDictionary *userCommentInfo;
 
 @property (assign, nonatomic) BOOL cellType;// yes 是笔记 no 是点评
 

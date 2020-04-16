@@ -14,8 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CourseCommentDetailVC : BaseViewController
 
 @property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) NSDictionary *commentInfo;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (assign, nonatomic) BOOL cellType;// yes 是点评 no 是笔记
+
+@property (strong, nonatomic) NSDictionary *topCellInfo;// 外部传入的数据
+@property (strong, nonatomic) NSString *commentId;
 
 @end
 

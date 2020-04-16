@@ -191,7 +191,7 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_courseListArray removeAllObjects];
-                    NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
+                    NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
                     for (CourseListModel *object in pass) {
                         CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                         [_courseListArray addObject:model];
@@ -234,7 +234,7 @@
                     if (SWNOTEmptyDictionary(responseObject)) {
                         if ([[responseObject objectForKey:@"code"] integerValue]) {
                             NSMutableArray *passOrigin = [NSMutableArray new];
-                            NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
+                            NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
                             for (CourseListModel *object in pass) {
                                 CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                                 [passOrigin addObject:model];
@@ -278,7 +278,7 @@
                     if (SWNOTEmptyDictionary(responseObject)) {
                         if ([[responseObject objectForKey:@"code"] integerValue]) {
                             NSMutableArray *passOrigin = [NSMutableArray new];
-                            NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"section_info"]]];
+                            NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
                             for (CourseListModel *object in pass) {
                                 CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                                 [passOrigin addObject:model];

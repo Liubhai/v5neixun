@@ -9,9 +9,11 @@
 #import "CourseCommentDetailVC.h"
 #import "CourseCommentCell.h"
 #import "CommentBaseView.h"
+#import "Net_Path.h"
 
 @interface CourseCommentDetailVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CommentBaseViewDelegate> {
     CGFloat keyHeight;
+    NSInteger page;
 }
 
 @property (strong, nonatomic) UILabel *replayCountLabel;
@@ -25,6 +27,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    if (!SWNOTEmptyStr(_commentId)) {
+        if (SWNOTEmptyDictionary(_topCellInfo)) {
+            _commentId = [NSString stringWithFormat:@"%@",[_topCellInfo objectForKey:@"id"]];
+        }
+    }
+    
+    page = 1;
+    
     _titleImage.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"评论";
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
@@ -35,6 +46,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getCommentReplayList)];
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     
@@ -49,6 +61,8 @@
     _commentBackView.hidden = YES;
     [self.view addSubview:_commentBackView];
     
+    [_tableView.mj_header beginRefreshing];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -62,7 +76,7 @@
     if (section == 0) {
         return 1;
     } else if (section == 1) {
-        return 10;
+        return _dataSource.count;
     } else {
         return 0;
     }
@@ -76,7 +90,7 @@
             cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
         }
         cell.commentCountButton.hidden = YES;
-        [cell setCommentInfo:nil];
+        [cell setCommentInfo:_topCellInfo];
         return cell;
     } else {
         static NSString *reuse = @"CourseCommentReplayCell";
@@ -86,7 +100,7 @@
         }
         cell.scoreStar.hidden = YES;
         cell.commentCountButton.hidden = YES;
-        [cell setCommentInfo:nil];
+        [cell setCommentInfo:_dataSource[indexPath.row]];
         return cell;
     }
 }
@@ -107,7 +121,8 @@
             _replayCountLabel.textColor = EdlineV5_Color.textFirstColor;
             _replayCountLabel.font = SYSTEMFONT(16);
         }
-        _replayCountLabel.text = @"共6条回复";
+        
+        _replayCountLabel.text = [NSString stringWithFormat:@"共%@条回复",[[_commentInfo objectForKey:@"commentReply"] objectForKey:@"total"]];
         [headerSetion addSubview:_replayCountLabel];
         return headerSetion;
     }
@@ -185,8 +200,54 @@
 
 - (void)sendReplayMsg:(CommentBaseView *)view {
     [view.inputTextView resignFirstResponder];
+    if (!SWNOTEmptyStr(view.inputTextView.text)) {
+        [self showHudInView:self.view showHint:@"请输入评论内容"];
+        return;
+    }
+    NSString *content = [NSString stringWithFormat:@"%@",view.inputTextView.text];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:content forKey:@"description"];
+    // 目前没有做回复评论
+    [param setObject:@"0" forKey:@"reply_uid"];
+    [Net_API requestPOSTWithURLStr:[Net_Path courseCommentReplayList:_commentId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:@"评论失败"];
+    }];
     view.inputTextView.text = @"";
     view.placeHoderLab.hidden = NO;
+}
+
+- (void)getCommentReplayList {
+    if (SWNOTEmptyStr(_commentId)) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:@(page) forKey:@"page"];
+        [param setObject:@"10" forKey:@"count"];
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseCommentReplayList:_commentId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            if (_tableView.mj_header.isRefreshing) {
+                [_tableView.mj_header endRefreshing];
+            }
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    _topCellInfo = [NSDictionary dictionaryWithDictionary:[[responseObject objectForKey:@"data"] objectForKey:@"comment"]];
+                    [_dataSource removeAllObjects];
+                    [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"commentReply"] objectForKey:@"data"]];
+                    _commentInfo = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            if (_tableView.mj_header.isRefreshing) {
+                [_tableView.mj_header endRefreshing];
+            }
+        }];
+    } else {
+        if (_tableView.mj_header.isRefreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+    }
 }
 
 @end

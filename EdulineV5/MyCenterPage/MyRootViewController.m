@@ -177,8 +177,6 @@
 
 // MARK: - MyCenterUserInfoViewDelegate(进入个人信息页面)
 - (void)goToUserInfoVC {
-    [AppDelegate presentLoginNav:self];
-    return;
     if (SWNOTEmptyStr([UserModel oauthToken])) {
         PersonalInformationVC *vc = [[PersonalInformationVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];

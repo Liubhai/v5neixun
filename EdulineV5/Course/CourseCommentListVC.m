@@ -13,7 +13,9 @@
 #import "CourseCommentViewController.h"
 #import "Net_Path.h"
 
-@interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate,UIScrollViewDelegate>
+@interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate,UIScrollViewDelegate> {
+    NSInteger page;
+}
 
 @property (strong, nonatomic) CourseCommentTopView *headerView;
 
@@ -25,6 +27,7 @@
     
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    page = 1;
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
     
@@ -37,6 +40,8 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableHeaderView = _headerView;
+    _tableView.showsVerticalScrollIndicator = NO;
+    _tableView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     [self getCourseCommentList];
@@ -44,7 +49,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -54,7 +59,7 @@
         cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
     }
     cell.delegate = self;
-    [cell setCommentInfo:nil];
+    [cell setCommentInfo:_dataSource[indexPath.row]];
     return cell;
 }
 
@@ -87,6 +92,7 @@
 - (void)replayComment:(CourseCommentCell *)cell {
     CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
     vc.cellType = _cellType;
+    vc.topCellInfo = cell.userCommentInfo;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -97,10 +103,39 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)showOwnCommentList:(UIButton *)sender {
+    if (SWNOTEmptyDictionary(_allCommentInfo)) {
+        [_dataSource removeAllObjects];
+        if (sender.selected) {
+            if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
+                if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
+                    [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
+                }
+            }
+        } else {
+            [_dataSource addObjectsFromArray:[[[_allCommentInfo objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+        }
+        [_tableView reloadData];
+    }
+}
+
 - (void)getCourseCommentList {
     if (SWNOTEmptyStr(_courseId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseCommentList:_courseId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:@(page) forKey:@"page"];
+        [param setObject:@"10" forKey:@"count"];
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseCommentList:_courseId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             NSLog(@"%@",responseObject);
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    _allCommentInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    [_dataSource removeAllObjects];
+                    [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+                    [_headerView setCourseCommentInfo:[responseObject objectForKey:@"data"] commentOrRecord:_cellType];
+                    [_headerView changeCommentStatus:[[[responseObject objectForKey:@"data"] objectForKey:@"has_comment"] boolValue]];
+                    [_tableView reloadData];
+                }
+            }
         } enError:^(NSError * _Nonnull error) {
             
         }];

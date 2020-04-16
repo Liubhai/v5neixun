@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *courseId;
 
 @property (strong, nonatomic) UITableView *tableView;
+/** 所有数据源 */
+@property (strong, nonatomic) NSDictionary *allCommentInfo;
+/** 当前显示的数据列表 */
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
 @property (weak, nonatomic) CourseMainViewController *vc;

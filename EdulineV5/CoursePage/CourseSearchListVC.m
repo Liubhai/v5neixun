@@ -280,7 +280,12 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                if (_dataSource.count<15) {
+                    _collectionView.mj_footer.hidden = YES;
+                } else {
+                    _collectionView.mj_footer.hidden = NO;
+                }
                 [_collectionView reloadData];
             }
         }
@@ -290,16 +295,53 @@
 }
 
 - (void)getCourseMainListMoreData {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    page = page + 1;
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    // 大类型
+    if (SWNOTEmptyStr(coursetypeIdString)) {
+        [param setObject:coursetypeIdString forKey:@"course_type"];
+    }
+    // 小分类
+    if (SWNOTEmptyStr(courseClassifyIdString)) {
+        [param setObject:courseClassifyIdString forKey:@"category"];
+    }
+    // 排序
+    if (SWNOTEmptyStr(courseSortIdString)) {
+        [param setObject:courseSortIdString forKey:@"order"];
+    }
+    // 筛选
+    if (SWNOTEmptyStr(screenId)) {
+        [param setObject:screenId forKey:@""];
+    }
+    if (SWNOTEmptyStr(screenPriceUpAndDown)) {
+        [param setObject:screenPriceUpAndDown forKey:@"price_order"];
+    }
+    if (SWNOTEmptyStr(minPrice)) {
+        [param setObject:minPrice forKey:@"price_min"];
+    }
+    if (SWNOTEmptyStr(maxPrice)) {
+        [param setObject:maxPrice forKey:@"price_max"];
+    }
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (_collectionView.mj_footer.isRefreshing) {
+            [_collectionView.mj_footer endRefreshing];
+        }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                if (pass.count<15) {
+                    [_collectionView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [_dataSource addObjectsFromArray:pass];
                 [_collectionView reloadData];
             }
         }
     } enError:^(NSError * _Nonnull error) {
-        
+        page--;
+        if (_collectionView.mj_footer.isRefreshing) {
+            [_collectionView.mj_footer endRefreshing];
+        }
     }];
 }
 
