@@ -131,6 +131,7 @@
                 [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
                 [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
                 [UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"LOGINFINISH" object:nil];
                 SurePwViewController *vc = [[SurePwViewController alloc] init];
                 vc.phoneNum = self.loginMsg.phoneNumTextField.text;
                 vc.msgCode = self.loginMsg.codeTextField.text;

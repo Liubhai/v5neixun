@@ -87,7 +87,28 @@
     _hasPhone = YES;
     self.quickLoginManager = [NTESQuickLoginManager sharedInstance];
     [self registerQuickLogin];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logout) name:@"logout" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFinishLogin) name:@"LOGINFINISH" object:nil];
+    
     return YES;
+}
+
+- (void)logout {
+    [UserModel deleteUserPassport];
+    [RootV5VC destoryShared];
+    if (self.window.rootViewController) {
+        [self.window.rootViewController removeFromParentViewController];
+        self.window.rootViewController = nil;
+    }
+    self.tabbar = [RootV5VC sharedBaseTabBarViewController];
+    self.tabbar.selectedIndex = [self.tabbar.childViewControllers count] - 1;
+    [self.tabbar rootVcIndexWithNum:[self.tabbar.childViewControllers count]];
+    self.window.rootViewController = self.tabbar;
+}
+
+- (void)didFinishLogin {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadUserInfo" object:nil];
 }
 
 +(AppDelegate *)delegate
@@ -320,6 +341,7 @@
                 [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
                 [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
                 [UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"LOGINFINISH" object:nil];
                 if ([[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]) {
                     
                     if ([NTESQuickLoginManager sharedInstance].model.currentVC) {

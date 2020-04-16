@@ -69,6 +69,14 @@
     // test
     [_myCenterUserInfoView setUserInfo:nil];
     [_tableView reloadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadUserInfo) name:@"reloadUserInfo" object:nil];
+}
+
+- (void)reloadUserInfo {
+    // test
+    [_myCenterUserInfoView setUserInfo:nil];
+    [_tableView reloadData];
 }
 
 - (void)makeHeaderView {

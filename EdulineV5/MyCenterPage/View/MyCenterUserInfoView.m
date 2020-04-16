@@ -57,7 +57,7 @@
     _nameLabel.text = @"9527";
     _nameLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *nameTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(faceTapClick)];
-    [_userFaceImageView addGestureRecognizer:nameTap];
+    [_nameLabel addGestureRecognizer:nameTap];
     [self addSubview:_nameLabel];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, _nameLabel.width, _nameLabel.height)];
@@ -96,6 +96,7 @@
         _userFaceImageView.image = Image(@"pre_touxaing");
         _nameLabel.centerY = _userFaceImageView.centerY;
         _nameLabel.text = @"登录/注册";
+        _introLabel.hidden = YES;
     }
 }
 
