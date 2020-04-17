@@ -100,4 +100,8 @@
     return [Net_Path fullPath:@"course/base/comment/{id}/like" repalce:@"{id}" byReplece:commentId];
 }
 
++ (NSString *)zanCommentReplay:(NSString *)commentReplayId {
+    return [Net_Path fullPath:@"course/base/comment/reply/{id}/like" repalce:@"{id}" byReplece:commentReplayId];
+}
+
 @end

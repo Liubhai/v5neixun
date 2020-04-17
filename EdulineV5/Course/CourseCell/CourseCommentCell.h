@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSDictionary *userCommentInfo;
 
 @property (assign, nonatomic) BOOL cellType;// yes 是笔记 no 是点评
+@property (assign, nonatomic) BOOL commentOrReplay;// yes 回复 no 是点评
+
 
 - (void)setCommentInfo:(NSDictionary *)info;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(BOOL)cellType;

@@ -81,6 +81,9 @@ struct NetWorkUrl {
 /** 点评点赞 */
 + (NSString *)zanComment:(NSString *)commentId;
 
+/** 点评回复的点赞 */
++ (NSString *)zanCommentReplay:(NSString *)commentReplayId;
+
 @end
 
 NS_ASSUME_NONNULL_END

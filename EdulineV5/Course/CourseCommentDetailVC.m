@@ -11,7 +11,7 @@
 #import "CommentBaseView.h"
 #import "Net_Path.h"
 
-@interface CourseCommentDetailVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CommentBaseViewDelegate> {
+@interface CourseCommentDetailVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CommentBaseViewDelegate,CourseCommentCellDelegate> {
     CGFloat keyHeight;
     NSInteger page;
 }
@@ -89,6 +89,7 @@
         if (!cell) {
             cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
         }
+        cell.delegate = self;
         cell.commentCountButton.hidden = YES;
         [cell setCommentInfo:_topCellInfo];
         return cell;
@@ -98,8 +99,10 @@
         if (!cell) {
             cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
         }
+        cell.delegate = self;
         cell.scoreStar.hidden = YES;
         cell.commentCountButton.hidden = YES;
+        cell.commentOrReplay = YES;
         [cell setCommentInfo:_dataSource[indexPath.row]];
         return cell;
     }
@@ -196,6 +199,97 @@
 
 - (void)commentBackViewTap:(UIGestureRecognizer *)tap {
     [_commentView.inputTextView resignFirstResponder];
+}
+
+// MARK: - 点赞代理
+- (void)zanComment:(CourseCommentCell *)cell {
+    // 判断是点赞还是取消点赞  然后再判断是展示我的还是展示所有的
+    if (!SWNOTEmptyDictionary(cell.userCommentInfo)) {
+        return;
+    }
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if ([[cell.userCommentInfo objectForKey:@"like"] boolValue]) {
+        // 取消点赞
+        [param setObject:@"0" forKey:@"status"];
+    } else {
+        // 点赞
+        [param setObject:@"1" forKey:@"status"];
+    }
+    NSString *commentId = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"id"]];
+    BOOL likeStatus = [[cell.userCommentInfo objectForKey:@"like"] boolValue];
+    if (cell.commentOrReplay) {
+        [Net_API requestPUTWithURLStr:[Net_Path zanCommentReplay:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    // 改变UI
+                    NSString *zanCount = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"like_count"]];
+                    if (likeStatus) {
+                        zanCount = [NSString stringWithFormat:@"%@",@(zanCount.integerValue - 1)];
+                        [cell changeZanButtonInfo:zanCount zanOrNot:NO];
+                    } else {
+                        zanCount = [NSString stringWithFormat:@"%@",@(zanCount.integerValue + 1)];
+                        [cell changeZanButtonInfo:zanCount zanOrNot:YES];
+                    }
+                    
+                    NSMutableDictionary *allCommentInfoPass = [NSMutableDictionary dictionaryWithDictionary:_commentInfo];
+                    NSMutableDictionary *listPass = [NSMutableDictionary dictionaryWithDictionary:[allCommentInfoPass objectForKey:@"commentReply"]];
+                    NSMutableArray *listDataArray = [NSMutableArray arrayWithArray:[listPass objectForKey:@"data"]];
+                    for (int i = 0; i<listDataArray.count; i++) {
+                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:listDataArray[i]];
+                        if ([[NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]] isEqualToString:commentId]) {
+                            [pass setObject:zanCount forKey:@"like_count"];
+                            [pass setObject:@(!likeStatus) forKey:@"like"];
+                            [listDataArray replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                            [listPass setObject:[NSArray arrayWithArray:listDataArray] forKey:@"data"];
+                            [allCommentInfoPass setObject:listPass forKey:@"commentReply"];
+                            _commentInfo = [NSDictionary dictionaryWithDictionary:allCommentInfoPass];
+                            break;
+                        }
+                    }
+                    
+                    [_dataSource removeAllObjects];
+                    [_dataSource addObjectsFromArray:[[_commentInfo objectForKey:@"commentReply"] objectForKey:@"data"]];
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:[[cell.userCommentInfo objectForKey:@"like"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
+        }];
+    } else {
+        [Net_API requestPUTWithURLStr:[Net_Path zanComment:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    // 改变UI
+                    NSString *zanCount = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"like_count"]];
+                    if (likeStatus) {
+                        zanCount = [NSString stringWithFormat:@"%@",@(zanCount.integerValue - 1)];
+                        [cell changeZanButtonInfo:zanCount zanOrNot:NO];
+                    } else {
+                        zanCount = [NSString stringWithFormat:@"%@",@(zanCount.integerValue + 1)];
+                        [cell changeZanButtonInfo:zanCount zanOrNot:YES];
+                    }
+                    // 改变数据源 先改变所有数据源 用id匹配
+                    // 点赞数 点赞状态(脑壳昏 想直接请求接口)
+                    NSMutableDictionary *allCommentInfoPass = [NSMutableDictionary dictionaryWithDictionary:_commentInfo];
+                    NSMutableDictionary *my_commentInfo = [NSMutableDictionary dictionaryWithDictionary:[allCommentInfoPass objectForKey:@"comment"]];
+                    if ([[my_commentInfo allKeys] count]) {
+                        if ([[NSString stringWithFormat:@"%@",[my_commentInfo objectForKey:@"id"]] isEqualToString:commentId]) {
+                            [my_commentInfo setObject:zanCount forKey:@"like_count"];
+                            [my_commentInfo setObject:@(!likeStatus) forKey:@"like"];
+                            [allCommentInfoPass setObject:my_commentInfo forKey:@"comment"];
+                        }
+                    }
+                    _commentInfo = [NSDictionary dictionaryWithDictionary:allCommentInfoPass];
+                    _topCellInfo = [NSDictionary dictionaryWithDictionary:[_commentInfo objectForKey:@"comment"]];
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:[[cell.userCommentInfo objectForKey:@"like"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
+        }];
+    }
 }
 
 - (void)sendReplayMsg:(CommentBaseView *)view {
