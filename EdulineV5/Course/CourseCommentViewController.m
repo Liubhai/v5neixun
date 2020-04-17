@@ -52,6 +52,21 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    if (SWNOTEmptyDictionary(_originCommentInfo)) {
+        float count = [[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"star"]] floatValue];
+        [_starEva setStarValue:count];
+        _starEva.currentValue = count;
+        _scoreLabel.text = [NSString stringWithFormat:@"%.1f分",count>5.0 ? 5.0 : count];
+        _commentTextView.text = [NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"description"]];
+        _placeLabel.hidden = YES;
+        _textCountLabel.text = [NSString stringWithFormat:@"%@/%@",@(_commentTextView.text.length),@(wordMax)];
+        if (_commentTextView.text.length>wordMax) {
+            NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_textCountLabel.text];
+            [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor} range:NSMakeRange(0, _textCountLabel.text.length - 4)];
+            _textCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+        }
+    }
 }
 
 - (void)makeSubView {

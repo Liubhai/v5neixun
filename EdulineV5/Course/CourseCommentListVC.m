@@ -12,6 +12,7 @@
 #import "CourseCommentDetailVC.h"
 #import "CourseCommentViewController.h"
 #import "Net_Path.h"
+#import "UserModel.h"
 
 @interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate,UIScrollViewDelegate> {
     NSInteger page;
@@ -87,6 +88,44 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self tableView:self.tableView cellForRowAtIndexPath:indexPath];
     return cell.frame.size.height;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
+    BOOL isMine = NO;
+    if (SWNOTEmptyDictionary(pass)) {
+        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+            isMine = YES;
+        }
+    }
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    if (isMine) {
+        UIAlertAction *editAction = [UIAlertAction actionWithTitle:@"编辑" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+            vc.isComment = !_cellType;
+            vc.courseId = _courseId;
+            vc.originCommentInfo = pass;
+            [self.navigationController pushViewController:vc animated:YES];
+        }];
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [alertController addAction:editAction];
+        [alertController addAction:deleteAction];
+    }
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"评论" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
+        vc.cellType = _cellType;
+        vc.topCellInfo = pass;
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertController addAction:commentAction];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)replayComment:(CourseCommentCell *)cell {
