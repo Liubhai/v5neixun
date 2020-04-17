@@ -22,13 +22,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface CourseCommentCell : UITableViewCell
+@interface CourseCommentCell : UITableViewCell<TYAttributedLabelDelegate>
 
 @property (assign, nonatomic) id<CourseCommentCellDelegate> delegate;
 @property (strong, nonatomic) UIImageView *userFace;
 @property (strong, nonatomic) UILabel *nameLabel;
 @property (strong, nonatomic) StarEvaluator *scoreStar;
-@property (strong, nonatomic) UILabel *contentLabel;
+@property (strong, nonatomic) TYAttributedLabel *contentLabel;
+//@property (strong, nonatomic) UILabel *contentLabel;
 @property (strong, nonatomic) YYLabel *tokenLabel;
 @property (strong, nonatomic) UILabel *timeLabel;
 @property (strong, nonatomic) UIButton *commentCountButton;

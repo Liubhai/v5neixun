@@ -58,7 +58,7 @@
         [_starEva setStarValue:count];
         _starEva.currentValue = count;
         _scoreLabel.text = [NSString stringWithFormat:@"%.1f分",count>5.0 ? 5.0 : count];
-        _commentTextView.text = [NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"description"]];
+        _commentTextView.text = [NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"content"]];
         _placeLabel.hidden = YES;
         _textCountLabel.text = [NSString stringWithFormat:@"%@/%@",@(_commentTextView.text.length),@(wordMax)];
         if (_commentTextView.text.length>wordMax) {
@@ -180,10 +180,10 @@
     }
     NSMutableDictionary *param = [NSMutableDictionary new];
     if (_isComment) {
-        [param setObject:_commentTextView.text forKey:@"description"];
+        [param setObject:_commentTextView.text forKey:@"content"];
         [param setObject:[_scoreLabel.text stringByReplacingOccurrencesOfString:@"分" withString:@""] forKey:@"star"];
     } else {
-        [param setObject:_commentTextView.text forKey:@"description"];
+        [param setObject:_commentTextView.text forKey:@"content"];
     }
     
     [Net_API requestPOSTWithURLStr:[Net_Path courseCommentList:_courseId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {

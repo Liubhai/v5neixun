@@ -36,7 +36,7 @@
     _inputTextView.returnKeyType = UIReturnKeyDone;
     [self addSubview:_inputTextView];
     
-    _placeHoderLab = [[UILabel alloc] initWithFrame:CGRectMake(_inputTextView.left + 12.5, (CommenViewHeight - CommentInputHeight) / 2.0, 150, CommentInputHeight)];
+    _placeHoderLab = [[UILabel alloc] initWithFrame:CGRectMake(_inputTextView.left + 12.5, (CommenViewHeight - CommentInputHeight) / 2.0, _inputTextView.width - 12.5, CommentInputHeight)];
     _placeHoderLab.text = @"评论";
     _placeHoderLab.textColor = EdlineV5_Color.textThirdColor;
     _placeHoderLab.font = SYSTEMFONT(16);
@@ -47,7 +47,7 @@
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    _placeHoderLab.hidden = YES;
+//    _placeHoderLab.hidden = YES;
     return YES;
 }
 

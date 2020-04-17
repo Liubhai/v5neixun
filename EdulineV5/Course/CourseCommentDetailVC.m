@@ -10,10 +10,12 @@
 #import "CourseCommentCell.h"
 #import "CommentBaseView.h"
 #import "Net_Path.h"
+#import "UserModel.h"
 
 @interface CourseCommentDetailVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CommentBaseViewDelegate,CourseCommentCellDelegate> {
     CGFloat keyHeight;
     NSInteger page;
+    NSString *replayUserId;
 }
 
 @property (strong, nonatomic) UILabel *replayCountLabel;
@@ -27,6 +29,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    replayUserId = @"";
     
     if (!SWNOTEmptyStr(_commentId)) {
         if (SWNOTEmptyDictionary(_topCellInfo)) {
@@ -125,7 +129,7 @@
             _replayCountLabel.font = SYSTEMFONT(16);
         }
         
-        _replayCountLabel.text = [NSString stringWithFormat:@"共%@条回复",[[_commentInfo objectForKey:@"commentReply"] objectForKey:@"total"]];
+        _replayCountLabel.text = [NSString stringWithFormat:@"共%@条回复",SWNOTEmptyDictionary(_commentInfo) ? [[_commentInfo objectForKey:@"commentReply"] objectForKey:@"total"] : @"0"];
         [headerSetion addSubview:_replayCountLabel];
         return headerSetion;
     }
@@ -147,6 +151,39 @@
         return 42;
     }
     return 0.001;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    replayUserId = @"";
+    if (indexPath.section == 0) {
+        return;
+    }
+    NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
+    BOOL isMine = NO;
+    if (SWNOTEmptyDictionary(pass)) {
+        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+            isMine = YES;
+        }
+    }
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    if (isMine) {
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [alertController addAction:deleteAction];
+    } else {
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"回复" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [_commentView.inputTextView becomeFirstResponder];
+            _commentView.placeHoderLab.text = [NSString stringWithFormat:@"回复@%@",[[pass objectForKey:@"user"] objectForKey:@"nick_name"]];
+            }];
+        [alertController addAction:commentAction];
+    }
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -300,7 +337,7 @@
     }
     NSString *content = [NSString stringWithFormat:@"%@",view.inputTextView.text];
     NSMutableDictionary *param = [NSMutableDictionary new];
-    [param setObject:content forKey:@"description"];
+    [param setObject:content forKey:@"content"];
     // 目前没有做回复评论
     [param setObject:@"0" forKey:@"reply_uid"];
     [Net_API requestPOSTWithURLStr:[Net_Path courseCommentReplayList:_commentId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {

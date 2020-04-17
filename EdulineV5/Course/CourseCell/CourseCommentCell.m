@@ -50,11 +50,12 @@
         [self addSeeMoreButtonInLabel:_tokenLabel];
         [self addSubview:_tokenLabel];
     } else {
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50)];
+        _contentLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50)];
         _contentLabel.text = @"但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦";
         _contentLabel.textColor = EdlineV5_Color.textFirstColor;
         _contentLabel.font = SYSTEMFONT(14);
         _contentLabel.numberOfLines = 0;
+        _contentLabel.delegate = self;
         [self addSubview:_contentLabel];
     }
     
@@ -109,11 +110,40 @@
             [_nameLabel setWidth:nameWidth];
             [_scoreStar setLeft:_nameLabel.right + 10];
             [_scoreStar setStarValue:[[NSString stringWithFormat:@"%@",[info objectForKey:@"star"]] floatValue]];
-            _contentLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"description"]];
-            _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
-            _contentLabel.numberOfLines = 0;
-            [_contentLabel sizeToFit];
-            [_contentLabel setHeight:_contentLabel.height];
+            NSString *replayUsername = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user"]]];
+            NSString *replayUserId = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_uid"]]];
+            if ([replayUserId isEqualToString:@"0"] || ![info objectForKey:@"reply_uid"]) {
+                _contentLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
+                _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
+                _contentLabel.numberOfLines = 0;
+                [_contentLabel sizeToFit];
+                [_contentLabel setHeight:_contentLabel.height];
+            } else {
+                _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
+                _contentLabel.numberOfLines = 0;
+                
+                NSString *insertString = [NSString stringWithFormat:@"@%@",replayUsername];
+                NSString *final = [NSString stringWithFormat:@"回复%@:%@",insertString,[NSString stringWithFormat:@"%@",[info objectForKey:@"content"]]];
+                TYLinkTextStorage *textStorage = [[TYLinkTextStorage alloc]init];
+                textStorage.textColor = EdlineV5_Color.themeColor;
+                textStorage.font = SYSTEMFONT(14);
+                textStorage.linkData = @{@"type":@"user",@"userId":replayUserId};
+                textStorage.underLineStyle = kCTUnderlineStyleNone;
+                textStorage.range = [final rangeOfString:insertString];
+                textStorage.text = insertString;
+                
+                // 属性文本生成器
+                TYTextContainer *attStringCreater = [[TYTextContainer alloc]init];
+                attStringCreater.text = final;
+                _contentLabel.textContainer = attStringCreater;
+                _contentLabel.textContainer.linesSpacing = 4;
+                attStringCreater.font = SYSTEMFONT(13);
+                attStringCreater.textAlignment = kCTTextAlignmentLeft;
+                attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
+                [_contentLabel setHeight:_contentLabel.textContainer.textHeight];
+                [attStringCreater addTextStorageArray:@[textStorage]];
+            }
+            
             
             [_timeLabel setTop:_contentLabel.bottom + 15];
             _timeLabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",[info objectForKey:@"create_time"]]];
@@ -259,5 +289,21 @@
     _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
     [_commentCountButton setRight:_zanCountButton.left - 18];
 }
+
+// MARK: - TY
+- (void)attributedLabel:(TYAttributedLabel *)attributedLabel textStorageClicked:(id<TYTextStorageProtocol>)textStorage atPoint:(CGPoint)point {
+    //非文本/比如表情什么的
+    if (![textStorage isKindOfClass:[TYLinkTextStorage class]]) {
+        return;
+    }
+    id linkContain = ((TYLinkTextStorage *)textStorage).linkData;
+    if ([linkContain isKindOfClass:[NSDictionary class]]) {
+        NSString *typeS = [linkContain objectForKey:@"type"];
+        if ([typeS isEqualToString:@"user"]) {
+            NSLog(@" 点评回复点击用户名 %@",[linkContain objectForKey:@"userId"]);
+        }
+    }
+}
+
 
 @end
