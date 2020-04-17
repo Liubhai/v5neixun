@@ -77,6 +77,10 @@ struct NetWorkUrl {
 
 /** 用户信息编辑 */
 + (NSString *)userInfoEdition;
+
+/** 点评点赞 */
++ (NSString *)zanComment:(NSString *)commentId;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -96,4 +96,8 @@
     return [Net_Path fullPath:@"user/account/edit" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)zanComment:(NSString *)commentId {
+    return [Net_Path fullPath:@"course/base/comment/{id}/like" repalce:@"{id}" byReplece:commentId];
+}
+
 @end

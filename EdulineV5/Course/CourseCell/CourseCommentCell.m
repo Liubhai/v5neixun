@@ -248,5 +248,16 @@
     }
 }
 
+- (void)changeZanButtonInfo:(NSString *)zanCount zanOrNot:(BOOL)zanOrNot {
+    CGFloat zanWidth = [zanCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
+    CGFloat space = 2.0;
+    _zanCountButton.frame = CGRectMake(MainScreenWidth - 15 - zanWidth, _timeLabel.top, zanWidth, 20);
+    [_zanCountButton setImage:zanOrNot ? Image(@"dianzan_icon") : Image(@"dianzan_icon_norm") forState:0];
+    [_zanCountButton setTitle:zanCount forState:0];
+    [_zanCountButton setTitleColor:zanOrNot ? EdlineV5_Color.textzanColor : EdlineV5_Color.textThirdColor forState:0];
+    _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+    _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+    [_commentCountButton setRight:_zanCountButton.left - 18];
+}
 
 @end

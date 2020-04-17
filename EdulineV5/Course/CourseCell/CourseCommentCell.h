@@ -41,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setCommentInfo:(NSDictionary *)info;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(BOOL)cellType;
 
+- (void)changeZanButtonInfo:(NSString *)zanCount zanOrNot:(BOOL)zanOrNot;
+
 @end
 
 NS_ASSUME_NONNULL_END
