@@ -173,6 +173,7 @@
         [alertController addAction:deleteAction];
     } else {
         UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"回复" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            replayUserId = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]];
             [_commentView.inputTextView becomeFirstResponder];
             _commentView.placeHoderLab.text = [NSString stringWithFormat:@"回复@%@",[[pass objectForKey:@"user"] objectForKey:@"nick_name"]];
             }];
@@ -339,10 +340,16 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:content forKey:@"content"];
     // 目前没有做回复评论
-    [param setObject:@"0" forKey:@"reply_uid"];
+    if (SWNOTEmptyStr(replayUserId)) {
+        [param setObject:replayUserId forKey:@"reply_uid"];
+    }
     [Net_API requestPOSTWithURLStr:[Net_Path courseCommentReplayList:_commentId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                replayUserId = @"";
+                _commentView.placeHoderLab.text = @"评论";
+            }
         }
     } enError:^(NSError * _Nonnull error) {
         [self showHudInView:self.view showHint:@"评论失败"];
