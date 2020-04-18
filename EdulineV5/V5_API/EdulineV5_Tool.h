@@ -53,6 +53,8 @@
 
 + (NSString *)sortedDictionary:(NSDictionary *)dict;
 
++ (NSString *)getImageFieldMD5:(NSData *)imageData;
+
 + (NSString *)getmd5WithString:(NSString *)string;
 
 // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`

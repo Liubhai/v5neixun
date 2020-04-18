@@ -104,4 +104,12 @@
     return [Net_Path fullPath:@"course/base/comment/reply/{id}/like" repalce:@"{id}" byReplece:commentReplayId];
 }
 
++ (NSString *)verifyImageExit {
+    return [Net_Path fullPath:@"upload/fast" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)uploadImageField {
+    return [Net_Path fullPath:@"upload/putFile" repalce:@"" byReplece:@""];
+}
+
 @end

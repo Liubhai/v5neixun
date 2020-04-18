@@ -84,6 +84,11 @@ struct NetWorkUrl {
 /** 点评回复的点赞 */
 + (NSString *)zanCommentReplay:(NSString *)commentReplayId;
 
++ (NSString *)verifyImageExit;
+
++ (NSString *)uploadImageField;
+
+
 @end
 
 NS_ASSUME_NONNULL_END
