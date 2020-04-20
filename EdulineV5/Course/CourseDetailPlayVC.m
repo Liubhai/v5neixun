@@ -628,9 +628,14 @@
 }
 
 - (void)jumpToCommentVC {
+    if (!SWNOTEmptyDictionary(_dataSource)) {
+        return;
+    }
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
     vc.isComment = NO;
     vc.courseId = _ID;
+    vc.courseHourseId = _currentHourseId;
+    vc.courseType = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"course_type"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "CourseCommentCell.h"
+#import "UserModel.h"
 
 @implementation CourseCommentCell
 
@@ -39,6 +40,13 @@
     _scoreStar.userInteractionEnabled = NO;
     _scoreStar.centerY = _userFace.centerY;
     [self addSubview:_scoreStar];
+    
+    _editButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _editButton.frame = CGRectMake(MainScreenWidth - 15 - 20, 0, 20, 20);
+    _editButton.centerY = _nameLabel.centerY;
+    [_editButton setImage:Image(@"home_edit_icon") forState:0];
+    [_editButton addTarget:self action:@selector(editButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_editButton];
     
     if (_cellType) {
         _scoreStar.hidden = YES;
@@ -95,10 +103,47 @@
     [self addSubview:_lineView];
 }
 
-- (void)setCommentInfo:(NSDictionary *)info {
+- (void)setCommentInfo:(NSDictionary *)info showAllContent:(BOOL)showAllContent {
     _userCommentInfo = info;
+    _editButton.hidden = YES;
+    if (SWNOTEmptyDictionary(info)) {
+        if ([[NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+            _editButton.hidden = NO;
+        }
+    }
     if (_cellType) {
+        _commentCountButton.hidden = YES;
+        _zanCountButton.hidden = YES;
+        _scoreStar.hidden = YES;
+        if (SWNOTEmptyDictionary(info)) {
+            _nameLabel.text = [NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"nick_name"]];
+            if (SWNOTEmptyStr([[info objectForKey:@"user"] objectForKey:@"avatar_url"])) {
+                [_userFace sd_setImageWithURL:EdulineUrlString([[info objectForKey:@"user"] objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
+            } else {
+                _userFace.image = DefaultUserImage;
+            }
+            
+            CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+            [_nameLabel setWidth:nameWidth];
+            
+            _tokenLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
+            if (showAllContent) {
+                _tokenLabel.numberOfLines = 0;
+            } else {
+                _tokenLabel.numberOfLines = 4;
+            }
+            [_tokenLabel sizeToFit];
+            [_tokenLabel setHeight:_tokenLabel.height];
+            
+            [_timeLabel setTop:_tokenLabel.bottom + 15];
+            _timeLabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",[info objectForKey:@"create_time"]]];
+            
+            [_lineView setTop:_timeLabel.bottom + 10];
+        }
     } else {
+        _commentCountButton.hidden = NO;
+        _zanCountButton.hidden = NO;
+        _scoreStar.hidden = NO;
         if (SWNOTEmptyDictionary(info)) {
             _nameLabel.text = [NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"nick_name"]];
             if (SWNOTEmptyStr([[info objectForKey:@"user"] objectForKey:@"avatar_url"])) {
@@ -181,6 +226,12 @@
 - (void)zanButtonClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(zanComment:)]) {
         [_delegate zanComment:self];
+    }
+}
+
+- (void)editButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(editContent:)]) {
+        [_delegate editContent:self];
     }
 }
 

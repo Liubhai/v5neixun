@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CourseCommentListVC : BaseViewController
 
 @property (strong, nonatomic) NSString *courseId;
+@property (strong, nonatomic) NSString *courseHourseId;
 
 @property (strong, nonatomic) UITableView *tableView;
 /** 所有数据源 */

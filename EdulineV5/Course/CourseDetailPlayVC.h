@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong ,nonatomic)NSDictionary   *dataSource;
 @property (strong ,nonatomic)NSString         *ID;
+@property (strong ,nonatomic)NSString         *currentHourseId;
 /** 是不是活动(由列表传入) */
 @property (assign, nonatomic) BOOL isEvent;
 /// 学习记录里面传过来的课时id

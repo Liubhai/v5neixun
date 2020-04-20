@@ -459,7 +459,6 @@ static EdulineV5_Tool *_sharedInstance;
     for(int  i =0; i<CC_MD5_DIGEST_LENGTH;i++){
         [outPutStr appendFormat:@"%02X", digist[i]];
     }
-   // return [outPutStr lowercaseString];
     return outPutStr;
 }
 

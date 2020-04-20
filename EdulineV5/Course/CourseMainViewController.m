@@ -554,6 +554,7 @@
     CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
     vc.ID = _ID;
     vc.courselayer = _courselayer;
+    vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

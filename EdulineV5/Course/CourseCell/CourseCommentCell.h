@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)replayComment:(CourseCommentCell *)cell;
 - (void)zanComment:(CourseCommentCell *)cell;
+- (void)editContent:(CourseCommentCell *)cell;
 
 @end
 
@@ -28,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImageView *userFace;
 @property (strong, nonatomic) UILabel *nameLabel;
 @property (strong, nonatomic) StarEvaluator *scoreStar;
+@property (strong, nonatomic) UIButton *editButton;
 @property (strong, nonatomic) TYAttributedLabel *contentLabel;
 //@property (strong, nonatomic) UILabel *contentLabel;
 @property (strong, nonatomic) YYLabel *tokenLabel;
@@ -41,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL commentOrReplay;// yes 回复 no 是点评
 
 
-- (void)setCommentInfo:(NSDictionary *)info;
+- (void)setCommentInfo:(NSDictionary *)info showAllContent:(BOOL)showAllContent;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(BOOL)cellType;
 
 - (void)changeZanButtonInfo:(NSString *)zanCount zanOrNot:(BOOL)zanOrNot;

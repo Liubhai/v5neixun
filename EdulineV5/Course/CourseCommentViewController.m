@@ -35,7 +35,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
 //    UITapGestureRecognizer *viewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backViewTap:)];
 //    [self.view addGestureRecognizer:viewTap];
-    wordMax = _isComment ? 200 : 400;
+    wordMax = _isComment ? 100 : 400;
     _titleImage.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = _isComment ? @"点评" : @"笔记";
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
@@ -54,17 +54,29 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     if (SWNOTEmptyDictionary(_originCommentInfo)) {
-        float count = [[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"star"]] floatValue];
-        [_starEva setStarValue:count];
-        _starEva.currentValue = count;
-        _scoreLabel.text = [NSString stringWithFormat:@"%.1f分",count>5.0 ? 5.0 : count];
-        _commentTextView.text = [NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"content"]];
-        _placeLabel.hidden = YES;
-        _textCountLabel.text = [NSString stringWithFormat:@"%@/%@",@(_commentTextView.text.length),@(wordMax)];
-        if (_commentTextView.text.length>wordMax) {
-            NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_textCountLabel.text];
-            [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor} range:NSMakeRange(0, _textCountLabel.text.length - 4)];
-            _textCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+        if (_isComment) {
+            float count = [[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"star"]] floatValue];
+            [_starEva setStarValue:count];
+            _starEva.currentValue = count;
+            _scoreLabel.text = [NSString stringWithFormat:@"%.1f分",count>5.0 ? 5.0 : count];
+            _commentTextView.text = [NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"content"]];
+            _placeLabel.hidden = YES;
+            _textCountLabel.text = [NSString stringWithFormat:@"%@/%@",@(_commentTextView.text.length),@(wordMax)];
+            if (_commentTextView.text.length>wordMax) {
+                NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_textCountLabel.text];
+                [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor} range:NSMakeRange(0, _textCountLabel.text.length - 4)];
+                _textCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+            }
+        } else {
+            _commentTextView.text = [NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"content"]];
+            _placeLabel.hidden = YES;
+            _textCountLabel.text = [NSString stringWithFormat:@"%@/%@",@(_commentTextView.text.length),@(wordMax)];
+            _openButton.selected = [[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"open_status"]] boolValue];
+            if (_commentTextView.text.length>wordMax) {
+                NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_textCountLabel.text];
+                [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor} range:NSMakeRange(0, _textCountLabel.text.length - 4)];
+                _textCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+            }
         }
     }
 }
@@ -182,21 +194,51 @@
     if (_isComment) {
         [param setObject:_commentTextView.text forKey:@"content"];
         [param setObject:[_scoreLabel.text stringByReplacingOccurrencesOfString:@"分" withString:@""] forKey:@"star"];
-    } else {
-        [param setObject:_commentTextView.text forKey:@"content"];
-    }
-    
-    [Net_API requestPOSTWithURLStr:[Net_Path courseCommentList:_courseId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-        if (SWNOTEmptyDictionary(responseObject)) {
-            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
-            if ([[responseObject objectForKey:@"code"] integerValue]) {
-                [self.navigationController popViewControllerAnimated:YES];
+        [Net_API requestPOSTWithURLStr:_isComment ? [Net_Path courseCommentList:_courseId] : (SWNOTEmptyDictionary(_originCommentInfo) ? [Net_Path modificationCourseNote:[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"id"]]] : [Net_Path addCourseHourseNote]) WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"comment"}];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    } else {
+        if (SWNOTEmptyDictionary(_originCommentInfo)) {
+            [param setObject:_commentTextView.text forKey:@"content"];
+            [param setObject:_openButton.selected ? @"1" : @"0"  forKey:@"open_status"];
+            [Net_API requestPUTWithURLStr:[Net_Path modificationCourseNote:[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"id"]]] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        } else {
+            [param setObject:_commentTextView.text forKey:@"content"];
+            [param setObject:_courseId forKey:@"course_id"];
+            [param setObject:_courseHourseId forKey:@"section_id"];
+            [param setObject:_courseType forKey:@"course_type"];
+            [param setObject:_openButton.selected ? @"1" : @"0"  forKey:@"open_status"];
+            [Net_API requestPOSTWithURLStr:_isComment ? [Net_Path courseCommentList:_courseId] : (SWNOTEmptyDictionary(_originCommentInfo) ? [Net_Path modificationCourseNote:[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"id"]]] : [Net_Path addCourseHourseNote]) WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
         }
-    } enError:^(NSError * _Nonnull error) {
-        
-    }];
-    
+    }
 }
 
 - (void)backViewTap:(UIGestureRecognizer *)tap {

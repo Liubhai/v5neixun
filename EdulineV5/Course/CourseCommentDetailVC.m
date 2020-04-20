@@ -46,7 +46,10 @@
     [_leftButton setImage:Image(@"nav_back_grey") forState:0];
     _dataSource = [NSMutableArray new];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 50 - MACRO_UI_SAFEAREA)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - CommenViewHeight - MACRO_UI_SAFEAREA)];
+    if (_cellType) {
+        _tableView.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_SAFEAREA);
+    }
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -56,6 +59,7 @@
     
     _commentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA)];
     _commentView.delegate = self;
+    _commentView.hidden = _cellType;
     [self.view addSubview:_commentView];
     
     _commentBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.001)];
@@ -73,6 +77,9 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (_cellType) {
+        return 1;
+    }
     return 2;
 }
 
@@ -94,8 +101,9 @@
             cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
         }
         cell.delegate = self;
+        [cell setCommentInfo:_topCellInfo showAllContent:_cellType];
         cell.commentCountButton.hidden = YES;
-        [cell setCommentInfo:_topCellInfo];
+        cell.editButton.hidden = YES;
         return cell;
     } else {
         static NSString *reuse = @"CourseCommentReplayCell";
@@ -104,10 +112,11 @@
             cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
         }
         cell.delegate = self;
+        [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:_cellType];
         cell.scoreStar.hidden = YES;
         cell.commentCountButton.hidden = YES;
         cell.commentOrReplay = YES;
-        [cell setCommentInfo:_dataSource[indexPath.row]];
+        cell.editButton.hidden = YES;
         return cell;
     }
 }
@@ -359,6 +368,12 @@
 }
 
 - (void)getCommentReplayList {
+    if (_cellType) {
+        if (_tableView.mj_header.isRefreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+        return;
+    }
     if (SWNOTEmptyStr(_commentId)) {
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:@(page) forKey:@"page"];

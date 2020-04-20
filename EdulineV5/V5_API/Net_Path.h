@@ -87,7 +87,19 @@ struct NetWorkUrl {
 + (NSString *)verifyImageExit;
 
 + (NSString *)uploadImageField;
+/** 课时笔记列表 */
++ (NSString *)courseHourseNoteList;
+/** 添加课时笔记 */
+/**
+ course_id 课程ID
+ course_type 课程类型【1：点播；2：直播；3：面授；4：班级；】
+ section_id 课时ID
+ content 笔记内容
+ */
++ (NSString *)addCourseHourseNote;
 
+/** 修改笔记 */
++ (NSString *)modificationCourseNote:(NSString *)noteId;
 
 @end
 

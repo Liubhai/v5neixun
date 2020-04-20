@@ -45,8 +45,13 @@
     _tableView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-    [self getCourseCommentList];
-    
+    if (_cellType) {
+        _courseHourseId = _detailVC.currentHourseId;
+        [self getNoteList];
+    } else {
+        [self getCourseCommentList];
+    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCourseCommentListVCData:) name:@"CourseCommentListVCRloadData" object:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -60,7 +65,7 @@
         cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
     }
     cell.delegate = self;
-    [cell setCommentInfo:_dataSource[indexPath.row]];
+    [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:NO];
     return cell;
 }
 
@@ -91,6 +96,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_cellType) {
+        return;
+    }
     NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
     BOOL isMine = NO;
     if (SWNOTEmptyDictionary(pass)) {
@@ -139,6 +147,16 @@
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
     vc.isComment = !_cellType;
     vc.courseId = _courseId;
+    vc.courseType = [NSString stringWithFormat:@"%@",[_detailVC.dataSource objectForKey:@"course_type"]];
+    vc.courseHourseId = [NSString stringWithFormat:@"%@",_detailVC.currentHourseId];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)editContent:(CourseCommentCell *)cell {
+    CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+    vc.isComment = !_cellType;
+    vc.courseId = _courseId;
+    vc.originCommentInfo = cell.userCommentInfo;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -217,18 +235,22 @@
 }
 
 - (void)showOwnCommentList:(UIButton *)sender {
-    if (SWNOTEmptyDictionary(_allCommentInfo)) {
-        [_dataSource removeAllObjects];
-        if (sender.selected) {
-            if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
-                if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
-                    [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
+    if (_cellType) {
+        [self getNoteList];
+    } else {
+        if (SWNOTEmptyDictionary(_allCommentInfo)) {
+            [_dataSource removeAllObjects];
+            if (sender.selected) {
+                if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
+                    if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
+                        [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
+                    }
                 }
+            } else {
+                [_dataSource addObjectsFromArray:[[[_allCommentInfo objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
             }
-        } else {
-            [_dataSource addObjectsFromArray:[[[_allCommentInfo objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+            [_tableView reloadData];
         }
-        [_tableView reloadData];
     }
 }
 
@@ -243,7 +265,15 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _allCommentInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [_dataSource removeAllObjects];
-                    [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+                    if (_headerView.showOwnButton.selected) {
+                        if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
+                            if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
+                                [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
+                            }
+                        }
+                    } else {
+                        [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+                    }
                     [_headerView setCourseCommentInfo:[responseObject objectForKey:@"data"] commentOrRecord:_cellType];
                     [_headerView changeCommentStatus:[[[responseObject objectForKey:@"data"] objectForKey:@"has_comment"] boolValue]];
                     [_tableView reloadData];
@@ -253,6 +283,46 @@
             
         }];
     }
+}
+
+- (void)getNoteList {
+    if (SWNOTEmptyStr(_courseHourseId)) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:@(page) forKey:@"page"];
+        [param setObject:@"10" forKey:@"count"];
+        [param setObject:_courseHourseId forKey:@"section_id"];
+        [param setObject:_headerView.showOwnButton.selected ? @"my" : @"all" forKey:@"type"];
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseNoteList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                    _allCommentInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    [_dataSource removeAllObjects];
+                    [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+//                    [_headerView setCourseCommentInfo:[responseObject objectForKey:@"data"] commentOrRecord:_cellType];
+//                    [_headerView changeCommentStatus:[[[responseObject objectForKey:@"data"] objectForKey:@"has_comment"] boolValue]];
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK: - 通知页面刷新数据(发布或者修改笔记、点评 或者点击了新的课时)
+- (void)reloadCourseCommentListVCData:(NSNotification *)notice {
+    if (SWNOTEmptyDictionary(notice.userInfo)) {
+        if ([[notice.userInfo objectForKey:@"type"] isEqualToString:@"comment"]) {
+            [self getCourseCommentList];
+        } else {
+            [self getNoteList];
+        }
+    }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

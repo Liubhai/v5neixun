@@ -133,7 +133,7 @@
 }
 
 - (void)setPassWordRequest {
-    [Net_API requestPUTWithURLStr:[Net_Path userSetPwPath:nil] paramDic:@{@"password":_passWordView.surePwTextField.text} Api_key:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPUTWithURLStr:[Net_Path userSetPwPath:nil] paramDic:@{@"password":[EdulineV5_Tool getmd5WithString:_passWordView.surePwTextField.text]} Api_key:nil finish:^(id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -146,7 +146,7 @@
 }
 
 - (void)reSetPassWordRequest {
-    [Net_API requestPUTWithURLStr:[Net_Path userResetPwPath:nil] paramDic:@{@"phone":_phoneNum,@"password":_passWordView.surePwTextField.text,@"pk":_pkString} Api_key:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPUTWithURLStr:[Net_Path userResetPwPath:nil] paramDic:@{@"phone":_phoneNum,@"password":[EdulineV5_Tool getmd5WithString:_passWordView.surePwTextField.text],@"pk":_pkString} Api_key:nil finish:^(id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {

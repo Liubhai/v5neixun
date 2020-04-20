@@ -112,4 +112,15 @@
     return [Net_Path fullPath:@"upload/putFile" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)courseHourseNoteList {
+    return [Net_Path fullPath:@"course/base/note/list" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)addCourseHourseNote {
+    return [Net_Path fullPath:@"course/base/note" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)modificationCourseNote:(NSString *)noteId {
+    return [Net_Path fullPath:@"course/base/note/{id}" repalce:@"{id}" byReplece:noteId];
+}
 @end

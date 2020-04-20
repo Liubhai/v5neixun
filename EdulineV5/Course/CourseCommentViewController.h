@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *courseId;
 @property (strong, nonatomic) NSDictionary *originCommentInfo;
 
+@property (strong, nonatomic) NSString *courseHourseId;// 课时id
+@property (strong, nonatomic) NSString *courseType;
+
 @end
 
 NS_ASSUME_NONNULL_END
