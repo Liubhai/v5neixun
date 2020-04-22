@@ -14,6 +14,7 @@
 //页面跳转
 #import "PersonalInformationVC.h"
 #import "SetingViewController.h"
+#import "MenberRootVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -183,6 +184,16 @@
     } else {
         [AppDelegate presentLoginNav:self];
     }
+}
+
+- (void)goToSetingVC {
+    SetingViewController *vc = [[SetingViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)goToMenberCenter {
+    MenberRootVC *vc = [[MenberRootVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

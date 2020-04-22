@@ -25,6 +25,7 @@
 		7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C99F242313F6002F6595 /* CourseIntroductionVC.m */; };
 		7839C9A32423655B002F6595 /* CourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A22423655A002F6595 /* CourseListVC.m */; };
 		7839C9A6242368A2002F6595 /* CourseCatalogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A5242368A2002F6595 /* CourseCatalogCell.m */; };
+		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853BDB92428957600F096EC /* CourseListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDB82428957600F096EC /* CourseListModel.m */; };
 		7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBB2428A14500F096EC /* CourseSearchListVC.m */; };
 		7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBE2428A43D00F096EC /* CourseSearchListCell.m */; };
@@ -349,6 +350,8 @@
 		7839C9A22423655A002F6595 /* CourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListVC.m; sourceTree = "<group>"; };
 		7839C9A4242368A2002F6595 /* CourseCatalogCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCatalogCell.h; sourceTree = "<group>"; };
 		7839C9A5242368A2002F6595 /* CourseCatalogCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCatalogCell.m; sourceTree = "<group>"; };
+		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
+		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853BDB72428957600F096EC /* CourseListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseListModel.h; sourceTree = "<group>"; };
 		7853BDB82428957600F096EC /* CourseListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListModel.m; sourceTree = "<group>"; };
 		7853BDBA2428A14500F096EC /* CourseSearchListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseSearchListVC.h; sourceTree = "<group>"; };
@@ -1130,6 +1133,8 @@
 				78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */,
 				78AA13A7244708B4007087F7 /* SetingViewController.h */,
 				78AA13A8244708B4007087F7 /* SetingViewController.m */,
+				78531643244FF60C007E239E /* MenberRootVC.h */,
+				78531644244FF60C007E239E /* MenberRootVC.m */,
 				78AA13932445967E007087F7 /* View */,
 			);
 			path = MyCenterPage;
@@ -2302,6 +2307,7 @@
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				78C549DD241B674F00A33FC4 /* UIResponder+AlivcHelper.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
+				78531645244FF60C007E239E /* MenberRootVC.m in Sources */,
 				78AA1359243C2278007087F7 /* CourseSortVC.m in Sources */,
 				7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,

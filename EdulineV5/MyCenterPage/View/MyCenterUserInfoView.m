@@ -78,6 +78,7 @@
     _menberBtn.titleLabel.font = SYSTEMFONT(14);
     [_menberBtn setTitle:@" 开通会员》" forState:0];
     [_menberBtn setTitleColor:HEXCOLOR(0xA87941) forState:0];
+    [_menberBtn addTarget:self action:@selector(menberButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_menberBtn];
     
 }
@@ -91,6 +92,12 @@
 - (void)setBtnClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(goToSetingVC)]) {
         [_delegate goToSetingVC];
+    }
+}
+
+- (void)menberButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(goToMenberCenter)]) {
+        [_delegate goToMenberCenter];
     }
 }
 
