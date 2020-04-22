@@ -8,8 +8,11 @@
 
 #import "MenberRootVC.h"
 #import "V5_Constant.h"
+#import "MenberCell.h"
 
-@interface MenberRootVC ()<UIScrollViewDelegate>
+@interface MenberRootVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate> {
+    NSIndexPath *currentIndexpath;
+}
 
 @property (strong, nonatomic) UIImageView *topBackView;
 
@@ -20,14 +23,16 @@
 @property (strong, nonatomic) UIView *otherTypeBackView;
 
 @property (strong, nonatomic) UIView *menberTypeBackView;
+@property (strong, nonatomic) NSMutableArray *memberTypeArray;
 
-@property (strong, nonatomic) UIScrollView *typeScrollView;
+@property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) UIView *bottomView;
 @property (strong, nonatomic) UIImageView *sureImageView;
 @property (strong, nonatomic) UIButton *sureButton;
 
 @property (strong, nonatomic) NSMutableArray *otherTypeArray;
+
 
 @end
 
@@ -36,9 +41,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = HEXCOLOR(0x20233C);
-    
+    currentIndexpath = [NSIndexPath indexPathForRow:0 inSection:0];
     _otherTypeArray = [NSMutableArray new];
-    
+    _memberTypeArray = [NSMutableArray new];
     [_otherTypeArray addObjectsFromArray:@[@{@"title":@"免费课程",@"image":@"vip_icon1",@"type":@"course"},@{@"title":@"会员专区",@"image":@"vip_icon2",@"type":@"menber"},@{@"title":@"会员专区",@"image":@"vip_icon2",@"type":@"menber"},@{@"title":@"尊贵标识",@"image":@"vip_icon3",@"type":@"menber"}]];
     _lineTL.hidden = YES;
     _titleLabel.text = @"会员中心";
@@ -127,12 +132,14 @@
     tipLabel.textColor = EdlineV5_Color.textFirstColor;
     [_menberTypeBackView addSubview:tipLabel];
     
-    _typeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, tipLabel.bottom + 6, _menberTypeBackView.width, _menberTypeBackView.height - (tipLabel.bottom + 6))];
-    _typeScrollView.backgroundColor = [UIColor whiteColor];
-    _typeScrollView.showsHorizontalScrollIndicator = NO;
-    _typeScrollView.showsVerticalScrollIndicator = NO;
-    _typeScrollView.delegate = self;
-    [_menberTypeBackView addSubview:_typeScrollView];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tipLabel.bottom + 6, _menberTypeBackView.width, _menberTypeBackView.height - (tipLabel.bottom + 6))];//[[UIScrollView alloc] initWithFrame:CGRectMake(0, tipLabel.bottom + 6, _menberTypeBackView.width, _menberTypeBackView.height - (tipLabel.bottom + 6))];
+    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.showsHorizontalScrollIndicator = NO;
+    _tableView.showsVerticalScrollIndicator = NO;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [_menberTypeBackView addSubview:_tableView];
     
     _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - 52 - MACRO_UI_SAFEAREA, MainScreenWidth, 52 + MACRO_UI_SAFEAREA)];
     _bottomView.backgroundColor = [UIColor whiteColor];
@@ -153,6 +160,30 @@
     _sureButton.center = _sureImageView.center;
     [_bottomView addSubview:_sureButton];
     
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *reuse = @"MenberCell";
+    MenberCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+    if (!cell) {
+        cell = [[MenberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+    }
+    [cell setMemberInfo:nil indexpath:indexPath currentIndexpath:currentIndexpath];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 90.0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    currentIndexpath = indexPath;
+    [_tableView reloadData];
 }
 
 - (void)otherTypeButtonClick:(UIButton *)sender {

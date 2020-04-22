@@ -26,6 +26,7 @@
 		7839C9A32423655B002F6595 /* CourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A22423655A002F6595 /* CourseListVC.m */; };
 		7839C9A6242368A2002F6595 /* CourseCatalogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A5242368A2002F6595 /* CourseCatalogCell.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
+		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853BDB92428957600F096EC /* CourseListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDB82428957600F096EC /* CourseListModel.m */; };
 		7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBB2428A14500F096EC /* CourseSearchListVC.m */; };
 		7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBE2428A43D00F096EC /* CourseSearchListCell.m */; };
@@ -352,6 +353,8 @@
 		7839C9A5242368A2002F6595 /* CourseCatalogCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCatalogCell.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
+		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
+		7853164724502E49007E239E /* MenberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberCell.m; sourceTree = "<group>"; };
 		7853BDB72428957600F096EC /* CourseListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseListModel.h; sourceTree = "<group>"; };
 		7853BDB82428957600F096EC /* CourseListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListModel.m; sourceTree = "<group>"; };
 		7853BDBA2428A14500F096EC /* CourseSearchListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseSearchListVC.h; sourceTree = "<group>"; };
@@ -1479,6 +1482,8 @@
 				78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */,
 				78AA13AA24470EB2007087F7 /* SetingCell.h */,
 				78AA13AB24470EB2007087F7 /* SetingCell.m */,
+				7853164624502E49007E239E /* MenberCell.h */,
+				7853164724502E49007E239E /* MenberCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2337,6 +2342,7 @@
 				78C5494F241B642B00A33FC4 /* AliyunViewMoreView.m in Sources */,
 				78C54979241B642B00A33FC4 /* _AlivcLiveBeautifySliderView.m in Sources */,
 				78AA1356243C214D007087F7 /* CourseClassifyVC.m in Sources */,
+				7853164824502E49007E239E /* MenberCell.m in Sources */,
 				7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */,
 				78C54957241B642B00A33FC4 /* AVC_VP_PlaySettingVC.m in Sources */,
 				78C5494C241B642B00A33FC4 /* AliyunPlayerViewSlider.m in Sources */,
