@@ -9,6 +9,7 @@
 #import "MenberRootVC.h"
 #import "V5_Constant.h"
 #import "MenberCell.h"
+#import "UINavigationController+EdulineStatusBar.h""
 
 @interface MenberRootVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate> {
     NSIndexPath *currentIndexpath;
@@ -38,8 +39,13 @@
 
 @implementation MenberRootVC
 
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setNeedsStatusBarAppearanceUpdate];
     self.view.backgroundColor = HEXCOLOR(0x20233C);
     currentIndexpath = [NSIndexPath indexPathForRow:0 inSection:0];
     _otherTypeArray = [NSMutableArray new];

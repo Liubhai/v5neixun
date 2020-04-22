@@ -28,6 +28,10 @@
 
 static RootV5VC *sharedBaseTabBar;
 
+//- (UIViewController *)childViewControllerForStatusBarStyle{
+//    return self.selectedViewController;
+//}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self createViewController];
