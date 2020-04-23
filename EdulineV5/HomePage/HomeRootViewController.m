@@ -19,6 +19,9 @@
 #import "HomePageCourseTypeOneCell.h"
 #import "HomePageCourseTypeTwoCell.h"
 
+// 测试
+#import "LiveRoomViewController.h"
+
 // 工具类
 #import "SDCycleScrollView.h"
 
@@ -94,9 +97,12 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    CourseSearchHistoryVC *vc = [[CourseSearchHistoryVC alloc] init];
+    LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
     return NO;
+//    CourseSearchHistoryVC *vc = [[CourseSearchHistoryVC alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+//    return NO;
 }
 
 - (void)makeTableView {

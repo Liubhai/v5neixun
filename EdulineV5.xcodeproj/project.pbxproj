@@ -29,6 +29,7 @@
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
 		78531653245131AF007E239E /* LiveRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531652245131AF007E239E /* LiveRoomViewController.m */; };
+		7853165824513A2E007E239E /* LiveRoomPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853165724513A2E007E239E /* LiveRoomPersonCell.m */; };
 		7853BDB92428957600F096EC /* CourseListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDB82428957600F096EC /* CourseListModel.m */; };
 		7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBB2428A14500F096EC /* CourseSearchListVC.m */; };
 		7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBE2428A43D00F096EC /* CourseSearchListCell.m */; };
@@ -359,9 +360,10 @@
 		7853164724502E49007E239E /* MenberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberCell.m; sourceTree = "<group>"; };
 		7853164C245040CF007E239E /* UINavigationController+EdulineStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+EdulineStatusBar.h"; sourceTree = "<group>"; };
 		7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+EdulineStatusBar.m"; sourceTree = "<group>"; };
-		785316502451317F007E239E /* MBProgressHUD+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+Add.h"; sourceTree = "<group>"; };
 		78531651245131AF007E239E /* LiveRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveRoomViewController.h; sourceTree = "<group>"; };
 		78531652245131AF007E239E /* LiveRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveRoomViewController.m; sourceTree = "<group>"; };
+		7853165624513A2E007E239E /* LiveRoomPersonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveRoomPersonCell.h; sourceTree = "<group>"; };
+		7853165724513A2E007E239E /* LiveRoomPersonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveRoomPersonCell.m; sourceTree = "<group>"; };
 		7853BDB72428957600F096EC /* CourseListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseListModel.h; sourceTree = "<group>"; };
 		7853BDB82428957600F096EC /* CourseListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListModel.m; sourceTree = "<group>"; };
 		7853BDBA2428A14500F096EC /* CourseSearchListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseSearchListVC.h; sourceTree = "<group>"; };
@@ -946,11 +948,20 @@
 		7853164F2451317F007E239E /* LivePage */ = {
 			isa = PBXGroup;
 			children = (
-				785316502451317F007E239E /* MBProgressHUD+Add.h */,
 				78531651245131AF007E239E /* LiveRoomViewController.h */,
 				78531652245131AF007E239E /* LiveRoomViewController.m */,
+				7853165424513A09007E239E /* view */,
 			);
 			path = LivePage;
+			sourceTree = "<group>";
+		};
+		7853165424513A09007E239E /* view */ = {
+			isa = PBXGroup;
+			children = (
+				7853165624513A2E007E239E /* LiveRoomPersonCell.h */,
+				7853165724513A2E007E239E /* LiveRoomPersonCell.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		7853BDB52428956B00F096EC /* CourseModel */ = {
@@ -2320,6 +2331,7 @@
 				78C54963241B642B00A33FC4 /* AVCVideo.m in Sources */,
 				78795730240FA3840013F95F /* ZLPhotoPickerGroup.m in Sources */,
 				78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */,
+				7853165824513A2E007E239E /* LiveRoomPersonCell.m in Sources */,
 				78AA139224441083007087F7 /* IntendedCourseVC.m in Sources */,
 				78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */,
 				78C54938241B642B00A33FC4 /* AVCVideoDownloadTCell.m in Sources */,
