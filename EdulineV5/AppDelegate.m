@@ -19,6 +19,10 @@
 #import "Net_Path.h"
 #import "SurePwViewController.h"
 
+// 直播
+#import "TICManager.h"
+#import "TICConfig.h"
+
 //
 //                       _oo0oo_
 //                      o8888888o
@@ -52,7 +56,7 @@
 //                  别人笑我忒疯癫，我笑自己命太贱；
 //                  不见满街漂亮妹，哪个归得程序员？
 
-@interface AppDelegate ()<BuglyDelegate>
+@interface AppDelegate ()<BuglyDelegate,TICStatusListener>
 
 @property (weak, nonatomic) NTESQuickLoginManager *quickLoginManager;
 
@@ -87,6 +91,13 @@
     _hasPhone = YES;
     self.quickLoginManager = [NTESQuickLoginManager sharedInstance];
     [self registerQuickLogin];
+    
+    int sdkAppid = [[TICConfig shareInstance].sdkAppId intValue];
+    [[TICManager sharedInstance] init:sdkAppid callback:^(TICModule module, int code, NSString *desc) {
+        if(code == 0){
+            [[TICManager sharedInstance] addStatusListener:self];
+        }
+    }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logout) name:@"logout" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFinishLogin) name:@"LOGINFINISH" object:nil];
@@ -490,6 +501,21 @@
     [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:QQAppId  appSecret:QQAppSecret redirectURL:@"http://mobile.umeng.com/social"];
     /* 设置新浪的appKey和appSecret */
     [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:@"3921700954"  appSecret:@"04b48b094faeb16683c32669824ebdad" redirectURL:@"https://sns.whalecloud.com/sina2/callback"];
+}
+
+#pragma mark - status listener
+- (void)onTICForceOffline {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"账号被踢" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [(UINavigationController *)self.window.rootViewController popToRootViewControllerAnimated:YES];
+    }];
+    [alert addAction:action];
+    UIViewController *currentVC = ((UINavigationController *)self.window.rootViewController).topViewController;
+    [currentVC presentViewController:alert animated:YES completion:nil];
+}
+- (void)onTICUserSigExpired
+{
+    
 }
 
 @end

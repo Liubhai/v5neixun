@@ -9,8 +9,9 @@
 #import "LiveRoomViewController.h"
 #import "LiveRoomPersonCell.h"
 #import "V5_Constant.h"
+#import <TEduBoard/TEduBoard.h>
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate>
 
 @property (assign, nonatomic) BOOL isFullScreen;
 @property (strong, nonatomic) NSMutableArray *livePersonArray;
@@ -25,8 +26,13 @@
     _titleImage.hidden = YES;
     
     _livePersonArray = [NSMutableArray new];
-    
+    [_livePersonArray addObject:_userId];
     [self makeLiveSubView];
+    [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
+}
+
+- (void)dealloc {
+    [self onQuitClassRoom];
 }
 
 - (void)makeLiveSubView {
@@ -38,6 +44,8 @@
     _topBlackView.backgroundColor = EdlineV5_Color.textFirstColor;
     [_liveBackView addSubview:_topBlackView];
     
+    [self makeBoardView];
+    
     _topToolBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _liveBackView.width, 37)];
     _topToolBackView.layer.masksToBounds = YES;
     _topToolBackView.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.4].CGColor;
@@ -45,6 +53,7 @@
     
     _leftBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 37, 37)];
     [_leftBtn setImage:Image(@"nav_back_white") forState:0];
+    [_leftBtn addTarget:self action:@selector(onQuitClassRoom) forControlEvents:UIControlEventTouchUpInside];
     [_topToolBackView addSubview:_leftBtn];
     
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_leftBtn.right, 0, MainScreenWidth, 37)];
@@ -112,6 +121,15 @@
     [self makeCollectionView];
 }
 
+// MARK: - 白板
+- (void)makeBoardView {
+    //白板视图
+    [[[TICManager sharedInstance] getBoardController] addDelegate:self];
+    UIView *boardView = [[[TICManager sharedInstance] getBoardController] getBoardRenderView];
+    boardView.frame = CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0);
+    [_liveBackView addSubview:boardView];
+}
+
 - (void)makeCollectionView {
     UICollectionViewFlowLayout *cellLayout = [[UICollectionViewFlowLayout alloc] init];
     cellLayout.itemSize = CGSizeMake(113, 64);
@@ -138,11 +156,12 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 10;//_livePersonArray.count;
+    return _livePersonArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LiveRoomPersonCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LiveRoomPersonCell" forIndexPath:indexPath];
+    [cell setLiveUserInfo:_livePersonArray[indexPath.row] localUserId:_userId];
     return cell;
 }
 
@@ -160,6 +179,109 @@
         _collectionView.frame = CGRectMake(MainScreenWidth - 113, _topBlackView.bottom, 113, (MainScreenWidth - 113)*3/4.0);
     }
     [_collectionView reloadData];
+}
+
+// MARK: - 白板代理
+#pragma mark - board delegate
+- (void)onTEBRedoStatusChanged:(BOOL)canRedo
+{
+    
+}
+
+- (void)onTEBUndoStatusChanged:(BOOL)canUndo
+{
+    
+}
+
+// MARK: - 退出互动课堂
+- (void)onQuitClassRoom
+{
+    [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[TICManager sharedInstance] removeEventListener:self];
+    [[TICManager sharedInstance] removeMessageListener:self];
+    __weak typeof(self) ws = self;
+    [[TICManager sharedInstance] quitClassroom:NO callback:^(TICModule module, int code, NSString *desc) {
+        if(code == 0){
+            //退出课堂成功
+        }
+        else{
+            //退出课堂失败
+        }
+        [ws.navigationController popViewControllerAnimated:YES];
+    }];
+}
+
+// MARK: - event listener
+- (void)onTICUserVideoAvailable:(NSString *)userId available:(BOOL)available
+{
+    if(available){
+        [_livePersonArray addObject:userId];
+//        TICRenderView *render = [[TICRenderView alloc] init];
+//        render.userId = userId;
+//        render.streamType = TICStreamType_Main;
+//        [self.renderViewContainer addSubview:render];
+//        [self.renderViews addObject:render];
+//        [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:userId view:render];
+    }
+    else{
+        [_livePersonArray removeObject:userId];
+//        TICRenderView *render = [self getRenderView:userId streamType:TICStreamType_Main];
+//        [self.renderViews removeObject:render];
+//        [render removeFromSuperview];
+        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
+    }
+//    [self updateRenderViewsLayout];
+    [_collectionView reloadData];
+}
+
+- (void)onTICUserSubStreamAvailable:(NSString *)userId available:(BOOL)available
+{
+    if(available){
+        [_livePersonArray addObject:userId];
+//        TICRenderView *render = [[TICRenderView alloc] init];
+//        render.userId = userId;
+//        render.streamType = TICStreamType_Sub;
+//        [self.renderViewContainer addSubview:render];
+//        [self.renderViews addObject:render];
+//        [[[TICManager sharedInstance] getTRTCCloud] startRemoteSubStreamView:userId view:render];
+    }
+    else{
+        [_livePersonArray removeObject:userId];
+//        TICRenderView *render = [self getRenderView:userId streamType:TICStreamType_Sub];
+//        [self.renderViews removeObject:render];
+//        [render removeFromSuperview];
+        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteSubStreamView:userId];
+    }
+//    [self updateRenderViewsLayout];
+    [_collectionView reloadData];
+}
+
+
+-(void)onTICMemberJoin:(NSArray*)members {
+    NSString *msgInfo = [NSString stringWithFormat:@"[%@] %@",members.firstObject, @"加入了房间"];
+    [self showHudInView:self.view showHint:msgInfo];
+//    self.chatView.text = [NSString stringWithFormat:@"%@\n%@",self.chatView.text, msgInfo];;
+}
+
+-(void)onTICMemberQuit:(NSArray*)members {
+
+    if ([members.firstObject isEqualToString:[[TIMManager sharedInstance] getLoginUser]]) {
+        [self showAlertWithTitle:@"退出课堂" msg:@"你被老师踢出了房间" handler:^(UIAlertAction *action) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+    }
+    NSString *msgInfo = [NSString stringWithFormat:@"[%@] %@",members.firstObject, @"退出了房间"];
+    [self showHudInView:self.view showHint:msgInfo];
+//    self.chatView.text = [NSString stringWithFormat:@"%@\n%@",self.chatView.text, msgInfo];;
+}
+
+
+-(void)onTICClassroomDestroy {
+    [self showAlertWithTitle:@"课程结束" msg:@"老师已经结束了该堂课程" handler:^(UIAlertAction *action) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    
 }
 
 @end

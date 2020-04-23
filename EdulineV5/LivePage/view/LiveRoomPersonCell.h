@@ -7,13 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TICRenderView.h"
+#import "TICManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LiveRoomPersonCell : UICollectionViewCell
 
-@property (strong, nonatomic) UIImageView *faceImageView;
+//@property (strong, nonatomic) UIImageView *faceImageView;
+@property (strong, nonatomic) TICRenderView *render;
 @property (strong, nonatomic) UILabel *nameLabel;
+
+- (void)setLiveUserInfo:(NSString *)userid localUserId:(NSString *)localUserId;
 
 @end
 

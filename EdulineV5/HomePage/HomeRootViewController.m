@@ -19,8 +19,10 @@
 #import "HomePageCourseTypeOneCell.h"
 #import "HomePageCourseTypeTwoCell.h"
 
-// 测试
+// 直播测试
 #import "LiveRoomViewController.h"
+#import "TICManager.h"
+#import "TICConfig.h"
 
 // 工具类
 #import "SDCycleScrollView.h"
@@ -97,8 +99,7 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self loginLiveRoom];
     return NO;
 //    CourseSearchHistoryVC *vc = [[CourseSearchHistoryVC alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
@@ -253,6 +254,59 @@
     IntendedCourseVC *vc = [[IntendedCourseVC alloc] init];
     vc.isChange = YES;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+// 直播相关测试
+
+- (void)loginLiveRoom {
+    NSString *userId = @"tiw_ios_7";
+    NSString *userSig = @"eJwtzEELgjAcBfDvsqsh22xNhA6R4UGTYtZVjK34I9Vwq7TouzfWTo-3e-A*qKlE-FQDyhCNMZr5DlLdLJzBs4VXC3fT8jAa2Xdag0QZmWNMKHfxX9SoYVDOGWMU46AWrt5SzhKe0qAGLu77cDTNSog8yWkd7aZTVT*EXZTr93Yz4YgWhc17Q-i4L80SfX8LlDI4";
+    __weak typeof(self) ws = self;
+    [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
+        if(code == 0){
+            [ws joinLiveRoom];
+        }
+        else{
+            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"登录失败: %d,%@",code, desc]];
+        }
+    }];
+}
+
+- (void)joinLiveRoom {
+    NSString *classId = @"95421";
+    NSString *userId = @"tiw_ios_7";
+    if (classId.length <= 0) {
+        return;
+    }
+
+    LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
+    vc.classId = classId;
+    vc.userId = userId;
+    
+//    UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//    ClassroomViewController *classRoom = [story instantiateViewControllerWithIdentifier:@"ClassroomViewController"];
+//    classRoom.classId = classId;
+//    classRoom.userId = userId;
+    TICClassroomOption *option = [[TICClassroomOption alloc] init];
+    option.classId = [classId intValue];
+    
+    [[TICManager sharedInstance] addMessageListener:vc];
+    [[TICManager sharedInstance] addEventListener:vc];
+    __weak typeof(self) ws = self;
+    [[TICManager sharedInstance] joinClassroom:option callback:^(TICModule module, int code, NSString *desc) {
+        if(code == 0){
+            [ws.navigationController pushViewController:vc animated:YES];
+        }
+        else{
+            if(code == 10015){
+                [self showHudInView:self.view showHint:@"课堂不存在，请\"创建课堂\""];
+            }
+            else{
+                [self showHudInView:self.view showHint:[NSString stringWithFormat:@"加入课堂失败：%d %@", code, desc]];
+            }
+        }
+    }];
 }
 
 @end

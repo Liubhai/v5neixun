@@ -7,10 +7,14 @@
 //
 
 #import "BaseViewController.h"
+#import "TICManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LiveRoomViewController : BaseViewController
+@interface LiveRoomViewController : BaseViewController<TICEventListener, TICMessageListener>
+
+@property (strong, nonatomic) NSString *classId;
+@property (strong, nonatomic) NSString *userId;
 
 @property (strong, nonatomic) UIView *liveBackView;
 
