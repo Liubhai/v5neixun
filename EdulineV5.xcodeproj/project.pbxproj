@@ -28,6 +28,7 @@
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
+		78531653245131AF007E239E /* LiveRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531652245131AF007E239E /* LiveRoomViewController.m */; };
 		7853BDB92428957600F096EC /* CourseListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDB82428957600F096EC /* CourseListModel.m */; };
 		7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBB2428A14500F096EC /* CourseSearchListVC.m */; };
 		7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDBE2428A43D00F096EC /* CourseSearchListCell.m */; };
@@ -358,6 +359,9 @@
 		7853164724502E49007E239E /* MenberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberCell.m; sourceTree = "<group>"; };
 		7853164C245040CF007E239E /* UINavigationController+EdulineStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+EdulineStatusBar.h"; sourceTree = "<group>"; };
 		7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+EdulineStatusBar.m"; sourceTree = "<group>"; };
+		785316502451317F007E239E /* MBProgressHUD+Add.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+Add.h"; sourceTree = "<group>"; };
+		78531651245131AF007E239E /* LiveRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveRoomViewController.h; sourceTree = "<group>"; };
+		78531652245131AF007E239E /* LiveRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveRoomViewController.m; sourceTree = "<group>"; };
 		7853BDB72428957600F096EC /* CourseListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseListModel.h; sourceTree = "<group>"; };
 		7853BDB82428957600F096EC /* CourseListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListModel.m; sourceTree = "<group>"; };
 		7853BDBA2428A14500F096EC /* CourseSearchListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseSearchListVC.h; sourceTree = "<group>"; };
@@ -939,6 +943,16 @@
 			path = CourseCell;
 			sourceTree = "<group>";
 		};
+		7853164F2451317F007E239E /* LivePage */ = {
+			isa = PBXGroup;
+			children = (
+				785316502451317F007E239E /* MBProgressHUD+Add.h */,
+				78531651245131AF007E239E /* LiveRoomViewController.h */,
+				78531652245131AF007E239E /* LiveRoomViewController.m */,
+			);
+			path = LivePage;
+			sourceTree = "<group>";
+		};
 		7853BDB52428956B00F096EC /* CourseModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1028,6 +1042,7 @@
 				7853BDC9242C485700F096EC /* OrderPage */,
 				7879575B24109F690013F95F /* LoginAndRegister */,
 				7839C968241F154B002F6595 /* Course */,
+				7853164F2451317F007E239E /* LivePage */,
 				7879566E240F929A0013F95F /* EdulineToolLib */,
 				78795610240DE7A50013F95F /* AppDelegate.h */,
 				78795611240DE7A50013F95F /* AppDelegate.m */,
@@ -2360,6 +2375,7 @@
 				7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */,
 				78C54946241B642B00A33FC4 /* AliyunPlayerViewSeekPopupView.m in Sources */,
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
+				78531653245131AF007E239E /* LiveRoomViewController.m in Sources */,
 				78795723240FA3840013F95F /* ZLCamera.m in Sources */,
 				7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */,
 				78C54973241B642B00A33FC4 /* AlivcSplicingRequestParameter.m in Sources */,
