@@ -27,7 +27,7 @@
     
     _livePersonArray = [NSMutableArray new];
     [self makeLiveSubView];
-    [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
+//    [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
 }
 
 - (void)dealloc {
