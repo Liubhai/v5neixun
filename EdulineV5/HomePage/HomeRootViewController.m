@@ -274,7 +274,7 @@
 }
 
 - (void)joinLiveRoom {
-    NSString *classId = @"95421";
+    NSString *classId = @"9520";
     NSString *userId = @"tiw_ios_7";
     if (classId.length <= 0) {
         return;

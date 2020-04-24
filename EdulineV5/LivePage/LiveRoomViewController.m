@@ -26,13 +26,24 @@
     _titleImage.hidden = YES;
     
     _livePersonArray = [NSMutableArray new];
-    [_livePersonArray addObject:_userId];
     [self makeLiveSubView];
     [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
 }
 
 - (void)dealloc {
-    [self onQuitClassRoom];
+//    [self onQuitClassRoom];
+    [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[TICManager sharedInstance] removeEventListener:self];
+    [[TICManager sharedInstance] removeMessageListener:self];
+    [[TICManager sharedInstance] quitClassroom:NO callback:^(TICModule module, int code, NSString *desc) {
+        if(code == 0){
+            //退出课堂成功
+        }
+        else{
+            //退出课堂失败
+        }
+    }];
 }
 
 - (void)makeLiveSubView {
@@ -65,6 +76,7 @@
     _cameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 7.5 - 37, 0, 37, 37)];
     [_cameraBtn setImage:Image(@"cam_open") forState:0];
     [_cameraBtn setImage:Image(@"cam_close") forState:UIControlStateSelected];
+    [_cameraBtn addTarget:self action:@selector(swicthCamera:) forControlEvents:UIControlEventTouchUpInside];
     [_topToolBackView addSubview:_cameraBtn];
     
     _voiceBtn = [[UIButton alloc] initWithFrame:CGRectMake(_cameraBtn.left - 37, 0, 37, 37)];
@@ -210,6 +222,18 @@
         }
         [ws.navigationController popViewControllerAnimated:YES];
     }];
+}
+
+// MARK: - 开关摄像头
+- (void)swicthCamera:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    [_livePersonArray removeObject:_userId];
+    if (sender.selected) {
+        [_livePersonArray addObject:_userId];
+    }
+    [_collectionView reloadData];
+//    [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
+    
 }
 
 // MARK: - event listener
