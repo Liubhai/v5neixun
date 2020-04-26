@@ -11,6 +11,7 @@
 #import "ShitikaViewController.h"
 #import "ShopCarCell.h"
 #import "LingquanViewController.h"
+#import "OrderSureViewController.h"
 
 @interface ShopCarManagerFinalVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -48,6 +49,7 @@
     _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, 10, MainScreenWidth, titleArray.count * 55)];
     _otherView.backgroundColor = [UIColor whiteColor];
     [_footerView addSubview:_otherView];
+    [_footerView setHeight:_otherView.bottom + 10];
     for (int i = 0; i < titleArray.count; i++) {
         UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
         youhui.text = titleArray[i];
@@ -75,7 +77,7 @@
         [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_otherView addSubview:clearBtn];
     }
-    
+    /**
     _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom + 10, MainScreenWidth, 168)];
     _orderTypeView.backgroundColor = [UIColor whiteColor];
     [_footerView addSubview:_orderTypeView];
@@ -129,8 +131,10 @@
     [_seleteBtn setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
     [_seleteBtn addTarget:self action:@selector(seleteAgreementButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_agreementTyLabel addView:_seleteBtn range:NSMakeRange(0, 2) alignment:TYDrawAlignmentCenter];
+     */
 }
 
+/**
 - (void)makeOrderType1View1 {
     _orderTypeView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
     _orderTypeView1.backgroundColor = [UIColor whiteColor];
@@ -199,6 +203,7 @@
     [_orderRightBtn3 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView3 addSubview:_orderRightBtn3];
 }
+*/
 
 - (void)makeDownView {
     _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT, MainScreenWidth, MACRO_UI_TABBAR_HEIGHT)];
@@ -218,6 +223,7 @@
     _submitButton.layer.masksToBounds = YES;
     _submitButton.layer.cornerRadius = _submitButton.height / 2.0;
     _submitButton.centerY = _youhuiLabel.centerY;
+    [_submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_submitButton];
     
     _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
@@ -264,6 +270,11 @@
         _orderRightBtn1.selected = NO;
         _orderRightBtn2.selected = NO;
     }
+}
+
+- (void)submitButtonClick:(UIButton *)sender {
+    OrderSureViewController *vc = [[OrderSureViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

@@ -8,6 +8,7 @@
 
 #import "OrderViewController.h"
 #import "ShitikaViewController.h"
+#import "OrderSureViewController.h"
 
 @interface OrderViewController ()
 
@@ -66,16 +67,16 @@
     _courseHourLabel.text = @"12课时";
     [_topContentView addSubview:_courseHourLabel];
     
-    _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 168)];
-    _orderTypeView.backgroundColor = [UIColor whiteColor];
-    [_mainScrollView addSubview:_orderTypeView];
+//    _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 168)];
+//    _orderTypeView.backgroundColor = [UIColor whiteColor];
+//    [_mainScrollView addSubview:_orderTypeView];
+//
+//    [self makeOrderType1View1];
+//    [self makeOrderType1View2];
+//    [self makeOrderType1View3];
+//    [_orderTypeView setHeight:_orderTypeView3.bottom];
     
-    [self makeOrderType1View1];
-    [self makeOrderType1View2];
-    [self makeOrderType1View3];
-    [_orderTypeView setHeight:_orderTypeView3.bottom];
-    
-    _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, _orderTypeView.bottom + 10, MainScreenWidth, 110)];
+    _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 110)];
     _otherView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_otherView];
     NSArray *titleArray = @[@"卡券",@"使用实体卡"];
@@ -107,49 +108,49 @@
         [_otherView addSubview:clearBtn];
     }
     
-    _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom +10, MainScreenWidth, 60)];
-    _agreeBackView.backgroundColor = [UIColor whiteColor];
-    [_mainScrollView addSubview:_agreeBackView];
-    
-    NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@购买协议》",appName];
-    NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
-    NSRange atrRange = [fullString rangeOfString:atr];
-    
-    _agreementTyLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
-    _agreementTyLabel.centerY = 60 / 2.0;
-    _agreementTyLabel.font = SYSTEMFONT(13);
-    _agreementTyLabel.textAlignment = kCTTextAlignmentLeft;
-    _agreementTyLabel.textColor = EdlineV5_Color.textSecendColor;
-    _agreementTyLabel.delegate = self;
-    _agreementTyLabel.numberOfLines = 0;
-    
-    TYLinkTextStorage *textStorage = [[TYLinkTextStorage alloc]init];
-    textStorage.textColor = EdlineV5_Color.themeColor;
-    textStorage.font = SYSTEMFONT(13);
-    textStorage.linkData = @{@"type":@"service"};
-    textStorage.underLineStyle = kCTUnderlineStyleNone;
-    textStorage.range = atrRange;
-    textStorage.text = atr;
-    
-    // 属性文本生成器
-    TYTextContainer *attStringCreater = [[TYTextContainer alloc]init];
-    attStringCreater.text = fullString;
-    _agreementTyLabel.textContainer = attStringCreater;
-    _agreementTyLabel.textContainer.linesSpacing = 4;
-    attStringCreater.font = SYSTEMFONT(13);
-    attStringCreater.textAlignment = kCTTextAlignmentLeft;
-    attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
-    [_agreementTyLabel setHeight:_agreementTyLabel.textContainer.textHeight];
-    _agreementTyLabel.centerY = 60 / 2.0;
-    [attStringCreater addTextStorageArray:@[textStorage]];
-    [_agreeBackView addSubview:_agreementTyLabel];
-    
-    _seleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
-    [_seleteBtn setImage:Image(@"checkbox_nor") forState:0];
-    [_seleteBtn setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
-    [_seleteBtn addTarget:self action:@selector(seleteAgreementButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_agreementTyLabel addView:_seleteBtn range:NSMakeRange(0, 2) alignment:TYDrawAlignmentCenter];
+//    _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom +10, MainScreenWidth, 60)];
+//    _agreeBackView.backgroundColor = [UIColor whiteColor];
+//    [_mainScrollView addSubview:_agreeBackView];
+//
+//    NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
+//    NSString *atr = [NSString stringWithFormat:@"《%@购买协议》",appName];
+//    NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
+//    NSRange atrRange = [fullString rangeOfString:atr];
+//
+//    _agreementTyLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
+//    _agreementTyLabel.centerY = 60 / 2.0;
+//    _agreementTyLabel.font = SYSTEMFONT(13);
+//    _agreementTyLabel.textAlignment = kCTTextAlignmentLeft;
+//    _agreementTyLabel.textColor = EdlineV5_Color.textSecendColor;
+//    _agreementTyLabel.delegate = self;
+//    _agreementTyLabel.numberOfLines = 0;
+//
+//    TYLinkTextStorage *textStorage = [[TYLinkTextStorage alloc]init];
+//    textStorage.textColor = EdlineV5_Color.themeColor;
+//    textStorage.font = SYSTEMFONT(13);
+//    textStorage.linkData = @{@"type":@"service"};
+//    textStorage.underLineStyle = kCTUnderlineStyleNone;
+//    textStorage.range = atrRange;
+//    textStorage.text = atr;
+//
+//    // 属性文本生成器
+//    TYTextContainer *attStringCreater = [[TYTextContainer alloc]init];
+//    attStringCreater.text = fullString;
+//    _agreementTyLabel.textContainer = attStringCreater;
+//    _agreementTyLabel.textContainer.linesSpacing = 4;
+//    attStringCreater.font = SYSTEMFONT(13);
+//    attStringCreater.textAlignment = kCTTextAlignmentLeft;
+//    attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
+//    [_agreementTyLabel setHeight:_agreementTyLabel.textContainer.textHeight];
+//    _agreementTyLabel.centerY = 60 / 2.0;
+//    [attStringCreater addTextStorageArray:@[textStorage]];
+//    [_agreeBackView addSubview:_agreementTyLabel];
+//
+//    _seleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+//    [_seleteBtn setImage:Image(@"checkbox_nor") forState:0];
+//    [_seleteBtn setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
+//    [_seleteBtn addTarget:self action:@selector(seleteAgreementButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [_agreementTyLabel addView:_seleteBtn range:NSMakeRange(0, 2) alignment:TYDrawAlignmentCenter];
     
     
 }
@@ -241,6 +242,7 @@
     _submitButton.layer.masksToBounds = YES;
     _submitButton.layer.cornerRadius = _submitButton.height / 2.0;
     _submitButton.centerY = _youhuiLabel.centerY;
+    [_submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_submitButton];
     
     _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
@@ -280,6 +282,11 @@
         _orderRightBtn1.selected = NO;
         _orderRightBtn2.selected = NO;
     }
+}
+
+- (void)submitButtonClick:(UIButton *)sender {
+    OrderSureViewController *vc = [[OrderSureViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
