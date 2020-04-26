@@ -13,6 +13,7 @@
 #import "SurePwViewController.h"
 #import "Net_Path.h"
 #import "UserModel.h"
+#import "PWResetViewController.h"
 
 @interface RegisterAndForgetPwVC ()<LoginMsgViewDelegate> {
     NSTimer *codeTimer;
@@ -32,7 +33,11 @@
     if (_registerOrForget) {
         _titleLabel.text = @"注册";
     } else {
-        _titleLabel.text = @"找回密码";
+        if (_editPw) {
+            _titleLabel.text = @"修改密码";
+        } else {
+            _titleLabel.text = @"找回密码";
+        }
     }
     [self makeSubViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
@@ -154,12 +159,20 @@
         NSLog(@"%@",responseObject);
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                SurePwViewController *vc = [[SurePwViewController alloc] init];
-                vc.registerOrForget = self.registerOrForget;
-                vc.phoneNum = self.loginMsg.phoneNumTextField.text;
-                vc.msgCode = self.loginMsg.codeTextField.text;
-                vc.pkString = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"pk"]];
-                [self.navigationController pushViewController:vc animated:YES];
+                if (_editPw) {
+                    PWResetViewController *vc = [[PWResetViewController alloc] init];
+                    vc.phoneNum = self.loginMsg.phoneNumTextField.text;
+                    vc.msgCode = self.loginMsg.codeTextField.text;
+                    vc.pkString = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"pk"]];
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    SurePwViewController *vc = [[SurePwViewController alloc] init];
+                    vc.registerOrForget = self.registerOrForget;
+                    vc.phoneNum = self.loginMsg.phoneNumTextField.text;
+                    vc.msgCode = self.loginMsg.codeTextField.text;
+                    vc.pkString = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"pk"]];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
             }
         }
     } enError:^(NSError * _Nonnull error) {

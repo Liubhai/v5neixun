@@ -10,6 +10,10 @@
 
 @interface SurePassWordView : UIView
 
+@property (strong, nonatomic) UILabel *oldPwLabel;
+@property (strong, nonatomic) UITextField *oldtPwTextField;
+@property (strong, nonatomic) UIView *line0;
+
 @property (strong, nonatomic) UILabel *firstPwLabel;
 @property (strong, nonatomic) UITextField *firstPwTextField;
 @property (strong, nonatomic) UIView *line1;
@@ -20,6 +24,10 @@
 
 @property (strong, nonatomic) UIImageView *iconView;
 @property (strong, nonatomic) UILabel *tipLabel;
+
+@property (assign, nonatomic) BOOL isReset;
+
+- (instancetype)initWithFrame:(CGRect)frame isReset:(BOOL)isReset;
 
 @end
 

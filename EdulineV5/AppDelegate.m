@@ -88,7 +88,7 @@
     [UMConfigure initWithAppkey:@"574e8829e0f55a12f8001790" channel:@"App Store"];
     [self confitUShareSettings];
     [self configUSharePlatforms];
-    _hasPhone = YES;
+    _hasPhone = NO;
     self.quickLoginManager = [NTESQuickLoginManager sharedInstance];
     [self registerQuickLogin];
     

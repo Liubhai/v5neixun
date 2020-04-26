@@ -37,7 +37,7 @@
 
 - (void)makeSubViews {
     
-    _passWordView = [[SurePassWordView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 101)];
+    _passWordView = [[SurePassWordView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 101) isReset:NO];
     [self.view addSubview:_passWordView];
     [_passWordView setHeight:_passWordView.height];
     

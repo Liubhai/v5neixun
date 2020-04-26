@@ -28,7 +28,7 @@
     self.layer.shadowOffset = CGSizeMake(0, 1);//shadowOffset阴影偏移，默认(0, -3),这个跟shadowRadius配合使用
     self.layer.shadowRadius = 12;
     
-    NSArray *orderSortArray = @[@{@"image":@"pre_order_daizhifu",@"title":@"待支付"},@{@"image":@"pre_order_quxiao",@"title":@"已取消"},@{@"image":@"pre_order_fin",@"title":@"已完成"},@{@"image":@"pre_order_shenqing",@"title":@"申请退款"},@{@"image":@"pre_order_tuikuan",@"title":@"已退款"}];
+    NSArray *orderSortArray = @[@{@"image":@"pre_order_daizhifu",@"title":@"待支付"},@{@"image":@"pre_order_quxiao",@"title":@"已取消"},@{@"image":@"pre_order_fin",@"title":@"已完成"},@{@"image":@"pre_order_tuikuan",@"title":@"课程售后"}];
     
     UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.bounds.size.width, 48)];
     themelabel.textColor = EdlineV5_Color.textFirstColor;

@@ -120,6 +120,7 @@
 		787957672410E7700013F95F /* LoginPwView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957662410E7700013F95F /* LoginPwView.m */; };
 		7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957692410F96A0013F95F /* ThirdLoginView.m */; };
 		787E19A62455379A00E2E016 /* OrderSureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19A52455379A00E2E016 /* OrderSureViewController.m */; };
+		787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19A8245576E000E2E016 /* PWResetViewController.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -558,6 +559,8 @@
 		787957692410F96A0013F95F /* ThirdLoginView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdLoginView.m; sourceTree = "<group>"; };
 		787E19A42455379A00E2E016 /* OrderSureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderSureViewController.h; sourceTree = "<group>"; };
 		787E19A52455379A00E2E016 /* OrderSureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderSureViewController.m; sourceTree = "<group>"; };
+		787E19A7245576E000E2E016 /* PWResetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PWResetViewController.h; sourceTree = "<group>"; };
+		787E19A8245576E000E2E016 /* PWResetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PWResetViewController.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1243,6 +1246,8 @@
 				78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */,
 				78AA13A7244708B4007087F7 /* SetingViewController.h */,
 				78AA13A8244708B4007087F7 /* SetingViewController.m */,
+				787E19A7245576E000E2E016 /* PWResetViewController.h */,
+				787E19A8245576E000E2E016 /* PWResetViewController.m */,
 				78531643244FF60C007E239E /* MenberRootVC.h */,
 				78531644244FF60C007E239E /* MenberRootVC.m */,
 				78AA13932445967E007087F7 /* View */,
@@ -2581,6 +2586,7 @@
 				7839C9892420CA15002F6595 /* CourseCommentTopView.m in Sources */,
 				78C54939241B642B00A33FC4 /* AlivcPlayListsView.m in Sources */,
 				78795655240E5B1C0013F95F /* RootV5VC.m in Sources */,
+				787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */,
 				78C549C7241B674E00A33FC4 /* AlivcLiveUserCountTool.m in Sources */,
 				78C5487B2418CC7400A33FC4 /* NSMutableAttributedString+TY.m in Sources */,
 				78795720240FA3840013F95F /* DACircularProgressView.m in Sources */,

@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(void)saveAvatar:(NSString *)avatar;
 +(void)saveIntro:(NSString *)intro;
 +(void)saveUid:(NSString *)uid;
++(void)saveGender:(NSString *)gender;
 +(void)saveAllInfo:(NSDictionary *)dic;
 +(void)saveIsAdmin:(BOOL)isAdmin;
 +(void)saveUsergroupId:(NSString *)usergroupId;
@@ -56,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(NSString *)uid;
 +(NSString *)uname;
++(NSString *)gender;
 +(NSString *)avatar;
 +(NSString *)intro;
 +(NSString *)oauthToken;

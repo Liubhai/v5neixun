@@ -11,6 +11,7 @@
 #import "V5_Constant.h"
 #import "UserModel.h"
 #import "AppDelegate.h"
+#import "Net_Path.h"
 //页面跳转
 #import "PersonalInformationVC.h"
 #import "SetingViewController.h"
@@ -63,13 +64,12 @@
     [self makeHeaderView];
     [self makeTableView];
     _tableView.tableHeaderView = _headerView;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getUserInfo)];
     [_tableView reloadData];
     
     [self.view bringSubviewToFront:_titleImage];
     
-    // test
-    [_myCenterUserInfoView setUserInfo:nil];
-    [_tableView reloadData];
+    [_tableView.mj_header beginRefreshing];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadUserInfo) name:@"reloadUserInfo" object:nil];
 }
@@ -194,6 +194,30 @@
 - (void)goToMenberCenter {
     MenberRootVC *vc = [[MenberRootVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)getUserInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path currentLoginUserInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_header.isRefreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _userInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]]];
+                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
+                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"user_name"]]];
+                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
+                [UserModel saveGender:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"gender"]]];
+                [self reloadUserInfo];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        if (_tableView.mj_header.isRefreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+        [self reloadUserInfo];
+    }];
 }
 
 @end

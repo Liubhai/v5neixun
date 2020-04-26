@@ -8,6 +8,8 @@
 
 #import "SetingViewController.h"
 #import "V5_Constant.h"
+#import "RegisterAndForgetPwVC.h"
+#import "PWResetViewController.h"
 
 #import "SetingCell.h"
 
@@ -120,6 +122,9 @@
         UIActionSheet *shit = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"退出", nil];
         shit.tag = 200;
         [shit showInView:self.view];
+    } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"password"]) {
+        PWResetViewController *vc = [[PWResetViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

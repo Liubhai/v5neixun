@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MyRootViewController : BaseViewController
 
 @property (strong, nonatomic) NSString *cellLayoutType;
+@property (strong, nonatomic) NSDictionary *userInfo;
 
 @end
 

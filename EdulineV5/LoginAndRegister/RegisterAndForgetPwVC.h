@@ -12,6 +12,7 @@
 @interface RegisterAndForgetPwVC : BaseViewController
 
 @property (assign, nonatomic) BOOL registerOrForget;
+@property (assign, nonatomic) BOOL editPw;
 
 @end
 

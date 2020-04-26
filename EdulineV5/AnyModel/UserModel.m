@@ -52,6 +52,17 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++(void)saveGender:(NSString *)gender {
+    
+    if (!SWNOTEmptyStr(gender)) {
+        return;
+    }
+    NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
+    [uDic setObject:gender forKey:@"gender"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 +(void)saveUid:(NSString *)uid
 {
     if ([uid integerValue]==0) {
@@ -188,6 +199,10 @@
 +(NSString *)uid
 {
     return [UserModel replaceNilStr:SWToStr([self userPassport][@"uid"]) nilStr:@""];
+}
+
++(NSString *)gender {
+    return [UserModel replaceNilStr:SWToStr([self userPassport][@"gender"]) nilStr:@""];
 }
 
 +(NSString *)avatar

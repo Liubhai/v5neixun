@@ -11,22 +11,43 @@
 
 @implementation SurePassWordView
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame isReset:(BOOL)isReset {
     self = [super initWithFrame:frame];
     if (self) {
+        _isReset = isReset;
         [self makeSubViews];
     }
     return self;
 }
 
 - (void)makeSubViews {
-    _firstPwLabel = [[UILabel alloc] initWithFrame:CGRectMake(15 * WidthRatio, 0, 90, 50)];
+    
+    if (_isReset) {
+        _oldPwLabel = [[UILabel alloc] initWithFrame:CGRectMake(15 * WidthRatio, 0, 90, 50)];
+        _oldPwLabel.text = @"原密码";
+        _oldPwLabel.font = SYSTEMFONT(14);
+        _oldPwLabel.textColor = EdlineV5_Color.textSecendColor;
+        [self addSubview:_oldPwLabel];
+        
+        _oldtPwTextField = [[UITextField alloc] initWithFrame:CGRectMake(_oldPwLabel.right, 0, MainScreenWidth - 15 * WidthRatio - _oldPwLabel.right, 50)];
+        _oldtPwTextField.font = SYSTEMFONT(14);
+        _oldtPwTextField.secureTextEntry = YES;
+        _oldtPwTextField.textColor = EdlineV5_Color.textFirstColor;
+        _oldtPwTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入原密码" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+        [self addSubview:_oldtPwTextField];
+        
+        _line0 = [[UIView alloc] initWithFrame:CGRectMake(_oldPwLabel.left, _oldPwLabel.bottom, MainScreenWidth - 30 * WidthRatio, 0.5)];
+        _line0.backgroundColor = EdlineV5_Color.fengeLineColor;
+        [self addSubview:_line0];
+    }
+    
+    _firstPwLabel = [[UILabel alloc] initWithFrame:CGRectMake(15 * WidthRatio, _isReset ? _line0.bottom : 0, 90, 50)];
     _firstPwLabel.text = @"设置新密码";
     _firstPwLabel.font = SYSTEMFONT(14);
     _firstPwLabel.textColor = EdlineV5_Color.textSecendColor;
     [self addSubview:_firstPwLabel];
     
-    _firstPwTextField = [[UITextField alloc] initWithFrame:CGRectMake(_firstPwLabel.right, 0, MainScreenWidth - 15 * WidthRatio - _firstPwLabel.right, 50)];
+    _firstPwTextField = [[UITextField alloc] initWithFrame:CGRectMake(_firstPwLabel.right, _firstPwLabel.top, MainScreenWidth - 15 * WidthRatio - _firstPwLabel.right, 50)];
     _firstPwTextField.font = SYSTEMFONT(14);
     _firstPwTextField.secureTextEntry = YES;
     _firstPwTextField.textColor = EdlineV5_Color.textFirstColor;

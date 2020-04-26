@@ -42,6 +42,9 @@ struct NetWorkUrl {
 /** 设置密码 */
 + (NSString *)userSetPwPath:(NSString *)userId;
 
+/** 修改密码 */
++ (NSString *)userEditPwPath;
+
 /** 短信验证 */
 + (NSString *)userVerifyPath:(NSString *)userId;
 
@@ -100,6 +103,9 @@ struct NetWorkUrl {
 
 /** 修改笔记 */
 + (NSString *)modificationCourseNote:(NSString *)noteId;
+
+/** 获取当前登录的用户信息 */
++ (NSString *)currentLoginUserInfo;
 
 @end
 

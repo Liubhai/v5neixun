@@ -48,6 +48,10 @@
     return [Net_Path fullPath:@"user/account/pwd/set" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userEditPwPath {
+    return [Net_Path fullPath:@"user/account/pwd/edit" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userVerifyPath:(NSString *)userId {
     return [Net_Path fullPath:@"user/account/pwd/verify" repalce:@"" byReplece:@""];
 }
@@ -123,4 +127,9 @@
 + (NSString *)modificationCourseNote:(NSString *)noteId {
     return [Net_Path fullPath:@"course/base/note/{id}" repalce:@"{id}" byReplece:noteId];
 }
+
++ (NSString *)currentLoginUserInfo {
+    return [Net_Path fullPath:@"user/account/info" repalce:@"" byReplece:@""];
+}
+
 @end
