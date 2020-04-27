@@ -121,6 +121,9 @@
 		7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957692410F96A0013F95F /* ThirdLoginView.m */; };
 		787E19A62455379A00E2E016 /* OrderSureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19A52455379A00E2E016 /* OrderSureViewController.m */; };
 		787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19A8245576E000E2E016 /* PWResetViewController.m */; };
+		787E19AE24566F0300E2E016 /* OrderRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19AD24566F0300E2E016 /* OrderRootVC.m */; };
+		787E19B124566FAE00E2E016 /* OrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19B024566FAE00E2E016 /* OrderCell.m */; };
+		787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19B3245685E100E2E016 /* OrderTypeViewController.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -561,6 +564,12 @@
 		787E19A52455379A00E2E016 /* OrderSureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderSureViewController.m; sourceTree = "<group>"; };
 		787E19A7245576E000E2E016 /* PWResetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PWResetViewController.h; sourceTree = "<group>"; };
 		787E19A8245576E000E2E016 /* PWResetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PWResetViewController.m; sourceTree = "<group>"; };
+		787E19AC24566F0300E2E016 /* OrderRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderRootVC.h; sourceTree = "<group>"; };
+		787E19AD24566F0300E2E016 /* OrderRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderRootVC.m; sourceTree = "<group>"; };
+		787E19AF24566FAE00E2E016 /* OrderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderCell.h; sourceTree = "<group>"; };
+		787E19B024566FAE00E2E016 /* OrderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderCell.m; sourceTree = "<group>"; };
+		787E19B2245685E100E2E016 /* OrderTypeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderTypeViewController.h; sourceTree = "<group>"; };
+		787E19B3245685E100E2E016 /* OrderTypeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderTypeViewController.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1250,6 +1259,7 @@
 				787E19A8245576E000E2E016 /* PWResetViewController.m */,
 				78531643244FF60C007E239E /* MenberRootVC.h */,
 				78531644244FF60C007E239E /* MenberRootVC.m */,
+				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 			);
 			path = MyCenterPage;
@@ -1539,6 +1549,17 @@
 			path = LoginRegisterViews;
 			sourceTree = "<group>";
 		};
+		787E19AA24566EBA00E2E016 /* OrderController */ = {
+			isa = PBXGroup;
+			children = (
+				787E19AC24566F0300E2E016 /* OrderRootVC.h */,
+				787E19AD24566F0300E2E016 /* OrderRootVC.m */,
+				787E19B2245685E100E2E016 /* OrderTypeViewController.h */,
+				787E19B3245685E100E2E016 /* OrderTypeViewController.m */,
+			);
+			path = OrderController;
+			sourceTree = "<group>";
+		};
 		78A16C612452F7C100391430 /* TIC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1646,6 +1667,8 @@
 				78AA139F24469D04007087F7 /* MyCenterTypeOneCell.m */,
 				78AA13A12446AB00007087F7 /* MyCenterTypeTwoCell.h */,
 				78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */,
+				787E19AF24566FAE00E2E016 /* OrderCell.h */,
+				787E19B024566FAE00E2E016 /* OrderCell.m */,
 				78AA13AA24470EB2007087F7 /* SetingCell.h */,
 				78AA13AB24470EB2007087F7 /* SetingCell.m */,
 				7853164624502E49007E239E /* MenberCell.h */,
@@ -2427,7 +2450,9 @@
 				787957672410E7700013F95F /* LoginPwView.m in Sources */,
 				78795737240FA3840013F95F /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				78795729240FA3840013F95F /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */,
+				787E19AE24566F0300E2E016 /* OrderRootVC.m in Sources */,
 				78C5497D241B642B00A33FC4 /* AlivcLiveBeautifySettingsViewController.m in Sources */,
+				787E19B124566FAE00E2E016 /* OrderCell.m in Sources */,
 				78C54948241B642B00A33FC4 /* AliyunGestureModel.m in Sources */,
 				78C5494D241B642B00A33FC4 /* AlilyunViewLoadingView.m in Sources */,
 				78C549D8241B674F00A33FC4 /* UIView+AlivcHelper.m in Sources */,
@@ -2615,6 +2640,7 @@
 				78C549CD241B674E00A33FC4 /* AlivcAlertView.m in Sources */,
 				78AA139D2445AE58007087F7 /* MyCenterUserInfoView.m in Sources */,
 				7853BDB92428957600F096EC /* CourseListModel.m in Sources */,
+				787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */,
 				7879572B240FA3840013F95F /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				78C5493B241B642B00A33FC4 /* AliyunVodPlayerView.m in Sources */,
 				78A16C882452F7C100391430 /* NetworkClock.m in Sources */,

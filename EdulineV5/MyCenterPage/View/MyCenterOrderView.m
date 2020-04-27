@@ -52,10 +52,17 @@
     line.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:line];
     
+    UIButton *allBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 48)];
+    allBtn.backgroundColor = [UIColor clearColor];
+    [allBtn addTarget:self action:@selector(orderButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    allBtn.tag = 66;
+    [self addSubview:allBtn];
+    
     CGFloat BtnWidth = self.bounds.size.width / (orderSortArray.count * 1.0);
     
     for (int i = 0; i< orderSortArray.count; i++) {
         UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(BtnWidth * i, line.bottom, BtnWidth, 90)];
+        btn.tag = i;
         NSString *imageName = [orderSortArray[i] objectForKey:@"image"];
         [btn setImage:Image(imageName) forState:0];
         [btn setTitle:[orderSortArray[i] objectForKey:@"title"] forState:0];
@@ -83,7 +90,9 @@
 }
 
 - (void)orderButtonClick:(UIButton *)sender {
-    
+    if (_delegate && [_delegate respondsToSelector:@selector(goToOrderVC:)]) {
+        [_delegate goToOrderVC:sender];
+    }
 }
 
 @end

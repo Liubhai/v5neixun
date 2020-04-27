@@ -16,6 +16,7 @@
 #import "PersonalInformationVC.h"
 #import "SetingViewController.h"
 #import "MenberRootVC.h"
+#import "OrderRootVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -26,7 +27,7 @@
 #import "MyCenterTypeTwoCell.h"
 #import "UIImage+Util.h"
 
-@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate>
+@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -86,6 +87,7 @@
     _myCenterUserInfoView.delegate = self;
     [_headerView addSubview:_myCenterUserInfoView];
     _mycenterOrderView = [[MyCenterOrderView alloc] initWithFrame:CGRectMake(15, _myCenterUserInfoView.bottom - 80, MainScreenWidth - 30, 140)];
+    _mycenterOrderView.delegate = self;
     [_headerView addSubview:_mycenterOrderView];
     _myCenterBalanceView = [[MyCenterBalanceView alloc] initWithFrame:CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, 90)];
     [_headerView addSubview:_myCenterBalanceView];
@@ -193,6 +195,23 @@
 
 - (void)goToMenberCenter {
     MenberRootVC *vc = [[MenberRootVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - MyCenterOrderViewDelegate(进入订单页面)
+- (void)goToOrderVC:(UIButton *)sender {
+    OrderRootVC *vc = [[OrderRootVC alloc] init];
+    if (sender.tag == 0) {
+       vc.currentType = @"pay";
+    } else if (sender.tag == 1) {
+        vc.currentType = @"cancel";
+    } else if (sender.tag == 2) {
+        vc.currentType = @"finish";
+    } else if (sender.tag == 3) {
+        vc.currentType = @"shouhou";
+    } else {
+        vc.currentType = @"all";
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 

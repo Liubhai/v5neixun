@@ -10,7 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol MyCenterOrderViewDelegate <NSObject>
+
+@optional
+- (void)goToOrderVC:(UIButton *)sender;
+
+@end
+
 @interface MyCenterOrderView : UIView
+
+@property (weak, nonatomic) id<MyCenterOrderViewDelegate> delegate;
 
 @end
 
