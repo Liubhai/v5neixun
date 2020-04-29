@@ -7,10 +7,21 @@
 //
 
 #import "BaseViewController.h"
+#import "CouponModel.h"
+
+@protocol LingquanViewControllerDelegate <NSObject>
+
+@optional
+- (void)chooseWhichCoupon:(CouponModel *)coupon;
+
+@end
 
 @interface LingquanViewController : BaseViewController
 
-@property (strong, nonatomic) NSString *kaquanID;
+@property (weak, nonatomic) id<LingquanViewControllerDelegate> delegate;
+
+@property (strong, nonatomic) CouponModel *couponModel;
+@property (strong, nonatomic) NSString *mhm_id;//机构id
 
 @property (assign, nonatomic) BOOL getOrUse; //yes 领取 no 使用
 

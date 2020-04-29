@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OrderSureViewController : BaseViewController<TYAttributedLabelDelegate>
 
+@property (strong, nonatomic) NSDictionary *orderSureInfo;
+
 @property (strong, nonatomic) UILabel *priceLabel;
 
 @property (strong, nonatomic) UIView *orderTypeView;

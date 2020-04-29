@@ -12,6 +12,7 @@
 #import "Net_Path.h"
 #import "EdulineV5_Tool.h"
 #import "CourseMainViewController.h"
+#import "ShopCarManagerVC.h"
 
 //分类
 #import "CourseTypeVC.h"
@@ -61,8 +62,9 @@
     _titleLabel.text = @"课程";
     _titleLabel.hidden = YES;
     _leftButton.hidden = YES;
+    _rightButton.hidden = NO;
     _cellType = NO;
-    _rightButton.hidden = YES;
+    [_rightButton setImage:Image(@"lesson_cart_icon") forState:0];
     if (SWNOTEmptyStr(_themeTitle)) {
         _titleLabel.text = _themeTitle;
         _leftButton.hidden = NO;
@@ -81,7 +83,7 @@
 
 - (void)makeTopSearch {
     // 顶部搜索框和 取消按钮
-    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_isSearch ? (_leftButton.right + 15) : 15, _titleLabel.top, MainScreenWidth - 30 - (_isSearch ? _leftButton.right : 0) , 36)];
+    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_isSearch ? (_leftButton.right + 15) : 15, _titleLabel.top, MainScreenWidth - 15 - _rightButton.width - (_isSearch ? _leftButton.right : 0) , 36)];
     _institutionSearch.font = SYSTEMFONT(14);
     _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索课程" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     _institutionSearch.delegate = self;
@@ -420,8 +422,7 @@
 }
 
 - (void)rightButtonClick:(id)sender {
-    CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
-    vc.isSearch = YES;
+    ShopCarManagerVC *vc = [[ShopCarManagerVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

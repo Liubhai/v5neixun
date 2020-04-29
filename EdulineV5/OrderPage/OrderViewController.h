@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "V5_Constant.h"
+#import "CouponModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,6 +55,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *youhuiLabel;
 @property (strong, nonatomic) UILabel *finalPriceLabel;
 @property (strong, nonatomic) UIButton *submitButton;
+
+
+@property (strong, nonatomic) NSString *orderTypeString;
+@property (strong, nonatomic) NSString *orderId;
+
+
+@property (strong, nonatomic) CouponModel *couponModel;
 
 @end
 

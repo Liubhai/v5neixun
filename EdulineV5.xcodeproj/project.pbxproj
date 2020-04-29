@@ -124,6 +124,7 @@
 		787E19AE24566F0300E2E016 /* OrderRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19AD24566F0300E2E016 /* OrderRootVC.m */; };
 		787E19B124566FAE00E2E016 /* OrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19B024566FAE00E2E016 /* OrderCell.m */; };
 		787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19B3245685E100E2E016 /* OrderTypeViewController.m */; };
+		789DB01524593041001302B4 /* CouponModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01424593041001302B4 /* CouponModel.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -570,6 +571,8 @@
 		787E19B024566FAE00E2E016 /* OrderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderCell.m; sourceTree = "<group>"; };
 		787E19B2245685E100E2E016 /* OrderTypeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderTypeViewController.h; sourceTree = "<group>"; };
 		787E19B3245685E100E2E016 /* OrderTypeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderTypeViewController.m; sourceTree = "<group>"; };
+		789DB01324593041001302B4 /* CouponModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouponModel.h; sourceTree = "<group>"; };
+		789DB01424593041001302B4 /* CouponModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CouponModel.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1056,6 +1059,8 @@
 				7853BDB82428957600F096EC /* CourseListModel.m */,
 				7853BDC32429F4FC00F096EC /* CourseListModelFinal.h */,
 				7853BDC42429F4FC00F096EC /* CourseListModelFinal.m */,
+				789DB01324593041001302B4 /* CouponModel.h */,
+				789DB01424593041001302B4 /* CouponModel.m */,
 			);
 			path = CourseModel;
 			sourceTree = "<group>";
@@ -2579,6 +2584,7 @@
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
 				787E19A62455379A00E2E016 /* OrderSureViewController.m in Sources */,
+				789DB01524593041001302B4 /* CouponModel.m in Sources */,
 				78795724240FA3840013F95F /* ZLCameraView.m in Sources */,
 				78C549E0241B674F00A33FC4 /* UIImage+AlivcHelper.m in Sources */,
 				7839C972241F174D002F6595 /* LBHTableView.m in Sources */,

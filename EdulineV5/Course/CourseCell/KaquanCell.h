@@ -7,10 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CouponModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class KaquanCell;
+
+@protocol KaquanCellDelegate <NSObject>
+
+@optional
+- (void)useOrGetAction:(KaquanCell *)cell;
+
+@end
+
 @interface KaquanCell : UITableViewCell
+
+@property (weak, nonatomic) id<KaquanCellDelegate> delegate;
 
 @property (strong, nonatomic) UIImageView *backView;
 @property (strong, nonatomic) UILabel *themeLabel;
@@ -18,8 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *timeLabel;
 @property (strong, nonatomic) UIButton *rightButton;
 @property (strong, nonatomic) NSString *cellType;
+@property (assign, nonatomic) BOOL getOrUse;
+@property (strong, nonatomic) CouponModel *couponModel;
+@property (strong, nonatomic) NSIndexPath *cellIndexpath;
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(NSString *)cellType;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(NSString *)cellType getOrUse:(BOOL)getOrUse;
+
+- (void)setCouponInfo:(CouponModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath;
 
 @end
 

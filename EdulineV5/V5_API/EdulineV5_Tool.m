@@ -353,6 +353,28 @@ static EdulineV5_Tool *_sharedInstance;
     return [theDay substringToIndex:10];
 }
 
++ (NSString *)timeForYYYYMMDDHHMM:(NSString *)time {
+    if (!time) {
+        return @"";
+    }
+    NSTimeInterval secondsPer = 24*60*60;
+    NSDate *today = [[NSDate alloc]init];
+    NSDate *yesterday = [today dateByAddingTimeInterval:-secondsPer];
+    NSString *yesterdayString = [[yesterday description]substringToIndex:10];
+    NSString *todayString = [[today description]substringToIndex:10];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:time.integerValue];
+    NSString *dateString = [[date description]substringToIndex:10];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat:@"yyyy.MM.dd"];
+    NSDate *nowDate = [NSDate dateWithTimeIntervalSince1970:time.integerValue];
+    NSString *theDay = [dateFormatter stringFromDate:nowDate];//日期的年月日
+    
+    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];//当前年月日
+    
+    return currentDay;
+}
+
 + (NSString *)currentdateInterval {
     NSDate *datenow = [NSDate date];
     NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)([datenow timeIntervalSince1970])];

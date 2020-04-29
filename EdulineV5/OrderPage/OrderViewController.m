@@ -9,8 +9,13 @@
 #import "OrderViewController.h"
 #import "ShitikaViewController.h"
 #import "OrderSureViewController.h"
+#import "V5_Constant.h"
+#import "Net_Path.h"
+#import "LingquanViewController.h"
 
-@interface OrderViewController ()
+@interface OrderViewController ()<LingquanViewControllerDelegate>
+
+@property (strong, nonatomic) NSMutableArray *couponsArray;
 
 @end
 
@@ -19,10 +24,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _couponsArray = [NSMutableArray new];
     _titleLabel.text = @"订单支付";
     [self makeScrollView];
     [self makeSubView];
     [self makeDownView];
+    [self getCourseOrderInfo];
 }
 
 - (void)makeScrollView {
@@ -79,7 +86,8 @@
     _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 110)];
     _otherView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_otherView];
-    NSArray *titleArray = @[@"卡券",@"使用实体卡"];
+//    NSArray *titleArray = @[@"卡券",@"使用实体卡"];
+    NSArray *titleArray = @[@"卡券"];
     for (int i = 0; i < titleArray.count; i++) {
         UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
         youhui.text = titleArray[i];
@@ -93,6 +101,7 @@
         [_otherView addSubview:themelabel];
         if (i==0) {
             _kaquanLabel = themelabel;
+            _kaquanLabel.textColor = EdlineV5_Color.youhuijuanColor;
         } else if (i == 1) {
             _shitikaLabel = themelabel;
         }
@@ -106,6 +115,9 @@
         clearBtn.tag = 10 + i;
         [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_otherView addSubview:clearBtn];
+        if (i == titleArray.count - 1) {
+            [_otherView setHeight:clearBtn.bottom];
+        }
     }
     
 //    _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom +10, MainScreenWidth, 60)];
@@ -230,7 +242,7 @@
     [self.view addSubview:_bottomView];
     
     _youhuiLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 150, 49)];
-    _youhuiLabel.text = @"优惠：¥10.00";
+    _youhuiLabel.text = @"优惠：¥0.00";
     _youhuiLabel.font = SYSTEMFONT(13);
     _youhuiLabel.textColor = EdlineV5_Color.textThirdColor;
     [_bottomView addSubview:_youhuiLabel];
@@ -248,7 +260,7 @@
     _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
     _finalPriceLabel.textColor = EdlineV5_Color.faildColor;
     _finalPriceLabel.font = SYSTEMFONT(15);
-    _finalPriceLabel.text = @"合计: ¥190.00";
+    _finalPriceLabel.text = @"合计: ¥0.00";
     _finalPriceLabel.textAlignment = NSTextAlignmentRight;
     [_bottomView addSubview:_finalPriceLabel];
     
@@ -261,6 +273,15 @@
     if (sender.tag == 11) {
         ShitikaViewController *vc = [[ShitikaViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        LingquanViewController *vc = [[LingquanViewController alloc] init];
+        vc.mhm_id = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"mhm_id"]];
+        vc.couponModel = _couponModel;
+        vc.getOrUse = NO;
+        vc.delegate = self;
+        vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
     }
 }
 
@@ -285,8 +306,111 @@
 }
 
 - (void)submitButtonClick:(UIButton *)sender {
-    OrderSureViewController *vc = [[OrderSureViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    if (!SWNOTEmptyDictionary(_orderInfo)) {
+        return;
+    }
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    NSString *courseId = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"id"]];
+    if (SWNOTEmptyStr(courseId)) {
+        [param setObject:courseId forKey:@"course_id"];
+    }
+    if (_couponModel) {
+        [param setObject:_couponModel.couponId forKey:@"coupon_id"];
+    }
+    [Net_API requestPOSTWithURLStr:[Net_Path creatSingleOrder] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                OrderSureViewController *vc = [[OrderSureViewController alloc] init];
+                vc.orderSureInfo = responseObject;
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:@"订单生成失败"];
+    }];
+}
+
+- (void)getCourseOrderInfo {
+    if (!SWNOTEmptyStr(_orderId)) {
+        return;
+    }
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseOrderInfo] WithAuthorization:nil paramDic:@{@"course_id":_orderId} finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+            }
+        }
+        [self setCourseUIData];
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)setCourseUIData {
+    if (SWNOTEmptyDictionary(_orderInfo)) {
+        [_courseFaceImageView sd_setImageWithURL:EdulineUrlString([[_orderInfo objectForKey:@"data"] objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+        _textLabel.text = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"title"]];
+        _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",[[_orderInfo objectForKey:@"data"] objectForKey:@"section_count"]];
+        _priceLabel.text = [NSString stringWithFormat:@"VIP:¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+        
+        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+        NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+        [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+        _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+        
+        NSString *timeLine = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"term_time"]];
+        if ([timeLine isEqualToString:@"0"]) {
+            _timeLabel.text = @"永久有效";
+        } else {
+            _timeLabel.text = [NSString stringWithFormat:@"有效期至%@",[EdulineV5_Tool timeForYYYYMMDD:timeLine]];
+        }
+    }
+}
+
+// MARK: - LingquanViewControllerDelegate(选择了之后的代理)
+- (void)chooseWhichCoupon:(CouponModel *)coupon {
+    if (_couponModel) {
+        if ([_couponModel.couponId isEqualToString:coupon.couponId]) {
+            _couponModel = nil;
+        } else {
+            _couponModel = coupon;
+        }
+    } else {
+        _couponModel = coupon;
+    }
+    if (_couponModel) {
+        if ([_couponModel.coupon_type isEqualToString:@"1"]) {
+            _kaquanLabel.text = [NSString stringWithFormat:@"满%@减%@",_couponModel.maxprice,_couponModel.price];
+            float max_price = [[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue];
+            if (max_price>=[_couponModel.maxprice floatValue]) {
+                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue] - [_couponModel.price floatValue]];
+                _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%@",_couponModel.price];
+            } else {
+                _kaquanLabel.text = [NSString stringWithFormat:@"满%@减%@(不满足要求,无法使用)",_couponModel.maxprice,_couponModel.price];
+                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+                _youhuiLabel.text = @"优惠：¥0.00";
+            }
+        } else if ([_couponModel.coupon_type isEqualToString:@"2"]) {
+            _kaquanLabel.text = [NSString stringWithFormat:@"%@折",_couponModel.discount];
+            float discount1 = [_couponModel.discount floatValue];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue] * discount1 / 10];
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue] - [[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue] * discount1 / 10];
+        } else if ([_couponModel.coupon_type isEqualToString:@"3"]) {
+            _kaquanLabel.text = @"课程卡";
+            _finalPriceLabel.text = @"合计: ¥0.00";
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+        }
+    } else {
+        _kaquanLabel.text = @"";
+        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+        _youhuiLabel.text = @"优惠：¥0.00";
+    }
+    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+    _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
 }
 
 @end

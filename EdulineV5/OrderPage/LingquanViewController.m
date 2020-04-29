@@ -10,11 +10,13 @@
 #import "KaquanCell.h"
 #import "V5_Constant.h"
 #import "AppDelegate.h"
+#import "Net_Path.h"
 
-@interface LingquanViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface LingquanViewController ()<UITableViewDelegate,UITableViewDataSource,KaquanCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
+@property (strong, nonatomic) NSMutableArray *changeStatusArray;
 
 @property (strong, nonatomic) UIView *whiteView;
 @property (strong, nonatomic) UILabel *themeLabel;
@@ -35,11 +37,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _dataSource = [NSMutableArray new];
+    _changeStatusArray = [NSMutableArray new];
     _titleImage.hidden = YES;
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
     [self makeTopView];
     [self makeTableView];
+//    if (_getOrUse) {
+//        [self makeBottomView];
+//    }
     [self makeBottomView];
+    [self getcouponsList];
 }
 
 - (void)makeTopView {
@@ -62,11 +71,14 @@
 }
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _whiteView.top + 52, MainScreenWidth, MainScreenHeight - (_whiteView.top + 52) - MACRO_UI_TABBAR_HEIGHT)];
+//    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _whiteView.top + 52, MainScreenWidth, MainScreenHeight - (_whiteView.top + 52) - (_getOrUse ? MACRO_UI_TABBAR_HEIGHT : 0)) style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _whiteView.top + 52, MainScreenWidth, MainScreenHeight - (_whiteView.top + 52) - MACRO_UI_TABBAR_HEIGHT) style:UITableViewStyleGrouped];
+    _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
+    [EdulineV5_Tool adapterOfIOS11With:_tableView];
 }
 
 - (void)makeBottomView {
@@ -91,29 +103,132 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return _dataSource.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    CouponArrayModel *model = _dataSource[section];
+    return model.list.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellId = @"KaquanCell1";
+    CouponArrayModel *model = _dataSource[indexPath.section];
+    CouponModel *model1 = model.list[indexPath.row];
     KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:[NSString stringWithFormat:@"%@",@(indexPath.row + 1)]];
+        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:model1.coupon_type getOrUse:_getOrUse];
     }
+    [cell setCouponInfo:model1 cellIndexPath:indexPath];
+    cell.delegate = self;
     return cell;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    CouponArrayModel *model = _dataSource[section];
+    if (!SWNOTEmptyArr(model.list)) {
+        return nil;
+    }
+    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 50)];
+    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, 50)];
+    sectionLabel.text = [NSString stringWithFormat:@"%@",((CouponArrayModel *)_dataSource[section]).coupon_type_text];
+    sectionLabel.font = SYSTEMFONT(14);
+    sectionLabel.textColor = EdlineV5_Color.textThirdColor;
+    [view1 addSubview:sectionLabel];
+    return view1;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return nil;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 92;
+    return 102;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    CouponArrayModel *model = _dataSource[section];
+    if (!SWNOTEmptyArr(model.list)) {
+        return 0.001;
+    }
+    return 50;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.001;
 }
 
 - (void)sureButtonClicked:(UIButton *)sender {
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
+}
+
+- (void)getcouponsList {
+    if (SWNOTEmptyStr(_mhm_id)) {
+        [Net_API requestGETSuperAPIWithURLStr:_getOrUse ? [Net_Path schoolCouponList] : [Net_Path couponsUserList] WithAuthorization:nil paramDic:@{@"mhm_id":_mhm_id,@"group":@"1"} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [_dataSource removeAllObjects];
+                    [_dataSource addObjectsFromArray:[CouponArrayModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                    [self changeDataSourceIsUseStatus];
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK: - KaquanCellDelegate(cell按钮点击事件)
+- (void)useOrGetAction:(KaquanCell *)cell {
+    if (_getOrUse) {
+        [Net_API requestPOSTWithURLStr:[Net_Path getWhichCoupon:cell.couponModel.couponId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    CouponModel *model = cell.couponModel;
+                    model.user_has = YES;
+                    CouponArrayModel *model1 = _dataSource[cell.cellIndexpath.section];
+                    NSMutableArray *list = [NSMutableArray arrayWithArray:model1.list];
+                    [list replaceObjectAtIndex:cell.cellIndexpath.row withObject:model];
+                    model1.list = [NSArray arrayWithArray:list];
+                    [_dataSource replaceObjectAtIndex:cell.cellIndexpath.section withObject:model1];
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    } else {
+        if (_delegate && [_delegate respondsToSelector:@selector(chooseWhichCoupon:)]) {
+            [_delegate chooseWhichCoupon:cell.couponModel];
+            [self.view removeFromSuperview];
+            [self removeFromParentViewController];
+        }
+    }
+}
+
+// MARK: - 改变数据源是否使用的状态
+- (void)changeDataSourceIsUseStatus {
+    if (_couponModel) {
+        if (SWNOTEmptyStr(_couponModel.couponId)) {
+            for (int i = 0; i<_dataSource.count; i++) {
+                CouponArrayModel *model1 = _dataSource[i];
+                [_changeStatusArray removeAllObjects];
+                [_changeStatusArray addObjectsFromArray:model1.list];
+                for (int j = 0; j<model1.list.count; j++) {
+                    CouponModel *model2 = model1.list[j];
+                    if ([model2.couponId isEqualToString:_couponModel.couponId]) {
+                        model2.IsUsed = YES;
+                        [_changeStatusArray replaceObjectAtIndex:j withObject:model2];
+                        model1.list = [NSArray arrayWithArray:_changeStatusArray];
+                        [_dataSource replaceObjectAtIndex:i withObject:model1];
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /*

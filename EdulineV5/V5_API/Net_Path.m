@@ -132,4 +132,24 @@
     return [Net_Path fullPath:@"user/account/info" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)courseOrderInfo {
+    return [Net_Path fullPath:@"course/payment/order/fetch/one" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)couponsUserList {
+    return [Net_Path fullPath:@"course/coupon/school/user" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)schoolCouponList {
+    return [Net_Path fullPath:@"course/coupon/school" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)getWhichCoupon:(NSString *)couponId {
+    return [Net_Path fullPath:@"course/coupon/{id}/derive" repalce:@"{id}" byReplece:couponId];
+}
+
++ (NSString *)creatSingleOrder {
+    return [Net_Path fullPath:@"course/payment/order/create/one" repalce:@"" byReplece:@""];
+}
+
 @end

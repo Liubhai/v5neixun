@@ -66,4 +66,6 @@
 
 + (void)dealButtonImageAndTitleUI:(UIButton *)sender;
 
++ (NSString *)timeForYYYYMMDDHHMM:(NSString *)time;
+
 @end

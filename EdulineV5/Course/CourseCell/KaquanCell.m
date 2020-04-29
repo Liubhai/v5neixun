@@ -12,18 +12,19 @@
 @implementation KaquanCell
 
 // 110 = 10 + 90 + 10
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(nonnull NSString *)cellType {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(nonnull NSString *)cellType getOrUse:(BOOL)getOrUse {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         _cellType = cellType;
+        _getOrUse = getOrUse;
         [self makeSubViews];
     }
     return self;
 }
 
 - (void)makeSubViews {
-    _backView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, MainScreenWidth - 30, 90)];
+    _backView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, MainScreenWidth - 30, 92)];
     [self addSubview:_backView];
     
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backView.left + 10, _backView.top, _backView.width - 10, 44)];
@@ -45,8 +46,13 @@
     _rightButton.layer.cornerRadius = 17;
     _rightButton.layer.borderWidth = 1;
     _rightButton.titleLabel.font = SYSTEMFONT(15);
-    [_rightButton setTitle:@"取消使用" forState:UIControlStateSelected];
-    [_rightButton setTitle:@"使用" forState:0];
+    if (_getOrUse) {
+        [_rightButton setTitle:@"已领取" forState:UIControlStateSelected];
+        [_rightButton setTitle:@"领取" forState:0];
+    } else {
+        [_rightButton setTitle:@"取消使用" forState:UIControlStateSelected];
+        [_rightButton setTitle:@"使用" forState:0];
+    }
     [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
     [_rightButton addTarget:self action:@selector(userButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     _rightButton.centerY = _backView.centerY;
@@ -75,7 +81,46 @@
     _rightButton.layer.borderColor = cellColor.CGColor;
 }
 
+- (void)setCouponInfo:(CouponModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath {
+    _couponModel = model;
+    _cellIndexpath = cellIndexPath;
+    if ([_cellType isEqualToString:@"1"]) {
+        _themeLabel.text = [NSString stringWithFormat:@"满%@减%@",model.maxprice,model.price];
+    } else if ([_cellType isEqualToString:@"2"]) {
+        _themeLabel.text = [NSString stringWithFormat:@"%@折",model.discount];
+    } else if ([_cellType isEqualToString:@"3"]) {
+        _themeLabel.text = @"课程卡";
+    }
+    _fanweiLabel.text = [NSString stringWithFormat:@"仅限%@使用",model.school_name];
+    _timeLabel.text = [NSString stringWithFormat:@"有效期%@至%@",[EdulineV5_Tool timeForYYYYMMDDHHMM:model.use_stime],[EdulineV5_Tool timeForYYYYMMDDHHMM:model.use_etime]];
+    
+    if (_getOrUse) {
+        _rightButton.selected = model.user_has;
+    } else {
+        _rightButton.selected = model.IsUsed;
+    }
+    
+    UIColor *cellColor = EdlineV5_Color.youhuijuanColor;
+    if ([_cellType isEqualToString:@"1"]) {
+        cellColor = EdlineV5_Color.youhuijuanColor;
+    } else if ([_cellType isEqualToString:@"2"]) {
+        cellColor = EdlineV5_Color.dazhekaColor;
+    } else if ([_cellType isEqualToString:@"3"]) {
+        cellColor = EdlineV5_Color.kechengkaColor;
+    }
+    if (_rightButton.selected) {
+        [_rightButton setBackgroundColor:[UIColor whiteColor]];
+    } else {
+        [_rightButton setBackgroundColor:cellColor];
+    }
+}
+
 - (void)userButtonClick:(UIButton *)sender {
+    
+    if (_getOrUse && _couponModel.user_has) {
+        return;
+    }
+    
     UIColor *cellColor = EdlineV5_Color.youhuijuanColor;
     if ([_cellType isEqualToString:@"1"]) {
         cellColor = EdlineV5_Color.youhuijuanColor;
@@ -89,6 +134,9 @@
         [sender setBackgroundColor:[UIColor whiteColor]];
     } else {
         [sender setBackgroundColor:cellColor];
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(useOrGetAction:)]) {
+        [_delegate useOrGetAction:self];
     }
 }
 

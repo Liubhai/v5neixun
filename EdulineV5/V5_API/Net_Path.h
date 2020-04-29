@@ -107,6 +107,21 @@ struct NetWorkUrl {
 /** 获取当前登录的用户信息 */
 + (NSString *)currentLoginUserInfo;
 
+/** 课程订单信息 */
++ (NSString *)courseOrderInfo;
+
+/** 用户领取的机构卡券列表 */
++ (NSString *)couponsUserList;
+
+/** 机构下的卡券 */
++ (NSString *)schoolCouponList;
+
+/** 领取 */
++ (NSString *)getWhichCoupon:(NSString *)couponId;
+
+/** 生成订单 */
++ (NSString *)creatSingleOrder;
+
 @end
 
 NS_ASSUME_NONNULL_END
