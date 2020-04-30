@@ -122,6 +122,9 @@ struct NetWorkUrl {
 /** 生成订单 */
 + (NSString *)creatSingleOrder;
 
+/** 余额信息 */
++ (NSString *)userBalanceInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -152,4 +152,8 @@
     return [Net_Path fullPath:@"course/payment/order/create/one" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userBalanceInfo {
+    return [Net_Path fullPath:@"user/balance" repalce:@"" byReplece:@""];
+}
+
 @end

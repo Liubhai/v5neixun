@@ -7,8 +7,11 @@
 //
 
 #import "OrderSureViewController.h"
+#import "Net_Path.h"
 
 @interface OrderSureViewController ()
+
+@property (strong, nonatomic) NSDictionary *balanceInfo;
 
 @end
 
@@ -23,7 +26,9 @@
     _priceLabel.font = SYSTEMFONT(20);
     _priceLabel.textAlignment = NSTextAlignmentCenter;
     _priceLabel.textColor = EdlineV5_Color.faildColor;
-    _priceLabel.text = @"¥190.00";
+    if (SWNOTEmptyDictionary(_orderSureInfo)) {
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+    }
     [self.view addSubview:_priceLabel];
     _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _priceLabel.bottom, MainScreenWidth, 168)];
     _orderTypeView.backgroundColor = [UIColor whiteColor];
@@ -36,6 +41,7 @@
     
     [self makeAgreeView];
     [self makeDownView];
+    [self getUserBalanceInfo];
 }
 
 - (void)makeOrderType1View1 {
@@ -186,6 +192,19 @@
         _orderRightBtn1.selected = NO;
         _orderRightBtn2.selected = NO;
     }
+}
+
+- (void)getUserBalanceInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userBalanceInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];//@"余额(¥1232.00)";
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 /*
