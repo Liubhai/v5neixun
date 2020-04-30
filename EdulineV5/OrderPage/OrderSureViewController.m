@@ -103,7 +103,7 @@
     _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, 150, 56)];
     _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle3.font = SYSTEMFONT(15);
-    _orderTitle3.text = @"余额(11111.00)";
+    _orderTitle3.text = @"余额(¥0.00)";
     [_orderTypeView3 addSubview:_orderTitle3];
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -199,7 +199,9 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
-                _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];//@"余额(¥1232.00)";
+                if (SWNOTEmptyDictionary(_balanceInfo[@"data"])) {
+                    _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];
+                }
             }
         }
     } enError:^(NSError * _Nonnull error) {
