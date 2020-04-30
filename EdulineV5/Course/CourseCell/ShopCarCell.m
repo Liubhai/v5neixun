@@ -35,6 +35,10 @@
     _courseFaceImageView.image = DefaultImage;
     [self addSubview:_courseFaceImageView];
     
+    _courseTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.right - 32, _courseFaceImageView.top + 8, 32, 18)];
+    _courseTypeImageView.image = Image(@"album_icon");
+    [self addSubview:_courseTypeImageView];
+    
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 10, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(14);
@@ -67,13 +71,39 @@
         _courseHourLabel.hidden = YES;
     } else {
         _selectedIconBtn.hidden = YES;
-        _timeLabel.hidden = NO;
+        _timeLabel.hidden = YES;
         _courseHourLabel.hidden = NO;
     }
 }
 
+- (void)setShopCarCourseInfo:(ShopCarCourseModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath {
+    
+    _courseModel = model;
+    _cellIndex = cellIndexPath;
+    
+    [_courseFaceImageView sd_setImageWithURL:EdulineUrlString(model.cover_url) placeholderImage:DefaultImage];
+    if (_cellType) {
+        _selectedIconBtn.selected = model.selected;
+    }
+    _themeLabel.text = model.title;
+    _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
+    if ([model.course_type isEqualToString:@"1"]) {
+        _courseTypeImageView.image = Image(@"dianbo");
+    } else if ([model.course_type isEqualToString:@"2"]) {
+        _courseTypeImageView.image = Image(@"live");
+    } else if ([model.course_type isEqualToString:@"3"]) {
+        _courseTypeImageView.image = Image(@"mianshou");
+    } else if ([model.course_type isEqualToString:@"4"]) {
+        _courseTypeImageView.image = Image(@"album_icon");
+    }
+    _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",model.section_count];
+}
+
 - (void)selectedBtnClick:(UIButton *)sender {
     sender.selected = !sender.selected;
+    if (_delegate && [_delegate respondsToSelector:@selector(chooseWhichCourse:)]) {
+        [_delegate chooseWhichCourse:self];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

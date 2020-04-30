@@ -12,11 +12,18 @@
 #import "V5_Constant.h"
 #import "LingquanViewController.h"
 #import "ShopCarManagerFinalVC.h"
+#import "Net_Path.h"
+#import "ShopCarModel.h"
 
-@interface ShopCarManagerVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface ShopCarManagerVC ()<UITableViewDelegate,UITableViewDataSource,ShopCarCellDelegate> {
+    NSString *course_ids;
+    BOOL allSeleted;
+}
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSourse;
+
+@property (strong, nonatomic) NSMutableArray *selectedArray;
 
 @end
 
@@ -25,6 +32,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    course_ids = @"";
+    allSeleted = NO;
     _titleLabel.text = @"购物车";
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"管理" forState:0];
@@ -32,8 +41,10 @@
     [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     _rightButton.hidden = NO;
     _dataSourse = [NSMutableArray new];
+    _selectedArray = [NSMutableArray new];
     [self makeTableView];
     [self makeDownView];
+    [self getUserShopCarInfo];
 }
 
 - (void)makeTableView {
@@ -80,7 +91,7 @@
     _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
     _finalPriceLabel.textColor = EdlineV5_Color.faildColor;
     _finalPriceLabel.font = SYSTEMFONT(15);
-    _finalPriceLabel.text = @"合计: ¥190.00";
+    _finalPriceLabel.text = @"合计: ¥0.00";
     _finalPriceLabel.textAlignment = NSTextAlignmentRight;
     [_bottomView addSubview:_finalPriceLabel];
     
@@ -96,6 +107,7 @@
     [_deleteBtn setTitleColor:EdlineV5_Color.youhuijuanColor forState:0];
     _deleteBtn.titleLabel.font = SYSTEMFONT(16);
     [_deleteBtn setTitle:@"删除" forState:0];
+    [_deleteBtn addTarget:self action:@selector(deleteCourses:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_deleteBtn];
     _deleteBtn.hidden = YES;
     
@@ -107,14 +119,16 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return _dataSourse.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    ShopCarModel *model = _dataSourse[section];
+    return model.course_list.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    ShopCarModel *model = _dataSourse[section];
     UIView *head = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 70)];
     head.backgroundColor = [UIColor whiteColor];
     UIView *jiange = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 9.5)];
@@ -124,10 +138,12 @@
     [selectBtn setImage:Image(@"checkbox_orange") forState:UIControlStateSelected];
     [selectBtn setImage:Image(@"checkbox_def") forState:0];
     [selectBtn addTarget:self action:@selector(headSelectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    selectBtn.tag = section;
     [head addSubview:selectBtn];
+    selectBtn.selected = model.selected;
     UILabel *jigouTitle = [[UILabel alloc] initWithFrame:CGRectMake(selectBtn.right + 7, 9.5, 150, 60)];
     jigouTitle.textColor = EdlineV5_Color.textFirstColor;
-    jigouTitle.text = [NSString stringWithFormat:@"机构名称%@",@(section)];
+    jigouTitle.text = [NSString stringWithFormat:@"%@",model.school_name];
     [head addSubview:jigouTitle];
     UIButton *lingquan = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, 9.5, 30, 60)];
     [lingquan setTitle:@"领券" forState:0];
@@ -159,6 +175,10 @@
     if (!cell) {
         cell = [[ShopCarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:YES];
     }
+    cell.delegate = self;
+    ShopCarModel *model = _dataSourse[indexPath.section];
+    ShopCarCourseModel *courseModel = model.course_list[indexPath.row];
+    [cell setShopCarCourseInfo:courseModel cellIndexPath:indexPath];
     return cell;
 }
 
@@ -167,7 +187,64 @@
 }
 
 - (void)headSelectBtnClick:(UIButton *)sender {
-    sender.selected = !sender.selected;
+    if (sender == _allSelectBtn) {
+        _allSelectBtn.selected = !sender.selected;
+        allSeleted = _allSelectBtn.selected;
+        
+        for (int i = 0; i < _dataSourse.count; i ++) {
+            ShopCarModel *carModel = _dataSourse[i];
+            carModel.selected = allSeleted;
+            NSMutableArray *pass = [NSMutableArray arrayWithArray:carModel.course_list];
+            for (int j = 0; j < pass.count; j ++) {
+                ShopCarCourseModel *courseModel = pass[j];
+                courseModel.selected = allSeleted;
+                [pass replaceObjectAtIndex:j withObject:courseModel];
+            }
+            carModel.course_list = [NSArray arrayWithArray:pass];
+            [_dataSourse replaceObjectAtIndex:i withObject:carModel];
+        }
+    } else {
+        sender.selected = !sender.selected;
+        ShopCarModel *model = _dataSourse[sender.tag];
+        NSMutableArray *pass = [NSMutableArray arrayWithArray:model.course_list];
+        
+        for (int i = 0; i < pass.count; i++) {
+            ShopCarCourseModel *courseModel = pass[i];
+            courseModel.selected = sender.selected;
+            [pass replaceObjectAtIndex:i withObject:courseModel];
+        }
+        
+        model.course_list = [NSArray arrayWithArray:pass];
+        model.selected = sender.selected;
+        [_dataSourse replaceObjectAtIndex:sender.tag withObject:model];
+        
+        // 判断每一个机构是不是全选与否
+        for (int i = 0; i < _dataSourse.count; i ++) {
+            ShopCarModel *carModel = _dataSourse[i];
+            BOOL carSelect = carModel.selected;
+            for (int j = 0; j < carModel.course_list.count; j ++) {
+                ShopCarCourseModel *courseModel = carModel.course_list[j];
+                if (courseModel.selected) {
+                    carSelect = YES;
+                } else {
+                    carSelect = NO;
+                    break;
+                }
+            }
+            carModel.selected = carSelect;
+            [_dataSourse replaceObjectAtIndex:i withObject:carModel];
+            
+            if (carModel.selected) {
+                allSeleted = YES;
+            } else {
+                allSeleted = NO;
+                break;
+            }
+        }
+        _allSelectBtn.selected = allSeleted;
+    }
+    [self dealDataSource];
+    [_tableView reloadData];
 }
 
 - (void)rightButtonClick:(id)sender {
@@ -197,6 +274,128 @@
 - (void)submiteButtonClick:(UIButton *)sender {
     ShopCarManagerFinalVC *vc = [[ShopCarManagerFinalVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+//MARK: - ShopCarCellDelegate(购物车选择代理)
+- (void)chooseWhichCourse:(ShopCarCell *)shopCarCell {
+    // 第一要改变数据源
+    shopCarCell.courseModel.selected = shopCarCell.selectedIconBtn.selected;
+    
+    ShopCarCourseModel *cellCourseModel = shopCarCell.courseModel;
+    NSIndexPath *path = shopCarCell.cellIndex;
+    
+    ShopCarModel *model = _dataSourse[path.section];
+    NSMutableArray *pass = [NSMutableArray arrayWithArray:model.course_list];
+    [pass replaceObjectAtIndex:path.row withObject:cellCourseModel];
+    model.course_list = [NSArray arrayWithArray:pass];
+    [_dataSourse replaceObjectAtIndex:path.section withObject:model];
+    
+    // 判断每一个机构是不是全选与否
+    BOOL hasSectionSchoolUnSelect = NO;
+    for (int i = 0; i < _dataSourse.count; i ++) {
+        ShopCarModel *carModel = _dataSourse[i];
+        BOOL carSelect = carModel.selected;
+        for (int j = 0; j < carModel.course_list.count; j ++) {
+            ShopCarCourseModel *courseModel = carModel.course_list[j];
+            if (courseModel.selected) {
+                carSelect = YES;
+            } else {
+                carSelect = NO;
+                break;
+            }
+        }
+        carModel.selected = carSelect;
+        [_dataSourse replaceObjectAtIndex:i withObject:carModel];
+        
+        // 判断是不是所有都选择了
+        if (!carModel.selected) {
+            // 说明有机构没有全选
+            hasSectionSchoolUnSelect = YES;
+        }
+    }
+    
+    allSeleted = !hasSectionSchoolUnSelect;
+    
+    _allSelectBtn.selected = allSeleted;
+    
+    
+    [self dealDataSource];
+    
+    // 第二 刷新页面
+    [_tableView reloadData];
+}
+
+// MARK: - 删除课程商品
+- (void)deleteCourses:(UIButton *)sender {
+    if (SWNOTEmptyArr(_selectedArray)) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确定要将这些课程移除购物车?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self deleteShopCarCourse];
+        }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [alertController addAction:commentAction];
+        [alertController addAction:cancelAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
+- (void)deleteShopCarCourse {
+    course_ids = @"";
+    for (int i = 0; i<_selectedArray.count; i ++) {
+        ShopCarCourseModel *model = _selectedArray[i];
+        if (SWNOTEmptyStr(course_ids)) {
+            course_ids = [NSString stringWithFormat:@"%@,%@",course_ids,model.courseId];
+        } else {
+            course_ids = model.courseId;
+        }
+    }
+    if (SWNOTEmptyStr(course_ids)) {
+        [Net_API requestDeleteWithURLStr:[Net_Path deleteCourseFromShopcar] paramDic:@{@"course_ids":course_ids} Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            }
+            [self getUserShopCarInfo];
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK: - 处理已选择的课程进 selectedArray
+- (void)dealDataSource {
+    [_selectedArray removeAllObjects];
+    float allMoney = 0.00;
+    for (int i = 0; i<_dataSourse.count; i++) {
+        ShopCarModel *carModel = _dataSourse[i];
+        for (int j = 0; j < carModel.course_list.count; j++) {
+            ShopCarCourseModel *courseModel = carModel.course_list[j];
+            if (courseModel.selected) {
+                [_selectedArray addObject:courseModel];
+                allMoney = allMoney + courseModel.price.floatValue;
+            }
+        }
+    }
+    _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",allMoney];
+    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+    _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+    [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%@)",@(_selectedArray.count)] forState:0];
+}
+
+- (void)getUserShopCarInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userShopcarInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_dataSourse removeAllObjects];
+                [_dataSourse addObjectsFromArray:[ShopCarModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                [_tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 /*

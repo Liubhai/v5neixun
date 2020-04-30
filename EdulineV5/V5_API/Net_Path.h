@@ -125,6 +125,18 @@ struct NetWorkUrl {
 /** 余额信息 */
 + (NSString *)userBalanceInfo;
 
+/** 购物车信息 */
++ (NSString *)userShopcarInfo;
+
+/** 订单—购物车信息 */
++ (NSString *)shopcarOrderInfo;
+
+/** 添加课程到购物车 */
++ (NSString *)addCourseIntoShopcar;
+
+/** 从购物车删除s课程 */
++ (NSString *)deleteCourseFromShopcar;
+
 @end
 
 NS_ASSUME_NONNULL_END

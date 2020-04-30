@@ -156,4 +156,20 @@
     return [Net_Path fullPath:@"user/balance" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userShopcarInfo {
+    return [Net_Path fullPath:@"course/payment/cart" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)shopcarOrderInfo {
+    return [Net_Path fullPath:@"course/payment/order/fetch/cart" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)addCourseIntoShopcar {
+    return [Net_Path fullPath:@"course/payment/cart" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)deleteCourseFromShopcar {
+    return [Net_Path fullPath:@"course/payment/cart" repalce:@"" byReplece:@""];
+}
+
 @end

@@ -26,7 +26,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"购物车";
-    [self makeTableFooterView];
+//    [self makeTableFooterView];
     [self makeTableView];
     [self makeDownView];
 }
@@ -38,7 +38,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.showsVerticalScrollIndicator = NO;
-    _tableView.tableFooterView = _footerView;
+//    _tableView.tableFooterView = _footerView;
     [self.view addSubview:_tableView];
 }
 

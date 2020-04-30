@@ -7,21 +7,36 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ShopCarModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ShopCarCell;
+
+@protocol ShopCarCellDelegate <NSObject>
+
+@optional
+- (void)chooseWhichCourse:(ShopCarCell *)shopCarCell;
+
+@end
+
 @interface ShopCarCell : UITableViewCell
+
+@property (weak, nonatomic) id<ShopCarCellDelegate> delegate;
 
 @property (strong, nonatomic) UIButton *selectedIconBtn;
 @property (strong,nonatomic) UIImageView *courseFaceImageView;
+@property (strong,nonatomic) UIImageView *courseTypeImageView;
 @property (strong,nonatomic) UILabel *themeLabel;
 @property (strong,nonatomic) UILabel *courseHourLabel;
 @property (strong,nonatomic) UILabel *priceLabel;
 @property (strong,nonatomic) UILabel *timeLabel;
 @property (assign, nonatomic) BOOL cellType;// 默认是结算页面cell 不然就是管理页面cell
 @property (nonatomic, strong) NSIndexPath *cellIndex;
+@property (strong, nonatomic) ShopCarCourseModel *courseModel;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(BOOL)cellType;
+- (void)setShopCarCourseInfo:(ShopCarCourseModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath;
 
 @end
 

@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ShopCarManagerFinalVC : BaseViewController<TYAttributedLabelDelegate>
 
+@property (strong, nonatomic) NSString *course_ids;//课程ID拼接 ,
+
 @property (strong, nonatomic) UIView *footerView;
 @property (strong, nonatomic) UIView *orderTypeView;
 

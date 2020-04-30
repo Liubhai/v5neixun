@@ -542,7 +542,15 @@
 }
 
 - (void)joinShopCarEvent:(CourseDownView *)downView {
-    
+    if (SWNOTEmptyStr(_ID)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path addCourseIntoShopcar] WithAuthorization:nil paramDic:@{@"course_id":_ID} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络超时"];
+        }];
+    }
 }
 
 - (void)joinStudyEvent:(CourseDownView *)downView {

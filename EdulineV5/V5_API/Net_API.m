@@ -200,6 +200,7 @@
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    manager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithArray:@[@""]];
  
     [manager DELETE:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
@@ -221,6 +222,9 @@
     #ifdef DEBUG
        NSLog(@"EdulineV4 DELETE request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
+        // 失败回调
+        NSData *errorData = [NSData dataWithData:[error.userInfo objectForKey:@"com.alamofire.serialization.response.error.data"]];
+        NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
         enError(error);
     }];
 }
