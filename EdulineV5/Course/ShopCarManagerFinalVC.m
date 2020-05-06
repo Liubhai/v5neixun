@@ -12,8 +12,9 @@
 #import "ShopCarCell.h"
 #import "LingquanViewController.h"
 #import "OrderSureViewController.h"
+#import "Net_Path.h"
 
-@interface ShopCarManagerFinalVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface ShopCarManagerFinalVC ()<UITableViewDelegate,UITableViewDataSource,LingquanViewControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSourse;
@@ -25,10 +26,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _dataSourse = [NSMutableArray new];
     _titleLabel.text = @"购物车";
 //    [self makeTableFooterView];
     [self makeTableView];
     [self makeDownView];
+    [self getOrderShopcarInfo];
 }
 
 - (void)makeTableView {
@@ -247,6 +250,12 @@
 
 - (void)kaquanClearBtnClick:(UIButton *)sender {
     LingquanViewController *vc = [[LingquanViewController alloc] init];
+    ShopCarModel *model = _dataSourse[sender.tag];
+    vc.shopCarFinalIndexPath = [NSIndexPath indexPathForRow:0 inSection:sender.tag];
+    vc.mhm_id = model.mhm_id;
+    vc.delegate = self;
+    vc.couponModel = model.best_coupon;
+    vc.carModel = model;
     vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
     [self.view addSubview:vc.view];
     [self addChildViewController:vc];
@@ -278,14 +287,16 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return _dataSourse.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    ShopCarModel *model = _dataSourse[section];
+    return model.course_list.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    ShopCarModel *model = _dataSourse[section];
     UIView *head = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 70)];
     head.backgroundColor = [UIColor whiteColor];
     UIView *jiange = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 9.5)];
@@ -293,7 +304,7 @@
     [head addSubview:jiange];
     UILabel *jigouTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 9.5, 150, 60)];
     jigouTitle.textColor = EdlineV5_Color.textFirstColor;
-    jigouTitle.text = [NSString stringWithFormat:@"机构名称%@",@(section)];
+    jigouTitle.text = [NSString stringWithFormat:@"%@",model.school_name];
     [head addSubview:jigouTitle];
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 69.5, MainScreenWidth, 0.5)];
     line.backgroundColor = EdlineV5_Color.fengeLineColor;
@@ -302,6 +313,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    
     UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 80)];
     footer.backgroundColor = [UIColor whiteColor];
     UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 40)];
@@ -328,7 +340,7 @@
     UILabel *sectionFinalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 200 - 15, youhui.bottom, 200, 40)];
     sectionFinalPriceLabel.textColor = EdlineV5_Color.faildColor;
     sectionFinalPriceLabel.font = SYSTEMFONT(15);
-    sectionFinalPriceLabel.text = @"合计: ¥190.00";
+    sectionFinalPriceLabel.text = @"合计: ¥0.00";
     sectionFinalPriceLabel.textAlignment = NSTextAlignmentRight;
     [footer addSubview:sectionFinalPriceLabel];
     
@@ -339,12 +351,41 @@
     CGFloat finalWidth = [sectionFinalPriceLabel.text sizeWithFont:sectionFinalPriceLabel.font].width + 4;
     
     UILabel *sectionYouhuiLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - finalWidth - 16 - 150, 0, 150, 40)];
-    sectionYouhuiLabel.text = @"优惠：¥10.00";
+    sectionYouhuiLabel.text = @"优惠：¥0.00";
     sectionYouhuiLabel.font = SYSTEMFONT(13);
     sectionYouhuiLabel.textAlignment = NSTextAlignmentRight;
     sectionYouhuiLabel.textColor = EdlineV5_Color.textThirdColor;
     sectionYouhuiLabel.centerY = sectionFinalPriceLabel.centerY;
     [footer addSubview:sectionYouhuiLabel];
+    
+    ShopCarModel *carModel = _dataSourse[section];
+    CouponModel *model = carModel.best_coupon;
+    
+    if (model.couponId) {
+        if ([model.coupon_type isEqualToString:@"1"]) {
+            themelabel.text = [NSString stringWithFormat:@"满%@减%@",model.maxprice,model.price];
+            float max_price = carModel.total_price;
+            if (max_price>=[model.maxprice floatValue]) {
+                sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",carModel.total_price - [model.price floatValue]];
+                sectionYouhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%@",model.price];
+            } else {
+                themelabel.text = [NSString stringWithFormat:@"满%@减%@(不满足要求,无法使用)",model.maxprice,model.price];
+                sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",carModel.total_price];
+                sectionYouhuiLabel.text = @"优惠：¥0.00";
+            }
+        } else if ([model.coupon_type isEqualToString:@"2"]) {
+            themelabel.text = [NSString stringWithFormat:@"%@折",model.discount];
+            float discount1 = [model.discount floatValue];
+            sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",carModel.total_price * discount1 / 10];
+            sectionYouhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%.2f",carModel.total_price - carModel.total_price * discount1 / 10];
+        } else if ([model.coupon_type isEqualToString:@"3"]) {
+            themelabel.text = @"课程卡";
+        }
+    } else {
+        themelabel.text = @"无卡券可使用";
+        sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",carModel.total_price];
+        sectionYouhuiLabel.text = @"优惠：¥0.00";
+    }
     
     return footer;
 }
@@ -363,11 +404,92 @@
     if (!cell) {
         cell = [[ShopCarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:NO];
     }
+    ShopCarModel *model = _dataSourse[indexPath.section];
+    ShopCarCourseModel *courseModel = model.course_list[indexPath.row];
+    [cell setShopCarCourseInfo:courseModel cellIndexPath:indexPath];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 92;
+}
+
+- (void)getOrderShopcarInfo {
+    if (SWNOTEmptyStr(_course_ids)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course_ids":_course_ids} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [_dataSourse removeAllObjects];
+                    [_dataSourse addObjectsFromArray:[ShopCarModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                    [_tableView reloadData];
+                }
+            }
+            [self setBottomViewData];
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK - 使用或者取消使用回调
+- (void)chooseWhichCoupon:(CouponModel *)coupon shopCarFinalIndexPath:(NSIndexPath *)shopCarFinalIndexPath {
+    if (_dataSourse.count>=(shopCarFinalIndexPath.section + 1)) {
+        ShopCarModel *carModel = _dataSourse[shopCarFinalIndexPath.section];
+        if (carModel.best_coupon.couponId) {
+            if ([carModel.best_coupon.couponId isEqualToString:coupon.couponId]) {
+                carModel.best_coupon = nil;
+            } else {
+                carModel.best_coupon = coupon;
+            }
+        } else {
+            carModel.best_coupon = coupon;
+        }
+        [_dataSourse replaceObjectAtIndex:shopCarFinalIndexPath.section withObject:carModel];
+        [_tableView reloadData];
+        [self setBottomViewData];
+    }
+}
+
+- (void)setBottomViewData {
+    if (SWNOTEmptyArr(_dataSourse)) {
+        float youhui = 0.00;
+        float totalPrice = 0.00;
+        for (int i = 0; i<_dataSourse.count; i++) {
+            ShopCarModel *carModel = _dataSourse[i];
+            CouponModel *model = carModel.best_coupon;
+            
+            if (model.couponId) {
+                if ([model.coupon_type isEqualToString:@"1"]) {
+                    float max_price = carModel.total_price;
+                    if (max_price>=[model.maxprice floatValue]) {
+                        youhui = youhui + model.price.floatValue;
+                        totalPrice = totalPrice + (carModel.total_price - [model.price floatValue]);
+                    } else {
+                        youhui = youhui;
+                        totalPrice = totalPrice + carModel.total_price;
+                    }
+                } else if ([model.coupon_type isEqualToString:@"2"]) {
+                    float discount1 = [model.discount floatValue];
+                    totalPrice = totalPrice + carModel.total_price * discount1 / 10;
+                    youhui = youhui + (carModel.total_price - carModel.total_price * discount1 / 10);
+                } else if ([model.coupon_type isEqualToString:@"3"]) {
+                    // 机构没有课程卡
+                }
+            } else {
+                youhui = youhui;
+                totalPrice = totalPrice + carModel.total_price;
+            }
+        }
+        _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%.2f",youhui];
+        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",totalPrice];
+    } else {
+        _youhuiLabel.text = @"优惠：¥0.00";
+        
+        _finalPriceLabel.text = @"合计: ¥0.00";
+    }
+    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+    _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
 }
 
 @end

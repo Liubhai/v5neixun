@@ -33,8 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL getOrUse;
 @property (strong, nonatomic) CouponModel *couponModel;
 @property (strong, nonatomic) NSIndexPath *cellIndexpath;
+@property (assign, nonatomic) BOOL useful;
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(NSString *)cellType getOrUse:(BOOL)getOrUse;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(NSString *)cellType getOrUse:(BOOL)getOrUse useful:(BOOL)useful;
 
 - (void)setCouponInfo:(CouponModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath;
 

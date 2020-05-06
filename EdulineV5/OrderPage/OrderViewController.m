@@ -275,7 +275,7 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         LingquanViewController *vc = [[LingquanViewController alloc] init];
-        vc.mhm_id = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"mhm_id"]];
+        vc.courseId = _orderId;
         vc.couponModel = _couponModel;
         vc.getOrUse = NO;
         vc.delegate = self;

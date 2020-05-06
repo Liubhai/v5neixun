@@ -8,11 +8,13 @@
 
 #import "BaseViewController.h"
 #import "CouponModel.h"
+#import "ShopCarModel.h"
 
 @protocol LingquanViewControllerDelegate <NSObject>
 
 @optional
 - (void)chooseWhichCoupon:(CouponModel *)coupon;
+- (void)chooseWhichCoupon:(CouponModel *)coupon shopCarFinalIndexPath:(NSIndexPath *)shopCarFinalIndexPath;
 
 @end
 
@@ -21,7 +23,10 @@
 @property (weak, nonatomic) id<LingquanViewControllerDelegate> delegate;
 
 @property (strong, nonatomic) CouponModel *couponModel;
+@property (strong, nonatomic) ShopCarModel *carModel;
 @property (strong, nonatomic) NSString *mhm_id;//机构id
+@property (strong, nonatomic) NSString *courseId;//机构id
+@property (strong, nonatomic) NSIndexPath *shopCarFinalIndexPath;
 
 @property (assign, nonatomic) BOOL getOrUse; //yes 领取 no 使用
 

@@ -116,6 +116,12 @@ struct NetWorkUrl {
 /** 机构下的卡券 */
 + (NSString *)schoolCouponList;
 
+/** 课程详情卡券入口 */
++ (NSString *)courseCouponList;
+
+/** 用户领取的课程卡券 */
++ (NSString *)courseCouponUserList;
+
 /** 领取 */
 + (NSString *)getWhichCoupon:(NSString *)couponId;
 

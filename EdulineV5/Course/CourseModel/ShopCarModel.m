@@ -10,10 +10,25 @@
 #import "V5_Constant.h"
 
 @implementation ShopCarModel
+
 +(NSDictionary *)mj_objectClassInArray
 {
     return @{@"course_list":@"ShopCarCourseModel"};
 }
+
+
+-(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
+{
+    if ([property.name isEqualToString:@"mhm_id"]) {
+        if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
+            return [NSString stringWithFormat:@"%@",oldValue];
+        }else if (!NOTNULL(oldValue)){
+            return @"";
+        }
+    }
+    return oldValue;
+}
+
 @end
 
 /**

@@ -12,12 +12,13 @@
 @implementation KaquanCell
 
 // 110 = 10 + 90 + 10
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(nonnull NSString *)cellType getOrUse:(BOOL)getOrUse {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(nonnull NSString *)cellType getOrUse:(BOOL)getOrUse useful:(BOOL)useful {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         _cellType = cellType;
         _getOrUse = getOrUse;
+        _useful = useful;
         [self makeSubViews];
     }
     return self;
@@ -42,16 +43,20 @@
     [self addSubview:_timeLabel];
     
     _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(_backView.right - 10 - 75, 0, 75, 34)];
-    _rightButton.layer.masksToBounds = YES;
-    _rightButton.layer.cornerRadius = 17;
-    _rightButton.layer.borderWidth = 1;
     _rightButton.titleLabel.font = SYSTEMFONT(15);
-    if (_getOrUse) {
-        [_rightButton setTitle:@"已领取" forState:UIControlStateSelected];
-        [_rightButton setTitle:@"领取" forState:0];
+    if (_useful) {
+        _rightButton.layer.masksToBounds = YES;
+        _rightButton.layer.cornerRadius = 17;
+        _rightButton.layer.borderWidth = 1;
+        if (_getOrUse) {
+            [_rightButton setTitle:@"已领取" forState:UIControlStateSelected];
+            [_rightButton setTitle:@"领取" forState:0];
+        } else {
+            [_rightButton setTitle:@"取消使用" forState:UIControlStateSelected];
+            [_rightButton setTitle:@"使用" forState:0];
+        }
     } else {
-        [_rightButton setTitle:@"取消使用" forState:UIControlStateSelected];
-        [_rightButton setTitle:@"使用" forState:0];
+        [_rightButton setTitle:@"不可使用" forState:UIControlStateSelected];
     }
     [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
     [_rightButton addTarget:self action:@selector(userButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -59,18 +64,30 @@
     [self addSubview:_rightButton];
     UIColor *cellColor = EdlineV5_Color.youhuijuanColor;
     // 1 优惠卷 2 打折卡 3 课程卡
-    if ([_cellType isEqualToString:@"1"]) {
-        _backView.image = Image(@"youhuiquan");
-        _themeLabel.font = SYSTEMFONT(20);
-        cellColor = EdlineV5_Color.youhuijuanColor;
-    } else if ([_cellType isEqualToString:@"2"]) {
-        _backView.image = Image(@"dazhe_bg");
-        _themeLabel.font = SYSTEMFONT(20);
-        cellColor = EdlineV5_Color.dazhekaColor;
-    } else if ([_cellType isEqualToString:@"3"]) {
-        _backView.image = Image(@"kecheng_bg");
-        _themeLabel.font = SYSTEMFONT(15);
-        cellColor = EdlineV5_Color.kechengkaColor;
+    if (_useful) {
+        if ([_cellType isEqualToString:@"1"]) {
+            _backView.image = Image(@"youhuiquan");
+            _themeLabel.font = SYSTEMFONT(20);
+            cellColor = EdlineV5_Color.youhuijuanColor;
+        } else if ([_cellType isEqualToString:@"2"]) {
+            _backView.image = Image(@"dazhe_bg");
+            _themeLabel.font = SYSTEMFONT(20);
+            cellColor = EdlineV5_Color.dazhekaColor;
+        } else if ([_cellType isEqualToString:@"3"]) {
+            _backView.image = Image(@"kecheng_bg");
+            _themeLabel.font = SYSTEMFONT(15);
+            cellColor = EdlineV5_Color.kechengkaColor;
+        }
+    } else {
+        _backView.image = Image(@"kaquan_grey");
+        cellColor = EdlineV5_Color.textThirdColor;
+        if ([_cellType isEqualToString:@"1"]) {
+            _themeLabel.font = SYSTEMFONT(20);
+        } else if ([_cellType isEqualToString:@"2"]) {
+            _themeLabel.font = SYSTEMFONT(20);
+        } else if ([_cellType isEqualToString:@"3"]) {
+            _themeLabel.font = SYSTEMFONT(15);
+        }
     }
     
     _themeLabel.textColor = cellColor;
@@ -108,16 +125,25 @@
     } else if ([_cellType isEqualToString:@"3"]) {
         cellColor = EdlineV5_Color.kechengkaColor;
     }
-    if (_rightButton.selected) {
-        [_rightButton setBackgroundColor:[UIColor whiteColor]];
+    if (_useful) {
+        if (_rightButton.selected) {
+            [_rightButton setBackgroundColor:[UIColor whiteColor]];
+        } else {
+            [_rightButton setBackgroundColor:cellColor];
+        }
     } else {
-        [_rightButton setBackgroundColor:cellColor];
+        cellColor = EdlineV5_Color.textThirdColor;
+        [_rightButton setBackgroundColor:[UIColor clearColor]];
     }
+    
 }
 
 - (void)userButtonClick:(UIButton *)sender {
     
     if (_getOrUse && _couponModel.user_has) {
+        return;
+    }
+    if (!_useful) {
         return;
     }
     

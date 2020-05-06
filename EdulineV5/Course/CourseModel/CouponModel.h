@@ -83,6 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSArray *list;//数组
 @property (strong, nonatomic) NSString *coupon_type_text;
+@property (assign, nonatomic) BOOL useful;
 
 @end
 

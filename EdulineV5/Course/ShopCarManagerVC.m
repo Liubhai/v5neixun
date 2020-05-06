@@ -266,13 +266,31 @@
 
 - (void)lingquanButtonClicked:(UIButton *)sender {
     LingquanViewController *vc = [[LingquanViewController alloc] init];
+    ShopCarModel *model = _dataSourse[sender.tag];
+    vc.mhm_id = model.mhm_id;
+    vc.getOrUse = YES;
     vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
     [self.view addSubview:vc.view];
     [self addChildViewController:vc];
 }
 
 - (void)submiteButtonClick:(UIButton *)sender {
+    
+    course_ids = @"";
+    for (int i = 0; i<_selectedArray.count; i ++) {
+        ShopCarCourseModel *model = _selectedArray[i];
+        if (SWNOTEmptyStr(course_ids)) {
+            course_ids = [NSString stringWithFormat:@"%@,%@",course_ids,model.courseId];
+        } else {
+            course_ids = model.courseId;
+        }
+    }
+    if (!SWNOTEmptyStr(course_ids)) {
+        [self showHudInView:self.view showHint:@"请选择一个商品"];
+        return;
+    }
     ShopCarManagerFinalVC *vc = [[ShopCarManagerFinalVC alloc] init];
+    vc.course_ids = course_ids;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

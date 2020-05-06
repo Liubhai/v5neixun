@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) float total_price;
 @property (strong, nonatomic) CouponModel *best_coupon;
 @property (assign, nonatomic) BOOL selected;
+@property (strong, nonatomic) NSString *mhm_id;
 
 @end
 

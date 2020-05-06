@@ -133,7 +133,7 @@
 }
 
 + (NSString *)courseOrderInfo {
-    return [Net_Path fullPath:@"course/payment/order/fetch/one" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"order/course/one" repalce:@"" byReplece:@""];
 }
 
 + (NSString *)couponsUserList {
@@ -144,12 +144,20 @@
     return [Net_Path fullPath:@"course/coupon/school" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)courseCouponList {
+    return [Net_Path fullPath:@"course/coupon/course" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)courseCouponUserList {
+    return [Net_Path fullPath:@"course/coupon/course/user" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)getWhichCoupon:(NSString *)couponId {
     return [Net_Path fullPath:@"course/coupon/{id}/derive" repalce:@"{id}" byReplece:couponId];
 }
 
 + (NSString *)creatSingleOrder {
-    return [Net_Path fullPath:@"course/payment/order/create/one" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"order/course/one" repalce:@"" byReplece:@""];
 }
 
 + (NSString *)userBalanceInfo {
@@ -161,7 +169,7 @@
 }
 
 + (NSString *)shopcarOrderInfo {
-    return [Net_Path fullPath:@"course/payment/order/fetch/cart" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"order/course/cart" repalce:@"" byReplece:@""];
 }
 
 + (NSString *)addCourseIntoShopcar {

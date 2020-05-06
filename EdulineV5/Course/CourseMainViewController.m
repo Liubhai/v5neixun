@@ -444,7 +444,8 @@
 // MARK: - 优惠卷点击事件
 - (void)jumpToCouponsVC {
     LingquanViewController *vc = [[LingquanViewController alloc] init];
-    vc.mhm_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"mhm_info"] objectForKey:@"id"]];
+//    vc.mhm_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"mhm_info"] objectForKey:@"id"]];
+    vc.courseId = _ID;
     vc.getOrUse = YES;
     vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
     [self.view addSubview:vc.view];

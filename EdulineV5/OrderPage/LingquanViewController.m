@@ -117,7 +117,7 @@
     CouponModel *model1 = model.list[indexPath.row];
     KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:model1.coupon_type getOrUse:_getOrUse];
+        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:model1.coupon_type getOrUse:_getOrUse useful:((SWNOTEmptyStr(_mhm_id) && _carModel) ? model.useful : YES)];
     }
     [cell setCouponInfo:model1 cellIndexPath:indexPath];
     cell.delegate = self;
@@ -165,7 +165,15 @@
 
 - (void)getcouponsList {
     if (SWNOTEmptyStr(_mhm_id)) {
-        [Net_API requestGETSuperAPIWithURLStr:_getOrUse ? [Net_Path schoolCouponList] : [Net_Path couponsUserList] WithAuthorization:nil paramDic:@{@"mhm_id":_mhm_id,@"group":@"1"} finish:^(id  _Nonnull responseObject) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:_mhm_id forKey:@"mhm_id"];
+        [param setObject:@"1" forKey:@"group"];
+        if (_carModel) {
+            if (_carModel.mhm_id) {
+                [param setObject:@(_carModel.total_price) forKey:@"price"];
+            }
+        }
+        [Net_API requestGETSuperAPIWithURLStr:_getOrUse ? [Net_Path schoolCouponList] : [Net_Path couponsUserList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_dataSource removeAllObjects];
@@ -177,6 +185,21 @@
         } enError:^(NSError * _Nonnull error) {
             
         }];
+    } else {
+        if (SWNOTEmptyStr(_courseId)) {
+            [Net_API requestGETSuperAPIWithURLStr:_getOrUse ? [Net_Path courseCouponList] : [Net_Path courseCouponUserList] WithAuthorization:nil paramDic:@{@"course_id":_courseId,@"group":@"1"} finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        [_dataSource removeAllObjects];
+                        [_dataSource addObjectsFromArray:[CouponArrayModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                        [self changeDataSourceIsUseStatus];
+                        [_tableView reloadData];
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        }
     }
 }
 
@@ -200,10 +223,18 @@
             
         }];
     } else {
-        if (_delegate && [_delegate respondsToSelector:@selector(chooseWhichCoupon:)]) {
-            [_delegate chooseWhichCoupon:cell.couponModel];
-            [self.view removeFromSuperview];
-            [self removeFromParentViewController];
+        if (_shopCarFinalIndexPath) {
+            if (_delegate && [_delegate respondsToSelector:@selector(chooseWhichCoupon:shopCarFinalIndexPath:)]) {
+                [_delegate chooseWhichCoupon:cell.couponModel shopCarFinalIndexPath:_shopCarFinalIndexPath];
+                [self.view removeFromSuperview];
+                [self removeFromParentViewController];
+            }
+        } else {
+            if (_delegate && [_delegate respondsToSelector:@selector(chooseWhichCoupon:)]) {
+                [_delegate chooseWhichCoupon:cell.couponModel];
+                [self.view removeFromSuperview];
+                [self removeFromParentViewController];
+            }
         }
     }
 }
