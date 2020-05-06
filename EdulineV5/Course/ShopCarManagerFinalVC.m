@@ -282,8 +282,50 @@
 }
 
 - (void)submitButtonClick:(UIButton *)sender {
-    OrderSureViewController *vc = [[OrderSureViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    NSMutableArray *paramArray = [NSMutableArray new];
+    if (SWNOTEmptyArr(_dataSourse)) {
+        for (int i = 0; i<_dataSourse.count; i++) {
+            ShopCarModel *carmodel = _dataSourse[i];
+            NSString *courseIdString = @"";
+            NSMutableDictionary *param = [NSMutableDictionary new];
+            if (carmodel.best_coupon.couponId) {
+                [param setObject:carmodel.best_coupon.couponId forKey:@"coupon"];
+            }
+            for (int j = 0; j<carmodel.course_list.count; j++) {
+                ShopCarCourseModel *model = carmodel.course_list[j];
+                if (SWNOTEmptyStr(courseIdString)) {
+                    courseIdString = [NSString stringWithFormat:@"%@,%@",courseIdString,model.courseId];
+                } else {
+                    courseIdString = [NSString stringWithFormat:@"%@",model.courseId];
+                }
+            }
+            if (SWNOTEmptyStr(courseIdString)) {
+                [param setObject:courseIdString forKey:@"course_ids"];
+            }
+            [paramArray addObject:[NSDictionary dictionaryWithDictionary:param]];
+        }
+    }
+    NSData *data = [NSJSONSerialization dataWithJSONObject:[NSArray arrayWithArray:paramArray]
+                                                   options:NSJSONWritingPrettyPrinted
+                                                     error:nil];
+    NSString *string = [[NSString alloc] initWithData:data
+                                             encoding:NSUTF8StringEncoding];
+    if (SWNOTEmptyArr(paramArray)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course":string} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    OrderSureViewController *vc = [[OrderSureViewController alloc] init];
+                    vc.orderSureInfo = responseObject;
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

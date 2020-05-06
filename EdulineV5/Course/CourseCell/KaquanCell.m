@@ -55,10 +55,11 @@
             [_rightButton setTitle:@"取消使用" forState:UIControlStateSelected];
             [_rightButton setTitle:@"使用" forState:0];
         }
+        [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
     } else {
-        [_rightButton setTitle:@"不可使用" forState:UIControlStateSelected];
+        [_rightButton setTitle:@"不可使用" forState:0];
+        [_rightButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
     }
-    [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
     [_rightButton addTarget:self action:@selector(userButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     _rightButton.centerY = _backView.centerY;
     [self addSubview:_rightButton];

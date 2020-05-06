@@ -150,6 +150,7 @@
     [lingquan setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     lingquan.titleLabel.font = SYSTEMFONT(13);
     [lingquan addTarget:self action:@selector(lingquanButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    lingquan.tag = section;
     [head addSubview:lingquan];
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 69.5, MainScreenWidth, 0.5)];
     line.backgroundColor = EdlineV5_Color.fengeLineColor;

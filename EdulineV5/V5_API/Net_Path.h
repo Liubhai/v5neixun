@@ -134,13 +134,15 @@ struct NetWorkUrl {
 /** 购物车信息 */
 + (NSString *)userShopcarInfo;
 
-/** 订单—购物车信息 */
+/** 订单—购物车信息
+ 和生成订单y同一接口 只是请求方式不同
+ */
 + (NSString *)shopcarOrderInfo;
 
 /** 添加课程到购物车 */
 + (NSString *)addCourseIntoShopcar;
 
-/** 从购物车删除s课程 */
+/** 从购物车删除课程 */
 + (NSString *)deleteCourseFromShopcar;
 
 @end
