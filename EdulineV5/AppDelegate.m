@@ -15,6 +15,7 @@
 #import <UMCommon/UMCommon.h>
 #import <UMShare/UMShare.h>
 #import <UMShare/UMSocialManager.h>
+#import <WXApi.h>
 //
 #import "Net_Path.h"
 #import "SurePwViewController.h"
@@ -486,7 +487,8 @@
 - (void)configUSharePlatforms
 {
     /* 设置微信的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:@"wxdc1e388c3822c80b" appSecret:@"3baf1193c85774b3fd9d18447d76cab0" redirectURL:@"http://mobile.umeng.com/social"];
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WXAppId appSecret:WXAppSecret redirectURL:@"https://t.v4.51eduline.com/"];
+    [WXApi registerApp:WXAppId universalLink:@"https://t.v4.51eduline.com/"];
 //    /*设置小程序回调app的回调*/
 //        [[UMSocialManager defaultManager] setLauchFromPlatform:(UMSocialPlatformType_WechatSession) completion:^(id userInfoResponse, NSError *error) {
 //        NSLog(@"setLauchFromPlatform:userInfoResponse:%@",userInfoResponse);

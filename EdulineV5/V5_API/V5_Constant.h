@@ -77,8 +77,8 @@
 #define MACRO_UI_SAFEAREA [EdulineV5_Tool safeAreaWithIPhoneX]
 
 // 微信分享
-#define WXAppId @"wxbbb961a0b0bf577a"
-#define WXAppSecret @"7ea0101aeabd53bc32859370cde278cc"
+#define WXAppId @"wx05293bb7051162ea"
+#define WXAppSecret @"5b0e9f51e4d35e8d15152fdbedaa9690"
 // QQ分享
 #define QQAppId @"101864714"
 #define QQAppSecret @"a5ced4fcf5a1b8dab7404e817b31cb56"
