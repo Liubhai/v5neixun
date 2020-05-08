@@ -10,7 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol MyCenterBalanceViewDelegate <NSObject>
+
+@optional
+- (void)jumpToOtherVC:(UIButton *)sender;
+
+@end
+
 @interface MyCenterBalanceView : UIView
+
+@property (weak, nonatomic) id<MyCenterBalanceViewDelegate> delegate;
 
 @property (strong, nonatomic) UILabel *balanceTitleLabel;
 @property (strong, nonatomic) UILabel *balanceLabel;

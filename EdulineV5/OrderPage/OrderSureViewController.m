@@ -8,7 +8,6 @@
 
 #import "OrderSureViewController.h"
 #import "Net_Path.h"
-#import "CourseMainViewController.h"
 
 @interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate> {
     NSString *typeString;//支付方式【lcnpay：余额；alipay：支付宝；wxpay：微信；】
@@ -259,9 +258,6 @@
         _wkWebView.navigationDelegate = self;
         [self.view addSubview:_wkWebView];
     }
-    /**
-     alipay://alipayclient/?%7B%22requestType%22%3A%22SafePay%22%2C%22fromAppUrlScheme%22%3A%22openshare%22%2C%22dataString%22%3A%22alipay_sdk%3Dalipay-sdk-php-20161101%26app_id%3D2017101909381859%26biz_content%3D%257B%2522body%2522%253A%2522Eduline%255Cu5728%255Cu7ebf%255Cu6559%255Cu80b2-%255Cu8d2d%255Cu4e70%255Cu76f4%255Cu64ad%255Cu8bfe%255Cu7a0b%255Cuff1a%255Cu673a...%2522%252C%2522subject%2522%253A%2522Eduline%255Cu5728%255Cu7ebf%255Cu6559%255Cu80b2-%255Cu8d2d%255Cu4e70%255Cu76f4%255Cu64ad%255Cu8bfe%255Cu7a0b%255Cuff1a%255Cu673a...%2522%252C%2522out_trade_no%2522%253A%25222020050712003272774230473433%2522%252C%2522total_amount%2522%253A%25220.01%2522%252C%2522product_code%2522%253A%2522QUICK_MSECURITY_PAY%2522%252C%2522passback_params%2522%253A%2522JDU57igfFVp7k9YYkdZDoBmHpQFQRk2WO7HRmE4sCmc4%25253DQJQq48WLzr2EaZQpAnfBjmuCh2dE-oJt%2522%257D%26charset%3DUTF-8%26format%3Djson%26method%3Dalipay.trade.app.pay%26notify_url%3Dhttps%253A%252F%252Ft.v4.51eduline.com%252Falipay_alinu.html%26sign_type%3DRSA2%26timestamp%3D2020-05-07%2B12%253A00%253A32%26version%3D1.0%26sign%3DxESId8g5i9Ya2%252B%252FsvYyYE7aoMP%252FJIx4zTWOi7cBo2H0jXp2hdo0%252Bb6jvAxFI0AT1TmrIRUP0TmHDYq61lUSUqf9lM8FbofkU%252BQH6LFqTyI4RfHX%252BkYf79sxKsBQ5fjC4WeeulyhtMCycn%252BbibA6hz3hADym8GYkc7OjzQtyBIUCyqkUzSbxgh3%252BiS9cTMoef77KbP96wJMF3%252FcVe45Sp6ZPoFkFXoINkoTMKsfA7Nz5efUQf%252F3XZ5CWiXYCZ%252Fr1cKssmN5dBX5Jqmn4xlGflN%252BVTDTew5uxCGR5ZgEKu5R6cmKPPFK4YMlojFmq8%252B8Tht5fuubwTK8ixXabYIvZc4Q%253D%253D%22%7D
-     */
     NSString *allStr = @"alipay://alipayclient/?%7B%22requestType%22%3A%22SafePay%22%2C%22fromAppUrlScheme%22%3A%22openshare%22%2C%22dataString%22%3A%22alipay_sdk%3Dalipay-sdk-php-20161101%26app_id%3D2017101909381859%26biz_content%3D%257B%2522body%2522%253A%2522Eduline%255Cu5728%255Cu7ebf%255Cu6559%255Cu80b2-%255Cu8d2d%255Cu4e70%255Cu8bfe%255Cu7a0b%255Cuff1a%255Cu4eba%255Cu529b%255Cu5fc5...%2522%252C%2522subject%2522%253A%2522Eduline%255Cu5728%255Cu7ebf%255Cu6559%255Cu80b2-%255Cu8d2d%255Cu4e70%255Cu8bfe%255Cu7a0b%255Cuff1a%255Cu4eba%255Cu529b%255Cu5fc5...%2522%252C%2522out_trade_no%2522%253A%25222020050715150986574456161875%2522%252C%2522total_amount%2522%253A%25220.01%2522%252C%2522product_code%2522%253A%2522QUICK_MSECURITY_PAY%2522%252C%2522passback_params%2522%253A%2522nekKOU0VfNlKINFVluCBfb4n4I7qgX0CpKELKdtmiHWN3HprNXOOeG1SwYZO2LoK7V70ta47ZaIR6wnG6%2522%257D%26charset%3DUTF-8%26format%3Djson%26method%3Dalipay.trade.app.pay%26notify_url%3Dhttps%253A%252F%252Ft.v4.51eduline.com%252Falipay_alinu.html%26sign_type%3DRSA2%26timestamp%3D2020-05-07%2B15%253A15%253A09%26version%3D1.0%26sign%3DwBm5c5%252FSBk4iLbMvPqfaVTXz3r0tJ7M3wJR22kPbIQsv93w%252BwDZirOyTMXE3rr4dF%252FuOc0EML6zZmP0Z6LPQQF0dY%252BXhvsgo3%252BXf%252B3dAYjQrmCte4PpDMssdnWhSzKwjCe7C%252F7qQZFJlzzgK42qNNz%252BuVCtTsx8o2c6moCxkjal4oS6BRZDbvAyFcIEwrKgdPXwDbryIveHnu8%252FHOZdytgnVerlhvwWBYh%252BRMaOtq0uhBckc71IPgZx%252F%252BQd8LWiw1ewBKNhcIB1MfXxdoHs%252BrsSh2UQq4T8be4pbC85WsVa1vceuE7gcRUsV4TXqVFT2hW6wMPFbPfjVi3HbSZng5w%253D%253D%22%7D";
     [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
 }

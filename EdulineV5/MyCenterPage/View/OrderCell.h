@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *theme;
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UILabel *dateLine;
+
+
+
 @property (strong, nonatomic) UIView *line2;
 
 @property (strong, nonatomic) UILabel *timeLabel;

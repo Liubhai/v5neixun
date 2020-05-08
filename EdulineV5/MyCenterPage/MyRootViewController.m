@@ -17,6 +17,8 @@
 #import "SetingViewController.h"
 #import "MenberRootVC.h"
 #import "OrderRootVC.h"
+#import "MyBalanceVC.h"
+#import "MyScoreVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -27,7 +29,7 @@
 #import "MyCenterTypeTwoCell.h"
 #import "UIImage+Util.h"
 
-@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate>
+@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate,MyCenterBalanceViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -90,6 +92,7 @@
     _mycenterOrderView.delegate = self;
     [_headerView addSubview:_mycenterOrderView];
     _myCenterBalanceView = [[MyCenterBalanceView alloc] initWithFrame:CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, 90)];
+    _myCenterBalanceView.delegate = self;
     [_headerView addSubview:_myCenterBalanceView];
     [_headerView setHeight:_myCenterBalanceView.bottom];
 }
@@ -213,6 +216,17 @@
         vc.currentType = @"all";
     }
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - MyCenterBalanceViewDelegate(进入余额积分等页面)
+- (void)jumpToOtherVC:(UIButton *)sender {
+    if (sender.tag == 0) {
+        MyBalanceVC *vc = [[MyBalanceVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (sender.tag == 2) {
+        MyScoreVC *vc = [[MyScoreVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)getUserInfo {

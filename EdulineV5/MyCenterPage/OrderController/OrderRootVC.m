@@ -35,7 +35,8 @@
     _titleLabel.text = @"我的订单";
     currentSelect = 0;
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all"},@{@"title":@"待支付",@"type":@"pay"},@{@"title":@"已取消",@"type":@"cancel"},@{@"title":@"已完成",@"type":@"finish"},@{@"title":@"课程售后",@"type":@"shouhou"}]];
+    //@{@"title":@"课程售后",@"type":@"shouhou"}
+    [_typeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all"},@{@"title":@"待支付",@"type":@"pay"},@{@"title":@"已取消",@"type":@"cancel"},@{@"title":@"已完成",@"type":@"finish"}]];
     
     [self makeTopView];
     [self makeScrollView];

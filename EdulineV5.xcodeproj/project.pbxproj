@@ -126,6 +126,9 @@
 		787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19B3245685E100E2E016 /* OrderTypeViewController.m */; };
 		789DB01524593041001302B4 /* CouponModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01424593041001302B4 /* CouponModel.m */; };
 		789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB017245A76A1001302B4 /* ShopCarModel.m */; };
+		789DB01B24654571001302B4 /* MyBalanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01A24654571001302B4 /* MyBalanceVC.m */; };
+		789DB01E2465785C001302B4 /* MyScoreVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01D2465785C001302B4 /* MyScoreVC.m */; };
+		789DB02124658C8D001302B4 /* OrderFinalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB02024658C8D001302B4 /* OrderFinalCell.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -576,6 +579,12 @@
 		789DB01424593041001302B4 /* CouponModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CouponModel.m; sourceTree = "<group>"; };
 		789DB016245A76A1001302B4 /* ShopCarModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarModel.h; sourceTree = "<group>"; };
 		789DB017245A76A1001302B4 /* ShopCarModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarModel.m; sourceTree = "<group>"; };
+		789DB01924654571001302B4 /* MyBalanceVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBalanceVC.h; sourceTree = "<group>"; };
+		789DB01A24654571001302B4 /* MyBalanceVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBalanceVC.m; sourceTree = "<group>"; };
+		789DB01C2465785C001302B4 /* MyScoreVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyScoreVC.h; sourceTree = "<group>"; };
+		789DB01D2465785C001302B4 /* MyScoreVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyScoreVC.m; sourceTree = "<group>"; };
+		789DB01F24658C8D001302B4 /* OrderFinalCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderFinalCell.h; sourceTree = "<group>"; };
+		789DB02024658C8D001302B4 /* OrderFinalCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderFinalCell.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1269,6 +1278,10 @@
 				787E19A8245576E000E2E016 /* PWResetViewController.m */,
 				78531643244FF60C007E239E /* MenberRootVC.h */,
 				78531644244FF60C007E239E /* MenberRootVC.m */,
+				789DB01924654571001302B4 /* MyBalanceVC.h */,
+				789DB01A24654571001302B4 /* MyBalanceVC.m */,
+				789DB01C2465785C001302B4 /* MyScoreVC.h */,
+				789DB01D2465785C001302B4 /* MyScoreVC.m */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 			);
@@ -1679,6 +1692,8 @@
 				78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */,
 				787E19AF24566FAE00E2E016 /* OrderCell.h */,
 				787E19B024566FAE00E2E016 /* OrderCell.m */,
+				789DB01F24658C8D001302B4 /* OrderFinalCell.h */,
+				789DB02024658C8D001302B4 /* OrderFinalCell.m */,
 				78AA13AA24470EB2007087F7 /* SetingCell.h */,
 				78AA13AB24470EB2007087F7 /* SetingCell.m */,
 				7853164624502E49007E239E /* MenberCell.h */,
@@ -2489,6 +2504,7 @@
 				7839C97A241F7B3E002F6595 /* CourseDownView.m in Sources */,
 				7879575F2410A1650013F95F /* QuickLoginVC.m in Sources */,
 				7879564D240E36FA0013F95F /* EdulineV5Client.m in Sources */,
+				789DB02124658C8D001302B4 /* OrderFinalCell.m in Sources */,
 				78C549D3241B674F00A33FC4 /* AlivcImage.m in Sources */,
 				78C54977241B642B00A33FC4 /* AlivcLivePresentationController.m in Sources */,
 				78C548792418CC7400A33FC4 /* TYViewStorage.m in Sources */,
@@ -2575,6 +2591,7 @@
 				78C5497C241B642B00A33FC4 /* _AlivcLiveBeautifyLevelView.m in Sources */,
 				7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */,
 				78C549C8241B674E00A33FC4 /* AlivcScanViewController.m in Sources */,
+				789DB01E2465785C001302B4 /* MyScoreVC.m in Sources */,
 				7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */,
 				78C54946241B642B00A33FC4 /* AliyunPlayerViewSeekPopupView.m in Sources */,
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
@@ -2683,6 +2700,7 @@
 				78C54961241B642B00A33FC4 /* AlivcVideoDataBase.m in Sources */,
 				78C54840241743DE00A33FC4 /* Net_Path.m in Sources */,
 				78C5496C241B642B00A33FC4 /* AlivcQuUserManager.m in Sources */,
+				789DB01B24654571001302B4 /* MyBalanceVC.m in Sources */,
 				78795756240FAA7A0013F95F /* UIViewController+DismissKeyboard.m in Sources */,
 				78C549C4241B674E00A33FC4 /* AlivcStringConvertTool.m in Sources */,
 				7853BDDC2431A1AE00F096EC /* ShopCarManagerVC.m in Sources */,
