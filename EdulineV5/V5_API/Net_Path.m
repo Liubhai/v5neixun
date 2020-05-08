@@ -164,6 +164,10 @@
     return [Net_Path fullPath:@"user/balance" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userPayInfo {
+    return [Net_Path fullPath:@"order/pay" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userShopcarInfo {
     return [Net_Path fullPath:@"course/payment/cart" repalce:@"" byReplece:@""];
 }
@@ -178,6 +182,10 @@
 
 + (NSString *)deleteCourseFromShopcar {
     return [Net_Path fullPath:@"course/payment/cart" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)subMitOrder {
+    return [Net_Path fullPath:@"order/pay" repalce:@"" byReplece:@""];
 }
 
 @end

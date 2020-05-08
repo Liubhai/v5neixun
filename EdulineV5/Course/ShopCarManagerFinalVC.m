@@ -316,6 +316,7 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     OrderSureViewController *vc = [[OrderSureViewController alloc] init];
                     vc.orderSureInfo = responseObject;
+                    vc.orderTypeString = @"shopcar";
                     [self.navigationController pushViewController:vc animated:YES];
                 } else {
                     [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];

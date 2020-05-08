@@ -131,6 +131,9 @@ struct NetWorkUrl {
 /** 余额信息 */
 + (NSString *)userBalanceInfo;
 
+/** 余额信息 */
++ (NSString *)userPayInfo;
+
 /** 购物车信息 */
 + (NSString *)userShopcarInfo;
 
@@ -144,6 +147,9 @@ struct NetWorkUrl {
 
 /** 从购物车删除课程 */
 + (NSString *)deleteCourseFromShopcar;
+
+/** 给钱了兄弟 */
++ (NSString *)subMitOrder;
 
 @end
 

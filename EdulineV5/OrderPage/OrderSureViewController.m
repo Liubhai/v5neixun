@@ -8,19 +8,33 @@
 
 #import "OrderSureViewController.h"
 #import "Net_Path.h"
+#import "CourseMainViewController.h"
 
-@interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate>
+@interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate> {
+    NSString *typeString;//支付方式【lcnpay：余额；alipay：支付宝；wxpay：微信；】
+    BOOL shouldPop;// 是否需要返回到课程详情页面
+}
 
 @property (strong, nonatomic) NSDictionary *balanceInfo;
 @property (strong, nonatomic) WKWebView *wkWebView;
+@property (strong, nonatomic) NSMutableArray *typeArray;
 
 @end
 
 @implementation OrderSureViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (shouldPop) {
+        [self popVcToWhich];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = EdlineV5_Color.backColor;
+    typeString = @"lcnpay";
+    _typeArray = [NSMutableArray new];
     _titleLabel.text = @"订单支付";
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT + 10, MainScreenWidth, 75)];
     _priceLabel.backgroundColor = [UIColor whiteColor];
@@ -35,19 +49,14 @@
     _orderTypeView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_orderTypeView];
     
-    [self makeOrderType1View1];
-    [self makeOrderType1View2];
-    [self makeOrderType1View3];
-    [_orderTypeView setHeight:_orderTypeView3.bottom];
-    
-    [self makeAgreeView];
     [self makeDownView];
-    [self getUserBalanceInfo];
+    [self getUserPayInfo];
 }
 
 - (void)makeOrderType1View1 {
     _orderTypeView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
     _orderTypeView1.backgroundColor = [UIColor whiteColor];
+    
     [_orderTypeView addSubview:_orderTypeView1];
     
     _orderLeftIcon1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
@@ -66,6 +75,25 @@
     [_orderRightBtn1 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
     [_orderRightBtn1 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView1 addSubview:_orderRightBtn1];
+    
+    BOOL hasMoubao = NO;
+    
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"alipay"]) {
+            hasMoubao = YES;
+        } else {
+            hasMoubao = NO;
+        }
+    } else {
+        hasMoubao = NO;
+    }
+    
+    if (!hasMoubao) {
+        [_orderTypeView1 setHeight:0];
+        _orderTypeView1.hidden = YES;
+    } else {
+        [self seleteButtonClick:_orderRightBtn1];
+    }
 }
 
 - (void)makeOrderType1View2 {
@@ -89,6 +117,27 @@
     [_orderRightBtn2 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
     [_orderRightBtn2 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView2 addSubview:_orderRightBtn2];
+    
+    BOOL hasW = NO;
+    
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"wxpay"]) {
+            hasW = YES;
+        } else {
+            hasW = NO;
+        }
+    } else {
+        hasW = NO;
+    }
+    
+    if (!hasW) {
+        [_orderTypeView2 setHeight:0];
+        _orderTypeView2.hidden = YES;
+    } else {
+        if (_orderTypeView1.height == 0) {
+            [self seleteButtonClick:_orderRightBtn2];
+        }
+    }
 }
 
 - (void)makeOrderType1View3 {
@@ -112,6 +161,27 @@
     [_orderRightBtn3 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
     [_orderRightBtn3 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView3 addSubview:_orderRightBtn3];
+    
+    BOOL hasW = NO;
+    
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"lcnpay"]) {
+            hasW = YES;
+        } else {
+            hasW = NO;
+        }
+    } else {
+        hasW = NO;
+    }
+    
+    if (!hasW) {
+        [_orderTypeView3 setHeight:0];
+        _orderTypeView3.hidden = YES;
+    } else {
+        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
+            [self seleteButtonClick:_orderRightBtn3];
+        }
+    }
 }
 
 - (void)makeAgreeView {
@@ -172,6 +242,7 @@
     _submitButton.layer.masksToBounds = YES;
     _submitButton.layer.cornerRadius = _submitButton.height / 2.0;
     _submitButton.centerX = _bottomView.width/2.0;
+    [_submitButton addTarget:self action:@selector(subMitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_submitButton];
 }
 
@@ -243,24 +314,36 @@
         _orderRightBtn1.selected = YES;
         _orderRightBtn2.selected = NO;
         _orderRightBtn3.selected = NO;
+        typeString = @"alipay";
     } else if (sender == _orderRightBtn2) {
         _orderRightBtn2.selected = YES;
         _orderRightBtn1.selected = NO;
         _orderRightBtn3.selected = NO;
+        typeString = @"wxpay";
     } else if (sender == _orderRightBtn3) {
         _orderRightBtn3.selected = YES;
         _orderRightBtn1.selected = NO;
         _orderRightBtn2.selected = NO;
+        typeString = @"lcnpay";
     }
 }
 
-- (void)getUserBalanceInfo {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userBalanceInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+- (void)getUserPayInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userPayInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                 if (SWNOTEmptyDictionary(_balanceInfo[@"data"])) {
                     _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];
+                    [_typeArray removeAllObjects];
+                    [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
+                    
+                    [self makeOrderType1View1];
+                    [self makeOrderType1View2];
+                    [self makeOrderType1View3];
+                    [_orderTypeView setHeight:_orderTypeView3.bottom];
+                    
+                    [self makeAgreeView];
                 }
             }
         }
@@ -269,14 +352,58 @@
     }];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)subMitButtonClick:(UIButton *)sender {
+    _submitButton.enabled = NO;
+    if (!_seleteBtn.selected) {
+        [self showHudInView:self.view showHint:@"请勾选并确认阅读购买协议"];
+        _submitButton.enabled = YES;
+        return;
+    }
+    if (SWNOTEmptyStr(typeString) && SWNOTEmptyDictionary(_orderSureInfo)) {
+        if (![[_orderSureInfo objectForKey:@"data"] count]) {
+            [self showHudInView:self.view showHint:@"订单信息不完整"];
+            _submitButton.enabled = YES;
+            return;
+        }
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:typeString forKey:@"pay_type"];
+        [param setObject:[[_orderSureInfo objectForKey:@"data"] objectForKey:@"order_no"] forKey:@"order_no"];
+        [Net_API requestPOSTWithURLStr:[Net_Path subMitOrder] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    if ([typeString isEqualToString:@"lcnpay"]) {
+                        [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [self popVcToWhich];
+                        });
+                        return;
+                    } else if ([typeString isEqualToString:@"alipay"]) {
+                        shouldPop = YES;
+                    } else if ([typeString isEqualToString:@"wxpay"]) {
+                        shouldPop = YES;
+                    }
+                } else {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                    _submitButton.enabled = YES;
+                }
+            } else {
+                _submitButton.enabled = YES;
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络飞走了"];
+            _submitButton.enabled = YES;
+        }];
+    } else {
+        _submitButton.enabled = YES;
+    }
 }
-*/
+
+- (void)popVcToWhich {
+    if ([_orderTypeString isEqualToString:@"course"]) {
+        [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:NO];
+    } else if ([_orderTypeString isEqualToString:@"shopcar"]) {
+        [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:NO];
+    }
+}
 
 @end

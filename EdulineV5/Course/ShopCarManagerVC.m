@@ -29,6 +29,13 @@
 
 @implementation ShopCarManagerVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (!SWNOTEmptyArr(_dataSourse)) {
+        [self getUserShopCarInfo];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
