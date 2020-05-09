@@ -12,6 +12,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "OrderSureViewController.h"
+#import "CourseMainViewController.h"
 
 @interface OrderTypeViewController ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger page;
@@ -199,6 +200,25 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *pass = _dataSource[indexPath.section][@"products"][indexPath.row];
+    NSString *courseType = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]];
+    //课程类型【1：点播；2：直播；3：面试；4：班级；】
+    if ([courseType isEqualToString:@"1"]) {
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
+        vc.courselayer = [NSString stringWithFormat:@"%@",[pass objectForKey:@"section_level"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([courseType isEqualToString:@"2"]) {
+        
+    } else if ([courseType isEqualToString:@"3"]) {
+        
+    } else if ([courseType isEqualToString:@"4"]) {
+        
+    }
+    
 }
 
 - (void)getOrderList {
