@@ -130,6 +130,8 @@
 		789DB01E2465785C001302B4 /* MyScoreVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01D2465785C001302B4 /* MyScoreVC.m */; };
 		789DB02124658C8D001302B4 /* OrderFinalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB02024658C8D001302B4 /* OrderFinalCell.m */; };
 		789DB02424663ECA001302B4 /* MyIncomeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB02324663ECA001302B4 /* MyIncomeVC.m */; };
+		789DB0272466B38F001302B4 /* BalanceDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB0262466B38F001302B4 /* BalanceDetailVC.m */; };
+		789DB02A2466B3D6001302B4 /* BalanceDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB0292466B3D6001302B4 /* BalanceDetailCell.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -588,6 +590,10 @@
 		789DB02024658C8D001302B4 /* OrderFinalCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderFinalCell.m; sourceTree = "<group>"; };
 		789DB02224663EC9001302B4 /* MyIncomeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIncomeVC.h; sourceTree = "<group>"; };
 		789DB02324663ECA001302B4 /* MyIncomeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIncomeVC.m; sourceTree = "<group>"; };
+		789DB0252466B38F001302B4 /* BalanceDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BalanceDetailVC.h; sourceTree = "<group>"; };
+		789DB0262466B38F001302B4 /* BalanceDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BalanceDetailVC.m; sourceTree = "<group>"; };
+		789DB0282466B3D6001302B4 /* BalanceDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BalanceDetailCell.h; sourceTree = "<group>"; };
+		789DB0292466B3D6001302B4 /* BalanceDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BalanceDetailCell.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1287,6 +1293,8 @@
 				789DB01D2465785C001302B4 /* MyScoreVC.m */,
 				789DB02224663EC9001302B4 /* MyIncomeVC.h */,
 				789DB02324663ECA001302B4 /* MyIncomeVC.m */,
+				789DB0252466B38F001302B4 /* BalanceDetailVC.h */,
+				789DB0262466B38F001302B4 /* BalanceDetailVC.m */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 			);
@@ -1703,6 +1711,8 @@
 				78AA13AB24470EB2007087F7 /* SetingCell.m */,
 				7853164624502E49007E239E /* MenberCell.h */,
 				7853164724502E49007E239E /* MenberCell.m */,
+				789DB0282466B3D6001302B4 /* BalanceDetailCell.h */,
+				789DB0292466B3D6001302B4 /* BalanceDetailCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2532,6 +2542,7 @@
 				78C54956241B642B00A33FC4 /* AVC_VP_AdsViewController.m in Sources */,
 				78C549CC241B674E00A33FC4 /* AlivcLocalDatabaseManager.m in Sources */,
 				78AA13822440543D007087F7 /* TAPageControl.m in Sources */,
+				789DB0272466B38F001302B4 /* BalanceDetailVC.m in Sources */,
 				78C54971241B642B00A33FC4 /* AlivcVideoPlayManager.m in Sources */,
 				78795738240FA3840013F95F /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
 				78C54963241B642B00A33FC4 /* AVCVideo.m in Sources */,
@@ -2622,6 +2633,7 @@
 				78795650240E3FB60013F95F /* EdulineV5_Tool.m in Sources */,
 				78C5496D241B642B00A33FC4 /* AlivcUserInfoManager.m in Sources */,
 				78AA135F243C254B007087F7 /* CourseCommonCell.m in Sources */,
+				789DB02A2466B3D6001302B4 /* BalanceDetailCell.m in Sources */,
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
 				78C54965241B642B00A33FC4 /* AVCVideoConfig.m in Sources */,
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,

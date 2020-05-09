@@ -9,6 +9,7 @@
 #import "MyBalanceVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "BalanceDetailVC.h"
 
 @interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate> {
     NSString *typeString;//方式
@@ -347,6 +348,11 @@
         _submitButton.enabled = YES;
         return;
     }
+}
+
+- (void)rightButtonClick:(id)sender {
+    BalanceDetailVC *vc = [[BalanceDetailVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getUserPayInfo {
