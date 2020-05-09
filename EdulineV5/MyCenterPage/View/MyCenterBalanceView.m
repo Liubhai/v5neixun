@@ -72,7 +72,7 @@
         NSString *credit = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"credit"]];
         _balanceLabel.text = [NSString stringWithFormat:@"¥%.2f",[balance floatValue]];
         _incomeLabel.text = [NSString stringWithFormat:@"¥%.2f",[income floatValue]];
-        _scoreLabel.text = [NSString stringWithFormat:@"¥%.2f",[credit floatValue]];
+        _scoreLabel.text = [NSString stringWithFormat:@"%.f",[credit floatValue]];
     }
 }
 

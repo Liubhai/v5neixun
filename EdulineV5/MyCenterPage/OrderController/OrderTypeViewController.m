@@ -11,6 +11,7 @@
 #import "OrderFinalCell.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "OrderSureViewController.h"
 
 @interface OrderTypeViewController ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger page;
@@ -29,6 +30,11 @@
     _dataSource = [NSMutableArray new];
     page = 1;
     [self makeTableView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOrderList) name:@"reloadOrderList" object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)makeTableView {
@@ -119,6 +125,7 @@
     [view addSubview:trueLabel];
     
     UIButton *button2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    button2.tag = section;
     button2.frame = CGRectMake(MainScreenWidth - 15 - 70, truePriceLabel.bottom + 13, 70, 28);
     [button2 setTitle:@"去支付" forState:0];
     button2.titleLabel.font = SYSTEMFONT(12);
@@ -126,9 +133,11 @@
     button2.backgroundColor = EdlineV5_Color.baseColor;
     button2.layer.masksToBounds = YES;
     button2.layer.cornerRadius = button2.height / 2.0;
+    [button2 addTarget:self action:@selector(button2Click:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:button2];
     
     UIButton *button1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    button1.tag = section;
     button1.frame = CGRectMake(button2.left - 12 - 70, truePriceLabel.bottom + 13, 70, 28);
     button1.titleLabel.font = SYSTEMFONT(12);
     [button1 setTitle:@"删除订单" forState:0];
@@ -137,6 +146,7 @@
     button1.layer.cornerRadius = button1.height / 2.0;
     button1.layer.borderWidth = 1;
     button1.layer.borderColor = EdlineV5_Color.baseColor.CGColor;
+    [button1 addTarget:self action:@selector(button1Click:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:button1];
     
     button1.hidden = NO;
@@ -244,6 +254,18 @@
             }
         }];
     }
+}
+
+- (void)button1Click:(UIButton *)sender {
+    
+}
+
+- (void)button2Click:(UIButton *)sender {
+    OrderSureViewController *vc = [[OrderSureViewController alloc] init];
+    vc.order_no = [NSString stringWithFormat:@"%@",_dataSource[sender.tag][@"order_no"]];
+    vc.payment = [NSString stringWithFormat:@"%@",_dataSource[sender.tag][@"payment"]];
+    vc.orderTypeString = @"orderList";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

@@ -40,9 +40,11 @@
     _priceLabel.font = SYSTEMFONT(20);
     _priceLabel.textAlignment = NSTextAlignmentCenter;
     _priceLabel.textColor = EdlineV5_Color.faildColor;
-    if (SWNOTEmptyDictionary(_orderSureInfo)) {
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+    if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
+        _payment = [NSString stringWithFormat:@"¥%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+        _order_no = [NSString stringWithFormat:@"%@",[[_orderSureInfo objectForKey:@"data"] objectForKey:@"order_no"]];
     }
+    _priceLabel.text = _payment;
     [self.view addSubview:_priceLabel];
     _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _priceLabel.bottom, MainScreenWidth, 168)];
     _orderTypeView.backgroundColor = [UIColor whiteColor];
@@ -330,7 +332,6 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                 if (SWNOTEmptyDictionary(_balanceInfo[@"data"])) {
-                    _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
                     
@@ -338,6 +339,8 @@
                     [self makeOrderType1View2];
                     [self makeOrderType1View3];
                     [_orderTypeView setHeight:_orderTypeView3.bottom];
+                    
+                    _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];
                     
                     [self makeAgreeView];
                 }
@@ -355,15 +358,10 @@
         _submitButton.enabled = YES;
         return;
     }
-    if (SWNOTEmptyStr(typeString) && SWNOTEmptyDictionary(_orderSureInfo)) {
-        if (![[_orderSureInfo objectForKey:@"data"] count]) {
-            [self showHudInView:self.view showHint:@"订单信息不完整"];
-            _submitButton.enabled = YES;
-            return;
-        }
+    if (SWNOTEmptyStr(typeString) && SWNOTEmptyStr(_order_no)) {
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:typeString forKey:@"pay_type"];
-        [param setObject:[[_orderSureInfo objectForKey:@"data"] objectForKey:@"order_no"] forKey:@"order_no"];
+        [param setObject:_order_no forKey:@"order_no"];
         [Net_API requestPOSTWithURLStr:[Net_Path subMitOrder] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -399,6 +397,10 @@
         [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:NO];
     } else if ([_orderTypeString isEqualToString:@"shopcar"]) {
         [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:NO];
+    } else if ([_orderTypeString isEqualToString:@"orderList"]) {
+        // 刷新订单所有页面
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadOrderList" object:nil];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

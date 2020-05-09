@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *orderTypeString;//course shopcar
 
+@property (strong, nonatomic) NSString *order_no;
+@property (strong, nonatomic) NSString *payment;
+
 @property (strong, nonatomic) NSDictionary *orderSureInfo;
 
 @property (strong, nonatomic) UILabel *priceLabel;

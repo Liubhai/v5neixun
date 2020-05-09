@@ -55,7 +55,7 @@
     
     _scribing_price = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 12 - 100, _priceLabel.bottom, 100, 24)];
     _scribing_price.font = SYSTEMFONT(14);
-    _scribing_price.textColor = EdlineV5_Color.textFirstColor;
+    _scribing_price.textColor = EdlineV5_Color.textThirdColor;
     _scribing_price.text = @"¥199";
     _scribing_price.textAlignment = NSTextAlignmentRight;
     [self addSubview:_scribing_price];
@@ -90,7 +90,9 @@
     
     _priceLabel.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"price"]];
     _scribing_price.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"scribing_price"]];
-    
+    NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_scribing_price.text];
+    [mut addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:NSMakeRange(0, _scribing_price.text.length)];
+    _scribing_price.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
     [self setHeight:_faceImageView.bottom + 7.5];
 }
 

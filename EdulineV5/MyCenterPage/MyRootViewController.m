@@ -206,7 +206,7 @@
 - (void)goToOrderVC:(UIButton *)sender {
     OrderRootVC *vc = [[OrderRootVC alloc] init];
     if (sender.tag == 0) {
-       vc.currentType = @"pay";
+       vc.currentType = @"waiting";
     } else if (sender.tag == 1) {
         vc.currentType = @"cancel";
     } else if (sender.tag == 2) {
