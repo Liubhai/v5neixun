@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PersonalInformationVC : BaseViewController
 
+@property (strong, nonatomic) NSDictionary *userCenterInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

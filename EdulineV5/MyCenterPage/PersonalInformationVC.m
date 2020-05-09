@@ -34,6 +34,8 @@
 @property (strong, nonatomic) UITextView *introTextView;
 @property (strong, nonatomic) UILabel *introTextViewPlaceholder;
 
+@property (strong, nonatomic) NSDictionary *userInfo;
+
 @end
 
 @implementation PersonalInformationVC
@@ -49,6 +51,12 @@
     [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     _rightButton.hidden = NO;
     [self makeSubView];
+    
+    if (SWNOTEmptyDictionary(_userCenterInfo)) {
+        _userInfo = [NSDictionary dictionaryWithDictionary:_userCenterInfo[@"data"][@"user"]];
+    }
+    
+    [self getUserInfo];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -381,6 +389,24 @@
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         [self showHudInView:self.view showHint:@"上传头像超时,请重试"];
     }];
+}
+
+- (void)getUserInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path currentLoginUserInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _userInfo = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)setInfoData {
+    if (SWNOTEmptyDictionary(_userInfo)) {
+        
+    }
 }
 
 - (void)dealloc {

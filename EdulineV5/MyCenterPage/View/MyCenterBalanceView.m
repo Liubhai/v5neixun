@@ -42,11 +42,11 @@
             _balanceLabel = lable1;
             _balanceTitleLabel = lable2;
         } else if (i == 1) {
+            _incomeLabel = lable1;
+            _incomeTitleLabel = lable2;
+        } else if (i == 2) {
             _scoreLabel = lable1;
             _scoreTitleLabel = lable2;
-        } else if (i == 2) {
-            _shopCarLabel = lable1;
-            _shopCarTitleLabel = lable2;
         }
         UIButton *selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(WW * i, 0, WW, 80)];
         selectBtn.backgroundColor = [UIColor clearColor];
@@ -66,7 +66,14 @@
 }
 
 - (void)setBalanceInfo:(NSDictionary *)info {
-    
+    if (SWNOTEmptyDictionary(info)) {
+        NSString *balance = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"balance"]];
+        NSString *income = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"income"]];
+        NSString *credit = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"credit"]];
+        _balanceLabel.text = [NSString stringWithFormat:@"¥%.2f",[balance floatValue]];
+        _incomeLabel.text = [NSString stringWithFormat:@"¥%.2f",[income floatValue]];
+        _scoreLabel.text = [NSString stringWithFormat:@"¥%.2f",[credit floatValue]];
+    }
 }
 
 @end

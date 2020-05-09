@@ -23,10 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UILabel *balanceTitleLabel;
 @property (strong, nonatomic) UILabel *balanceLabel;
+@property (strong, nonatomic) UILabel *incomeTitleLabel;
+@property (strong, nonatomic) UILabel *incomeLabel;
 @property (strong, nonatomic) UILabel *scoreTitleLabel;
 @property (strong, nonatomic) UILabel *scoreLabel;
-@property (strong, nonatomic) UILabel *shopCarTitleLabel;
-@property (strong, nonatomic) UILabel *shopCarLabel;
+//@property (strong, nonatomic) UILabel *shopCarTitleLabel;
+//@property (strong, nonatomic) UILabel *shopCarLabel;
 @property (strong, nonatomic) UIView *lineView;
 
 - (void)setBalanceInfo:(NSDictionary *)info;

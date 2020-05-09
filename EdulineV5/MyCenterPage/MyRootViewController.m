@@ -234,18 +234,19 @@
 }
 
 - (void)getUserInfo {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path currentLoginUserInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCenterInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.isRefreshing) {
             [_tableView.mj_header endRefreshing];
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _userInfo = [NSDictionary dictionaryWithDictionary:responseObject];
-                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]]];
-                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
-                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"user_name"]]];
-                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
-                [UserModel saveGender:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"gender"]]];
+                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"id"]]];
+                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"nick_name"]]];
+                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"user_name"]]];
+                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"phone"]]];
+                [UserModel saveGender:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"gender"]]];
+                [self.myCenterBalanceView setBalanceInfo:_userInfo];
                 [self reloadUserInfo];
             }
         }

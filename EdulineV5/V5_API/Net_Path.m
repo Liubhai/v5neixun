@@ -192,4 +192,8 @@
     return [Net_Path fullPath:@"user/order/{type}" repalce:@"{type}" byReplece:orderListType];
 }
 
++ (NSString *)userCenterInfo {
+    return [Net_Path fullPath:@"user/profile" repalce:@"" byReplece:@""];
+}
+
 @end
