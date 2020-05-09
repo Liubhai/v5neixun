@@ -19,6 +19,7 @@
 #import "OrderRootVC.h"
 #import "MyBalanceVC.h"
 #import "MyScoreVC.h"
+#import "MyIncomeVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -225,6 +226,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if (sender.tag == 2) {
         MyScoreVC *vc = [[MyScoreVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (sender.tag == 1) {
+        MyIncomeVC *vc = [[MyIncomeVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

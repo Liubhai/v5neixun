@@ -15,8 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImageView *faceImageView;
 @property (strong, nonatomic) UIImageView *courseTypeImage;
 @property (strong, nonatomic) UILabel *theme;
-@property (strong, nonatomic) UILabel *priceLabel;
+@property (strong, nonatomic) UILabel *priceLabel;//售价
+@property (strong, nonatomic) UILabel *scribing_price;//划线价格
 @property (strong, nonatomic) UILabel *dateLine;
+@property (strong, nonatomic) UILabel *countLabel;
+
 
 - (void)setOrderFinalInfo:(NSDictionary *)OrderFinalInfo;
 

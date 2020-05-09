@@ -188,4 +188,8 @@
     return [Net_Path fullPath:@"order/pay" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userOrderList:(NSString *)orderListType {
+    return [Net_Path fullPath:@"user/order/{type}" repalce:@"{type}" byReplece:orderListType];
+}
+
 @end

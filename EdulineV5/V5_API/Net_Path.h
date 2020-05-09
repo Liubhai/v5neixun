@@ -151,6 +151,9 @@ struct NetWorkUrl {
 /** 给钱了兄弟 */
 + (NSString *)subMitOrder;
 
+/** 用户订单 */
++ (NSString *)userOrderList:(NSString *)orderListType;
+
 @end
 
 NS_ASSUME_NONNULL_END

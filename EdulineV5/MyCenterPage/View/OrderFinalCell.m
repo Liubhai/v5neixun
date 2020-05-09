@@ -51,6 +51,19 @@
     _priceLabel.text = @"¥199";
     _priceLabel.textAlignment = NSTextAlignmentRight;
     [self addSubview:_priceLabel];
+    
+    _scribing_price = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 12 - 100, _priceLabel.bottom, 100, 24)];
+    _scribing_price.font = SYSTEMFONT(14);
+    _scribing_price.textColor = EdlineV5_Color.textFirstColor;
+    _scribing_price.text = @"¥199";
+    _scribing_price.textAlignment = NSTextAlignmentRight;
+    [self addSubview:_scribing_price];
+    
+    _countLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, _dateLine.top, 100, 15)];
+    _countLabel.font = SYSTEMFONT(12);
+    _countLabel.textColor = EdlineV5_Color.textThirdColor;
+    _countLabel.text = @"x2";
+    [self addSubview:_countLabel];
 }
 
 - (void)setOrderFinalInfo:(NSDictionary *)OrderFinalInfo {
@@ -66,7 +79,18 @@
         _courseTypeImage.image = Image(@"album_icon");
     }
     
-    [self setHeight:_courseTypeImage.bottom + 7.5];
+    _theme.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"title"]];
+    [_faceImageView sd_setImageWithURL:EdulineUrlString([OrderFinalInfo objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+    if ([[NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"expire_time"]] isEqualToString:@"0"]) {
+        _dateLine.text = @"永久有效";
+    } else {
+        _dateLine.text = [NSString stringWithFormat:@"有效期至%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"expire_time"]]]];
+    }
+    
+    _priceLabel.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"price"]];
+    _scribing_price.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"scribing_price"]];
+    
+    [self setHeight:_faceImageView.bottom + 7.5];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
