@@ -136,6 +136,8 @@
 		789DB032246924CF001302B4 /* StudyTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB031246924CF001302B4 /* StudyTimeCell.m */; };
 		789DB03524692C1D001302B4 /* StudyLatestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB03424692C1D001302B4 /* StudyLatestCell.m */; };
 		789DB038246943E1001302B4 /* StudyCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB037246943E1001302B4 /* StudyCourseCell.m */; };
+		789DB03B24698BC3001302B4 /* JoinCourseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB03A24698BC3001302B4 /* JoinCourseVC.m */; };
+		789DB03E24698EE8001302B4 /* JoinCourseTypeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB03D24698EE8001302B4 /* JoinCourseTypeVC.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -606,6 +608,10 @@
 		789DB03424692C1D001302B4 /* StudyLatestCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StudyLatestCell.m; sourceTree = "<group>"; };
 		789DB036246943E1001302B4 /* StudyCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyCourseCell.h; sourceTree = "<group>"; };
 		789DB037246943E1001302B4 /* StudyCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StudyCourseCell.m; sourceTree = "<group>"; };
+		789DB03924698BC3001302B4 /* JoinCourseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinCourseVC.h; sourceTree = "<group>"; };
+		789DB03A24698BC3001302B4 /* JoinCourseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinCourseVC.m; sourceTree = "<group>"; };
+		789DB03C24698EE8001302B4 /* JoinCourseTypeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinCourseTypeVC.h; sourceTree = "<group>"; };
+		789DB03D24698EE8001302B4 /* JoinCourseTypeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinCourseTypeVC.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1127,6 +1133,10 @@
 			children = (
 				787657262435C79E008F475D /* StudyRootVC.h */,
 				787657272435C79E008F475D /* StudyRootVC.m */,
+				789DB03924698BC3001302B4 /* JoinCourseVC.h */,
+				789DB03A24698BC3001302B4 /* JoinCourseVC.m */,
+				789DB03C24698EE8001302B4 /* JoinCourseTypeVC.h */,
+				789DB03D24698EE8001302B4 /* JoinCourseTypeVC.m */,
 				789DB02E246924AC001302B4 /* view */,
 			);
 			path = StudyPage;
@@ -2661,6 +2671,7 @@
 				7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */,
 				78795650240E3FB60013F95F /* EdulineV5_Tool.m in Sources */,
 				78C5496D241B642B00A33FC4 /* AlivcUserInfoManager.m in Sources */,
+				789DB03E24698EE8001302B4 /* JoinCourseTypeVC.m in Sources */,
 				78AA135F243C254B007087F7 /* CourseCommonCell.m in Sources */,
 				789DB02A2466B3D6001302B4 /* BalanceDetailCell.m in Sources */,
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
@@ -2673,6 +2684,7 @@
 				78795759240FAA7A0013F95F /* NSDateFormatter+Category.m in Sources */,
 				78C549C3241B674E00A33FC4 /* AlivcStringDrawing.m in Sources */,
 				7879572A240FA3840013F95F /* ZLPhotoPickerBrowserPhotoView.m in Sources */,
+				789DB03B24698BC3001302B4 /* JoinCourseVC.m in Sources */,
 				78A16C8A2452F7C100391430 /* TICKeychainWrapper.m in Sources */,
 				7879566D240F39200013F95F /* BaseViewController.m in Sources */,
 				78C5494B241B642B00A33FC4 /* AliyunPlayerViewQualityListView.m in Sources */,

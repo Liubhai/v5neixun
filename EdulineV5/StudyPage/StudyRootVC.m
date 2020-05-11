@@ -11,6 +11,7 @@
 #import "StudyLatestCell.h"
 #import "StudyCourseCell.h"
 #import "V5_Constant.h"
+#import "JoinCourseVC.h"
 
 @interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger currentCourseType;
@@ -36,7 +37,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor redColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     currentCourseType = 0;
     
@@ -234,6 +235,7 @@
         [moreBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
         [EdulineV5_Tool dealButtonImageAndTitleUI:moreBtn];
         moreBtn.centerX = MainScreenWidth / 2.0;
+        [moreBtn addTarget:self action:@selector(moreJoinCourseButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:moreBtn];
         
         return view;
@@ -326,6 +328,11 @@
 
 - (void)changeTypeButtonClick:(UIButton *)sender {
     _changeTypeBackView.hidden = YES;
+}
+
+- (void)moreJoinCourseButtonClick:(UIButton *)sender {
+    JoinCourseVC *vc = [[JoinCourseVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getStudyInfo {
