@@ -133,6 +133,9 @@
 		789DB0272466B38F001302B4 /* BalanceDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB0262466B38F001302B4 /* BalanceDetailVC.m */; };
 		789DB02A2466B3D6001302B4 /* BalanceDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB0292466B3D6001302B4 /* BalanceDetailCell.m */; };
 		789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB02C2468E82A001302B4 /* CardInterVC.m */; };
+		789DB032246924CF001302B4 /* StudyTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB031246924CF001302B4 /* StudyTimeCell.m */; };
+		789DB03524692C1D001302B4 /* StudyLatestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB03424692C1D001302B4 /* StudyLatestCell.m */; };
+		789DB038246943E1001302B4 /* StudyCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB037246943E1001302B4 /* StudyCourseCell.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -597,6 +600,12 @@
 		789DB0292466B3D6001302B4 /* BalanceDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BalanceDetailCell.m; sourceTree = "<group>"; };
 		789DB02B2468E82A001302B4 /* CardInterVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardInterVC.h; sourceTree = "<group>"; };
 		789DB02C2468E82A001302B4 /* CardInterVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardInterVC.m; sourceTree = "<group>"; };
+		789DB030246924CF001302B4 /* StudyTimeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyTimeCell.h; sourceTree = "<group>"; };
+		789DB031246924CF001302B4 /* StudyTimeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StudyTimeCell.m; sourceTree = "<group>"; };
+		789DB03324692C1D001302B4 /* StudyLatestCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyLatestCell.h; sourceTree = "<group>"; };
+		789DB03424692C1D001302B4 /* StudyLatestCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StudyLatestCell.m; sourceTree = "<group>"; };
+		789DB036246943E1001302B4 /* StudyCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyCourseCell.h; sourceTree = "<group>"; };
+		789DB037246943E1001302B4 /* StudyCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StudyCourseCell.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1118,6 +1127,7 @@
 			children = (
 				787657262435C79E008F475D /* StudyRootVC.h */,
 				787657272435C79E008F475D /* StudyRootVC.m */,
+				789DB02E246924AC001302B4 /* view */,
 			);
 			path = StudyPage;
 			sourceTree = "<group>";
@@ -1599,6 +1609,19 @@
 				787E19B3245685E100E2E016 /* OrderTypeViewController.m */,
 			);
 			path = OrderController;
+			sourceTree = "<group>";
+		};
+		789DB02E246924AC001302B4 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				789DB030246924CF001302B4 /* StudyTimeCell.h */,
+				789DB031246924CF001302B4 /* StudyTimeCell.m */,
+				789DB03324692C1D001302B4 /* StudyLatestCell.h */,
+				789DB03424692C1D001302B4 /* StudyLatestCell.m */,
+				789DB036246943E1001302B4 /* StudyCourseCell.h */,
+				789DB037246943E1001302B4 /* StudyCourseCell.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		78A16C612452F7C100391430 /* TIC */ = {
@@ -2501,6 +2524,7 @@
 				78C54948241B642B00A33FC4 /* AliyunGestureModel.m in Sources */,
 				78C5494D241B642B00A33FC4 /* AlilyunViewLoadingView.m in Sources */,
 				78C549D8241B674F00A33FC4 /* UIView+AlivcHelper.m in Sources */,
+				789DB038246943E1001302B4 /* StudyCourseCell.m in Sources */,
 				78C549DF241B674F00A33FC4 /* MBProgressHUD+AlivcHelper.m in Sources */,
 				78C54952241B642B00A33FC4 /* AliyunPlayerViewFirstStartGuideView.m in Sources */,
 				78C54960241B642B00A33FC4 /* AVCDownloadVideo.m in Sources */,
@@ -2681,6 +2705,7 @@
 				7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */,
 				78C54955241B642B00A33FC4 /* AVC_VP_VideoPlayViewController.m in Sources */,
 				789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */,
+				789DB03524692C1D001302B4 /* StudyLatestCell.m in Sources */,
 				78AA13832440543D007087F7 /* TAAnimatedDotView.m in Sources */,
 				78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */,
 				7853BE002433352E00F096EC /* LingquanViewController.m in Sources */,
@@ -2715,6 +2740,7 @@
 				78795734240FA3840013F95F /* ZLNavigationController.m in Sources */,
 				7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */,
 				7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */,
+				789DB032246924CF001302B4 /* StudyTimeCell.m in Sources */,
 				78C54942241B642B00A33FC4 /* AliyunPlayerViewPopLayer.m in Sources */,
 				78C549DC241B674F00A33FC4 /* NSArray+AliyunDeepCopy.m in Sources */,
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
