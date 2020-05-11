@@ -27,6 +27,7 @@
     
     _titleLabel.text = @"明细";
     _dataSource = [NSMutableArray new];
+    _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     page = 1;
     [self makeTableView];
 }

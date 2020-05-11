@@ -132,6 +132,7 @@
 		789DB02424663ECA001302B4 /* MyIncomeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB02324663ECA001302B4 /* MyIncomeVC.m */; };
 		789DB0272466B38F001302B4 /* BalanceDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB0262466B38F001302B4 /* BalanceDetailVC.m */; };
 		789DB02A2466B3D6001302B4 /* BalanceDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB0292466B3D6001302B4 /* BalanceDetailCell.m */; };
+		789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB02C2468E82A001302B4 /* CardInterVC.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -594,6 +595,8 @@
 		789DB0262466B38F001302B4 /* BalanceDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BalanceDetailVC.m; sourceTree = "<group>"; };
 		789DB0282466B3D6001302B4 /* BalanceDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BalanceDetailCell.h; sourceTree = "<group>"; };
 		789DB0292466B3D6001302B4 /* BalanceDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BalanceDetailCell.m; sourceTree = "<group>"; };
+		789DB02B2468E82A001302B4 /* CardInterVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardInterVC.h; sourceTree = "<group>"; };
+		789DB02C2468E82A001302B4 /* CardInterVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CardInterVC.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1295,6 +1298,8 @@
 				789DB02324663ECA001302B4 /* MyIncomeVC.m */,
 				789DB0252466B38F001302B4 /* BalanceDetailVC.h */,
 				789DB0262466B38F001302B4 /* BalanceDetailVC.m */,
+				789DB02B2468E82A001302B4 /* CardInterVC.h */,
+				789DB02C2468E82A001302B4 /* CardInterVC.m */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 			);
@@ -2675,6 +2680,7 @@
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,
 				7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */,
 				78C54955241B642B00A33FC4 /* AVC_VP_VideoPlayViewController.m in Sources */,
+				789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */,
 				78AA13832440543D007087F7 /* TAAnimatedDotView.m in Sources */,
 				78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */,
 				7853BE002433352E00F096EC /* LingquanViewController.m in Sources */,

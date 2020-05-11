@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "BalanceDetailVC.h"
+#import "CardInterVC.h"
 
 @interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate> {
     NSString *typeString;//方式
