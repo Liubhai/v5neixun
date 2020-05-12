@@ -38,7 +38,7 @@
 {
     AppDelegate *app = [AppDelegate delegate];
     RootV5VC * nv = (RootV5VC *)app.window.rootViewController;
-    [nv isHiddenCustomTabBarByBoolean:NO];
+    [nv isHiddenCustomTabBarByBoolean:_hiddenNavDisappear];
     [super viewWillDisappear:animated];
     self.navigationController.navigationBar.hidden = YES;
 }

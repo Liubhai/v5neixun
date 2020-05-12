@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL isMainPage;// 是不是课程主页
 @property (strong, nonatomic) NSString *typeId;// 当前选中的类型
 
+@property (strong, nonatomic) NSString *pageClass;// 当前页面是啥 // 课程主页、加入的课程
+
+
 @end
 
 NS_ASSUME_NONNULL_END

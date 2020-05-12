@@ -23,6 +23,7 @@
 @property (nonatomic,retain) UIImageView *titleImage;
 @property (nonatomic,retain) UIView *lineTL;
 @property (nonatomic, assign) BOOL notHiddenNav;
+@property (nonatomic, assign) BOOL hiddenNavDisappear;
 
 - (void)leftButtonClick:(id)sender;
 - (void)rightButtonClick:(id)sender;

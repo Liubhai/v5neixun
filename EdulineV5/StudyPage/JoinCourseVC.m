@@ -9,8 +9,12 @@
 #import "JoinCourseVC.h"
 #import "V5_Constant.h"
 #import "JoinCourseTypeVC.h"
+#import "CourseSortVC.h"
 
-@interface JoinCourseVC ()<UIScrollViewDelegate>
+@interface JoinCourseVC ()<UIScrollViewDelegate,CourseSortVCDelegate> {
+    NSString *courseSortIdString;
+    NSString *courseSortString;
+}
 
 @property (strong, nonatomic) UIView *topView;
 @property (strong, nonatomic) UIView *lineView;
@@ -28,6 +32,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    courseSortIdString = @"";
+    courseSortString = @"";
     _titleLabel.text = @"加入的课程";
     [_rightButton setImage:Image(@"lesson_screen_nor") forState:0];
     _rightButton.hidden = NO;
@@ -57,6 +63,7 @@
         [btn setTitle:[_typeArray[i] objectForKey:@"title"] forState:0];
         [btn addTarget:self action:@selector(topButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         if (i == 0) {
+            btn.selected = YES;
             _lineView.centerX = btn.centerX;
             _needDealButton = btn;
         } else if (i == 1) {
@@ -122,6 +129,34 @@
 
 - (void)topButtonClick:(UIButton *)sender {
     [self.mainScrollView setContentOffset:CGPointMake(MainScreenWidth * sender.tag, 0) animated:YES];
+}
+
+- (void)rightButtonClick:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    _rightButton.selected = !_rightButton.selected;
+    if (_rightButton.selected) {
+        CourseSortVC *vc = [[CourseSortVC alloc] init];
+        vc.notHiddenNav = NO;
+        vc.hiddenNavDisappear = YES;
+        vc.isMainPage = NO;
+        vc.pageClass = @"joinCourse";
+        vc.delegate = self;
+        if (SWNOTEmptyStr(courseSortIdString)) {
+            vc.typeId = courseSortIdString;
+        }
+        vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
+    }
+}
+
+// MARK: - 筛选点击a代理
+- (void)sortTypeChoose:(NSDictionary *)info {
+    if (SWNOTEmptyDictionary(info)) {
+        courseSortString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+        courseSortIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    }
 }
 
 /*
