@@ -58,3 +58,24 @@
 }
 
 @end
+
+@implementation UserCouponModel
+
++(NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"listId":@"id"};
+}
+
+-(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
+{
+    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"user_id"] || [property.name isEqualToString:@"coupon_id"] || [property.name isEqualToString:@"mhm_id"]) {
+        if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
+            return [NSString stringWithFormat:@"%@",oldValue];
+        }else if (!NOTNULL(oldValue)){
+            return @"";
+        }
+    }
+    return oldValue;
+}
+
+@end

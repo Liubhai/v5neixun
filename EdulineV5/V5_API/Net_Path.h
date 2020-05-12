@@ -157,6 +157,12 @@ struct NetWorkUrl {
 /** 用户信息 */
 + (NSString *)userCenterInfo;
 
+/** 我的卡券 */
++ (NSString *)myCouponsList:(NSString *)couponType;
+
+/** 兑换 */
++ (NSString *)couponExchange;
+
 @end
 
 NS_ASSUME_NONNULL_END

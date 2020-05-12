@@ -196,4 +196,12 @@
     return [Net_Path fullPath:@"user/profile" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)myCouponsList:(NSString *)couponType {
+    return [Net_Path fullPath:@"user/coupon/{type}" repalce:@"{type}" byReplece:couponType];
+}
+
++ (NSString *)couponExchange {
+    return [Net_Path fullPath:@"user/coupon/exchange" repalce:@"" byReplece:@""];
+}
+
 @end

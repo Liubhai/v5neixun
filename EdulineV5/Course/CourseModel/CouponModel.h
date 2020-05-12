@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CouponModel,CouponArrayModel;
+@class CouponModel,CouponArrayModel,UserCouponModel;
 
 @interface CouponModel : NSObject
 
@@ -83,6 +83,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSArray *list;//数组
 @property (strong, nonatomic) NSString *coupon_type_text;
+@property (assign, nonatomic) BOOL useful;
+
+@end
+
+@interface UserCouponModel : NSObject
+
+/**
+"id": 3,
+"user_id": 1,
+"coupon_id": 6,
+"mhm_id": 1,
+"create_time": 1587974763,
+"end_time": 1607702400,
+"status": 0,
+*/
+
+@property (strong, nonatomic) NSString *listId;
+@property (strong, nonatomic) NSString *user_id;
+@property (strong, nonatomic) NSString *coupon_id;
+@property (strong, nonatomic) NSString *mhm_id;
+@property (strong, nonatomic) NSString *end_time;
+@property (strong, nonatomic) NSString *create_time;
+@property (assign, nonatomic) BOOL status;
+
+@property (strong, nonatomic) CouponModel *coupon;//数组
 @property (assign, nonatomic) BOOL useful;
 
 @end

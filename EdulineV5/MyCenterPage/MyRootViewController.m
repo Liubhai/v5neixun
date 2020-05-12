@@ -20,6 +20,7 @@
 #import "MyBalanceVC.h"
 #import "MyScoreVC.h"
 #import "MyIncomeVC.h"
+#import "MycouponsRootVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -156,6 +157,11 @@
     } else {
         return 0;
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
