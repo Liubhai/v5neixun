@@ -140,6 +140,8 @@
 		789DB03E24698EE8001302B4 /* JoinCourseTypeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB03D24698EE8001302B4 /* JoinCourseTypeVC.m */; };
 		789DB041246A4436001302B4 /* MycouponsRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB040246A4436001302B4 /* MycouponsRootVC.m */; };
 		789DB044246A4499001302B4 /* MycouponsListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB043246A4499001302B4 /* MycouponsListVC.m */; };
+		789DB047246ABF2F001302B4 /* LearnRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB046246ABF2F001302B4 /* LearnRecordVC.m */; };
+		789DB04A246AC624001302B4 /* LearnRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB049246AC624001302B4 /* LearnRecordCell.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -618,6 +620,10 @@
 		789DB040246A4436001302B4 /* MycouponsRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MycouponsRootVC.m; sourceTree = "<group>"; };
 		789DB042246A4499001302B4 /* MycouponsListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MycouponsListVC.h; sourceTree = "<group>"; };
 		789DB043246A4499001302B4 /* MycouponsListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MycouponsListVC.m; sourceTree = "<group>"; };
+		789DB045246ABF2F001302B4 /* LearnRecordVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LearnRecordVC.h; sourceTree = "<group>"; };
+		789DB046246ABF2F001302B4 /* LearnRecordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LearnRecordVC.m; sourceTree = "<group>"; };
+		789DB048246AC624001302B4 /* LearnRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LearnRecordCell.h; sourceTree = "<group>"; };
+		789DB049246AC624001302B4 /* LearnRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LearnRecordCell.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1330,6 +1336,8 @@
 				789DB040246A4436001302B4 /* MycouponsRootVC.m */,
 				789DB042246A4499001302B4 /* MycouponsListVC.h */,
 				789DB043246A4499001302B4 /* MycouponsListVC.m */,
+				789DB045246ABF2F001302B4 /* LearnRecordVC.h */,
+				789DB046246ABF2F001302B4 /* LearnRecordVC.m */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 			);
@@ -1761,6 +1769,8 @@
 				7853164724502E49007E239E /* MenberCell.m */,
 				789DB0282466B3D6001302B4 /* BalanceDetailCell.h */,
 				789DB0292466B3D6001302B4 /* BalanceDetailCell.m */,
+				789DB048246AC624001302B4 /* LearnRecordCell.h */,
+				789DB049246AC624001302B4 /* LearnRecordCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2604,6 +2614,7 @@
 				78C54938241B642B00A33FC4 /* AVCVideoDownloadTCell.m in Sources */,
 				78C54845241873EB00A33FC4 /* UserModel.m in Sources */,
 				78C54962241B642B00A33FC4 /* DownloadManager.m in Sources */,
+				789DB04A246AC624001302B4 /* LearnRecordCell.m in Sources */,
 				78C549C6241B674E00A33FC4 /* AlivcKeyboardManager.m in Sources */,
 				7839C98E2420D089002F6595 /* CourseCommentCell.m in Sources */,
 				78AA138924406009007087F7 /* HomePageTeacherCell.m in Sources */,
@@ -2698,6 +2709,7 @@
 				789DB03B24698BC3001302B4 /* JoinCourseVC.m in Sources */,
 				78A16C8A2452F7C100391430 /* TICKeychainWrapper.m in Sources */,
 				7879566D240F39200013F95F /* BaseViewController.m in Sources */,
+				789DB047246ABF2F001302B4 /* LearnRecordVC.m in Sources */,
 				78C5494B241B642B00A33FC4 /* AliyunPlayerViewQualityListView.m in Sources */,
 				787957622410E1F40013F95F /* LoginViewController.m in Sources */,
 				7853BDC8242AEB1E00F096EC /* CourseDetailPlayVC.m in Sources */,
