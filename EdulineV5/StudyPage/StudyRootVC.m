@@ -12,6 +12,8 @@
 #import "StudyCourseCell.h"
 #import "V5_Constant.h"
 #import "JoinCourseVC.h"
+#import "UserModel.h"
+#import "AppDelegate.h"
 
 @interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger currentCourseType;
@@ -31,9 +33,27 @@
 @property (strong, nonatomic) UIView *changeTypeBackView;
 @property (strong, nonatomic) UIButton *changeTypeBtn;
 
+@property (strong, nonatomic) UIView *notLoginView;
+@property (strong, nonatomic) UIImageView *notLoginIcon;
+@property (strong, nonatomic) UILabel *notLoginLabel;
+@property (strong, nonatomic) UIButton *notLoginButton;
+
 @end
 
 @implementation StudyRootVC
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (SWNOTEmptyStr([UserModel oauthToken])) {
+        if (_notLoginView) {
+            _notLoginView.hidden = YES;
+        }
+    } else {
+        if (_notLoginView) {
+            _notLoginView.hidden = NO;
+        }
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,6 +69,41 @@
     _titleImage.hidden = YES;
     
     [self makeTableView];
+    [self makeNotLoginView];
+    if (SWNOTEmptyStr([UserModel oauthToken])) {
+        _notLoginView.hidden = YES;
+    } else {
+        _notLoginView.hidden = NO;
+    }
+}
+
+- (void)makeNotLoginView {
+    
+    _notLoginView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT)];
+    _notLoginView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_notLoginView];
+    
+    _notLoginIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth/2.0 - 71, _notLoginView.height/2.0 - 25 - 35 - 106, 142, 106)];
+    _notLoginIcon.image = Image(@"empty_img");
+    [_notLoginView addSubview:_notLoginIcon];
+    
+    _notLoginLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _notLoginIcon.bottom + 15, MainScreenWidth, 20)];
+    _notLoginLabel.text = @"登录后查看更多内容~";
+    _notLoginLabel.font = SYSTEMFONT(14);
+    _notLoginLabel.textColor = EdlineV5_Color.textSecendColor;
+    _notLoginLabel.textAlignment = NSTextAlignmentCenter;
+    [_notLoginView addSubview:_notLoginLabel];
+    
+    _notLoginButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _notLoginLabel.bottom + 50, 110, 36)];
+    [_notLoginButton setTitle:@"登录" forState:0];
+    [_notLoginButton setTitleColor:[UIColor whiteColor] forState:0];
+    _notLoginButton.titleLabel.font = SYSTEMFONT(16);
+    _notLoginButton.backgroundColor = EdlineV5_Color.themeColor;
+    _notLoginButton.layer.masksToBounds = YES;
+    _notLoginButton.layer.cornerRadius = 18;
+    _notLoginButton.centerX = _notLoginIcon.centerX;
+    [_notLoginButton addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_notLoginView addSubview:_notLoginButton];
 }
 
 - (void)makeChangeTypeBackView {
@@ -333,6 +388,10 @@
 - (void)moreJoinCourseButtonClick:(UIButton *)sender {
     JoinCourseVC *vc = [[JoinCourseVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)loginButtonClick:(UIButton *)sender {
+    [AppDelegate presentLoginNav:self];
 }
 
 - (void)getStudyInfo {
