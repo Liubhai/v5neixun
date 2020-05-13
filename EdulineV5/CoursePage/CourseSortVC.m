@@ -26,6 +26,10 @@
     _dataSource = [NSMutableArray new];
     if ([_pageClass isEqualToString:@"joinCourse"]) {
         [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"default"},@{@"title":@"未开始",@"id":@"splendid"},@{@"title":@"学习中",@"id":@"popular"},@{@"title":@"已完成",@"id":@"latest"}]];
+    } else if ([_pageClass isEqualToString:@"incomeTime"]) {
+        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"default"},@{@"title":@"本月",@"id":@"splendid"}]];
+    } else if ([_pageClass isEqualToString:@"incomeType"]) {
+        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"default"},@{@"title":@"分成",@"id":@"splendid"},@{@"title":@"推广",@"id":@"popular"}]];
     } else {
         [_dataSource addObjectsFromArray:@[@{@"title":@"综合排序",@"id":@"default"},@{@"title":@"推荐",@"id":@"splendid"},@{@"title":@"畅销",@"id":@"popular"},@{@"title":@"最新",@"id":@"latest"}]];
     }

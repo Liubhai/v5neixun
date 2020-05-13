@@ -9,6 +9,7 @@
 #import "MyIncomeVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "IncomeDetailVC.h"
 
 @interface MyIncomeVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
@@ -498,6 +499,11 @@
         i++;
     }
     return res;
+}
+
+- (void)rightButtonClick:(id)sender {
+    IncomeDetailVC *vc = [[IncomeDetailVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
