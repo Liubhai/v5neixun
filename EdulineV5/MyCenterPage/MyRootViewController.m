@@ -22,6 +22,7 @@
 #import "MyIncomeVC.h"
 #import "MycouponsRootVC.h"
 #import "LearnRecordVC.h"
+#import "MyCollectCourseVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -168,6 +169,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
         LearnRecordVC *vc = [[LearnRecordVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    } else if (indexPath.row == 1) {
+        MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
         return;
     }

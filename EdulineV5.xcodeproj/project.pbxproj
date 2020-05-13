@@ -145,6 +145,9 @@
 		789DB04D246B9031001302B4 /* IncomeDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB04C246B9031001302B4 /* IncomeDetailVC.m */; };
 		789DB050246BC68C001302B4 /* ScoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB04F246BC68C001302B4 /* ScoreCell.m */; };
 		789DB053246BCF46001302B4 /* ScoreDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB052246BCF46001302B4 /* ScoreDetailVC.m */; };
+		789DB056246C168F001302B4 /* MyCollectCourseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB055246C168F001302B4 /* MyCollectCourseVC.m */; };
+		789DB059246C1858001302B4 /* CollectionListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB058246C1858001302B4 /* CollectionListVC.m */; };
+		789DB05C246C2680001302B4 /* LBHScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB05B246C2680001302B4 /* LBHScrollView.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -633,6 +636,12 @@
 		789DB04F246BC68C001302B4 /* ScoreCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreCell.m; sourceTree = "<group>"; };
 		789DB051246BCF46001302B4 /* ScoreDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoreDetailVC.h; sourceTree = "<group>"; };
 		789DB052246BCF46001302B4 /* ScoreDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreDetailVC.m; sourceTree = "<group>"; };
+		789DB054246C168F001302B4 /* MyCollectCourseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCollectCourseVC.h; sourceTree = "<group>"; };
+		789DB055246C168F001302B4 /* MyCollectCourseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCollectCourseVC.m; sourceTree = "<group>"; };
+		789DB057246C1858001302B4 /* CollectionListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionListVC.h; sourceTree = "<group>"; };
+		789DB058246C1858001302B4 /* CollectionListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectionListVC.m; sourceTree = "<group>"; };
+		789DB05A246C2680001302B4 /* LBHScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBHScrollView.h; sourceTree = "<group>"; };
+		789DB05B246C2680001302B4 /* LBHScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBHScrollView.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1351,6 +1360,10 @@
 				789DB043246A4499001302B4 /* MycouponsListVC.m */,
 				789DB045246ABF2F001302B4 /* LearnRecordVC.h */,
 				789DB046246ABF2F001302B4 /* LearnRecordVC.m */,
+				789DB054246C168F001302B4 /* MyCollectCourseVC.h */,
+				789DB055246C168F001302B4 /* MyCollectCourseVC.m */,
+				789DB057246C1858001302B4 /* CollectionListVC.h */,
+				789DB058246C1858001302B4 /* CollectionListVC.m */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 			);
@@ -1368,6 +1381,8 @@
 				7839C96E241F174D002F6595 /* LBHProgressView.m */,
 				7839C96D241F174D002F6595 /* LBHTableView.h */,
 				7839C96F241F174D002F6595 /* LBHTableView.m */,
+				789DB05A246C2680001302B4 /* LBHScrollView.h */,
+				789DB05B246C2680001302B4 /* LBHScrollView.m */,
 				7839C973241F5C57002F6595 /* StarEvaluator.h */,
 				7839C974241F5C57002F6595 /* StarEvaluator.m */,
 				7839C9952421CB1C002F6595 /* CommentBaseView.h */,
@@ -2647,6 +2662,7 @@
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
 				78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */,
 				7853167F24518B4D007E239E /* TICConfig.m in Sources */,
+				789DB059246C1858001302B4 /* CollectionListVC.m in Sources */,
 				7853BDCD242C486E00F096EC /* OrderViewController.m in Sources */,
 				78795753240FAA7A0013F95F /* NSDate+Category.m in Sources */,
 				7853169024519A35007E239E /* UIViewController+Utils.m in Sources */,
@@ -2684,6 +2700,7 @@
 				78C5487D2418CC7400A33FC4 /* TYTextStorage.m in Sources */,
 				78AA138F24407197007087F7 /* HomePageCourseTypeTwoCell.m in Sources */,
 				78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */,
+				789DB056246C168F001302B4 /* MyCollectCourseVC.m in Sources */,
 				78C5497C241B642B00A33FC4 /* _AlivcLiveBeautifyLevelView.m in Sources */,
 				7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */,
 				78C549C8241B674E00A33FC4 /* AlivcScanViewController.m in Sources */,
@@ -2816,6 +2833,7 @@
 				78AA135C243C22B8007087F7 /* CourseScreenVC.m in Sources */,
 				78795735240FA3840013F95F /* ZLPhotoPickerViewController.m in Sources */,
 				78795755240FAA7A0013F95F /* NSString+Hashing.m in Sources */,
+				789DB05C246C2680001302B4 /* LBHScrollView.m in Sources */,
 				78A16C8C2452F7C100391430 /* TICRenderView.m in Sources */,
 				78C54954241B642B00A33FC4 /* AVC_VP_BaseViewController.m in Sources */,
 				78C549E2241B674F00A33FC4 /* NSData+AlivcHelper.m in Sources */,
