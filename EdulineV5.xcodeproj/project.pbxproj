@@ -143,6 +143,8 @@
 		789DB047246ABF2F001302B4 /* LearnRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB046246ABF2F001302B4 /* LearnRecordVC.m */; };
 		789DB04A246AC624001302B4 /* LearnRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB049246AC624001302B4 /* LearnRecordCell.m */; };
 		789DB04D246B9031001302B4 /* IncomeDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB04C246B9031001302B4 /* IncomeDetailVC.m */; };
+		789DB050246BC68C001302B4 /* ScoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB04F246BC68C001302B4 /* ScoreCell.m */; };
+		789DB053246BCF46001302B4 /* ScoreDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB052246BCF46001302B4 /* ScoreDetailVC.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -627,6 +629,10 @@
 		789DB049246AC624001302B4 /* LearnRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LearnRecordCell.m; sourceTree = "<group>"; };
 		789DB04B246B9031001302B4 /* IncomeDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IncomeDetailVC.h; sourceTree = "<group>"; };
 		789DB04C246B9031001302B4 /* IncomeDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IncomeDetailVC.m; sourceTree = "<group>"; };
+		789DB04E246BC68C001302B4 /* ScoreCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoreCell.h; sourceTree = "<group>"; };
+		789DB04F246BC68C001302B4 /* ScoreCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreCell.m; sourceTree = "<group>"; };
+		789DB051246BCF46001302B4 /* ScoreDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoreDetailVC.h; sourceTree = "<group>"; };
+		789DB052246BCF46001302B4 /* ScoreDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreDetailVC.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1335,6 +1341,8 @@
 				789DB0262466B38F001302B4 /* BalanceDetailVC.m */,
 				789DB04B246B9031001302B4 /* IncomeDetailVC.h */,
 				789DB04C246B9031001302B4 /* IncomeDetailVC.m */,
+				789DB051246BCF46001302B4 /* ScoreDetailVC.h */,
+				789DB052246BCF46001302B4 /* ScoreDetailVC.m */,
 				789DB02B2468E82A001302B4 /* CardInterVC.h */,
 				789DB02C2468E82A001302B4 /* CardInterVC.m */,
 				789DB03F246A4436001302B4 /* MycouponsRootVC.h */,
@@ -1774,6 +1782,8 @@
 				7853164724502E49007E239E /* MenberCell.m */,
 				789DB0282466B3D6001302B4 /* BalanceDetailCell.h */,
 				789DB0292466B3D6001302B4 /* BalanceDetailCell.m */,
+				789DB04E246BC68C001302B4 /* ScoreCell.h */,
+				789DB04F246BC68C001302B4 /* ScoreCell.m */,
 				789DB048246AC624001302B4 /* LearnRecordCell.h */,
 				789DB049246AC624001302B4 /* LearnRecordCell.m */,
 			);
@@ -2556,6 +2566,7 @@
 				787E19AE24566F0300E2E016 /* OrderRootVC.m in Sources */,
 				78C5497D241B642B00A33FC4 /* AlivcLiveBeautifySettingsViewController.m in Sources */,
 				787E19B124566FAE00E2E016 /* OrderCell.m in Sources */,
+				789DB050246BC68C001302B4 /* ScoreCell.m in Sources */,
 				78C54948241B642B00A33FC4 /* AliyunGestureModel.m in Sources */,
 				78C5494D241B642B00A33FC4 /* AlilyunViewLoadingView.m in Sources */,
 				78C549D8241B674F00A33FC4 /* UIView+AlivcHelper.m in Sources */,
@@ -2614,6 +2625,7 @@
 				78795730240FA3840013F95F /* ZLPhotoPickerGroup.m in Sources */,
 				78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */,
 				789DB04D246B9031001302B4 /* IncomeDetailVC.m in Sources */,
+				789DB053246BCF46001302B4 /* ScoreDetailVC.m in Sources */,
 				7853165824513A2E007E239E /* LiveRoomPersonCell.m in Sources */,
 				78AA139224441083007087F7 /* IntendedCourseVC.m in Sources */,
 				78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */,

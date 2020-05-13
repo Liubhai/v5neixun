@@ -68,4 +68,7 @@
 
 + (NSString *)timeForYYYYMMDDHHMM:(NSString *)time;
 
+/** 获取某个颜色值的rgb值 */
++ (const CGFloat *)getColorRGB:(UIColor *)currentColor;
+
 @end

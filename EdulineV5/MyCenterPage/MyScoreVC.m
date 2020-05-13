@@ -9,6 +9,7 @@
 #import "MyScoreVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "ScoreDetailVC.h"
 
 @interface MyScoreVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
@@ -65,6 +66,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+    
     
     sple_score_str = @"10";
     
@@ -496,6 +498,11 @@
         i++;
     }
     return res;
+}
+
+- (void)rightButtonClick:(id)sender {
+    ScoreDetailVC *vc = [[ScoreDetailVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

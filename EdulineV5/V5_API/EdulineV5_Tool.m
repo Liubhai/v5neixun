@@ -515,4 +515,14 @@ static EdulineV5_Tool *_sharedInstance;
     [sender setImageEdgeInsets:UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth)];
 }
 
++ (const CGFloat *)getColorRGB:(UIColor *)currentColor {
+    CGColorRef color = [currentColor CGColor];
+    int numComponents = CGColorGetNumberOfComponents(color);
+    if (numComponents == 4) {
+        const CGFloat *components = CGColorGetComponents(color);
+        return components;
+    }
+    return nil;
+}
+
 @end
