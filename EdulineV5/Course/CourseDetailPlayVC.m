@@ -85,6 +85,10 @@
 
 @implementation CourseDetailPlayVC
 
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     AppDelegate *app = [AppDelegate delegate];
@@ -127,6 +131,8 @@
     self.canScroll = YES;
     _titleLabel.text = @"课程详情";
     _titleImage.backgroundColor = BasidColor;
+    
+    _titleLabel.textColor = [UIColor whiteColor];
 
     [self makeHeaderView];
     [self makeSubViews];

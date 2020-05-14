@@ -48,7 +48,7 @@
     _incomeButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [_incomeButton setTitle:@"全部" forState:UIControlStateNormal];
     [_incomeButton setImage:Image(@"sanjiao_icon_nor") forState:UIControlStateNormal];
-    [_incomeButton setImage:Image(@"sanjiao_icon_pre") forState:UIControlStateSelected];
+    [_incomeButton setImage:[Image(@"sanjiao_icon_pre") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateSelected];
     [_incomeButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateNormal];
     [_incomeButton setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
     [EdulineV5_Tool dealButtonImageAndTitleUI:_incomeButton];
@@ -60,7 +60,7 @@
     _timeButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [_timeButton setTitle:@"时间" forState:UIControlStateNormal];
     [_timeButton setImage:Image(@"sanjiao_icon_nor") forState:UIControlStateNormal];
-    [_timeButton setImage:Image(@"sanjiao_icon_pre") forState:UIControlStateSelected];
+    [_timeButton setImage:[Image(@"sanjiao_icon_pre") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateSelected];
     [_timeButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateNormal];
     [_timeButton setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
     [EdulineV5_Tool dealButtonImageAndTitleUI:_timeButton];

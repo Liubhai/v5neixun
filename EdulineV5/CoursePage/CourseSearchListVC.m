@@ -119,7 +119,7 @@
         button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [button setTitle:titleArray[i] forState:UIControlStateNormal];
         [button setImage:Image(@"sanjiao_icon_nor") forState:UIControlStateNormal];
-        [button setImage:Image(@"sanjiao_icon_pre") forState:UIControlStateSelected];
+        [button setImage:[Image(@"sanjiao_icon_pre") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateSelected];
         [button setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateNormal];
         [button setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
         [EdulineV5_Tool dealButtonImageAndTitleUI:button];

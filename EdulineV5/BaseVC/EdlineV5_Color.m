@@ -18,11 +18,19 @@
 
 /** 基本色 */
 + (UIColor *)baseColor {
+    NSString *themeColorString = [[NSUserDefaults standardUserDefaults] objectForKey:@"color"];
+    if ([themeColorString isEqualToString:@"1"]) {
+        return [UIColor redColor];
+    }
     return HEXCOLORV5(0x5191FF);
 }
 
 /** 主题色 */
 + (UIColor *)themeColor {
+    NSString *themeColorString = [[NSUserDefaults standardUserDefaults] objectForKey:@"color"];
+    if ([themeColorString isEqualToString:@"1"]) {
+        return [UIColor redColor];
+    }
     return HEXCOLORV5(0x5191FF);
 }
 

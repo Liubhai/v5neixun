@@ -17,6 +17,8 @@
 #import "AppDelegate.h"
 #import "AVC_VP_VideoPlayViewController.h"
 #import "CourseSearchListVC.h"
+#import "NSObject+PYThemeExtension.h"
+#import "UIImage+Util.h"
 
 @interface RootV5VC ()
 
@@ -90,13 +92,16 @@ static RootV5VC *sharedBaseTabBar;
         [btn setImage:imageNol forState:UIControlStateNormal];
         //选中状态时的图片
         UIImage * imageSelected = [UIImage imageNamed:selectedArray[i]];
-        [btn setImage:imageSelected forState:UIControlStateSelected];
+//        [imageSelected py_addToThemeColorPoolWithSelector:@selector(converToOtherColor:) objects:@[PYTHEME_THEME_COLOR]];
+        
+        [btn setImage:[imageSelected converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateSelected];
+//        [btn py_addToThemeColorPoolWithSelector:@selector(setImage:forState:) objects:@[imageSelected, @(UIControlStateSelected)]];
         
         [btn setTitle:normalTitleArray[i] forState:0];
         [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
         [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
         btn.titleLabel.font = SYSTEMFONT(12);
-        
+//        [btn py_addToThemeColorPoolWithSelector:@selector(setTitleColor:forState:) objects:@[PYTHEME_THEME_COLOR, @(UIControlStateSelected)]];
         CGFloat imageWith = btn.imageView.frame.size.width;
         CGFloat imageHeight = btn.imageView.frame.size.height;
         

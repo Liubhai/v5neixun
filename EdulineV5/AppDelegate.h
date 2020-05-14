@@ -24,6 +24,8 @@
 
 - (RootV5VC *)rootVC;
 
+- (void)changeThemeColor;
+
 +(void)presentLoginNav:(UIViewController *)currentViewController;
 
 @end

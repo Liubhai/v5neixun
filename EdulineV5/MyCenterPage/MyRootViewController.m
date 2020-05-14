@@ -32,6 +32,7 @@
 #import "MyCenterTypeOneCell.h"
 #import "MyCenterTypeTwoCell.h"
 #import "UIImage+Util.h"
+#import "NSObject+PYThemeExtension.h"
 
 @interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate,MyCenterBalanceViewDelegate>
 
@@ -174,6 +175,16 @@
     } else if (indexPath.row == 1) {
         MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+        return;
+    } else if (indexPath.row == 2) {
+//        [self py_setThemeColor:EdlineV5_Color.faildColor];
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"color"];
+        [[AppDelegate delegate] changeThemeColor];
+        return;
+    } else if (indexPath.row == 3) {
+//        [self py_setThemeColor:EdlineV5_Color.themeColor];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"color"];
+        [[AppDelegate delegate] changeThemeColor];
         return;
     }
     MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];

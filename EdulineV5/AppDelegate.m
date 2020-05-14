@@ -79,6 +79,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
+    self.window.tintColor = [UIColor redColor];//EdlineV5_Color.faildColor;
     
     self.tabbar = [RootV5VC sharedBaseTabBarViewController];
     self.window.rootViewController = self.tabbar;
@@ -108,6 +109,18 @@
 
 - (void)logout {
     [UserModel deleteUserPassport];
+    [RootV5VC destoryShared];
+    if (self.window.rootViewController) {
+        [self.window.rootViewController removeFromParentViewController];
+        self.window.rootViewController = nil;
+    }
+    self.tabbar = [RootV5VC sharedBaseTabBarViewController];
+    self.tabbar.selectedIndex = [self.tabbar.childViewControllers count] - 1;
+    [self.tabbar rootVcIndexWithNum:[self.tabbar.childViewControllers count]];
+    self.window.rootViewController = self.tabbar;
+}
+
+- (void)changeThemeColor {
     [RootV5VC destoryShared];
     if (self.window.rootViewController) {
         [self.window.rootViewController removeFromParentViewController];

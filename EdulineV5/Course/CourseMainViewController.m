@@ -21,6 +21,7 @@
 #import "CourseListVC.h"
 #import "CourseDetailPlayVC.h"
 #import "LingquanViewController.h"
+#import "InstitutionRootVC.h"
 
 //
 #import "OrderViewController.h"
@@ -80,6 +81,10 @@
 
 @implementation CourseMainViewController
 
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -93,6 +98,8 @@
     self.canScroll = YES;
     _titleLabel.text = @"课程详情";
     _titleImage.backgroundColor = BasidColor;
+    
+    _titleLabel.textColor = [UIColor whiteColor];
     
     [self makeHeaderView];
     [self makeSubViews];
@@ -433,7 +440,8 @@
 
 // MARK: - 讲师机构点击事件(讲师)
 - (void)jumpToOrganization:(NSDictionary *)schoolInfo {
-    
+    InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 // MARK: - 讲师机构点击事件(机构)
