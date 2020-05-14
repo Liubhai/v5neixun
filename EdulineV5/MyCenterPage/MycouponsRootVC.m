@@ -182,12 +182,21 @@
 
 - (BOOL)validateNumber:(NSString*)number {
     BOOL res = YES;
-    NSCharacterSet* tmpSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+//    NSString *regex = @"\\d{0,}([a-z]{1,}\\d{1,}){1,}[a-z]{0,}";
+//    regex = @"((?=.*\\d)(?=.*[a-zA-Z]))[\\da-zA-Z]*";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[a-zA-Z0-9]*"];
+//    NSCharacterSet* tmpSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
     int i = 0;
     while (i < number.length) {
+//        NSString * string = [number substringWithRange:NSMakeRange(i, 1)];
+//        NSRange range = [string rangeOfCharacterFromSet:tmpSet];
+//        if (range.length == 0) {
+//            res = NO;
+//            break;
+//        }
         NSString * string = [number substringWithRange:NSMakeRange(i, 1)];
-        NSRange range = [string rangeOfCharacterFromSet:tmpSet];
-        if (range.length == 0) {
+        BOOL isOk = [predicate evaluateWithObject:string];
+        if (!isOk) {
             res = NO;
             break;
         }
