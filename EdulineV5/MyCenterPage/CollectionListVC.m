@@ -26,11 +26,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
     page = 1;
     [self makeTableView];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOrderList) name:@"reloadOrderList" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(canScroll:) name:@"canScrollTable" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(canScroll:) name:@"canScrollTable" object:nil];
 }
 
 - (void)dealloc {
@@ -74,6 +75,7 @@
     
 }
 
+/**
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"删除";
 }
@@ -100,5 +102,6 @@
         _tableView.scrollEnabled = NO;
     }
 }
+*/
 
 @end

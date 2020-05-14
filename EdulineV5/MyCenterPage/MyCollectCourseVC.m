@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "CollectionListVC.h"
 #import "LBHScrollView.h"
+#import "MyCollectionCourseManagerVC.h"
 
 @interface MyCollectCourseVC ()<UIScrollViewDelegate>
 
@@ -22,7 +23,7 @@
 @property (strong, nonatomic) UIButton *otherButton;
 @property (strong, nonatomic) NSMutableArray *typeArray;
 
-@property (strong, nonatomic) LBHScrollView *mainScrollView;
+@property (strong, nonatomic) UIScrollView *mainScrollView;
 
 @end
 
@@ -32,6 +33,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"我的收藏";
+    [_rightButton setImage:nil forState:0];
+    [_rightButton setTitle:@"管理" forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    _rightButton.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     
@@ -78,20 +83,18 @@
 }
 
 - (void)makeScrollView {
-    _mainScrollView = [[LBHScrollView alloc]initWithFrame:CGRectMake(0,_topView.bottom, MainScreenWidth, MainScreenHeight - _topView.bottom)];
+    _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,_topView.bottom, MainScreenWidth, MainScreenHeight - _topView.bottom)];
     _mainScrollView.contentSize = CGSizeMake(MainScreenWidth*_typeArray.count, 0);
     _mainScrollView.pagingEnabled = YES;
     _mainScrollView.showsHorizontalScrollIndicator = NO;
     _mainScrollView.showsVerticalScrollIndicator = NO;
     _mainScrollView.bounces = NO;
     _mainScrollView.delegate = self;
-    _mainScrollView.delaysContentTouches = NO;
-    _mainScrollView.canCancelContentTouches = NO;
     [self.view addSubview:_mainScrollView];
     
     for (int i = 0; i<_typeArray.count; i++) {
         CollectionListVC *vc = [[CollectionListVC alloc] init];
-        vc.orderType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
+        vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
         vc.view.frame = CGRectMake(MainScreenWidth*i, 0, MainScreenWidth, _mainScrollView.height);
         [_mainScrollView addSubview:vc.view];
         [self addChildViewController:vc];
@@ -99,7 +102,7 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"canScrollTable" object:nil userInfo:@{@"can":@"0"}];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"canScrollTable" object:nil userInfo:@{@"can":@"0"}];
     if (scrollView == _mainScrollView) {
         if (scrollView.contentOffset.x <= 0) {
             self.lineView.centerX = self.allButton.centerX;
@@ -141,11 +144,25 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"canScrollTable" object:nil userInfo:@{@"can":@"1"}];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"canScrollTable" object:nil userInfo:@{@"can":@"1"}];
 }
 
 - (void)topButtonClick:(UIButton *)sender {
     [self.mainScrollView setContentOffset:CGPointMake(MainScreenWidth * sender.tag, 0) animated:YES];
+}
+
+- (void)rightButtonClick:(id)sender {
+    MyCollectionCourseManagerVC *vc = [[MyCollectionCourseManagerVC alloc] init];
+    NSInteger i = 0;
+    for (UIButton *btn in _topView.subviews) {
+        if ([btn isKindOfClass:[UIButton class]]) {
+            if (btn.selected) {
+                i = btn.tag;
+            }
+        }
+    }
+    vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

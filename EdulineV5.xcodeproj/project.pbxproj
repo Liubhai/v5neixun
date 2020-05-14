@@ -148,6 +148,8 @@
 		789DB056246C168F001302B4 /* MyCollectCourseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB055246C168F001302B4 /* MyCollectCourseVC.m */; };
 		789DB059246C1858001302B4 /* CollectionListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB058246C1858001302B4 /* CollectionListVC.m */; };
 		789DB05C246C2680001302B4 /* LBHScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB05B246C2680001302B4 /* LBHScrollView.m */; };
+		789DB05F246CE3B1001302B4 /* MyCollectionCourseManagerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB05E246CE3B1001302B4 /* MyCollectionCourseManagerVC.m */; };
+		789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB061246CF042001302B4 /* CourseCollectionManagerCell.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -642,6 +644,10 @@
 		789DB058246C1858001302B4 /* CollectionListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectionListVC.m; sourceTree = "<group>"; };
 		789DB05A246C2680001302B4 /* LBHScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBHScrollView.h; sourceTree = "<group>"; };
 		789DB05B246C2680001302B4 /* LBHScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBHScrollView.m; sourceTree = "<group>"; };
+		789DB05D246CE3B1001302B4 /* MyCollectionCourseManagerVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCollectionCourseManagerVC.h; sourceTree = "<group>"; };
+		789DB05E246CE3B1001302B4 /* MyCollectionCourseManagerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCollectionCourseManagerVC.m; sourceTree = "<group>"; };
+		789DB060246CF042001302B4 /* CourseCollectionManagerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCollectionManagerCell.h; sourceTree = "<group>"; };
+		789DB061246CF042001302B4 /* CourseCollectionManagerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCollectionManagerCell.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1364,6 +1370,8 @@
 				789DB055246C168F001302B4 /* MyCollectCourseVC.m */,
 				789DB057246C1858001302B4 /* CollectionListVC.h */,
 				789DB058246C1858001302B4 /* CollectionListVC.m */,
+				789DB05D246CE3B1001302B4 /* MyCollectionCourseManagerVC.h */,
+				789DB05E246CE3B1001302B4 /* MyCollectionCourseManagerVC.m */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 			);
@@ -1801,6 +1809,8 @@
 				789DB04F246BC68C001302B4 /* ScoreCell.m */,
 				789DB048246AC624001302B4 /* LearnRecordCell.h */,
 				789DB049246AC624001302B4 /* LearnRecordCell.m */,
+				789DB060246CF042001302B4 /* CourseCollectionManagerCell.h */,
+				789DB061246CF042001302B4 /* CourseCollectionManagerCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2676,6 +2686,7 @@
 				78C54978241B642B00A33FC4 /* AlivcLiveTransitionController.m in Sources */,
 				78C5497F241B642B00A33FC4 /* AlivcBeautySettingUIDefine.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
+				789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */,
 				78C54950241B642B00A33FC4 /* AliyunSpeedButton.m in Sources */,
 				78C549D5241B674F00A33FC4 /* AlivcKeyboardManageViewController.m in Sources */,
 				7879572F240FA3840013F95F /* ZLPhotoPickerDatas.m in Sources */,
@@ -2845,6 +2856,7 @@
 				7839C9942421B996002F6595 /* CourseCommentDetailVC.m in Sources */,
 				7876572324347DB2008F475D /* FindListCell.m in Sources */,
 				7879564A240E35CE0013F95F /* Net_API.m in Sources */,
+				789DB05F246CE3B1001302B4 /* MyCollectionCourseManagerVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
