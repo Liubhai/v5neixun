@@ -20,6 +20,9 @@
 #import "CourseScreenVC.h"
 #import "CourseClassifyVC.h"
 
+// test
+#import "TeacherCourseListHeaderView.h"
+
 @interface CourseSearchListVC ()<UITextFieldDelegate,CourseTypeVCDelegate,CourseClassifyVCDelegate,CourseSortVCDelegate,CourseScreenVCDelegate> {
     NSInteger page;
     
@@ -187,6 +190,29 @@
     [cell setCourseListInfo:_dataSource[indexPath.row] cellIndex:indexPath cellType:_cellType];
     return cell;
 }
+
+
+//- (CGSize)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+//    CGSize size = CGSizeMake([UIScreen mainScreen].bounds.size.width, 200);
+//    return size;
+//}
+//
+//// 创建一个继承collectionReusableView的类,用法类比tableViewcell
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+//    UICollectionReusableView *reusableView = nil;
+//    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+//        // 头部视图
+//        // 代码初始化表头
+//         [collectionView registerClass:[TeacherCourseListHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"TeacherCourseListHeaderView"];
+//        // xib初始化表头
+////        [collectionView registerNib:[UINib nibWithNibName:@"HeaderReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderReusableView"];
+//        TeacherCourseListHeaderView *tempHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"TeacherCourseListHeaderView" forIndexPath:indexPath];
+//        reusableView = tempHeaderView;
+//    } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+//        // 底部视图
+//    }
+//    return reusableView;
+//}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];

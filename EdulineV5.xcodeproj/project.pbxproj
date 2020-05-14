@@ -152,6 +152,7 @@
 		789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB061246CF042001302B4 /* CourseCollectionManagerCell.m */; };
 		789DB065246D26EC001302B4 /* NSObject+PYThemeExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB064246D26EC001302B4 /* NSObject+PYThemeExtension.m */; };
 		789DB06A246D6576001302B4 /* InstitutionRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB069246D6576001302B4 /* InstitutionRootVC.m */; };
+		789DB06F246D7E04001302B4 /* TeacherCourseListHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB06E246D7E04001302B4 /* TeacherCourseListHeaderView.m */; };
 		78A16C812452F7C100391430 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C632452F7C100391430 /* TICManager.m */; };
 		78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C652452F7C100391430 /* TICWeakProxy.m */; };
 		78A16C832452F7C100391430 /* TICDef.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C672452F7C100391430 /* TICDef.m */; };
@@ -654,6 +655,8 @@
 		789DB064246D26EC001302B4 /* NSObject+PYThemeExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+PYThemeExtension.m"; sourceTree = "<group>"; };
 		789DB068246D6576001302B4 /* InstitutionRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionRootVC.h; sourceTree = "<group>"; };
 		789DB069246D6576001302B4 /* InstitutionRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionRootVC.m; sourceTree = "<group>"; };
+		789DB06D246D7E04001302B4 /* TeacherCourseListHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherCourseListHeaderView.h; sourceTree = "<group>"; };
+		789DB06E246D7E04001302B4 /* TeacherCourseListHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherCourseListHeaderView.m; sourceTree = "<group>"; };
 		78A16C622452F7C100391430 /* TICKeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICKeychainWrapper.h; sourceTree = "<group>"; };
 		78A16C632452F7C100391430 /* TICManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TICManager.m; sourceTree = "<group>"; };
 		78A16C642452F7C100391430 /* TICRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICRenderView.h; sourceTree = "<group>"; };
@@ -1702,8 +1705,18 @@
 			children = (
 				789DB068246D6576001302B4 /* InstitutionRootVC.h */,
 				789DB069246D6576001302B4 /* InstitutionRootVC.m */,
+				789DB06B246D7DD4001302B4 /* view */,
 			);
 			path = InstitutionsPage;
+			sourceTree = "<group>";
+		};
+		789DB06B246D7DD4001302B4 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				789DB06D246D7E04001302B4 /* TeacherCourseListHeaderView.h */,
+				789DB06E246D7E04001302B4 /* TeacherCourseListHeaderView.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		78A16C612452F7C100391430 /* TIC */ = {
@@ -2863,6 +2876,7 @@
 				78C54937241B642B00A33FC4 /* AVCLogView.m in Sources */,
 				78AA135C243C22B8007087F7 /* CourseScreenVC.m in Sources */,
 				78795735240FA3840013F95F /* ZLPhotoPickerViewController.m in Sources */,
+				789DB06F246D7E04001302B4 /* TeacherCourseListHeaderView.m in Sources */,
 				78795755240FAA7A0013F95F /* NSString+Hashing.m in Sources */,
 				789DB05C246C2680001302B4 /* LBHScrollView.m in Sources */,
 				78A16C8C2452F7C100391430 /* TICRenderView.m in Sources */,
