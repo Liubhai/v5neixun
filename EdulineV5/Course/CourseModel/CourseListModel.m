@@ -29,3 +29,24 @@
 }
 
 @end
+
+@implementation section_data_model
+
++(NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"fileId":@"id"};
+}
+
+-(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
+{
+    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"uid"] || [property.name isEqualToString:@"attach_id"] || [property.name isEqualToString:@"fileurl"] || [property.name isEqualToString:@"data_type"] || [property.name isEqualToString:@"data_type_text"]) {
+        if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
+            return [NSString stringWithFormat:@"%@",oldValue];
+        }else if (!NOTNULL(oldValue)){
+            return @"";
+        }
+    }
+    return oldValue;
+}
+
+@end

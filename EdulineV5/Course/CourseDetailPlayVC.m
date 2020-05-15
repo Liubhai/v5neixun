@@ -706,7 +706,7 @@
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
 //    http://v5.51eduline.com/test.php
     //https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8
-    if (!SWNOTEmptyStr(model.model.video_url)) {
+    if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
         return;
     }
     for (int i = 0; i<_courseListVC.courseListArray.count; i++) {
@@ -753,7 +753,7 @@
         }
     }
     
-    [self.playerView playViewPrepareWithURL:EdulineUrlString(model.model.video_url)];
+    [self.playerView playViewPrepareWithURL:EdulineUrlString(model.model.section_data.fileurl)];
     [AppDelegate delegate]._allowRotation = YES;
 //    [self tableViewCanNotScroll];
     

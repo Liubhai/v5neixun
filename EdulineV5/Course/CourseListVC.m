@@ -33,7 +33,6 @@
     }
     _courseListArray = [NSMutableArray new];
     _canPlayRecordVideo = YES;
-    _courseId = @"1";
     [self addTableView];
     [self getCourseListData];
 }
