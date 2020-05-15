@@ -134,7 +134,7 @@
 //        learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
 //        priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
     }
-    [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight : ((infoArray.count + 1)/2.0) * TwoCellHeight];
+    [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight + 10 : ((infoArray.count + 1)/2.0) * TwoCellHeight + 10];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

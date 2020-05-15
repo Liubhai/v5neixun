@@ -111,7 +111,23 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
-    sectionHead.backgroundColor = [UIColor redColor];
+    sectionHead.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 56)];
+    themeLabel.font = SYSTEMFONT(19);
+    themeLabel.textColor = EdlineV5_Color.textFirstColor;
+    if (section == 0) {
+        themeLabel.text = @"推荐课程";
+    } else if (section == 1) {
+        themeLabel.text = @"推荐讲师";
+    }
+    [sectionHead addSubview:themeLabel];
+    
+    UIButton *more = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 60, 0, 60, 56)];
+    [more setTitle:@"查看更多" forState:0];
+    more.titleLabel.font = SYSTEMFONT(14);
+    [more setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    [sectionHead addSubview:more];
     return sectionHead;
 }
 

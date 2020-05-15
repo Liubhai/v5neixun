@@ -161,4 +161,13 @@
     }
 }
 
+- (void)setCOurseInfoData:(NSDictionary *)courseInfo {
+    if (SWNOTEmptyDictionary(courseInfo)) {
+        if ([[courseInfo objectForKey:@"is_buy"] boolValue]) {
+            _joinShopCarButton.hidden = YES;
+            [_joinStudyButton setTitle:@"开始学习" forState:0];
+        }
+    }
+}
+
 @end

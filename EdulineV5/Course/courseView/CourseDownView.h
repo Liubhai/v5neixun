@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFrame:(CGRect)frame isRecord:(BOOL)isRecord;
 
+- (void)setCOurseInfoData:(NSDictionary *)courseInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

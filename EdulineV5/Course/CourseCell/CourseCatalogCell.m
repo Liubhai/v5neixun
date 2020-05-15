@@ -37,20 +37,25 @@
     _typeIcon.image = Image(@"contents_icon_video");
     [self addSubview:_typeIcon];
     
-    _lockIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_typeIcon.right + 5, 0, 14, 16)];
+    _lockIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 14, 0, 14, 16)];
     _lockIcon.centerY = 50 / 2.0;
     _lockIcon.image = Image(@"contents_icon_lock");
     [self addSubview:_lockIcon];
     
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_lockIcon.right + 5, 0, 150, 50)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_typeIcon.right + 5, 0, 150, 50)];
     _titleLabel.text = @"第三课时课时名称";
     _titleLabel.textColor = EdlineV5_Color.textSecendColor;
     _titleLabel.font = SYSTEMFONT(14);
     [self addSubview:_titleLabel];
     
-    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.right + 10, 0, 100, 50)];
+    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.right + 10, (50 - 16) / 2.0, 100, 16)];
     _priceLabel.text = @"¥199";
-    _priceLabel.textColor = EdlineV5_Color.textSecendColor;
+    _priceLabel.textAlignment = NSTextAlignmentCenter;
+    _priceLabel.textColor = EdlineV5_Color.faildColor;
+    _priceLabel.layer.masksToBounds = YES;
+    _priceLabel.layer.cornerRadius = 1;
+    _priceLabel.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
+    _priceLabel.layer.borderWidth = 1;
     _priceLabel.font = SYSTEMFONT(14);
     [self addSubview:_priceLabel];
     
@@ -229,7 +234,6 @@
     model.courselayer = @"3";
     model.cellIndex = indexPath;
     [cell setListInfo:model];
-    [cell setListInfo:model];
     return cell;
 }
 
@@ -239,6 +243,14 @@
     
     _titleLabel.text = model.model.title;
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.model.price];
+    CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
+    [_priceLabel setWidth:priceWidth];
+    [_priceLabel setRight:_titleLabel.right + 10];
+    if ([model.model.price floatValue]>0) {
+        _priceLabel.hidden = NO;
+    } else {
+        _priceLabel.hidden = YES;
+    }
     
     if ([_allLayar isEqualToString:@"1"]) {
         [self setHeight:50];
@@ -258,6 +270,7 @@
         }
     } else if ([_allLayar isEqualToString:@"2"]) {
         if ([_courselayer isEqualToString:@"2"]) {
+            _priceLabel.hidden = YES;
             if (model.isExpanded) {
                 [self setHeight:50 + model.child.count * 50];
                 [_cellTableView setHeight:model.child.count * 50];
@@ -286,6 +299,7 @@
         }
     } else if ([_allLayar isEqualToString:@"3"]) {
         if ([_courselayer isEqualToString:@"1"]) {
+            _priceLabel.hidden = YES;
             if (model.isExpanded) {
                 CGFloat cellHeight = 50;
                 for (CourseListModelFinal *object in model.child) {
@@ -308,6 +322,7 @@
                 _cellTableView.hidden = YES;
             }
         } else if ([_courselayer isEqualToString:@"2"]) {
+            _priceLabel.hidden = YES;
             if (model.isExpanded) {
                 [self setHeight:50 + model.child.count * 50];
                 [_cellTableView setHeight:model.child.count * 50];
@@ -336,6 +351,17 @@
                 }
             }
         }
+    }
+    if ([model.model.section_data.data_type isEqualToString:@"1"]) {
+        _typeIcon.image = Image(@"contents_icon_video");
+    } else if ([model.model.section_data.data_type isEqualToString:@"2"]) {
+        _typeIcon.image = Image(@"contents_icon_vioce");
+    } else if ([model.model.section_data.data_type isEqualToString:@"3"]) {
+        _typeIcon.image = Image(@"contents_icon_word");
+    } else if ([model.model.section_data.data_type isEqualToString:@"4"]) {
+        _typeIcon.image = Image(@"contents_icon_text");
+    } else {
+        _typeIcon.image = Image(@"contents_icon_video");
     }
 //    if (!_isMainPage) {
 //        _learnIcon.hidden = YES;

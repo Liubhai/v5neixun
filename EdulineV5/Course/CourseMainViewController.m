@@ -563,10 +563,19 @@
 }
 
 - (void)joinStudyEvent:(CourseDownView *)downView {
-    OrderViewController *vc = [[OrderViewController alloc] init];
-    vc.orderTypeString = @"course";
-    vc.orderId = _ID;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (SWNOTEmptyDictionary(_dataSource)) {
+        if ([[_dataSource objectForKey:@"is_buy"] boolValue]) {
+            CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+            vc.ID = _ID;
+            vc.courselayer = _courselayer;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            OrderViewController *vc = [[OrderViewController alloc] init];
+            vc.orderTypeString = @"course";
+            vc.orderId = _ID;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
 }
 
 - (void)jumpToCommentVC {
@@ -608,6 +617,7 @@
         } else {
             _faceImageView.image = DefaultImage;
         }
+        [_courseDownView setCOurseInfoData:_dataSource];
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:NO];
         if (SWNOTEmptyDictionary([_dataSource objectForKey:@"mhm_info"]) || SWNOTEmptyDictionary([_dataSource objectForKey:@"teacher_info"])) {
             [_teachersHeaderBackView setHeight:59];

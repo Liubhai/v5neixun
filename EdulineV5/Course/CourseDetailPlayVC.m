@@ -80,6 +80,7 @@
 
 // 播放器
 @property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
+@property (strong ,nonatomic)UIWebView *webView;
 
 @end
 
@@ -225,6 +226,39 @@
     
     }
     return _playerView;
+}
+
+- (void)addWebView:(NSString *)textUrl {//文档
+    [_webView removeFromSuperview];
+    _webView = [[UIWebView alloc] initWithFrame:self.playerView.frame];
+    //    if (iPhone4SOriPhone4) {
+    //        _webView.frame = CGRectMake(0, 64, self.view.frame.size.width, (self.view.frame.size.width)*3/5);
+    //    } else if (iPhone5o5Co5S) {
+    //        _webView.frame = CGRectMake(0, 70, MainScreenWidth, MainScreenWidth*3/5);
+    //    } else if (iPhone6) {
+    //        _webView.frame = CGRectMake(0, 0, self.view.frame.size.width, 210 * WideEachUnit);
+    //    } else if (iPhone6Plus) {
+    //        _webView.frame = CGRectMake(0, 64, self.view.frame.size.width, (self.view.frame.size.width)*3/4);
+    //    } else if (iPhoneX) {
+    //        _webView.frame = CGRectMake(0, 88, self.view.frame.size.width, (self.view.frame.size.width)*3/4);
+    //    }
+    _webView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    [self.view addSubview:_webView];
+    
+    
+    [_webView setUserInteractionEnabled:YES];//是否支持交互
+    _webView.delegate = self;
+    [_webView setOpaque:YES];//opaque是不透明的意思
+    [_webView setScalesPageToFit:YES];//自适应
+    
+    NSURL *url = nil;
+    url = [NSURL URLWithString:textUrl];
+    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+    
+    //添加手势
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fakeTapGestureHandler:)];
+    [tapGestureRecognizer setDelegate:self];
+    [_webView.scrollView addGestureRecognizer:tapGestureRecognizer];
 }
 
 // MARK: - tableview 的 headerview
@@ -707,6 +741,10 @@
 //    http://v5.51eduline.com/test.php
     //https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8
     if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
+        return;
+    }
+    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+        [self addWebView:model.model.section_data.fileurl];
         return;
     }
     for (int i = 0; i<_courseListVC.courseListArray.count; i++) {
