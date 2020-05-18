@@ -34,6 +34,8 @@
 @interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate> {
     // 新增内容
     CGFloat sectionHeight;
+    BOOL shouldStopRecordTimer;//阻止记录定时器方法执行
+    CourseListModelFinal *currentCourseFinalModel;
 }
 
 /**三大子页面*/
@@ -81,6 +83,7 @@
 // 播放器
 @property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
 @property (strong ,nonatomic)UIWebView *webView;
+@property (strong, nonatomic) NSTimer *recordTimer;
 
 @end
 
@@ -104,6 +107,14 @@
     [super viewWillDisappear:animated];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if (_recordTimer != nil) {
+        [_recordTimer invalidate];
+        _recordTimer = nil;
+    }
+}
+
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     [self destroyPlayVideo];
@@ -114,6 +125,7 @@
     if (_playerView != nil) {
         [_playerView stop];
         [_playerView releasePlayer];
+        [_playerView setDelegate:nil];
         [_playerView removeFromSuperview];
         _playerView = nil;
     }
@@ -122,6 +134,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    shouldStopRecordTimer = YES;
     _isClassNew = YES;
     /// 新增内容
     self.canScroll = YES;
@@ -157,40 +170,6 @@
                                              selector:@selector(resignActive)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(willResignActive)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:nil];
-}
-
-- (void)willResignActive {
-    if (_playerView &&  self.playerView.playerViewState == AVPStatusStarted){
-        [self.playerView pause];
-    }
-}
-
-- (void)becomeActive{
-    if (self.playerView && [self.playerView getPopLayerIsHidden] == YES){
-        [self.playerView resume];
-    }
-//    if (self.isPresent == NO) {
-//        self.isBecome = NO;
-//        NSLog(@"%@%ld",NSLocalizedString(@"播放器状态:", nil),(long)self.playerView.playerViewState);
-//        if (self.playerView && [self.playerView getPopLayerIsHidden] == YES){
-//            [self.playerView resume];
-//        }
-//    }
-   
-}
-
-- (void)resignActive{
-//    if (self.isPresent) {
-//        self.isBecome = YES;
-//    }
-    
-    if (_playerView &&  self.playerView.playerViewState == AVPStatusStarted){
-        [self.playerView pause];
-    }
 }
 
 - (AliyunVodPlayerView *__nullable)playerView{
@@ -215,7 +194,6 @@
 //        currentModel.videoUrl = @"https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8";
 //        currentModel.playMethod = AliyunPlayMedthodSTS;
 //        _playerView.currentModel = currentModel;
-        _playerView.circlePlay = YES;
         [_playerView setDelegate:self];
         [_playerView setAutoPlay:YES];
         
@@ -223,7 +201,6 @@
         _playerView.controlView.topView.hidden = YES;
         _playerView.isScreenLocked = false;
         _playerView.fixedPortrait = false;
-    
     }
     return _playerView;
 }
@@ -247,7 +224,7 @@
     
     
     [_webView setUserInteractionEnabled:YES];//是否支持交互
-    _webView.delegate = self;
+//    _webView.delegate = self;
     [_webView setOpaque:YES];//opaque是不透明的意思
     [_webView setScalesPageToFit:YES];//自适应
     
@@ -256,9 +233,9 @@
     [_webView loadRequest:[NSURLRequest requestWithURL:url]];
     
     //添加手势
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fakeTapGestureHandler:)];
-    [tapGestureRecognizer setDelegate:self];
-    [_webView.scrollView addGestureRecognizer:tapGestureRecognizer];
+//    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fakeTapGestureHandler:)];
+//    [tapGestureRecognizer setDelegate:self];
+//    [_webView.scrollView addGestureRecognizer:tapGestureRecognizer];
 }
 
 // MARK: - tableview 的 headerview
@@ -740,6 +717,9 @@
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
 //    http://v5.51eduline.com/test.php
     //https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8
+    __weak CourseDetailPlayVC *wekself = self;
+    [wekself stopRecordTimer];
+    [wekself destroyPlayVideo];
     if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
         return;
     }
@@ -769,6 +749,8 @@
         CourseListModelFinal *parentmodel = supermodel.child[panrentCellIndex.row];
         CourseListModelFinal *model = parentmodel.child[cellIndex.row];
         model.isPlaying = YES;
+        CourseListModelFinal *curent = model;
+        currentCourseFinalModel = curent;
         [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
         [supermodel.child replaceObjectAtIndex:panrentCellIndex.row withObject:parentmodel];
         [_courseListVC.courseListArray replaceObjectAtIndex:superIndex.row withObject:supermodel];
@@ -778,6 +760,8 @@
             CourseListModelFinal *parentmodel = _courseListVC.courseListArray[panrentCellIndex.row];
             CourseListModelFinal *model = parentmodel.child[cellIndex.row];
             model.isPlaying = YES;
+            CourseListModelFinal *curent = model;
+            currentCourseFinalModel = curent;
             [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
             [_courseListVC.courseListArray replaceObjectAtIndex:panrentCellIndex.row withObject:parentmodel];
             [_courseListVC.tableView reloadData];
@@ -785,16 +769,95 @@
             if (cellIndex) {
                 CourseListModelFinal *model = _courseListVC.courseListArray[cellIndex.row];
                 model.isPlaying = YES;
+                CourseListModelFinal *curent = model;
+                currentCourseFinalModel = curent;
                 [_courseListVC.courseListArray replaceObjectAtIndex:cellIndex.row withObject:model];
                 [_courseListVC.tableView reloadData];
             }
         }
     }
-    
-    [self.playerView playViewPrepareWithURL:EdulineUrlString(model.model.section_data.fileurl)];
+    wekself.playerView.coverImageView.image = DefaultImage;
+    [wekself.headerView addSubview:wekself.playerView];
+    [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.model.section_data.fileurl)];
+    wekself.playerView.userInteractionEnabled = YES;
     [AppDelegate delegate]._allowRotation = YES;
-//    [self tableViewCanNotScroll];
     
+}
+
+//// MARK: - 音视频开始播放
+- (void)aliyunVodPlayerView:(AliyunVodPlayerView*)playerView happen:(AVPEventType )event {
+    if (event == AVPEventFirstRenderedStart) {
+        __weak CourseDetailPlayVC *wekself = self;
+        [wekself starRecordTimer];
+    } else if (event == AVPEventCompletion) {
+        __weak CourseDetailPlayVC *wekself = self;
+        [wekself stopRecordTimer];
+    }
+}
+
+- (void)aliyunVodPlayerView:(AliyunVodPlayerView*)playerView onStop:(NSTimeInterval)currentPlayTime {
+    __weak CourseDetailPlayVC *wekself = self;
+    [wekself stopRecordTimer];
+}
+
+ // MARK: - 暂停事件
+- (void)aliyunVodPlayerView:(AliyunVodPlayerView*)playerView onPause:(NSTimeInterval)currentPlayTime {
+    __weak CourseDetailPlayVC *wekself = self;
+    [wekself stopRecordTimer];
+}
+
+// MARK: - 继续事件
+- (void)aliyunVodPlayerView:(AliyunVodPlayerView*)playerView onResume:(NSTimeInterval)currentPlayTime {
+    __weak CourseDetailPlayVC *wekself = self;
+    [wekself starRecordTimer];
+}
+
+// MARK: - 功能：播放完成事件 ，请区别stop（停止播放）
+- (void)onFinishWithAliyunVodPlayerView:(AliyunVodPlayerView*)playerView {
+    __weak CourseDetailPlayVC *wekself = self;
+    [wekself stopRecordTimer];
+}
+
+// MARK: - 学习记录定时器
+- (void)addLearnRecord {
+    if (shouldStopRecordTimer) {
+        return;
+    }
+    if (!currentCourseFinalModel) {
+        return;
+    }
+    __weak CourseDetailPlayVC *wekself = self;
+    if (!SWNOTEmptyStr(wekself.ID)) {
+        return;
+    }
+    [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)becomeActive{
+    NSLog(@"播放器状态:%ld",(long)self.playerView.playerViewState);
+    
+    if (self.playerView && self.playerView.playerViewState == AVPStatusPaused){
+//        [self.playerView start];
+//        [self.playerView resume];
+//        [self.recordTimer setFireDate:[NSDate distantPast]];
+    }
+//    if (wmPlayer.player) {
+//        [wmPlayer.player play];
+//    }
+}
+
+- (void)resignActive{
+    if (self.playerView){
+        [self.playerView pause];
+        [self.recordTimer setFireDate:[NSDate distantFuture]];
+    }
+//    if (wmPlayer.player) {
+//        [wmPlayer.player pause];
+//    }
 }
 
 // MARK: - 横屏权限
@@ -832,6 +895,28 @@
     _canScrollAfterVideoPlay = YES;
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
     [_tableView reloadData];
+}
+
+- (void)stopRecordTimer {
+    __weak CourseDetailPlayVC *wekself = self;
+    [wekself.recordTimer invalidate];
+    wekself.recordTimer = nil;
+    shouldStopRecordTimer = YES;
+}
+
+- (void)starRecordTimer {
+    __weak CourseDetailPlayVC *wekself = self;
+    [wekself stopRecordTimer];
+    [wekself performSelector:@selector(startTimer) afterDelay:10];
+}
+
+- (void)startTimer {
+    __weak CourseDetailPlayVC *wekself = self;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:wekself selector:@selector(startTimer) object:nil];
+    shouldStopRecordTimer = NO;
+    wekself.recordTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:wekself selector:@selector(addLearnRecord) userInfo:nil repeats:YES];
+    [wekself.recordTimer fire];
 }
 
 @end

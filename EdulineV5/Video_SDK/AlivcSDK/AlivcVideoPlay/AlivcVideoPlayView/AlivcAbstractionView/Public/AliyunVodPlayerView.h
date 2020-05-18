@@ -108,6 +108,8 @@
  */
 @interface AliyunVodPlayerView : UIView
 
+@property (nonatomic, strong) AliPlayer *aliPlayer;               //点播播放器
+
 @property (nonatomic, strong) AliyunPlayerViewControlView *controlView;
 
 /**

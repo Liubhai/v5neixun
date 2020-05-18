@@ -163,6 +163,8 @@ struct NetWorkUrl {
 /** 兑换 */
 + (NSString *)couponExchange;
 
++ (NSString *)addRecord;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -204,4 +204,8 @@
     return [Net_Path fullPath:@"user/coupon/exchange" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)addRecord {
+    return [Net_Path fullPath:@"course/base/record" repalce:@"" byReplece:@""];
+}
+
 @end

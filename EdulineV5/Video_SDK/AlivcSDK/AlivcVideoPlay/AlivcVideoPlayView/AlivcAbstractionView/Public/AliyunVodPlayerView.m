@@ -46,7 +46,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 
 #pragma mark - view
 @property (nonatomic, strong) UIButton *downloadButton;               //下载按钮
-@property (nonatomic, strong) AliPlayer *aliPlayer;               //点播播放器
+//@property (nonatomic, strong) AliPlayer *aliPlayer;               //点播播放器
 @property (nonatomic, strong) UIView *playerView;
 //@property (nonatomic, strong) UIImageView *coverImageView;              //封面
 //@property (nonatomic, strong) AliyunPlayerViewControlView *controlView;
