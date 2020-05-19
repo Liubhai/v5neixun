@@ -25,7 +25,7 @@
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
     if ([_pageClass isEqualToString:@"joinCourse"]) {
-        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"default"},@{@"title":@"未开始",@"id":@"splendid"},@{@"title":@"学习中",@"id":@"popular"},@{@"title":@"已完成",@"id":@"latest"}]];
+        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"未开始",@"id":@"not_started"},@{@"title":@"学习中",@"id":@"learning"},@{@"title":@"已完成",@"id":@"finished"}]];
     } else if ([_pageClass isEqualToString:@"incomeTime"]) {
         [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"default"},@{@"title":@"本月",@"id":@"splendid"}]];
     } else if ([_pageClass isEqualToString:@"incomeType"]) {

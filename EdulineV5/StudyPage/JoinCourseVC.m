@@ -40,7 +40,7 @@
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"course"},@{@"title":@"直播",@"type":@"live"},@{@"title":@"专辑",@"type":@"class"},@{@"title":@"面授",@"type":@"offline"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"1"},@{@"title":@"直播",@"type":@"2"},@{@"title":@"专辑",@"type":@"3"},@{@"title":@"面授",@"type":@"4"}]];
     
     [self makeTopView];
     [self makeScrollView];
@@ -155,7 +155,10 @@
     if (SWNOTEmptyDictionary(info)) {
         courseSortString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
         courseSortIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
+        _rightButton.selected = !_rightButton.selected;
+        NSInteger currentTag = _mainScrollView.contentOffset.x/MainScreenWidth;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"courseStudyTypeProgressChange" object:nil userInfo:@{@"StudyTypeProgress":courseSortIdString,@"currentType":[_typeArray[currentTag] objectForKey:@"type"]}];
     }
 }
 

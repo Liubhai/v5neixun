@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setStudyCourseInfo:(NSDictionary *)courseInfo;
 
+- (void)setJoinStudyCourseInfo:(NSDictionary *)courseInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

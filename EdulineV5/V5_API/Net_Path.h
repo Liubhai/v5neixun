@@ -169,6 +169,9 @@ struct NetWorkUrl {
 /** 学习主页数据 */
 + (NSString *)studyMainPageData;
 
+/** 学习主页 加入的课程 */
++ (NSString *)studyMainPageJoinCourseList;
+
 @end
 
 NS_ASSUME_NONNULL_END

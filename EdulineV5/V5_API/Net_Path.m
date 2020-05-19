@@ -212,4 +212,8 @@
     return [Net_Path fullPath:@"course/base/record/fetch" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)studyMainPageJoinCourseList {
+    return [Net_Path fullPath:@"course/base/record/course" repalce:@"" byReplece:@""];
+}
+
 @end

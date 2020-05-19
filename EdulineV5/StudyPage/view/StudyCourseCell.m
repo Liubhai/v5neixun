@@ -79,6 +79,29 @@
     }
 }
 
+- (void)setJoinStudyCourseInfo:(NSDictionary *)courseInfo {
+    [_courseFace sd_setImageWithURL:EdulineUrlString([courseInfo objectForKey:@"course_cover"]) placeholderImage:DefaultImage];
+    NSString *courseType = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"product_type_id"]];
+    if ([courseType isEqualToString:@"1"]) {
+        _courseTypeImage.image = Image(@"dianbo");
+    } else if ([courseType isEqualToString:@"2"]) {
+        _courseTypeImage.image = Image(@"live");
+    } else if ([courseType isEqualToString:@"3"]) {
+        _courseTypeImage.image = Image(@"mianshou");
+    } else if ([courseType isEqualToString:@"4"]) {
+        _courseTypeImage.image = Image(@"album_icon");
+    }
+    _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"product_title"]];
+    _learnProgress.progress = [[courseInfo objectForKey:@"finished_rate"] integerValue] / 100;
+    if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 0) {
+        _learnCountLabel.text = @"开始学习";
+    } else if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 100) {
+        _learnCountLabel.text = @"已完成";
+    } else {
+        _learnCountLabel.text = [NSString stringWithFormat:@"%@%%",@([[courseInfo objectForKey:@"finished_rate"] integerValue])];
+    }
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
