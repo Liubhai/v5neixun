@@ -163,7 +163,11 @@ struct NetWorkUrl {
 /** 兑换 */
 + (NSString *)couponExchange;
 
+/** 添加学习记录 */
 + (NSString *)addRecord;
+
+/** 学习主页数据 */
++ (NSString *)studyMainPageData;
 
 @end
 

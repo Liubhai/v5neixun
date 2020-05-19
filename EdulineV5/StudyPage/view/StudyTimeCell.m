@@ -62,6 +62,17 @@
     }
 }
 
+- (void)studyPageTimeInfo:(NSDictionary *)timeInfo {
+    if (SWNOTEmptyDictionary(timeInfo)) {
+        if ([[[timeInfo objectForKey:@"data"] allKeys] count]) {
+            NSDictionary *timeInfoData = [NSDictionary dictionaryWithDictionary:[[timeInfo objectForKey:@"data"] objectForKey:@"basic"]];
+            _todayLearnTime.text = [NSString stringWithFormat:@"%@",[timeInfoData objectForKey:@"today_learn_time"]];
+            _continuousLearnTime.text = [NSString stringWithFormat:@"%@",[timeInfoData objectForKey:@"days"]];
+            _allLearnTime.text = [NSString stringWithFormat:@"%@",[timeInfoData objectForKey:@"total_learn_time"]];
+        }
+    }
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

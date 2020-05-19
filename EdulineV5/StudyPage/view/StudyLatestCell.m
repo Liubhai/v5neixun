@@ -31,26 +31,35 @@
     [_mainScrollView removeAllSubviews];
     CGFloat maxHeight = 0;
     CGFloat maxWidth = 0;
-    for (int i = 0; i<5; i ++) {
+    for (int i = 0; i<learnArray.count; i ++) {
         UIImageView *face = [[UIImageView alloc] initWithFrame:CGRectMake(15 + (125 + 8) * i, 10, 125, 70)];
-        face.image = DefaultImage;
+        [face sd_setImageWithURL:EdulineUrlString([learnArray[i] objectForKey:@"course_cover"]) placeholderImage:DefaultImage];
         [_mainScrollView addSubview:face];
         
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(face.right - 32, face.top + 8, 32, 18)];
-        icon.image = Image(@"album_icon");
+        NSString *courseType = [NSString stringWithFormat:@"%@",[learnArray[i] objectForKey:@"course_type"]];
+        if ([courseType isEqualToString:@"1"]) {
+            icon.image = Image(@"dianbo");
+        } else if ([courseType isEqualToString:@"2"]) {
+            icon.image = Image(@"live");
+        } else if ([courseType isEqualToString:@"3"]) {
+            icon.image = Image(@"mianshou");
+        } else if ([courseType isEqualToString:@"4"]) {
+            icon.image = Image(@"album_icon");
+        }
         [_mainScrollView addSubview:icon];
         
         UILabel *learnTime = [[UILabel alloc] initWithFrame:CGRectMake(face.left, face.bottom - 16, face.width, 16)];
         learnTime.layer.backgroundColor = [UIColor colorWithRed:48/255.0 green:49/255.0 blue:51/255.0 alpha:0.5].CGColor;
         learnTime.textColor = [UIColor whiteColor];
         learnTime.font = SYSTEMFONT(10);
-        learnTime.text = @" 学习至00:23:43";
+        learnTime.text = [NSString stringWithFormat:@" 学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:[[learnArray[i] objectForKey:@"current_time"] integerValue]]];
         [_mainScrollView addSubview:learnTime];
         
         UILabel *thmeLabel = [[UILabel alloc] initWithFrame:CGRectMake(face.left, face.bottom + 10, face.width, 20)];
         thmeLabel.font = SYSTEMFONT(13);
         thmeLabel.textColor = EdlineV5_Color.textFirstColor;
-        thmeLabel.text = @"标题只有一排点多可以只有一排点多可以标题只有一排点多可以只有一排点多可以";
+        thmeLabel.text = [NSString stringWithFormat:@"%@",[learnArray[i] objectForKey:@"course_title"]];
         thmeLabel.numberOfLines = 0;
         [thmeLabel sizeToFit];
         if (thmeLabel.height > 20) {

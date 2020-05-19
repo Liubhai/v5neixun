@@ -208,4 +208,8 @@
     return [Net_Path fullPath:@"course/base/record" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)studyMainPageData {
+    return [Net_Path fullPath:@"course/base/record/fetch" repalce:@"" byReplece:@""];
+}
+
 @end

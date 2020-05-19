@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *allLearnTime;
 @property (strong, nonatomic) UILabel *allLearn;
 
+- (void)studyPageTimeInfo:(NSDictionary *)timeInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END
