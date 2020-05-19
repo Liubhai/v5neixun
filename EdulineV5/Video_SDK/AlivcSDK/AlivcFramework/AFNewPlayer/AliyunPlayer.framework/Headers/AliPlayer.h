@@ -361,6 +361,20 @@ OBJC_EXPORT
 -(void) setDefaultBandWidth:(int)bandWidth;
 
 /**
+ * @brief 获取播放器的参数
+ *
+ * @param key 参数值
+ * @return 相关信息
+ */
+/****
+ * @brief Get player information
+ *
+ * @param key The key
+ * @return The information
+ */
+-(NSString *) getOption:(AVPOption)key;
+
+/**
  @brief 获取SDK版本号信息
  */
 /****

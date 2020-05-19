@@ -113,6 +113,9 @@
         [_recordTimer invalidate];
         _recordTimer = nil;
     }
+    __weak CourseDetailPlayVC *wekself = self;
+    [NSObject cancelPreviousPerformRequestsWithTarget:wekself];
+    [NSObject cancelPreviousPerformRequestsWithTarget:wekself selector:@selector(startTimer) object:nil];
 }
 
 - (void)dealloc{
@@ -151,7 +154,7 @@
     [self makeHeaderView];
     [self makeSubViews];
 //    self.playerView.hidden = YES;
-    self.playerView.coverImageView.image = DefaultImage;
+//    self.playerView.coverImageView.image = DefaultImage;
     [_headerView addSubview:self.playerView];
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
     [self makeTableView];
@@ -170,6 +173,10 @@
                                              selector:@selector(resignActive)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(willResignActive)
+        name:UIApplicationWillResignActiveNotification
+      object:nil];
 }
 
 - (AliyunVodPlayerView *__nullable)playerView{
@@ -194,7 +201,8 @@
 //        currentModel.videoUrl = @"https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8";
 //        currentModel.playMethod = AliyunPlayMedthodSTS;
 //        _playerView.currentModel = currentModel;
-        [_playerView setDelegate:self];
+        __weak CourseDetailPlayVC *wekself = self;
+        [_playerView setDelegate:wekself];
         [_playerView setAutoPlay:YES];
         
         [_playerView setPrintLog:YES];
@@ -776,7 +784,7 @@
             }
         }
     }
-    wekself.playerView.coverImageView.image = DefaultImage;
+//    wekself.playerView.coverImageView.image = DefaultImage;
     [wekself.headerView addSubview:wekself.playerView];
     [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.model.section_data.fileurl)];
     wekself.playerView.userInteractionEnabled = YES;
@@ -837,27 +845,29 @@
     }];
 }
 
-- (void)becomeActive{
-    NSLog(@"播放器状态:%ld",(long)self.playerView.playerViewState);
-    
-    if (self.playerView && self.playerView.playerViewState == AVPStatusPaused){
-//        [self.playerView start];
-//        [self.playerView resume];
-//        [self.recordTimer setFireDate:[NSDate distantPast]];
+- (void)willResignActive {
+    if (_playerView &&  self.playerView.playerViewState == AVPStatusStarted){
+        [self.playerView pause];
+        __weak CourseDetailPlayVC *wekself = self;
+        [wekself.recordTimer setFireDate:[NSDate distantFuture]];
     }
-//    if (wmPlayer.player) {
-//        [wmPlayer.player play];
-//    }
+}
+
+- (void)becomeActive{
+    __weak CourseDetailPlayVC *wekself = self;
+    NSLog(@"播放器状态:%ld",(long)wekself.playerView.playerViewState);
+    if (wekself.playerView && wekself.playerView.playerViewState == AVPStatusPaused){
+        [wekself.playerView resume];
+        [wekself.recordTimer setFireDate:[NSDate distantPast]];
+    }
 }
 
 - (void)resignActive{
-    if (self.playerView){
-        [self.playerView pause];
-        [self.recordTimer setFireDate:[NSDate distantFuture]];
+    __weak CourseDetailPlayVC *wekself = self;
+    if (wekself.playerView && self.playerView.playerViewState == AVPStatusStarted){
+        [wekself.playerView pause];
+        [wekself.recordTimer setFireDate:[NSDate distantFuture]];
     }
-//    if (wmPlayer.player) {
-//        [wmPlayer.player pause];
-//    }
 }
 
 // MARK: - 横屏权限
@@ -905,6 +915,7 @@
 }
 
 - (void)starRecordTimer {
+    return;
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
     [wekself performSelector:@selector(startTimer) afterDelay:10];
@@ -912,7 +923,7 @@
 
 - (void)startTimer {
     __weak CourseDetailPlayVC *wekself = self;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:wekself];
     [NSObject cancelPreviousPerformRequestsWithTarget:wekself selector:@selector(startTimer) object:nil];
     shouldStopRecordTimer = NO;
     wekself.recordTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:wekself selector:@selector(addLearnRecord) userInfo:nil repeats:YES];
