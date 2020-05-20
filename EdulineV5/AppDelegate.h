@@ -28,5 +28,8 @@
 
 +(void)presentLoginNav:(UIViewController *)currentViewController;
 
+//  被挤下线
+@property (nonatomic,strong) UIAlertView* noticeLogoutAlert;
+
 @end
 

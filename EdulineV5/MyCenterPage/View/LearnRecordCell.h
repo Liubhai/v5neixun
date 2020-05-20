@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *courseHourseTitle;
 @property (strong, nonatomic) UILabel *learnTime;
 
+- (void)setLearnRecordInfo:(NSDictionary *)recordInfo;
 
 @end
 

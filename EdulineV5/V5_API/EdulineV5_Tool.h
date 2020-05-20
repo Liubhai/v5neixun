@@ -47,6 +47,9 @@
 + (NSString *)formateTime:(NSString *)time;
 + (NSString *)timeForHHmm:(NSString *)time;
 + (NSString *)timeForYYYYMMDD:(NSString *)time;
++ (NSString *)formatterDate:(NSString *)time;
++ (NSString *)timeForYYYY:(NSString *)time;
++ (NSString *)timeForMMDD:(NSString *)time;
 
 + (NSString *)currentdateInterval;
 + (NSString *)getRandomString;

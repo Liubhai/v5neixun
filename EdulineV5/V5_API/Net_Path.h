@@ -166,6 +166,9 @@ struct NetWorkUrl {
 /** 添加学习记录 */
 + (NSString *)addRecord;
 
+/** 学习记录列表 */
++ (NSString *)learnRecordList;
+
 /** 学习主页数据 */
 + (NSString *)studyMainPageData;
 

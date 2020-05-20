@@ -9,6 +9,7 @@
 #import "Net_API.h"
 #import "EdulineV5_Tool.h"
 #import "UserModel.h"
+#import "AppDelegate.h"
 
 #define HeaderUrl_V5_Api @"http://v5.51eduline.com"
 
@@ -62,6 +63,19 @@
         // 失败回调
         NSData *errorData = [NSData dataWithData:[error.userInfo objectForKey:@"com.alamofire.serialization.response.error.data"]];
         NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+        NSJSONSerialization *dicJson = [NSJSONSerialization JSONObjectWithData:errorData options:NSJSONReadingAllowFragments error:nil];
+        NSDictionary *pass = [NSDictionary dictionaryWithDictionary:(NSDictionary *)dicJson];
+        if ([[pass allKeys] count]) {
+            if (SWNOTEmptyDictionary([pass objectForKey:@"data"])) {
+                NSString *error_code = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"data"] objectForKey:@"error_code"]];
+                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([UserModel oauthToken])) {
+                    // 展示提示框
+                    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    [appDelegate.noticeLogoutAlert show];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"logout" object:nil];
+                }
+            }
+        }
         enError(error);
        
    }];
@@ -115,6 +129,19 @@
        // 失败回调
        NSData *errorData = [NSData dataWithData:[error.userInfo objectForKey:@"com.alamofire.serialization.response.error.data"]];
        NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+       NSJSONSerialization *dicJson = [NSJSONSerialization JSONObjectWithData:errorData options:NSJSONReadingAllowFragments error:nil];
+       NSDictionary *pass = [NSDictionary dictionaryWithDictionary:(NSDictionary *)dicJson];
+       if ([[pass allKeys] count]) {
+           if (SWNOTEmptyDictionary([pass objectForKey:@"data"])) {
+               NSString *error_code = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"data"] objectForKey:@"error_code"]];
+               if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([UserModel oauthToken])) {
+                   // 展示提示框
+                   AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                   [appDelegate.noticeLogoutAlert show];
+                   [[NSNotificationCenter defaultCenter] postNotificationName:@"logout" object:nil];
+               }
+           }
+       }
        enError(error);
    }];
 }
@@ -168,6 +195,21 @@
     #ifdef DEBUG
        NSLog(@"EdulineV4 PUT request failure \n%@\n%@",task.currentRequest.URL.absoluteString,paramDic);
     #endif
+        NSData *errorData = [NSData dataWithData:[error.userInfo objectForKey:@"com.alamofire.serialization.response.error.data"]];
+        NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+        NSJSONSerialization *dicJson = [NSJSONSerialization JSONObjectWithData:errorData options:NSJSONReadingAllowFragments error:nil];
+        NSDictionary *pass = [NSDictionary dictionaryWithDictionary:(NSDictionary *)dicJson];
+        if ([[pass allKeys] count]) {
+            if (SWNOTEmptyDictionary([pass objectForKey:@"data"])) {
+                NSString *error_code = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"data"] objectForKey:@"error_code"]];
+                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([UserModel oauthToken])) {
+                    // 展示提示框
+                    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    [appDelegate.noticeLogoutAlert show];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"logout" object:nil];
+                }
+            }
+        }
         enError(error);
     }];
 }
@@ -225,6 +267,19 @@
         // 失败回调
         NSData *errorData = [NSData dataWithData:[error.userInfo objectForKey:@"com.alamofire.serialization.response.error.data"]];
         NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+        NSJSONSerialization *dicJson = [NSJSONSerialization JSONObjectWithData:errorData options:NSJSONReadingAllowFragments error:nil];
+        NSDictionary *pass = [NSDictionary dictionaryWithDictionary:(NSDictionary *)dicJson];
+        if ([[pass allKeys] count]) {
+            if (SWNOTEmptyDictionary([pass objectForKey:@"data"])) {
+                NSString *error_code = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"data"] objectForKey:@"error_code"]];
+                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([UserModel oauthToken])) {
+                    // 展示提示框
+                    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    [appDelegate.noticeLogoutAlert show];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"logout" object:nil];
+                }
+            }
+        }
         enError(error);
     }];
 }

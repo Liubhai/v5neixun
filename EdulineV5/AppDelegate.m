@@ -57,7 +57,7 @@
 //                  别人笑我忒疯癫，我笑自己命太贱；
 //                  不见满街漂亮妹，哪个归得程序员？
 
-@interface AppDelegate ()<BuglyDelegate,TICStatusListener>
+@interface AppDelegate ()<BuglyDelegate,TICStatusListener,UIAlertViewDelegate>
 
 @property (weak, nonatomic) NTESQuickLoginManager *quickLoginManager;
 
@@ -100,6 +100,9 @@
             [[TICManager sharedInstance] addStatusListener:self];
         }
     }];
+    
+    _noticeLogoutAlert = [[UIAlertView alloc]initWithTitle:LoginInvalid_TXT message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    _noticeLogoutAlert.tag = 101;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logout) name:@"logout" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFinishLogin) name:@"LOGINFINISH" object:nil];
@@ -530,6 +533,10 @@
 }
 - (void)onTICUserSigExpired
 {
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
 }
 

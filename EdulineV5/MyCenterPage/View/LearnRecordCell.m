@@ -64,6 +64,16 @@
     
 }
 
+- (void)setLearnRecordInfo:(NSDictionary *)recordInfo {
+    _timeLabel.text = [EdulineV5_Tool timeForHHmm:[recordInfo objectForKey:@"update_time"]];
+    
+    _courseTitle.text = [NSString stringWithFormat:@"%@",[recordInfo objectForKey:@"course_title"]];
+    
+    _courseHourseTitle.text = [NSString stringWithFormat:@"%@",[recordInfo objectForKey:@"section_title"]];
+    
+    _learnTime.text = [NSString stringWithFormat:@" 学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:[[recordInfo objectForKey:@"current_time"] integerValue]]];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
