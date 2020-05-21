@@ -55,8 +55,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *reuse = @"KaquanCell";
-    UserCouponModel *model = _dataSource[indexPath.row];
-    CouponModel *model1 = model.coupon;
+    CouponModel *model1 = _dataSource[indexPath.row];
     KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
         cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:model1.coupon_type getOrUse:NO useful:([_couponType isEqualToString:@"usable"] ? YES : NO)];
@@ -84,7 +83,7 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_dataSource removeAllObjects];
-                    [_dataSource addObjectsFromArray:[UserCouponModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
+                    [_dataSource addObjectsFromArray:[CouponModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                 }
             }
             if (_dataSource.count<10) {
@@ -111,7 +110,7 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                    [_dataSource addObjectsFromArray:[UserCouponModel mj_objectArrayWithKeyValuesArray:pass]];
+                    [_dataSource addObjectsFromArray:[CouponModel mj_objectArrayWithKeyValuesArray:pass]];
                     if (pass.count<10) {
                         _tableView.mj_footer.hidden = YES;
                     } else {

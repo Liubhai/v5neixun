@@ -31,11 +31,12 @@
 
 #define FacePlayImageHeight 207
 
-@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate> {
+@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate,WKUIDelegate,WKNavigationDelegate> {
     // 新增内容
     CGFloat sectionHeight;
     BOOL shouldStopRecordTimer;//阻止记录定时器方法执行
     CourseListModelFinal *currentCourseFinalModel;
+    BOOL     isWebViewBig;//文档 是否放大
 }
 
 /**三大子页面*/
@@ -82,7 +83,7 @@
 
 // 播放器
 @property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
-@property (strong ,nonatomic)UIWebView *webView;
+@property (strong, nonatomic) WKWebView *wkWebView;
 @property (strong, nonatomic) NSTimer *recordTimer;
 
 @end
@@ -137,15 +138,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    isWebViewBig = NO;
     shouldStopRecordTimer = YES;
     _isClassNew = YES;
     /// 新增内容
-    self.canScroll = YES;
-    self.canScrollAfterVideoPlay = YES;
+    _canScroll = NO;
+    _canScrollAfterVideoPlay = NO;
+    _tableView.scrollEnabled = NO;
     
     _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"笔记",@"点评"]];
 
-    self.canScroll = YES;
     _titleLabel.text = @"课程详情";
     _titleImage.backgroundColor = BasidColor;
     
@@ -156,12 +158,14 @@
 //    self.playerView.hidden = YES;
 //    self.playerView.coverImageView.image = DefaultImage;
     [_headerView addSubview:self.playerView];
+    [self makeWkWebView];
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
     [self makeTableView];
     [self.view bringSubviewToFront:_titleImage];
     _titleImage.backgroundColor = [UIColor clearColor];
     _titleLabel.hidden = YES;
     _lineTL.hidden = YES;
+    [_leftButton setImage:Image(@"nav_back_white") forState:0];
     [self makeDownView];
     [self getCourseInfo];
     /**************************************/
@@ -177,6 +181,7 @@
     selector:@selector(willResignActive)
         name:UIApplicationWillResignActiveNotification
       object:nil];
+//    [self dealPlayWordBook];
 }
 
 - (AliyunVodPlayerView *__nullable)playerView{
@@ -209,41 +214,47 @@
         _playerView.controlView.topView.hidden = YES;
         _playerView.isScreenLocked = false;
         _playerView.fixedPortrait = false;
+        _playerView.hidden = YES;
     }
     return _playerView;
 }
 
-- (void)addWebView:(NSString *)textUrl {//文档
-    [_webView removeFromSuperview];
-    _webView = [[UIWebView alloc] initWithFrame:self.playerView.frame];
-    //    if (iPhone4SOriPhone4) {
-    //        _webView.frame = CGRectMake(0, 64, self.view.frame.size.width, (self.view.frame.size.width)*3/5);
-    //    } else if (iPhone5o5Co5S) {
-    //        _webView.frame = CGRectMake(0, 70, MainScreenWidth, MainScreenWidth*3/5);
-    //    } else if (iPhone6) {
-    //        _webView.frame = CGRectMake(0, 0, self.view.frame.size.width, 210 * WideEachUnit);
-    //    } else if (iPhone6Plus) {
-    //        _webView.frame = CGRectMake(0, 64, self.view.frame.size.width, (self.view.frame.size.width)*3/4);
-    //    } else if (iPhoneX) {
-    //        _webView.frame = CGRectMake(0, 88, self.view.frame.size.width, (self.view.frame.size.width)*3/4);
-    //    }
-    _webView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    [self.view addSubview:_webView];
-    
-    
-    [_webView setUserInteractionEnabled:YES];//是否支持交互
-//    _webView.delegate = self;
-    [_webView setOpaque:YES];//opaque是不透明的意思
-    [_webView setScalesPageToFit:YES];//自适应
-    
-    NSURL *url = nil;
-    url = [NSURL URLWithString:textUrl];
-    [_webView loadRequest:[NSURLRequest requestWithURL:url]];
-    
-    //添加手势
-//    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fakeTapGestureHandler:)];
-//    [tapGestureRecognizer setDelegate:self];
-//    [_webView.scrollView addGestureRecognizer:tapGestureRecognizer];
+- (void)makeWkWebView {
+    if (!_wkWebView) {
+        WKUserContentController *wkUController = [[WKUserContentController alloc] init];
+        WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+        wkWebConfig.userContentController = wkUController;
+
+        _wkWebView = [[WKWebView alloc] initWithFrame:self.playerView.frame configuration:wkWebConfig];
+        _wkWebView.backgroundColor = [UIColor clearColor];
+        _wkWebView.userInteractionEnabled = YES;
+        _wkWebView.UIDelegate = self;
+        _wkWebView.navigationDelegate = self;
+        [self.headerView addSubview:_wkWebView];
+        _wkWebView.hidden = YES;
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fakeTapGestureHandler:)];
+        [tapGestureRecognizer setDelegate:self];
+        [_wkWebView.scrollView addGestureRecognizer:tapGestureRecognizer];
+    }
+}
+
+- (void)fakeTapGestureHandler:(UITapGestureRecognizer *)tap {
+    __weak CourseDetailPlayVC *wekself = self;
+    isWebViewBig = !isWebViewBig;
+    if (isWebViewBig == YES) {
+        [UIView animateWithDuration:0.25 animations:^{
+            wekself.wkWebView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+            [wekself.view addSubview:wekself.wkWebView];
+            //方法 隐藏导航栏
+            wekself.navigationController.navigationBar.hidden = YES;
+        }];
+    } else {
+        [UIView animateWithDuration:0.25 animations:^{
+            wekself.wkWebView.frame = self.playerView.frame;
+            [wekself.headerView addSubview:wekself.wkWebView];
+            wekself.navigationController.navigationBar.hidden = YES;
+        }];
+    }
 }
 
 // MARK: - tableview 的 headerview
@@ -390,14 +401,14 @@
             _courseListVC.tabelHeight = sectionHeight - 47;
             _courseListVC.detailVC = weakself;
             _courseListVC.delegate = weakself;
-            _courseListVC.cellTabelCanScroll = weakself.canScrollAfterVideoPlay;
+            _courseListVC.cellTabelCanScroll = YES;//weakself.canScrollAfterVideoPlay;
             _courseListVC.videoInfoDict = _dataSource;
             _courseListVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
             [weakself.mainScroll addSubview:weakself.courseListVC.view];
             [weakself addChildViewController:weakself.courseListVC];
 //            [self addBlockCategory:_courseListVC];
         } else {
-            _courseListVC.cellTabelCanScroll = weakself.canScrollAfterVideoPlay;
+            _courseListVC.cellTabelCanScroll = YES;//weakself.canScrollAfterVideoPlay;
             _courseListVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
             _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
@@ -408,13 +419,13 @@
             _recordVC.tabelHeight = sectionHeight - 47;
             _recordVC.detailVC = weakself;
             _recordVC.cellType = YES;
-            _recordVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
             _recordVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
             [self.mainScroll addSubview:_recordVC.view];
             [self addChildViewController:_recordVC];
         } else {
             _recordVC.courseId = _ID;
-            _recordVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
             _recordVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
             _recordVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
@@ -425,13 +436,13 @@
             _commentVC.tabelHeight = sectionHeight - 47;
             _commentVC.detailVC = weakself;
             _commentVC.cellType = NO;
-            _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
             [self.mainScroll addSubview:_commentVC.view];
             [self addChildViewController:_commentVC];
         } else {
             _commentVC.courseId = _ID;
-            _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
             _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
@@ -529,18 +540,6 @@
                             }
                         }
                     }
-//                    if (self.recordButton.selected) {
-//                        if ([vc isKindOfClass:[Good_ClassNotesViewController class]]) {
-//                            Good_ClassNotesViewController *vccomment = (Good_ClassNotesViewController *)vc;
-//                            vccomment.cellTabelCanScroll = YES;
-//                        }
-//                    }
-//                    if (self.questionButton.selected) {
-//                        if ([vc isKindOfClass:[Good_ClassAskQuestionsViewController class]]) {
-//                            Good_ClassAskQuestionsViewController *vccomment = (Good_ClassAskQuestionsViewController *)vc;
-//                            vccomment.cellTabelCanScroll = YES;
-//                        }
-//                    }
                 }
             }
         }else{
@@ -699,6 +698,7 @@
     if (![AppDelegate delegate]._allowRotation) {
         return;
     }
+//    _tableView.scrollEnabled = YES;
     if (isFullScreen) {
         _titleImage.hidden = YES;
         _playerView.controlView.topView.hidden = NO;
@@ -706,19 +706,17 @@
         _headerView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
         _tableView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
         _tableView.contentOffset = CGPointMake(0, 0);
-        [self tableViewCanNotScroll];
+//        [self tableViewCanNotScroll];
     } else {
-        _titleImage.hidden = NO;
+        _titleImage.hidden = YES;
         _playerView.controlView.topView.hidden = YES;
         _playerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight);
         _headerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight + 90);
         _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - 50);
-        [self tableViewCanScroll];
+//        [self tableViewCanScroll];
     }
     _tableView.tableHeaderView = _headerView;
     [_tableView reloadData];
-//    self.isStatusHidden = isFullScreen;
-//    [self refreshUIWhenScreenChanged:isFullScreen];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -728,13 +726,9 @@
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
     [wekself destroyPlayVideo];
-    if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
-        return;
-    }
-    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
-        [self addWebView:model.model.section_data.fileurl];
-        return;
-    }
+    [AppDelegate delegate]._allowRotation = NO;
+    _titleImage.hidden = NO;
+    //首先全部重置为没有再播放
     for (int i = 0; i<_courseListVC.courseListArray.count; i++) {
         CourseListModelFinal *model1 = _courseListVC.courseListArray[i];
         for (int j = 0; j<model1.child.count; j++) {
@@ -749,6 +743,19 @@
         }
         model1.isPlaying = NO;
         [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model1];
+    }
+    
+    if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
+        [_courseListVC.tableView reloadData];
+        return;
+    }
+    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+        _wkWebView.hidden = NO;
+        _playerView.hidden = YES;
+        [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:model.model.section_data.fileurl]]];
+        [_tableView setContentOffset:CGPointZero animated:YES];
+        [_courseListVC.tableView reloadData];
+        return;
     }
     
     //刷新数据源
@@ -784,8 +791,10 @@
             }
         }
     }
-//    wekself.playerView.coverImageView.image = DefaultImage;
     [wekself.headerView addSubview:wekself.playerView];
+    _wkWebView.hidden = YES;
+    _playerView.hidden = NO;
+    _titleImage.hidden = YES;
     [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.model.section_data.fileurl)];
     wekself.playerView.userInteractionEnabled = YES;
     [AppDelegate delegate]._allowRotation = YES;
@@ -824,6 +833,10 @@
 - (void)onFinishWithAliyunVodPlayerView:(AliyunVodPlayerView*)playerView {
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
+}
+
+- (void)onBackViewClickWithAliyunVodPlayerView:(AliyunVodPlayerView *)playerView{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 // MARK: - 学习记录定时器
@@ -896,15 +909,41 @@
 - (void)canNotScroll {
     _canScroll = NO;
     _canScrollAfterVideoPlay = NO;
-    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 47 - MACRO_UI_UPHEIGHT;
     [_tableView reloadData];
 }
 
 - (void)canTableScroll {
     _canScroll = YES;
     _canScrollAfterVideoPlay = YES;
-    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 47 - MACRO_UI_UPHEIGHT;
     [_tableView reloadData];
+}
+
+- (void)dealPlayWordBook {
+    _canScroll = NO;
+    _canScrollAfterVideoPlay = NO;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 47 - MACRO_UI_UPHEIGHT;
+    _tableView.scrollEnabled = NO;
+    for (UIViewController *vc in self.childViewControllers) {
+        if ([vc isKindOfClass:[CourseListVC class]]) {
+            CourseListVC *vccomment = (CourseListVC *)vc;
+            vccomment.cellTabelCanScroll = YES;
+        }
+        if ([vc isKindOfClass:[CourseCommentListVC class]]) {
+            CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
+            if (vccomment.cellType) {
+                // 笔记
+                vccomment.cellTabelCanScroll = YES;
+            }
+        }
+        if ([vc isKindOfClass:[CourseCommentListVC class]]) {
+            CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
+            if (!vccomment.cellType) {
+                vccomment.cellTabelCanScroll = YES;
+            }
+        }
+    }
 }
 
 - (void)stopRecordTimer {

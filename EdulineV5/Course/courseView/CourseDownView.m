@@ -92,6 +92,7 @@
     _joinShopCarButton.titleLabel.font = SYSTEMFONT(16);
     [_joinShopCarButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     [_joinShopCarButton addTarget:self action:@selector(joinShopCarButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _joinShopCarButton.hidden = YES;
     [self addSubview:_joinShopCarButton];
     
     _joinStudyButton = [[UIButton alloc] initWithFrame:CGRectMake(_joinShopCarButton.right + 10, 5, 120, 40)];
@@ -125,7 +126,7 @@
         _serviceButton.hidden = NO;
         _shopCarButton.hidden = NO;
         _shopCountLabel.hidden = NO;
-        _joinShopCarButton.hidden = NO;
+        _joinShopCarButton.hidden = YES;
         _joinStudyButton.hidden = NO;
     }
     
@@ -166,6 +167,8 @@
         if ([[courseInfo objectForKey:@"is_buy"] boolValue]) {
             _joinShopCarButton.hidden = YES;
             [_joinStudyButton setTitle:@"开始学习" forState:0];
+        } else {
+            _joinShopCarButton.hidden = NO;
         }
     }
 }

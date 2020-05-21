@@ -34,7 +34,7 @@
     [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     _rightButton.hidden = NO;
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"可使用",@"type":@"usable"},@{@"title":@"已使用",@"type":@"unusable"},@{@"title":@"已过期",@"type":@"expired"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"可使用",@"type":@"usable"},@{@"title":@"已使用",@"type":@"used"},@{@"title":@"已过期",@"type":@"expired"}]];
     
     [self makeSearchText];
     
