@@ -12,9 +12,12 @@
 #import "BalanceDetailVC.h"
 #import "CardInterVC.h"
 
-@interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate> {
+@interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
+    UIButton *moneySeleButton;//记录充值的button
 }
+
+@property (strong, nonatomic) UIView *account;
 
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UILabel *userPriceLabel;
@@ -45,9 +48,16 @@
 @property (strong, nonatomic) UIButton *submitButton;
 
 @property (strong, nonatomic) NSMutableArray *typeArray;
+@property (strong ,nonatomic) NSMutableArray *netWorkBalanceArray;//网络请求下来的个数
+@property (strong ,nonatomic) NSMutableArray *iosArray;
 
 @property (strong, nonatomic) NSDictionary *balanceInfo;
 @property (strong, nonatomic) WKWebView *wkWebView;
+
+@property (strong, nonatomic) UIButton *cardButton;
+@property (strong, nonatomic) UITextField *otherMoneyText;
+
+
 
 @end
 
@@ -57,6 +67,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _typeArray = [NSMutableArray new];
+    _netWorkBalanceArray = [NSMutableArray new];
+    _iosArray = [NSMutableArray new];
+    
     _titleImage.backgroundColor = EdlineV5_Color.themeColor;
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
     _titleLabel.text = @"我的余额";
@@ -76,33 +89,185 @@
     
     [self makeBottomView];
     
-    [self getUserPayInfo];
+    [self getUserBalanceInfo];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)makeUserAccountUI {
-    UIView *account = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 175 - 44)];
-    account.backgroundColor = EdlineV5_Color.themeColor;
-    [_mainScrollView addSubview:account];
+    _account = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 175 - 44)];
+    _account.backgroundColor = EdlineV5_Color.themeColor;
+    [_mainScrollView addSubview:_account];
     
-    _userPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (account.height - 45 * 2)/2.0, MainScreenWidth, 45)];
+    _userPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (_account.height - 45 * 2)/2.0, MainScreenWidth, 45)];
     _userPriceLabel.font = SYSTEMFONT(32);
     _userPriceLabel.text = @"0.00";
     _userPriceLabel.textColor = [UIColor whiteColor];
     _userPriceLabel.textAlignment = NSTextAlignmentCenter;
-    [account addSubview:_userPriceLabel];
+    [_account addSubview:_userPriceLabel];
     
     UILabel * priceType = [[UILabel alloc] initWithFrame:CGRectMake(0, _userPriceLabel.bottom, MainScreenWidth, 45)];
     priceType.font = SYSTEMFONT(15);
     priceType.text = @"余额(元)";
     priceType.textAlignment = NSTextAlignmentCenter;
     priceType.textColor = [UIColor whiteColor];
-    [account addSubview:priceType];
+    [_account addSubview:priceType];
 }
 
 - (void)makeMoneyView {
-    _moneyView = [[UIView alloc] initWithFrame:CGRectMake(0, 175 - 44, MainScreenWidth, 300)];
-    _moneyView.backgroundColor = [UIColor whiteColor];
-    [_mainScrollView addSubview:_moneyView];
+    
+    if (_moneyView == nil) {
+        _moneyView = [[UIView alloc] initWithFrame:CGRectMake(0, _account.bottom, MainScreenWidth, 300)];
+        _moneyView.backgroundColor = [UIColor whiteColor];
+        [_mainScrollView addSubview:_moneyView];
+    }
+    [_moneyView removeAllSubviews];
+    
+    //名字
+    UILabel *title = [[UILabel  alloc] initWithFrame:CGRectMake(15, 10 , 100, 20)];
+    title.text = @"充值";
+    title.textColor = EdlineV5_Color.textFirstColor;
+    title.font = SYSTEMFONT(15);
+    [_moneyView addSubview:title];
+    
+    //判断是否应该有此支付方式
+    BOOL isAddAilpayView = NO;
+    for (NSString *payStr in _typeArray) {
+        if ([payStr isEqualToString:@"alipay"]) {
+            isAddAilpayView = YES;
+        }
+    }
+    //判断是否应该有此支付方式
+    BOOL isAddWxpayView = NO;
+    for (NSString *payStr in _typeArray) {
+        if ([payStr isEqualToString:@"wxpay"]) {
+            isAddWxpayView = YES;
+        }
+    }
+    //判断是否应该有此支付方式
+    BOOL isAddApplepayView = NO;
+    for (NSString *payStr in _typeArray) {
+        if ([payStr isEqualToString:@"applepay"]) {
+            isAddApplepayView = YES;
+        }
+    }
+    //判断是否应该有此支付方式
+    BOOL isAddRechargeCardView = NO;
+    for (NSString *payStr in _typeArray) {
+        if ([payStr isEqualToString:@"cardpay"]) {
+            isAddRechargeCardView = YES;
+        }
+    }
+    
+    [_netWorkBalanceArray removeAllObjects];
+    if (_orderRightBtn3.selected || (!isAddAilpayView && !isAddWxpayView && !isAddRechargeCardView)) {
+        [_netWorkBalanceArray addObjectsFromArray:_iosArray];
+    } else {
+        [_netWorkBalanceArray addObjectsFromArray:[[_balanceInfo[@"data"] objectForKey:@"recharge"] objectForKey:@"public"]];
+    }
+    
+    //添加充值界面
+    
+    CGFloat buttonW = (MainScreenWidth - 30 - 20) / 3.0;
+    CGFloat buttonH = 64;
+    NSArray *titleArray = nil;
+    NSArray *additionArray = nil;
+    NSInteger allNumber = 0;
+    if (_netWorkBalanceArray.count == 0) {
+        titleArray = @[@"育币20",@"",@"",@"育币   "];
+        additionArray = @[@"",@"充50送10",@"充100送30",@""];
+        allNumber = 4;
+    } else {
+        allNumber = _netWorkBalanceArray.count;
+    }
+    for (int i  = 0 ; i < _netWorkBalanceArray.count; i ++) {
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(15 + (buttonW + 10) * (i % 3), 40 + (buttonH + 15) * (i / 3), buttonW, buttonH)];
+        button.backgroundColor = [UIColor whiteColor];
+        button.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
+        button.layer.borderWidth = 1;
+        button.layer.cornerRadius = 4;
+        [button setTitle:titleArray[i] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor redColor] forState:UIControlStateSelected];
+        [button setTitleColor:[UIColor colorWithHexString:@"#888"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(buttonCilck:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag = i;
+        [_moneyView addSubview:button];
+        
+        //钱的数字
+        UILabel *number1 = [[UILabel  alloc] initWithFrame:CGRectMake(0, 10 , buttonW, 20)];
+        number1.text = [NSString stringWithFormat:@"%@育币",[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"balance"]];
+        number1.textColor = EdlineV5_Color.textSecendColor;
+        number1.font = SYSTEMFONT(15);
+        number1.textAlignment = NSTextAlignmentCenter;
+        number1.tag = 100;
+        [button addSubview:number1];
+        
+        //提示
+        UILabel *title = [[UILabel  alloc] initWithFrame:CGRectMake(0, 34 , buttonW, 15)];
+        title.tag = 4;
+        title.text = @"充50送10";
+        if (_netWorkBalanceArray.count == 0) {
+            title.text = @"充50送10";
+        } else {
+            
+            if ([[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"give_balance"] integerValue] == 0) {
+                title.text = @"";
+                number1.frame = CGRectMake(0, 0, buttonW, buttonH);
+            } else {
+                title.text = [NSString stringWithFormat:@"充%@送%@",[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"balance"],[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"give_balance"]];
+            }
+        }
+        title.textColor = EdlineV5_Color.textThirdColor;
+        title.font = SYSTEMFONT(12);
+        title.textAlignment = NSTextAlignmentCenter;
+        [button addSubview:title];
+    }
+    
+    if ((isAddAilpayView || isAddWxpayView || isAddRechargeCardView) && !_orderRightBtn3.selected) {
+        _cardButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 30 + (buttonH + 15) * (_netWorkBalanceArray.count / 2), buttonW, 50)];
+        _cardButton.backgroundColor = [UIColor whiteColor];
+        _cardButton.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
+        _cardButton.layer.borderWidth = 1;
+        _cardButton.layer.cornerRadius = 4;
+        [_cardButton setTitle:@"充值卡" forState:UIControlStateNormal];
+        [_cardButton setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+        [_moneyView addSubview:_cardButton];
+        
+        _otherMoneyText = [[UITextField alloc] initWithFrame:CGRectMake(_cardButton.right + 10, _cardButton.top, buttonW * 2 + 10, _cardButton.height)];
+        _otherMoneyText.backgroundColor = [UIColor whiteColor];
+        _otherMoneyText.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
+        _otherMoneyText.layer.borderWidth = 1;
+        _otherMoneyText.layer.cornerRadius = 4;
+        _otherMoneyText.font = SYSTEMFONT(14);
+        _otherMoneyText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"输入其他金额" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+        _otherMoneyText.delegate = self;
+        _otherMoneyText.textColor = EdlineV5_Color.textSecendColor;
+        _otherMoneyText.returnKeyType = UIReturnKeyDone;
+        _otherMoneyText.leftViewMode = UITextFieldViewModeAlways;
+        [_moneyView addSubview:_otherMoneyText];
+        
+        UILabel *tip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 40, _otherMoneyText.height)];
+        tip.text = @"¥";
+        tip.font = SYSTEMFONT(18);
+        tip.textColor = EdlineV5_Color.textFirstColor;
+        tip.textAlignment = NSTextAlignmentCenter;
+        _otherMoneyText.leftView = tip;
+    }
+    
+    if ((_netWorkBalanceArray.count + 1) % 2 == 0) {//能整除的时候
+        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, ((_netWorkBalanceArray.count + 1) / 2) * (buttonH + 15) + 70);
+        if (_iosArray.count>0 && (_orderRightBtn3.selected || (!isAddAilpayView && !isAddWxpayView && !isAddRechargeCardView))) {
+            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, ((_netWorkBalanceArray.count + 1) / 2) * (buttonH + 15) + 30);
+        }
+    } else {//不能整除的时候
+        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, ((_netWorkBalanceArray.count + 1) / 2 + 1) * (buttonH + 15) + 70);
+        if (_iosArray.count>0 && (_orderRightBtn3.selected || (!isAddAilpayView && !isAddWxpayView && !isAddRechargeCardView))) {
+            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, ((_netWorkBalanceArray.count + 1) / 2) * (buttonH + 15) + 30);
+        }
+    }
+    
+    [_orderTypeView setTop:CGRectGetMaxY(_moneyView.frame) + 10];
+    [_agreeBackView setTop:CGRectGetMaxY(_orderTypeView.frame) + 10];
+    
 }
 
 - (void)makeOrderView {
@@ -343,6 +508,88 @@
     }
 }
 
+- (void)buttonCilck:(UIButton *)button {
+    [_otherMoneyText resignFirstResponder];
+    NSLog(@"----%ld",button.tag);
+    moneySeleButton.selected = NO;
+    moneySeleButton.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
+    if ([moneySeleButton viewWithTag:100]) {
+        ((UILabel *)[moneySeleButton viewWithTag:100]).textColor = EdlineV5_Color.textSecendColor;
+    }
+    button.selected = YES;
+    moneySeleButton = button;
+    
+    if (button.selected == YES) {
+        button.layer.borderColor = EdlineV5_Color.themeColor.CGColor;
+        if ([button viewWithTag:100]) {
+            ((UILabel *)[button viewWithTag:100]).textColor = EdlineV5_Color.themeColor;
+        }
+        
+    } else {
+        button.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
+        if ([button viewWithTag:100]) {
+            ((UILabel *)[button viewWithTag:100]).textColor = EdlineV5_Color.textSecendColor;
+        }
+    }
+    
+    _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"price"]];
+    
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+    moneySeleButton.selected = NO;
+    moneySeleButton.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
+    if ([moneySeleButton viewWithTag:100]) {
+        ((UILabel *)[moneySeleButton viewWithTag:100]).textColor = EdlineV5_Color.textSecendColor;
+    }
+    
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+
+    if ([string isEqualToString:@"\n"]) {
+        [textField resignFirstResponder];
+        return NO;
+    } else {
+        return [self validateNumber:string];
+    }
+}
+
+- (void)textfieldDidChanged:(NSNotification *)notice {
+    UITextField *textfield = (UITextField *)notice.object;
+    if (textfield.text.length>0) {
+        if (textfield.text.length == 1) {
+            if ([textfield.text isEqualToString:@"0"]) {
+                textfield.text = @"";
+            }
+        }
+        if (textfield.text.length>5) {
+            textfield.text = [textfield.text substringToIndex:5];
+        }
+        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue]];
+    } else {
+        _priceLabel.text = @"¥0.00";
+    }
+}
+
+- (BOOL)validateNumber:(NSString*)number {
+    BOOL res = YES;
+    NSCharacterSet* tmpSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+    int i = 0;
+    while (i < number.length) {
+        NSString * string = [number substringWithRange:NSMakeRange(i, 1)];
+        NSRange range = [string rangeOfCharacterFromSet:tmpSet];
+        if (range.length == 0) {
+            res = NO;
+            break;
+        }
+        i++;
+    }
+    return res;
+}
+
+
 - (void)submitButtonClick:(UIButton *)sender {
     if (!_seleteBtn.selected) {
         [self showHudInView:self.view showHint:@"请勾选并确认阅读购买协议"];
@@ -356,8 +603,8 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)getUserPayInfo {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userPayInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+- (void)getUserBalanceInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userBalanceInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
@@ -365,6 +612,12 @@
                     _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
+                    
+                    [_netWorkBalanceArray removeAllObjects];
+                    [_netWorkBalanceArray addObjectsFromArray:[[_balanceInfo[@"data"] objectForKey:@"recharge"] objectForKey:@"public"]];
+                    
+                    [_iosArray removeAllObjects];
+                    [_iosArray addObjectsFromArray:[[_balanceInfo[@"data"] objectForKey:@"recharge"] objectForKey:@"ios"]];
                     
                     [self makeMoneyView];
                     [self makeOrderView];
