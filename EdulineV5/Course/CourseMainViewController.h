@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CourseMainViewController : BaseViewController
 
+@property (assign, nonatomic) BOOL isLive;//是不是直播  区分直播详情页和其他类型详情页
+
 @property (strong ,nonatomic)NSDictionary   *dataSource;
 @property (strong ,nonatomic)NSString         *ID;
 /** 是不是活动(由列表传入) */

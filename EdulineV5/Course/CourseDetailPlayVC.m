@@ -146,7 +146,11 @@
     _canScrollAfterVideoPlay = NO;
     _tableView.scrollEnabled = NO;
     
-    _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"笔记",@"点评"]];
+    if (_isLive) {
+        _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"点评"]];
+    } else {
+        _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"笔记",@"点评"]];
+    }
 
     _titleLabel.text = @"课程详情";
     _titleImage.backgroundColor = BasidColor;
@@ -159,14 +163,16 @@
 //    self.playerView.coverImageView.image = DefaultImage;
     [_headerView addSubview:self.playerView];
     [self makeWkWebView];
-    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT - (_isLive ? 0 : 50);
     [self makeTableView];
     [self.view bringSubviewToFront:_titleImage];
     _titleImage.backgroundColor = [UIColor clearColor];
     _titleLabel.hidden = YES;
     _lineTL.hidden = YES;
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
-    [self makeDownView];
+    if (!_isLive) {
+        [self makeDownView];
+    }
     [self getCourseInfo];
     /**************************************/
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -265,7 +271,7 @@
 
 // MARK: - tableview
 - (void)makeTableView {
-    _tableView = [[LBHTableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - 50) style:UITableViewStylePlain];
+    _tableView = [[LBHTableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50)) style:UITableViewStylePlain];
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -356,14 +362,25 @@
                 btn.titleLabel.font = SYSTEMFONT(15);
                 [btn setTitleColor:[UIColor blackColor] forState:0];
                 [btn setTitleColor:BasidColor forState:UIControlStateSelected];
-                if (i == 0) {
-                    self.introButton = btn;
-                } else if (i == 1) {
-                    self.courseButton = btn;
-                } else if (i == 2) {
-                    self.commentButton = btn;
+                if (_isLive) {
+                    if (i == 0) {
+                        self.introButton = btn;
+                    } else if (i == 1) {
+                        self.commentButton = btn;
+                    } else if (i == 2) {
+                        self.courseButton = btn;
+                    }
+                    [_bg addSubview:btn];
+                } else {
+                    if (i == 0) {
+                        self.introButton = btn;
+                    } else if (i == 1) {
+                        self.courseButton = btn;
+                    } else if (i == 2) {
+                        self.commentButton = btn;
+                    }
+                    [_bg addSubview:btn];
                 }
-                [_bg addSubview:btn];
             }
             self.introButton.selected = YES;
             
@@ -420,13 +437,13 @@
             _recordVC.detailVC = weakself;
             _recordVC.cellType = YES;
             _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
-            _recordVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+            _recordVC.view.frame = CGRectMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
             [self.mainScroll addSubview:_recordVC.view];
             [self addChildViewController:_recordVC];
         } else {
             _recordVC.courseId = _ID;
             _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
-            _recordVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+            _recordVC.view.frame = CGRectMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
             _recordVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
 
@@ -437,13 +454,13 @@
             _commentVC.detailVC = weakself;
             _commentVC.cellType = NO;
             _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
-            _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+            _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
             [self.mainScroll addSubview:_commentVC.view];
             [self addChildViewController:_commentVC];
         } else {
             _commentVC.courseId = _ID;
             _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
-            _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+            _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
             _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
     }
@@ -459,9 +476,9 @@
     if (sender == self.introButton) {
         [self.mainScroll setContentOffset:CGPointMake(0, 0) animated:YES];
     } else if (sender == self.courseButton) {
-        [self.mainScroll setContentOffset:CGPointMake(MainScreenWidth, 0) animated:YES];
+        [self.mainScroll setContentOffset:CGPointMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth, 0) animated:YES];
     } else if (sender == self.commentButton) {
-        [self.mainScroll setContentOffset:CGPointMake(MainScreenWidth * 2, 0) animated:YES];
+        [self.mainScroll setContentOffset:CGPointMake(_isLive ? MainScreenWidth : MainScreenWidth * 2, 0) animated:YES];
     } else if (sender == self.recordButton) {
         [self.mainScroll setContentOffset:CGPointMake(MainScreenWidth * 3, 0) animated:YES];
     } else if (sender == self.questionButton) {
@@ -487,12 +504,21 @@
             self.recordButton.selected = NO;
             self.questionButton.selected = NO;
         }else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
-            self.blueLineView.centerX = self.courseButton.centerX;
-            self.courseButton.selected = YES;
-            self.introButton.selected = NO;
-            self.commentButton.selected = NO;
-            self.recordButton.selected = NO;
-            self.questionButton.selected = NO;
+            if (_isLive) {
+                self.blueLineView.centerX = self.commentButton.centerX;
+                self.courseButton.selected = NO;
+                self.introButton.selected = NO;
+                self.commentButton.selected = YES;
+                self.recordButton.selected = NO;
+                self.questionButton.selected = NO;
+            } else {
+                self.blueLineView.centerX = self.courseButton.centerX;
+                self.courseButton.selected = YES;
+                self.introButton.selected = NO;
+                self.commentButton.selected = NO;
+                self.recordButton.selected = NO;
+                self.questionButton.selected = NO;
+            }
         }else if (scrollView.contentOffset.x >= 3*MainScreenWidth && scrollView.contentOffset.x <= 3*MainScreenWidth){
             self.blueLineView.centerX = self.recordButton.centerX;
             self.courseButton.selected = NO;
@@ -909,21 +935,21 @@
 - (void)canNotScroll {
     _canScroll = NO;
     _canScrollAfterVideoPlay = NO;
-    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 47 - MACRO_UI_UPHEIGHT;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - MACRO_UI_UPHEIGHT;
     [_tableView reloadData];
 }
 
 - (void)canTableScroll {
     _canScroll = YES;
     _canScrollAfterVideoPlay = YES;
-    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 47 - MACRO_UI_UPHEIGHT;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - MACRO_UI_UPHEIGHT;
     [_tableView reloadData];
 }
 
 - (void)dealPlayWordBook {
     _canScroll = NO;
     _canScrollAfterVideoPlay = NO;
-    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 47 - MACRO_UI_UPHEIGHT;
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - MACRO_UI_UPHEIGHT;
     _tableView.scrollEnabled = NO;
     for (UIViewController *vc in self.childViewControllers) {
         if ([vc isKindOfClass:[CourseListVC class]]) {

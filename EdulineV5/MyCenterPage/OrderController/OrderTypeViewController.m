@@ -210,6 +210,7 @@
         CourseMainViewController *vc = [[CourseMainViewController alloc] init];
         vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
         vc.courselayer = [NSString stringWithFormat:@"%@",[pass objectForKey:@"section_level"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([courseType isEqualToString:@"2"]) {
         

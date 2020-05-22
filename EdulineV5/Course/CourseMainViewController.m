@@ -312,6 +312,7 @@
         CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
         vc.courselayer = _courselayer;
         vc.ID = _ID;
+        vc.isLive = _isLive;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -568,6 +569,7 @@
             CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
             vc.ID = _ID;
             vc.courselayer = _courselayer;
+            vc.isLive = _isLive;
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             OrderViewController *vc = [[OrderViewController alloc] init];
@@ -590,6 +592,7 @@
     vc.ID = _ID;
     vc.courselayer = _courselayer;
     vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
+    vc.isLive = _isLive;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

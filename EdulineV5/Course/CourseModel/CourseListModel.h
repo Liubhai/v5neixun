@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *price;
 @property (assign, nonatomic) BOOL status;
 @property (assign, nonatomic) BOOL has_child;
+@property (strong, nonatomic) NSString *course_type;
 @property (strong, nonatomic) section_data_model *section_data;
 
 

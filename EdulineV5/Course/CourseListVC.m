@@ -136,7 +136,7 @@
     static NSString *reuse = @"CourseCatalogCell";
     CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:cellCouserlayar isMainPage:_isMainPage allLayar:_courselayer];
+        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:reuse isClassNew:_isClassCourse cellSection:indexPath.section cellRow:indexPath.row courselayer:cellCouserlayar isMainPage:_isMainPage allLayar:_courselayer isLive:self.vc ? self.vc.isLive : self.detailVC.isLive];
     }
     cell.delegate = self;
     CourseListModelFinal *model = _courseListArray[indexPath.row];

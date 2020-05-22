@@ -10,7 +10,7 @@
 
 @implementation CourseCatalogCell
 
--(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow courselayer:(NSString *)courselayer isMainPage:(BOOL)isMainPage allLayar:(nonnull NSString *)allLayar {
+-(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow courselayer:(NSString *)courselayer isMainPage:(BOOL)isMainPage allLayar:(nonnull NSString *)allLayar isLive:(BOOL)isLive {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
         _isClassNew = isClassNew;
@@ -19,6 +19,7 @@
         _courselayer = courselayer;
         _isMainPage = isMainPage;
         _allLayar = allLayar;
+        _isLive = isLive;
         [self makeSubView];
     }
     return self;
@@ -35,6 +36,7 @@
     _typeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 32, 16)];
     _typeIcon.centerY = 50 / 2.0;
     _typeIcon.image = Image(@"contents_icon_video");
+    _typeIcon.hidden = _isLive;
     [self addSubview:_typeIcon];
     
     _lockIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 14, 0, 14, 16)];
@@ -42,7 +44,7 @@
     _lockIcon.image = Image(@"contents_icon_lock");
     [self addSubview:_lockIcon];
     
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_typeIcon.right + 5, 0, 150, 50)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_isLive ? 15 : (_typeIcon.right + 5), 0, 150, 50)];
     _titleLabel.text = @"第三课时课时名称";
     _titleLabel.textColor = EdlineV5_Color.textSecendColor;
     _titleLabel.font = SYSTEMFONT(14);
@@ -213,7 +215,7 @@
         static NSString *cellReuse = @"classnew1";
         CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuse];
         if (!cell) {
-            cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:cellReuse isClassNew:NO cellSection:0 cellRow:0 courselayer:@"2" isMainPage:_isMainPage allLayar:_allLayar];
+            cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:cellReuse isClassNew:NO cellSection:0 cellRow:0 courselayer:@"2" isMainPage:_isMainPage allLayar:_allLayar isLive:_isLive];
         }
         cell.delegate = self;
         CourseListModelFinal *model = _listFinalModel.child[indexPath.row];
@@ -226,7 +228,7 @@
     static NSString *cellReuse = @"classnew2";
     CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuse];
     if (!cell) {
-        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:cellReuse isClassNew:NO cellSection:0 cellRow:0 courselayer:@"3" isMainPage:_isMainPage allLayar:_allLayar];
+        cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:cellReuse isClassNew:NO cellSection:0 cellRow:0 courselayer:@"3" isMainPage:_isMainPage allLayar:_allLayar isLive:_isLive];
     }
     cell.delegate = self;
     CourseListModelFinal *model = _listFinalModel.child[indexPath.row];
