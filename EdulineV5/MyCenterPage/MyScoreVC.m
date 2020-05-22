@@ -142,6 +142,7 @@
     _scoreInputText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"输入数额" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17]}];
     _scoreInputText.centerX = _moneyView.width / 2.0;
     _scoreInputText.delegate = self;
+    _scoreInputText.textAlignment = NSTextAlignmentCenter;
     [_moneyView addSubview:_scoreInputText];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, _scoreInputText.bottom + 5, 243, 1)];

@@ -66,6 +66,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTap)];
+    [self.view addGestureRecognizer:tap];
+    
     _typeArray = [NSMutableArray new];
     _netWorkBalanceArray = [NSMutableArray new];
     _iosArray = [NSMutableArray new];
@@ -91,6 +95,8 @@
     
     [self getUserBalanceInfo];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)makeUserAccountUI {
@@ -209,7 +215,7 @@
             title.text = @"充50送10";
         } else {
             
-            if ([[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"give_balance"] integerValue] == 0) {
+            if ([[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"give_balance"] integerValue] == 0 || _orderRightBtn3.selected) {
                 title.text = @"";
                 number1.frame = CGRectMake(0, 0, buttonW, buttonH);
             } else {
@@ -230,6 +236,7 @@
         _cardButton.layer.cornerRadius = 4;
         [_cardButton setTitle:@"充值卡" forState:UIControlStateNormal];
         [_cardButton setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+        [_cardButton addTarget:self action:@selector(cardButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_moneyView addSubview:_cardButton];
         
         _otherMoneyText = [[UITextField alloc] initWithFrame:CGRectMake(_cardButton.right + 10, _cardButton.top, buttonW * 2 + 10, _cardButton.height)];
@@ -494,18 +501,32 @@
         _orderRightBtn1.selected = YES;
         _orderRightBtn2.selected = NO;
         _orderRightBtn3.selected = NO;
+        if ([typeString isEqualToString:@"applepay"]) {
+            [self makeMoneyView];
+        }
         typeString = @"alipay";
     } else if (sender == _orderRightBtn2) {
         _orderRightBtn2.selected = YES;
         _orderRightBtn1.selected = NO;
         _orderRightBtn3.selected = NO;
+        if ([typeString isEqualToString:@"applepay"]) {
+            [self makeMoneyView];
+        }
         typeString = @"wxpay";
     } else if (sender == _orderRightBtn3) {
         _orderRightBtn3.selected = YES;
         _orderRightBtn1.selected = NO;
         _orderRightBtn2.selected = NO;
+        if (![typeString isEqualToString:@"applepay"]) {
+            [self makeMoneyView];
+        }
         typeString = @"applepay";
     }
+    _priceLabel.text = @"¥0.00";
+}
+
+- (void)viewTap {
+    [_otherMoneyText resignFirstResponder];
 }
 
 - (void)buttonCilck:(UIButton *)button {
@@ -534,6 +555,20 @@
     
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"price"]];
     
+}
+
+- (void)cardButtonClick:(UIButton *)sender {
+    CardInterVC *vc = [[CardInterVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification{
+    [_mainScrollView setContentOffset:CGPointMake(0, 0)];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification{
+    NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    [_mainScrollView setContentOffset:CGPointMake(0, [endValue CGRectValue].size.height)];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -612,6 +647,7 @@
                     _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
+                    [_typeArray addObject:@"applepay"];
                     
                     [_netWorkBalanceArray removeAllObjects];
                     [_netWorkBalanceArray addObjectsFromArray:[[_balanceInfo[@"data"] objectForKey:@"recharge"] objectForKey:@"public"]];

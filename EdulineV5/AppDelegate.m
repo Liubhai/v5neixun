@@ -79,7 +79,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.tintColor = [UIColor redColor];//EdlineV5_Color.faildColor;
+//    self.window.tintColor = [UIColor redColor];//EdlineV5_Color.faildColor;
     
     self.tabbar = [RootV5VC sharedBaseTabBarViewController];
     self.window.rootViewController = self.tabbar;
