@@ -10,6 +10,8 @@
 #import "HomePageTeacherCell.h"
 #import "HomePageCourseTypeTwoCell.h"
 #import "V5_Constant.h"
+#import "TeacherListVC.h"
+#import "InstitutionListVC.h"
 
 @interface InstitutionRootVC ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -124,9 +126,11 @@
     [sectionHead addSubview:themeLabel];
     
     UIButton *more = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 60, 0, 60, 56)];
+    more.tag = section;
     [more setTitle:@"查看更多" forState:0];
     more.titleLabel.font = SYSTEMFONT(14);
     [more setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    [more addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [sectionHead addSubview:more];
     return sectionHead;
 }
@@ -189,6 +193,13 @@
     }
     if (scrollView.contentOffset.y <= 0) {
         _titleImage.alpha = 0;
+    }
+}
+
+- (void)moreButtonClick:(UIButton *)sender {
+    if (sender.tag == 1) {
+        InstitutionListVC *vc = [[InstitutionListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

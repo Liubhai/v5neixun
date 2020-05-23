@@ -165,6 +165,10 @@
 		787F1E8E247381A400108F7B /* DownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E60247381A300108F7B /* DownloadManager.m */; };
 		787F1E8F247381A400108F7B /* AVCVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E61247381A300108F7B /* AVCVideo.m */; };
 		787F1E90247381A400108F7B /* AVCVideoConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E62247381A300108F7B /* AVCVideoConfig.m */; };
+		787F1E952479198400108F7B /* TeacherListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E942479198100108F7B /* TeacherListVC.m */; };
+		787F1E9A24791A6300108F7B /* TeacherListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9924791A6300108F7B /* TeacherListCell.m */; };
+		787F1E9D247925AD00108F7B /* InstitutionListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9C247925AD00108F7B /* InstitutionListVC.m */; };
+		787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9F2479263200108F7B /* InstitutionListCell.m */; };
 		789DB01524593041001302B4 /* CouponModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01424593041001302B4 /* CouponModel.m */; };
 		789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB017245A76A1001302B4 /* ShopCarModel.m */; };
 		789DB01B24654571001302B4 /* MyBalanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01A24654571001302B4 /* MyBalanceVC.m */; };
@@ -671,6 +675,14 @@
 		787F1E60247381A300108F7B /* DownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadManager.m; sourceTree = "<group>"; };
 		787F1E61247381A300108F7B /* AVCVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCVideo.m; sourceTree = "<group>"; };
 		787F1E62247381A300108F7B /* AVCVideoConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCVideoConfig.m; sourceTree = "<group>"; };
+		787F1E932479198100108F7B /* TeacherListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherListVC.h; sourceTree = "<group>"; };
+		787F1E942479198100108F7B /* TeacherListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherListVC.m; sourceTree = "<group>"; };
+		787F1E9824791A6300108F7B /* TeacherListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherListCell.h; sourceTree = "<group>"; };
+		787F1E9924791A6300108F7B /* TeacherListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherListCell.m; sourceTree = "<group>"; };
+		787F1E9B247925AD00108F7B /* InstitutionListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionListVC.h; sourceTree = "<group>"; };
+		787F1E9C247925AD00108F7B /* InstitutionListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionListVC.m; sourceTree = "<group>"; };
+		787F1E9E2479263200108F7B /* InstitutionListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionListCell.h; sourceTree = "<group>"; };
+		787F1E9F2479263200108F7B /* InstitutionListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionListCell.m; sourceTree = "<group>"; };
 		789DB01324593041001302B4 /* CouponModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouponModel.h; sourceTree = "<group>"; };
 		789DB01424593041001302B4 /* CouponModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CouponModel.m; sourceTree = "<group>"; };
 		789DB016245A76A1001302B4 /* ShopCarModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarModel.h; sourceTree = "<group>"; };
@@ -1220,6 +1232,7 @@
 				7839C968241F154B002F6595 /* Course */,
 				7853164F2451317F007E239E /* LivePage */,
 				789DB066246D6550001302B4 /* InstitutionsPage */,
+				787F1E912479196000108F7B /* TeacherPage */,
 				7879566E240F929A0013F95F /* EdulineToolLib */,
 				78795610240DE7A50013F95F /* AppDelegate.h */,
 				78795611240DE7A50013F95F /* AppDelegate.m */,
@@ -1924,6 +1937,25 @@
 			path = AlivcVideoPlayModel;
 			sourceTree = "<group>";
 		};
+		787F1E912479196000108F7B /* TeacherPage */ = {
+			isa = PBXGroup;
+			children = (
+				787F1E932479198100108F7B /* TeacherListVC.h */,
+				787F1E942479198100108F7B /* TeacherListVC.m */,
+				787F1E9624791A4700108F7B /* view */,
+			);
+			path = TeacherPage;
+			sourceTree = "<group>";
+		};
+		787F1E9624791A4700108F7B /* view */ = {
+			isa = PBXGroup;
+			children = (
+				787F1E9824791A6300108F7B /* TeacherListCell.h */,
+				787F1E9924791A6300108F7B /* TeacherListCell.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 		789DB02E246924AC001302B4 /* view */ = {
 			isa = PBXGroup;
 			children = (
@@ -1942,6 +1974,8 @@
 			children = (
 				789DB068246D6576001302B4 /* InstitutionRootVC.h */,
 				789DB069246D6576001302B4 /* InstitutionRootVC.m */,
+				787F1E9B247925AD00108F7B /* InstitutionListVC.h */,
+				787F1E9C247925AD00108F7B /* InstitutionListVC.m */,
 				789DB06B246D7DD4001302B4 /* view */,
 			);
 			path = InstitutionsPage;
@@ -1952,6 +1986,8 @@
 			children = (
 				789DB06D246D7E04001302B4 /* TeacherCourseListHeaderView.h */,
 				789DB06E246D7E04001302B4 /* TeacherCourseListHeaderView.m */,
+				787F1E9E2479263200108F7B /* InstitutionListCell.h */,
+				787F1E9F2479263200108F7B /* InstitutionListCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -2652,6 +2688,7 @@
 				78AA139224441083007087F7 /* IntendedCourseVC.m in Sources */,
 				78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */,
 				78C54845241873EB00A33FC4 /* UserModel.m in Sources */,
+				787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */,
 				789DB04A246AC624001302B4 /* LearnRecordCell.m in Sources */,
 				78C549C6241B674E00A33FC4 /* AlivcKeyboardManager.m in Sources */,
 				7839C98E2420D089002F6595 /* CourseCommentCell.m in Sources */,
@@ -2672,6 +2709,7 @@
 				7853BDCD242C486E00F096EC /* OrderViewController.m in Sources */,
 				78795753240FAA7A0013F95F /* NSDate+Category.m in Sources */,
 				7853169024519A35007E239E /* UIViewController+Utils.m in Sources */,
+				787F1E952479198400108F7B /* TeacherListVC.m in Sources */,
 				78795612240DE7A50013F95F /* AppDelegate.m in Sources */,
 				78AA137E2440543D007087F7 /* SDCycleScrollView.m in Sources */,
 				787657282435C79E008F475D /* StudyRootVC.m in Sources */,
@@ -2751,6 +2789,7 @@
 				787F1E77247381A400108F7B /* AliyunPlayerViewControlView.m in Sources */,
 				789DB047246ABF2F001302B4 /* LearnRecordVC.m in Sources */,
 				787957622410E1F40013F95F /* LoginViewController.m in Sources */,
+				787F1E9A24791A6300108F7B /* TeacherListCell.m in Sources */,
 				7853BDC8242AEB1E00F096EC /* CourseDetailPlayVC.m in Sources */,
 				78C54972241B642B00A33FC4 /* AlivcVideoPlayListModel.m in Sources */,
 				7876573324370560008F475D /* playAnimationView.m in Sources */,
@@ -2837,6 +2876,7 @@
 				787F1E80247381A400108F7B /* AliyunPlayerViewGifView.m in Sources */,
 				78AA135C243C22B8007087F7 /* CourseScreenVC.m in Sources */,
 				78795735240FA3840013F95F /* ZLPhotoPickerViewController.m in Sources */,
+				787F1E9D247925AD00108F7B /* InstitutionListVC.m in Sources */,
 				789DB06F246D7E04001302B4 /* TeacherCourseListHeaderView.m in Sources */,
 				787F1E67247381A400108F7B /* AVCSelectSharpnessView.m in Sources */,
 				78795755240FAA7A0013F95F /* NSString+Hashing.m in Sources */,
