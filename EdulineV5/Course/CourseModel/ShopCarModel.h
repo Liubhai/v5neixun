@@ -81,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *update_time;
 @property (strong, nonatomic) NSString *delete_time;
 @property (assign, nonatomic) BOOL selected;
+@property (assign, nonatomic) BOOL has_course_card;
 
 
 @end

@@ -52,6 +52,7 @@
     [self makeTableView];
     [self makeDownView];
     [self getUserShopCarInfo];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserShopCarInfo) name:@"getCouponsReload" object:nil];
 }
 
 - (void)makeTableView {
@@ -285,8 +286,12 @@
 - (void)submiteButtonClick:(UIButton *)sender {
     
     course_ids = @"";
+    BOOL hasCoureCard = NO;
     for (int i = 0; i<_selectedArray.count; i ++) {
         ShopCarCourseModel *model = _selectedArray[i];
+        if (model.has_course_card) {
+            hasCoureCard = YES;
+        }
         if (SWNOTEmptyStr(course_ids)) {
             course_ids = [NSString stringWithFormat:@"%@,%@",course_ids,model.courseId];
         } else {
@@ -297,6 +302,23 @@
         [self showHudInView:self.view showHint:@"请选择一个商品"];
         return;
     }
+    if (hasCoureCard) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"订单含有课程卡课程 是否取消勾选？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续付款" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            ShopCarManagerFinalVC *vc = [[ShopCarManagerFinalVC alloc] init];
+            vc.course_ids = course_ids;
+            [self.navigationController pushViewController:vc animated:YES];
+            }];
+        [alertController addAction:commentAction];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"去取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [alertController addAction:cancelAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
+    
     ShopCarManagerFinalVC *vc = [[ShopCarManagerFinalVC alloc] init];
     vc.course_ids = course_ids;
     [self.navigationController pushViewController:vc animated:YES];
@@ -411,6 +433,7 @@
 }
 
 - (void)getUserShopCarInfo {
+    [_selectedArray removeAllObjects];
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path userShopcarInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {

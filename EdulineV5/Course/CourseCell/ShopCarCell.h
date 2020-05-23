@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong,nonatomic) UILabel *courseHourLabel;
 @property (strong,nonatomic) UILabel *priceLabel;
 @property (strong,nonatomic) UILabel *timeLabel;
+@property (strong,nonatomic) UIImageView *hasCourseCardImageView;
 @property (assign, nonatomic) BOOL cellType;// 默认是结算页面cell 不然就是管理页面cell
 @property (nonatomic, strong) NSIndexPath *cellIndex;
 @property (strong, nonatomic) ShopCarCourseModel *courseModel;

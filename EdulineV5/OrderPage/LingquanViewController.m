@@ -159,6 +159,9 @@
 }
 
 - (void)sureButtonClicked:(UIButton *)sender {
+    if (_getOrUse) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"getCouponsReload" object:nil];
+    }
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
 }

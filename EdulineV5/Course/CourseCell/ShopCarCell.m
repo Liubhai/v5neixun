@@ -58,6 +58,10 @@
     _priceLabel.text = @"VIP:¥200.00";
     [self addSubview:_priceLabel];
     
+    _hasCourseCardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 36, _timeLabel.top, 36, 15)];
+    _hasCourseCardImageView.image = Image(@"lessoncard_icon");
+    [self addSubview:_hasCourseCardImageView];
+    
     _courseHourLabel = [[UILabel alloc] initWithFrame:CGRectMake(_timeLabel.left, _timeLabel.top - 17, _timeLabel.width, 15)];
     _courseHourLabel.font = SYSTEMFONT(11);
     _courseHourLabel.textAlignment = NSTextAlignmentRight;
@@ -69,10 +73,12 @@
         _selectedIconBtn.hidden = NO;
         _timeLabel.hidden = YES;
         _courseHourLabel.hidden = YES;
+        _hasCourseCardImageView.hidden = NO;
     } else {
         _selectedIconBtn.hidden = YES;
         _timeLabel.hidden = YES;
         _courseHourLabel.hidden = NO;
+        _hasCourseCardImageView.hidden = YES;
     }
 }
 
@@ -84,6 +90,7 @@
     [_courseFaceImageView sd_setImageWithURL:EdulineUrlString(model.cover_url) placeholderImage:DefaultImage];
     if (_cellType) {
         _selectedIconBtn.selected = model.selected;
+        _hasCourseCardImageView.hidden = !model.has_course_card;
     }
     _themeLabel.text = model.title;
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
