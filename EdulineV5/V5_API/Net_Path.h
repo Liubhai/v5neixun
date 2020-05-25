@@ -131,7 +131,13 @@ struct NetWorkUrl {
 /** 余额信息 */
 + (NSString *)userBalanceInfo;
 
-/** 余额信息 */
+/** 余额明细 */
++ (NSString *)userBalanceDetailInfo;
+
+/** 收入明细 */
++ (NSString *)userIncomeDetailInfo;
+
+/** 余额配置信息 */
 + (NSString *)userPayInfo;
 
 /** 购物车信息 */

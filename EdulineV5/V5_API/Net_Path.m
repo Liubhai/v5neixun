@@ -164,6 +164,14 @@
     return [Net_Path fullPath:@"user/balance" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userBalanceDetailInfo {
+    return [Net_Path fullPath:@"user/balance/flow" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)userIncomeDetailInfo {
+    return [Net_Path fullPath:@"user/income/flow" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userPayInfo {
     return [Net_Path fullPath:@"order/pay" repalce:@"" byReplece:@""];
 }

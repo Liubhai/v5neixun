@@ -356,6 +356,38 @@ static EdulineV5_Tool *_sharedInstance;
     }
 }
 
++ (NSString *)timeForBalanceYYMMDDHHMM:(NSString *)time {
+    if (!time) {
+        return @"";
+    }
+    NSTimeInterval secondsPer = 24*60*60;
+    NSDate *today = [[NSDate alloc]init];
+    NSDate *yesterday = [today dateByAddingTimeInterval:-secondsPer];
+    NSString *yesterdayString = [[yesterday description]substringToIndex:10];
+    NSString *todayString = [[today description]substringToIndex:10];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:time.integerValue];
+    NSString *dateString = [[date description]substringToIndex:10];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *nowDate = [NSDate dateWithTimeIntervalSince1970:time.integerValue];
+    NSString *theDay = [dateFormatter stringFromDate:nowDate];//日期的年月日
+    
+    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];//当前年月日
+    NSString *nowYearStr = [currentDay substringToIndex:4];
+    NSString *yearStr = [theDay substringToIndex:4];
+    if ([dateString isEqualToString:todayString]) {
+        return [NSString stringWithFormat:@"今天 %@",[theDay substringFromIndex:11]];
+    }else if ([dateString isEqualToString:yesterdayString]){
+        return [NSString stringWithFormat:@"昨天 %@",[theDay substringFromIndex:11]];
+    }else{
+        if ([yearStr isEqualToString:nowYearStr]) {
+            return [theDay substringFromIndex:5];
+        }
+        return theDay;
+    }
+}
+
 + (NSString *)timeForYYYYMMDD:(NSString *)time {
     if (!time) {
         return @"";

@@ -50,6 +50,7 @@
 + (NSString *)formatterDate:(NSString *)time;
 + (NSString *)timeForYYYY:(NSString *)time;
 + (NSString *)timeForMMDD:(NSString *)time;
++ (NSString *)timeForBalanceYYMMDDHHMM:(NSString *)time;
 
 + (NSString *)currentdateInterval;
 + (NSString *)getRandomString;

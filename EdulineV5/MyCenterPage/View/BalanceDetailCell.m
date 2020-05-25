@@ -48,6 +48,12 @@
 
 - (void)setInfoData:(NSDictionary *)infoData {
     
+    if (SWNOTEmptyDictionary(infoData)) {
+        _titleLabel.text = [NSString stringWithFormat:@"%@",[infoData objectForKey:@"note"]];
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",[infoData objectForKey:@"num"]];
+        _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForBalanceYYMMDDHHMM:[infoData objectForKey:@"create_time"]]];
+    }
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
