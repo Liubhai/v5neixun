@@ -64,6 +64,20 @@
     } else {
         _selectImage.image = Image(@"");
     }
+    
+    _titleLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+    NSString *price = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"scribing_price"]];
+    NSString *scribing_price = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+    NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
+    NSRange rangOld = NSMakeRange(scribing_price.length, price.length);
+    NSRange rangNow = NSMakeRange(1, scribing_price.length - 1);
+    NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(14),NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
+    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(24),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:rangNow];
+    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(16),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 1)];
+    _priceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+    _freeLabel.text = [NSString stringWithFormat:@"赠送 %@积分",[info objectForKey:@"give_credit"]];
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

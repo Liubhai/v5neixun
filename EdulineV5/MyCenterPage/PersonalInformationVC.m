@@ -78,7 +78,7 @@
     _userFace.centerY = _faceTitle.centerY;
     _userFace.layer.masksToBounds = YES;
     _userFace.layer.cornerRadius = 25;
-    _userFace.image = Image(@"pre_touxaing");
+    _userFace.image = DefaultUserImage;
     _userFace.userInteractionEnabled = YES;
     _userFace.clipsToBounds = YES;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;

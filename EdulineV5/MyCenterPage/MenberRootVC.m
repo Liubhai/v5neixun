@@ -9,7 +9,9 @@
 #import "MenberRootVC.h"
 #import "V5_Constant.h"
 #import "MenberCell.h"
-#import "UINavigationController+EdulineStatusBar.h""
+#import "UINavigationController+EdulineStatusBar.h"
+#import "Net_Path.h"
+#import "UserModel.h"
 
 @interface MenberRootVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate> {
     NSIndexPath *currentIndexpath;
@@ -50,13 +52,14 @@
     currentIndexpath = [NSIndexPath indexPathForRow:0 inSection:0];
     _otherTypeArray = [NSMutableArray new];
     _memberTypeArray = [NSMutableArray new];
-    [_otherTypeArray addObjectsFromArray:@[@{@"title":@"免费课程",@"image":@"vip_icon1",@"type":@"course"},@{@"title":@"会员专区",@"image":@"vip_icon2",@"type":@"menber"},@{@"title":@"会员专区",@"image":@"vip_icon2",@"type":@"menber"},@{@"title":@"尊贵标识",@"image":@"vip_icon3",@"type":@"menber"}]];
+    [_otherTypeArray addObjectsFromArray:@[@{@"title":@"免费课程",@"image":@"vip_icon1",@"type":@"course"},@{@"title":@"付费课程",@"image":@"vip_icon_course",@"type":@"menberCourse"},@{@"title":@"权益说明",@"image":@"vip_icon3",@"type":@"menberIntro"}]];
     _lineTL.hidden = YES;
     _titleLabel.text = @"会员中心";
     _titleImage.backgroundColor = HEXCOLOR(0x20233C);
     _titleLabel.textColor = [UIColor whiteColor];
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
     [self makeSubView];
+    [self getMemBerInfo];
 }
 
 - (void)makeSubView {
@@ -73,12 +76,15 @@
     _userFace.clipsToBounds = YES;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;
     _userFace.image = DefaultUserImage;
+    if ([UserModel avatar]) {
+        [_userFace sd_setImageWithURL:EdulineUrlString([UserModel avatar]) placeholderImage:DefaultUserImage];
+    }
     [_topBackView addSubview:_userFace];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 15, _userFace.top, 150, _userFace.height / 2.0)];
     _nameLabel.textColor = HEXCOLOR(0x946A38);
     _nameLabel.font = SYSTEMFONT(17);
-    _nameLabel.text = @"9527";
+    _nameLabel.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
     _nameLabel.userInteractionEnabled = YES;
     [_topBackView addSubview:_nameLabel];
     
@@ -164,12 +170,13 @@
     _sureButton.layer.masksToBounds = YES;
     _sureButton.layer.cornerRadius = 20;
     _sureButton.center = _sureImageView.center;
+    [_sureButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_sureButton];
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return _memberTypeArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -178,7 +185,7 @@
     if (!cell) {
         cell = [[MenberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setMemberInfo:nil indexpath:indexPath currentIndexpath:currentIndexpath];
+    [cell setMemberInfo:_memberTypeArray[indexPath.row] indexpath:indexPath currentIndexpath:currentIndexpath];
     return cell;
 }
 
@@ -194,6 +201,25 @@
 
 - (void)otherTypeButtonClick:(UIButton *)sender {
     
+}
+
+// MARK: - 提交按钮点击事件
+- (void)submitButtonClick:(UIButton *)sender {
+    
+}
+
+- (void)getMemBerInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userMemberInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_memberTypeArray removeAllObjects];
+                [_memberTypeArray addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"vip"]];
+                [_tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 @end

@@ -45,9 +45,8 @@
     _userFaceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _leftBtn.bottom + 15, 64, 64)];
     _userFaceImageView.layer.masksToBounds = YES;
     _userFaceImageView.layer.cornerRadius = _userFaceImageView.height / 2.0;
-    _userFaceImageView.image = DefaultImage;
     _userFaceImageView.userInteractionEnabled = YES;
-    _userFaceImageView.image = Image(@"pre_touxaing");
+    _userFaceImageView.image = DefaultUserImage;
     UITapGestureRecognizer *faceTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(faceTapClick)];
     [_userFaceImageView addGestureRecognizer:faceTap];
     [self addSubview:_userFaceImageView];
@@ -107,7 +106,7 @@
         _introLabel.hidden = NO;
         _nameLabel.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
     } else {
-        _userFaceImageView.image = Image(@"pre_touxaing");
+        _userFaceImageView.image = DefaultUserImage;
         _nameLabel.centerY = _userFaceImageView.centerY;
         _nameLabel.text = @"登录/注册";
         _introLabel.hidden = YES;

@@ -160,6 +160,10 @@
     return [Net_Path fullPath:@"order/course/one" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userMemberInfo {
+    return [Net_Path fullPath:@"user/vip" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userBalanceInfo {
     return [Net_Path fullPath:@"user/balance" repalce:@"" byReplece:@""];
 }

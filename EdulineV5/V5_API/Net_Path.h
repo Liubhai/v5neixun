@@ -128,6 +128,9 @@ struct NetWorkUrl {
 /** 生成订单 */
 + (NSString *)creatSingleOrder;
 
+/** 成员信息 */
++ (NSString *)userMemberInfo;
+
 /** 余额信息 */
 + (NSString *)userBalanceInfo;
 
