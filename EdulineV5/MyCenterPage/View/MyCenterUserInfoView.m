@@ -67,7 +67,7 @@
     _levelImageView.centerY = _nameLabel.centerY;
     [self addSubview:_levelImageView];
     
-    _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, _nameLabel.width, _nameLabel.height)];
+    _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, MainScreenWidth - _nameLabel.left - 86, _nameLabel.height)];
     _introLabel.textColor = [UIColor whiteColor];
     _introLabel.font = SYSTEMFONT(13);
     _introLabel.text = @"曾经有无数份真挚的爱情摆在我的面前";
@@ -113,6 +113,9 @@
         _introLabel.hidden = NO;
         _nameLabel.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
         _levelImageView.hidden = NO;
+        CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+        [_nameLabel setWidth:nameWidth];
+        [_levelImageView setLeft:_nameLabel.right];
     } else {
         _userFaceImageView.image = DefaultUserImage;
         _nameLabel.centerY = _userFaceImageView.centerY;

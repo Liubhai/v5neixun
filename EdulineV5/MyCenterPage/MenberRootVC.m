@@ -14,9 +14,11 @@
 #import "UserModel.h"
 #import "OrderSureViewController.h"
 
-@interface MenberRootVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate> {
+@interface MenberRootVC ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UITextFieldDelegate> {
     NSIndexPath *currentIndexpath;
 }
+
+@property (strong, nonatomic) UITextField *cardNumT;
 
 @property (strong, nonatomic) UIImageView *topBackView;
 
@@ -55,13 +57,42 @@
     _otherTypeArray = [NSMutableArray new];
     _memberTypeArray = [NSMutableArray new];
     [_otherTypeArray addObjectsFromArray:@[@{@"title":@"免费课程",@"image":@"vip_icon1",@"type":@"course"},@{@"title":@"付费课程",@"image":@"vip_icon_course",@"type":@"menberCourse"},@{@"title":@"权益说明",@"image":@"vip_icon3",@"type":@"menberIntro"}]];
+    
+    [_rightButton setImage:nil forState:0];
+    [_rightButton setTitle:@"兑换" forState:0];
+    [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
+    _rightButton.hidden = NO;
+    
     _lineTL.hidden = YES;
     _titleLabel.text = @"会员中心";
     _titleImage.backgroundColor = HEXCOLOR(0x20233C);
     _titleLabel.textColor = [UIColor whiteColor];
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
+    [self makeSearchText];
     [self makeSubView];
     [self getMemBerInfo];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+}
+
+- (void)makeSearchText {
+    _cardNumT = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, _titleLabel.width, 36)];
+    _cardNumT.backgroundColor = HEXCOLOR(0x4d4e64);
+    _cardNumT.layer.masksToBounds = YES;
+    _cardNumT.layer.cornerRadius = 18;
+    _cardNumT.font = SYSTEMFONT(14);
+    _cardNumT.textColor = [UIColor whiteColor];
+    _cardNumT.returnKeyType = UIReturnKeyDone;
+    _cardNumT.textAlignment = NSTextAlignmentLeft;
+    _cardNumT.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"会员卡兑换码" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:HEXCOLOR(0xC2C2C2)}];
+    _cardNumT.delegate = self;
+    _cardNumT.center = _titleLabel.center;
+    [_titleImage addSubview:_cardNumT];
+    
+    UIView *leftMode = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 13, 36)];
+    leftMode.backgroundColor = HEXCOLOR(0x4d4e64);
+    _cardNumT.leftView = leftMode;
+    _cardNumT.leftViewMode = UITextFieldViewModeAlways;
 }
 
 - (void)makeSubView {
@@ -184,6 +215,41 @@
     
 }
 
+- (void)textfieldDidChanged:(NSNotification *)notice {
+    UITextField *textfield = (UITextField *)notice.object;
+    if (textfield.text.length>0) {
+        _rightButton.enabled = YES;
+    } else {
+        _rightButton.enabled = NO;
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string isEqualToString:@"\n"]) {
+        [_cardNumT resignFirstResponder];
+        return NO;
+    } else {
+        return [self validateNumber:string];
+    }
+    return YES;
+}
+
+- (BOOL)validateNumber:(NSString*)number {
+    BOOL res = YES;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[a-zA-Z0-9]*"];
+    int i = 0;
+    while (i < number.length) {
+        NSString * string = [number substringWithRange:NSMakeRange(i, 1)];
+        BOOL isOk = [predicate evaluateWithObject:string];
+        if (!isOk) {
+            res = NO;
+            break;
+        }
+        i++;
+    }
+    return res;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _memberTypeArray.count;
 }
@@ -228,6 +294,27 @@
             
         }];
     }
+}
+
+- (void)rightButtonClick:(id)sender {
+    [_cardNumT resignFirstResponder];
+    if (!SWNOTEmptyStr(_cardNumT.text)) {
+        [self showAlertWithTitle:nil msg:@"请输入会员卡兑换码" handler:nil];
+        return;
+    }
+//    [Net_API requestPOSTWithURLStr:[Net_Path couponExchange] WithAuthorization:nil paramDic:@{@"code":_cardNumT.text} finish:^(id  _Nonnull responseObject) {
+//        if (SWNOTEmptyDictionary(responseObject)) {
+//            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+//            if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                _cardNumT.text = @"";
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMyCouponList" object:nil];
+//            } else {
+//
+//            }
+//        }
+//    } enError:^(NSError * _Nonnull error) {
+//
+//    }];
 }
 
 - (void)getMemBerInfo {
