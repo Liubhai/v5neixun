@@ -401,6 +401,8 @@
         // 刷新订单所有页面
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadOrderList" object:nil];
         [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

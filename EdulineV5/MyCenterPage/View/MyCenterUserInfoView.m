@@ -59,6 +59,13 @@
     UITapGestureRecognizer *nameTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(faceTapClick)];
     [_nameLabel addGestureRecognizer:nameTap];
     [self addSubview:_nameLabel];
+    CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+    [_nameLabel setWidth:nameWidth];
+    
+    _levelImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_nameLabel.right, 0, 15, 13)];
+    _levelImageView.image = Image(@"vip_icon");
+    _levelImageView.centerY = _nameLabel.centerY;
+    [self addSubview:_levelImageView];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, _nameLabel.width, _nameLabel.height)];
     _introLabel.textColor = [UIColor whiteColor];
@@ -105,11 +112,13 @@
         [_nameLabel setTop:_userFaceImageView.top];
         _introLabel.hidden = NO;
         _nameLabel.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
+        _levelImageView.hidden = NO;
     } else {
         _userFaceImageView.image = DefaultUserImage;
         _nameLabel.centerY = _userFaceImageView.centerY;
         _nameLabel.text = @"登录/注册";
         _introLabel.hidden = YES;
+        _levelImageView.hidden = YES;
     }
 }
 

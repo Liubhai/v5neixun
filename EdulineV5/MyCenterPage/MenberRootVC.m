@@ -12,6 +12,7 @@
 #import "UINavigationController+EdulineStatusBar.h"
 #import "Net_Path.h"
 #import "UserModel.h"
+#import "OrderSureViewController.h"
 
 @interface MenberRootVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate> {
     NSIndexPath *currentIndexpath;
@@ -21,6 +22,7 @@
 
 @property (strong, nonatomic) UIImageView *userFace;
 @property (strong, nonatomic) UILabel *nameLabel;
+@property (strong, nonatomic) UIImageView *levelImageView;
 @property (strong, nonatomic) UILabel *introLabel;
 
 @property (strong, nonatomic) UIView *otherTypeBackView;
@@ -87,6 +89,13 @@
     _nameLabel.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
     _nameLabel.userInteractionEnabled = YES;
     [_topBackView addSubview:_nameLabel];
+    CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+    [_nameLabel setWidth:nameWidth];
+    
+    _levelImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_nameLabel.right, 0, 15, 13)];
+    _levelImageView.image = Image(@"vip_icon");
+    _levelImageView.centerY = _nameLabel.centerY;
+    [_topBackView addSubview:_levelImageView];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, _nameLabel.width, _nameLabel.height)];
     _introLabel.textColor = HEXCOLOR(0x946A38);
@@ -205,7 +214,20 @@
 
 // MARK: - 提交按钮点击事件
 - (void)submitButtonClick:(UIButton *)sender {
-    
+    if (SWNOTEmptyArr(_memberTypeArray)) {
+        NSString *vip_id = [NSString stringWithFormat:@"%@",[_memberTypeArray[currentIndexpath.row] objectForKey:@"id"]];
+        [Net_API requestPOSTWithURLStr:[Net_Path userMemberInfo] WithAuthorization:nil paramDic:@{@"vip_id":vip_id} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    OrderSureViewController *vc = [[OrderSureViewController alloc] init];
+                    vc.orderSureInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 - (void)getMemBerInfo {

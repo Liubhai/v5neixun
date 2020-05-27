@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImageView *userFaceImageView;
 
 @property (strong, nonatomic) UILabel *nameLabel;
+@property (strong, nonatomic) UIImageView *levelImageView;
 @property (strong, nonatomic) UILabel *introLabel;
 
 @property (strong, nonatomic) UIImageView *menberImageView;
