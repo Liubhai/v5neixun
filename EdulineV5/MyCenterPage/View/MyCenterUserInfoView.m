@@ -116,6 +116,18 @@
         CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
         [_nameLabel setWidth:nameWidth];
         [_levelImageView setLeft:_nameLabel.right];
+        if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+            _levelImageView.hidden = NO;
+            [_menberBtn setTitle:@" 续费会员》" forState:0];
+            _levelImageView.image = Image(@"vip_icon");
+        } else if ([[UserModel vipStatus] isEqualToString:@"2"]) {
+            _levelImageView.hidden = NO;
+            _levelImageView.image = Image(@"vip_grey_icon");
+            [_menberBtn setTitle:@" 续费会员》" forState:0];
+        } else {
+            _levelImageView.hidden = YES;
+            [_menberBtn setTitle:@" 开通会员》" forState:0];
+        }
     } else {
         _userFaceImageView.image = DefaultUserImage;
         _nameLabel.centerY = _userFaceImageView.centerY;

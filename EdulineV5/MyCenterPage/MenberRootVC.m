@@ -126,9 +126,14 @@
     _levelImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_nameLabel.right, 0, 15, 13)];
     _levelImageView.image = Image(@"vip_icon");
     _levelImageView.centerY = _nameLabel.centerY;
+    if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+        _levelImageView.hidden = NO;
+    } else {
+        _levelImageView.hidden = YES;
+    }
     [_topBackView addSubview:_levelImageView];
     
-    _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, _nameLabel.width, _nameLabel.height)];
+    _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, MainScreenWidth - _nameLabel.width - 30, _nameLabel.height)];
     _introLabel.textColor = HEXCOLOR(0x946A38);
     _introLabel.font = SYSTEMFONT(13);
     _introLabel.text = @"VIP5";
@@ -321,6 +326,24 @@
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path userMemberInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                
+                NSString *vipStatus = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"vip_status"]];
+                if ([vipStatus isEqualToString:@"1"]) {
+                    NSString *expierTime = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"expire_time"]];
+                    _levelImageView.hidden = NO;
+                    _levelImageView.image = Image(@"vip_icon");
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+                    NSDate *nowDate = [NSDate dateWithTimeIntervalSince1970:expierTime.integerValue];
+                    NSString *theDay = [dateFormatter stringFromDate:nowDate];//日期的年月日
+                    _introLabel.text = [NSString stringWithFormat:@"会员有效期至 %@",theDay];
+                } else if ([vipStatus isEqualToString:@"2"]) {
+                    _levelImageView.hidden = NO;
+                    _levelImageView.image = Image(@"vip_grey_icon");
+                } else {
+                    _levelImageView.hidden = YES;
+                }
+                
                 [_memberTypeArray removeAllObjects];
                 [_memberTypeArray addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"vip"]];
                 [_tableView reloadData];

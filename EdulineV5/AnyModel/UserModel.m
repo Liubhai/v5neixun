@@ -180,6 +180,15 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (void)saveVipStatus:(NSString *)status {
+    if (!SWNOTEmptyStr(status)) {
+        return;
+    }
+    NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
+    [uDic setObject:status forKey:@"vipStatus"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 
 + (NSDictionary *)groupPermission {
@@ -223,6 +232,11 @@
 +(NSString *)oauthTokenSecret
 {
     return [UserModel replaceNilStr:[self userPassport][@"oauthTokenSecret"] nilStr:@""];
+}
+
++(NSString *)vipStatus
+{
+    return [UserModel replaceNilStr:[self userPassport][@"vipStatus"] nilStr:@""];
 }
 
 +(NSString *)groupImg
