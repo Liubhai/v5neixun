@@ -29,6 +29,13 @@
 #import "AlivcVideoPlayListModel.h"
 #import "AppDelegate.h"
 
+// 直播测试
+#import "LiveRoomViewController.h"
+#import "TICManager.h"
+#import "TICConfig.h"
+
+#import "AppDelegate.h"
+
 #define FacePlayImageHeight 207
 
 @interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate,WKUIDelegate,WKNavigationDelegate> {
@@ -747,6 +754,10 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
+    if ([_courseType isEqualToString:@"2"]) {
+        [self getLiveCourseHourseInfo:model.model.classHourId];
+        return;
+    }
 //    http://v5.51eduline.com/test.php
     //https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8
     __weak CourseDetailPlayVC *wekself = self;
@@ -993,6 +1004,104 @@
     shouldStopRecordTimer = NO;
     wekself.recordTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:wekself selector:@selector(addLearnRecord) userInfo:nil repeats:YES];
     [wekself.recordTimer fire];
+}
+
+// MARK: - 直播相关
+// 直播相关测试
+- (void)loginLiveRoom:(NSDictionary *)liveInfo {
+    NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
+    NSString *userSig = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_sig"]];
+    [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
+        if(code == 0){
+            [self joinLiveRoom:liveInfo];
+        }
+        else{
+            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"登录失败: %d,%@",code, desc]];
+        }
+    }];
+//    __weak CourseDetailPlayVC *wekself = self;
+//    AppDelegate *app = [AppDelegate delegate];
+//    app.configTXSDK = ^(NSString *success) {
+//        NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
+//        NSString *userSig = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_sig"]];
+//        [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
+//            if(code == 0){
+//                [self joinLiveRoom:liveInfo];
+//            }
+//            else{
+//                [self showHudInView:wekself.view showHint:[NSString stringWithFormat:@"登录失败: %d,%@",code, desc]];
+//            }
+//        }];
+//    };
+//    [app intTXSDK];
+}
+
+- (void)joinLiveRoom:(NSDictionary *)liveInfo {
+    NSString *classId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"room_no"]];
+    NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
+    if (classId.length <= 0) {
+        return;
+    }
+
+    LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
+    vc.classId = classId;
+    vc.userId = userId;
+    
+    TICClassroomOption *option = [[TICClassroomOption alloc] init];
+    option.classId = [classId intValue];
+    option.classScene = TIC_CLASS_SCENE_VIDEO_CALL;
+    
+    [[TICManager sharedInstance] addMessageListener:vc];
+    [[TICManager sharedInstance] addEventListener:vc];
+    
+    __weak CourseDetailPlayVC *wekself = self;
+    [[TICManager sharedInstance] joinClassroom:option callback:^(TICModule module, int code, NSString *desc) {
+        if(code == 0){
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else{
+            if(code == 10015){
+                [self showHudInView:self.view showHint:@"课堂不存在，请\"创建课堂\""];
+                [[TICManager sharedInstance] createClassroom:[classId intValue] classScene:TIC_CLASS_SCENE_VIDEO_CALL callback:^(TICModule module, int code, NSString *desc) {
+                    if(code == 0){
+                        [self showHudInView:self.view showHint:@"创建课堂成功，请\"加入课堂\""];
+                    }
+                    else{
+                        if(code == 10021){
+                            [self showHudInView:self.view showHint:@"该课堂已被他人创建，请\"加入课堂\""];
+                        }
+                        else if(code == 10025){
+                            [self showHudInView:self.view showHint:@"该课堂已创建，请\"加入课堂\""];
+                        }
+                        else{
+                            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"创建课堂失败：%d %@", code, desc]];
+                        }
+                    }
+                }];
+            }
+            else{
+                [self showHudInView:self.view showHint:[NSString stringWithFormat:@"加入课堂失败：%d %@", code, desc]];
+            }
+        }
+    }];
+}
+
+// MARK: - 获取直播课时相关信息
+- (void)getLiveCourseHourseInfo:(NSString *)liveHourseSectionId {
+    if (SWNOTEmptyStr(liveHourseSectionId)) {
+        __weak typeof(self) ws = self;
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path liveLoginInfo] WithAuthorization:nil paramDic:@{@"section_id":liveHourseSectionId} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"sdk_appid"]] forKey:@"sdk_appid"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [self loginLiveRoom:[responseObject objectForKey:@"data"]];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 @end

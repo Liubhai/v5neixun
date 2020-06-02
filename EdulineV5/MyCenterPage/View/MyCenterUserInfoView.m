@@ -134,6 +134,8 @@
         _nameLabel.text = @"登录/注册";
         _introLabel.hidden = YES;
         _levelImageView.hidden = YES;
+        CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+        [_nameLabel setWidth:nameWidth];
     }
 }
 

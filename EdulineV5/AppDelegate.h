@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "RootV5VC.h"
 
+typedef void (^configTXSDK)(NSString *success);
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate> {
     
 }
 
+@property (strong ,nonatomic) configTXSDK configTXSDK;
 @property (strong, nonatomic) UIWindow *window;
 
 @property (assign, nonatomic) BOOL _allowRotation;
@@ -27,6 +30,9 @@
 - (void)changeThemeColor;
 
 +(void)presentLoginNav:(UIViewController *)currentViewController;
+
+/** 初始化TXSDK */
+- (void)intTXSDK;
 
 //  被挤下线
 @property (nonatomic,strong) UIAlertView* noticeLogoutAlert;

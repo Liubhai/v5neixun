@@ -44,7 +44,7 @@
         schoolFace.layer.cornerRadius = 20;
         schoolFace.clipsToBounds = YES;
         schoolFace.contentMode = UIViewContentModeScaleAspectFill;
-        [schoolFace sd_setImageWithURL:[NSURL URLWithString:SWNOTEmptyStr([_schoolInfo objectForKey:@"cover"]) ? [_schoolInfo objectForKey:@"cover"] : @""] placeholderImage:DefaultImage];
+        [schoolFace sd_setImageWithURL:[NSURL URLWithString:SWNOTEmptyStr([_schoolInfo objectForKey:@"logo"]) ? [_schoolInfo objectForKey:@"logo"] : @""] placeholderImage:DefaultImage];
         [_teachersHeaderScrollView addSubview:schoolFace];
         UILabel *schoolName = [[UILabel alloc] initWithFrame:CGRectMake(schoolFace.right + 5, 15, 0, 14)];
         schoolName.textColor = EdlineV5_Color.textFirstColor;
@@ -69,7 +69,7 @@
             teacherFace.layer.cornerRadius = 20;
             teacherFace.clipsToBounds = YES;
             teacherFace.contentMode = UIViewContentModeScaleAspectFill;
-            [teacherFace sd_setImageWithURL:[NSURL URLWithString:[_teacherInfoDict objectForKey:@"headimg"]] placeholderImage:DefaultImage];
+            [teacherFace sd_setImageWithURL:[NSURL URLWithString:[_teacherInfoDict objectForKey:@"avatar_url"]] placeholderImage:DefaultImage];
             [_teachersHeaderScrollView addSubview:teacherFace];
             UILabel *teacherName = [[UILabel alloc] initWithFrame:CGRectMake(teacherFace.right + 5, 15, 0, 14)];
             teacherName.textColor = EdlineV5_Color.textFirstColor;

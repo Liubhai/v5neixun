@@ -94,13 +94,9 @@
     self.quickLoginManager = [NTESQuickLoginManager sharedInstance];
     [self registerQuickLogin];
     
-    int sdkAppid = [[TICConfig shareInstance].sdkAppId intValue];
-    [[TICManager sharedInstance] init:sdkAppid callback:^(TICModule module, int code, NSString *desc) {
-        if(code == 0){
-            [[TICManager sharedInstance] addStatusListener:self];
-        }
-    }];
+    [self appConfigInfo];
     
+    [self intTXSDK];
     _noticeLogoutAlert = [[UIAlertView alloc]initWithTitle:LoginInvalid_TXT message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     _noticeLogoutAlert.tag = 101;
     
@@ -538,6 +534,34 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
+}
+
+// MARK: - 初始化信息
+- (void)appConfigInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path appConfig] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"sdk_appid"] forKey:@"sdk_appid"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+// MARK: - 初始化TX直播
+- (void)intTXSDK {
+    __weak typeof(self) weakSelf = self;
+    if (SWNOTEmptyStr(TXSDKID)) {
+        int sdkAppid = [TXSDKID intValue];
+        [[TICManager sharedInstance] init:sdkAppid callback:^(TICModule module, int code, NSString *desc) {
+            if(code == 0){
+                [[TICManager sharedInstance] addStatusListener:self];
+//                weakSelf.configTXSDK(@"1");
+            }
+        }];
+    }
 }
 
 @end

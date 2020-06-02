@@ -593,6 +593,7 @@
     vc.courselayer = _courselayer;
     vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
     vc.isLive = _isLive;
+    vc.courseType = _courseType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

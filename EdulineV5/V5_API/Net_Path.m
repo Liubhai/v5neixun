@@ -24,6 +24,10 @@
     return [[NSString stringWithFormat:@"%@",path] stringByReplacingOccurrencesOfString:replace withString:byReplace];
 }
 
++ (NSString *)appConfig {
+    return [Net_Path fullPath:@"config/init" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userCreatePath:(NSString *)userId {
     return [Net_Path fullPath:@"user/account/create" repalce:@"" byReplece:@""];
 }
@@ -230,6 +234,10 @@
 
 + (NSString *)studyMainPageJoinCourseList {
     return [Net_Path fullPath:@"course/base/record/course" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)liveLoginInfo {
+    return [Net_Path fullPath:@"course/live/tencent/v2/userSig" repalce:@"" byReplece:@""];
 }
 
 @end

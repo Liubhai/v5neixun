@@ -260,8 +260,8 @@
 // 直播相关测试
 
 - (void)loginLiveRoom {
-    NSString *userId = @"tiw_ios_7";
-    NSString *userSig = @"eJwtzEELgjAcBfDvsqsh22xNhA6R4UGTYtZVjK34I9Vwq7TouzfWTo-3e-A*qKlE-FQDyhCNMZr5DlLdLJzBs4VXC3fT8jAa2Xdag0QZmWNMKHfxX9SoYVDOGWMU46AWrt5SzhKe0qAGLu77cDTNSog8yWkd7aZTVT*EXZTr93Yz4YgWhc17Q-i4L80SfX8LlDI4";
+    NSString *userId = @"32";
+    NSString *userSig = @"eJwtzMsKwjAURdF-yVQpN0*x4MAObBVBig-sUEgqlzYa0hKL4r9bYodnHdgfctofk2A8SQlLgMzjRm0ePdYYmbNJO93cnENNUioAuFBKwf8xg0NvRpdSMoBJe7TRlhRAMkanCt7H6CYUipfWVEW7u76yzL*rtpFlNzOW8sv5ucjDcKi3*RrFinx-LLEvrw__";
     __weak typeof(self) ws = self;
     [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
         if(code == 0){
@@ -274,8 +274,8 @@
 }
 
 - (void)joinLiveRoom {
-    NSString *classId = @"95421";//@"9520";
-    NSString *userId = @"tiw_ios_7";
+    NSString *classId = @"24";
+    NSString *userId = @"32";
     if (classId.length <= 0) {
         return;
     }

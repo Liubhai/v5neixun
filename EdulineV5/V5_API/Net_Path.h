@@ -23,6 +23,9 @@ struct NetWorkUrl {
 
 + (NSString *)fullPath:(NSString *)path repalce:(NSString *)replace byReplece:(NSString *)byReplace;
 
+/** app初始化信息 */
++ (NSString *)appConfig;
+
 /** 创建账号 */
 + (NSString *)userCreatePath:(NSString *)userId;
 
@@ -183,6 +186,9 @@ struct NetWorkUrl {
 
 /** 学习主页 加入的课程 */
 + (NSString *)studyMainPageJoinCourseList;
+
+/** 直播用户登录所需信息 */
++ (NSString *)liveLoginInfo;
 
 @end
 
