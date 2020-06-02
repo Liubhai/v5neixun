@@ -170,7 +170,7 @@
 //    self.playerView.coverImageView.image = DefaultImage;
     [_headerView addSubview:self.playerView];
     [self makeWkWebView];
-    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT - (_isLive ? 0 : 50);
+//    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT - (_isLive ? 0 : 50);
     [self makeTableView];
     [self.view bringSubviewToFront:_titleImage];
     _titleImage.backgroundColor = [UIColor clearColor];
@@ -314,6 +314,7 @@
 //        _teachersHeaderBackView.delegate = self;
 //    }
     [_headerView setHeight:_courseContentView.bottom];
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - _headerView.height;
 }
 
 // MARK: - 底部视图(咨询、加入购物车、加入学习)
@@ -598,6 +599,7 @@
         [_teachersHeaderBackView setTeacherAndOrganizationData:_schoolInfo teacherInfo:_teacherInfoDict];
     }
     [_headerView setHeight:_teachersHeaderBackView.bottom];
+    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - _headerView.height;
     _tableView.tableHeaderView = _headerView;
     [_tableView reloadData];
 }
@@ -1049,7 +1051,6 @@
     
     TICClassroomOption *option = [[TICClassroomOption alloc] init];
     option.classId = [classId intValue];
-    option.classScene = TIC_CLASS_SCENE_VIDEO_CALL;
     
     [[TICManager sharedInstance] addMessageListener:vc];
     [[TICManager sharedInstance] addEventListener:vc];
