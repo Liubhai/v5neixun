@@ -313,6 +313,7 @@
         vc.courselayer = _courselayer;
         vc.ID = _ID;
         vc.isLive = _isLive;
+        vc.courseType = _courseType;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -570,6 +571,7 @@
             vc.ID = _ID;
             vc.courselayer = _courselayer;
             vc.isLive = _isLive;
+            vc.courseType = _courseType;
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             OrderViewController *vc = [[OrderViewController alloc] init];

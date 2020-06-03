@@ -151,4 +151,10 @@
 + (UIColor *)kechengkaColor {
     return HEXCOLORV5(0x67C23A);
 }
+
+/** 价格免费颜色 */
++ (UIColor *)priceFreeColor {
+    return HEXCOLORV5(0x67C23A);
+}
+
 @end

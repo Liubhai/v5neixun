@@ -81,13 +81,36 @@
     
     NSString *price = [NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"price"]];
     NSString *scribing_price = [NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"scribing_price"]];
-    NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
-    NSRange rangNow = NSMakeRange(scribing_price.length, price.length);
-    NSRange rangOld = NSMakeRange(0, scribing_price.length);
-    NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
-    [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangOld];
-    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:rangNow];
-    _coursePrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+    if ([scribing_price isEqualToString:@"¥0.00"]) {
+        if ([price isEqualToString:@"¥0.00"]) {
+            _coursePrice.text = @"免费";
+            _coursePrice.textColor = EdlineV5_Color.priceFreeColor;
+            _coursePrice.font = SYSTEMFONT(18);
+        } else {
+            _coursePrice.text = price;
+            _coursePrice.textColor = EdlineV5_Color.textPriceColor;
+            _coursePrice.font = SYSTEMFONT(18);
+        }
+    } else {
+        if ([price isEqualToString:@"¥0.00"]) {
+            price = @"免费";
+            NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
+            NSRange rangNow = NSMakeRange(scribing_price.length, price.length);
+            NSRange rangOld = NSMakeRange(0, scribing_price.length);
+            NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+            [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangOld];
+            [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.priceFreeColor} range:rangNow];
+            _coursePrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+        } else {
+            NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
+            NSRange rangNow = NSMakeRange(scribing_price.length, price.length);
+            NSRange rangOld = NSMakeRange(0, scribing_price.length);
+            NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+            [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangOld];
+            [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.textPriceColor} range:rangNow];
+            _coursePrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+        }
+    }
     if (showTitleOnly) {
         _courseTitleLabel.frame = CGRectMake(15, 0, MainScreenWidth - 30, 86);
         _lianzaiIcon.hidden = YES;

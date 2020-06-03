@@ -92,6 +92,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 课程卡内文字颜色 */
 + (UIColor *)kechengkaColor;
 
+/** 价格免费颜色 */
++ (UIColor *)priceFreeColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -168,8 +168,10 @@
     [self makeSubViews];
 //    self.playerView.hidden = YES;
 //    self.playerView.coverImageView.image = DefaultImage;
-    [_headerView addSubview:self.playerView];
-    [self makeWkWebView];
+    if (!_isLive) {
+        [_headerView addSubview:self.playerView];
+        [self makeWkWebView];
+    }
 //    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT - (_isLive ? 0 : 50);
     [self makeTableView];
     [self.view bringSubviewToFront:_titleImage];
@@ -182,18 +184,20 @@
     }
     [self getCourseInfo];
     /**************************************/
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(becomeActive)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(resignActive)
-                                                 name:UIApplicationDidEnterBackgroundNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(willResignActive)
-        name:UIApplicationWillResignActiveNotification
-      object:nil];
+    if (!_isLive) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(becomeActive)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(resignActive)
+                                                     name:UIApplicationDidEnterBackgroundNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+        selector:@selector(willResignActive)
+            name:UIApplicationWillResignActiveNotification
+          object:nil];
+    }
 //    [self dealPlayWordBook];
 }
 
@@ -1063,22 +1067,22 @@
         else{
             if(code == 10015){
                 [self showHudInView:self.view showHint:@"课堂不存在，请\"创建课堂\""];
-                [[TICManager sharedInstance] createClassroom:[classId intValue] classScene:TIC_CLASS_SCENE_VIDEO_CALL callback:^(TICModule module, int code, NSString *desc) {
-                    if(code == 0){
-                        [self showHudInView:self.view showHint:@"创建课堂成功，请\"加入课堂\""];
-                    }
-                    else{
-                        if(code == 10021){
-                            [self showHudInView:self.view showHint:@"该课堂已被他人创建，请\"加入课堂\""];
-                        }
-                        else if(code == 10025){
-                            [self showHudInView:self.view showHint:@"该课堂已创建，请\"加入课堂\""];
-                        }
-                        else{
-                            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"创建课堂失败：%d %@", code, desc]];
-                        }
-                    }
-                }];
+//                [[TICManager sharedInstance] createClassroom:[classId intValue] classScene:TIC_CLASS_SCENE_VIDEO_CALL callback:^(TICModule module, int code, NSString *desc) {
+//                    if(code == 0){
+//                        [self showHudInView:self.view showHint:@"创建课堂成功，请\"加入课堂\""];
+//                    }
+//                    else{
+//                        if(code == 10021){
+//                            [self showHudInView:self.view showHint:@"该课堂已被他人创建，请\"加入课堂\""];
+//                        }
+//                        else if(code == 10025){
+//                            [self showHudInView:self.view showHint:@"该课堂已创建，请\"加入课堂\""];
+//                        }
+//                        else{
+//                            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"创建课堂失败：%d %@", code, desc]];
+//                        }
+//                    }
+//                }];
             }
             else{
                 [self showHudInView:self.view showHint:[NSString stringWithFormat:@"加入课堂失败：%d %@", code, desc]];
