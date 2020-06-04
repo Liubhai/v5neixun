@@ -96,11 +96,25 @@
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+    NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
     
     if (!_cellType) {
         _titleL.frame = CGRectMake(0, 0, _titleL.width, 100);
         [_titleL sizeToFit];
         _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
+    }
+    _priceLabel.textColor = EdlineV5_Color.faildColor;
+    if ([[info objectForKey:@"is_buy"] integerValue]) {
+        _priceLabel.text = @"已购买";
+        _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+    } else {
+        if ([priceValue isEqualToString:@"0.00"]) {
+            _priceLabel.text = @"免费";
+            _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+        } else {
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+            _priceLabel.textColor = EdlineV5_Color.faildColor;
+        }
     }
 }
 
