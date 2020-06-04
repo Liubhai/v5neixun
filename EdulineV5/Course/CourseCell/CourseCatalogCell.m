@@ -244,12 +244,17 @@
     _listModel = model.model;
     
     _titleLabel.text = model.model.title;
+    
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.model.price];
+    
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     [_priceLabel setWidth:priceWidth];
     [_priceLabel setRight:_titleLabel.right + 10];
     if ([model.model.price floatValue]>0) {
         _priceLabel.hidden = NO;
+        if (model.model.is_buy) {
+            _priceLabel.text = @"已购买";
+        }
     } else {
         _priceLabel.hidden = YES;
     }
