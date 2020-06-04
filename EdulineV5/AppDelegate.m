@@ -96,7 +96,6 @@
     
     [self appConfigInfo];
     
-    [self intTXSDK];
     _noticeLogoutAlert = [[UIAlertView alloc]initWithTitle:LoginInvalid_TXT message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     _noticeLogoutAlert.tag = 101;
     
@@ -558,7 +557,7 @@
         [[TICManager sharedInstance] init:sdkAppid callback:^(TICModule module, int code, NSString *desc) {
             if(code == 0){
                 [[TICManager sharedInstance] addStatusListener:self];
-//                weakSelf.configTXSDK(@"1");
+                weakSelf.configTXSDK(@"1");
             }
         }];
     }

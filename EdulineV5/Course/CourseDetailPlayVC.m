@@ -1015,31 +1015,21 @@
 // MARK: - 直播相关
 // 直播相关测试
 - (void)loginLiveRoom:(NSDictionary *)liveInfo {
-    NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
-    NSString *userSig = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_sig"]];
-    [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
-        if(code == 0){
-            [self joinLiveRoom:liveInfo];
-        }
-        else{
-            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"登录失败: %d,%@",code, desc]];
-        }
-    }];
-//    __weak CourseDetailPlayVC *wekself = self;
-//    AppDelegate *app = [AppDelegate delegate];
-//    app.configTXSDK = ^(NSString *success) {
-//        NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
-//        NSString *userSig = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_sig"]];
-//        [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
-//            if(code == 0){
-//                [self joinLiveRoom:liveInfo];
-//            }
-//            else{
-//                [self showHudInView:wekself.view showHint:[NSString stringWithFormat:@"登录失败: %d,%@",code, desc]];
-//            }
-//        }];
-//    };
-//    [app intTXSDK];
+    __weak CourseDetailPlayVC *wekself = self;
+    AppDelegate *app = [AppDelegate delegate];
+    app.configTXSDK = ^(NSString *success) {
+        NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
+        NSString *userSig = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_sig"]];
+        [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
+            if(code == 0){
+                [self joinLiveRoom:liveInfo];
+            }
+            else{
+                [self showHudInView:wekself.view showHint:[NSString stringWithFormat:@"登录失败: %d,%@",code, desc]];
+            }
+        }];
+    };
+    [app intTXSDK];
 }
 
 - (void)joinLiveRoom:(NSDictionary *)liveInfo {

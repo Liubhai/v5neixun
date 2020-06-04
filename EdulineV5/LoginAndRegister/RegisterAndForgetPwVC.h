@@ -13,6 +13,7 @@
 
 @property (assign, nonatomic) BOOL registerOrForget;
 @property (assign, nonatomic) BOOL editPw;
+@property (assign, nonatomic) BOOL changePhone;
 
 @end
 

@@ -36,7 +36,11 @@
         if (_editPw) {
             _titleLabel.text = @"修改密码";
         } else {
-            _titleLabel.text = @"找回密码";
+            if (_changePhone) {
+                _titleLabel.text = @"更换手机号";
+            } else {
+                _titleLabel.text = @"找回密码";
+            }
         }
     }
     [self makeSubViews];
@@ -54,7 +58,19 @@
     _nextButton.layer.masksToBounds = YES;
     _nextButton.layer.cornerRadius = 5;
     [_nextButton setTitleColor:[UIColor whiteColor] forState:0];
-    [_nextButton setTitle:@"下一步" forState:0];
+    if (_registerOrForget) {
+        [_nextButton setTitle:@"下一步" forState:0];
+    } else {
+        if (_editPw) {
+            [_nextButton setTitle:@"下一步" forState:0];
+        } else {
+            if (_changePhone) {
+                [_nextButton setTitle:@"确认更换" forState:0];
+            } else {
+                [_nextButton setTitle:@"下一步" forState:0];
+            }
+        }
+    }
     _nextButton.titleLabel.font = SYSTEMFONT(18);
     _nextButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     _nextButton.enabled = NO;
@@ -98,7 +114,11 @@
     if (_registerOrForget) {
         [self loginRequest];
     } else {
-        [self jumpPassWordSetVc];
+        if (_changePhone) {
+            
+        } else {
+            [self jumpPassWordSetVc];
+        }
     }
 }
 
@@ -174,6 +194,25 @@
                     vc.pkString = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"pk"]];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
+}
+
+- (void)userChangePhone {
+    [self.view endEditing:YES];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:@"verify" forKey:@"logintype"];
+    [dict setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    [dict setObject:_loginMsg.codeTextField.text forKey:@"verify"];
+    [Net_API requestPOSTWithURLStr:[Net_Path userAccountChangePhone] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeUserInfoPagePhone" object:nil userInfo:@{@"phone":_loginMsg.phoneNumTextField.text}];
+                [self.navigationController popViewControllerAnimated:YES];
             }
         }
     } enError:^(NSError * _Nonnull error) {

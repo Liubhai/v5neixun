@@ -42,6 +42,7 @@
     _lockIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 14, 0, 14, 16)];
     _lockIcon.centerY = 50 / 2.0;
     _lockIcon.image = Image(@"contents_icon_lock");
+    _lockIcon.hidden = YES;
     [self addSubview:_lockIcon];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_isLive ? 15 : (_typeIcon.right + 5), 0, 150, 50)];

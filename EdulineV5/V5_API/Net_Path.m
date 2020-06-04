@@ -80,6 +80,10 @@
     return [Net_Path fullPath:@"sms/verify" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userAccountChangePhone {
+    return [Net_Path fullPath:@"user/account/phone" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)coursetypeList {
     return [Net_Path fullPath:@"course/base/type" repalce:@"" byReplece:@""];
 }

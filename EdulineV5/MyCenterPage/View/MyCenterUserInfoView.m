@@ -54,7 +54,6 @@
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFaceImageView.right + 15, _userFaceImageView.top, 150, _userFaceImageView.height / 2.0)];
     _nameLabel.textColor = [UIColor whiteColor];;
     _nameLabel.font = SYSTEMFONT(17);
-    _nameLabel.text = @"9527";
     _nameLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *nameTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(faceTapClick)];
     [_nameLabel addGestureRecognizer:nameTap];
@@ -65,17 +64,18 @@
     _levelImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_nameLabel.right, 0, 15, 13)];
     _levelImageView.image = Image(@"vip_icon");
     _levelImageView.centerY = _nameLabel.centerY;
+    _levelImageView.hidden = YES;
     [self addSubview:_levelImageView];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, MainScreenWidth - _nameLabel.left - 86, _nameLabel.height)];
     _introLabel.textColor = [UIColor whiteColor];
     _introLabel.font = SYSTEMFONT(13);
-    _introLabel.text = @"曾经有无数份真挚的爱情摆在我的面前";
     [self addSubview:_introLabel];
     
     _menberImageView = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 86, 0, 86, 32)];
     _menberImageView.image = Image(@"pre_vip_button");
     _menberImageView.centerY = _userFaceImageView.centerY;
+    _menberImageView.hidden = YES;
     [self addSubview:_menberImageView];
     
     _menberBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -85,6 +85,7 @@
     [_menberBtn setTitle:@" 开通会员》" forState:0];
     [_menberBtn setTitleColor:HEXCOLOR(0xA87941) forState:0];
     [_menberBtn addTarget:self action:@selector(menberButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _menberBtn.hidden = YES;
     [self addSubview:_menberBtn];
     
 }
@@ -111,6 +112,7 @@
     if (SWNOTEmptyStr([UserModel oauthToken])) {
         [_nameLabel setTop:_userFaceImageView.top];
         _introLabel.hidden = NO;
+        _introLabel.text = [NSString stringWithFormat:@"%@",[UserModel intro]];
         _nameLabel.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
         _levelImageView.hidden = NO;
         CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
@@ -136,6 +138,8 @@
         _levelImageView.hidden = YES;
         CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
         [_nameLabel setWidth:nameWidth];
+        _menberImageView.hidden = YES;
+        _menberBtn.hidden = YES;
     }
 }
 

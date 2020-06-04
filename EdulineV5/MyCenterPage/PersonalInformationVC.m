@@ -9,6 +9,8 @@
 #import "PersonalInformationVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "UserModel.h"
+#import "RegisterAndForgetPwVC.h"
 
 @interface PersonalInformationVC ()<UIScrollViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
     NSString *gender;
@@ -22,9 +24,20 @@
 @property (strong, nonatomic) UILabel *faceTitle;
 @property (strong, nonatomic) UIImageView *userFace;
 @property (strong, nonatomic) UIView *line1;
+
+@property (strong, nonatomic) UILabel *accountTitle;
+@property (strong, nonatomic) UITextField *accountTextField;
+@property (strong, nonatomic) UIView *line4;
+
 @property (strong, nonatomic) UILabel *nameTitle;
 @property (strong, nonatomic) UITextField *nameTextField;
 @property (strong, nonatomic) UIView *line2;
+
+@property (strong, nonatomic) UILabel *phoneTitle;
+@property (strong, nonatomic) UITextField *phoneTextField;
+@property (strong, nonatomic) UIView *line5;
+@property (strong, nonatomic) UIButton *phoneRightBtn;
+
 @property (strong, nonatomic) UILabel *sexTitle;
 @property (strong, nonatomic) UIButton *maleBtn;
 @property (strong, nonatomic) UIButton *feMaleBtn;
@@ -58,6 +71,8 @@
     
     [self getUserInfo];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeUserInfoPhone:) name:@"changeUserInfoPagePhone" object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -79,6 +94,7 @@
     _userFace.layer.masksToBounds = YES;
     _userFace.layer.cornerRadius = 25;
     _userFace.image = DefaultUserImage;
+    [_userFace sd_setImageWithURL:EdulineUrlString([UserModel avatar]) placeholderImage:DefaultUserImage];
     _userFace.userInteractionEnabled = YES;
     _userFace.clipsToBounds = YES;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;
@@ -90,7 +106,27 @@
     _line1.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_mainScrollView addSubview:_line1];
     
-    _nameTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line1.bottom, _faceTitle.width, 50)];
+    _accountTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line1.bottom, _faceTitle.width, 50)];
+    _accountTitle.text = @"账号";
+    _accountTitle.textColor = EdlineV5_Color.textFirstColor;
+    _accountTitle.font = SYSTEMFONT(15);
+    [_mainScrollView addSubview:_accountTitle];
+    
+    _accountTextField = [[UITextField alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _accountTitle.top, 200, 50)];
+    _accountTextField.textColor = EdlineV5_Color.textSecendColor;
+    _accountTextField.font = SYSTEMFONT(15);
+    _accountTextField.textAlignment = NSTextAlignmentRight;
+    _accountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"账号" attributes:@{NSFontAttributeName:SYSTEMFONT(15),NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
+    _accountTextField.delegate = self;
+    _accountTextField.text = [NSString stringWithFormat:@"%@",[UserModel userNickName]];
+    _accountTextField.returnKeyType = UIReturnKeyDone;
+    [_mainScrollView addSubview:_accountTextField];
+    
+    _line4 = [[UIView alloc] initWithFrame:CGRectMake(_faceTitle.left, _accountTitle.bottom, MainScreenWidth - 15, 0.5)];
+    _line4.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_mainScrollView addSubview:_line4];
+    
+    _nameTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line4.bottom, _faceTitle.width, 50)];
     _nameTitle.text = @"昵称修改";
     _nameTitle.textColor = EdlineV5_Color.textFirstColor;
     _nameTitle.font = SYSTEMFONT(15);
@@ -102,17 +138,47 @@
     _nameTextField.textAlignment = NSTextAlignmentRight;
     _nameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"用户名" attributes:@{NSFontAttributeName:SYSTEMFONT(15),NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
     _nameTextField.delegate = self;
+    _nameTextField.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
+    _nameTextField.returnKeyType = UIReturnKeyDone;
     [_mainScrollView addSubview:_nameTextField];
     
     _line2 = [[UIView alloc] initWithFrame:CGRectMake(_faceTitle.left, _nameTitle.bottom, MainScreenWidth - 15, 0.5)];
     _line2.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_mainScrollView addSubview:_line2];
     
-    _sexTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line2.bottom, _faceTitle.width, 50)];
+    _phoneTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line2.bottom, _faceTitle.width, 50)];
+    _phoneTitle.text = @"手机号";
+    _phoneTitle.textColor = EdlineV5_Color.textFirstColor;
+    _phoneTitle.font = SYSTEMFONT(15);
+    [_mainScrollView addSubview:_phoneTitle];
+    
+    _phoneRightBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 30, 0, 30, 30)];
+    [_phoneRightBtn setImage:Image(@"list_more") forState:0];
+    [_phoneRightBtn addTarget:self action:@selector(jumpToChangePhonePage) forControlEvents:UIControlEventTouchUpInside];
+    [_mainScrollView addSubview:_phoneRightBtn];
+    
+    _phoneTextField = [[UITextField alloc] initWithFrame:CGRectMake(_phoneRightBtn.left - 5 - 200, _phoneTitle.top, 200, 50)];
+    _phoneTextField.textColor = EdlineV5_Color.textSecendColor;
+    _phoneTextField.font = SYSTEMFONT(15);
+    _phoneTextField.textAlignment = NSTextAlignmentRight;
+    _phoneTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"手机号" attributes:@{NSFontAttributeName:SYSTEMFONT(15),NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
+    _phoneTextField.delegate = self;
+    _phoneTextField.text = [NSString stringWithFormat:@"%@",[UserModel userPhone]];
+    [_mainScrollView addSubview:_phoneTextField];
+    _phoneRightBtn.centerY = _phoneTextField.centerY;
+    
+    _line5 = [[UIView alloc] initWithFrame:CGRectMake(_faceTitle.left, _phoneTitle.bottom, MainScreenWidth - 15, 0.5)];
+    _line5.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_mainScrollView addSubview:_line5];
+    
+    _sexTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line5.bottom, _faceTitle.width, 50)];
     _sexTitle.text = @"性别";
     _sexTitle.textColor = EdlineV5_Color.textFirstColor;
     _sexTitle.font = SYSTEMFONT(15);
     [_mainScrollView addSubview:_sexTitle];
+    
+    
+    gender = [NSString stringWithFormat:@"%@",[UserModel gender]];// 0 保密 1 男 2 女
     
     _secrecyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _secrecyBtn.frame = CGRectMake(MainScreenWidth - 15 - 60, _sexTitle.top, 60, 50);
@@ -150,7 +216,13 @@
     [_maleBtn addTarget:self action:@selector(sexButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_mainScrollView addSubview:_maleBtn];
     
-    
+    if ([gender isEqualToString:@"0"]) {
+        [self sexButtonClick:_secrecyBtn];
+    } else if ([gender isEqualToString:@"1"]) {
+        [self sexButtonClick:_maleBtn];
+    } else {
+        [self sexButtonClick:_feMaleBtn];
+    }
     
     _line3 = [[UIView alloc] initWithFrame:CGRectMake(_faceTitle.left, _sexTitle.bottom, MainScreenWidth - 15, 0.5)];
     _line3.backgroundColor = EdlineV5_Color.fengeLineColor;
@@ -178,6 +250,11 @@
     [_mainScrollView addSubview:_introTextViewPlaceholder];
     
     [_mainScrollView setHeight:_introTextView.bottom + 10];
+    
+    if (SWNOTEmptyStr([UserModel intro])) {
+        _introTextViewPlaceholder.hidden = YES;
+        _introTextView.text = [NSString stringWithFormat:@"%@",[UserModel intro]];
+    }
 }
 
 - (void)changeUserFaceTap:(UITapGestureRecognizer *)sender {
@@ -274,14 +351,15 @@
 
 - (void)sexButtonClick:(UIButton *)sender {
     sender.selected = YES;
+    // 0 保密 1 男 2 女
     if (sender == _feMaleBtn) {
         _maleBtn.selected = NO;
         _secrecyBtn.selected = NO;
-        gender = @"1";
+        gender = @"2";
     } else if (sender == _maleBtn) {
         _feMaleBtn.selected = NO;
         _secrecyBtn.selected = NO;
-        gender = @"2";
+        gender = @"1";
     } else {
         _feMaleBtn.selected = NO;
         _maleBtn.selected = NO;
@@ -308,6 +386,30 @@
     return YES;
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (textField == _accountTextField) {
+        if (SWNOTEmptyDictionary(_userInfo)) {
+            if ([[_userInfo objectForKey:@"rest_times"] integerValue]) {
+                return YES;
+            } else {
+                return NO;
+            }
+        } else {
+            return NO;
+        }
+    } else {
+        return YES;
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string isEqualToString:@"\n"]) {
+        [self inputTextResign];
+        return NO;
+    }
+    return YES;
+}
+
 // MARK: - 修改用户信息
 /**nick_name avatar signature gender*/
 - (void)rightButtonClick:(id)sender {
@@ -321,7 +423,11 @@
     } else {
         [param setObject:@"" forKey:@"nick_name"];
     }
-    
+    if (SWNOTEmptyStr(_accountTextField.text)) {
+        [param setObject:_accountTextField.text forKey:@"user_name"];
+    } else {
+        [param setObject:@"" forKey:@"user_name"];
+    }
     if (SWNOTEmptyStr(_introTextView.text)) {
         [param setObject:_introTextView.text forKey:@"signature"];
     } else {
@@ -348,6 +454,7 @@
 
 - (void)verifyImage {
     if (!SWNOTEmptyArr(_imageArray)) {
+        [self changeUserInfo];
         return;
     }
     NSMutableDictionary *param = [NSMutableDictionary new];
@@ -396,6 +503,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _userInfo = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                [self setInfoData];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -405,7 +513,30 @@
 
 - (void)setInfoData {
     if (SWNOTEmptyDictionary(_userInfo)) {
-        
+        if (![[_userInfo objectForKey:@"rest_times"] integerValue]) {
+            _accountTextField.textColor = EdlineV5_Color.fengeLineColor;
+        }
+    }
+}
+
+- (void)jumpToChangePhonePage {
+    [self inputTextResign];
+    RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
+    vc.changePhone = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)inputTextResign {
+    [_accountTextField resignFirstResponder];
+    [_nameTextField resignFirstResponder];
+    [_phoneTextField resignFirstResponder];
+    [_introTextView  resignFirstResponder];
+}
+
+- (void)changeUserInfoPhone:(NSNotification *)notice {
+    NSDictionary *pass = [NSDictionary dictionaryWithDictionary:notice.userInfo];
+    if (SWNOTEmptyDictionary(pass)) {
+        _phoneTextField.text = [NSString stringWithFormat:@"%@",[pass objectForKey:@"phone"]];
     }
 }
 

@@ -66,6 +66,9 @@ struct NetWorkUrl {
 /** 短信验证码 */
 + (NSString *)smsCodeSend;
 
+/** 用户修改手机号 */
++ (NSString *)userAccountChangePhone;
+
 /** 课程种类 */
 + (NSString *)coursetypeList;
 
