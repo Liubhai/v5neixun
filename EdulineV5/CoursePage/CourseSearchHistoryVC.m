@@ -236,6 +236,8 @@
     CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
     vc.isSearch = YES;
     vc.searchKeyWord = _institutionSearch.text;
+    vc.hiddenNavDisappear = YES;
+    vc.notHiddenNav = NO;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

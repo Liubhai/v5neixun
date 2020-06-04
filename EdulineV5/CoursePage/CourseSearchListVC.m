@@ -395,8 +395,9 @@
         _screeningButton.selected = NO;
         if (_classOrLiveButton.selected) {
             CourseTypeVC *vc = [[CourseTypeVC alloc] init];
-            vc.notHiddenNav = YES;
+            vc.notHiddenNav = !_isSearch;
             vc.isMainPage = !_isSearch;
+            vc.hiddenNavDisappear = _isSearch;
             vc.delegate = self;
             if (SWNOTEmptyStr(coursetypeIdString)) {
                 vc.typeId = coursetypeIdString;
@@ -412,7 +413,9 @@
         _screeningButton.selected = NO;
         if (_classTypeButton.selected) {
             CourseClassifyVC *vc = [[CourseClassifyVC alloc] init];
-            vc.notHiddenNav = YES;
+            vc.notHiddenNav = !_isSearch;
+            vc.isMainPage = !_isSearch;
+            vc.hiddenNavDisappear = _isSearch;
             vc.delegate = self;
             vc.isMainPage = !_isSearch;
             if (SWNOTEmptyStr(courseClassifyIdString)) {
@@ -429,8 +432,9 @@
         _screeningButton.selected = NO;
         if (_moreButton.selected) {
             CourseSortVC *vc = [[CourseSortVC alloc] init];
-            vc.notHiddenNav = YES;
+            vc.notHiddenNav = !_isSearch;
             vc.isMainPage = !_isSearch;
+            vc.hiddenNavDisappear = _isSearch;
             vc.delegate = self;
             if (SWNOTEmptyStr(courseSortIdString)) {
                 vc.typeId = courseSortIdString;
@@ -450,8 +454,9 @@
             vc.upAndDown = screenPriceUpAndDown;
             vc.priceMax = maxPrice;
             vc.priceMin = minPrice;
-            vc.notHiddenNav = YES;
+            vc.notHiddenNav = !_isSearch;
             vc.isMainPage = !_isSearch;
+            vc.hiddenNavDisappear = _isSearch;
             vc.delegate = self;
             vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
             [self.view addSubview:vc.view];
