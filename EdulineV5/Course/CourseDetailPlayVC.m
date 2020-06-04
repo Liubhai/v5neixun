@@ -790,6 +790,7 @@
     
     if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
         [_courseListVC.tableView reloadData];
+        [self showHudInView:wekself.view showHint:@"该课时内容无效"];
         return;
     }
     if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
@@ -876,6 +877,11 @@
 - (void)onFinishWithAliyunVodPlayerView:(AliyunVodPlayerView*)playerView {
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
+    [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
+        NSLog(@"%@",responseObject);
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 - (void)onBackViewClickWithAliyunVodPlayerView:(AliyunVodPlayerView *)playerView{
