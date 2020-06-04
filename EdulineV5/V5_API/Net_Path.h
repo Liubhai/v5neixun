@@ -69,6 +69,9 @@ struct NetWorkUrl {
 /** 用户修改手机号 */
 + (NSString *)userAccountChangePhone;
 
+/** 搜索课程 */
++ (NSString *)searchCourse;
+
 /** 课程种类 */
 + (NSString *)coursetypeList;
 

@@ -84,6 +84,10 @@
     return [Net_Path fullPath:@"user/account/phone" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)searchCourse {
+    return [Net_Path fullPath:@"course/base/search" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)coursetypeList {
     return [Net_Path fullPath:@"course/base/type" repalce:@"" byReplece:@""];
 }

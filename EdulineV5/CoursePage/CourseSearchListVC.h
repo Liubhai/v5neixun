@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CourseSearchListVC : BaseViewController<UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (strong, nonatomic) NSString *themeTitle;// 顶部标题
+@property (strong, nonatomic) NSString *searchKeyWord;// 顶部标题
 @property (assign, nonatomic) BOOL isSearch;// yes 是首页过来的搜索页面 no 课程列表主页
 
 @property (nonatomic, strong) UICollectionView *collectionView;

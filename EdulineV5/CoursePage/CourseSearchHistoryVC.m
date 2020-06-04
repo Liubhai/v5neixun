@@ -9,6 +9,8 @@
 #import "CourseSearchHistoryVC.h"
 #import "V5_Constant.h"
 #import "SearchHistoryListCell.h"
+#import "Net_Path.h"
+#import "CourseSearchListVC.h"
 
 @interface CourseSearchHistoryVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 
@@ -33,7 +35,6 @@
     // 构造数据
     NSArray *pass1 = @[@"小朋友",@"你是不是",@"有很多",@"问号",@"为什么别的小朋友都在玩游戏",@"而你却在学钢琴画漫画",@"这几把谁知道呀",@"难受呀老铁",@"西八",@"哦豁",@"来玩呀客官",@"这里有漂亮的姑娘",@"为什么别的小朋友都在玩游戏",@"而你却在学钢琴画漫画",@"这几把谁知道呀",@"难受呀老铁",@"西八"];
     [_hotDataSource addObjectsFromArray:pass1];
-    [_searchDataSource addObjectsFromArray:pass1];
     _rightButton.hidden = NO;
     [_rightButton setTitle:@"搜索" forState:0];
     [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
@@ -94,7 +95,7 @@
     if (!cell) {
         cell = [[SearchHistoryListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setSearchHistoryListCellInfo:@{@"title":_searchDataSource[indexPath.row]} searchKeyWord:_institutionSearch.text];
+    [cell setSearchHistoryListCellInfo:_searchDataSource[indexPath.row] searchKeyWord:_institutionSearch.text];
     return cell;
 }
 
@@ -215,8 +216,7 @@
     UITextField *textfield = (UITextField *)notice.object;
     if (textfield.text.length>0) {
         _mainScrollView.hidden = YES;
-        _tableView.hidden = NO;
-        [_tableView reloadData];
+        _tableView.hidden = YES;
     } else {
         _mainScrollView.hidden = NO;
         _tableView.hidden = YES;
@@ -226,9 +226,31 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if ([string isEqualToString:@"\n"]) {
         [_institutionSearch resignFirstResponder];
+        [self jumpSearchListMainPage];
         return NO;
     }
     return YES;
+}
+
+- (void)jumpSearchListMainPage {
+    CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
+    vc.isSearch = YES;
+    vc.searchKeyWord = _institutionSearch.text;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)searchHotCourse {
+    if (SWNOTEmptyStr(_institutionSearch.text)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:@{@"title":_institutionSearch.text} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [_searchDataSource removeAllObjects];
+                [_searchDataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                [_tableView reloadData];
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 @end

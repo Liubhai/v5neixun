@@ -96,6 +96,10 @@
     _institutionSearch.clearButtonMode = UITextFieldViewModeWhileEditing;
     _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
     _institutionSearch.leftViewMode = UITextFieldViewModeAlways;
+    
+    if (SWNOTEmptyStr(_searchKeyWord)) {
+        _institutionSearch.text = _searchKeyWord;
+    }
 
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(5, 6, 15, 15)];
     [button setImage:Image(@"home_serch_icon") forState:UIControlStateNormal];
@@ -109,9 +113,9 @@
     [self.view addSubview:_headerView];
     
     
-    NSArray *titleArray = @[@"点播课程",@"分类",@"排序",@"筛选"];
+    NSArray *titleArray = @[@"课程类型",@"分类",@"排序",@"筛选"];
     if (_cateStr != nil) {
-        titleArray = @[@"点播课程",_cateStr,@"排序",@"筛选"];
+        titleArray = @[@"课程类型",_cateStr,@"排序",@"筛选"];
     }
     CGFloat ButtonH = 45;
     CGFloat ButtonW = MainScreenWidth / titleArray.count;
@@ -305,6 +309,10 @@
         [param setObject:maxPrice forKey:@"price_max"];
     }
     
+    if (SWNOTEmptyStr(_institutionSearch.text)) {
+        [param setObject:_institutionSearch.text forKey:@"title"];
+    }
+    
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         [_collectionView.mj_header endRefreshing];
         if (SWNOTEmptyDictionary(responseObject)) {
@@ -352,6 +360,9 @@
     }
     if (SWNOTEmptyStr(maxPrice)) {
         [param setObject:maxPrice forKey:@"price_max"];
+    }
+    if (SWNOTEmptyStr(_institutionSearch.text)) {
+        [param setObject:_institutionSearch.text forKey:@"title"];
     }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_collectionView.mj_footer.isRefreshing) {
@@ -457,6 +468,7 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if ([string isEqualToString:@"\n"]) {
         [_institutionSearch resignFirstResponder];
+        [self getCourseMainList];
         return NO;
     }
     return YES;
