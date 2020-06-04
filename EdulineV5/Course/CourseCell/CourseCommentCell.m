@@ -156,8 +156,8 @@
             [_scoreStar setLeft:_nameLabel.right + 10];
             [_scoreStar setStarValue:[[NSString stringWithFormat:@"%@",[info objectForKey:@"star"]] floatValue]];
             NSString *replayUsername = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user"]]];
-            NSString *replayUserId = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_uid"]]];
-            if ([replayUserId isEqualToString:@"0"] || ![info objectForKey:@"reply_uid"]) {
+            NSString *replayUserId = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user_id"]]];
+            if ([replayUserId isEqualToString:@"0"] || ![info objectForKey:@"reply_user_id"]) {
                 _contentLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
                 _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
                 _contentLabel.numberOfLines = 0;

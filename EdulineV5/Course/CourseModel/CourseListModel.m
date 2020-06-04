@@ -50,3 +50,8 @@
 }
 
 @end
+
+@implementation section_rate_model
+
+
+@end

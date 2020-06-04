@@ -348,7 +348,7 @@
     NSString *content = [NSString stringWithFormat:@"%@",view.inputTextView.text];
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:content forKey:@"content"];
-    [param setObject:SWNOTEmptyStr(replayUserId) ? replayUserId : @"0" forKey:@"reply_uid"];
+    [param setObject:SWNOTEmptyStr(replayUserId) ? replayUserId : @"0" forKey:@"reply_user_id"];
     [Net_API requestPOSTWithURLStr:[Net_Path courseCommentReplayList:_commentId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];

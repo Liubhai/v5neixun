@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class CourseListModel,section_data_model;
+@class CourseListModel,section_data_model,section_rate_model;
 
 @interface CourseListModel : NSObject
 
@@ -46,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL has_child;
 @property (strong, nonatomic) NSString *course_type;
 @property (strong, nonatomic) section_data_model *section_data;
+@property (strong, nonatomic) section_rate_model *section_rate;
 
 
 @end
@@ -71,6 +72,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *data_type_text;
 @property (strong, nonatomic) NSString *fileurl;
 
+@end
+
+@interface section_rate_model : NSObject
+/*
+"rate": 19,
+"status": 999,//学习状态【957：未开始；999：学习中；992：已完成；】
+"status_text": "学习中",
+"current_time": 43
+*/
+@property (assign, nonatomic) unsigned int rate;//评论数量
+@property (assign, nonatomic) unsigned int status;//评论数量
+@property (assign, nonatomic) unsigned int current_time;//评论数量
+@property (strong, nonatomic) NSString *status_text;//评论数量
 @end
 
 NS_ASSUME_NONNULL_END
