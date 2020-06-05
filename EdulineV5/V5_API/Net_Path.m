@@ -148,6 +148,10 @@
     return [Net_Path fullPath:@"order/course/one" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)courseHourseOrderInfo {
+    return [Net_Path fullPath:@"order/section" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)couponsUserList {
     return [Net_Path fullPath:@"course/coupon/school/user" repalce:@"" byReplece:@""];
 }

@@ -45,34 +45,37 @@
     [_mainScrollView addSubview:_topContentView];
     
     _courseFaceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 130, 72)];
-    _courseFaceImageView.image = DefaultImage;
+    if (![_orderTypeString isEqualToString:@"course"]) {
+        _courseFaceImageView.frame = CGRectMake(15, 15, 32, 16);
+    }
     [_topContentView addSubview:_courseFaceImageView];
     
     _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 15, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
     _textLabel.textColor = EdlineV5_Color.textFirstColor;
     _textLabel.font = SYSTEMFONT(14);
-    _textLabel.text = @"课程显示课程标题，课时显示课时名称";
+    _textLabel.numberOfLines = 0;
     [_topContentView addSubview:_textLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, _courseFaceImageView.bottom - 15, 150, 15)];
+    if (![_orderTypeString isEqualToString:@"course"]) {
+        _timeLabel.frame = CGRectMake(MainScreenWidth - 15 - 150, 15 + 72 - 15, 150, 15);
+    }
     _timeLabel.font = SYSTEMFONT(11);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     _timeLabel.textAlignment = NSTextAlignmentRight;
-    _timeLabel.text = @"有效期至2022.12.12";
     [_topContentView addSubview:_timeLabel];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, _timeLabel.top, 150, 15)];
     _priceLabel.font = SYSTEMFONT(12);
     _priceLabel.textColor = EdlineV5_Color.faildColor;
-    _priceLabel.text = @"VIP:¥200.00";
     [_topContentView addSubview:_priceLabel];
     
     _courseHourLabel = [[UILabel alloc] initWithFrame:CGRectMake(_timeLabel.left, _timeLabel.top - 17, _timeLabel.width, 15)];
     _courseHourLabel.font = SYSTEMFONT(11);
     _courseHourLabel.textAlignment = NSTextAlignmentRight;
     _courseHourLabel.textColor = EdlineV5_Color.textThirdColor;
-    _courseHourLabel.text = @"12课时";
     [_topContentView addSubview:_courseHourLabel];
+    _courseHourLabel.hidden = ![_orderTypeString isEqualToString:@"course"];
     
 //    _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 168)];
 //    _orderTypeView.backgroundColor = [UIColor whiteColor];
@@ -83,40 +86,41 @@
 //    [self makeOrderType1View3];
 //    [_orderTypeView setHeight:_orderTypeView3.bottom];
     
-    _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 110)];
-    _otherView.backgroundColor = [UIColor whiteColor];
-    [_mainScrollView addSubview:_otherView];
-//    NSArray *titleArray = @[@"卡券",@"使用实体卡"];
-    NSArray *titleArray = @[@"卡券"];
-    for (int i = 0; i < titleArray.count; i++) {
-        UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
-        youhui.text = titleArray[i];
-        youhui.textColor = EdlineV5_Color.textSecendColor;
-        youhui.font = SYSTEMFONT(15);
-        [_otherView addSubview:youhui];
-        
-        UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
-        themelabel.font = SYSTEMFONT(14);
-        themelabel.textAlignment = NSTextAlignmentRight;
-        [_otherView addSubview:themelabel];
-        if (i==0) {
-            _kaquanLabel = themelabel;
-            _kaquanLabel.textColor = EdlineV5_Color.youhuijuanColor;
-        } else if (i == 1) {
-            _shitikaLabel = themelabel;
-        }
-        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
-        icon.image = Image(@"list_more");
-        icon.centerY = themelabel.centerY;;
-        [_otherView addSubview:icon];
-        
-        UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
-        clearBtn.backgroundColor = [UIColor clearColor];
-        clearBtn.tag = 10 + i;
-        [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_otherView addSubview:clearBtn];
-        if (i == titleArray.count - 1) {
-            [_otherView setHeight:clearBtn.bottom];
+    if ([_orderTypeString isEqualToString:@"course"]) {
+        _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 110)];
+        _otherView.backgroundColor = [UIColor whiteColor];
+        [_mainScrollView addSubview:_otherView];
+        NSArray *titleArray = @[@"卡券"];
+        for (int i = 0; i < titleArray.count; i++) {
+            UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
+            youhui.text = titleArray[i];
+            youhui.textColor = EdlineV5_Color.textSecendColor;
+            youhui.font = SYSTEMFONT(15);
+            [_otherView addSubview:youhui];
+            
+            UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
+            themelabel.font = SYSTEMFONT(14);
+            themelabel.textAlignment = NSTextAlignmentRight;
+            [_otherView addSubview:themelabel];
+            if (i==0) {
+                _kaquanLabel = themelabel;
+                _kaquanLabel.textColor = EdlineV5_Color.youhuijuanColor;
+            } else if (i == 1) {
+                _shitikaLabel = themelabel;
+            }
+            UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
+            icon.image = Image(@"list_more");
+            icon.centerY = themelabel.centerY;;
+            [_otherView addSubview:icon];
+            
+            UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
+            clearBtn.backgroundColor = [UIColor clearColor];
+            clearBtn.tag = 10 + i;
+            [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_otherView addSubview:clearBtn];
+            if (i == titleArray.count - 1) {
+                [_otherView setHeight:clearBtn.bottom];
+            }
         }
     }
     
@@ -246,6 +250,7 @@
     _youhuiLabel.font = SYSTEMFONT(13);
     _youhuiLabel.textColor = EdlineV5_Color.textThirdColor;
     [_bottomView addSubview:_youhuiLabel];
+    _youhuiLabel.hidden = ![_orderTypeString isEqualToString:@"course"];
     
     _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 110, 0, 110, 36)];
     [_submitButton setTitle:@"提交订单" forState:0];
@@ -310,15 +315,26 @@
     if (!SWNOTEmptyDictionary(_orderInfo)) {
         return;
     }
+    NSString *courseOrderInfoUrl = [Net_Path courseOrderInfo];
+    if ([_orderTypeString isEqualToString:@"course"]) {
+        courseOrderInfoUrl = [Net_Path courseOrderInfo];
+    } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+        courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
+    }
+    
+    
     NSMutableDictionary *param = [NSMutableDictionary new];
-    NSString *courseId = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"id"]];
-    if (SWNOTEmptyStr(courseId)) {
-        [param setObject:courseId forKey:@"course_id"];
+    if (SWNOTEmptyStr(_orderId)) {
+        if ([_orderTypeString isEqualToString:@"course"]) {
+            [param setObject:_orderId forKey:@"course_id"];
+        } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+            [param setObject:_orderId forKey:@"section_id"];
+        }
     }
     if (_couponModel) {
         [param setObject:_couponModel.couponId forKey:@"coupon_id"];
     }
-    [Net_API requestPOSTWithURLStr:[Net_Path creatSingleOrder] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPOSTWithURLStr:courseOrderInfoUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 OrderSureViewController *vc = [[OrderSureViewController alloc] init];
@@ -338,7 +354,21 @@
     if (!SWNOTEmptyStr(_orderId)) {
         return;
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseOrderInfo] WithAuthorization:nil paramDic:@{@"course_id":_orderId} finish:^(id  _Nonnull responseObject) {
+    NSString *courseOrderInfoUrl = [Net_Path courseOrderInfo];
+    if ([_orderTypeString isEqualToString:@"course"]) {
+        courseOrderInfoUrl = [Net_Path courseOrderInfo];
+    } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+        courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
+    }
+    
+    NSMutableDictionary *pass = [[NSMutableDictionary alloc] init];
+    if ([_orderTypeString isEqualToString:@"course"]) {
+        [pass setObject:_orderId forKey:@"course_id"];
+    } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+        [pass setObject:_orderId forKey:@"section_id"];
+    }
+    
+    [Net_API requestGETSuperAPIWithURLStr:courseOrderInfoUrl WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
@@ -352,10 +382,27 @@
 
 - (void)setCourseUIData {
     if (SWNOTEmptyDictionary(_orderInfo)) {
-        [_courseFaceImageView sd_setImageWithURL:EdulineUrlString([[_orderInfo objectForKey:@"data"] objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
         _textLabel.text = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"title"]];
-        _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",[[_orderInfo objectForKey:@"data"] objectForKey:@"section_count"]];
-        _priceLabel.text = [NSString stringWithFormat:@"VIP:¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+        [_textLabel sizeToFit];
+        [_textLabel setHeight:_textLabel.height];
+        if ([_orderTypeString isEqualToString:@"course"]) {
+            [_courseFaceImageView sd_setImageWithURL:EdulineUrlString([[_orderInfo objectForKey:@"data"] objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+            _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",[[_orderInfo objectForKey:@"data"] objectForKey:@"section_count"]];
+        } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+            NSString *courseHourseType = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"data_type"]];
+            if ([courseHourseType isEqualToString:@"1"]) {
+                _courseFaceImageView.image = Image(@"contents_icon_video");
+            } else if ([courseHourseType isEqualToString:@"2"]) {
+                _courseFaceImageView.image = Image(@"contents_icon_vioce");
+            } else if ([courseHourseType isEqualToString:@"3"]) {
+                _courseFaceImageView.image = Image(@"contents_icon_word");
+            } else if ([courseHourseType isEqualToString:@"4"]) {
+                _courseFaceImageView.image = Image(@"contents_icon_text");
+            } else {
+                _courseFaceImageView.image = Image(@"contents_icon_video");
+            }
+        }
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
         
         _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
         NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];

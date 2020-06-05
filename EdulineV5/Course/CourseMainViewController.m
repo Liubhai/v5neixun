@@ -590,6 +590,18 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell{
+    if (cell.listFinalModel.model.audition <= 0 && !cell.listFinalModel.model.is_buy) {
+        if ([cell.listFinalModel.model.price floatValue] > 0) {
+            OrderViewController *vc = [[OrderViewController alloc] init];
+            vc.orderTypeString = @"courseHourse";
+            vc.orderId = cell.listFinalModel.model.classHourId;
+            [self.navigationController pushViewController:vc animated:YES];
+            [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
+        } else {
+            [self showHudInView:self.view showHint:@"需解锁该课程"];
+        }
+        return;
+    }
     CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
     vc.ID = _ID;
     vc.courselayer = _courselayer;

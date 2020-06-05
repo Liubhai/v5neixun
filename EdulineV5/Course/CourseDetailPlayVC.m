@@ -19,6 +19,7 @@
 #import "CourseCommentViewController.h"
 #import "CourseIntroductionVC.h"
 #import "CourseListVC.h"
+#import "OrderViewController.h"
 
 //
 #import "CourseListModelFinal.h"
@@ -44,6 +45,7 @@
     BOOL shouldStopRecordTimer;//阻止记录定时器方法执行
     CourseListModelFinal *currentCourseFinalModel;
     BOOL     isWebViewBig;//文档 是否放大
+    BOOL freeLook;
 }
 
 /**三大子页面*/
@@ -90,6 +92,7 @@
 
 // 播放器
 @property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
+@property (nonatomic,strong) UIImageView  *freeLookShowImageView;
 @property (strong, nonatomic) WKWebView *wkWebView;
 @property (strong, nonatomic) NSTimer *recordTimer;
 
@@ -145,6 +148,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    freeLook = NO;
     isWebViewBig = NO;
     shouldStopRecordTimer = YES;
     _isClassNew = YES;
@@ -163,7 +167,7 @@
     _titleImage.backgroundColor = BasidColor;
     
     _titleLabel.textColor = [UIColor whiteColor];
-
+    
     [self makeHeaderView];
     [self makeSubViews];
 //    self.playerView.hidden = YES;
@@ -171,7 +175,16 @@
     if (!_isLive) {
         [_headerView addSubview:self.playerView];
         [self makeWkWebView];
+        _freeLookShowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, self.playerView.height)];
+        _freeLookShowImageView.image  = Image(@"freeLook");
+    } else {
+        _freeLookShowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, self.faceImageView.height)];
+        _freeLookShowImageView.image  = Image(@"freeLook");
     }
+    _freeLookShowImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *freeLookTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(freeLookTapClick:)];
+    [_freeLookShowImageView addGestureRecognizer:freeLookTap];
+    
 //    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT - (_isLive ? 0 : 50);
     [self makeTableView];
     [self.view bringSubviewToFront:_titleImage];
@@ -673,6 +686,14 @@
     [_allWindowView removeFromSuperview];
 }
 
+// MARK: - 免费试看结束后点击事件
+- (void)freeLookTapClick:(UITapGestureRecognizer *)tap {
+    OrderViewController *vc = [[OrderViewController alloc] init];
+    vc.orderTypeString = @"courseHourse";
+    vc.orderId = currentCourseFinalModel.model.classHourId;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 // MARK: - 底部按钮点击事件
 - (void)jumpServiceVC:(CourseDownView *)downView {
     
@@ -760,12 +781,24 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
+    freeLook = NO;
     if ([_courseType isEqualToString:@"2"]) {
+        if (cell.listFinalModel.model.audition <= 0 && !cell.listFinalModel.model.is_buy) {
+            if ([cell.listFinalModel.model.price floatValue] > 0) {
+                OrderViewController *vc = [[OrderViewController alloc] init];
+                vc.orderTypeString = @"courseHourse";
+                vc.orderId = cell.listFinalModel.model.classHourId;
+                [self.navigationController pushViewController:vc animated:YES];
+                [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
+            } else {
+                [self showHudInView:self.view showHint:@"需解锁该课程"];
+            }
+            return;
+        }
         [self getLiveCourseHourseInfo:model.model.classHourId];
         return;
     }
-//    http://v5.51eduline.com/test.php
-    //https://hls.videocc.net/cf754ccb6d/c/cf754ccb6d0cb61da723e3a2000ec0df_1.m3u8
+
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
     [wekself destroyPlayVideo];
@@ -786,6 +819,20 @@
         }
         model1.isPlaying = NO;
         [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model1];
+    }
+    
+    if (cell.listFinalModel.model.audition <= 0 && !cell.listFinalModel.model.is_buy) {
+        if ([cell.listFinalModel.model.price floatValue] > 0) {
+            OrderViewController *vc = [[OrderViewController alloc] init];
+            vc.orderTypeString = @"courseHourse";
+            vc.orderId = cell.listFinalModel.model.classHourId;
+            [self.navigationController pushViewController:vc animated:YES];
+            [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
+        } else {
+            [self showHudInView:self.view showHint:@"需解锁该课程"];
+        }
+        [_courseListVC.tableView reloadData];
+        return;
     }
     
     if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
@@ -835,6 +882,11 @@
             }
         }
     }
+    
+    if (cell.listFinalModel.model.audition > 0 && !cell.listFinalModel.model.is_buy) {
+        freeLook = YES;
+    }
+    
     [wekself.headerView addSubview:wekself.playerView];
     _wkWebView.hidden = YES;
     _playerView.hidden = NO;
@@ -896,10 +948,27 @@
     if (!currentCourseFinalModel) {
         return;
     }
+    
     __weak CourseDetailPlayVC *wekself = self;
     if (!SWNOTEmptyStr(wekself.ID)) {
         return;
     }
+    
+    if (freeLook) {
+        long currentTime = (long) (wekself.playerView.controlView.currentTime/1000);
+        long duration = (long) (wekself.playerView.controlView.duration/1000);
+        if (currentTime * 100 / duration >= currentCourseFinalModel.model.audition) {
+            [wekself stopRecordTimer];
+            [wekself.playerView stop];
+            if ([wekself.freeLookShowImageView superview]) {
+                wekself.freeLookShowImageView.hidden = NO;
+            } else {
+                [wekself.headerView addSubview:wekself.freeLookShowImageView];
+            }
+            return;
+        }
+    }
+    
     [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
         NSLog(@"%@",responseObject);
     } enError:^(NSError * _Nonnull error) {
@@ -1003,7 +1072,6 @@
 }
 
 - (void)starRecordTimer {
-    return;
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
     [wekself performSelector:@selector(startTimer) afterDelay:10];

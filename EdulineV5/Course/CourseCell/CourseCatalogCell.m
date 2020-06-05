@@ -35,7 +35,6 @@
     
     _typeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 32, 16)];
     _typeIcon.centerY = 50 / 2.0;
-    _typeIcon.image = Image(@"contents_icon_video");
     _typeIcon.hidden = _isLive;
     [self addSubview:_typeIcon];
     
@@ -46,13 +45,16 @@
     [self addSubview:_lockIcon];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_isLive ? 15 : (_typeIcon.right + 5), 0, 150, 50)];
-    _titleLabel.text = @"第三课时课时名称";
     _titleLabel.textColor = EdlineV5_Color.textSecendColor;
     _titleLabel.font = SYSTEMFONT(14);
     [self addSubview:_titleLabel];
     
-    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.right + 10, (50 - 16) / 2.0, 100, 16)];
-    _priceLabel.text = @"¥199";
+    _freeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_titleLabel.right + 10, (50 - 16) / 2.0, 36, 16)];
+    _freeImageView.image = Image(@"contents_icon_free");
+    _freeImageView.hidden = YES;
+    [self addSubview:_freeImageView];
+    
+    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_freeImageView.right + 10, (50 - 16) / 2.0, 100, 16)];
     _priceLabel.textAlignment = NSTextAlignmentCenter;
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     _priceLabel.layer.masksToBounds = YES;
@@ -247,22 +249,31 @@
     
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.model.price];
     
-    CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
-    [_priceLabel setWidth:priceWidth];
-    [_priceLabel setRight:_titleLabel.right + 10];
+    if (model.model.audition > 0) {
+        _freeImageView.hidden = NO;
+    } else {
+        _freeImageView.hidden = YES;
+    }
+    
     if ([model.model.price floatValue]>0) {
         _priceLabel.hidden = NO;
         if (model.model.is_buy) {
             _priceLabel.text = @"已购买";
+            _freeImageView.hidden = YES;
         }
     } else {
         _priceLabel.hidden = YES;
     }
-    
+    CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
+    CGFloat titleWidth = ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4) > 150 ? 150 : ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4);
+    [_titleLabel setWidth:titleWidth];
+    [_priceLabel setWidth:priceWidth];
+    [_freeImageView setLeft:_titleLabel.right + 3];
+    [_priceLabel setLeft:_freeImageView.right + 3];
     if ([_allLayar isEqualToString:@"1"]) {
         [self setHeight:50];
         if (!_isMainPage) {
-            [_priceLabel setRight:_learnIcon.left - 5];
+//            [_priceLabel setRight:_learnIcon.left - 5];
             if (_listFinalModel.isPlaying) {
                 _learnIcon.hidden = YES;
                 _learnTimeLabel.hidden = YES;
@@ -311,7 +322,7 @@
         } else if ([_courselayer isEqualToString:@"3"]) {
             [self setHeight:50];
             if (!_isMainPage) {
-                [_priceLabel setRight:_learnIcon.left - 5];
+//                [_priceLabel setRight:_learnIcon.left - 5];
                 if (_listFinalModel.isPlaying) {
                     _learnIcon.hidden = YES;
                     _learnTimeLabel.hidden = YES;
@@ -386,7 +397,7 @@
             [_cellTableView setHeight:0];
             _cellTableView.hidden = YES;
             if (!_isMainPage) {
-                [_priceLabel setRight:_learnIcon.left - 5];
+//                [_priceLabel setRight:_learnIcon.left - 5];
                 if (_listFinalModel.isPlaying) {
                     _learnIcon.hidden = YES;
                     _learnTimeLabel.hidden = YES;

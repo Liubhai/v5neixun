@@ -119,6 +119,9 @@ struct NetWorkUrl {
 /** 课程订单信息 */
 + (NSString *)courseOrderInfo;
 
+/** 单课时购买信息 */
++ (NSString *)courseHourseOrderInfo;
+
 /** 用户领取的机构卡券列表 */
 + (NSString *)couponsUserList;
 
