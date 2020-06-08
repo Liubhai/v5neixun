@@ -340,7 +340,7 @@ static EdulineV5_Tool *_sharedInstance;
     NSString *dateString = [[date description]substringToIndex:10];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
     NSDate *nowDate = [NSDate dateWithTimeIntervalSince1970:time.integerValue];
     NSString *theDay = [dateFormatter stringFromDate:nowDate];//日期的年月日
     

@@ -26,6 +26,9 @@ struct NetWorkUrl {
 /** app初始化信息 */
 + (NSString *)appConfig;
 
+/** 排版布局配置信息 */
++ (NSString *)layoutConfig;
+
 /** 创建账号 */
 + (NSString *)userCreatePath:(NSString *)userId;
 

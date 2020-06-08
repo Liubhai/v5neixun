@@ -28,6 +28,10 @@
     return [Net_Path fullPath:@"config/init" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)layoutConfig {
+    return [Net_Path fullPath:@"config/typeset" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userCreatePath:(NSString *)userId {
     return [Net_Path fullPath:@"user/account/create" repalce:@"" byReplece:@""];
 }

@@ -95,6 +95,7 @@
     [self registerQuickLogin];
     
     [self appConfigInfo];
+    [self layoutConfig];
     
     _noticeLogoutAlert = [[UIAlertView alloc]initWithTitle:LoginInvalid_TXT message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     _noticeLogoutAlert.tag = 101;
@@ -543,6 +544,18 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"sdk_appid"] forKey:@"sdk_appid"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)layoutConfig {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path layoutConfig] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if ([[responseObject objectForKey:@"code"] integerValue]) {
+            [[NSUserDefaults standardUserDefaults] setObject:@"3" forKey:@"profile"];//[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"profile"]]
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"course"]] forKey:@"course"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     } enError:^(NSError * _Nonnull error) {
         

@@ -34,7 +34,7 @@
 #import "UIImage+Util.h"
 #import "NSObject+PYThemeExtension.h"
 
-@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate,MyCenterBalanceViewDelegate>
+@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate,MyCenterBalanceViewDelegate,MyCenterTypeOneCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -60,10 +60,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _cellLayoutType = @"2";
 //    _titleImage.hidden = YES;
     _iconArray = [NSMutableArray new];
-    [_iconArray addObjectsFromArray:@[@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"},@{@"image":@"pre_list_kaquan",@"title":@"我的卡券"}]];
     _titleImage.alpha = 0;
     _titleLabel.text = @"个人中心";
     [_leftButton setImage:[Image(@"pre_nav_home") converToOtherColor:EdlineV5_Color.textFirstColor] forState:0];
@@ -121,9 +119,7 @@
 
 // MARK: - table代理
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([_cellLayoutType isEqualToString:@"1"]) {
-        return 1;
-    } else if ([_cellLayoutType isEqualToString:@"2"]) {
+    if ([PROFILELAYOUT isEqualToString:@"1"]) {
         return _iconArray.count;
     } else {
         return 1;
@@ -131,15 +127,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([_cellLayoutType isEqualToString:@"1"]) {
-        static NSString *reuse = @"centerOneCell";
-        MyCenterTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-        if (!cell) {
-            cell = [[MyCenterTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-        }
-        [cell setMyCenterClassifyInfo:_iconArray];
-        return cell;
-    } else if ([_cellLayoutType isEqualToString:@"2"]) {
+    if ([PROFILELAYOUT isEqualToString:@"1"]) {
         static NSString *reuse = @"centerTwoCell";
         MyCenterTypeTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
@@ -148,47 +136,61 @@
         [cell setMyCenterTypeTwoCellInfo:_iconArray[indexPath.row]];
         return cell;
     } else {
-        static NSString *reuse = @"centerCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        static NSString *reuse = @"centerOneCell";
+        MyCenterTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            cell = [[MyCenterTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
+        cell.delegate = self;
+        [cell setMyCenterClassifyInfo:_iconArray];
         return cell;
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([_cellLayoutType isEqualToString:@"1"]) {
-        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
-    } else if ([_cellLayoutType isEqualToString:@"2"]) {
+    if ([PROFILELAYOUT isEqualToString:@"1"]) {
         return 50.0;
     } else {
-        return 0;
+        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        LearnRecordVC *vc = [[LearnRecordVC alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-        return;
-    } else if (indexPath.row == 1) {
-        MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-        return;
-    } else if (indexPath.row == 2) {
-//        [self py_setThemeColor:EdlineV5_Color.faildColor];
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"color"];
-        [[AppDelegate delegate] changeThemeColor];
-        return;
-    } else if (indexPath.row == 3) {
-//        [self py_setThemeColor:EdlineV5_Color.themeColor];
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"color"];
-        [[AppDelegate delegate] changeThemeColor];
-        return;
+    if ([PROFILELAYOUT isEqualToString:@"1"]) {
+        NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[indexPath.row] objectForKey:@"key"]];
+        if ([iconKey isEqualToString:@"wenda"]) {
+            
+        } else if ([iconKey isEqualToString:@"comment"]) {
+            
+        } else if ([iconKey isEqualToString:@"note"]) {
+            
+        } else if ([iconKey isEqualToString:@"collection"]) {
+            MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if ([iconKey isEqualToString:@"record"]) {
+            LearnRecordVC *vc = [[LearnRecordVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if ([iconKey isEqualToString:@"doc"]) {
+            
+        } else if ([iconKey isEqualToString:@"storage"]) {
+            
+        } else if ([iconKey isEqualToString:@"vip"]) {
+            
+        } else if ([iconKey isEqualToString:@"coupon"]) {
+            MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if ([iconKey isEqualToString:@"exchange"]) {
+            
+        } else if ([iconKey isEqualToString:@"subordinate"]) {
+            
+        } else if ([iconKey isEqualToString:@"teacher"]) {
+            
+        } else if ([iconKey isEqualToString:@"school"]) {
+            
+        } else if ([iconKey isEqualToString:@"address"]) {
+            
+        }
     }
-    MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -213,6 +215,43 @@
 - (void)setingButtonClick:(UIButton *)sender {
     SetingViewController *vc = [[SetingViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: -
+- (void)jumpToOtherPage:(UIButton *)sender {
+    NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[sender.tag - 66] objectForKey:@"key"]];
+    if ([iconKey isEqualToString:@"wenda"]) {
+        
+    } else if ([iconKey isEqualToString:@"comment"]) {
+        
+    } else if ([iconKey isEqualToString:@"note"]) {
+        
+    } else if ([iconKey isEqualToString:@"collection"]) {
+        MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"record"]) {
+        LearnRecordVC *vc = [[LearnRecordVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"doc"]) {
+        
+    } else if ([iconKey isEqualToString:@"storage"]) {
+        
+    } else if ([iconKey isEqualToString:@"vip"]) {
+        
+    } else if ([iconKey isEqualToString:@"coupon"]) {
+        MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"exchange"]) {
+        
+    } else if ([iconKey isEqualToString:@"subordinate"]) {
+        
+    } else if ([iconKey isEqualToString:@"teacher"]) {
+        
+    } else if ([iconKey isEqualToString:@"school"]) {
+        
+    } else if ([iconKey isEqualToString:@"address"]) {
+        
+    }
 }
 
 // MARK: - MyCenterUserInfoViewDelegate(进入个人信息页面)
@@ -282,6 +321,15 @@
                 [UserModel saveAvatar:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"avatar_url"]]];
                 [UserModel saveVipStatus:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"vip_status"]]];
                 [UserModel saveIntro:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"signature"]]];
+                
+                [_iconArray removeAllObjects];
+                NSArray *listArray = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"list"]];
+                for (int i = 0; i<listArray.count; i++) {
+                    if (SWNOTEmptyArr([listArray[i] objectForKey:@"list"])) {
+                        [_iconArray addObjectsFromArray:[listArray[i] objectForKey:@"list"]];
+                    }
+                }
+                
                 [self.myCenterBalanceView setBalanceInfo:_userInfo];
                 [self reloadUserInfo];
             }

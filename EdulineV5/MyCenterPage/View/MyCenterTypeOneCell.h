@@ -10,7 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol MyCenterTypeOneCellDelegate <NSObject>
+
+@optional
+- (void)jumpToOtherPage:(UIButton *)sender;
+
+@end
+
 @interface MyCenterTypeOneCell : UITableViewCell
+
+@property (weak, nonatomic) id<MyCenterTypeOneCellDelegate> delegate;
 
 @property (strong, nonatomic) UIView *cellView;
 

@@ -15,6 +15,7 @@
 #import "UserModel.h"
 #import "AppDelegate.h"
 #import "Net_Path.h"
+#import "LearnRecordVC.h"
 
 @interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger currentCourseType;
@@ -256,6 +257,7 @@
         [moreButton setTitle:@"更多" forState:0];
         [moreButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
         moreButton.titleLabel.font = SYSTEMFONT(14);
+        [moreButton addTarget:self action:@selector(jumpLearnRecord:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:moreButton];
         
         return view;
@@ -325,7 +327,7 @@
         view.backgroundColor = [UIColor whiteColor];
         
         UIButton *moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 17, 80, 20)];
-        [moreBtn setImage:Image(@"study_more") forState:0];
+        [moreBtn setImage:[Image(@"study_more") converToMainColor] forState:0];
         [moreBtn setTitle:@"查看更多" forState:0];
         moreBtn.titleLabel.font = SYSTEMFONT(13);
         [moreBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
@@ -444,6 +446,11 @@
         _studyFirstBtn.selected = YES;
     }
     [self getStudyInfo];
+}
+
+- (void)jumpLearnRecord:(UIButton *)sender {
+    LearnRecordVC *vc = [[LearnRecordVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)moreJoinCourseButtonClick:(UIButton *)sender {

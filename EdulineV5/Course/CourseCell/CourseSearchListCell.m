@@ -23,6 +23,7 @@
     _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 153, 86)];
     
     _courseFace.image = DefaultImage;
+    _courseFace.clipsToBounds = YES;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_courseFace];
     
@@ -53,8 +54,7 @@
 
 - (void)setCourseListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex cellType:(BOOL)cellType {
     _cellType = cellType;
-    [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover"]) placeholderImage:DefaultImage];
-    _courseFace.contentMode = UIViewContentModeScaleAspectFill;
+    [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
     // 1 点播 2 直播 3 面授 4 专辑
     NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
     if ([courseType isEqualToString:@"1"]) {

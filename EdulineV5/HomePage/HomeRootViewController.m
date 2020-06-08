@@ -18,6 +18,7 @@
 #import "HomePageTeacherCell.h"
 #import "HomePageCourseTypeOneCell.h"
 #import "HomePageCourseTypeTwoCell.h"
+#import "HomePageHotRecommendedCell.h"
 
 // 直播测试
 #import "LiveRoomViewController.h"
@@ -26,6 +27,7 @@
 
 // 工具类
 #import "SDCycleScrollView.h"
+#import "ZPScrollerScaleView.h"
 
 @interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,HomePageTeacherCellDelegate,UITableViewDelegate,UITableViewDataSource>
 
@@ -63,7 +65,7 @@
     _bannerImageSourceArray = [NSMutableArray new];
     _cateSourceArray = [NSMutableArray new];
     
-    [_bannerImageArray addObject:@""];
+    [_bannerImageArray addObjectsFromArray:@[@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg"]];
     [_cateSourceArray addObjectsFromArray:@[@"",@"",@""]];
     
     _teacherArray = [NSMutableArray new];
@@ -143,6 +145,7 @@
     cycleScrollView3.pageControlDotSize = CGSizeMake(5, 5);
     cycleScrollView3.delegate = self;
     [_imageBannerBackView addSubview:cycleScrollView3];
+    [_headerView addSubview:_imageBannerBackView];
 }
 
 - (void)makeCateView {
@@ -180,7 +183,7 @@
 
 // MARK: - tableview 代理
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -223,6 +226,14 @@
         }
         [cell setHomePageCourseTypeTwoCellInfo:@[@"",@"",@"",@"",@""]];
         return cell;
+    } else if (indexPath.section == 2) {
+        static NSString *reuse = @"HomePageHotRecommendedCell";
+        HomePageHotRecommendedCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[HomePageHotRecommendedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setRecommendCourseCellInfo:@[@"",@"",@"",@"",@""]];
+        return cell;
     } else {
         static NSString *reuse = @"homeCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
@@ -238,6 +249,8 @@
         return 106;
     } else if (indexPath.section == 1) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
+    } else if (indexPath.section == 2) {
+        return 172 + 15 + 20;
     } else {
         return 0.0;
     }

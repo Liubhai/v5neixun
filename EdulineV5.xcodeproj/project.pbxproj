@@ -326,6 +326,8 @@
 		78C549E8241B751800A33FC4 /* AliyunMediaDownloader.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78C54900241B642B00A33FC4 /* AliyunMediaDownloader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78C549EA241B773200A33FC4 /* alivcffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C549E9241B773200A33FC4 /* alivcffmpeg.framework */; };
 		78C549EB241B774B00A33FC4 /* alivcffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78C549E9241B773200A33FC4 /* alivcffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		78C936C0248DE41900D5F1ED /* ZPScrollerScaleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */; };
+		78C936C3248DE4C700D5F1ED /* HomePageHotRecommendedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936C2248DE4C700D5F1ED /* HomePageHotRecommendedCell.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -972,6 +974,10 @@
 		78C549C2241B674E00A33FC4 /* NSData+AlivcHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AlivcHelper.m"; sourceTree = "<group>"; };
 		78C549E3241B6C9500A33FC4 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		78C549E9241B773200A33FC4 /* alivcffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = alivcffmpeg.framework; sourceTree = "<group>"; };
+		78C936BE248DE41900D5F1ED /* ZPScrollerScaleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPScrollerScaleView.h; sourceTree = "<group>"; };
+		78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPScrollerScaleView.m; sourceTree = "<group>"; };
+		78C936C1248DE4C700D5F1ED /* HomePageHotRecommendedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageHotRecommendedCell.h; sourceTree = "<group>"; };
+		78C936C2248DE4C700D5F1ED /* HomePageHotRecommendedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageHotRecommendedCell.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1410,6 +1416,7 @@
 		7879566E240F929A0013F95F /* EdulineToolLib */ = {
 			isa = PBXGroup;
 			children = (
+				78C936BD248DE41900D5F1ED /* HomeScrollThird */,
 				78AA136E2440543C007087F7 /* SDCycleScrollView */,
 				78C548622418CC7400A33FC4 /* TYAttributedLabel */,
 				7879573F240FAA7A0013F95F /* Categories */,
@@ -2082,6 +2089,8 @@
 				78AA138B2440710B007087F7 /* HomePageCourseTypeOneCell.m */,
 				78AA138D24407197007087F7 /* HomePageCourseTypeTwoCell.h */,
 				78AA138E24407197007087F7 /* HomePageCourseTypeTwoCell.m */,
+				78C936C1248DE4C700D5F1ED /* HomePageHotRecommendedCell.h */,
+				78C936C2248DE4C700D5F1ED /* HomePageHotRecommendedCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2380,6 +2389,15 @@
 				78C549C2241B674E00A33FC4 /* NSData+AlivcHelper.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		78C936BD248DE41900D5F1ED /* HomeScrollThird */ = {
+			isa = PBXGroup;
+			children = (
+				78C936BE248DE41900D5F1ED /* ZPScrollerScaleView.h */,
+				78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */,
+			);
+			path = HomeScrollThird;
 			sourceTree = "<group>";
 		};
 		7B328A11FE82EEC19F082C22 /* Pods */ = {
@@ -2750,6 +2768,7 @@
 				7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */,
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
 				78531653245131AF007E239E /* LiveRoomViewController.m in Sources */,
+				78C936C0248DE41900D5F1ED /* ZPScrollerScaleView.m in Sources */,
 				78795723240FA3840013F95F /* ZLCamera.m in Sources */,
 				7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */,
 				78C54973241B642B00A33FC4 /* AlivcSplicingRequestParameter.m in Sources */,
@@ -2848,6 +2867,7 @@
 				787F1E7D247381A400108F7B /* AliyunPlayerViewQualityListView.m in Sources */,
 				78AA13812440543D007087F7 /* TADotView.m in Sources */,
 				7839C97D24206AD1002F6595 /* CourseContentView.m in Sources */,
+				78C936C3248DE4C700D5F1ED /* HomePageHotRecommendedCell.m in Sources */,
 				7879572E240FA3840013F95F /* UIView+ZLExtension.m in Sources */,
 				787F1E86247381A400108F7B /* AVC_VP_BaseViewController.m in Sources */,
 				7839C9972421CB1C002F6595 /* CommentBaseView.m in Sources */,

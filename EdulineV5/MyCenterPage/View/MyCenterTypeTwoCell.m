@@ -22,6 +22,8 @@
 
 - (void)makeSubView {
     _iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, (50 - 22)/2.0, 22, 22)];
+    _iconImage.clipsToBounds = YES;
+    _iconImage.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_iconImage];
     
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_iconImage.right + 10, 0, 150, 50)];
@@ -41,7 +43,7 @@
 
 - (void)setMyCenterTypeTwoCellInfo:(NSDictionary *)info {
     if (SWNOTEmptyDictionary(info)) {
-        _iconImage.image = Image([info objectForKey:@"image"]);
+        [_iconImage sd_setImageWithURL:EdulineUrlString([info objectForKey:@"icon"]) placeholderImage:Image(@"pre_list_kaquan")];
         _themeLabel.text = [info objectForKey:@"title"];
     }
 }

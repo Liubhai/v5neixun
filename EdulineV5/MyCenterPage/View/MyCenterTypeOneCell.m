@@ -29,13 +29,15 @@
 - (void)setMyCenterClassifyInfo:(NSMutableArray *)info {
     [_cellView removeAllSubviews];
     int m = 0;
+    int count = [PROFILELAYOUT intValue];
     for (int i = 0; i<info.count; i++) {
-        m = i/4;
+        m = i/count;
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake((i%4)*(MainScreenWidth/4.0), m * (28 + 8 + 20 + 33 / 2.0) + 33 / 2.0, MainScreenWidth/4.0, 28 + 8 + 20 + 33 / 2.0);
+        btn.frame = CGRectMake((i%count)*(MainScreenWidth/count), m * MainScreenWidth/count, MainScreenWidth/count, MainScreenWidth/count);;//CGRectMake((i%4)*(MainScreenWidth/4.0), m * (28 + 8 + 20 + 33 / 2.0) + 33 / 2.0, MainScreenWidth/4.0, 28 + 8 + 20 + 33 / 2.0);
         btn.titleLabel.font = SYSTEMFONT(14);
         NSString *imageName = [info[i] objectForKey:@"image"];
-        [btn setImage:Image(imageName) forState:0];
+//        [btn sd_setImageWithURL:EdulineUrlString([info[i] objectForKey:@"icon"]) forState:0];
+        [btn setImage:Image(@"pre_list_wenku") forState:0];
         [btn setTitle:[info[i] objectForKey:@"title"] forState:0];
         [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
         // 1. 得到imageView和titleLabel的宽、高
@@ -54,12 +56,20 @@
         }
         btn.imageEdgeInsets = UIEdgeInsetsMake(-labelHeight-8/2.0, 0, 0, -labelWidth);
         btn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith, -imageHeight-8/2.0, 0);
+        btn.tag = 66 + i;
+        [btn addTarget:self action:@selector(typeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_cellView addSubview:btn];
         if (i == (info.count - 1)) {
             [_cellView setHeight:btn.bottom];
         }
     }
     [self setHeight:_cellView.height];
+}
+
+- (void)typeButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(jumpToOtherPage:)]) {
+        [_delegate jumpToOtherPage:sender];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
