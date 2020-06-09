@@ -1,53 +1,47 @@
 //
-//  TeacherListVC.m
+//  UserCommenListVC.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2020/5/23.
+//  Created by 刘邦海 on 2020/6/9.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
-#import "TeacherListVC.h"
-#import "TeacherListCell.h"
+#import "UserCommenListVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
-#import "TeacherMainPageVC.h"
+#import "UserListCell.h"
 
-@interface TeacherListVC ()<UITableViewDelegate, UITableViewDataSource> {
+@interface UserCommenListVC ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger page;
-    NSString *categoryString;// 类型
 }
 
-@property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
+@property (strong, nonatomic) UITableView *tableView;
 
 @end
 
-@implementation TeacherListVC
+@implementation UserCommenListVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _titleLabel.text = @"讲师";
-    [_rightButton setImage:Image(@"lesson_screen_nor") forState:0];
-    [_rightButton setImage:[Image(@"lesson_screen_nor") converToMainColor] forState:UIControlStateSelected];
-    _rightButton.hidden = NO;
+    _titleLabel.text = _themeString;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _dataSource = [NSMutableArray new];
     page = 1;
-    categoryString = @"";
     [self makeTableView];
 }
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getTeacherList)];
-    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreTeacherList)];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstData)];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreOrderList)];
     _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
@@ -59,35 +53,38 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuse = @"TeacherListCell";
-    TeacherListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+    static NSString *reuse = @"UserListCell";
+    UserListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[TeacherListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        cell = [[UserListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setTeacherListInfo:_dataSource[indexPath.row]];
+    [cell setUserInfo:_dataSource[indexPath.row]];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 152;
+    return 97;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
-    vc.teacherId = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"id"]];
-    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
-- (void)getTeacherList {
+- (void)getFirstData {
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(categoryString)) {
-        [param setObject:categoryString forKey:@"category"];
+    if (SWNOTEmptyStr(_userId)) {
+        [param setObject:_userId forKey:@"user_id"];
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    NSString *netUlr;
+    if ([_themeString isEqualToString:@"粉丝"]) {
+        netUlr = [Net_Path userFollowListNet];
+    } else if ([_themeString isEqualToString:@"关注"]) {
+        netUlr = [Net_Path userFollowNet];
+    }
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageJoinCourseList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -110,14 +107,19 @@
     }];
 }
 
-- (void)getMoreTeacherList {
+- (void)getMoreOrderList {
     page = page + 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(categoryString)) {
-        [param setObject:categoryString forKey:@"category"];
+    if (SWNOTEmptyStr(_userId)) {
+        [param setObject:_userId forKey:@"user_id"];
+    }
+    NSString *netUlr;
+    if ([_themeString isEqualToString:@"粉丝"]) {
+        netUlr = [Net_Path userFollowListNet];
+    } else if ([_themeString isEqualToString:@"关注"]) {
+        netUlr = [Net_Path userFollowNet];
     }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageJoinCourseList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
@@ -140,5 +142,15 @@
         }
     }];
 }
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 @end

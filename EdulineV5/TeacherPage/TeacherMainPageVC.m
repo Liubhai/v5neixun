@@ -11,6 +11,7 @@
 #import "TeacherIntroVC.h"
 #import "TeahcerCourseListVC.h"
 #import "Net_Path.h"
+#import "UserCommenListVC.h"
 
 @interface TeacherMainPageVC ()<UIScrollViewDelegate>
 
@@ -145,7 +146,7 @@
     NSArray *typeArray = @[@"关注",@"粉丝",@"最近访客"];
     for (int i = 0; i<typeArray.count; i++) {
         UIButton *typeBtn = [[UIButton alloc] initWithFrame:CGRectMake((MainScreenWidth - 60 * 3) / 4.0 + ((MainScreenWidth - 60 * 3) / 4.0 + 60) * i, _faceImageView.bottom + 10, 60, 40)];
-        
+        typeBtn.tag = 666 + i;
         UILabel *countL = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 20)];
         countL.font = SYSTEMFONT(16);
         countL.textAlignment = NSTextAlignmentCenter;
@@ -169,6 +170,8 @@
             _visitorsButton = typeBtn;
             _visitorsCountLabel = countL;
         }
+        
+        [typeBtn addTarget:self action:@selector(goToUserCommenListVC:) forControlEvents:UIControlEventTouchUpInside];
         
         [_topView addSubview:typeBtn];
     }
@@ -270,6 +273,19 @@
     }
 }
 
+- (void)goToUserCommenListVC:(UIButton *)sender {
+    UserCommenListVC *vc = [[UserCommenListVC alloc] init];
+    if (sender.tag == 666) {
+        vc.themeString = @"关注";
+    } else if (sender.tag == 667) {
+        vc.themeString = @"粉丝";
+    } else {
+        vc.themeString = @"最近访客";
+    }
+    vc.userId = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"user_id"]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)buttonTypeClick:(UIButton *)sender {
     [self.mainScrollView setContentOffset:CGPointMake(MainScreenWidth * sender.tag, 0) animated:YES];
 }
@@ -287,11 +303,20 @@
 - (void)followUserAction {
     if (SWNOTEmptyDictionary(_teacherInfoDict)) {
         NSString *userId = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"user_id"]];
-        [Net_API requestPOSTWithURLStr:[Net_Path userFollowNet] WithAuthorization:nil paramDic:@{@"user_id":userId} finish:^(id  _Nonnull responseObject) {
-            
-        } enError:^(NSError * _Nonnull error) {
-            
-        }];
+        if ([[_teacherInfoDict objectForKey:@"is_follow"] boolValue]) {
+            [Net_API requestDeleteWithURLStr:[Net_Path userFollowNet] paramDic:@{@"user_id":userId} Api_key:nil finish:^(id  _Nonnull responseObject) {
+                [self getTeacherInfo];
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        } else {
+            [Net_API requestPOSTWithURLStr:[Net_Path userFollowNet] WithAuthorization:nil paramDic:@{@"user_id":userId} finish:^(id  _Nonnull responseObject) {
+                [self getTeacherInfo];
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        }
+        
     }
 }
 
@@ -316,6 +341,7 @@
         [_faceImageView sd_setImageWithURL:EdulineUrlString([_teacherInfoDict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
         _InstitutionLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"title"]];
         _levelLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"level_text"]];
+        [_likeButton setTitle:[[_teacherInfoDict objectForKey:@"is_follow"] boolValue] ? @"已关注" : @"+关注" forState:0];
         CGFloat levelWidth = [_levelLabel.text sizeWithFont:_levelLabel.font].width + 4;
         [_levelLabel setWidth:levelWidth];
         NSString *schoolName = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"school_name"]];

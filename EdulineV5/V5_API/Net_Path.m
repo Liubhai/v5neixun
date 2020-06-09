@@ -272,4 +272,8 @@
     return [Net_Path fullPath:@"user/follow" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userFollowListNet {
+    return [Net_Path fullPath:@"user/follow/follower" repalce:@"" byReplece:@""];
+}
+
 @end

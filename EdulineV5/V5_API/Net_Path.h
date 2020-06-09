@@ -214,6 +214,9 @@ struct NetWorkUrl {
 /** 关注和取消关注 */
 + (NSString *)userFollowNet;
 
+/** 粉丝列表 */
++ (NSString *)userFollowListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
