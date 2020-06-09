@@ -202,6 +202,18 @@ struct NetWorkUrl {
 /** 直播用户登录所需信息 */
 + (NSString *)liveLoginInfo;
 
+/** 讲师列表 */
++ (NSString *)teacherList;
+
+/** 讲师主页课程列表 */
++ (NSString *)teacherCourseListInfo:(NSString *)teacherId;
+
+/** 讲师主页信息 */
++ (NSString *)teacherMainInfo:(NSString *)teacherId;
+
+/** 关注和取消关注 */
++ (NSString *)userFollowNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -30,6 +30,9 @@
 #ifndef V5_Constant_h
 #define V5_Constant_h
 
+#define WebTitleContenDistance 10
+#define WebDistanceLeft 15//内容和左右的边距
+
 #define TXSDKID [[NSUserDefaults standardUserDefaults] objectForKey:@"sdk_appid"]
 
 #define PROFILELAYOUT [[NSUserDefaults standardUserDefaults] objectForKey:@"profile"]

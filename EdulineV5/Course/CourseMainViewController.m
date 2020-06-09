@@ -22,6 +22,7 @@
 #import "CourseDetailPlayVC.h"
 #import "LingquanViewController.h"
 #import "InstitutionRootVC.h"
+#import "TeacherMainPageVC.h"
 
 //
 #import "OrderViewController.h"
@@ -448,7 +449,8 @@
 
 // MARK: - 讲师机构点击事件(机构)
 - (void)jumpToTeacher:(NSDictionary *)teacherInfoDict tapTag:(NSInteger)viewTag {
-    
+    TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 // MARK: - 优惠卷点击事件

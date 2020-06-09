@@ -256,4 +256,20 @@
     return [Net_Path fullPath:@"course/live/tencent/v2/userSig" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)teacherList {
+    return [Net_Path fullPath:@"user/teacher/list" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)teacherCourseListInfo:(NSString *)teacherId {
+    return [Net_Path fullPath:@"user/teacher/{id}/course" repalce:@"{id}" byReplece:teacherId];
+}
+
++ (NSString *)teacherMainInfo:(NSString *)teacherId {
+    return [Net_Path fullPath:@"user/teacher/{id}/basic" repalce:@"{id}" byReplece:teacherId];
+}
+
++ (NSString *)userFollowNet {
+    return [Net_Path fullPath:@"user/follow" repalce:@"" byReplece:@""];
+}
+
 @end

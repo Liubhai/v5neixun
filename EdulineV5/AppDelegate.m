@@ -553,7 +553,7 @@
 - (void)layoutConfig {
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path layoutConfig] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if ([[responseObject objectForKey:@"code"] integerValue]) {
-            [[NSUserDefaults standardUserDefaults] setObject:@"3" forKey:@"profile"];//[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"profile"]]
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"profile"]] forKey:@"profile"];
             [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"course"]] forKey:@"course"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }

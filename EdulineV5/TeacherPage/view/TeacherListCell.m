@@ -48,13 +48,13 @@
 
 - (void)setTeacherListInfo:(NSDictionary *)info {
     
-    _faceImageView.image = DefaultImage;
+    [_faceImageView sd_setImageWithURL:EdulineUrlString([info objectForKey:@"avatar_url"]) placeholderImage:DefaultImage];
     
-    _nameLabel.text = @"讲师";
+    _nameLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     
-    _levelLabel.text = @"高级讲师";
+    _levelLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"level_text"]];
     
-    NSString *intro = @"高级软件工程师 资深签约讲师深签约讲师深签约讲师";
+    NSString *intro = [NSString stringWithFormat:@"%@",[info objectForKey:@"signature"]];
     _introLabel.text = intro;
     _introLabel.numberOfLines = 0;
     [_introLabel sizeToFit];

@@ -328,6 +328,9 @@
 		78C549EB241B774B00A33FC4 /* alivcffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78C549E9241B773200A33FC4 /* alivcffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78C936C0248DE41900D5F1ED /* ZPScrollerScaleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */; };
 		78C936C3248DE4C700D5F1ED /* HomePageHotRecommendedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936C2248DE4C700D5F1ED /* HomePageHotRecommendedCell.m */; };
+		78C936C6248F64AF00D5F1ED /* TeacherMainPageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936C5248F64AF00D5F1ED /* TeacherMainPageVC.m */; };
+		78C936C9248F816D00D5F1ED /* TeacherIntroVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936C8248F816D00D5F1ED /* TeacherIntroVC.m */; };
+		78C936CC248F846200D5F1ED /* TeahcerCourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936CB248F846200D5F1ED /* TeahcerCourseListVC.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -978,6 +981,12 @@
 		78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPScrollerScaleView.m; sourceTree = "<group>"; };
 		78C936C1248DE4C700D5F1ED /* HomePageHotRecommendedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageHotRecommendedCell.h; sourceTree = "<group>"; };
 		78C936C2248DE4C700D5F1ED /* HomePageHotRecommendedCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageHotRecommendedCell.m; sourceTree = "<group>"; };
+		78C936C4248F64AF00D5F1ED /* TeacherMainPageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherMainPageVC.h; sourceTree = "<group>"; };
+		78C936C5248F64AF00D5F1ED /* TeacherMainPageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherMainPageVC.m; sourceTree = "<group>"; };
+		78C936C7248F816D00D5F1ED /* TeacherIntroVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherIntroVC.h; sourceTree = "<group>"; };
+		78C936C8248F816D00D5F1ED /* TeacherIntroVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherIntroVC.m; sourceTree = "<group>"; };
+		78C936CA248F846200D5F1ED /* TeahcerCourseListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeahcerCourseListVC.h; sourceTree = "<group>"; };
+		78C936CB248F846200D5F1ED /* TeahcerCourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeahcerCourseListVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1949,6 +1958,12 @@
 			children = (
 				787F1E932479198100108F7B /* TeacherListVC.h */,
 				787F1E942479198100108F7B /* TeacherListVC.m */,
+				78C936C4248F64AF00D5F1ED /* TeacherMainPageVC.h */,
+				78C936C5248F64AF00D5F1ED /* TeacherMainPageVC.m */,
+				78C936C7248F816D00D5F1ED /* TeacherIntroVC.h */,
+				78C936C8248F816D00D5F1ED /* TeacherIntroVC.m */,
+				78C936CA248F846200D5F1ED /* TeahcerCourseListVC.h */,
+				78C936CB248F846200D5F1ED /* TeahcerCourseListVC.m */,
 				787F1E9624791A4700108F7B /* view */,
 			);
 			path = TeacherPage;
@@ -2665,6 +2680,7 @@
 				78795752240FAA7A0013F95F /* UIViewController+HUD.m in Sources */,
 				787F1E6B247381A400108F7B /* AlivcPlayListsView.m in Sources */,
 				78A16C842452F7C100391430 /* TICReport.m in Sources */,
+				78C936C6248F64AF00D5F1ED /* TeacherMainPageVC.m in Sources */,
 				78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */,
 				789DB065246D26EC001302B4 /* NSObject+PYThemeExtension.m in Sources */,
 				7839C97A241F7B3E002F6595 /* CourseDownView.m in Sources */,
@@ -2753,6 +2769,7 @@
 				78A16C872452F7C100391430 /* NetAssociation.m in Sources */,
 				7853164824502E49007E239E /* MenberCell.m in Sources */,
 				7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */,
+				78C936CC248F846200D5F1ED /* TeahcerCourseListVC.m in Sources */,
 				78C548372416212300A33FC4 /* RegisterAndForgetPwVC.m in Sources */,
 				78C5487D2418CC7400A33FC4 /* TYTextStorage.m in Sources */,
 				78AA138F24407197007087F7 /* HomePageCourseTypeTwoCell.m in Sources */,
@@ -2815,6 +2832,7 @@
 				78C549D6241B674F00A33FC4 /* AlivcBaseNavigationController.m in Sources */,
 				78AA13A32446AB00007087F7 /* MyCenterTypeTwoCell.m in Sources */,
 				7839C9A32423655B002F6595 /* CourseListVC.m in Sources */,
+				78C936C9248F816D00D5F1ED /* TeacherIntroVC.m in Sources */,
 				7853BDD0242D8F4300F096EC /* ShitikaViewController.m in Sources */,
 				7839C9892420CA15002F6595 /* CourseCommentTopView.m in Sources */,
 				78795655240E5B1C0013F95F /* RootV5VC.m in Sources */,
