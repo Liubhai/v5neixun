@@ -235,6 +235,7 @@
     [self addChildViewController:_teacherIntroVC];
     
     _teacherCourseVC = [[TeahcerCourseListVC alloc] init];
+    _teacherCourseVC.teacherId = _teacherId;
     _teacherCourseVC.tabelHeight = _mainScrollView.height;
     _teacherCourseVC.view.frame = CGRectMake(MainScreenWidth * 2,0, MainScreenWidth, _mainScrollView.height);
     [_mainScrollView addSubview:_teacherCourseVC.view];

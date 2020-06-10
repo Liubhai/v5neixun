@@ -33,7 +33,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     page = 1;
-    _typeArray = @[@"推荐",@"点播",@"直播",@"面授"];
+    coursetypeIdString = @"0";
+    _typeArray = @[@{@"title":@"推荐",@"id":@"0"},@{@"title":@"点播",@"id":@"1"},@{@"title":@"直播",@"id":@"2"},@{@"title":@"面授",@"id":@"3"}];
     _dataSource = [NSMutableArray new];
     _titleImage.hidden = YES;
     [self addHeaderView];
@@ -53,7 +54,7 @@
         btn.tag = 100 + i;
         btn.layer.masksToBounds = YES;
         btn.layer.cornerRadius = 14;
-        [btn setTitle:_typeArray[i] forState:0];
+        [btn setTitle:_typeArray[i][@"title"] forState:0];
         [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
         btn.titleLabel.font = SYSTEMFONT(14);
@@ -142,6 +143,8 @@
             [btn setBackgroundColor:EdlineV5_Color.fengeLineColor];
         }
     }
+    coursetypeIdString = [NSString stringWithFormat:@"%@",_typeArray[sender.tag - 100][@"id"]];
+    [self getCourseMainList];
 }
 
 - (void)getCourseMainList {
