@@ -444,12 +444,14 @@
 // MARK: - 讲师机构点击事件(讲师)
 - (void)jumpToOrganization:(NSDictionary *)schoolInfo {
     InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
+    vc.institutionId = [NSString stringWithFormat:@"%@",_dataSource[@"mhm_info"][@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 // MARK: - 讲师机构点击事件(机构)
 - (void)jumpToTeacher:(NSDictionary *)teacherInfoDict tapTag:(NSInteger)viewTag {
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
+    vc.teacherId = [NSString stringWithFormat:@"%@",_dataSource[@"teacher_info"][@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

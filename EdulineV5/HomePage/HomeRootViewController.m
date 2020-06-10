@@ -232,7 +232,7 @@
         if (!cell) {
             cell = [[HomePageCourseTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell setHomePageCourseTypeTwoCellInfo:@[@"",@"",@"",@"",@""]];
+//        [cell setHomePageCourseTypeTwoCellInfo:@[@"",@"",@"",@"",@""]];
         return cell;
     } else if (indexPath.section == 2) {
         static NSString *reuse = @"HomePageHotRecommendedCell";
@@ -240,7 +240,7 @@
         if (!cell) {
             cell = [[HomePageHotRecommendedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell setRecommendCourseCellInfo:@[@"",@"",@"",@"",@""]];
+//        [cell setRecommendCourseCellInfo:@[@"",@"",@"",@"",@""]];
         return cell;
     } else {
         static NSString *reuse = @"homeCell";

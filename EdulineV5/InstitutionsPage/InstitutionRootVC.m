@@ -12,10 +12,14 @@
 #import "V5_Constant.h"
 #import "TeacherListVC.h"
 #import "InstitutionListVC.h"
+#import "Net_Path.h"
+#import "TeacherMainPageVC.h"
 
-@interface InstitutionRootVC ()<UITableViewDelegate, UITableViewDataSource>
+@interface InstitutionRootVC ()<UITableViewDelegate, UITableViewDataSource,HomePageTeacherCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
+
+@property (strong, nonatomic) NSDictionary *institutionInfo;
 
 @property (strong, nonatomic) NSMutableArray *cateSourceArray;
 // 讲师
@@ -40,7 +44,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _titleLabel.text = @"XXX机构";
     _titleLabel.textColor = [UIColor whiteColor];
     _titleImage.backgroundColor = EdlineV5_Color.themeColor;
     _titleImage.alpha = 0;
@@ -48,7 +51,7 @@
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.themeColor;
     _teacherArray = [NSMutableArray new];
-    [_cateSourceArray addObjectsFromArray:@[@"",@"",@""]];
+    _cateSourceArray = [NSMutableArray new];
     
     [self makeHeaderView];
     [self makeTableView];
@@ -79,13 +82,11 @@
     
     _InstitutionLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 20, _faceImageView.top + 5, MainScreenWidth - (_faceImageView.right + 20), 23)];
     _InstitutionLabel.font = SYSTEMFONT(16);
-    _InstitutionLabel.text = @"XXX机构";
     _InstitutionLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_InstitutionLabel];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 20, _InstitutionLabel.bottom + 7.5, MainScreenWidth - (_faceImageView.right + 20), 23)];
     _introLabel.font = SYSTEMFONT(12);
-    _introLabel.text = @"XXX机构";
     _introLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_introLabel];
 }
@@ -98,17 +99,22 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.showsVerticalScrollIndicator = NO;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getInstitutionInfo)];
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
+    [_tableView.mj_header beginRefreshing];
 }
 
 // MARK: - tableview 代理
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    if (section == 0 || section == 1) {
+        return 1;
+    }
+    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -122,12 +128,14 @@
         themeLabel.text = @"推荐课程";
     } else if (section == 1) {
         themeLabel.text = @"推荐讲师";
+    } else if (section == 2) {
+        themeLabel.text = @"推荐资讯";
     }
     [sectionHead addSubview:themeLabel];
     
     UIButton *more = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 60, 0, 60, 56)];
     more.tag = section;
-    [more setTitle:@"查看更多" forState:0];
+    [more setTitle:@"查看全部" forState:0];
     more.titleLabel.font = SYSTEMFONT(14);
     [more setTitleColor:EdlineV5_Color.textThirdColor forState:0];
     [more addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -156,15 +164,16 @@
         if (!cell) {
             cell = [[HomePageCourseTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell setHomePageCourseTypeTwoCellInfo:@[@"",@"",@"",@"",@""]];
+        [cell setHomePageCourseTypeTwoCellInfo:_cateSourceArray];
         return cell;
     } else if (indexPath.section == 1) {
-        static NSString *reuse = @"HomePageCourseTypeTwoCell";
-        HomePageCourseTypeTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        static NSString *reuse = @"HomePageTeacherInstitutionCell";
+        HomePageTeacherCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
-            cell = [[HomePageCourseTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            cell = [[HomePageTeacherCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell setHomePageCourseTypeTwoCellInfo:@[@"",@"",@"",@"",@""]];
+        [cell setTeacherArrayInfo:_teacherArray];
+        cell.delegate = self;
         return cell;
     } else {
         static NSString *reuse = @"homeCell";
@@ -196,15 +205,62 @@
     }
 }
 
+// MARK: - HomePageTeacherCellDelegate(讲师点击事件)
+- (void)goToTeacherMainPage:(NSInteger)teacherViewTag {
+    TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
+    vc.teacherId = [NSString stringWithFormat:@"%@",_teacherArray[teacherViewTag][@"id"]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)moreButtonClick:(UIButton *)sender {
     if (sender.tag == 1) {
-        InstitutionListVC *vc = [[InstitutionListVC alloc] init];
+        TeacherListVC *vc = [[TeacherListVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
 - (void)leftBackButtonClick:(UIButton *)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)getInstitutionInfo {
+    if (SWNOTEmptyStr(_institutionId)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionMainPageNet:_institutionId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+            if (_tableView.mj_header.isRefreshing) {
+                [_tableView.mj_header endRefreshing];
+            }
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [_cateSourceArray removeAllObjects];
+                    [_cateSourceArray addObjectsFromArray:responseObject[@"data"][@"course"]];
+                    
+                    [_teacherArray removeAllObjects];
+                    [_teacherArray addObjectsFromArray:responseObject[@"data"][@"teacher"]];
+                    
+                    _institutionInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    
+                    [self setInstitutionInfoData];
+                    
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            if (_tableView.mj_header.isRefreshing) {
+                [_tableView.mj_header endRefreshing];
+            }
+        }];
+    }
+}
+
+- (void)setInstitutionInfoData {
+    if (SWNOTEmptyDictionary(_institutionInfo)) {
+        if ([[_institutionInfo objectForKey:@"code"] integerValue]) {
+            [_faceImageView sd_setImageWithURL:EdulineUrlString(_institutionInfo[@"data"][@"info"][@"logo"]) placeholderImage:DefaultImage];
+            _InstitutionLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"title"]];
+            _titleLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"title"]];
+            _introLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"info"]];
+        }
+    }
 }
 
 /*

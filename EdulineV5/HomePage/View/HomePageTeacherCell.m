@@ -36,6 +36,7 @@
     
     for (int i = 0 ; i < infoArray.count; i ++) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(15 + (TeaViewWidth + 12) * i, 15, TeaViewWidth, TeaViewHight)];
+        view.userInteractionEnabled = YES;
         view.tag = i;
         view.layer.masksToBounds = NO;
         view.layer.cornerRadius = 10;
@@ -52,8 +53,8 @@
         
         //添加头像
         UIImageView *TeaImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 15, 80, 80)];
-        NSString *urlStr = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"headimg"]];//[[infoArray objectAtIndex:i] stringValueForKey:@"headimg"];
-        [TeaImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:Image(@"站位图")];
+        NSString *urlStr = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"avatar"]];
+        [TeaImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:DefaultUserImage];
         TeaImageView.layer.masksToBounds = YES;
         TeaImageView.layer.cornerRadius = 40;
         TeaImageView.centerX = TeaViewWidth / 2.0;
@@ -61,7 +62,7 @@
         
         //添加名字
         UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(TeaImageView.frame) + 13, TeaViewWidth, 20)];
-        name.text = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"name"]];//[[infoArray objectAtIndex:i] stringValueForKey:@"name"];
+        name.text = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"title"]];
         name.textAlignment = NSTextAlignmentCenter;
         name.font = SYSTEMFONT(14);
         name.textColor = EdlineV5_Color.textFirstColor;
@@ -69,7 +70,7 @@
         
         //添加讲师等级
         UILabel *teacherLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(name.frame) + 3, TeaViewWidth, 17)];
-        teacherLevel.text = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"teacher_title"]];//[[infoArray objectAtIndex:i] stringValueForKey:@"teacher_title"];
+        teacherLevel.text = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"level_text"]];
         teacherLevel.textAlignment = NSTextAlignmentCenter;
         teacherLevel.font = SYSTEMFONT(12);
         teacherLevel.textColor = EdlineV5_Color.textThirdColor;
@@ -78,6 +79,8 @@
         //添加手势
         [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(teacherViewClick:)]];
     }
+    [_teacherScrollView setHeight:infoArray.count > 0 ? 190 : 0];
+    [self setHeight:infoArray.count > 0 ? 190 : 0];
 }
 
 - (void)teacherViewClick:(UITapGestureRecognizer *)sender {

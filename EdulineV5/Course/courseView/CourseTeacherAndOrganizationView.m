@@ -74,7 +74,7 @@
             UILabel *teacherName = [[UILabel alloc] initWithFrame:CGRectMake(teacherFace.right + 5, 15, 0, 14)];
             teacherName.textColor = EdlineV5_Color.textFirstColor;
             teacherName.font = SYSTEMFONT(13);
-            teacherName.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"title"]];
+            teacherName.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"teacher_name"]];
             [_teachersHeaderScrollView addSubview:teacherName];
             UILabel *taecherOwn = [[UILabel alloc] initWithFrame:CGRectMake(teacherFace.right + 5, teacherName.bottom, 0, 18)];
             taecherOwn.text = @"主讲老师";

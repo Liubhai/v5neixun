@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface InstitutionRootVC : BaseViewController
 
+@property (strong, nonatomic) NSString *institutionId;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -58,52 +58,44 @@
 - (void)setHomePageCourseTypeTwoCellInfo:(NSMutableArray *)infoArray {
     [self removeAllSubviews];
     for (int i = 0; i<infoArray.count; i++) {
-        
-//        NSDictionary *info = [NSDictionary dictionaryWithDictionary:infoArray[i]];
-        
         UIImageView *courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 153, 86)];
         
-        courseFace.image = DefaultImage;
+        [courseFace sd_setImageWithURL:EdulineUrlString(infoArray[i][@"cover_url"]) placeholderImage:DefaultImage];
+        courseFace.clipsToBounds = YES;
         courseFace.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:courseFace];
         
         UIImageView *courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(courseFace.right - 32, courseFace.top + 8, 32, 18)];
-        courseTypeImage.image = Image(@"album_icon");
         [self addSubview:courseTypeImage];
         
         UILabel *titleL = [[UILabel alloc] initWithFrame:CGRectMake(courseFace.right + 12, courseFace.top, MainScreenWidth - (courseFace.right + 12) - 15, 50)];
-        titleL.text = @"你是个傻屌";
         titleL.textColor = EdlineV5_Color.textFirstColor;
         titleL.font = SYSTEMFONT(15);
         [self addSubview:titleL];
         
         UILabel *learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleL.left, courseFace.bottom - 18, 100, 16)];
         learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
-        learnCountLabel.text = @"1214人报名";
         learnCountLabel.font = SYSTEMFONT(12);
         [self addSubview:learnCountLabel];
         
         UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, 0, 150, 21)];
         priceLabel.textColor = EdlineV5_Color.faildColor;
         priceLabel.font = SYSTEMFONT(15);
-        priceLabel.text = @"¥1099.00";
         priceLabel.textAlignment = NSTextAlignmentRight;
         priceLabel.centerY = learnCountLabel.centerY;
         [self addSubview:priceLabel];
         
-//        [courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover"]) placeholderImage:DefaultImage];
-//        courseFace.contentMode = UIViewContentModeScaleAspectFill;
-//        // 1 点播 2 直播 3 面授 4 专辑
-//        NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
-//        if ([courseType isEqualToString:@"1"]) {
-//            courseTypeImage.image = Image(@"dianbo");
-//        } else if ([courseType isEqualToString:@"2"]) {
-//            courseTypeImage.image = Image(@"live");
-//        } else if ([courseType isEqualToString:@"3"]) {
-//            courseTypeImage.image = Image(@"mianshou");
-//        } else if ([courseType isEqualToString:@"4"]) {
-//            courseTypeImage.image = Image(@"album_icon");
-//        }
+        // 1 点播 2 直播 3 面授 4 专辑
+        NSString *courseType = [NSString stringWithFormat:@"%@",infoArray[i][@"course_type"]];
+        if ([courseType isEqualToString:@"1"]) {
+            courseTypeImage.image = Image(@"dianbo");
+        } else if ([courseType isEqualToString:@"2"]) {
+            courseTypeImage.image = Image(@"live");
+        } else if ([courseType isEqualToString:@"3"]) {
+            courseTypeImage.image = Image(@"mianshou");
+        } else if ([courseType isEqualToString:@"4"]) {
+            courseTypeImage.image = Image(@"album_icon");
+        }
         
         courseFace.frame = CGRectMake(singleLeftSpace, topSpace, MainScreenWidth/2.0 - singleRightSpace * 2 - singleLeftSpace, faceImageHeight);
         titleL.frame = CGRectMake(courseFace.left, courseFace.bottom + 6, courseFace.width, 20);
@@ -130,9 +122,9 @@
             priceLabel.centerY = learnCountLabel.centerY;
         }
         
-//        titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
-//        learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
-//        priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+        titleL.text = [NSString stringWithFormat:@"%@",infoArray[i][@"title"]];
+        learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",infoArray[i][@"sale_count"]];
+        priceLabel.text = [NSString stringWithFormat:@"¥%@",infoArray[i][@"price"]];
     }
     [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight + 10 : ((infoArray.count + 1)/2.0) * TwoCellHeight + 10];
 }
