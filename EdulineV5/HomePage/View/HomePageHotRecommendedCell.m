@@ -21,24 +21,11 @@
 }
 
 - (void)makeSubView {
-    /**初始化配置项*/
-    ZPScrollerScaleViewConfig * config = [[ZPScrollerScaleViewConfig alloc]init];
-    config.scaleMin = 0.9;
-    config.scaleMax = 1;
-    config.pageSize = CGSizeMake(MainScreenWidth - 100, 172);
-    config.ItemMaingin = 15;
     
-    /**初始化滚动缩放视图*/
-    _scrollerView = [[ZPScrollerScaleView alloc] initWithConfig:config];
-    _scrollerView.frame = CGRectMake(0, 15, MainScreenWidth, 172);
-    
-    //至少要是等于 2-8
-    self.scrollerView.defalutIndex = 2;
-    _scrollerView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:_scrollerView];
 }
 
 - (void)setRecommendCourseCellInfo:(NSArray *)recommendArray {
+    [self removeAllSubviews];
     NSMutableArray *pass = [NSMutableArray new];
     for (int i = 0; i<recommendArray.count; i++) {
         UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 15, MainScreenWidth - 100 - 15, 172)];
@@ -61,8 +48,23 @@
         [backView addSubview:titleLabel];
         [pass addObject:backView];
     }
+    /**初始化配置项*/
+    ZPScrollerScaleViewConfig * config = [[ZPScrollerScaleViewConfig alloc]init];
+    config.scaleMin = 0.9;
+    config.scaleMax = 1;
+    config.pageSize = CGSizeMake(MainScreenWidth - 100, 172);
+    config.ItemMaingin = 15;
+    
+    /**初始化滚动缩放视图*/
+    ZPScrollerScaleView *scrollerView = [[ZPScrollerScaleView alloc] initWithConfig:config];
+    scrollerView.frame = CGRectMake(0, 15, MainScreenWidth, 172);
+    
+    //至少要是等于 2-8
+    scrollerView.defalutIndex = 2;
+    scrollerView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:scrollerView];
     //2:将子视图数组传递 ZPScrollerScaleView
-    self.scrollerView.items = pass;
+    scrollerView.items = pass;
 }
 
 - (void)awakeFromNib {

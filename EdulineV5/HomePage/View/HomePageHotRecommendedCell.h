@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HomePageHotRecommendedCell : UITableViewCell
 
-@property (nonatomic, strong) ZPScrollerScaleView *scrollerView;
+//@property (nonatomic, strong) ZPScrollerScaleView *scrollerView;
 
 - (void)setRecommendCourseCellInfo:(NSArray *)recommendArray;
 
