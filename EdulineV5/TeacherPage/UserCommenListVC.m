@@ -33,7 +33,7 @@
 }
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
@@ -84,7 +84,10 @@
     } else if ([_themeString isEqualToString:@"关注"]) {
         netUlr = [Net_Path userFollowNet];
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageJoinCourseList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    if (!SWNOTEmptyStr(netUlr)) {
+        return;
+    }
+    [Net_API requestGETSuperAPIWithURLStr:netUlr WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -121,7 +124,10 @@
     } else if ([_themeString isEqualToString:@"关注"]) {
         netUlr = [Net_Path userFollowNet];
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageJoinCourseList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    if (!SWNOTEmptyStr(netUlr)) {
+        return;
+    }
+    [Net_API requestGETSuperAPIWithURLStr:netUlr WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }

@@ -40,6 +40,7 @@
     [self addSubview:_introLabel];
     
     _followButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 55, 0, 55, 21)];
+    _followButton.centerY = _faceImageView.centerY;
     _followButton.layer.masksToBounds = YES;
     _followButton.layer.cornerRadius = 2;
     _followButton.layer.borderWidth = 1;
