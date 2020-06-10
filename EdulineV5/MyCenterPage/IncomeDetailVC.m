@@ -15,6 +15,9 @@
 @interface IncomeDetailVC ()<UITableViewDelegate, UITableViewDataSource, CourseSortVCDelegate> {
     NSString *courseSortIdString;
     NSString *courseSortString;
+    
+    NSString *timeIdString;
+    NSString *timeString;
     NSInteger page;
 }
 
@@ -36,8 +39,14 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [NSMutableArray new];
-    _titleLabel.text = @"明细";
+    _titleLabel.text = @"收入明细";
     page = 1;
+    courseSortString = @"全部";
+    courseSortIdString = @"all";
+    
+    timeString = @"全部";
+    timeIdString = @"all";
+    
     [self makeTopView];
     [self makeTabelView];
 }
@@ -105,6 +114,7 @@
     if (!cell) {
         cell = [[BalanceDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
+    [cell setInfoData:_dataSource[indexPath.row]];
     return cell;
 }
 
@@ -122,8 +132,15 @@
         vc.isMainPage = NO;
         vc.pageClass = (sender == _incomeButton) ? @"incomeType" : @"incomeTime";
         vc.delegate = self;
-        if (SWNOTEmptyStr(courseSortIdString)) {
-            vc.typeId = courseSortIdString;
+        if (sender == _incomeButton) {
+            if (SWNOTEmptyStr(courseSortIdString)) {
+                vc.typeId = courseSortIdString;
+            }
+        }
+        if (sender == _timeButton) {
+            if (SWNOTEmptyStr(timeIdString)) {
+                vc.typeId = timeIdString;
+            }
         }
         vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 54, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 54);
         [self.view addSubview:vc.view];
@@ -133,25 +150,38 @@
 
 - (void)sortTypeChoose:(NSDictionary *)info {
     if (SWNOTEmptyDictionary(info)) {
-        courseSortString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
-        courseSortIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
         if (_incomeButton.selected) {
+            courseSortString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+            courseSortIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
             _incomeButton.selected = NO;
             [_incomeButton setTitle:courseSortString forState:0];
             [EdulineV5_Tool dealButtonImageAndTitleUI:_incomeButton];
         }
         if (_timeButton.selected) {
+            timeString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+            timeIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
             _timeButton.selected = NO;
             [_timeButton setTitle:courseSortString forState:0];
             [EdulineV5_Tool dealButtonImageAndTitleUI:_timeButton];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        [self getFirstData];
     }
 }
 
 - (void)getFirstData {
     page = 1;
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userIncomeDetailInfo] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
+    // 大类型
+    if (SWNOTEmptyStr(timeIdString)) {
+        [param setObject:timeIdString forKey:@"time"];
+    }
+    if (SWNOTEmptyStr(courseSortIdString)) {
+        [param setObject:courseSortIdString forKey:@"type"];
+    }
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userIncomeDetailInfo] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.isRefreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -178,7 +208,17 @@
 
 - (void)getMoreData {
     page = page + 1;
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userIncomeDetailInfo] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
+    // 大类型
+    if (SWNOTEmptyStr(timeIdString)) {
+        [param setObject:timeIdString forKey:@"time"];
+    }
+    if (SWNOTEmptyStr(courseSortIdString)) {
+        [param setObject:courseSortIdString forKey:@"type"];
+    }
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userIncomeDetailInfo] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }

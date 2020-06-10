@@ -188,12 +188,24 @@
     return [Net_Path fullPath:@"user/balance" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userIncomeDetail {
+    return [Net_Path fullPath:@"user/income" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)userScoreDetail {
+    return [Net_Path fullPath:@"user/credit" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userBalanceDetailInfo {
     return [Net_Path fullPath:@"user/balance/flow" repalce:@"" byReplece:@""];
 }
 
 + (NSString *)userIncomeDetailInfo {
     return [Net_Path fullPath:@"user/income/flow" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)userScoreDetailInfo {
+    return [Net_Path fullPath:@"user/credit/flow" repalce:@"" byReplece:@""];
 }
 
 + (NSString *)userPayInfo {

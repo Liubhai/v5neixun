@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *lineView;
 
 
+- (void)setScoreDetailListInfo:(NSDictionary *)scoreInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

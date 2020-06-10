@@ -26,7 +26,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _titleLabel.text = @"明细";
+    _titleLabel.text = @"余额明细";
     _dataSource = [NSMutableArray new];
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     page = 1;

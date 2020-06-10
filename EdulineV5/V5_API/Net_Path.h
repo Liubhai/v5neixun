@@ -149,11 +149,20 @@ struct NetWorkUrl {
 /** 余额信息 */
 + (NSString *)userBalanceInfo;
 
+/** 收入明细 */
++ (NSString *)userIncomeDetail;
+
+/** 积分明细 */
++ (NSString *)userScoreDetail;
+
 /** 余额明细 */
 + (NSString *)userBalanceDetailInfo;
 
 /** 收入明细 */
 + (NSString *)userIncomeDetailInfo;
+
+/** 积分明细 */
++ (NSString *)userScoreDetailInfo;
 
 /** 余额配置信息 */
 + (NSString *)userPayInfo;

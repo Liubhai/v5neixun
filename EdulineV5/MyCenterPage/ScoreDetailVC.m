@@ -9,6 +9,7 @@
 #import "ScoreDetailVC.h"
 #import "ScoreCell.h"
 #import "V5_Constant.h"
+#import "Net_Path.h"
 
 @interface ScoreDetailVC ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger page;
@@ -40,16 +41,16 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstData)];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstData)];
     _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
     _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;//_dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -58,6 +59,7 @@
     if (!cell) {
         cell = [[ScoreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
+    [cell setScoreDetailListInfo:_dataSource[indexPath.row]];
     return cell;
 }
 
@@ -66,10 +68,54 @@
 }
 
 - (void)getFirstData {
-    
+    page = 1;
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userScoreDetailInfo] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_header.isRefreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_dataSource removeAllObjects];
+                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+            }
+        }
+        if (_dataSource.count<10) {
+            _tableView.mj_footer.hidden = YES;
+        } else {
+            _tableView.mj_footer.hidden = NO;
+        }
+        [_tableView reloadData];
+    } enError:^(NSError * _Nonnull error) {
+        if (_tableView.mj_header.isRefreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+    }];
 }
 
 - (void)getMoreData {
+    page = page + 1;
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userScoreDetailInfo] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:pass];
+                if (pass.count<10) {
+                    _tableView.mj_footer.hidden = YES;
+                } else {
+                    _tableView.mj_footer.hidden = NO;
+                }
+            }
+        }
+        [_tableView reloadData];
+    } enError:^(NSError * _Nonnull error) {
+        page--;
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+    }];
 }
 
 /*

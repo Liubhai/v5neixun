@@ -85,22 +85,7 @@
     _mainScrollView.backgroundColor = EdlineV5_Color.backColor;
     [self.view addSubview:_mainScrollView];
     
-    [self makeUserAccountUI];
-    
-    [self makeMoneyView];
-    
-    [self makeOrderView];
-    
-    [self makeOrderType1View1];
-    [self makeOrderType1View2];
-    [self makeOrderType1View3];
-//    [self makeOrderType1View4];
-    [_orderTypeView setHeight:_orderTypeView3.bottom];
-    
-    [self makeAgreeView];
-    
-    [self makeBottomView];
-    
+    [self getUserIncomeInfo];
 }
 
 - (void)makeUserAccountUI {
@@ -157,7 +142,7 @@
     [_moneyView addSubview:line];
     
     _tipSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(tip1.left, line.bottom + 15, _moneyView.width - tip1.left, 20)];
-    _tipSwitchLabel.text = @"注：提现到余额后不能再转至银行卡或支付宝，转账比例为1:1";
+    _tipSwitchLabel.text = [NSString stringWithFormat:@"注：提现到余额后不能再转至银行卡或支付宝，转账比例为%@",[_balanceInfo[@"data"] objectForKey:@"ratio"]];
     _tipSwitchLabel.font = SYSTEMFONT(12);
     _tipSwitchLabel.textColor = EdlineV5_Color.textThirdColor;
     [_moneyView addSubview:_tipSwitchLabel];
@@ -271,7 +256,7 @@
     _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, 150, 56)];
     _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle3.font = SYSTEMFONT(15);
-    _orderTitle3.text = @"余额(¥0.00)";
+    _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];//@"余额(¥0.00)";
     [_orderTypeView3 addSubview:_orderTitle3];
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -504,6 +489,37 @@
 - (void)rightButtonClick:(id)sender {
     IncomeDetailVC *vc = [[IncomeDetailVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)getUserIncomeInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userIncomeDetail] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                if (SWNOTEmptyDictionary(_balanceInfo[@"data"])) {
+                    _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"income"]];
+                    [_typeArray removeAllObjects];
+                    [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"encashment_way"]];
+                    
+                    [self makeUserAccountUI];
+                    [self makeMoneyView];
+                    
+                    [self makeOrderView];
+                    
+                    [self makeOrderType1View1];
+                    [self makeOrderType1View2];
+                    [self makeOrderType1View3];
+                    [_orderTypeView setHeight:_orderTypeView3.bottom];
+                    
+                    [self makeAgreeView];
+                    
+                    [self makeBottomView];
+                }
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 @end

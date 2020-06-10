@@ -27,9 +27,9 @@
     if ([_pageClass isEqualToString:@"joinCourse"]) {
         [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"未开始",@"id":@"not_started"},@{@"title":@"学习中",@"id":@"learning"},@{@"title":@"已完成",@"id":@"finished"}]];
     } else if ([_pageClass isEqualToString:@"incomeTime"]) {
-        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"default"},@{@"title":@"本月",@"id":@"splendid"}]];
+        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"本月",@"id":@"month"}]];
     } else if ([_pageClass isEqualToString:@"incomeType"]) {
-        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"default"},@{@"title":@"分成",@"id":@"splendid"},@{@"title":@"推广",@"id":@"popular"}]];
+        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"分成",@"id":@"user"},@{@"title":@"推广",@"id":@"teacher"}]];
     } else {
         [_dataSource addObjectsFromArray:@[@{@"title":@"综合排序",@"id":@"default"},@{@"title":@"推荐",@"id":@"splendid"},@{@"title":@"畅销",@"id":@"popular"},@{@"title":@"最新",@"id":@"latest"}]];
     }

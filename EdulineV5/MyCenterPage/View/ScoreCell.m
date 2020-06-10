@@ -25,7 +25,6 @@
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 40, 22)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(16);
-    _themeLabel.text = @"充值";
     [self addSubview:_themeLabel];
     
     _statusButton = [[UIButton alloc] initWithFrame:CGRectMake(_themeLabel.right + 5, 0, 32, 16)];
@@ -37,10 +36,10 @@
     [_statusButton setTitleColor:EdlineV5_Color.faildColor forState:0];
     const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.faildColor];
     _statusButton.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.2].CGColor;
+    _statusButton.hidden = YES;
     [self addSubview:_statusButton];
     
     _scoreCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 165, 0, 150, 21)];
-    _scoreCountLabel.text = @"-10积分";
     _scoreCountLabel.font = SYSTEMFONT(15);
     _scoreCountLabel.textAlignment = NSTextAlignmentRight;
     _scoreCountLabel.textColor = EdlineV5_Color.textFirstColor;
@@ -48,13 +47,11 @@
     [self addSubview:_scoreCountLabel];
     
     _scoreFromLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _themeLabel.bottom + 10, MainScreenWidth/2.0, 21)];
-    _scoreFromLabel.text = @"备注：积分充值消耗";
     _scoreFromLabel.font = SYSTEMFONT(13);
     _scoreFromLabel.textColor = EdlineV5_Color.textFirstColor;
     [self addSubview:_scoreFromLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 165, 0, 150, 16)];
-    _timeLabel.text = @"昨天 12:32";
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textAlignment = NSTextAlignmentRight;
     _timeLabel.textColor = EdlineV5_Color.textSecendColor;
@@ -64,6 +61,21 @@
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 80 - 0.5, MainScreenWidth - 15, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView];
+}
+
+- (void)setScoreDetailListInfo:(NSDictionary *)scoreInfo {
+    if (SWNOTEmptyDictionary(scoreInfo)) {
+        _themeLabel.text = [NSString stringWithFormat:@"%@",[scoreInfo objectForKey:@"type_text"]];
+        if ([[scoreInfo objectForKey:@"alter_type"] boolValue]) {
+            _scoreCountLabel.text = [NSString stringWithFormat:@"+¥%@",[scoreInfo objectForKey:@"num"]];
+            _scoreCountLabel.textColor = EdlineV5_Color.faildColor;
+        } else {
+            _scoreCountLabel.text = [NSString stringWithFormat:@"-¥%@",[scoreInfo objectForKey:@"num"]];
+            _scoreCountLabel.textColor = EdlineV5_Color.textFirstColor;
+        }
+        _scoreFromLabel.text = [NSString stringWithFormat:@"备注:%@",[scoreInfo objectForKey:@"note"]];
+        _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForBalanceYYMMDDHHMM:[scoreInfo objectForKey:@"create_time"]]];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
