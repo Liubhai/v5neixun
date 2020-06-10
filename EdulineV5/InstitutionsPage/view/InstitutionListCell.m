@@ -45,11 +45,11 @@
 
 - (void)setInstitutionListInfo:(NSDictionary *)info {
     
-    _faceImageView.image = DefaultImage;
+    [_faceImageView sd_setImageWithURL:EdulineUrlString([info objectForKey:@"logo"]) placeholderImage:DefaultUserImage];
     
-    _nameLabel.text = @"知之教育";
+    _nameLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     
-    NSString *intro = @"专注平面设计教学的国内知名机构平面设计教学的国内知名机构";
+    NSString *intro = [NSString stringWithFormat:@"%@",[info objectForKey:@"info"]];
     _introLabel.text = intro;
     _introLabel.numberOfLines = 0;
     [_introLabel sizeToFit];
