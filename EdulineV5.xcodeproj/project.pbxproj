@@ -333,6 +333,7 @@
 		78C936CC248F846200D5F1ED /* TeahcerCourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936CB248F846200D5F1ED /* TeahcerCourseListVC.m */; };
 		78C936CF248FBA2D00D5F1ED /* UserCommenListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936CE248FBA2D00D5F1ED /* UserCommenListVC.m */; };
 		78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936D1248FBC5400D5F1ED /* UserListCell.m */; };
+		78C936D52490DAFF00D5F1ED /* InstitutionCourseMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -993,6 +994,8 @@
 		78C936CE248FBA2D00D5F1ED /* UserCommenListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCommenListVC.m; sourceTree = "<group>"; };
 		78C936D0248FBC5400D5F1ED /* UserListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserListCell.h; sourceTree = "<group>"; };
 		78C936D1248FBC5400D5F1ED /* UserListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserListCell.m; sourceTree = "<group>"; };
+		78C936D32490DAFE00D5F1ED /* InstitutionCourseMainVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionCourseMainVC.h; sourceTree = "<group>"; };
+		78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionCourseMainVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2008,6 +2011,8 @@
 				789DB069246D6576001302B4 /* InstitutionRootVC.m */,
 				787F1E9B247925AD00108F7B /* InstitutionListVC.h */,
 				787F1E9C247925AD00108F7B /* InstitutionListVC.m */,
+				78C936D32490DAFE00D5F1ED /* InstitutionCourseMainVC.h */,
+				78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */,
 				789DB06B246D7DD4001302B4 /* view */,
 			);
 			path = InstitutionsPage;
@@ -2826,6 +2831,7 @@
 				78795725240FA3840013F95F /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				7839C98624209FAF002F6595 /* CourseCommentViewController.m in Sources */,
 				787F1E7A247381A400108F7B /* AliyunGestureModel.m in Sources */,
+				78C936D52490DAFF00D5F1ED /* InstitutionCourseMainVC.m in Sources */,
 				78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */,
 				78795759240FAA7A0013F95F /* NSDateFormatter+Category.m in Sources */,
 				78C549C3241B674E00A33FC4 /* AlivcStringDrawing.m in Sources */,

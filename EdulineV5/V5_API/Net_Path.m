@@ -276,6 +276,10 @@
     return [Net_Path fullPath:@"user/follow/follower" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userLastVisitorList {
+    return [Net_Path fullPath:@"user/visitor/recent" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)institutionListNet {
     return [Net_Path fullPath:@"school/list" repalce:@"" byReplece:@""];
 }

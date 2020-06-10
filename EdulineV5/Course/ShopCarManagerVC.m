@@ -52,7 +52,7 @@
     [self makeTableView];
     [self makeDownView];
     [self getUserShopCarInfo];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserShopCarInfo) name:@"getCouponsReload" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserShopCarInfo) name:@"getCouponsReload" object:nil];
 }
 
 - (void)makeTableView {

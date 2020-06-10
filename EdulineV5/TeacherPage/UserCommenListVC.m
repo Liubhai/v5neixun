@@ -119,6 +119,8 @@
         netUlr = [Net_Path userFollowListNet];
     } else if ([_themeString isEqualToString:@"关注"]) {
         netUlr = [Net_Path userFollowNet];
+    } else if ([_themeString isEqualToString:@"最近访客"]) {
+        netUlr = [Net_Path userLastVisitorList];
     }
     if (!SWNOTEmptyStr(netUlr)) {
         return;
@@ -159,6 +161,8 @@
         netUlr = [Net_Path userFollowListNet];
     } else if ([_themeString isEqualToString:@"关注"]) {
         netUlr = [Net_Path userFollowNet];
+    } else if ([_themeString isEqualToString:@"最近访客"]) {
+        netUlr = [Net_Path userLastVisitorList];
     }
     if (!SWNOTEmptyStr(netUlr)) {
         return;

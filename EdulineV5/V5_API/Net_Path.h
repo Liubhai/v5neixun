@@ -217,6 +217,9 @@ struct NetWorkUrl {
 /** 粉丝列表 */
 + (NSString *)userFollowListNet;
 
+/** 最近访客  */
++ (NSString *)userLastVisitorList;
+
 /** 机构列表 */
 + (NSString *)institutionListNet;
 

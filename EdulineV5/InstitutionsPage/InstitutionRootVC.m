@@ -14,6 +14,7 @@
 #import "InstitutionListVC.h"
 #import "Net_Path.h"
 #import "TeacherMainPageVC.h"
+#import "InstitutionCourseMainVC.h"
 
 @interface InstitutionRootVC ()<UITableViewDelegate, UITableViewDataSource,HomePageTeacherCellDelegate>
 
@@ -215,6 +216,10 @@
 - (void)moreButtonClick:(UIButton *)sender {
     if (sender.tag == 1) {
         TeacherListVC *vc = [[TeacherListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (sender.tag == 0) {
+        InstitutionCourseMainVC *vc = [[InstitutionCourseMainVC alloc] init];
+        vc.institutionID = _institutionId;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
