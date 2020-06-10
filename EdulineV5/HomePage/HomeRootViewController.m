@@ -14,6 +14,7 @@
 #import "CourseSearchListVC.h"
 #import "CourseSearchHistoryVC.h"
 #import "IntendedCourseVC.h"
+#import "TeacherListVC.h"
 
 #import "HomePageTeacherCell.h"
 #import "HomePageCourseTypeOneCell.h"
@@ -193,6 +194,13 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
     sectionHead.backgroundColor = [UIColor redColor];
+    UIButton *moreButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 58, 0, 58, 56)];
+    moreButton.titleLabel.font = SYSTEMFONT(14);
+    [moreButton setTitle:@"更多" forState:0];
+    [moreButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    [moreButton addTarget:self action:@selector(sectionMoreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    moreButton.tag = section;
+    [sectionHead addSubview:moreButton];
     return sectionHead;
 }
 
@@ -253,6 +261,14 @@
         return 172 + 15 + 20;
     } else {
         return 0.0;
+    }
+}
+
+// MARK: - 更多按钮点击事件
+- (void)sectionMoreButtonClick:(UIButton *)sender {
+    if (sender.tag == 2) {
+        TeacherListVC *vc = [[TeacherListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
