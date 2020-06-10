@@ -229,6 +229,7 @@
     [self.view addSubview:_mainScrollView];
     
     _teacherIntroVC = [[TeacherIntroVC alloc] init];
+    _teacherIntroVC.teacherId = _teacherId;
     _teacherIntroVC.tabelHeight = _mainScrollView.height;
     _teacherIntroVC.view.frame = CGRectMake(0,0, MainScreenWidth, _mainScrollView.height);
     [_mainScrollView addSubview:_teacherIntroVC.view];

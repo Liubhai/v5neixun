@@ -33,7 +33,7 @@
     _mainScroll.contentSize = CGSizeMake(MainScreenWidth, _tabelHeight + 10);
     [self.view addSubview:_mainScroll];
     _mainScroll.contentSize = CGSizeMake(MainScreenWidth, _ClassIntroWeb.bottom > _tabelHeight ? _ClassIntroWeb.bottom : (_tabelHeight + 10));
-//    [self getCourseInfo];
+    [self getTeacherInfo];
 }
 
 - (void)makeClassInfoWebView {
@@ -278,17 +278,19 @@
     return photo;
 }
 
-- (void)getCourseInfo {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseInfo:_courseId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
-        NSLog(@"课程详情 = %@",responseObject);
-        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+- (void)getTeacherInfo {
+    if (!SWNOTEmptyStr(_teacherId)) {
+        return;
+    }
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherMainInfo:_teacherId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
                 [self makeClassInfoWebView];
             }
         }
     } enError:^(NSError * _Nonnull error) {
-        NSLog(@"课程详情请求失败 = %@",error);
+        
     }];
 }
 @end

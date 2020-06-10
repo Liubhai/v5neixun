@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) CGFloat tabelHeight;
 
 @property (strong ,nonatomic)NSDictionary   *dataSource;
-@property (strong, nonatomic) NSString *courseId;
+@property (strong, nonatomic) NSString *teacherId;
 
 @end
 
