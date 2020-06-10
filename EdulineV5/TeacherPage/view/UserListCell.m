@@ -56,7 +56,8 @@
     [self addSubview:_lineView];
 }
 
-- (void)setUserInfo:(NSDictionary *)dict {
+- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(nonnull NSIndexPath *)cellIndexPath {
+    _cellIndex = cellIndexPath;
     _nameLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"nick_name"]];
     _introLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"signature"]];
     [_faceImageView sd_setImageWithURL:EdulineUrlString([dict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
@@ -64,8 +65,8 @@
 }
 
 - (void)followButtonClick:(UIButton *)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(followAndUnFollow:)]) {
-        [_delegate followAndUnFollow:sender];
+    if (_delegate && [_delegate respondsToSelector:@selector(followAndUnFollow:cellIndexPath:)]) {
+        [_delegate followAndUnFollow:sender cellIndexPath:_cellIndex];
     }
 }
 

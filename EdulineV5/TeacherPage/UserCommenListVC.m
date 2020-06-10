@@ -11,7 +11,7 @@
 #import "Net_Path.h"
 #import "UserListCell.h"
 
-@interface UserCommenListVC ()<UITableViewDelegate, UITableViewDataSource> {
+@interface UserCommenListVC ()<UITableViewDelegate, UITableViewDataSource,UserListCellDelegate> {
     NSInteger page;
 }
 
@@ -58,7 +58,8 @@
     if (!cell) {
         cell = [[UserListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setUserInfo:_dataSource[indexPath.row]];
+    [cell setUserInfo:_dataSource[indexPath.row] cellIndexPath:indexPath];
+    cell.delegate = self;
     return cell;
 }
 
@@ -68,6 +69,41 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+}
+
+// MARK: - UserListCellDelegate(关注取消关注按钮点击事件)
+- (void)followAndUnFollow:(UIButton *)sender cellIndexPath:(nonnull NSIndexPath *)cellIndexPath {
+    if (SWNOTEmptyDictionary(_dataSource[cellIndexPath.row])) {
+        NSString *userId = [NSString stringWithFormat:@"%@",[_dataSource[cellIndexPath.row] objectForKey:@"user_id"]];
+        if ([[_dataSource[cellIndexPath.row] objectForKey:@"is_follow"] boolValue]) {
+            [Net_API requestDeleteWithURLStr:[Net_Path userFollowNet] paramDic:@{@"user_id":userId} Api_key:nil finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellIndexPath.row]];
+                        [pass setObject:@"0" forKey:@"is_follow"];
+                        [_dataSource replaceObjectAtIndex:cellIndexPath.row withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                    }
+                }
+                [_tableView reloadData];
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        } else {
+            [Net_API requestPOSTWithURLStr:[Net_Path userFollowNet] WithAuthorization:nil paramDic:@{@"user_id":userId} finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellIndexPath.row]];
+                        [pass setObject:@"1" forKey:@"is_follow"];
+                        [_dataSource replaceObjectAtIndex:cellIndexPath.row withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                    }
+                }
+                [_tableView reloadData];
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        }
+        
+    }
 }
 
 - (void)getFirstData {
