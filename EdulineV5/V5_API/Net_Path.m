@@ -276,4 +276,20 @@
     return [Net_Path fullPath:@"user/follow/follower" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)institutionListNet {
+    return [Net_Path fullPath:@"school/list" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)institutionMainPageNet:(NSString *)institutionId {
+    return [Net_Path fullPath:@"school/{id}/home" repalce:@"{id}" byReplece:institutionId];
+}
+
++ (NSString *)institutionCourseListNet:(NSString *)institutionId {
+    return [Net_Path fullPath:@"school/{id}/course" repalce:@"{id}" byReplece:institutionId];
+}
+
++ (NSString *)institutionApplyNet {
+    return [Net_Path fullPath:@"school/auth" repalce:@"" byReplece:@""];
+}
+
 @end

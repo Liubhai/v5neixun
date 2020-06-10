@@ -217,6 +217,18 @@ struct NetWorkUrl {
 /** 粉丝列表 */
 + (NSString *)userFollowListNet;
 
+/** 机构列表 */
++ (NSString *)institutionListNet;
+
+/** 机构主页信息 */
++ (NSString *)institutionMainPageNet:(NSString *)institutionId;
+
+/** 机构课程列表 */
++ (NSString *)institutionCourseListNet:(NSString *)institutionId;
+
+/** 机构认证 */
++ (NSString *)institutionApplyNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
