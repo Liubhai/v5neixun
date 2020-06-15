@@ -55,6 +55,7 @@
 		7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */; };
 		7853BE002433352E00F096EC /* LingquanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFF2433352D00F096EC /* LingquanViewController.m */; };
 		7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */; };
+		785A3E152497A16B00298054 /* TeacherApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E142497A16B00298054 /* TeacherApplyVC.m */; };
 		7876572324347DB2008F475D /* FindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572224347DB2008F475D /* FindListCell.m */; };
 		787657282435C79E008F475D /* StudyRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787657272435C79E008F475D /* StudyRootVC.m */; };
 		7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572A2435D53A008F475D /* CourseSearchHistoryVC.m */; };
@@ -460,6 +461,8 @@
 		7853BDFF2433352D00F096EC /* LingquanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LingquanViewController.m; sourceTree = "<group>"; };
 		7853BE0124342A0900F096EC /* ShopCarManagerFinalVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarManagerFinalVC.h; sourceTree = "<group>"; };
 		7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarManagerFinalVC.m; sourceTree = "<group>"; };
+		785A3E132497A16B00298054 /* TeacherApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherApplyVC.h; sourceTree = "<group>"; };
+		785A3E142497A16B00298054 /* TeacherApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherApplyVC.m; sourceTree = "<group>"; };
 		7876572124347DB2008F475D /* FindListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindListCell.h; sourceTree = "<group>"; };
 		7876572224347DB2008F475D /* FindListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindListCell.m; sourceTree = "<group>"; };
 		787657262435C79E008F475D /* StudyRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyRootVC.h; sourceTree = "<group>"; };
@@ -1181,6 +1184,15 @@
 			path = OrderPage;
 			sourceTree = "<group>";
 		};
+		785A3E112497A14D00298054 /* ApplyPage */ = {
+			isa = PBXGroup;
+			children = (
+				785A3E132497A16B00298054 /* TeacherApplyVC.h */,
+				785A3E142497A16B00298054 /* TeacherApplyVC.m */,
+			);
+			path = ApplyPage;
+			sourceTree = "<group>";
+		};
 		7876571F24347D9F008F475D /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1400,6 +1412,7 @@
 				789DB058246C1858001302B4 /* CollectionListVC.m */,
 				789DB05D246CE3B1001302B4 /* MyCollectionCourseManagerVC.h */,
 				789DB05E246CE3B1001302B4 /* MyCollectionCourseManagerVC.m */,
+				785A3E112497A14D00298054 /* ApplyPage */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 			);
@@ -2768,6 +2781,7 @@
 				78AA138C2440710B007087F7 /* HomePageCourseTypeOneCell.m in Sources */,
 				78AA1353243C211B007087F7 /* CourseTypeVC.m in Sources */,
 				78C54978241B642B00A33FC4 /* AlivcLiveTransitionController.m in Sources */,
+				785A3E152497A16B00298054 /* TeacherApplyVC.m in Sources */,
 				78C5497F241B642B00A33FC4 /* AlivcBeautySettingUIDefine.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
 				789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */,
