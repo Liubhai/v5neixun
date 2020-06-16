@@ -54,7 +54,7 @@
     static NSString *reuse = @"SearchHistoryListCell";
     CourseCommonCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[CourseCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        cell = [[CourseCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse showOneLine:YES];
     }
     [cell setCourseCommonCellInfo:_dataSource[indexPath.row] searchKeyWord:_typeId];
     return cell;

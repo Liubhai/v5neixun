@@ -56,6 +56,9 @@
 		7853BE002433352E00F096EC /* LingquanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFF2433352D00F096EC /* LingquanViewController.m */; };
 		7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */; };
 		785A3E152497A16B00298054 /* TeacherApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E142497A16B00298054 /* TeacherApplyVC.m */; };
+		785A3E1A2498757200298054 /* ScanPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E182498757200298054 /* ScanPhotoViewController.m */; };
+		785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E192498757200298054 /* UIActionSheet+Blocks.m */; };
+		785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E1D2498F65900298054 /* TeacherCategoryVC.m */; };
 		7876572324347DB2008F475D /* FindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572224347DB2008F475D /* FindListCell.m */; };
 		787657282435C79E008F475D /* StudyRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787657272435C79E008F475D /* StudyRootVC.m */; };
 		7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572A2435D53A008F475D /* CourseSearchHistoryVC.m */; };
@@ -463,6 +466,12 @@
 		7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarManagerFinalVC.m; sourceTree = "<group>"; };
 		785A3E132497A16B00298054 /* TeacherApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherApplyVC.h; sourceTree = "<group>"; };
 		785A3E142497A16B00298054 /* TeacherApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherApplyVC.m; sourceTree = "<group>"; };
+		785A3E162498757000298054 /* ScanPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanPhotoViewController.h; sourceTree = "<group>"; };
+		785A3E172498757100298054 /* UIActionSheet+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Blocks.h"; sourceTree = "<group>"; };
+		785A3E182498757200298054 /* ScanPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanPhotoViewController.m; sourceTree = "<group>"; };
+		785A3E192498757200298054 /* UIActionSheet+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Blocks.m"; sourceTree = "<group>"; };
+		785A3E1C2498F65900298054 /* TeacherCategoryVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherCategoryVC.h; sourceTree = "<group>"; };
+		785A3E1D2498F65900298054 /* TeacherCategoryVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherCategoryVC.m; sourceTree = "<group>"; };
 		7876572124347DB2008F475D /* FindListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindListCell.h; sourceTree = "<group>"; };
 		7876572224347DB2008F475D /* FindListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindListCell.m; sourceTree = "<group>"; };
 		787657262435C79E008F475D /* StudyRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyRootVC.h; sourceTree = "<group>"; };
@@ -1189,6 +1198,8 @@
 			children = (
 				785A3E132497A16B00298054 /* TeacherApplyVC.h */,
 				785A3E142497A16B00298054 /* TeacherApplyVC.m */,
+				785A3E1C2498F65900298054 /* TeacherCategoryVC.h */,
+				785A3E1D2498F65900298054 /* TeacherCategoryVC.m */,
 			);
 			path = ApplyPage;
 			sourceTree = "<group>";
@@ -1648,6 +1659,10 @@
 		7879573F240FAA7A0013F95F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				785A3E162498757000298054 /* ScanPhotoViewController.h */,
+				785A3E182498757200298054 /* ScanPhotoViewController.m */,
+				785A3E172498757100298054 /* UIActionSheet+Blocks.h */,
+				785A3E192498757200298054 /* UIActionSheet+Blocks.m */,
 				7879574B240FAA7A0013F95F /* UIViewController+HUD.h */,
 				78795741240FAA7A0013F95F /* UIViewController+HUD.m */,
 				78795744240FAA7A0013F95F /* NSDateFormatter+Category.h */,
@@ -2776,6 +2791,7 @@
 				78795612240DE7A50013F95F /* AppDelegate.m in Sources */,
 				78AA137E2440543D007087F7 /* SDCycleScrollView.m in Sources */,
 				787657282435C79E008F475D /* StudyRootVC.m in Sources */,
+				785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */,
 				787F1E88247381A400108F7B /* AVC_VP_PlaySettingVC.m in Sources */,
 				78C549D2241B674E00A33FC4 /* AlivcUIConfig.m in Sources */,
 				78AA138C2440710B007087F7 /* HomePageCourseTypeOneCell.m in Sources */,
@@ -2825,6 +2841,7 @@
 				7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */,
 				78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
+				785A3E1A2498757200298054 /* ScanPhotoViewController.m in Sources */,
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
 				787E19A62455379A00E2E016 /* OrderSureViewController.m in Sources */,
 				789DB01524593041001302B4 /* CouponModel.m in Sources */,
@@ -2882,6 +2899,7 @@
 				78C549DE241B674F00A33FC4 /* UIButton+AliyunBlock.m in Sources */,
 				78795726240FA3840013F95F /* ZLPhotoRect.m in Sources */,
 				78795732240FA3840013F95F /* ZLPhotoPickerGroupViewController.m in Sources */,
+				785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */,
 				7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */,
 				78A16C8D2452F7C100391430 /* TICDevice.m in Sources */,
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,

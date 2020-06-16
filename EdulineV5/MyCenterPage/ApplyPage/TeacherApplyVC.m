@@ -8,7 +8,35 @@
 
 #import "TeacherApplyVC.h"
 
-@interface TeacherApplyVC ()
+@interface TeacherApplyVC () {
+    NSString *whichPic;
+    // 附件 id
+    NSString *idCardIDFont;
+    NSString *idCardIDBack;
+    NSString *teacherId;
+//    【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
+    NSString *verified_status;
+    // 机构id
+    NSString *schoolID;
+    NSInteger currentPickerRow;
+}
+
+@property(strong, nonatomic) NSDictionary *teacherApplyInfo;
+
+@property(strong, nonatomic) NSMutableArray *schoolArray;
+@property(strong, nonatomic) NSMutableArray *dataSource;
+
+// 机构选择
+@property(strong, nonatomic) UIView *pickerLineView;
+@property(strong, nonatomic) UIButton *sureButton;
+@property(strong, nonatomic) UIButton *cancelButton;
+@property(strong, nonatomic) UIView *whiteBackView;
+@property(strong, nonatomic) UIView *pickBackView;
+@property(strong, nonatomic) UIPickerView *choosePickerView;
+
+@property(strong, nonatomic) NSMutableArray *imageArray;
+@property(strong, nonatomic) NSMutableArray *imageArrayIdCardBack;
+@property(strong, nonatomic) NSMutableArray *imageArrayTeacher;
 
 @end
 
@@ -17,6 +45,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    whichPic = @"";
+    idCardIDFont = @"";
+    idCardIDBack = @"";
+    teacherId = @"";
+    verified_status = @"";
+    schoolID = @"";
+    currentPickerRow = 0;
+    _imageArray = [NSMutableArray new];
+    _imageArrayIdCardBack = [NSMutableArray new];
+    _imageArrayTeacher = [NSMutableArray new];
+    _schoolArray = [NSMutableArray new];
+    
+    UITapGestureRecognizer *viewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapClick:)];
+    [self.view addGestureRecognizer:viewTap];
+    
     _titleLabel.text = @"讲师认证";
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
@@ -24,11 +68,19 @@
     [self makeSubView];
     [self makeAgreeView];
     [self makeDownView];
+    [self makePickerView];
+    [self getUserTeacherApplyInfo];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)makeScrollView {
     _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_SAFEAREA)];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
+    _mainScrollView.bounces = NO;
+    _mainScrollView.delegate = self;
+    _mainScrollView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_mainScrollView];
 }
 
@@ -40,12 +92,12 @@
     _nameLeftLabel.textColor = EdlineV5_Color.textFirstColor;
     [_mainScrollView addSubview:_nameLeftLabel];
     
-    _nameRightText = [[UITextField alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, 0, 200, 50)];
-    _nameRightText.textColor = EdlineV5_Color.textSecendColor;
-    _nameRightText.font = SYSTEMFONT(15);
-    _nameRightText.textAlignment = NSTextAlignmentRight;
-    _nameRightText.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入昵称" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
-    [_mainScrollView addSubview:_nameRightText];
+    _nameRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, 0, 200, 50)];
+    _nameRightLabel.textColor = EdlineV5_Color.textSecendColor;
+    _nameRightLabel.font = SYSTEMFONT(15);
+    _nameRightLabel.textAlignment = NSTextAlignmentRight;
+    _nameRightLabel.text = [UserModel uname];
+    [_mainScrollView addSubview:_nameRightLabel];
     
     _line1 = [[UIView alloc] initWithFrame:CGRectMake(15, _nameLeftLabel.bottom, MainScreenWidth - 15, 1)];
     _line1.backgroundColor = EdlineV5_Color.fengeLineColor;
@@ -62,9 +114,10 @@
     _statusRightLabel.text = @"未认证";
     _statusRightLabel.font = SYSTEMFONT(15);
     _statusRightLabel.textColor = EdlineV5_Color.textThirdColor;
+    _statusRightLabel.textAlignment = NSTextAlignmentRight;
     [_mainScrollView addSubview:_statusRightLabel];
     
-    _line2 = [[UIView alloc] initWithFrame:CGRectMake(15, _statusLeftLabel.bottom, MainScreenWidth - 15, 5)];
+    _line2 = [[UIView alloc] initWithFrame:CGRectMake(0, _statusLeftLabel.bottom, MainScreenWidth, 5)];
     _line2.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_mainScrollView addSubview:_line2];
     
@@ -79,10 +132,12 @@
     _institutionRightLabel.text = @"请选择所属机构";
     _institutionRightLabel.font = SYSTEMFONT(15);
     _institutionRightLabel.textColor = EdlineV5_Color.textThirdColor;
+    _institutionRightLabel.textAlignment = NSTextAlignmentRight;
     [_mainScrollView addSubview:_institutionRightLabel];
     
-    _institutionIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line2.bottom, 30, 50)];
-    _institutionIcon.image = Image(@"list_more");
+    _institutionIcon = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line2.bottom, 30, 50)];
+    [_institutionIcon setImage:Image(@"list_more") forState:0];
+    [_institutionIcon addTarget:self action:@selector(coverButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_mainScrollView addSubview:_institutionIcon];
     
     _line3 = [[UIView alloc] initWithFrame:CGRectMake(15, _institutionLeftLabel.bottom, MainScreenWidth - 15, 1)];
@@ -100,10 +155,12 @@
     _industryRightLabel.text = @"请选择所属行业";
     _industryRightLabel.font = SYSTEMFONT(15);
     _industryRightLabel.textColor = EdlineV5_Color.textThirdColor;
+    _industryRightLabel.textAlignment = NSTextAlignmentRight;
     [_mainScrollView addSubview:_industryRightLabel];
     
-    _industryIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line3.bottom, 30, 50)];
-    _industryIcon.image = Image(@"list_more");
+    _industryIcon = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line3.bottom, 30, 50)];
+    [_industryIcon setImage:Image(@"list_more") forState:0];
+    [_industryIcon addTarget:self action:@selector(coverButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_mainScrollView addSubview:_industryIcon];
     
     _industryBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _industryRightLabel.bottom, MainScreenWidth - 30, 0)];
@@ -111,7 +168,7 @@
     [_mainScrollView addSubview:_industryBackView];
     
     // 身份证号
-    _otherBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _industryBackView.bottom, MainScreenWidth, 700)];
+    _otherBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _industryBackView.bottom, MainScreenWidth, 1)];
     _otherBackView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_otherBackView];
     
@@ -126,6 +183,8 @@
     [_otherBackView addSubview:_idCardLabel];
     
     _idCardText = [[UITextField alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _line4.bottom, 200, 50)];
+    _idCardText.returnKeyType = UIReturnKeyDone;
+    _idCardText.delegate = self;
     _idCardText.textColor = EdlineV5_Color.textSecendColor;
     _idCardText.font = SYSTEMFONT(15);
     _idCardText.textAlignment = NSTextAlignmentRight;
@@ -147,17 +206,61 @@
     _idCardPictureTip.text = @"图片最大不超过xxM";
     _idCardPictureTip.font = SYSTEMFONT(15);
     _idCardPictureTip.textColor = EdlineV5_Color.textThirdColor;
+    _idCardPictureTip.textAlignment = NSTextAlignmentRight;
     [_otherBackView addSubview:_idCardPictureTip];
     
-    _idCardPictureLeft = [[UIImageView alloc] initWithFrame:CGRectMake(15, _idCardPictureTitle.bottom, (MainScreenWidth - 30 - 7) / 2.0, ((MainScreenWidth - 30 - 7) / 2.0) * 107 / 169)];
+    _idCardPictureLeft = [[UIImageView alloc] initWithFrame:CGRectMake(15, _idCardPictureTitle.bottom, 169, 107)];
+    _idCardPictureLeft.image = Image(@"id_front");
+    _idCardPictureLeft.clipsToBounds = YES;
+    _idCardPictureLeft.contentMode = UIViewContentModeScaleAspectFill;
+    _idCardPictureLeft.userInteractionEnabled = YES;
+    UITapGestureRecognizer *idLefttap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeUserFaceTap:)];
+    [_idCardPictureLeft addGestureRecognizer:idLefttap];
+    [_otherBackView addSubview:_idCardPictureLeft];
     
+    _idCardPictureRight = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 169, _idCardPictureTitle.bottom, 169, 107)];
+    _idCardPictureRight.image = Image(@"id_back_def");
+    _idCardPictureRight.clipsToBounds = YES;
+    _idCardPictureRight.contentMode = UIViewContentModeScaleAspectFill;
+    _idCardPictureRight.userInteractionEnabled = YES;
+    UITapGestureRecognizer *idRighttap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeUserFaceTap:)];
+    [_idCardPictureRight addGestureRecognizer:idRighttap];
+    [_otherBackView addSubview:_idCardPictureRight];
+    
+    // 身份证证件正反面
+    _teacherPictureTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, _idCardPictureLeft.bottom, 100, 50)];
+    _teacherPictureTitle.text = @"教师资格证";
+    _teacherPictureTitle.font = SYSTEMFONT(15);
+    _teacherPictureTitle.textColor = EdlineV5_Color.textFirstColor;
+    [_otherBackView addSubview:_teacherPictureTitle];
+    
+    _teacherPictureTip = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _idCardPictureLeft.bottom, 200, 50)];
+    _teacherPictureTip.text = @"图片最大不超过xxM";
+    _teacherPictureTip.font = SYSTEMFONT(15);
+    _teacherPictureTip.textColor = EdlineV5_Color.textThirdColor;
+    _teacherPictureTip.textAlignment = NSTextAlignmentRight;
+    [_otherBackView addSubview:_teacherPictureTip];
+    
+    _teacherPicture = [[UIImageView alloc] initWithFrame:CGRectMake(15, _teacherPictureTitle.bottom, 169, 169)];
+    _teacherPicture.image = Image(@"teacher_id");
+    _teacherPicture.clipsToBounds = YES;
+    _teacherPicture.contentMode = UIViewContentModeScaleAspectFill;
+    _teacherPicture.userInteractionEnabled = YES;
+    UITapGestureRecognizer *teacherTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeUserFaceTap:)];
+    [_teacherPicture addGestureRecognizer:teacherTap];
+    [_otherBackView addSubview:_teacherPicture];
     // 讲师资格证照片
 }
 
 - (void)makeAgreeView {
-    _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _teacherPicture.bottom + 17, MainScreenWidth, 60)];
+    
+    _bottomBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _teacherPicture.bottom + 17, MainScreenWidth, 0)];
+    _bottomBackView.backgroundColor = EdlineV5_Color.backColor;
+    [_otherBackView addSubview:_bottomBackView];
+    
+    _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 60)];
     _agreeBackView.backgroundColor = EdlineV5_Color.backColor;
-    [_otherBackView addSubview:_agreeBackView];
+    [_bottomBackView addSubview:_agreeBackView];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
     NSString *atr = [NSString stringWithFormat:@"《%@讲师认证协议》",appName];
@@ -165,6 +268,7 @@
     NSRange atrRange = [fullString rangeOfString:atr];
     
     _agreementTyLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
+    _agreementTyLabel.backgroundColor = EdlineV5_Color.backColor;
     _agreementTyLabel.centerY = 60 / 2.0;
     _agreementTyLabel.font = SYSTEMFONT(13);
     _agreementTyLabel.textAlignment = kCTTextAlignmentLeft;
@@ -201,15 +305,501 @@
 }
 
 - (void)makeDownView {
-    _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _agreeBackView.bottom + 20, MainScreenWidth - 30, 40)];
+    _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(15, _agreeBackView.bottom + 20, MainScreenWidth - 30, 40)];
     [_submitButton setTitle:@"提交申请" forState:0];
     _submitButton.titleLabel.font = SYSTEMFONT(16);
     _submitButton.backgroundColor = EdlineV5_Color.themeColor;
     _submitButton.layer.masksToBounds = YES;
     _submitButton.layer.cornerRadius = 5;
-    _submitButton.centerX = _bottomView.width/2.0;
     [_submitButton addTarget:self action:@selector(subMitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_otherBackView addSubview:_submitButton];
+    [_bottomBackView addSubview:_submitButton];
+    
+    [_bottomBackView setHeight:_submitButton.bottom + 10];
+    
+    [_otherBackView setHeight:_bottomBackView.bottom];
+    _mainScrollView.contentSize = CGSizeMake(0, _otherBackView.bottom);
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string isEqualToString:@"\n"]) {
+        [self  textFieldResign];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)makePickerView {
+    _pickBackView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _pickBackView.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3].CGColor;
+    [self.view addSubview:_pickBackView];
+    
+    _whiteBackView = [[UIView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - 240.5, MainScreenWidth, 241)];
+    _whiteBackView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_whiteBackView];
+    
+    UILabel *institutionPickerTheme = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 50)];
+    institutionPickerTheme.text = @"所属机构";
+    institutionPickerTheme.font = SYSTEMFONT(16);
+    institutionPickerTheme.textAlignment = NSTextAlignmentCenter;
+    institutionPickerTheme.centerX = MainScreenWidth / 2.0;
+    [_whiteBackView addSubview:institutionPickerTheme];
+    
+    _cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 70, 50)];
+    [_cancelButton setTitle:@"取消" forState:0];
+    [_cancelButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    [_cancelButton addTarget:self action:@selector(pickerViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_whiteBackView addSubview:_cancelButton];
+    
+    _sureButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 70, 0, 70, 50)];
+    [_sureButton setTitle:@"确定" forState:0];
+    [_sureButton setTitleColor:BasidColor forState:0];
+    [_sureButton addTarget:self action:@selector(pickerViewButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_whiteBackView addSubview:_sureButton];
+    
+    _pickerLineView = [[UIView alloc] initWithFrame:CGRectMake(0, _cancelButton.bottom, MainScreenWidth, 1)];
+    _pickerLineView.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_whiteBackView addSubview:_pickerLineView];
+    
+    _choosePickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, _pickerLineView.bottom, MainScreenWidth, 190)];
+    _choosePickerView.delegate = self;
+    _choosePickerView.dataSource = self;
+    _choosePickerView.backgroundColor = [UIColor whiteColor];
+    [_whiteBackView addSubview:_choosePickerView];
+    
+    _pickBackView.hidden = YES;
+    _whiteBackView.hidden = YES;
+}
+
+- (void)pickerViewButtonClick:(UIButton *)sender {
+    if (sender == _sureButton) {
+        if (SWNOTEmptyArr(_schoolArray)) {
+            _institutionRightLabel.text = [NSString stringWithFormat:@"%@",[_schoolArray[currentPickerRow] objectForKey:@"title"]];
+            schoolID = [NSString stringWithFormat:@"%@",[_schoolArray[currentPickerRow] objectForKey:@"id"]];
+        }
+    }
+    _pickBackView.hidden = YES;
+    _whiteBackView.hidden = YES;
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return _schoolArray.count;
+}
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    return MainScreenWidth;
+}
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
+    return 35;
+}
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
+    UILabel *pickerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 35)];
+    pickerLabel.font = SYSTEMFONT(14);
+    pickerLabel.textAlignment = NSTextAlignmentCenter;
+    pickerLabel.text = [NSString stringWithFormat:@"%@",[_schoolArray[row] objectForKey:@"title"]];
+    return pickerLabel;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    currentPickerRow = row;
+}
+
+- (void)changeUserFaceTap:(UITapGestureRecognizer *)sender {
+    [self textFieldResign];
+    
+    //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
+    if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
+        return;
+    }
+    
+    if (sender.view == _idCardPictureLeft) {
+        whichPic = @"idCardFont";
+        if (SWNOTEmptyArr(_imageArray)) {
+            ScanPhotoViewController *scanVC = [[ScanPhotoViewController alloc]init];
+            scanVC.imgArr = _imageArray;
+            scanVC.index = 0;
+            scanVC.delegate = self;
+            scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:scanVC animated:YES completion:^{
+                
+            }];
+            return;
+        }
+    } else if (sender.view == _idCardPictureRight) {
+        whichPic = @"idCardBack";
+        if (SWNOTEmptyArr(_imageArrayIdCardBack)) {
+            ScanPhotoViewController *scanVC = [[ScanPhotoViewController alloc]init];
+            scanVC.imgArr = _imageArrayIdCardBack;
+            scanVC.index = 0;
+            scanVC.delegate = self;
+            scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:scanVC animated:YES completion:^{
+                
+            }];
+            return;
+        }
+    } else if (sender.view == _teacherPicture) {
+        whichPic = @"teacherId";
+        if (SWNOTEmptyArr(_imageArrayTeacher)) {
+            ScanPhotoViewController *scanVC = [[ScanPhotoViewController alloc]init];
+            scanVC.imgArr = _imageArrayTeacher;
+            scanVC.index = 0;
+            scanVC.delegate = self;
+            scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:scanVC animated:YES completion:^{
+                
+            }];
+            return;
+        }
+    }
+    UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"相册里选" otherButtonTitles:@"相机拍照", nil];
+    action.delegate = self;
+    [action showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0){//进入相册
+//        if (_imageArray.count >= MAX_IMAGE_COUNT) {
+//            [TKProgressHUD showError:[NSString stringWithFormat:@"最多选%d张图片",MAX_IMAGE_COUNT] toView:self.view];
+//            return;
+//        }
+        TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 delegate:self];//[[TZImagePickerController alloc] initWithMaxImagesCount:0 delegate:self singleChoose:NO];
+        imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:imagePickerVc animated:YES completion:nil];
+    }else if (buttonIndex == 1){//相机拍照
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        {
+            
+            UIImagePickerController *_imagePickerController1 = [[UIImagePickerController alloc]init];
+            _imagePickerController1.sourceType = UIImagePickerControllerSourceTypeCamera;
+            _imagePickerController1.delegate = self;
+            _imagePickerController1.mediaTypes = [[NSArray alloc]initWithObjects:(NSString *)kUTTypeImage, nil];
+            _imagePickerController1.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+            _imagePickerController1.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:_imagePickerController1 animated:YES completion:^{
+                
+            }];
+        }
+        else
+        {
+//            [self showError:@"设备不支持" toView:self.view];
+            [self showHudInView:self.view showHint:@"设备不支持"];
+        }
+//        if (_imageArray.count>=MAX_IMAGE_COUNT) {
+//            [TKProgressHUD showError:[NSString stringWithFormat:@"最多选%d张图片",MAX_IMAGE_COUNT] toView:self.view];
+//            return;
+//        }
+//        else
+//        {
+//            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+//            {
+//
+//                UIImagePickerController *_imagePickerController1 = [[UIImagePickerController alloc]init];
+//                _imagePickerController1.sourceType = UIImagePickerControllerSourceTypeCamera;
+//                _imagePickerController1.delegate = self;
+//                _imagePickerController1.mediaTypes = [[NSArray alloc]initWithObjects:(NSString *)kUTTypeImage, nil];
+//                _imagePickerController1.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+//                [self presentViewController:_imagePickerController1 animated:YES completion:^{
+//
+//                }];
+//            }
+//            else
+//            {
+//                [TKProgressHUD showError:@"设备不支持" toView:self.view];
+//            }
+//        }
+    }
+}
+
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto infos:(NSArray<NSDictionary *> *)infos {
+    if ([whichPic isEqualToString:@"idCardFont"]) {
+        [_imageArray removeAllObjects];
+        [_imageArray addObjectsFromArray:photos];
+        [self verifyImage];
+    } else if ([whichPic isEqualToString:@"idCardBack"]) {
+        [_imageArrayIdCardBack removeAllObjects];
+        [_imageArrayIdCardBack addObjectsFromArray:photos];
+        [self verifyImage];
+    } else if ([whichPic isEqualToString:@"teacherId"]) {
+        [_imageArrayTeacher removeAllObjects];
+        [_imageArrayTeacher addObjectsFromArray:photos];
+        [self verifyImage];
+    }
+}
+
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingVideo:(UIImage *)coverImage sourceAssets:(PHAsset *)asset {
+    if ([whichPic isEqualToString:@"idCardFont"]) {
+        [_imageArray removeAllObjects];
+        [_imageArray addObject:coverImage];
+        [self verifyImage];
+    } else if ([whichPic isEqualToString:@"idCardBack"]) {
+        [_imageArrayIdCardBack removeAllObjects];
+        [_imageArrayIdCardBack addObject:coverImage];
+        [self verifyImage];
+    } else if ([whichPic isEqualToString:@"teacherId"]) {
+        [_imageArrayTeacher removeAllObjects];
+        [_imageArrayTeacher addObject:coverImage];
+        [self verifyImage];
+    }
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        if ([whichPic isEqualToString:@"idCardFont"]) {
+            [_imageArray removeAllObjects];
+            [_imageArray addObject:image];
+            [self verifyImage];
+        } else if ([whichPic isEqualToString:@"idCardBack"]) {
+            [_imageArrayIdCardBack removeAllObjects];
+            [_imageArrayIdCardBack addObject:image];
+            [self verifyImage];
+        } else if ([whichPic isEqualToString:@"teacherId"]) {
+            [_imageArrayTeacher removeAllObjects];
+            [_imageArrayTeacher addObject:image];
+            [self verifyImage];
+        }
+    }];
+}
+
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray *)photos sourceAssets:(NSArray *)assets{
+    if ([whichPic isEqualToString:@"idCardFont"]) {
+        [_imageArray removeAllObjects];
+        [_imageArray addObjectsFromArray:photos];
+        [self verifyImage];
+    } else if ([whichPic isEqualToString:@"idCardBack"]) {
+        [_imageArrayIdCardBack removeAllObjects];
+        [_imageArrayIdCardBack addObjectsFromArray:photos];
+        [self verifyImage];
+    } else if ([whichPic isEqualToString:@"teacherId"]) {
+        [_imageArrayTeacher removeAllObjects];
+        [_imageArrayTeacher addObjectsFromArray:photos];
+        [self verifyImage];
+    }
+}
+
+- (void)verifyImage {
+    if ([whichPic isEqualToString:@"idCardFont"]) {
+        if (!SWNOTEmptyArr(_imageArray)) {
+            return;
+        }
+    } else if ([whichPic isEqualToString:@"idCardBack"]) {
+        if (!SWNOTEmptyArr(_imageArrayIdCardBack)) {
+            return;
+        }
+    } else if ([whichPic isEqualToString:@"teacherId"]) {
+        if (!SWNOTEmptyArr(_imageArrayTeacher)) {
+            return;
+        }
+    }
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    NSString *fieldName = @"image0.jpg";
+    NSData *dataImg;
+    if ([whichPic isEqualToString:@"idCardFont"]) {
+        dataImg = UIImageJPEGRepresentation(_imageArray[0], 0.5);
+    } else if ([whichPic isEqualToString:@"idCardBack"]) {
+        dataImg = UIImageJPEGRepresentation(_imageArrayIdCardBack[0], 0.5);
+    } else if ([whichPic isEqualToString:@"teacherId"]) {
+        dataImg = UIImageJPEGRepresentation(_imageArrayTeacher[0], 0.5);
+    }
+    UIImage *image = [UIImage imageWithData:dataImg];
+    [param setObject:fieldName forKey:@"name"];
+    [param setObject:[EdulineV5_Tool getImageFieldMD5:dataImg] forKey:@"md5"];
+    [self showHudInView:self.view hint:@"上传中..."];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path verifyImageExit] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue] == 0) {
+                [self uploadImage];
+            } else {
+                [self hideHud];
+            }
+        } else {
+            [self hideHud];
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [self hideHud];
+    }];
+}
+
+- (void)uploadImage {
+    if ([whichPic isEqualToString:@"idCardFont"]) {
+        if (!SWNOTEmptyArr(_imageArray)) {
+            [self hideHud];
+            return;
+        }
+    } else if ([whichPic isEqualToString:@"idCardBack"]) {
+        if (!SWNOTEmptyArr(_imageArrayIdCardBack)) {
+            [self hideHud];
+            return;
+        }
+    } else if ([whichPic isEqualToString:@"teacherId"]) {
+        if (!SWNOTEmptyArr(_imageArrayTeacher)) {
+            [self hideHud];
+            return;
+        }
+    }
+    [Net_API POST:[Net_Path uploadImageField] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //上传图片
+        if ([whichPic isEqualToString:@"idCardFont"]) {
+            for (int i = 0; i<_imageArray.count; i++) {
+                NSData *dataImg=UIImageJPEGRepresentation(_imageArray[i], 0.5);
+                [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
+            }
+        } else if ([whichPic isEqualToString:@"idCardBack"]) {
+            for (int i = 0; i<_imageArrayIdCardBack.count; i++) {
+                NSData *dataImg=UIImageJPEGRepresentation(_imageArrayIdCardBack[i], 0.5);
+                [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
+            }
+        } else if ([whichPic isEqualToString:@"teacherId"]) {
+            for (int i = 0; i<_imageArrayTeacher.count; i++) {
+                NSData *dataImg=UIImageJPEGRepresentation(_imageArrayTeacher[i], 0.5);
+                [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
+            }
+        }
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        [self hideHud];
+        if ([[responseObject objectForKey:@"code"] integerValue] == 1) {
+            if ([whichPic isEqualToString:@"idCardFont"]) {
+                idCardIDFont = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
+                _idCardPictureLeft.image = _imageArray[0];
+            } else if ([whichPic isEqualToString:@"idCardBack"]) {
+                idCardIDBack = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
+                _idCardPictureRight.image = _imageArrayIdCardBack[0];
+            } else if ([whichPic isEqualToString:@"teacherId"]) {
+                teacherId = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
+                _teacherPicture.image = _imageArrayTeacher[0];
+            }
+        } else {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+        }
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        [self hideHud];
+        [self showHudInView:self.view showHint:@"上传头像超时,请重试"];
+    }];
+}
+
+-(void)sendPhotoArr:(NSArray *)array{
+    if ([whichPic isEqualToString:@"idCardFont"]) {
+        [_imageArray removeAllObjects];
+        [_imageArray addObjectsFromArray:array];
+        if (SWNOTEmptyArr(_imageArray)) {
+            if ([_imageArray[0] isKindOfClass:[UIImage class]]) {
+                _idCardPictureLeft.image = _imageArray[0];
+            } else {
+                [_idCardPictureLeft sd_setImageWithURL:[NSURL URLWithString:_imageArray[0]] placeholderImage:Image(@"id_front")];
+            }
+        } else {
+            _idCardPictureLeft.image = Image(@"id_front");
+        }
+    } else if ([whichPic isEqualToString:@"idCardBack"]) {
+        [_imageArrayIdCardBack removeAllObjects];
+        [_imageArrayIdCardBack addObjectsFromArray:array];
+        if (SWNOTEmptyArr(_imageArrayIdCardBack)) {
+            if ([_imageArrayIdCardBack[0] isKindOfClass:[UIImage class]]) {
+                _idCardPictureRight.image = _imageArrayIdCardBack[0];
+            } else {
+                [_idCardPictureRight sd_setImageWithURL:[NSURL URLWithString:_imageArrayIdCardBack[0]] placeholderImage:Image(@"id_back_def")];
+            }
+        } else {
+            _idCardPictureRight.image = Image(@"id_back_def");
+        }
+    } else if ([whichPic isEqualToString:@"teacherId"]) {
+        [_imageArrayTeacher removeAllObjects];
+        [_imageArrayTeacher addObjectsFromArray:array];
+        if (SWNOTEmptyArr(_imageArrayTeacher)) {
+            if ([_imageArrayTeacher[0] isKindOfClass:[UIImage class]]) {
+                _teacherPicture.image = _imageArrayTeacher[0];
+            } else {
+                [_teacherPicture sd_setImageWithURL:[NSURL URLWithString:_imageArrayTeacher[0]] placeholderImage:Image(@"teacher_id")];
+            }
+        } else {
+            _teacherPicture.image = Image(@"teacher_id");
+        }
+    }
+}
+
+- (void)coverButtonClick:(UIButton *)sender {
+    if ([verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"2"]) {
+        return;
+    }
+    [self textFieldResign];
+    if (sender == _institutionIcon) {
+        _pickBackView.hidden = NO;
+        _whiteBackView.hidden = NO;
+        currentPickerRow = 0;
+        [_choosePickerView reloadAllComponents];
+        if (_schoolArray.count) {
+            [_choosePickerView selectRow:0 inComponent:0 animated:NO];
+        }
+    } else if (sender == _industryIcon) {
+        // 跳转到选择分类页面
+        TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)seleteAgreementButtonClick:(UIButton *)sender {
+    sender.selected = !sender.selected;
+}
+
+- (void)subMitButtonClick:(UIButton *)sender {
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+}
+
+- (void)viewTapClick:(UITapGestureRecognizer *)tap {
+    [self textFieldResign];
+}
+
+- (void)textFieldResign {
+    [_idCardText resignFirstResponder];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification{
+    [_mainScrollView setContentOffset:CGPointMake(0, 0)];
+}
+- (void)keyboardWillShow:(NSNotification *)notification{
+    NSValue *endValue = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGFloat otherViewOriginY = _otherBackView.top + 100;
+    CGFloat offSet = MainScreenHeight - MACRO_UI_UPHEIGHT - otherViewOriginY;
+    [_mainScrollView setContentOffset:CGPointMake(0, [endValue CGRectValue].size.height - offSet)];
+}
+
+- (void)getUserTeacherApplyInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherApplyInfoNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _teacherApplyInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                [_schoolArray removeAllObjects];
+                [_schoolArray addObjectsFromArray:_teacherApplyInfo[@"data"][@"school"]];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)submitApplyClick:(UIButton *)sender {
+    
+    if (!SWNOTEmptyStr(schoolID)) {
+        [self showHudInView:self.view showHint:@"请选择所属机构"];
+        return;
+    }
+    
+    if (!SWNOTEmptyStr(schoolID)) {
+        [self showHudInView:self.view showHint:@"请选择所属机构"];
+        return;
+    }
+    
 }
 
 

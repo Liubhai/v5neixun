@@ -220,6 +220,12 @@ struct NetWorkUrl {
 /** 讲师主页信息 */
 + (NSString *)teacherMainInfo:(NSString *)teacherId;
 
+/** 讲师认证信息 */
++ (NSString *)teacherApplyInfoNet;
+
+/** 讲师认证提交 */
++ (NSString *)teacherApplySubmiteNet;
+
 /** 关注和取消关注 */
 + (NSString *)userFollowNet;
 
@@ -240,6 +246,9 @@ struct NetWorkUrl {
 
 /** 机构认证 */
 + (NSString *)institutionApplyNet;
+
+/** 公共分类接口 默认0【0：课程；1：讲师；2：机构；】 */
++ (NSString *)commonCategoryNet;
 
 @end
 

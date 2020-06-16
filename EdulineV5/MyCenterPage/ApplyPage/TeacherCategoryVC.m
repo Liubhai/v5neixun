@@ -1,17 +1,19 @@
 //
-//  CourseClassifyVC.m
+//  TeacherCategoryVC.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2020/4/7.
+//  Created by 刘邦海 on 2020/6/16.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
-#import "CourseClassifyVC.h"
+#import "TeacherCategoryVC.h"
 #import "V5_Constant.h"
-#import "CourseCommonCell.h"
 #import "Net_Path.h"
+#import "CourseCommonCell.h"
 
-@interface CourseClassifyVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface TeacherCategoryVC ()<UITableViewDelegate,UITableViewDataSource> {
+    NSInteger currentSelectRow;
+}
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *firstArray;
@@ -21,33 +23,40 @@
 
 @end
 
-@implementation CourseClassifyVC
+@implementation TeacherCategoryVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
-    self.view.hidden = YES;
-    _titleImage.hidden = YES;
+    self.view.backgroundColor = [UIColor whiteColor];
+    currentSelectRow = 0;
+    _titleLabel.text = @"选择所属行业";
+    [_leftButton setImage:Image(@"close") forState:0];
+    [_rightButton setTitle:@"确定" forState:0];
+    [_rightButton setImage:nil forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    _rightButton.hidden = NO;
+    _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
+    _lineTL.hidden = NO;
+    
     _firstArray = [NSMutableArray new];
     _secondArray = [NSMutableArray new];
     _thirdArray = [NSMutableArray new];
     [self maketableView];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCourseTypeVC:) name:@"hiddenCourseAll" object:nil];
-    [self getCourseClassifyList];
+    [self getTeacherClassifyList];
+    
 }
 
 - (void)maketableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MIN(MAX(_firstArray.count * 60, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT))];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth / 4.0, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     
-    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(MainScreenWidth / 4.0, 0, MainScreenWidth * 3 / 4.0, _tableView.height)];
+    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(MainScreenWidth / 4.0, MACRO_UI_UPHEIGHT, MainScreenWidth * 3 / 4.0, _tableView.height)];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_mainScrollView];
-    _mainScrollView.hidden = YES;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -60,35 +69,37 @@
     if (!cell) {
         cell = [[CourseCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse showOneLine:NO];
     }
-    [cell setCourseCommonCellInfo:_firstArray[indexPath.row] searchKeyWord:_typeId];
+    if (currentSelectRow == indexPath.row) {
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.LeftLineView.hidden = NO;
+        cell.themeLabel.textColor = EdlineV5_Color.textFirstColor;
+    } else {
+        cell.backgroundColor = EdlineV5_Color.backColor;
+        cell.LeftLineView.hidden = YES;
+        cell.themeLabel.textColor = EdlineV5_Color.textSecendColor;
+    }
+    [cell setCourseCommonCellInfo:_firstArray[indexPath.row] searchKeyWord:@"111"];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60;
+    return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    _typeId = [NSString stringWithFormat:@"%@",[_firstArray[indexPath.row] objectForKey:@"id"]];
-    if (SWNOTEmptyArr([_firstArray[indexPath.row] objectForKey:@"child"])) {
-        [self makeScrollViewSubView:_firstArray[indexPath.row]];
-            [UIView animateWithDuration:0.25 animations:^{
-                [_tableView setWidth:MainScreenWidth / 4.0];
-                _mainScrollView.hidden = NO;
-            }];
-            [_tableView reloadData];
-    } else {
-        if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
-            [_delegate chooseCourseClassify:_firstArray[indexPath.row]];
-        }
-    }
+    currentSelectRow = indexPath.row;
+    [self.tableView reloadData];
+    [self makeScrollViewSubView:_firstArray[indexPath.row]];
 }
 
 // MARK: - 布局右边分类视图
 - (void)makeScrollViewSubView:(NSDictionary *)selectedInfo {
     if (_mainScrollView) {
         [_mainScrollView removeAllSubviews];
+    }
+    if (![selectedInfo objectForKey:@"child"]) {
+        return;
     }
     CGFloat hotYY = 0;
     CGFloat secondSpace = 6;
@@ -113,7 +124,9 @@
         [secondBtn addTarget:self action:@selector(secondBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [hotView addSubview:secondBtn];
         [_thirdArray removeAllObjects];
-        [_thirdArray addObjectsFromArray:[NSArray arrayWithArray:[_secondArray[j] objectForKey:@"child"]]];
+        if ([_secondArray[j] objectForKey:@"child"]) {
+            [_thirdArray addObjectsFromArray:[NSArray arrayWithArray:[_secondArray[j] objectForKey:@"child"]]];
+        }
         if (_thirdArray.count) {
             CGFloat topSpacee = 20.0;
             CGFloat rightSpace = 15.0;
@@ -158,13 +171,14 @@
     [self removeFromParentViewController];
 }
 
-- (void)getCourseClassifyList {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseClassifyList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+- (void)getTeacherClassifyList {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path commonCategoryNet] WithAuthorization:nil paramDic:@{@"type":@"1"} finish:^(id  _Nonnull responseObject) {
         if ([[responseObject objectForKey:@"code"] integerValue]) {
             [_firstArray addObjectsFromArray:[responseObject objectForKey:@"data"]];
-            _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MIN(MAX(_firstArray.count * 60, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT));
             [_tableView reloadData];
-            self.view.hidden = NO;
+            if (SWNOTEmptyArr(_firstArray)) {
+                [self makeScrollViewSubView:_firstArray[currentSelectRow]];
+            }
         }
     } enError:^(NSError * _Nonnull error) {
         
@@ -172,15 +186,15 @@
 }
 
 - (void)secondBtnClick:(UIButton *)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
-        [_delegate chooseCourseClassify:_secondArray[sender.tag - 100]];
-    }
+//    if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
+//        [_delegate chooseCourseClassify:_secondArray[sender.tag - 100]];
+//    }
 }
 
 - (void)thirdBtnClick:(UIButton *)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
-        [_delegate chooseCourseClassify:_thirdArray[sender.tag - 200]];
-    }
+//    if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
+//        [_delegate chooseCourseClassify:_thirdArray[sender.tag - 200]];
+//    }
 }
 
 @end

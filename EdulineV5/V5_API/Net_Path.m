@@ -280,6 +280,14 @@
     return [Net_Path fullPath:@"user/teacher/{id}/basic" repalce:@"{id}" byReplece:teacherId];
 }
 
++ (NSString *)teacherApplyInfoNet {
+    return [Net_Path fullPath:@"user/teacher/auth" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)teacherApplySubmiteNet {
+    return [Net_Path fullPath:@"user/teacher/auth" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userFollowNet {
     return [Net_Path fullPath:@"user/follow" repalce:@"" byReplece:@""];
 }
@@ -306,6 +314,10 @@
 
 + (NSString *)institutionApplyNet {
     return [Net_Path fullPath:@"school/auth" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)commonCategoryNet {
+    return [Net_Path fullPath:@"category/tree" repalce:@"" byReplece:@""];
 }
 
 @end

@@ -9,15 +9,18 @@
 #import "BaseViewController.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "ScanPhotoViewController.h"
+#import "UserModel.h"
+#import "TeacherCategoryVC.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TeacherApplyVC : BaseViewController<TYAttributedLabelDelegate>
+@interface TeacherApplyVC : BaseViewController<UIPickerViewDelegate, UIPickerViewDataSource,TYAttributedLabelDelegate,UIScrollViewDelegate,UIActionSheetDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,sendPhotoArrDelegate,UITextFieldDelegate>
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
 
 @property (strong, nonatomic) UILabel *nameLeftLabel;
-@property (strong, nonatomic) UITextField *nameRightText;
+@property (strong, nonatomic) UILabel *nameRightLabel;
 
 @property (strong, nonatomic) UIView *line1;
 
@@ -28,13 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UILabel *institutionLeftLabel;
 @property (strong, nonatomic) UILabel *institutionRightLabel;
-@property (strong, nonatomic) UIImageView *institutionIcon;
+@property (strong, nonatomic) UIButton *institutionIcon;
 
 @property (strong, nonatomic) UIView *line3;
 
 @property (strong, nonatomic) UILabel *industryLeftLabel;
 @property (strong, nonatomic) UILabel *industryRightLabel;
-@property (strong, nonatomic) UIImageView *industryIcon;
+@property (strong, nonatomic) UIButton *industryIcon;
 
 @property (strong, nonatomic) UIView *industryBackView;
 

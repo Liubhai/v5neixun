@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UILabel *themeLabel;
 @property (strong, nonatomic) UIView *lineView;
+@property (strong, nonatomic) UIView *LeftLineView;
+@property (assign, nonatomic) BOOL showOneLine;
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier showOneLine:(BOOL)oneLine;
 
 - (void)setCourseCommonCellInfo:(NSDictionary *)info searchKeyWord:(NSString *)searchKeyWord;
 
