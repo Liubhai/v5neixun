@@ -61,6 +61,21 @@
     }
 }
 
+- (void)setCategoryInfo:(TeacherCategoryModel *)teacherModel {
+    _themeLabel.text = [NSString stringWithFormat:@"%@",teacherModel.title];
+    if (!_showOneLine) {
+        [_themeLabel setWidth:MainScreenWidth / 4.0 - 30];
+        [_themeLabel sizeToFit];
+        if (_themeLabel.height > 60) {
+            [_themeLabel setHeight:_themeLabel.height];
+        } else {
+            [_themeLabel setHeight:60];
+        }
+        [_LeftLineView setHeight:_themeLabel.height];
+        [self setHeight:_themeLabel.height];
+    }
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

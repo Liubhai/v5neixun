@@ -59,6 +59,7 @@
 		785A3E1A2498757200298054 /* ScanPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E182498757200298054 /* ScanPhotoViewController.m */; };
 		785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E192498757200298054 /* UIActionSheet+Blocks.m */; };
 		785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E1D2498F65900298054 /* TeacherCategoryVC.m */; };
+		785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E222499C1AE00298054 /* TeacherCategoryModel.m */; };
 		7876572324347DB2008F475D /* FindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572224347DB2008F475D /* FindListCell.m */; };
 		787657282435C79E008F475D /* StudyRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787657272435C79E008F475D /* StudyRootVC.m */; };
 		7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572A2435D53A008F475D /* CourseSearchHistoryVC.m */; };
@@ -472,6 +473,8 @@
 		785A3E192498757200298054 /* UIActionSheet+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Blocks.m"; sourceTree = "<group>"; };
 		785A3E1C2498F65900298054 /* TeacherCategoryVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherCategoryVC.h; sourceTree = "<group>"; };
 		785A3E1D2498F65900298054 /* TeacherCategoryVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherCategoryVC.m; sourceTree = "<group>"; };
+		785A3E212499C1AE00298054 /* TeacherCategoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherCategoryModel.h; sourceTree = "<group>"; };
+		785A3E222499C1AE00298054 /* TeacherCategoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherCategoryModel.m; sourceTree = "<group>"; };
 		7876572124347DB2008F475D /* FindListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindListCell.h; sourceTree = "<group>"; };
 		7876572224347DB2008F475D /* FindListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindListCell.m; sourceTree = "<group>"; };
 		787657262435C79E008F475D /* StudyRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyRootVC.h; sourceTree = "<group>"; };
@@ -1204,6 +1207,15 @@
 			path = ApplyPage;
 			sourceTree = "<group>";
 		};
+		785A3E1F2499C18D00298054 /* CategoryCommonModel */ = {
+			isa = PBXGroup;
+			children = (
+				785A3E212499C1AE00298054 /* TeacherCategoryModel.h */,
+				785A3E222499C1AE00298054 /* TeacherCategoryModel.m */,
+			);
+			path = CategoryCommonModel;
+			sourceTree = "<group>";
+		};
 		7876571F24347D9F008F475D /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1426,6 +1438,7 @@
 				785A3E112497A14D00298054 /* ApplyPage */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
+				785A3E1F2499C18D00298054 /* CategoryCommonModel */,
 			);
 			path = MyCenterPage;
 			sourceTree = "<group>";
@@ -2948,6 +2961,7 @@
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
 				78C549D1241B674E00A33FC4 /* AlivcBaseViewController.m in Sources */,
 				78795731240FA3840013F95F /* ZLPhotoAssets.m in Sources */,
+				785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */,
 				7839C9912420DEC9002F6595 /* CourseCommentListVC.m in Sources */,
 				789DB06A246D6576001302B4 /* InstitutionRootVC.m in Sources */,
 				78C54840241743DE00A33FC4 /* Net_Path.m in Sources */,

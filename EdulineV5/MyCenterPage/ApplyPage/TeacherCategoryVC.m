@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "CourseCommonCell.h"
+#import "TeacherCategoryModel.h"
 
 @interface TeacherCategoryVC ()<UITableViewDelegate,UITableViewDataSource> {
     NSInteger currentSelectRow;
@@ -78,7 +79,7 @@
         cell.LeftLineView.hidden = YES;
         cell.themeLabel.textColor = EdlineV5_Color.textSecendColor;
     }
-    [cell setCourseCommonCellInfo:_firstArray[indexPath.row] searchKeyWord:@"111"];
+    [cell setCategoryInfo:_firstArray[indexPath.row]];
     return cell;
 }
 
@@ -94,24 +95,25 @@
 }
 
 // MARK: - 布局右边分类视图
-- (void)makeScrollViewSubView:(NSDictionary *)selectedInfo {
+- (void)makeScrollViewSubView:(TeacherCategoryModel *)selectedInfo {
     if (_mainScrollView) {
         [_mainScrollView removeAllSubviews];
     }
-    if (![selectedInfo objectForKey:@"child"]) {
+    if (!SWNOTEmptyArr(selectedInfo.child)) {
+        // 要添加一个全部按钮
         return;
     }
     CGFloat hotYY = 0;
     CGFloat secondSpace = 6;
     [_secondArray removeAllObjects];
-    [_secondArray addObjectsFromArray:[NSArray arrayWithArray:[selectedInfo objectForKey:@"child"]]];
+    [_secondArray addObjectsFromArray:selectedInfo.child];
     for (int j = 0; j < _secondArray.count; j++) {
         UIView *hotView = [[UIView alloc] initWithFrame:CGRectMake(0, hotYY, MainScreenWidth, 0)];
         hotView.backgroundColor = [UIColor whiteColor];
         hotView.tag = 10 + j;
         [_mainScrollView addSubview:hotView];
         
-        NSString *secondTitle = [NSString stringWithFormat:@"%@",[_secondArray[j] objectForKey:@"title"]];//@"热门搜索";
+        NSString *secondTitle = [NSString stringWithFormat:@"%@",((CateGoryModelSecond *)_secondArray[j]).title];//@"热门搜索";
         CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(15)].width + 4 + 7;
         UIButton *secondBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 0, secondBtnWidth, 60)];
         secondBtn.tag = 100 + j;
@@ -124,8 +126,8 @@
         [secondBtn addTarget:self action:@selector(secondBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [hotView addSubview:secondBtn];
         [_thirdArray removeAllObjects];
-        if ([_secondArray[j] objectForKey:@"child"]) {
-            [_thirdArray addObjectsFromArray:[NSArray arrayWithArray:[_secondArray[j] objectForKey:@"child"]]];
+        if (SWNOTEmptyArr(((CateGoryModelSecond *)_secondArray[j]).child)) {
+            [_thirdArray addObjectsFromArray:[NSArray arrayWithArray:((CateGoryModelSecond *)_secondArray[j]).child]];
         }
         if (_thirdArray.count) {
             CGFloat topSpacee = 20.0;
@@ -138,7 +140,7 @@
                 UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, 0, btnHeight)];
                 btn.tag = 200 + i;
                 [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-                [btn setTitle:[NSString stringWithFormat:@"%@",[_thirdArray[i] objectForKey:@"title"]] forState:0];
+                [btn setTitle:[NSString stringWithFormat:@"%@",((CateGoryModelThird *)_thirdArray[j]).title] forState:0];
                 btn.titleLabel.font = SYSTEMFONT(14);
                 [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
                 btn.backgroundColor = EdlineV5_Color.backColor;
@@ -174,7 +176,7 @@
 - (void)getTeacherClassifyList {
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path commonCategoryNet] WithAuthorization:nil paramDic:@{@"type":@"1"} finish:^(id  _Nonnull responseObject) {
         if ([[responseObject objectForKey:@"code"] integerValue]) {
-            [_firstArray addObjectsFromArray:[responseObject objectForKey:@"data"]];
+            [_firstArray addObjectsFromArray:[NSArray arrayWithArray:[TeacherCategoryModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]]];
             [_tableView reloadData];
             if (SWNOTEmptyArr(_firstArray)) {
                 [self makeScrollViewSubView:_firstArray[currentSelectRow]];

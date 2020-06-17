@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TeacherCategoryModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier showOneLine:(BOOL)oneLine;
 
 - (void)setCourseCommonCellInfo:(NSDictionary *)info searchKeyWord:(NSString *)searchKeyWord;
+
+- (void)setCategoryInfo:(TeacherCategoryModel *)teacherModel;
 
 @end
 

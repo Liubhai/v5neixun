@@ -7,6 +7,7 @@
 //
 
 #import "TeacherApplyVC.h"
+#import "TeacherCategoryModel.h"
 
 @interface TeacherApplyVC () {
     NSString *whichPic;
