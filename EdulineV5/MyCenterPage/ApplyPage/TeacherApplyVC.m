@@ -433,11 +433,6 @@
 - (void)changeUserFaceTap:(UITapGestureRecognizer *)sender {
     [self textFieldResign];
     
-    //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
-    if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
-        return;
-    }
-    
     if (sender.view == _idCardPictureLeft) {
         whichPic = @"idCardFont";
         if (SWNOTEmptyArr(_imageArray)) {
@@ -445,6 +440,10 @@
             scanVC.imgArr = _imageArray;
             scanVC.index = 0;
             scanVC.delegate = self;
+            //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
+            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
+                scanVC.isPhoto = YES;
+            }
             scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:scanVC animated:YES completion:^{
                 
@@ -458,6 +457,10 @@
             scanVC.imgArr = _imageArrayIdCardBack;
             scanVC.index = 0;
             scanVC.delegate = self;
+            //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
+            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
+                scanVC.isPhoto = YES;
+            }
             scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:scanVC animated:YES completion:^{
                 
@@ -471,6 +474,10 @@
             scanVC.imgArr = _imageArrayTeacher;
             scanVC.index = 0;
             scanVC.delegate = self;
+            //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
+            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
+                scanVC.isPhoto = YES;
+            }
             scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:scanVC animated:YES completion:^{
                 
@@ -827,18 +834,17 @@
         
         idCardIDFont = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive"]];
         [_imageArray removeAllObjects];
-        [_imageArray addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive_url"]]];
-        [_idCardPictureLeft sd_setImageWithURL:EdulineUrlString(_imageArray[0]) placeholderImage:Image(@"id_front")];
+        [_idCardPictureLeft sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive_url"]) placeholderImage:Image(@"id_front")];
         
         idCardIDBack = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side"]];
         [_imageArrayIdCardBack removeAllObjects];
-        [_imageArrayIdCardBack addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]]];
-        [_idCardPictureRight sd_setImageWithURL:EdulineUrlString(_imageArrayIdCardBack[0]) placeholderImage:Image(@"id_back_def")];
+//        [_imageArrayIdCardBack addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]]];
+        [_idCardPictureRight sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]) placeholderImage:Image(@"id_back_def")];
         
         teacherId = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification"]];
         [_imageArrayTeacher removeAllObjects];
-        [_imageArrayTeacher addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]]];
-        [_teacherPicture sd_setImageWithURL:EdulineUrlString(_imageArrayTeacher[0]) placeholderImage:Image(@"teacher_id")];
+//        [_imageArrayTeacher addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]]];
+        [_teacherPicture sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]) placeholderImage:Image(@"teacher_id")];
         return;
     }
 }
