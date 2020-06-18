@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *cateGoryId;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSArray *child;
+@property (strong, nonatomic) CateGoryModelThird *all;
+@property (assign, nonatomic) BOOL selected;
 
 @end
 
@@ -25,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *cateGoryId;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSArray *child;
-@property (strong, nonatomic) CateGoryModelThird *all;
+@property (assign, nonatomic) BOOL selected;
 
 @end
 
@@ -33,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *cateGoryId;
 @property (strong, nonatomic) NSString *title;
+@property (assign, nonatomic) BOOL selected;
 
 @end
 

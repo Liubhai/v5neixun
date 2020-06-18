@@ -15,7 +15,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TeacherApplyVC : BaseViewController<UIPickerViewDelegate, UIPickerViewDataSource,TYAttributedLabelDelegate,UIScrollViewDelegate,UIActionSheetDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,sendPhotoArrDelegate,UITextFieldDelegate>
+@interface TeacherApplyVC : BaseViewController<UIPickerViewDelegate, UIPickerViewDataSource,TYAttributedLabelDelegate,UIScrollViewDelegate,UIActionSheetDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,sendPhotoArrDelegate,UITextFieldDelegate,TeacherCategoryVCDelegate>
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
 

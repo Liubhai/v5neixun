@@ -39,6 +39,10 @@
 @property(strong, nonatomic) NSMutableArray *imageArrayIdCardBack;
 @property(strong, nonatomic) NSMutableArray *imageArrayTeacher;
 
+@property (strong, nonatomic) NSMutableArray *teacherCategoryArray;
+@property (strong, nonatomic) NSMutableArray *teacherCategoryIDArray;
+@property (strong, nonatomic) NSMutableArray *teacherCategoryTitleArray;
+
 @end
 
 @implementation TeacherApplyVC
@@ -58,6 +62,10 @@
     _imageArrayIdCardBack = [NSMutableArray new];
     _imageArrayTeacher = [NSMutableArray new];
     _schoolArray = [NSMutableArray new];
+    
+    _teacherCategoryArray = [NSMutableArray new];
+    _teacherCategoryIDArray = [NSMutableArray new];
+    _teacherCategoryTitleArray = [NSMutableArray new];
     
     UITapGestureRecognizer *viewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapClick:)];
     [self.view addGestureRecognizer:viewTap];
@@ -742,6 +750,7 @@
     } else if (sender == _industryIcon) {
         // 跳转到选择分类页面
         TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -789,6 +798,105 @@
     }];
 }
 
+// MARK: - TeacherCategoryVCDelegate(选择了分类后传值)
+- (void)chooseCategoryArray:(NSMutableArray *)array {
+    [_teacherCategoryArray removeAllObjects];
+    [_teacherCategoryIDArray removeAllObjects];
+    [_teacherCategoryTitleArray removeAllObjects];
+    
+    [_teacherCategoryArray addObjectsFromArray:array];
+    
+    // 先获取id数组 再处理ui
+    for (int i = 0; i<_teacherCategoryArray.count; i++) {
+        NSArray *pass = [NSArray arrayWithArray:_teacherCategoryArray[i]];
+        
+        if (pass.count == 1) {
+            TeacherCategoryModel *model = (TeacherCategoryModel *)pass[0];
+            [_teacherCategoryTitleArray addObject:model.title];
+        } else if (pass.count == 2) {
+            CateGoryModelSecond *model = (CateGoryModelSecond *)pass[1];
+            [_teacherCategoryTitleArray addObject:model.title];
+        } else if (pass.count == 3) {
+            CateGoryModelThird *model = (CateGoryModelThird *)pass[2];
+            [_teacherCategoryTitleArray addObject:model.title];
+        }
+        
+        // 内层一围数组
+        NSMutableArray *temp = [NSMutableArray new];
+        for (int j = 0; j<pass.count; j++) {
+            if (j == 0) {
+                TeacherCategoryModel *model = (TeacherCategoryModel *)pass[j];
+                [temp addObject:model.cateGoryId];
+            } else if (j == 1) {
+                CateGoryModelSecond *model = (CateGoryModelSecond *)pass[j];
+                [temp addObject:model.cateGoryId];
+            } else if (j == 2) {
+                CateGoryModelThird *model = (CateGoryModelThird *)pass[j];
+                [temp addObject:model.cateGoryId];
+            }
+        }
+        [_teacherCategoryIDArray addObject:temp];
+    }
+    NSLog(@"行业名称数组 = %@\n 行业ID数组 = %@",_teacherCategoryTitleArray,_teacherCategoryIDArray);
+    if (_teacherCategoryArray.count) {
+        _industryRightLabel.text = [NSString stringWithFormat:@"全部%@个",@(_teacherCategoryArray.count)];
+    } else {
+        _industryRightLabel.text = @"请选择所属行业";
+    }
+    // 布局所属行业分类UI
+    [self setTeacherCategoryUI];
+}
+
+// MARK: - 布局所属行业分类UI
+- (void)setTeacherCategoryUI {
+    [_industryBackView removeAllSubviews];
+    if (_teacherCategoryTitleArray.count) {
+        CGFloat topSpacee = 16.0;
+        CGFloat rightSpace = 15.0;
+        CGFloat btnInSpace = 12.0;
+        CGFloat XX = _industryBackView.width;
+        CGFloat YY = 0.0;
+        CGFloat btnHeight = 32.0;
+        for (int i = 0; i<_teacherCategoryTitleArray.count; i++) {
+            NSString *secondTitle = [NSString stringWithFormat:@"%@",_teacherCategoryTitleArray[i]];
+            CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(13)].width + 4 + 9 + 5 + 20;
+            CGFloat btnWidth = [secondTitle sizeWithFont:SYSTEMFONT(13)].width + 4;
+            UIButton *secondBtn = [[UIButton alloc] initWithFrame:CGRectMake(XX - secondBtnWidth, YY, secondBtnWidth, btnHeight)];
+            secondBtn.tag = 100 + i;
+            [secondBtn setImage:Image(@"closeCategory") forState:0];
+            [secondBtn setTitle:secondTitle forState:0];
+            [secondBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+            secondBtn.titleLabel.font = SYSTEMFONT(13);
+            [secondBtn setImageEdgeInsets:UIEdgeInsetsMake(0, btnWidth+5/2.0, 0, -btnWidth-5/2.0)];
+            [secondBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -secondBtn.currentImage.size.width - 5/2.0, 0, secondBtn.currentImage.size.width + 5/2.0)];
+            [secondBtn addTarget:self action:@selector(teacherCategoryButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            secondBtn.layer.masksToBounds = YES;
+            secondBtn.layer.cornerRadius = btnHeight / 2.0;
+            secondBtn.backgroundColor = EdlineV5_Color.backColor;
+            if ((XX - secondBtnWidth) < 0) {
+                XX = _industryBackView.width - secondBtnWidth;
+                YY = YY + topSpacee + btnHeight;
+                secondBtn.frame = CGRectMake(XX, YY, secondBtnWidth, btnHeight);
+            }
+            XX = secondBtn.left - rightSpace;
+            if (i == _teacherCategoryTitleArray.count - 1) {
+                [_industryBackView setHeight:secondBtn.bottom + topSpacee];
+            }
+            [_industryBackView addSubview:secondBtn];
+        }
+    } else {
+        [_industryBackView setHeight:0];
+    }
+    [_otherBackView setTop:_industryBackView.bottom];
+    _mainScrollView.contentSize = CGSizeMake(0, _otherBackView.bottom);
+}
+
+- (void)teacherCategoryButtonClick:(UIButton *)sender {
+    NSMutableArray *pass = [NSMutableArray arrayWithArray:_teacherCategoryArray];
+    [pass removeObjectAtIndex:sender.tag - 100];
+    [self chooseCategoryArray:pass];
+}
+
 - (void)submitApplyClick:(UIButton *)sender {
     
     if (!SWNOTEmptyStr(schoolID)) {
@@ -796,9 +904,13 @@
         return;
     }
     
-    if (!SWNOTEmptyStr(schoolID)) {
+    if (!SWNOTEmptyArr(_te)) {
         [self showHudInView:self.view showHint:@"请选择所属机构"];
         return;
+    }
+    
+    if (SWN) {
+        <#statements#>
     }
     
 }

@@ -10,7 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol TeacherCategoryVCDelegate <NSObject>
+
+@optional
+- (void)chooseCategoryArray:(NSMutableArray *)array;
+
+@end
+
 @interface TeacherCategoryVC : BaseViewController
+
+@property (weak, nonatomic) id<TeacherCategoryVCDelegate> delegate;
 
 @end
 
