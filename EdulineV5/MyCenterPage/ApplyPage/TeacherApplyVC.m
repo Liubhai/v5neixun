@@ -309,6 +309,7 @@
     _seleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
     [_seleteBtn setImage:Image(@"checkbox_nor") forState:0];
     [_seleteBtn setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
+    [_seleteBtn setImage:Image(@"checkbox_sel") forState:UIControlStateDisabled];
     [_seleteBtn addTarget:self action:@selector(seleteAgreementButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_agreementTyLabel addView:_seleteBtn range:NSMakeRange(0, 2) alignment:TYDrawAlignmentCenter];
 }
@@ -320,7 +321,7 @@
     _submitButton.backgroundColor = EdlineV5_Color.themeColor;
     _submitButton.layer.masksToBounds = YES;
     _submitButton.layer.cornerRadius = 5;
-    [_submitButton addTarget:self action:@selector(subMitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_submitButton addTarget:self action:@selector(submitApplyClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBackView addSubview:_submitButton];
     
     [_bottomBackView setHeight:_submitButton.bottom + 10];
@@ -335,6 +336,18 @@
         return NO;
     }
     return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (SWNOTEmptyStr(verified_status)) {
+        if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
+            return NO;
+        } else {
+            return YES;
+        }
+    } else {
+        return NO;
+    }
 }
 
 - (void)makePickerView {
@@ -759,9 +772,6 @@
     sender.selected = !sender.selected;
 }
 
-- (void)subMitButtonClick:(UIButton *)sender {
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
 }
@@ -791,11 +801,46 @@
                 _teacherApplyInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                 [_schoolArray removeAllObjects];
                 [_schoolArray addObjectsFromArray:_teacherApplyInfo[@"data"][@"school"]];
+                [self setApplyInfoData];
             }
         }
     } enError:^(NSError * _Nonnull error) {
         
     }];
+}
+
+- (void)setApplyInfoData {
+    //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
+    verified_status = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_status"]];
+    if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
+        _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        _submitButton.enabled = NO;
+        _seleteBtn.enabled = NO;
+    }
+    if ([verified_status isEqualToString:@"1"] || [verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"3"]) {
+        _statusRightLabel.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_status_text"]];
+        
+        schoolID = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"mhm_id"]];
+        _institutionRightLabel.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"school_name"]];
+        
+        _idCardText.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard"]];
+        
+        idCardIDFont = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive"]];
+        [_imageArray removeAllObjects];
+        [_imageArray addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive_url"]]];
+        [_idCardPictureLeft sd_setImageWithURL:EdulineUrlString(_imageArray[0]) placeholderImage:Image(@"id_front")];
+        
+        idCardIDBack = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side"]];
+        [_imageArrayIdCardBack removeAllObjects];
+        [_imageArrayIdCardBack addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]]];
+        [_idCardPictureRight sd_setImageWithURL:EdulineUrlString(_imageArrayIdCardBack[0]) placeholderImage:Image(@"id_back_def")];
+        
+        teacherId = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification"]];
+        [_imageArrayTeacher removeAllObjects];
+        [_imageArrayTeacher addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]]];
+        [_teacherPicture sd_setImageWithURL:EdulineUrlString(_imageArrayTeacher[0]) placeholderImage:Image(@"teacher_id")];
+        return;
+    }
 }
 
 // MARK: - TeacherCategoryVCDelegate(选择了分类后传值)
@@ -904,15 +949,60 @@
         return;
     }
     
-    if (!SWNOTEmptyArr(_te)) {
-        [self showHudInView:self.view showHint:@"请选择所属机构"];
+    if (!SWNOTEmptyArr(_teacherCategoryIDArray)) {
+        [self showHudInView:self.view showHint:@"请选择所属行业"];
         return;
     }
     
-    if (SWN) {
-        <#statements#>
+    if (!SWNOTEmptyStr(_idCardText.text)) {
+        [self showHudInView:self.view showHint:@"请输入身份证号码"];
+        return;
     }
     
+    if (!SWNOTEmptyStr(idCardIDFont)) {
+        [self showHudInView:self.view showHint:@"请上传您的身份证正面照"];
+        return;
+    }
+    
+    if (!SWNOTEmptyStr(idCardIDBack)) {
+        [self showHudInView:self.view showHint:@"请上传您的身份证反面照"];
+        return;
+    }
+    
+    if (!SWNOTEmptyStr(teacherId)) {
+        [self showHudInView:self.view showHint:@"请上传您的教师资格证证件照"];
+        return;
+    }
+    
+    if (!_seleteBtn.selected) {
+        [self showHudInView:self.view showHint:@"请确认阅读并同意认证协议"];
+        return;
+    }
+    
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:schoolID forKey:@"mhm_id"];
+    
+    [param setObject:_teacherCategoryIDArray forKey:@"category"];
+    
+    [param setObject:_idCardText.text forKey:@"IDcard"];
+    
+    [param setObject:idCardIDFont forKey:@"IDcard_positive"];
+    
+    [param setObject:idCardIDBack forKey:@"IDcard_side"];
+    
+    [param setObject:teacherId forKey:@"certification"];
+    
+    [Net_API requestPOSTWithURLStr:[Net_Path teacherApplySubmiteNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self.navigationController popViewControllerAnimated:YES];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        NSLog(@"讲师认证失败");
+    }];
 }
 
 
