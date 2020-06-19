@@ -1,25 +1,27 @@
 //
-//  TeacherApplyVC.m
+//  InstitutionApplyVC.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2020/6/15.
+//  Created by 刘邦海 on 2020/6/19.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
-#import "TeacherApplyVC.h"
-#import "TeacherCategoryModel.h"
+#import "InstitutionApplyVC.h"
 
-@interface TeacherApplyVC () {
+@interface InstitutionApplyVC () {
     NSString *whichPic;
     // 附件 id
     NSString *idCardIDFont;
     NSString *idCardIDBack;
     NSString *teacherId;
-//    【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
+    NSString *logoId;
+    //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
     NSString *verified_status;
     // 机构id
     NSString *schoolID;
     NSInteger currentPickerRow;
+    
+    BOOL isInstitutionTextField;
 }
 
 @property(strong, nonatomic) NSDictionary *teacherApplyInfo;
@@ -38,6 +40,7 @@
 @property(strong, nonatomic) NSMutableArray *imageArray;
 @property(strong, nonatomic) NSMutableArray *imageArrayIdCardBack;
 @property(strong, nonatomic) NSMutableArray *imageArrayTeacher;
+@property (strong, nonatomic) NSMutableArray *logoImageArray;
 
 @property (strong, nonatomic) NSMutableArray *teacherCategoryArray;
 @property (strong, nonatomic) NSMutableArray *teacherCategoryIDArray;
@@ -45,39 +48,39 @@
 
 @end
 
-@implementation TeacherApplyVC
+@implementation InstitutionApplyVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _titleLabel.text = @"成为机构";
+    _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
+    _lineTL.hidden = NO;
+    // Do any additional setup after loading the view.
     
     whichPic = @"";
     idCardIDFont = @"";
     idCardIDBack = @"";
     teacherId = @"";
+    logoId = @"";
     verified_status = @"";
     schoolID = @"";
     currentPickerRow = 0;
     _imageArray = [NSMutableArray new];
     _imageArrayIdCardBack = [NSMutableArray new];
     _imageArrayTeacher = [NSMutableArray new];
+    _logoImageArray = [NSMutableArray new];
     _schoolArray = [NSMutableArray new];
     
     _teacherCategoryArray = [NSMutableArray new];
     _teacherCategoryIDArray = [NSMutableArray new];
     _teacherCategoryTitleArray = [NSMutableArray new];
     
-    UITapGestureRecognizer *viewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapClick:)];
-    [self.view addGestureRecognizer:viewTap];
-    
-    _titleLabel.text = @"讲师认证";
-    _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
-    _lineTL.hidden = NO;
     [self makeScrollView];
     [self makeSubView];
     [self makeAgreeView];
     [self makeDownView];
-    [self makePickerView];
+//    [self makePickerView];
     [self getUserTeacherApplyInfo];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -91,12 +94,20 @@
     _mainScrollView.delegate = self;
     _mainScrollView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_mainScrollView];
+    
+    _nextScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_SAFEAREA)];
+    _nextScrollView.backgroundColor = [UIColor whiteColor];
+    _nextScrollView.bounces = NO;
+    _nextScrollView.delegate = self;
+    _nextScrollView.showsVerticalScrollIndicator = NO;
+    [self.view addSubview:_nextScrollView];
+    _nextScrollView.hidden = YES;
 }
 
 - (void)makeSubView {
     // 昵称
     _nameLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 50)];
-    _nameLeftLabel.text = @"昵称";
+    _nameLeftLabel.text = @"当前用户";
     _nameLeftLabel.font = SYSTEMFONT(15);
     _nameLeftLabel.textColor = EdlineV5_Color.textFirstColor;
     [_mainScrollView addSubview:_nameLeftLabel];
@@ -137,17 +148,14 @@
     _institutionLeftLabel.textColor = EdlineV5_Color.textFirstColor;
     [_mainScrollView addSubview:_institutionLeftLabel];
     
-    _institutionRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30 - 200, _line2.bottom, 200, 50)];
-    _institutionRightLabel.text = @"请选择所属机构";
-    _institutionRightLabel.font = SYSTEMFONT(15);
-    _institutionRightLabel.textColor = EdlineV5_Color.textThirdColor;
-    _institutionRightLabel.textAlignment = NSTextAlignmentRight;
-    [_mainScrollView addSubview:_institutionRightLabel];
-    
-    _institutionIcon = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line2.bottom, 30, 50)];
-    [_institutionIcon setImage:Image(@"list_more") forState:0];
-    [_institutionIcon addTarget:self action:@selector(coverButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_mainScrollView addSubview:_institutionIcon];
+    _institutionTextField = [[UITextField alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _line2.bottom, 200, 50)];
+    _institutionTextField.returnKeyType = UIReturnKeyDone;
+    _institutionTextField.delegate = self;
+    _institutionTextField.textColor = EdlineV5_Color.textSecendColor;
+    _institutionTextField.font = SYSTEMFONT(15);
+    _institutionTextField.textAlignment = NSTextAlignmentRight;
+    _institutionTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写机构名称" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
+    [_mainScrollView addSubview:_institutionTextField];
     
     _line3 = [[UIView alloc] initWithFrame:CGRectMake(15, _institutionLeftLabel.bottom, MainScreenWidth - 15, 1)];
     _line3.backgroundColor = EdlineV5_Color.fengeLineColor;
@@ -176,12 +184,124 @@
     _industryBackView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_industryBackView];
     
-    // 身份证号
-    _otherBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _industryBackView.bottom, MainScreenWidth, 1)];
-    _otherBackView.backgroundColor = [UIColor whiteColor];
-    [_mainScrollView addSubview:_otherBackView];
+    _nextBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _industryBackView.bottom, MainScreenWidth, 1)];
+    _nextBackView.backgroundColor = [UIColor whiteColor];
+    [_mainScrollView addSubview:_nextBackView];
     
-    _line4 = [[UIView alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 15, 1)];
+    _nextLine4 = [[UIView alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 15, 1)];
+    _nextLine4.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_nextBackView addSubview:_nextLine4];
+    
+    _logoLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _nextLine4.bottom, 100, 82)];
+    _logoLabel.font = SYSTEMFONT(15);
+    _logoLabel.text = @"LOGO";
+    _logoLabel.textColor = EdlineV5_Color.textFirstColor;
+    [_nextBackView addSubview:_logoLabel];
+    
+    _logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 50, 0, 50, 50)];
+    _logoImageView.clipsToBounds = YES;
+    _logoImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _logoImageView.layer.masksToBounds = YES;
+    _logoImageView.layer.cornerRadius = _logoImageView.height / 2.0;
+    _logoImageView.image = DefaultImage;
+    _logoImageView.centerY = _logoLabel.centerY;
+    [_nextBackView addSubview:_logoImageView];
+    
+    _nextLine5 = [[UIView alloc] initWithFrame:CGRectMake(15, _logoLabel.bottom, MainScreenWidth - 15, 1)];
+    _nextLine5.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_nextBackView addSubview:_nextLine5];
+    
+    _institutionInroLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _nextLine5.bottom, 100, 28 + 21)];
+    _institutionInroLabel.text = @"机构简介";
+    _institutionInroLabel.font = SYSTEMFONT(15);
+    _institutionInroLabel.textColor = EdlineV5_Color.textFirstColor;
+    [_nextBackView addSubview:_institutionInroLabel];
+    
+    _institutionInroTextView = [[UITextView alloc] initWithFrame:CGRectMake(95, _institutionInroLabel.top + 7, MainScreenWidth - 15 - 95, 78)];
+    _institutionInroTextView.textColor = EdlineV5_Color.textSecendColor;
+    _institutionInroTextView.font = SYSTEMFONT(15);
+    _institutionInroTextView.delegate = self;
+    _institutionInroTextView.returnKeyType = UIReturnKeyDone;
+    [_nextBackView addSubview:_institutionInroTextView];
+    
+    _institutionInroPlace = [[UILabel alloc] initWithFrame:CGRectMake(_institutionInroTextView.left, _institutionInroTextView.top + 1, _institutionInroTextView.width, 30)];
+    _institutionInroPlace.text = @" 请填写机构简介";
+    _institutionInroPlace.textColor = EdlineV5_Color.textThirdColor;
+    _institutionInroPlace.font = SYSTEMFONT(15);
+    _institutionInroPlace.userInteractionEnabled = YES;
+    UITapGestureRecognizer *placeTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(placeLabelTap:)];
+    [_institutionInroPlace addGestureRecognizer:placeTap];
+    [_nextBackView addSubview:_institutionInroPlace];
+    
+    _nextLine6 = [[UIView alloc] initWithFrame:CGRectMake(15, _institutionInroTextView.bottom + 20, MainScreenWidth - 15, 1)];
+    _nextLine6.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_nextBackView addSubview:_nextLine6];
+    
+    _phoneLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _nextLine6.bottom, 100, 50)];
+    _phoneLabel.text = @"联系电话";
+    _phoneLabel.font = SYSTEMFONT(15);
+    _phoneLabel.textColor = EdlineV5_Color.textFirstColor;
+    [_nextBackView addSubview:_phoneLabel];
+    
+    _phoneTextField = [[UITextField alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _nextLine6.bottom, 200, 50)];
+    _phoneTextField.returnKeyType = UIReturnKeyDone;
+    _phoneTextField.delegate = self;
+    _phoneTextField.textColor = EdlineV5_Color.textSecendColor;
+    _phoneTextField.font = SYSTEMFONT(15);
+    _phoneTextField.textAlignment = NSTextAlignmentRight;
+    _phoneTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写联系电话" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
+    [_nextBackView addSubview:_phoneTextField];
+    
+    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, _phoneLabel.bottom, MainScreenWidth, 76)];
+    _bottomView.backgroundColor = EdlineV5_Color.backColor;
+    [_nextBackView addSubview:_bottomView];
+    
+    _nextButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 28, MainScreenWidth - 30, 40)];
+    [_nextButton setTitle:@"下一步" forState:0];
+    _nextButton.titleLabel.font = SYSTEMFONT(16);
+    _nextButton.backgroundColor = EdlineV5_Color.themeColor;
+    _nextButton.layer.masksToBounds = YES;
+    _nextButton.layer.cornerRadius = 5;
+    [_nextButton addTarget:self action:@selector(nextButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:_nextButton];
+    
+    [_nextBackView setHeight:_bottomView.bottom];
+    if (_nextBackView.bottom < _mainScrollView.height) {
+        [_bottomView setHeight:76 + (_mainScrollView.height - _nextBackView.bottom)];
+        [_nextBackView setHeight:_bottomView.bottom];
+    }
+    _mainScrollView.contentSize = CGSizeMake(0, _nextBackView.bottom);
+    
+    // 下一页 下一页 下一页 下一页
+    _otherBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
+    _otherBackView.backgroundColor = [UIColor whiteColor];
+    [_nextScrollView addSubview:_otherBackView];
+    
+    // 联系地址
+    _addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 28 + 21)];
+    _addressLabel.text = @"联系地址";
+    _addressLabel.font = SYSTEMFONT(15);
+    _addressLabel.textColor = EdlineV5_Color.textFirstColor;
+    [_otherBackView addSubview:_addressLabel];
+    
+    _addressTextView = [[UITextView alloc] initWithFrame:CGRectMake(95, _addressLabel.top + 7, MainScreenWidth - 15 - 95, 78)];
+    _addressTextView.textColor = EdlineV5_Color.textSecendColor;
+    _addressTextView.font = SYSTEMFONT(15);
+    _addressTextView.delegate = self;
+    _addressTextView.returnKeyType = UIReturnKeyDone;
+    [_otherBackView addSubview:_addressTextView];
+    
+    _addressPlace = [[UILabel alloc] initWithFrame:CGRectMake(_addressTextView.left, _addressTextView.top + 1, _addressTextView.width, 30)];
+    _addressPlace.text = @" 请填写联系地址";
+    _addressPlace.textColor = EdlineV5_Color.textThirdColor;
+    _addressPlace.font = SYSTEMFONT(15);
+    _addressPlace.userInteractionEnabled = YES;
+    UITapGestureRecognizer *addressPlaceTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addressPlaceLabelTap:)];
+    [_addressPlace addGestureRecognizer:addressPlaceTap];
+    [_otherBackView addSubview:_addressPlace];
+    
+    // 身份证号
+    _line4 = [[UIView alloc] initWithFrame:CGRectMake(15, _addressTextView.bottom + 20, MainScreenWidth - 15, 1)];
     _line4.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_otherBackView addSubview:_line4];
     
@@ -272,7 +392,7 @@
     [_bottomBackView addSubview:_agreeBackView];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@讲师认证协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@机构认证协议》",appName];
     NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
     NSRange atrRange = [fullString rangeOfString:atr];
     
@@ -327,23 +447,50 @@
     [_bottomBackView setHeight:_submitButton.bottom + 10];
     
     [_otherBackView setHeight:_bottomBackView.bottom];
-    
-    if (_otherBackView.bottom < _mainScrollView.height) {
-        [_bottomBackView setHeight:_submitButton.bottom + 10 + (_mainScrollView.height - _otherBackView.bottom)];
+    if (_otherBackView.bottom < _nextScrollView.height) {
+        [_bottomBackView setHeight:_submitButton.bottom + 10 + (_nextScrollView.height - _otherBackView.bottom)];
         [_otherBackView setHeight:_bottomBackView.bottom];
     }
-    _mainScrollView.contentSize = CGSizeMake(0, _otherBackView.bottom);
+    _nextScrollView.contentSize = CGSizeMake(0, _otherBackView.bottom);
+    
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if ([string isEqualToString:@"\n"]) {
-        [self  textFieldResign];
+        [self.view endEditing:YES];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [self.view endEditing:YES];
         return NO;
     }
     return YES;
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (textField == _institutionTextField) {
+        isInstitutionTextField = YES;
+    } else {
+        isInstitutionTextField = NO;
+    }
+    if (SWNOTEmptyStr(verified_status)) {
+        if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"]) {
+            return NO;
+        } else {
+            return YES;
+        }
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    // 重置
+    isInstitutionTextField = NO;
     if (SWNOTEmptyStr(verified_status)) {
         if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"]) {
             return NO;
@@ -775,7 +922,7 @@
     } else if (sender == _industryIcon) {
         // 跳转到选择分类页面
         TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
-        vc.typeString = @"1";
+        vc.typeString = @"2";
         vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -793,27 +940,47 @@
     [self textFieldResign];
 }
 
+- (void)placeLabelTap:(UITapGestureRecognizer *)tap {
+    [self.view endEditing:YES];
+    _institutionInroPlace.hidden = YES;
+    [_institutionInroTextView becomeFirstResponder];
+}
+
+- (void)addressPlaceLabelTap:(UIGestureRecognizer *)tap {
+    [self.view endEditing:YES];
+    _addressPlace.hidden = YES;
+    [_addressTextView becomeFirstResponder];
+}
+
 - (void)textFieldResign {
     [_idCardText resignFirstResponder];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification{
     [_mainScrollView setContentOffset:CGPointMake(0, 0)];
+    // 重置
+    isInstitutionTextField = NO;
 }
 - (void)keyboardWillShow:(NSNotification *)notification{
-    NSValue *endValue = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGFloat otherViewOriginY = _otherBackView.top + 100;
-    CGFloat offSet = MainScreenHeight - MACRO_UI_UPHEIGHT - otherViewOriginY;
-    [_mainScrollView setContentOffset:CGPointMake(0, [endValue CGRectValue].size.height - offSet)];
+    if (isInstitutionTextField) {
+        // 暂不作处理
+    } else {
+        NSValue *endValue = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+        CGFloat otherViewOriginY = _nextBackView.top + _phoneLabel.bottom + 10;
+        CGFloat offSet = MainScreenHeight - MACRO_UI_UPHEIGHT - otherViewOriginY;
+        if ([endValue CGRectValue].size.height > offSet) {
+            [_mainScrollView setContentOffset:CGPointMake(0, [endValue CGRectValue].size.height - offSet)];
+        }
+    }
 }
 
 - (void)getUserTeacherApplyInfo {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherApplyInfoNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionApplyNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _teacherApplyInfo = [NSDictionary dictionaryWithDictionary:responseObject];
-                [_schoolArray removeAllObjects];
-                [_schoolArray addObjectsFromArray:_teacherApplyInfo[@"data"][@"school"]];
+//                [_schoolArray removeAllObjects];
+//                [_schoolArray addObjectsFromArray:_teacherApplyInfo[@"data"][@"school"]];
                 [self setApplyInfoData];
             }
         }
@@ -1015,12 +1182,12 @@
     } else {
         [_industryBackView setHeight:0];
     }
-    [_otherBackView setTop:_industryBackView.bottom];
-    if (_otherBackView.bottom < _mainScrollView.height) {
-        [_bottomBackView setHeight:_submitButton.bottom + 10 + (_mainScrollView.height - _otherBackView.bottom)];
-        [_otherBackView setHeight:_bottomBackView.bottom];
+    [_nextBackView setTop:_industryBackView.bottom];
+    if (_nextBackView.bottom < _mainScrollView.height) {
+        [_bottomView setHeight:76 + (_mainScrollView.height - _nextBackView.bottom)];
+        [_nextBackView setHeight:_bottomView.bottom];
     }
-    _mainScrollView.contentSize = CGSizeMake(0, _otherBackView.bottom);
+    _mainScrollView.contentSize = CGSizeMake(0, _nextBackView.bottom);
 }
 
 - (void)teacherCategoryButtonClick:(UIButton *)sender {
@@ -1095,15 +1262,20 @@
     }];
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+// MARK: - 下一步
+- (void)nextButtonClick:(UIButton *)sender {
+    _mainScrollView.hidden = YES;
+    _nextScrollView.hidden = NO;
 }
-*/
+
+- (void)leftButtonClick:(id)sender {
+    [self.view endEditing:YES];
+    if (_nextScrollView.hidden) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        _mainScrollView.hidden = NO;
+        _nextScrollView.hidden = YES;
+    }
+}
 
 @end

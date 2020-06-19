@@ -24,6 +24,7 @@
 #import "LearnRecordVC.h"
 #import "MyCollectCourseVC.h"
 #import "TeacherApplyVC.h"
+#import "InstitutionApplyVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -188,7 +189,8 @@
             TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"school"]) {
-            
+            InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"address"]) {
             
         }
@@ -251,7 +253,8 @@
         TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"school"]) {
-        
+        InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"address"]) {
         
     }

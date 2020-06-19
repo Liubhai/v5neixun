@@ -174,6 +174,7 @@
 		787F1E9A24791A6300108F7B /* TeacherListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9924791A6300108F7B /* TeacherListCell.m */; };
 		787F1E9D247925AD00108F7B /* InstitutionListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9C247925AD00108F7B /* InstitutionListVC.m */; };
 		787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9F2479263200108F7B /* InstitutionListCell.m */; };
+		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		789DB01524593041001302B4 /* CouponModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01424593041001302B4 /* CouponModel.m */; };
 		789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB017245A76A1001302B4 /* ShopCarModel.m */; };
 		789DB01B24654571001302B4 /* MyBalanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01A24654571001302B4 /* MyBalanceVC.m */; };
@@ -706,6 +707,8 @@
 		787F1E9C247925AD00108F7B /* InstitutionListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionListVC.m; sourceTree = "<group>"; };
 		787F1E9E2479263200108F7B /* InstitutionListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionListCell.h; sourceTree = "<group>"; };
 		787F1E9F2479263200108F7B /* InstitutionListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionListCell.m; sourceTree = "<group>"; };
+		7888A34E249C8D1B00DB078D /* InstitutionApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionApplyVC.h; sourceTree = "<group>"; };
+		7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionApplyVC.m; sourceTree = "<group>"; };
 		789DB01324593041001302B4 /* CouponModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouponModel.h; sourceTree = "<group>"; };
 		789DB01424593041001302B4 /* CouponModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CouponModel.m; sourceTree = "<group>"; };
 		789DB016245A76A1001302B4 /* ShopCarModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarModel.h; sourceTree = "<group>"; };
@@ -1201,6 +1204,8 @@
 			children = (
 				785A3E132497A16B00298054 /* TeacherApplyVC.h */,
 				785A3E142497A16B00298054 /* TeacherApplyVC.m */,
+				7888A34E249C8D1B00DB078D /* InstitutionApplyVC.h */,
+				7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */,
 				785A3E1C2498F65900298054 /* TeacherCategoryVC.h */,
 				785A3E1D2498F65900298054 /* TeacherCategoryVC.m */,
 			);
@@ -2827,6 +2832,7 @@
 				78AA1356243C214D007087F7 /* CourseClassifyVC.m in Sources */,
 				78A16C872452F7C100391430 /* NetAssociation.m in Sources */,
 				7853164824502E49007E239E /* MenberCell.m in Sources */,
+				7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */,
 				7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */,
 				78C936CC248F846200D5F1ED /* TeahcerCourseListVC.m in Sources */,
 				78C548372416212300A33FC4 /* RegisterAndForgetPwVC.m in Sources */,
