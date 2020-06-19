@@ -340,7 +340,7 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     if (SWNOTEmptyStr(verified_status)) {
-        if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
+        if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"]) {
             return NO;
         } else {
             return YES;
@@ -441,8 +441,8 @@
             scanVC.index = 0;
             scanVC.delegate = self;
             //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
-            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
-                scanVC.isPhoto = YES;
+            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"]) {
+                scanVC.hiddenRightButton = YES;
             }
             scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:scanVC animated:YES completion:^{
@@ -458,8 +458,8 @@
             scanVC.index = 0;
             scanVC.delegate = self;
             //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
-            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
-                scanVC.isPhoto = YES;
+            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"]) {
+                scanVC.hiddenRightButton = YES;
             }
             scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:scanVC animated:YES completion:^{
@@ -475,8 +475,8 @@
             scanVC.index = 0;
             scanVC.delegate = self;
             //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
-            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
-                scanVC.isPhoto = YES;
+            if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"]) {
+                scanVC.hiddenRightButton = YES;
             }
             scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:scanVC animated:YES completion:^{
@@ -755,7 +755,7 @@
 }
 
 - (void)coverButtonClick:(UIButton *)sender {
-    if ([verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"2"]) {
+    if ([verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"1"]) {
         return;
     }
     [self textFieldResign];
@@ -819,12 +819,13 @@
 - (void)setApplyInfoData {
     //【0：禁用；1：正常；2：待审；:3：驳回；4：未认证；】
     verified_status = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_status"]];
-    if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"]) {
+    if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"]) {
         _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
         _submitButton.enabled = NO;
         _seleteBtn.enabled = NO;
     }
-    if ([verified_status isEqualToString:@"1"] || [verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"3"]) {
+    if ([verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"] || [verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"3"]) {
+        
         _statusRightLabel.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_status_text"]];
         
         schoolID = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"mhm_id"]];
@@ -834,17 +835,87 @@
         
         idCardIDFont = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive"]];
         [_imageArray removeAllObjects];
-        [_idCardPictureLeft sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive_url"]) placeholderImage:Image(@"id_front")];
+        [_idCardPictureLeft sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive_url"]) placeholderImage:Image(@"id_front") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            if (!error) {
+                [_imageArray addObject:_idCardPictureLeft.image];
+            }
+        }];
         
         idCardIDBack = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side"]];
         [_imageArrayIdCardBack removeAllObjects];
 //        [_imageArrayIdCardBack addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]]];
-        [_idCardPictureRight sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]) placeholderImage:Image(@"id_back_def")];
+        [_idCardPictureRight sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]) placeholderImage:Image(@"id_back_def") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            if (!error) {
+                [_imageArrayIdCardBack addObject:_idCardPictureRight.image];
+            }
+        }];
         
         teacherId = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification"]];
         [_imageArrayTeacher removeAllObjects];
 //        [_imageArrayTeacher addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]]];
-        [_teacherPicture sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]) placeholderImage:Image(@"teacher_id")];
+        [_teacherPicture sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]) placeholderImage:Image(@"teacher_id") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            if (!error) {
+                [_imageArrayTeacher addObject:_teacherPicture.image];
+            }
+        }];
+        
+        // 处理所属机构内容
+        [_teacherCategoryIDArray removeAllObjects];
+        [_teacherCategoryTitleArray removeAllObjects];
+        [_teacherCategoryArray removeAllObjects];
+        
+        NSArray *pass = [NSArray arrayWithArray:_teacherApplyInfo[@"data"][@"auth_info"][@"selected_category"]];
+        for (NSDictionary *dict in pass) {
+            [_teacherCategoryTitleArray addObject:[NSString stringWithFormat:@"%@",dict[@"text"]]];
+            NSString *path = [NSString stringWithFormat:@"%@",dict[@"path"]];
+            path = [path stringByReplacingOccurrencesOfString:@"[" withString:@""];
+            path = [path stringByReplacingOccurrencesOfString:@"]" withString:@""];
+            NSArray *pathArray = [path componentsSeparatedByString:@","];
+            [_teacherCategoryIDArray addObject:pathArray];
+            
+            // 组装 _teacherCategoryArray
+            if (pathArray.count) {
+                if (pathArray.count == 1) {
+                    TeacherCategoryModel *model = [[TeacherCategoryModel alloc] init];
+                    model.cateGoryId = pathArray[0];
+                    model.title = _teacherCategoryTitleArray[0];
+                    [_teacherCategoryArray addObject:@[model]];
+                } else if (pathArray.count == 2) {
+                    TeacherCategoryModel *model = [[TeacherCategoryModel alloc] init];
+                    model.cateGoryId = pathArray[0];
+                    model.title = _teacherCategoryTitleArray[0];
+                    
+                    CateGoryModelSecond *modelSecond = [[CateGoryModelSecond alloc] init];
+                    modelSecond.cateGoryId = pathArray[1];
+                    modelSecond.title = _teacherCategoryTitleArray[0];
+                    
+                    [_teacherCategoryArray addObject:@[model,modelSecond]];
+                } else if (pathArray.count == 3) {
+                    TeacherCategoryModel *model = [[TeacherCategoryModel alloc] init];
+                    model.cateGoryId = pathArray[0];
+                    model.title = _teacherCategoryTitleArray[0];
+                    
+                    CateGoryModelSecond *modelSecond = [[CateGoryModelSecond alloc] init];
+                    modelSecond.cateGoryId = pathArray[1];
+                    modelSecond.title = _teacherCategoryTitleArray[0];
+                    
+                    CateGoryModelThird *modelThird = [[CateGoryModelThird alloc] init];
+                    modelThird.cateGoryId = pathArray[2];
+                    modelThird.title = _teacherCategoryTitleArray[0];
+                    
+                    [_teacherCategoryArray addObject:@[model,modelSecond,modelThird]];
+                }
+            }
+        }
+        
+        if (_teacherCategoryArray.count) {
+            _industryRightLabel.text = [NSString stringWithFormat:@"全部%@个",@(_teacherCategoryArray.count)];
+        } else {
+            _industryRightLabel.text = @"请选择所属行业";
+        }
+        
+        [self setTeacherCategoryUI];
+        
         return;
     }
 }
@@ -943,6 +1014,9 @@
 }
 
 - (void)teacherCategoryButtonClick:(UIButton *)sender {
+    if ([verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"1"]) {
+        return;
+    }
     NSMutableArray *pass = [NSMutableArray arrayWithArray:_teacherCategoryArray];
     [pass removeObjectAtIndex:sender.tag - 100];
     [self chooseCategoryArray:pass];

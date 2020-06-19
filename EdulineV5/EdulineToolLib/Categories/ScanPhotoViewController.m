@@ -44,9 +44,13 @@
     if (isPhoto) {
         _rightButton.hidden = YES;
     }else{
-        _rightButton.hidden = NO;
-        [_rightButton setImage:Image(@"ico_more") forState:UIControlStateNormal];
-        //		[_rightButton setTitle:@"删除" forState:0];
+        if (_hiddenRightButton) {
+            _rightButton.hidden = YES;
+        } else {
+            _rightButton.hidden = NO;
+            [_rightButton setImage:Image(@"ico_more") forState:UIControlStateNormal];
+//            [_rightButton setTitle:@"删除" forState:0];
+        }
     }
     self.view.backgroundColor = [UIColor whiteColor];
     

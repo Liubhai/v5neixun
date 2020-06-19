@@ -23,5 +23,6 @@
 @property (nonatomic,retain) NSMutableArray *imgArr;
 @property(nonatomic,assign)int index;
 @property(nonatomic,assign)BOOL isPhoto;
+@property (assign, nonatomic) BOOL hiddenRightButton;
 
 @end
