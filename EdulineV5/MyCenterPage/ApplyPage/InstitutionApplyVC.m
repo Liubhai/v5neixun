@@ -205,6 +205,9 @@
     _logoImageView.layer.cornerRadius = _logoImageView.height / 2.0;
     _logoImageView.image = DefaultImage;
     _logoImageView.centerY = _logoLabel.centerY;
+    _logoImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *logoTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeUserFaceTap:)];
+    [_logoImageView addGestureRecognizer:logoTap];
     [_nextBackView addSubview:_logoImageView];
     
     _nextLine5 = [[UIView alloc] initWithFrame:CGRectMake(15, _logoLabel.bottom, MainScreenWidth - 15, 1)];
@@ -636,6 +639,8 @@
             }];
             return;
         }
+    } else if (sender.view == _logoImageView) {
+        whichPic = @"logoId";
     }
     UIActionSheet *action = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"相册里选" otherButtonTitles:@"相机拍照", nil];
     action.delegate = self;
@@ -709,6 +714,10 @@
         [_imageArrayTeacher removeAllObjects];
         [_imageArrayTeacher addObjectsFromArray:photos];
         [self verifyImage];
+    } else if ([whichPic isEqualToString:@"logoId"]) {
+        [_logoImageArray removeAllObjects];
+        [_logoImageArray addObjectsFromArray:photos];
+        [self verifyImage];
     }
 }
 
@@ -724,6 +733,10 @@
     } else if ([whichPic isEqualToString:@"teacherId"]) {
         [_imageArrayTeacher removeAllObjects];
         [_imageArrayTeacher addObject:coverImage];
+        [self verifyImage];
+    } else if ([whichPic isEqualToString:@"logoId"]) {
+        [_logoImageArray removeAllObjects];
+        [_logoImageArray addObject:coverImage];
         [self verifyImage];
     }
 }
@@ -744,6 +757,10 @@
             [_imageArrayTeacher removeAllObjects];
             [_imageArrayTeacher addObject:image];
             [self verifyImage];
+        } else if ([whichPic isEqualToString:@"logoId"]) {
+            [_logoImageArray removeAllObjects];
+            [_logoImageArray addObject:image];
+            [self verifyImage];
         }
     }];
 }
@@ -761,6 +778,10 @@
         [_imageArrayTeacher removeAllObjects];
         [_imageArrayTeacher addObjectsFromArray:photos];
         [self verifyImage];
+    } else if ([whichPic isEqualToString:@"logoId"]) {
+        [_logoImageArray removeAllObjects];
+        [_logoImageArray addObjectsFromArray:photos];
+        [self verifyImage];
     }
 }
 
@@ -777,6 +798,10 @@
         if (!SWNOTEmptyArr(_imageArrayTeacher)) {
             return;
         }
+    } else if ([whichPic isEqualToString:@"logoId"]) {
+        if (!SWNOTEmptyArr(_logoImageArray)) {
+            return;
+        }
     }
     NSMutableDictionary *param = [NSMutableDictionary new];
     NSString *fieldName = @"image0.jpg";
@@ -787,6 +812,8 @@
         dataImg = UIImageJPEGRepresentation(_imageArrayIdCardBack[0], 0.5);
     } else if ([whichPic isEqualToString:@"teacherId"]) {
         dataImg = UIImageJPEGRepresentation(_imageArrayTeacher[0], 0.5);
+    } else if ([whichPic isEqualToString:@"logoId"]) {
+        dataImg = UIImageJPEGRepresentation(_logoImageArray[0], 0.5);
     }
     UIImage *image = [UIImage imageWithData:dataImg];
     [param setObject:fieldName forKey:@"name"];
@@ -823,6 +850,11 @@
             [self hideHud];
             return;
         }
+    } else if ([whichPic isEqualToString:@"logoId"]) {
+        if (!SWNOTEmptyArr(_logoImageArray)) {
+            [self hideHud];
+            return;
+        }
     }
     [Net_API POST:[Net_Path uploadImageField] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         //上传图片
@@ -841,6 +873,11 @@
                 NSData *dataImg=UIImageJPEGRepresentation(_imageArrayTeacher[i], 0.5);
                 [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
             }
+        } else if ([whichPic isEqualToString:@"logoId"]) {
+            for (int i = 0; i<_logoImageArray.count; i++) {
+                NSData *dataImg=UIImageJPEGRepresentation(_logoImageArray[i], 0.5);
+                [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
+            }
         }
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -856,6 +893,9 @@
             } else if ([whichPic isEqualToString:@"teacherId"]) {
                 teacherId = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
                 _teacherPicture.image = _imageArrayTeacher[0];
+            } else if ([whichPic isEqualToString:@"logoId"]) {
+                logoId = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
+                _logoImageView.image = _logoImageArray[0];
             }
         } else {
             [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
@@ -954,6 +994,10 @@
 
 - (void)textFieldResign {
     [_idCardText resignFirstResponder];
+    [_institutionInroTextView resignFirstResponder];
+    [_institutionTextField resignFirstResponder];
+    [_phoneTextField resignFirstResponder];
+    [_addressTextView resignFirstResponder];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification{
@@ -1201,8 +1245,8 @@
 
 - (void)submitApplyClick:(UIButton *)sender {
     
-    if (!SWNOTEmptyStr(schoolID)) {
-        [self showHudInView:self.view showHint:@"请选择所属机构"];
+    if (!SWNOTEmptyStr(_institutionTextField.text)) {
+        [self showHudInView:self.view showHint:@"请填写机构名称"];
         return;
     }
     
@@ -1211,8 +1255,28 @@
         return;
     }
     
+    if (!SWNOTEmptyStr(logoId)) {
+        [self showHudInView:self.view showHint:@"请上传机构logo"];
+        return;
+    }
+    
+    if (!SWNOTEmptyStr(_institutionInroTextView.text)) {
+        [self showHudInView:self.view showHint:@"请填写机构简介"];
+        return;
+    }
+    
+    if (!SWNOTEmptyStr(_phoneTextField.text)) {
+        [self showHudInView:self.view showHint:@"请填写联系电话"];
+        return;
+    }
+    
+    if (!SWNOTEmptyStr(_addressTextView.text)) {
+        [self showHudInView:self.view showHint:@"请填写联系地址"];
+        return;
+    }
+    
     if (!SWNOTEmptyStr(_idCardText.text)) {
-        [self showHudInView:self.view showHint:@"请输入身份证号码"];
+        [self showHudInView:self.view showHint:@"请输入法人身份证号码"];
         return;
     }
     
@@ -1227,7 +1291,7 @@
     }
     
     if (!SWNOTEmptyStr(teacherId)) {
-        [self showHudInView:self.view showHint:@"请上传您的教师资格证证件照"];
+        [self showHudInView:self.view showHint:@"请上传您的营业执照"];
         return;
     }
     
@@ -1237,19 +1301,27 @@
     }
     
     NSMutableDictionary *param = [NSMutableDictionary new];
-    [param setObject:schoolID forKey:@"mhm_id"];
+    [param setObject:_institutionTextField.text forKey:@"title"];
     
     [param setObject:_teacherCategoryIDArray forKey:@"category"];
     
-    [param setObject:_idCardText.text forKey:@"IDcard"];
+    [param setObject:logoId forKey:@"logo"];
     
-    [param setObject:idCardIDFont forKey:@"IDcard_positive"];
+    [param setObject:_institutionInroTextView.text forKey:@"intro"];
     
-    [param setObject:idCardIDBack forKey:@"IDcard_side"];
+    [param setObject:_phoneTextField.text forKey:@"telephone"];
     
-    [param setObject:teacherId forKey:@"certification"];
+    [param setObject:_addressTextView.text forKey:@"address"];
     
-    [Net_API requestPOSTWithURLStr:[Net_Path teacherApplySubmiteNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [param setObject:_idCardText.text forKey:@"legal_IDcard"];
+    
+    [param setObject:idCardIDFont forKey:@"legal_IDcard_positive"];
+    
+    [param setObject:idCardIDBack forKey:@"legal_IDcard_side"];
+    
+    [param setObject:teacherId forKey:@"business_license"];
+    
+    [Net_API requestPOSTWithURLStr:[Net_Path institutionApplyNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [self.navigationController popViewControllerAnimated:YES];
@@ -1258,7 +1330,7 @@
             }
         }
     } enError:^(NSError * _Nonnull error) {
-        NSLog(@"讲师认证失败");
+        NSLog(@"机构认证失败");
     }];
 }
 
