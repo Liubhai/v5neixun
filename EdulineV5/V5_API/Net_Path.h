@@ -250,6 +250,11 @@ struct NetWorkUrl {
 /** 公共分类接口 默认0【0：课程；1：讲师；2：机构；】 */
 + (NSString *)commonCategoryNet;
 
+// MARK: - 发现页面接口
+
+/** 发现页面数据接口 */
++ (NSString *)findPageNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

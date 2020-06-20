@@ -53,7 +53,7 @@
         
         //添加头像
         UIImageView *TeaImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 15, 80, 80)];
-        NSString *urlStr = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"avatar"]];
+        NSString *urlStr = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"avatar_url"]];
         [TeaImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:DefaultUserImage];
         TeaImageView.layer.masksToBounds = YES;
         TeaImageView.layer.cornerRadius = 40;

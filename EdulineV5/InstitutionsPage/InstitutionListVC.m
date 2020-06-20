@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "InstitutionListCell.h"
+#import "InstitutionRootVC.h"
 
 @interface InstitutionListVC ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger page;
@@ -72,7 +73,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
+    vc.institutionId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getFirstList {

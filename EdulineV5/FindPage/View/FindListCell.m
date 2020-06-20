@@ -79,7 +79,8 @@
         _typeTitle.frame = CGRectMake(_typeIcon.right + 10, 0, 200, 50);
         _typeTitle.textAlignment = NSTextAlignmentLeft;
     }
-    _typeIcon.image = Image([info objectForKey:@"image"]);
+//    _typeIcon.image = Image([info objectForKey:@"image"]);
+    [_typeIcon sd_setImageWithURL:EdulineUrlString([info objectForKey:@"icon_url"]) placeholderImage:nil];
     _typeTitle.text = [info objectForKey:@"title"];
 }
 

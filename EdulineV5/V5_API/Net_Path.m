@@ -320,4 +320,8 @@
     return [Net_Path fullPath:@"category/tree" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)findPageNet {
+    return [Net_Path fullPath:@"config/discovery" repalce:@"" byReplece:@""];
+}
+
 @end
