@@ -15,6 +15,7 @@
 #import "CourseSearchHistoryVC.h"
 #import "IntendedCourseVC.h"
 #import "TeacherListVC.h"
+#import "TeacherMainPageVC.h"
 
 #import "HomePageTeacherCell.h"
 #import "HomePageCourseTypeOneCell.h"
@@ -56,6 +57,10 @@
 
 @property (strong, nonatomic) NSMutableArray *sortArray;
 
+// 周榜月榜按钮
+@property (strong, nonatomic) UIButton *weekBtn;
+@property (strong, nonatomic) UIButton *monthBtn;
+
 @end
 
 @implementation HomeRootViewController
@@ -63,6 +68,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    isWeek = YES;
     _rightButton.hidden = NO;
     [_rightButton setImage:Image(@"home_intentionlesson_icon") forState:0];
     
@@ -128,9 +134,10 @@
 
 - (void)makeHeaderView {
     if (!_headerView) {
-        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0)];
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.01)];
         _headerView.backgroundColor = [UIColor whiteColor];
     }
+    _headerView.frame = CGRectMake(0, 0, MainScreenWidth, 0.01);
     [_headerView removeAllSubviews];
 }
 
@@ -143,16 +150,18 @@
     _imageBannerBackView.frame = CGRectMake(0, 0, MainScreenWidth, SWNOTEmptyArr(_bannerImageArray) ? (2 * MainScreenWidth / 5 + 20) : 0);
     [_imageBannerBackView removeAllSubviews];
     
-    // 添加工具类
-    // 网络加载 --- 创建自定义图片的pageControlDot的图片轮播器
-    SDCycleScrollView *cycleScrollView3 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 10, MainScreenWidth, MainScreenWidth * 2 / 5) delegate:self placeholderImage:[UIImage imageNamed:@"站位图"]];
-    cycleScrollView3.currentPageDotImage = [UIImage imageNamed:@"pageControlCurrentDot"];
-    cycleScrollView3.pageDotImage = [UIImage imageNamed:@"pageControlDot"];
-    cycleScrollView3.imageURLStringsGroup = _bannerImageArray;
-    cycleScrollView3.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
-    cycleScrollView3.pageControlDotSize = CGSizeMake(5, 5);
-    cycleScrollView3.delegate = self;
-    [_imageBannerBackView addSubview:cycleScrollView3];
+    if (SWNOTEmptyArr(_bannerImageSourceArray)) {
+        // 添加工具类
+        // 网络加载 --- 创建自定义图片的pageControlDot的图片轮播器
+        SDCycleScrollView *cycleScrollView3 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 10, MainScreenWidth, MainScreenWidth * 2 / 5) delegate:self placeholderImage:[UIImage imageNamed:@"站位图"]];
+        cycleScrollView3.currentPageDotImage = [UIImage imageNamed:@"pageControlCurrentDot"];
+        cycleScrollView3.pageDotImage = [UIImage imageNamed:@"pageControlDot"];
+        cycleScrollView3.imageURLStringsGroup = _bannerImageArray;
+        cycleScrollView3.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
+        cycleScrollView3.pageControlDotSize = CGSizeMake(5, 5);
+        cycleScrollView3.delegate = self;
+        [_imageBannerBackView addSubview:cycleScrollView3];
+    }
     [_headerView addSubview:_imageBannerBackView];
 }
 
@@ -185,7 +194,7 @@
         }
     }
     
-    UIView *fenge = [[UIView alloc] initWithFrame:CGRectMake(0, _cateScrollView.bottom, MainScreenWidth, (SWNOTEmptyArr(_bannerImageArray) || SWNOTEmptyArr(_cateSourceArray)) ? 10 : 0)];
+    UIView *fenge = [[UIView alloc] initWithFrame:CGRectMake(0, _cateScrollView.bottom, MainScreenWidth, (SWNOTEmptyArr(_bannerImageArray) || SWNOTEmptyArr(_cateSourceArray)) ? 10 : 0.01)];
     _headerView.frame = CGRectMake(0, 0, MainScreenWidth, fenge.bottom);
 }
 
@@ -225,17 +234,60 @@
     themeLabel.text = [NSString stringWithFormat:@"%@",_sortArray[section][@"title"]];
     [sectionHead addSubview:themeLabel];
     
-    UIButton *moreButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 58, 0, 58, 56)];
-    moreButton.titleLabel.font = SYSTEMFONT(14);
-    [moreButton setTitle:@"更多" forState:0];
-    [moreButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        [moreButton setTitle:@"" forState:0];
-        [moreButton setImage:Image(@"home_change_icon") forState:0];
+    if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        UIView *changeButtonView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 92, (sectionHead.height - 26) / 2.0, 92, 26)];
+        changeButtonView.backgroundColor = EdlineV5_Color.backColor;
+        changeButtonView.layer.masksToBounds = YES;
+        changeButtonView.layer.cornerRadius = changeButtonView.height / 2.0;
+        [sectionHead addSubview:changeButtonView];
+        for (int i = 0; i<2; i++) {
+            UIButton *weekButton = [[UIButton alloc] initWithFrame:CGRectMake(46 * i, 0, 46, 26)];
+            weekButton.layer.masksToBounds = YES;
+            weekButton.layer.cornerRadius = weekButton.height / 2.0;
+            [weekButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+            [weekButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+            weekButton.titleLabel.font = SYSTEMFONT(14);
+            [weekButton addTarget:self action:@selector(weekButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            if (i == 0) {
+                [weekButton setTitle:@"周榜" forState:0];
+                _weekBtn = weekButton;
+            } else {
+                [weekButton setTitle:@"月榜" forState:0];
+                _monthBtn = weekButton;
+            }
+            if (isWeek) {
+                if (i==0) {
+                    weekButton.selected = YES;
+                    weekButton.backgroundColor = EdlineV5_Color.themeColor;
+                } else {
+                    weekButton.selected = NO;
+                    weekButton.backgroundColor = EdlineV5_Color.backColor;
+                }
+            } else {
+                if (i==1) {
+                    weekButton.selected = YES;
+                    weekButton.backgroundColor = EdlineV5_Color.themeColor;
+                } else {
+                    weekButton.selected = NO;
+                    weekButton.backgroundColor = EdlineV5_Color.backColor;
+                }
+            }
+            [changeButtonView addSubview:weekButton];
+        }
+        
+    } else {
+        UIButton *moreButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 58, 0, 58, 56)];
+        moreButton.titleLabel.font = SYSTEMFONT(14);
+        [moreButton setTitle:@"更多" forState:0];
+        [moreButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+        if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
+            [moreButton setTitle:@"" forState:0];
+            [moreButton setImage:Image(@"home_change_icon") forState:0];
+        }
+        [moreButton addTarget:self action:@selector(sectionMoreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        moreButton.tag = section;
+        [sectionHead addSubview:moreButton];
     }
-    [moreButton addTarget:self action:@selector(sectionMoreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    moreButton.tag = section;
-    [sectionHead addSubview:moreButton];
     return sectionHead;
 }
 
@@ -354,14 +406,30 @@
 }
 
 // MARK: - 调整到讲师主页面
-- (void)goToTeacherMainPage:(NSInteger)teacherViewTag {
-    
+- (void)goToTeacherMainPage:(NSString *)teacherId {
+    TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
+    vc.teacherId = teacherId;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)rightButtonClick:(id)sender {
     IntendedCourseVC *vc = [[IntendedCourseVC alloc] init];
     vc.isChange = YES;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 周榜月榜切换按钮点击事件
+- (void)weekButtonClick:(UIButton *)sender {
+    if (sender == _weekBtn) {
+        isWeek = YES;
+        _weekBtn.selected = YES;
+        _monthBtn.selected = NO;
+    } else {
+        isWeek = NO;
+        _weekBtn.selected = NO;
+        _monthBtn.selected = YES;
+    }
+    [_tableView reloadData];
 }
 
 // MARK: - 首页请求数据

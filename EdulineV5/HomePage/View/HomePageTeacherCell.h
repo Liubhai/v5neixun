@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HomePageTeacherCellDelegate <NSObject>
 
 @optional
-- (void)goToTeacherMainPage:(NSInteger)teacherViewTag;
+- (void)goToTeacherMainPage:(NSString *)teacherId;
 
 @end
 
@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) id<HomePageTeacherCellDelegate> delegate;
 
 @property (strong, nonatomic) UIScrollView *teacherScrollView;
+@property (strong, nonatomic) NSMutableArray *teacherInfoArray;
 
 - (void)setTeacherArrayInfo:(NSMutableArray *)infoArray;
 

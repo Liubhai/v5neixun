@@ -207,9 +207,9 @@
 }
 
 // MARK: - HomePageTeacherCellDelegate(讲师点击事件)
-- (void)goToTeacherMainPage:(NSInteger)teacherViewTag {
+- (void)goToTeacherMainPage:(NSString *)teacherId {
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
-    vc.teacherId = [NSString stringWithFormat:@"%@",_teacherArray[teacherViewTag][@"id"]];
+    vc.teacherId = teacherId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

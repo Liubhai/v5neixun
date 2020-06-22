@@ -14,6 +14,8 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        _teacherInfoArray = [NSMutableArray new];
+        [_teacherInfoArray removeAllObjects];
         [self makeSubViews];
     }
     return self;
@@ -28,6 +30,8 @@
 }
 
 - (void)setTeacherArrayInfo:(NSMutableArray *)infoArray {
+    [_teacherInfoArray removeAllObjects];
+    [_teacherInfoArray addObjectsFromArray:infoArray];
     [_teacherScrollView removeAllSubviews];
     CGFloat TeaViewWidth = 115;
     CGFloat TeaViewHight = 160;
@@ -58,11 +62,18 @@
         TeaImageView.layer.masksToBounds = YES;
         TeaImageView.layer.cornerRadius = 40;
         TeaImageView.centerX = TeaViewWidth / 2.0;
+        TeaImageView.clipsToBounds = YES;
+        TeaImageView.contentMode = UIViewContentModeScaleAspectFill;
         [view addSubview:TeaImageView];
         
         //添加名字
         UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(TeaImageView.frame) + 13, TeaViewWidth, 20)];
-        name.text = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"title"]];
+        NSString *nametext = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"title"]];
+        if ([nametext isEqualToString:@"<null>"] || [nametext isEqualToString:@"null"]) {
+           name.text = @"";
+        } else {
+            name.text = nametext;
+        }
         name.textAlignment = NSTextAlignmentCenter;
         name.font = SYSTEMFONT(14);
         name.textColor = EdlineV5_Color.textFirstColor;
@@ -70,7 +81,12 @@
         
         //添加讲师等级
         UILabel *teacherLevel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(name.frame) + 3, TeaViewWidth, 17)];
-        teacherLevel.text = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"level_text"]];
+        NSString *teacherLeveltext = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"level_text"]];
+        if ([teacherLeveltext isEqualToString:@"<null>"] || [teacherLeveltext isEqualToString:@"null"]) {
+           teacherLevel.text = @"";
+        } else {
+            teacherLevel.text = teacherLeveltext;
+        }
         teacherLevel.textAlignment = NSTextAlignmentCenter;
         teacherLevel.font = SYSTEMFONT(12);
         teacherLevel.textColor = EdlineV5_Color.textThirdColor;
@@ -85,7 +101,7 @@
 
 - (void)teacherViewClick:(UITapGestureRecognizer *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(goToTeacherMainPage:)]) {
-        [_delegate goToTeacherMainPage:sender.view.tag];
+        [_delegate goToTeacherMainPage:[NSString stringWithFormat:@"%@",_teacherInfoArray[sender.view.tag][@"id"]]];
     }
 }
 

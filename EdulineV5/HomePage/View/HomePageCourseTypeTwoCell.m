@@ -126,7 +126,11 @@
         learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",infoArray[i][@"sale_count"]];
         priceLabel.text = [NSString stringWithFormat:@"¥%@",infoArray[i][@"price"]];
     }
-    [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight + 10 : ((infoArray.count + 1)/2.0) * TwoCellHeight + 10];
+    if (SWNOTEmptyArr(infoArray)) {
+        [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight + 10 : ((infoArray.count + 1)/2.0) * TwoCellHeight + 10];
+    } else {
+        [self setHeight:0];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

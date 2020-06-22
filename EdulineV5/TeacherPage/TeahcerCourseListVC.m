@@ -42,7 +42,7 @@
     _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainList)];
     _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainListMoreData)];
     _collectionView.mj_footer.hidden = YES;
-//    [_collectionView.mj_header beginRefreshing];
+    [_collectionView.mj_header beginRefreshing];
 }
 
 - (void)addHeaderView {
