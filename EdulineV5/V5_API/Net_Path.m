@@ -328,4 +328,8 @@
     return [Net_Path fullPath:@"home" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)favoriteCourseChangeNet {
+    return [Net_Path fullPath:@"user/course/favorite" repalce:@"" byReplece:@""];
+}
+
 @end

@@ -16,6 +16,7 @@
 #import "IntendedCourseVC.h"
 #import "TeacherListVC.h"
 #import "TeacherMainPageVC.h"
+#import "TeacherCategoryVC.h"
 
 #import "HomePageTeacherCell.h"
 #import "HomePageCourseTypeOneCell.h"
@@ -88,6 +89,8 @@
     [self makeTableView];
     _tableView.tableHeaderView = _headerView;
     [_tableView reloadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHomePageInfo) name:@"changeFavoriteCourse" object:nil];
 }
 
 - (void)makeTopSearch {
@@ -433,6 +436,11 @@
         vc.sortStr = @"推荐";
         vc.sortIdStr = @"splendid";
         [self.navigationController pushViewController:vc animated:YES];
+    } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"favoriteCourse"]) {
+        TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+        vc.isChange = YES;
+        vc.typeString = @"0";
+        [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"categoryCourse"]) {
         CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
         vc.isSearch = YES;
@@ -446,8 +454,9 @@
 
 // MARK: - 调整到讲师主页面
 - (void)goToTeacherMainPage:(NSString *)teacherId {
-    TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
-    vc.teacherId = teacherId;
+    TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+    vc.isChange = YES;
+    vc.typeString = @"0";
     [self.navigationController pushViewController:vc animated:YES];
 }
 

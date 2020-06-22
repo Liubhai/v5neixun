@@ -38,6 +38,12 @@
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _rightButton.hidden = NO;
+    
+    if ([_typeString isEqualToString:@"0"]) {
+        _titleLabel.text = _isChange ? @"选择意向课程" : @"更改意向课程";
+        _rightButton.hidden = YES;
+    }
+    
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     
@@ -232,6 +238,13 @@
     
     sender.selected = !sender.selected;
     TeacherCategoryModel *model = (TeacherCategoryModel *)_firstArray[sender.tag - 200];
+    
+    // 如果是意向课程选择 就是单选 这里直接请求更换意向课程接口
+    if ([_typeString isEqualToString:@"0"]) {
+        [self changeFavoriteCourse:model.cateGoryId];
+        return;
+    }
+    
     model.selected = sender.selected;
     
     // 选择了全部 这个第一层分类下面所有的都将被取消选中状态
@@ -259,6 +272,12 @@
     
     NSMutableArray *passSecond = [NSMutableArray arrayWithArray:model.child];
     CateGoryModelSecond *secondModel = (CateGoryModelSecond *)passSecond[sender.tag - 100];
+    
+    // 如果是意向课程选择 就是单选 这里直接请求更换意向课程接口
+    if ([_typeString isEqualToString:@"0"]) {
+        [self changeFavoriteCourse:secondModel.cateGoryId];
+        return;
+    }
     
     NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
     for (int j = 0; j<passThird.count; j++) {
@@ -299,6 +318,12 @@
     NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
     CateGoryModelThird *thirdModel = (CateGoryModelThird *)passThird[sender.tag - 400];
     thirdModel.selected = sender.selected;
+    
+    // 如果是意向课程选择 就是单选 这里直接请求更换意向课程接口
+    if ([_typeString isEqualToString:@"0"]) {
+        [self changeFavoriteCourse:thirdModel.cateGoryId];
+        return;
+    }
     
     // 置换第三层model
     [passThird replaceObjectAtIndex:sender.tag - 400 withObject:thirdModel];
@@ -347,6 +372,22 @@
     if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryArray:)]) {
         [_delegate chooseCategoryArray:teacherCateGory];
         [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void)changeFavoriteCourse:(NSString *)favoriteCourseId {
+    if (SWNOTEmptyStr(favoriteCourseId)) {
+        [Net_API requestPUTWithURLStr:[Net_Path favoriteCourseChangeNet] paramDic:@{@"category":favoriteCourseId} Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeFavoriteCourse" object:nil];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"选择意向课程失败"];
+        }];
     }
 }
 

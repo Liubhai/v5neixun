@@ -260,6 +260,10 @@ struct NetWorkUrl {
 /** 首页接口地址  */
 + (NSString *)homePageInfoNet;
 
+// MARK: - 意向课程选择
+/** 意向课程选择 */
++ (NSString *)favoriteCourseChangeNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
