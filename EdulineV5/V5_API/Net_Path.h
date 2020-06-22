@@ -255,6 +255,11 @@ struct NetWorkUrl {
 /** 发现页面数据接口 */
 + (NSString *)findPageNet;
 
+// MARK: - 首页接口
+
+/** 首页接口地址  */
++ (NSString *)homePageInfoNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -53,22 +53,22 @@
 }
 
 - (void)setHomePageCourseTypeOneCellInfo:(NSDictionary *)info {
-//    [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover"]) placeholderImage:DefaultImage];
-//    _courseFace.contentMode = UIViewContentModeScaleAspectFill;
-//    // 1 点播 2 直播 3 面授 4 专辑
-//    NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
-//    if ([courseType isEqualToString:@"1"]) {
-//        _courseTypeImage.image = Image(@"dianbo");
-//    } else if ([courseType isEqualToString:@"2"]) {
-//        _courseTypeImage.image = Image(@"live");
-//    } else if ([courseType isEqualToString:@"3"]) {
-//        _courseTypeImage.image = Image(@"mianshou");
-//    } else if ([courseType isEqualToString:@"4"]) {
-//        _courseTypeImage.image = Image(@"album_icon");
-//    }
-//    _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
-//    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
-//    _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+    [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+    _courseFace.contentMode = UIViewContentModeScaleAspectFill;
+    // 1 点播 2 直播 3 面授 4 专辑
+    NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+    if ([courseType isEqualToString:@"1"]) {
+        _courseTypeImage.image = Image(@"dianbo");
+    } else if ([courseType isEqualToString:@"2"]) {
+        _courseTypeImage.image = Image(@"live");
+    } else if ([courseType isEqualToString:@"3"]) {
+        _courseTypeImage.image = Image(@"mianshou");
+    } else if ([courseType isEqualToString:@"4"]) {
+        _courseTypeImage.image = Image(@"album_icon");
+    }
+    _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
+    _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
     
     _titleL.frame = CGRectMake(0, 0, _titleL.width, 100);
     [_titleL sizeToFit];

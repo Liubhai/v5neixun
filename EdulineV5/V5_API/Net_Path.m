@@ -324,4 +324,8 @@
     return [Net_Path fullPath:@"config/discovery" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)homePageInfoNet {
+    return [Net_Path fullPath:@"home" repalce:@"" byReplece:@""];
+}
+
 @end

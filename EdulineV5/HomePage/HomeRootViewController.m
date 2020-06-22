@@ -30,7 +30,9 @@
 #import "SDCycleScrollView.h"
 #import "ZPScrollerScaleView.h"
 
-@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,HomePageTeacherCellDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,HomePageTeacherCellDelegate,UITableViewDelegate,UITableViewDataSource> {
+    BOOL isWeek;// 显示周榜还是月榜
+}
 
 @property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
 @property (strong, nonatomic) UITextField *institutionSearch;
@@ -52,6 +54,8 @@
 // 讲师
 @property (strong, nonatomic) NSMutableArray *teacherArray;
 
+@property (strong, nonatomic) NSMutableArray *sortArray;
+
 @end
 
 @implementation HomeRootViewController
@@ -65,6 +69,7 @@
     _bannerImageArray = [NSMutableArray new];
     _bannerImageSourceArray = [NSMutableArray new];
     _cateSourceArray = [NSMutableArray new];
+    _sortArray = [NSMutableArray new];
     
     [_bannerImageArray addObjectsFromArray:@[@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg"]];
     [_cateSourceArray addObjectsFromArray:@[@"",@"",@""]];
@@ -115,8 +120,10 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getHomePageInfo)];
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (void)makeHeaderView {
@@ -184,20 +191,48 @@
 
 // MARK: - tableview 代理
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return _sortArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
+        return [_sortArray[section][@"list"] count];
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        if (isWeek) {
+            for (NSDictionary *dict in _sortArray[section][@"list"]) {
+                if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
+                    return [[dict objectForKey:@"list"] count];
+                }
+            }
+        } else {
+            for (NSDictionary *dict in _sortArray[section][@"list"]) {
+                if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
+                    return [[dict objectForKey:@"list"] count];
+                }
+            }
+        }
+    }
     return 1;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
-    sectionHead.backgroundColor = [UIColor redColor];
+    sectionHead.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, sectionHead.height)];
+    themeLabel.font = SYSTEMFONT(20);
+    themeLabel.textColor = EdlineV5_Color.textFirstColor;
+    themeLabel.text = [NSString stringWithFormat:@"%@",_sortArray[section][@"title"]];
+    [sectionHead addSubview:themeLabel];
+    
     UIButton *moreButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 58, 0, 58, 56)];
     moreButton.titleLabel.font = SYSTEMFONT(14);
     [moreButton setTitle:@"更多" forState:0];
     [moreButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
+        [moreButton setTitle:@"" forState:0];
+        [moreButton setImage:Image(@"home_change_icon") forState:0];
+    }
     [moreButton addTarget:self action:@selector(sectionMoreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     moreButton.tag = section;
     [sectionHead addSubview:moreButton];
@@ -219,28 +254,69 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        static NSString *reuse = @"HomePageCourseTypeOneCell";
+    
+    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
+        static NSString *reuse = @"HomePageCourseTypeOnefavoriteCourseCell";
         HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
             cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
+        [cell setHomePageCourseTypeOneCellInfo:_sortArray[indexPath.section][@"list"][indexPath.row]];
         return cell;
-    } else if (indexPath.section == 1) {
-        static NSString *reuse = @"HomePageCourseTypeTwoCell";
-        HomePageCourseTypeTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-        if (!cell) {
-            cell = [[HomePageCourseTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-        }
-//        [cell setHomePageCourseTypeTwoCellInfo:@[@"",@"",@"",@"",@""]];
-        return cell;
-    } else if (indexPath.section == 2) {
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendCourse"]) {
         static NSString *reuse = @"HomePageHotRecommendedCell";
         HomePageHotRecommendedCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
             cell = [[HomePageHotRecommendedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-//        [cell setRecommendCourseCellInfo:@[@"",@"",@"",@"",@""]];
+        [cell setRecommendCourseCellInfo:_sortArray[indexPath.section][@"list"]];
+        return cell;
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        if (isWeek) {
+            NSMutableArray *pass = [NSMutableArray new];
+            for (NSDictionary *dict in _sortArray[indexPath.section][@"list"]) {
+                if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
+                    [pass addObjectsFromArray:[dict objectForKey:@"list"]];
+                }
+            }
+            static NSString *reuse = @"HomePageCourseTypeOneweekCell";
+            HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+            if (!cell) {
+                cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            }
+            [cell setHomePageCourseTypeOneCellInfo:pass[indexPath.row]];
+            return cell;
+        } else {
+            NSMutableArray *pass = [NSMutableArray new];
+            for (NSDictionary *dict in _sortArray[indexPath.section][@"list"]) {
+                if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
+                    [pass addObjectsFromArray:[dict objectForKey:@"list"]];
+                }
+            }
+            static NSString *reuse = @"HomePageCourseTypeOnemonthCell";
+            HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+            if (!cell) {
+                cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            }
+            [cell setHomePageCourseTypeOneCellInfo:pass[indexPath.row]];
+            return cell;
+        }
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"]) {
+        static NSString *reuse = @"HomePageTeacherrecommendTeacherCell";
+        HomePageTeacherCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[HomePageTeacherCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setTeacherArrayInfo:_sortArray[indexPath.section][@"list"]];
+        cell.delegate = self;
+        return cell;
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"categoryCourse"]) {
+        static NSString *reuse = @"HomePageCourseTypecategoryCourseCell";
+        HomePageCourseTypeTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[HomePageCourseTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setHomePageCourseTypeTwoCellInfo:_sortArray[indexPath.section][@"list"]];
         return cell;
     } else {
         static NSString *reuse = @"homeCell";
@@ -253,12 +329,17 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    
+    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
         return 106;
-    } else if (indexPath.section == 1) {
-        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
-    } else if (indexPath.section == 2) {
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendCourse"]) {
         return 172 + 15 + 20;
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        return 106;
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"]) {
+        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"categoryCourse"]) {
+        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
     } else {
         return 0.0;
     }
@@ -281,6 +362,59 @@
     IntendedCourseVC *vc = [[IntendedCourseVC alloc] init];
     vc.isChange = YES;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 首页请求数据
+- (void)getHomePageInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path homePageInfoNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if ([_tableView.mj_header isRefreshing]) {
+            [_tableView.mj_header endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_sortArray removeAllObjects];
+                
+                [_bannerImageSourceArray removeAllObjects];
+                [_bannerImageArray removeAllObjects];
+                
+                [_cateSourceArray removeAllObjects];
+                
+                if (SWNOTEmptyArr([responseObject objectForKey:@"data"])) {
+                    NSArray *passArray = [NSArray arrayWithArray:[responseObject objectForKey:@"data"]];
+                    for (NSDictionary *dict in passArray) {
+                        if ([dict[@"key"] isEqualToString:@"banner"]) {
+                            [_bannerImageSourceArray addObjectsFromArray:dict[@"list"]];
+                            for (NSDictionary *imageSource in _bannerImageSourceArray) {
+                                if (SWNOTEmptyStr(imageSource[@"image_url"])) {
+                                    [_bannerImageArray addObject:imageSource[@"image_url"]];
+                                } else {
+                                    [_bannerImageArray addObject:@""];
+                                }
+                            }
+                        } else if ([dict[@"key"] isEqualToString:@"advert"]) {
+                            [_cateSourceArray addObjectsFromArray:dict[@"list"]];
+                        }
+                    }
+                    [_sortArray addObjectsFromArray:passArray];
+                    for (int i = _sortArray.count - 1; i>=0; i--) {
+                        if ([_sortArray[i][@"key"] isEqualToString:@"banner"] || [_sortArray[i][@"key"] isEqualToString:@"advert"]) {
+                            [_sortArray removeObjectAtIndex:i];
+                        }
+                    }
+                }
+                
+                [self makeHeaderView];
+                [self makeBannerView];
+                [self makeCateView];
+                _tableView.tableHeaderView = _headerView;
+                [_tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        if ([_tableView.mj_header isRefreshing]) {
+            [_tableView.mj_header endRefreshing];
+        }
+    }];
 }
 
 @end
