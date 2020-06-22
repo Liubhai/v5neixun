@@ -77,9 +77,6 @@
     _cateSourceArray = [NSMutableArray new];
     _sortArray = [NSMutableArray new];
     
-    [_bannerImageArray addObjectsFromArray:@[@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg",@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg"]];
-    [_cateSourceArray addObjectsFromArray:@[@"",@"",@""]];
-    
     _teacherArray = [NSMutableArray new];
     
     _titleLabel.text = @"首页";
@@ -425,8 +422,24 @@
 
 // MARK: - 更多按钮点击事件
 - (void)sectionMoreButtonClick:(UIButton *)sender {
-    if (sender.tag == 2) {
+    if ([_sortArray[sender.tag][@"key"] isEqualToString:@"recommendTeacher"]) {
         TeacherListVC *vc = [[TeacherListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"recommendCourse"]) {
+        CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
+        vc.isSearch = YES;
+        vc.hiddenNavDisappear = YES;
+        vc.notHiddenNav = NO;
+        vc.sortStr = @"推荐";
+        vc.sortIdStr = @"splendid";
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"categoryCourse"]) {
+        CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
+        vc.isSearch = YES;
+        vc.hiddenNavDisappear = YES;
+        vc.notHiddenNav = NO;
+        vc.cateStr = [NSString stringWithFormat:@"%@",_sortArray[sender.tag][@"title"]];
+        vc.cateIdStr = [NSString stringWithFormat:@"%@",_sortArray[sender.tag][@"category_id"]];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

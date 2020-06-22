@@ -75,6 +75,17 @@
     if (_isSearch) {
         _leftButton.hidden = NO;
     }
+    
+    if (SWNOTEmptyStr(_cateIdStr)) {
+        courseClassifyString = _cateStr;
+        courseClassifyIdString = _cateIdStr;
+    }
+    
+    if (SWNOTEmptyStr(_sortIdStr)) {
+        courseSortString = _sortStr;
+        courseSortIdString = _sortIdStr;
+    }
+    
     [self makeTopSearch];
     [self addHeaderView];
     [self makeCollectionView];
@@ -113,10 +124,7 @@
     [self.view addSubview:_headerView];
     
     
-    NSArray *titleArray = @[@"课程类型",@"分类",@"排序",@"筛选"];
-    if (_cateStr != nil) {
-        titleArray = @[@"课程类型",_cateStr,@"排序",@"筛选"];
-    }
+    NSArray *titleArray = @[@"课程类型",SWNOTEmptyStr(_cateStr) ? _cateStr : @"分类",SWNOTEmptyStr(courseSortString) ? courseSortString : @"排序",@"筛选"];
     CGFloat ButtonH = 45;
     CGFloat ButtonW = MainScreenWidth / titleArray.count;
     
