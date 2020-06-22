@@ -33,12 +33,12 @@
 @end
 
 @implementation ZPScrollerScaleView
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-    if([self pointInside:point withEvent:event]){
-        return _contentView;
-    }
-    return [super hitTest:point withEvent:event];
-}
+//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
+//    if([self pointInside:point withEvent:event]){
+//        return _contentView;
+//    }
+//    return [super hitTest:point withEvent:event];
+//}
 - (instancetype)initWithConfig:(ZPScrollerScaleViewConfig *)config{
     _config = config;
     self = [super init];

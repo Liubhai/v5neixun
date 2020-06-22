@@ -17,6 +17,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        _categoryCourseArray = [NSMutableArray new];
+        [_categoryCourseArray removeAllObjects];
         [self makeSubViews];
     }
     return self;
@@ -56,6 +58,8 @@
 }
 
 - (void)setHomePageCourseTypeTwoCellInfo:(NSMutableArray *)infoArray {
+    [_categoryCourseArray removeAllObjects];
+    [_categoryCourseArray addObjectsFromArray:infoArray];
     [self removeAllSubviews];
     for (int i = 0; i<infoArray.count; i++) {
         UIImageView *courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 153, 86)];
@@ -84,6 +88,12 @@
         priceLabel.textAlignment = NSTextAlignmentRight;
         priceLabel.centerY = learnCountLabel.centerY;
         [self addSubview:priceLabel];
+        
+        UIButton *tapButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        tapButton.backgroundColor = [UIColor clearColor];
+        tapButton.tag = 666 + i;
+        [tapButton addTarget:self action:@selector(tapButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:tapButton];
         
         // 1 点播 2 直播 3 面授 4 专辑
         NSString *courseType = [NSString stringWithFormat:@"%@",infoArray[i][@"course_type"]];
@@ -122,6 +132,8 @@
             priceLabel.centerY = learnCountLabel.centerY;
         }
         
+        tapButton.frame = CGRectMake(courseFace.left, courseFace.top, courseFace.width, priceLabel.bottom - courseFace.top);
+        
         titleL.text = [NSString stringWithFormat:@"%@",infoArray[i][@"title"]];
         learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",infoArray[i][@"sale_count"]];
         priceLabel.text = [NSString stringWithFormat:@"¥%@",infoArray[i][@"price"]];
@@ -130,6 +142,12 @@
         [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight + 10 : ((infoArray.count + 1)/2.0) * TwoCellHeight + 10];
     } else {
         [self setHeight:0];
+    }
+}
+
+- (void)tapButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(categoryCourseTapJump:)]) {
+        [_delegate categoryCourseTapJump:_categoryCourseArray[sender.tag - 666]];
     }
 }
 

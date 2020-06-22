@@ -15,6 +15,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        _recommendCourseArray = [NSMutableArray new];
+        [_recommendCourseArray removeAllObjects];
         [self makeSubView];
     }
     return self;
@@ -25,15 +27,21 @@
 }
 
 - (void)setRecommendCourseCellInfo:(NSArray *)recommendArray {
+    [_recommendCourseArray removeAllObjects];
+    [_recommendCourseArray addObjectsFromArray:recommendArray];
     [self removeAllSubviews];
     NSMutableArray *pass = [NSMutableArray new];
     for (int i = 0; i<recommendArray.count; i++) {
         UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 15, MainScreenWidth - 100 - 15, 172)];
+        backView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(recommendCourseTap:)];
+        [backView addGestureRecognizer:tap];
         backView.backgroundColor = [UIColor whiteColor];
         backView.tag = 100 + i;
         
         UIImageView *face = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, (MainScreenWidth - 100)-30, 136)];
-        [face sd_setImageWithURL:EdulineUrlString(@"http://v5.51eduline.com/storage/upload/20200518/f577433b3d66563404a232f21f96bfec.jpg") placeholderImage:DefaultImage];//[recommendArray[i] objectForKey:@"cover_url"]
+        [face sd_setImageWithURL:EdulineUrlString([recommendArray[i] objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+        face.userInteractionEnabled = YES;
         face.clipsToBounds = YES;
         face.contentMode = UIViewContentModeScaleAspectFill;
         face.layer.masksToBounds = YES;
@@ -41,7 +49,7 @@
         [backView addSubview:face];
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, face.bottom + 5, face.width, 21)];
-        titleLabel.text = @"建筑设计师考证系列课程列课程…";//[NSString stringWithFormat:@"%@",[recommendArray[i] objectForKey:@"title"]];
+        titleLabel.text = [NSString stringWithFormat:@"%@",[recommendArray[i] objectForKey:@"title"]];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = SYSTEMFONT(15);
         titleLabel.textColor = EdlineV5_Color.textFirstColor;
@@ -65,6 +73,13 @@
     [self addSubview:scrollerView];
     //2:将子视图数组传递 ZPScrollerScaleView
     scrollerView.items = pass;
+}
+
+// 722 是三方工具里面的 宏定义 下标起始值
+- (void)recommendCourseTap:(UITapGestureRecognizer *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(recommendCourseJump:)]) {
+        [_delegate recommendCourseJump:_recommendCourseArray[sender.view.tag - 722]];
+    }
 }
 
 - (void)awakeFromNib {

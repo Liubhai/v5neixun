@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImageView *courseActivityIcon;
 @property (assign, nonatomic) BOOL cellType;
 @property (nonatomic, strong) NSIndexPath *cellIndex;
+@property (strong, nonatomic) NSDictionary *courseInfoDict;
 
 - (void)setHomePageCourseTypeOneCellInfo:(NSDictionary *)info;
 

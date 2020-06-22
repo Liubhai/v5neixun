@@ -53,6 +53,7 @@
 }
 
 - (void)setHomePageCourseTypeOneCellInfo:(NSDictionary *)info {
+    _courseInfoDict = info;
     [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     // 1 点播 2 直播 3 面授 4 专辑

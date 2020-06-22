@@ -622,6 +622,7 @@
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                    _courselayer = [NSString stringWithFormat:@"%@",_dataSource[@"section_level"]];
                     [self setCourseInfoData];
                 }
             }
@@ -633,9 +634,9 @@
 
 - (void)setCourseInfoData {
     if (SWNOTEmptyDictionary(_dataSource)) {
-        NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover"]];
+        NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover_url"]];
         if ([faceUrlString containsString:@"http"]) {
-            [_faceImageView sd_setImageWithURL:EdulineUrlString([_dataSource objectForKey:@"cover"]) placeholderImage:DefaultImage];
+            [_faceImageView sd_setImageWithURL:EdulineUrlString([_dataSource objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
         } else {
             _faceImageView.image = DefaultImage;
         }

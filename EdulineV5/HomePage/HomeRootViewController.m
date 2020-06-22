@@ -31,7 +31,7 @@
 #import "SDCycleScrollView.h"
 #import "ZPScrollerScaleView.h"
 
-@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,HomePageTeacherCellDelegate,UITableViewDelegate,UITableViewDataSource> {
+@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate> {
     BOOL isWeek;// 显示周榜还是月榜
 }
 
@@ -322,6 +322,7 @@
             cell = [[HomePageHotRecommendedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         [cell setRecommendCourseCellInfo:_sortArray[indexPath.section][@"list"]];
+        cell.delegate = self;
         return cell;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"]) {
         if (isWeek) {
@@ -369,6 +370,7 @@
             cell = [[HomePageCourseTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         [cell setHomePageCourseTypeTwoCellInfo:_sortArray[indexPath.section][@"list"]];
+        cell.delegate = self;
         return cell;
     } else {
         static NSString *reuse = @"homeCell";
@@ -397,6 +399,30 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
+        
+        HomePageCourseTypeOneCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"id"]];
+        vc.courselayer = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"section_level"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+        vc.courseType = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"course_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"categoryCourse"]) {
+        HomePageCourseTypeOneCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"id"]];
+        vc.courselayer = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"section_level"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+        vc.courseType = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"course_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 // MARK: - 更多按钮点击事件
 - (void)sectionMoreButtonClick:(UIButton *)sender {
     if (sender.tag == 2) {
@@ -409,6 +435,26 @@
 - (void)goToTeacherMainPage:(NSString *)teacherId {
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
     vc.teacherId = teacherId;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: 热门推荐课程跳转(HomePageHotRecommendedCellDelegate)
+- (void)recommendCourseJump:(NSDictionary *)courseInfo {
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"id"]];
+    vc.courselayer = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"section_level"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_type"]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 分类课程点击跳转课程详情事件(HomePageCourseTypeTwoCellDelegate)
+- (void)categoryCourseTapJump:(NSDictionary *)courseInfo {
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"id"]];
+    vc.courselayer = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"section_level"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_type"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

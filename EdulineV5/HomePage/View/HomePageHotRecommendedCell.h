@@ -11,9 +11,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol HomePageHotRecommendedCellDelegate <NSObject>
+
+@optional
+
+- (void)recommendCourseJump:(NSDictionary *)courseInfo;
+
+@end
+
 @interface HomePageHotRecommendedCell : UITableViewCell
 
 //@property (nonatomic, strong) ZPScrollerScaleView *scrollerView;
+
+@property (weak, nonatomic) id<HomePageHotRecommendedCellDelegate> delegate;
+
+@property (strong, nonatomic) NSMutableArray *recommendCourseArray;
 
 - (void)setRecommendCourseCellInfo:(NSArray *)recommendArray;
 

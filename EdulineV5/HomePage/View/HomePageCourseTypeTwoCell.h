@@ -10,6 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol HomePageCourseTypeTwoCellDelegate <NSObject>
+
+@optional
+- (void)categoryCourseTapJump:(NSDictionary *)courseInfo;
+
+@end
+
 @interface HomePageCourseTypeTwoCell : UITableViewCell
 
 //@property (strong, nonatomic) UIImageView *courseFace;
@@ -20,6 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (strong, nonatomic) UIImageView *courseActivityIcon;
 //@property (assign, nonatomic) BOOL cellType;
 //@property (nonatomic, strong) NSIndexPath *cellIndex;
+
+@property (weak, nonatomic) id<HomePageCourseTypeTwoCellDelegate> delegate;
+
+@property (strong, nonatomic) NSMutableArray *categoryCourseArray;
 
 - (void)setHomePageCourseTypeTwoCellInfo:(NSMutableArray *)infoArray;
 
