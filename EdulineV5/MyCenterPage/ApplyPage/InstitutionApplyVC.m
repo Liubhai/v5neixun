@@ -1046,35 +1046,45 @@
         _statusRightLabel.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_status_text"]];
         
         schoolID = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"mhm_id"]];
-        _institutionRightLabel.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"school_name"]];
+        _institutionTextField.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"title"]];
         
-        _idCardText.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard"]];
+        _idCardText.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"legal_IDcard"]];
         
-        idCardIDFont = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive"]];
+        idCardIDFont = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"legal_IDcard_positive"]];
         [_imageArray removeAllObjects];
-        [_idCardPictureLeft sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive_url"]) placeholderImage:Image(@"id_front") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [_idCardPictureLeft sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"legal_IDcard_positive_url"]) placeholderImage:Image(@"id_front") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
             if (!error) {
                 [_imageArray addObject:_idCardPictureLeft.image];
             }
         }];
         
-        idCardIDBack = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side"]];
+        idCardIDBack = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"legal_IDcard_side"]];
         [_imageArrayIdCardBack removeAllObjects];
 //        [_imageArrayIdCardBack addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]]];
-        [_idCardPictureRight sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_side_url"]) placeholderImage:Image(@"id_back_def") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [_idCardPictureRight sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"legal_IDcard_side_url"]) placeholderImage:Image(@"id_back_def") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
             if (!error) {
                 [_imageArrayIdCardBack addObject:_idCardPictureRight.image];
             }
         }];
         
-        teacherId = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification"]];
+        teacherId = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"business_license"]];
         [_imageArrayTeacher removeAllObjects];
 //        [_imageArrayTeacher addObject:[NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]]];
-        [_teacherPicture sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"certification_url"]) placeholderImage:Image(@"teacher_id") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [_teacherPicture sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"business_license_url"]) placeholderImage:Image(@"teacher_id") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
             if (!error) {
                 [_imageArrayTeacher addObject:_teacherPicture.image];
             }
         }];
+        
+        [_logoImageView sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"logo"]) placeholderImage:DefaultImage];
+        
+        _phoneTextField.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"telephone"]];
+        
+        _institutionInroTextView.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"intro"]];
+        _institutionInroPlace.hidden = YES;
+        
+        _addressTextView.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"address"]];
+        _addressPlace.hidden = YES;
         
         // 处理所属机构内容
         [_teacherCategoryIDArray removeAllObjects];
