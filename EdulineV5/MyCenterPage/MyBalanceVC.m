@@ -230,7 +230,7 @@
     }
     
     if ((isAddAilpayView || isAddWxpayView || isAddRechargeCardView) && !_orderRightBtn3.selected) {
-        _cardButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 30 + (buttonH + 15) * (_netWorkBalanceArray.count / 2), buttonW, 50)];
+        _cardButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 40 + (buttonH + 15) * (_netWorkBalanceArray.count % 3 == 0 ? (_netWorkBalanceArray.count / 3) : (_netWorkBalanceArray.count / 3 + 1)), buttonW, 50)];
         _cardButton.backgroundColor = [UIColor whiteColor];
         _cardButton.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
         _cardButton.layer.borderWidth = 1;
@@ -261,15 +261,15 @@
         _otherMoneyText.leftView = tip;
     }
     
-    if ((_netWorkBalanceArray.count + 1) % 2 == 0) {//能整除的时候
-        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, ((_netWorkBalanceArray.count + 1) / 2) * (buttonH + 15) + 70);
+    if (_netWorkBalanceArray.count % 3 == 0) {//能整除的时候
+        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 50 + 30);
         if (_iosArray.count>0 && (_orderRightBtn3.selected || (!isAddAilpayView && !isAddWxpayView && !isAddRechargeCardView))) {
-            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, ((_netWorkBalanceArray.count + 1) / 2) * (buttonH + 15) + 30);
+            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 30);
         }
     } else {//不能整除的时候
-        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, ((_netWorkBalanceArray.count + 1) / 2 + 1) * (buttonH + 15) + 70);
+        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3 + 1) * (buttonH + 15) + 50 + 30);
         if (_iosArray.count>0 && (_orderRightBtn3.selected || (!isAddAilpayView && !isAddWxpayView && !isAddRechargeCardView))) {
-            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, ((_netWorkBalanceArray.count + 1) / 2) * (buttonH + 15) + 30);
+            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 30);
         }
     }
     
