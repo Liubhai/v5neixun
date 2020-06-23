@@ -146,8 +146,12 @@ struct NetWorkUrl {
 /** 成员信息 */
 + (NSString *)userMemberInfo;
 
+// MARK: - 余额收入积分
 /** 余额信息 */
 + (NSString *)userBalanceInfo;
+
+/** 余额充值生成订单 */
++ (NSString *)balanceOrderCreate;
 
 /** 收入明细 */
 + (NSString *)userIncomeDetail;

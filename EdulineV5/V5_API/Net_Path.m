@@ -188,6 +188,10 @@
     return [Net_Path fullPath:@"user/balance" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)balanceOrderCreate {
+    return [Net_Path fullPath:@"user/balance/order" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userIncomeDetail {
     return [Net_Path fullPath:@"user/income" repalce:@"" byReplece:@""];
 }

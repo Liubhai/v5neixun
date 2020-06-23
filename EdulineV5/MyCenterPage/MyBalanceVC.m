@@ -16,6 +16,7 @@
 @interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
     UIButton *moneySeleButton;//记录充值的button
+    NSString *ratio_string;
 }
 
 @property (strong, nonatomic) UIView *account;
@@ -74,6 +75,7 @@
     _typeArray = [NSMutableArray new];
     _netWorkBalanceArray = [NSMutableArray new];
     _iosArray = [NSMutableArray new];
+    ratio_string = @"";
     
     _titleImage.backgroundColor = EdlineV5_Color.themeColor;
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
@@ -504,6 +506,7 @@
         _orderRightBtn3.selected = NO;
         if ([typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
+            _priceLabel.text = @"¥0.00";
         }
         typeString = @"alipay";
     } else if (sender == _orderRightBtn2) {
@@ -512,6 +515,7 @@
         _orderRightBtn3.selected = NO;
         if ([typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
+            _priceLabel.text = @"¥0.00";
         }
         typeString = @"wxpay";
     } else if (sender == _orderRightBtn3) {
@@ -520,10 +524,10 @@
         _orderRightBtn2.selected = NO;
         if (![typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
+            _priceLabel.text = @"¥0.00";
         }
         typeString = @"applepay";
     }
-    _priceLabel.text = @"¥0.00";
 }
 
 - (void)viewTap {
@@ -603,7 +607,7 @@
         if (textfield.text.length>5) {
             textfield.text = [textfield.text substringToIndex:5];
         }
-        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue]];
+        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [ratio_string floatValue] / 100.00];
     } else {
         _priceLabel.text = @"¥0.00";
     }
@@ -631,6 +635,88 @@
         [self showHudInView:self.view showHint:@"请勾选并确认阅读购买协议"];
         _submitButton.enabled = YES;
         return;
+    }
+    
+    if (![typeString isEqualToString:@"applepay"]) {
+        // 这里先处理普通流程
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        
+        if (moneySeleButton) {
+            if (moneySeleButton.selected) {
+                NSDictionary *pass = _netWorkBalanceArray[moneySeleButton.tag];
+                NSString *pass_balance = [NSString stringWithFormat:@"%@",pass[@"balance"]];
+                NSString *pass_chargeId = [NSString stringWithFormat:@"%@",pass[@"id"]];
+                [param setObject:@([pass_balance floatValue]) forKey:@"balance"];
+                NSString *price = [_priceLabel.text substringFromIndex:1];
+                [param setObject:@([price floatValue]) forKey:@"payment"];
+                [param setObject:pass_chargeId forKey:@"recharge_id"];
+            } else {
+                if (SWNOTEmptyStr(_otherMoneyText.text)) {
+                    [param setObject:@([_otherMoneyText.text floatValue]) forKey:@"balance"];
+                    NSString *price = [_priceLabel.text substringFromIndex:1];
+                    [param setObject:@([price floatValue]) forKey:@"payment"];
+                    [param setObject:@"0" forKey:@"recharge_id"];
+                } else {
+                    [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
+                    _submitButton.enabled = YES;
+                    return;
+                }
+            }
+        } else {
+            if (SWNOTEmptyStr(_otherMoneyText.text)) {
+                [param setObject:@([_otherMoneyText.text floatValue]) forKey:@"balance"];
+                NSString *price = [_priceLabel.text substringFromIndex:1];
+                [param setObject:@([price floatValue]) forKey:@"payment"];
+                [param setObject:@"0" forKey:@"recharge_id"];
+            } else {
+                [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
+                _submitButton.enabled = YES;
+                return;
+            }
+        }
+        // 生成余额订单
+        
+    }
+    
+    
+}
+
+// MARK: - 生成余额订单
+- (void)createBalanceOrder:(NSDictionary *)dict {
+    if (SWNOTEmptyDictionary(dict)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path balanceOrderCreate] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [self submiteOrder:[responseObject objectForKey:@"data"]];
+                } else {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK: - 支付
+- (void)submiteOrder:(NSDictionary *)dict {
+    if (SWNOTEmptyDictionary(dict) && SWNOTEmptyStr(typeString)) {
+        NSMutableDictionary *pass = [NSMutableDictionary new];
+        [pass setObject:[dict objectForKey:@"order_no"] forKey:@"order_no"];
+        [pass setObject:typeString forKey:@"pay_type"];
+        [Net_API requestPOSTWithURLStr:[Net_Path subMitOrder] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    if ([typeString isEqualToString:@"wxpay"]) {
+                        
+                    } else if ([typeString isEqualToString:@"alipay"]) {
+                        
+                    }
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
     }
 }
 
@@ -675,6 +761,12 @@
                     
                     [_netWorkBalanceArray removeAllObjects];
                     [_netWorkBalanceArray addObjectsFromArray:[[_balanceInfo[@"data"] objectForKey:@"recharge"] objectForKey:@"public"]];
+                    
+                    NSString *ratio = [NSString stringWithFormat:@"%@",[[_balanceInfo[@"data"] objectForKey:@"recharge"] objectForKey:@"ratio"]];
+                    NSArray *ratioArray = [ratio componentsSeparatedByString:@":"];
+                    if (SWNOTEmptyArr(ratioArray)) {
+                        ratio_string = [NSString stringWithFormat:@"%@",ratioArray[0]];
+                    }
                     
                     [_iosArray removeAllObjects];
                     [_iosArray addObjectsFromArray:[[_balanceInfo[@"data"] objectForKey:@"recharge"] objectForKey:@"ios"]];
