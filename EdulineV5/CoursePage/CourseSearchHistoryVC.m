@@ -26,24 +26,28 @@
 
 @implementation CourseSearchHistoryVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self searchHotSearchInfo];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _searchDataSource = [NSMutableArray new];
     _hotDataSource = [NSMutableArray new];
     
-    // 构造数据
-    NSArray *pass1 = @[@"小朋友",@"你是不是",@"有很多",@"问号",@"为什么别的小朋友都在玩游戏",@"而你却在学钢琴画漫画",@"这几把谁知道呀",@"难受呀老铁",@"西八",@"哦豁",@"来玩呀客官",@"这里有漂亮的姑娘",@"为什么别的小朋友都在玩游戏",@"而你却在学钢琴画漫画",@"这几把谁知道呀",@"难受呀老铁",@"西八"];
-    [_hotDataSource addObjectsFromArray:pass1];
     _rightButton.hidden = NO;
     [_rightButton setTitle:@"搜索" forState:0];
     [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     [_rightButton setImage:nil forState:0];
     [self makeTopSearch];
     [self makeMainScrollView];
-    [self maketableView];
+//    [self maketableView];
     _tableView.hidden = YES;
-    [self makeScrollViewUI];
+    
+    [self searchHotSearchInfo];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
@@ -108,11 +112,15 @@
 }
 
 - (void)makeScrollViewUI {
+    if (!_mainScrollView) {
+        return;
+    }
+    [_mainScrollView removeAllSubviews];
     if (!_hotView) {
         _hotView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0)];
         _hotView.backgroundColor = [UIColor whiteColor];
-        [_mainScrollView addSubview:_hotView];
     }
+    [_mainScrollView addSubview:_hotView];
     [_hotView removeAllSubviews];
     
     UIImageView *hotIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 12, 16)];
@@ -136,6 +144,7 @@
         CGFloat btnHeight = 32.0;
         for (int i = 0; i<_hotDataSource.count; i++) {
             UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, 0, btnHeight)];
+            [btn addTarget:self action:@selector(courseTitleButClick:) forControlEvents:UIControlEventTouchUpInside];
             [btn setTitle:_hotDataSource[i] forState:0];
             btn.titleLabel.font = SYSTEMFONT(14);
             [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
@@ -163,8 +172,8 @@
     if (!_historyView) {
         _historyView = [[UIView alloc] initWithFrame:CGRectMake(0, _hotView.bottom, MainScreenWidth, 0)];
         _historyView.backgroundColor = [UIColor whiteColor];
-        [_mainScrollView addSubview:_historyView];
     }
+    [_mainScrollView addSubview:_historyView];
     [_historyView removeAllSubviews];
     
     UILabel *historyLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 60)];
@@ -177,18 +186,20 @@
     [clearHistoryBtn setTitle:@"清空" forState:0];
     [clearHistoryBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
     clearHistoryBtn.titleLabel.font = SYSTEMFONT(14);
+    [clearHistoryBtn addTarget:self action:@selector(clearHistoryBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [_historyView addSubview:clearHistoryBtn];
     
-    if (_hotDataSource.count) {
+    if (_searchDataSource.count) {
         CGFloat topSpacee = 20.0;
         CGFloat rightSpace = 15.0;
         CGFloat btnInSpace = 10.0;
         CGFloat XX = 15.0;
         CGFloat YY = 0.0 + historyLabel.bottom;
         CGFloat btnHeight = 32.0;
-        for (int i = 0; i<_hotDataSource.count; i++) {
+        for (int i = 0; i<_searchDataSource.count; i++) {
             UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, 0, btnHeight)];
-            [btn setTitle:_hotDataSource[i] forState:0];
+            [btn addTarget:self action:@selector(courseTitleButClick:) forControlEvents:UIControlEventTouchUpInside];
+            [btn setTitle:_searchDataSource[i] forState:0];
             btn.titleLabel.font = SYSTEMFONT(14);
             [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
             btn.backgroundColor = EdlineV5_Color.backColor;
@@ -201,7 +212,7 @@
             }
             btn.frame = CGRectMake(XX, YY, btnWidth, btnHeight);
             XX = btn.right + rightSpace;
-            if (i == _hotDataSource.count - 1) {
+            if (i == _searchDataSource.count - 1) {
                 [_historyView setHeight:btn.bottom];
             }
             [_historyView addSubview:btn];
@@ -214,13 +225,14 @@
 
 - (void)textfieldDidChanged:(NSNotification *)notice {
     UITextField *textfield = (UITextField *)notice.object;
-    if (textfield.text.length>0) {
-        _mainScrollView.hidden = YES;
-        _tableView.hidden = YES;
-    } else {
-        _mainScrollView.hidden = NO;
-        _tableView.hidden = YES;
-    }
+    _mainScrollView.hidden = NO;
+//    if (textfield.text.length>0) {
+//        _mainScrollView.hidden = YES;
+//        _tableView.hidden = YES;
+//    } else {
+//        _mainScrollView.hidden = NO;
+//        _tableView.hidden = YES;
+//    }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -233,6 +245,20 @@
 }
 
 - (void)jumpSearchListMainPage {
+    
+    if (!SWNOTEmptyStr(_institutionSearch.text)) {
+        [self showHudInView:self.view showHint:@"请输入搜索课程的名字"];
+    }
+    // 把搜索历史数据存本地
+    if ([_searchDataSource containsObject:_institutionSearch.text]) {
+        [_searchDataSource removeObject:_institutionSearch.text];
+    }
+    [_searchDataSource addObject:_institutionSearch.text];
+    
+    NSArray *pass = [NSArray arrayWithArray:_searchDataSource];
+    [[NSUserDefaults standardUserDefaults] setObject:pass forKey:@"homepagesearchArray"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
     vc.isSearch = YES;
     vc.searchKeyWord = _institutionSearch.text;
@@ -241,18 +267,57 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)searchHotCourse {
-    if (SWNOTEmptyStr(_institutionSearch.text)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseMainList] WithAuthorization:nil paramDic:@{@"title":_institutionSearch.text} finish:^(id  _Nonnull responseObject) {
-            if (SWNOTEmptyDictionary(responseObject)) {
-                [_searchDataSource removeAllObjects];
-                [_searchDataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                [_tableView reloadData];
-            }
-        } enError:^(NSError * _Nonnull error) {
-            
-        }];
+// MARK: - 课程名称按钮点击事件
+- (void)courseTitleButClick:(UIButton *)sender {
+    // 把搜索历史数据存本地
+    if ([_searchDataSource containsObject:sender.titleLabel.text]) {
+        [_searchDataSource removeObject:sender.titleLabel.text];
     }
+    [_searchDataSource addObject:sender.titleLabel.text];
+    
+    NSArray *pass = [NSArray arrayWithArray:_searchDataSource];
+    [[NSUserDefaults standardUserDefaults] setObject:pass forKey:@"homepagesearchArray"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
+    vc.isSearch = YES;
+    vc.searchKeyWord = sender.titleLabel.text;
+    vc.hiddenNavDisappear = YES;
+    vc.notHiddenNav = NO;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 清空历史搜索记录按钮点击事件
+- (void)clearHistoryBtnClick:(UIButton *)sender {
+    
+    [_searchDataSource removeAllObjects];
+    NSArray *pass = [NSArray arrayWithArray:_searchDataSource];
+    [[NSUserDefaults standardUserDefaults] setObject:pass forKey:@"homepagesearchArray"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self makeScrollViewUI];
+    
+}
+
+- (void)rightButtonClick:(id)sender {
+    [_institutionSearch resignFirstResponder];
+    [self jumpSearchListMainPage];
+}
+
+- (void)searchHotSearchInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path hotSearchNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [_hotDataSource removeAllObjects];
+            [_hotDataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+            [_searchDataSource removeAllObjects];
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:@"homepagesearchArray"]) {
+                [_searchDataSource addObjectsFromArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"homepagesearchArray"]];
+            }
+            [self makeScrollViewUI];
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 @end

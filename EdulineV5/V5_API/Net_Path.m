@@ -328,6 +328,10 @@
     return [Net_Path fullPath:@"home" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)hotSearchNet {
+    return [Net_Path fullPath:@"course/base/search/hot" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)favoriteCourseChangeNet {
     return [Net_Path fullPath:@"user/course/favorite" repalce:@"" byReplece:@""];
 }
