@@ -66,7 +66,11 @@
     _titleLabel.hidden = YES;
     _leftButton.hidden = YES;
     _rightButton.hidden = NO;
-    _cellType = NO;
+    if ([COURSELAYOUT isEqualToString:@"2"]) {
+        _cellType = YES;
+    } else {
+        _cellType = NO;
+    }
     [_rightButton setImage:Image(@"lesson_cart_icon") forState:0];
     if (SWNOTEmptyStr(_themeTitle)) {
         _titleLabel.text = _themeTitle;

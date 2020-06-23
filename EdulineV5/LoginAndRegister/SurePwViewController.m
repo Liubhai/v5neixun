@@ -11,6 +11,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "EdulineV5_Tool.h"
+#import "WkWebViewController.h"
 
 @interface SurePwViewController ()<TYAttributedLabelDelegate>
 
@@ -176,6 +177,12 @@
             NSLog(@"TYLinkTouch = netservice");
         }
     }
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
+    NSString *atr = [NSString stringWithFormat:@"《%@服务协议》",appName];
+    WkWebViewController *vc = [[WkWebViewController alloc] init];
+    vc.titleString = atr;
+    vc.agreementKey = @"agreement";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

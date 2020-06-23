@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "IncomeDetailVC.h"
+#import "WkWebViewController.h"
 
 @interface MyIncomeVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
@@ -447,6 +448,28 @@
         _submitButton.enabled = YES;
         return;
     }
+}
+
+- (void)attributedLabel:(TYAttributedLabel *)attributedLabel textStorageClicked:(id<TYTextStorageProtocol>)textStorage atPoint:(CGPoint)point {
+    //非文本/比如表情什么的
+    if (![textStorage isKindOfClass:[TYLinkTextStorage class]]) {
+        return;
+    }
+    id linkContain = ((TYLinkTextStorage *)textStorage).linkData;
+    if ([linkContain isKindOfClass:[NSDictionary class]]) {
+        NSString *typeS = [linkContain objectForKey:@"type"];
+        if ([typeS isEqualToString:@"service"]) {
+            NSLog(@"TYLinkTouch = service");
+        } else if ([typeS isEqualToString:@"netservice"]) {
+            NSLog(@"TYLinkTouch = netservice");
+        }
+    }
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
+    NSString *atr = [NSString stringWithFormat:@"《%@购买协议》",appName];
+    WkWebViewController *vc = [[WkWebViewController alloc] init];
+    vc.titleString = atr;
+    vc.agreementKey = @"proService";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)textfieldDidChanged:(NSNotification *)notice {

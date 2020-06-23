@@ -145,7 +145,6 @@
     if (!_imageBannerBackView) {
         _imageBannerBackView = [[UIView alloc] initWithFrame:CGRectMake(0, SWNOTEmptyArr(_bannerImageArray) ? 15 : 0, MainScreenWidth, 0)];
         _imageBannerBackView.backgroundColor = [UIColor whiteColor];
-        [_headerView addSubview:_imageBannerBackView];
     }
     _imageBannerBackView.frame = CGRectMake(0, 0, MainScreenWidth, SWNOTEmptyArr(_bannerImageArray) ? (2 * MainScreenWidth / 5 + 20) : 0);
     [_imageBannerBackView removeAllSubviews];
@@ -174,8 +173,8 @@
         _cateScrollView.delegate = self;
         _cateScrollView.showsHorizontalScrollIndicator = NO;
         _cateScrollView.showsVerticalScrollIndicator = NO;
-        [_headerView addSubview:_cateScrollView];
     }
+    [_headerView addSubview:_cateScrollView];
     _cateScrollView.frame = CGRectMake(0, _imageBannerBackView.bottom, MainScreenWidth, SWNOTEmptyArr(_cateSourceArray) ? 116 : 0);
     [_cateScrollView removeAllSubviews];
     
@@ -188,6 +187,7 @@
         cateImage.layer.cornerRadius = 5;
         cateImage.clipsToBounds = YES;
         cateImage.contentMode = UIViewContentModeScaleAspectFill;
+        [cateImage sd_setImageWithURL:EdulineUrlString(_cateSourceArray[i][@"image_url"]) placeholderImage:DefaultImage];
         [_cateScrollView addSubview:cateImage];
         if (i == (_cateSourceArray.count - 1)) {
             _cateScrollView.contentSize = CGSizeMake(cateImage.right + 10, 0);
@@ -195,6 +195,8 @@
     }
     
     UIView *fenge = [[UIView alloc] initWithFrame:CGRectMake(0, _cateScrollView.bottom, MainScreenWidth, (SWNOTEmptyArr(_bannerImageArray) || SWNOTEmptyArr(_cateSourceArray)) ? 10 : 0.01)];
+    fenge.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_headerView addSubview:fenge];
     _headerView.frame = CGRectMake(0, 0, MainScreenWidth, fenge.bottom);
 }
 
@@ -481,8 +483,9 @@
 }
 
 - (void)rightButtonClick:(id)sender {
-    IntendedCourseVC *vc = [[IntendedCourseVC alloc] init];
+    TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
     vc.isChange = YES;
+    vc.typeString = @"0";
     [self.navigationController pushViewController:vc animated:YES];
 }
 

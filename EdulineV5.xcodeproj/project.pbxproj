@@ -175,6 +175,8 @@
 		787F1E9D247925AD00108F7B /* InstitutionListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9C247925AD00108F7B /* InstitutionListVC.m */; };
 		787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9F2479263200108F7B /* InstitutionListCell.m */; };
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
+		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
+		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
 		789DB01524593041001302B4 /* CouponModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01424593041001302B4 /* CouponModel.m */; };
 		789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB017245A76A1001302B4 /* ShopCarModel.m */; };
 		789DB01B24654571001302B4 /* MyBalanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01A24654571001302B4 /* MyBalanceVC.m */; };
@@ -709,6 +711,10 @@
 		787F1E9F2479263200108F7B /* InstitutionListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionListCell.m; sourceTree = "<group>"; };
 		7888A34E249C8D1B00DB078D /* InstitutionApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionApplyVC.h; sourceTree = "<group>"; };
 		7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionApplyVC.m; sourceTree = "<group>"; };
+		7888A35124A1D3CF00DB078D /* WkWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WkWebViewController.h; sourceTree = "<group>"; };
+		7888A35224A1D3CF00DB078D /* WkWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WkWebViewController.m; sourceTree = "<group>"; };
+		7888A35424A1DB1800DB078D /* WKWebIntroview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebIntroview.h; sourceTree = "<group>"; };
+		7888A35524A1DB1800DB078D /* WKWebIntroview.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebIntroview.m; sourceTree = "<group>"; };
 		789DB01324593041001302B4 /* CouponModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouponModel.h; sourceTree = "<group>"; };
 		789DB01424593041001302B4 /* CouponModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CouponModel.m; sourceTree = "<group>"; };
 		789DB016245A76A1001302B4 /* ShopCarModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarModel.h; sourceTree = "<group>"; };
@@ -1465,6 +1471,10 @@
 				7839C974241F5C57002F6595 /* StarEvaluator.m */,
 				7839C9952421CB1C002F6595 /* CommentBaseView.h */,
 				7839C9962421CB1C002F6595 /* CommentBaseView.m */,
+				7888A35124A1D3CF00DB078D /* WkWebViewController.h */,
+				7888A35224A1D3CF00DB078D /* WkWebViewController.m */,
+				7888A35424A1DB1800DB078D /* WKWebIntroview.h */,
+				7888A35524A1DB1800DB078D /* WKWebIntroview.m */,
 				7853168F24519A35007E239E /* UIViewController+Utils.h */,
 				7853168E24519A35007E239E /* UIViewController+Utils.m */,
 				789DB063246D26EB001302B4 /* NSObject+PYThemeExtension.h */,
@@ -2738,6 +2748,7 @@
 				7853BDC52429F4FC00F096EC /* CourseListModelFinal.m in Sources */,
 				78795727240FA3840013F95F /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.m in Sources */,
 				78C549C9241B674E00A33FC4 /* AlivcLiveEnvManager.m in Sources */,
+				7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */,
 				78795752240FAA7A0013F95F /* UIViewController+HUD.m in Sources */,
 				787F1E6B247381A400108F7B /* AlivcPlayListsView.m in Sources */,
 				78A16C842452F7C100391430 /* TICReport.m in Sources */,
@@ -2917,6 +2928,7 @@
 				78C548802418CC7400A33FC4 /* TYTextContainer.m in Sources */,
 				78C549DE241B674F00A33FC4 /* UIButton+AliyunBlock.m in Sources */,
 				78795726240FA3840013F95F /* ZLPhotoRect.m in Sources */,
+				7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */,
 				78795732240FA3840013F95F /* ZLPhotoPickerGroupViewController.m in Sources */,
 				785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */,
 				7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */,

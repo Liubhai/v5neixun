@@ -32,57 +32,23 @@
     _mainScroll.showsVerticalScrollIndicator = NO;
     _mainScroll.contentSize = CGSizeMake(MainScreenWidth, _tabelHeight + 10);
     [self.view addSubview:_mainScroll];
-//    [self makeClassInfoWebView];
     _mainScroll.contentSize = CGSizeMake(MainScreenWidth, _ClassIntroWeb.bottom > _tabelHeight ? _ClassIntroWeb.bottom : (_tabelHeight + 10));
     [self getCourseInfo];
 }
 
 - (void)makeClassInfoWebView {
-    NSString *jScript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
     
-//    WKUserScript *wkUScript = [[WKUserScript alloc] initWithSource:jScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
-    WKUserContentController *wkUController = [[WKUserContentController alloc] init];
-//    [wkUController addUserScript:wkUScript];
-    
-    WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
-    wkWebConfig.userContentController = wkUController;
-    
-    _ClassIntroWeb = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5) configuration:wkWebConfig];
-    _ClassIntroWeb.backgroundColor = [UIColor clearColor];
+    _ClassIntroWeb = [[WKWebIntroview alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5)];
+    _ClassIntroWeb.backgroundColor = [UIColor whiteColor];
     _ClassIntroWeb.scrollView.scrollEnabled = NO;
     _ClassIntroWeb.UIDelegate = self;
     _ClassIntroWeb.navigationDelegate = self;
     [_mainScroll addSubview:_ClassIntroWeb];
     NSString *allStr = [NSString stringWithFormat:@"%@",_dataSource[@"info"]];
-//    NSString *replaceStr = [NSString stringWithFormat:@"<img src=\"%@/data/upload",HeaderUrl_V5];
-//    NSString *textStr = [allStr stringByReplacingOccurrencesOfString:@"<img src=\"/data/upload" withString:replaceStr];
-//    NSString *content = [NSString stringWithFormat:@"%@",textStr];
-//    if (!SWNOTEmptyDictionary(_dataSource)) {
-//        content = @"";
-//    } else {
-//        if (!SWNOTEmptyStr([_dataSource objectForKey:@"info"])) {
-//            content = @"";
-//        }
-//    }
-//
-//    NSString *str = [NSString stringWithFormat:@"<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><meta name=\"viewport\" content=\"width=device-width,height=device-height,font-size:15px, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1,target-densitydpi=device-dpi \"></head>"
-//                     "<body>"
-//                     "<script type='text/javascript'>"
-//                     "window.onload = function(){\n"
-//                     "var $img = document.getElementsByTagName('img');\n"
-//                     "for(var p in  $img){\n"
-//                     " $img[p].style.width = '100%%';\n"
-//                     "$img[p].style.height ='auto'\n"
-//                     "}\n"
-//                     "}"
-//                     "</script>%@"
-//                     "</body>"
-//                     "</html>",content];
-//    [_ClassIntroWeb loadHTMLString:str baseURL:[NSURL URLWithString:HeaderUrl_V5]];
 
     [_ClassIntroWeb loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
     UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap1:)];
-    [_ClassIntroWeb addGestureRecognizer:singleTap];
+//    [_ClassIntroWeb addGestureRecognizer:singleTap];
     singleTap.delegate = self;
     singleTap.cancelsTouchesInView = NO;
 }

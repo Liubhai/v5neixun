@@ -332,4 +332,8 @@
     return [Net_Path fullPath:@"user/course/favorite" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)agreementContentNet:(NSString *)agreementKey {
+    return [Net_Path fullPath:@"content/agreement/{key}/fetch" repalce:@"{key}" byReplece:agreementKey];
+}
+
 @end

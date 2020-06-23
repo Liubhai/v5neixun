@@ -7,6 +7,7 @@
 //
 
 #import "InstitutionApplyVC.h"
+#import "WkWebViewController.h"
 
 @interface InstitutionApplyVC () {
     NSString *whichPic;
@@ -1358,6 +1359,29 @@
         _mainScrollView.hidden = NO;
         _nextScrollView.hidden = YES;
     }
+}
+
+// MARK: - 协议点击代理
+- (void)attributedLabel:(TYAttributedLabel *)attributedLabel textStorageClicked:(id<TYTextStorageProtocol>)textStorage atPoint:(CGPoint)point {
+    //非文本/比如表情什么的
+    if (![textStorage isKindOfClass:[TYLinkTextStorage class]]) {
+        return;
+    }
+    id linkContain = ((TYLinkTextStorage *)textStorage).linkData;
+    if ([linkContain isKindOfClass:[NSDictionary class]]) {
+        NSString *typeS = [linkContain objectForKey:@"type"];
+        if ([typeS isEqualToString:@"service"]) {
+            NSLog(@"TYLinkTouch = service");
+        } else if ([typeS isEqualToString:@"netservice"]) {
+            NSLog(@"TYLinkTouch = netservice");
+        }
+    }
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
+    NSString *atr = [NSString stringWithFormat:@"《%@机构认证协议》",appName];
+    WkWebViewController *vc = [[WkWebViewController alloc] init];
+    vc.titleString = atr;
+    vc.agreementKey = @"school_service";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

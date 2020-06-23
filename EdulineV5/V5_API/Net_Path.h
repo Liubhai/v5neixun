@@ -264,6 +264,10 @@ struct NetWorkUrl {
 /** 意向课程选择 */
 + (NSString *)favoriteCourseChangeNet;
 
+// MARK: - 协议内容接口
+/** 各种协议内容接口 */
++ (NSString *)agreementContentNet:(NSString *)agreementKey;
+
 @end
 
 NS_ASSUME_NONNULL_END
