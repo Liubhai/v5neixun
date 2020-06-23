@@ -542,6 +542,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"sdk_appid"] forKey:@"sdk_appid"];
+                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"theme_color"] forKey:@"color"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         }

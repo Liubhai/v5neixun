@@ -57,7 +57,7 @@
     
     _showOwnButton = [[UIButton alloc] initWithFrame:CGRectMake(_showLabel.left - 8 - 15, 0, 15, 15)];
     [_showOwnButton setImage:Image(@"checkbox_nor") forState:0];
-    [_showOwnButton setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
+    [_showOwnButton setImage:[Image(@"checkbox_sel1") converToMainColor] forState:UIControlStateSelected];
     [_showOwnButton addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     _showOwnButton.centerY = _showLabel.centerY;
     [self addSubview:_showOwnButton];

@@ -7,6 +7,20 @@
 //
 
 #import "EdlineV5_Color.h"
+#import "EdulineV5_Tool.h"
+
+/**
+{ name: 'haiyanglan', color: '#5191FF' },
+{ name: 'shenhailan', color: '#2C5DFF' },
+{ name: 'tiankonglan', color: '#43C7F9' },
+{ name: 'shiliuhong', color: '#EC0000' },
+{ name: 'shanchahong', color: '#FA648D' },
+{ name: 'zhulv', color: '#00AD82' },
+{ name: 'caolv', color: '#19C349' },
+{ name: 'bohelv', color: '#00D3B5' },
+{ name: 'nanguacheng', color: '#FF7C03'},
+{ name: 'zise', color: '#6665FF' }
+ */
 
 #define HEXCOLORV5(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -19,8 +33,26 @@
 /** 基本色 */
 + (UIColor *)baseColor {
     NSString *themeColorString = [[NSUserDefaults standardUserDefaults] objectForKey:@"color"];
-    if ([themeColorString isEqualToString:@"1"]) {
-        return [UIColor redColor];
+    if ([themeColorString isEqualToString:@"haiyanglan"]) {
+        return HEXCOLORV5(0x5191FF);
+    } else if ([themeColorString isEqualToString:@"shenhailan"]) {
+        return HEXCOLORV5(0x2C5DFF);
+    } else if ([themeColorString isEqualToString:@"tiankonglan"]) {
+        return HEXCOLORV5(0x43C7F9);
+    } else if ([themeColorString isEqualToString:@"shiliuhong"]) {
+        return HEXCOLORV5(0xEC0000);
+    } else if ([themeColorString isEqualToString:@"shanchahong"]) {
+        return HEXCOLORV5(0xFA648D);
+    } else if ([themeColorString isEqualToString:@"zhulv"]) {
+        return HEXCOLORV5(0x00AD82);
+    } else if ([themeColorString isEqualToString:@"caolv"]) {
+        return HEXCOLORV5(0x19C349);
+    } else if ([themeColorString isEqualToString:@"bohelv"]) {
+        return HEXCOLORV5(0x00D3B5);
+    } else if ([themeColorString isEqualToString:@"nanguacheng"]) {
+        return HEXCOLORV5(0xFF7C03);
+    } else if ([themeColorString isEqualToString:@"zise"]) {
+        return HEXCOLORV5(0x6665FF);
     }
     return HEXCOLORV5(0x5191FF);
 }
@@ -28,8 +60,26 @@
 /** 主题色 */
 + (UIColor *)themeColor {
     NSString *themeColorString = [[NSUserDefaults standardUserDefaults] objectForKey:@"color"];
-    if ([themeColorString isEqualToString:@"1"]) {
-        return [UIColor redColor];
+    if ([themeColorString isEqualToString:@"haiyanglan"]) {
+        return HEXCOLORV5(0x5191FF);
+    } else if ([themeColorString isEqualToString:@"shenhailan"]) {
+        return HEXCOLORV5(0x2C5DFF);
+    } else if ([themeColorString isEqualToString:@"tiankonglan"]) {
+        return HEXCOLORV5(0x43C7F9);
+    } else if ([themeColorString isEqualToString:@"shiliuhong"]) {
+        return HEXCOLORV5(0xEC0000);
+    } else if ([themeColorString isEqualToString:@"shanchahong"]) {
+        return HEXCOLORV5(0xFA648D);
+    } else if ([themeColorString isEqualToString:@"zhulv"]) {
+        return HEXCOLORV5(0x00AD82);
+    } else if ([themeColorString isEqualToString:@"caolv"]) {
+        return HEXCOLORV5(0x19C349);
+    } else if ([themeColorString isEqualToString:@"bohelv"]) {
+        return HEXCOLORV5(0x00D3B5);
+    } else if ([themeColorString isEqualToString:@"nanguacheng"]) {
+        return HEXCOLORV5(0xFF7C03);
+    } else if ([themeColorString isEqualToString:@"zise"]) {
+        return HEXCOLORV5(0x6665FF);
     }
     return HEXCOLORV5(0x5191FF);
 }
@@ -110,17 +160,83 @@
 
 /** 按钮可点击颜色 */
 + (UIColor *)buttonNormalColor {
+    NSString *themeColorString = [[NSUserDefaults standardUserDefaults] objectForKey:@"color"];
+    if ([themeColorString isEqualToString:@"haiyanglan"]) {
+        return HEXCOLORV5(0x5191FF);
+    } else if ([themeColorString isEqualToString:@"shenhailan"]) {
+        return HEXCOLORV5(0x2C5DFF);
+    } else if ([themeColorString isEqualToString:@"tiankonglan"]) {
+        return HEXCOLORV5(0x43C7F9);
+    } else if ([themeColorString isEqualToString:@"shiliuhong"]) {
+        return HEXCOLORV5(0xEC0000);
+    } else if ([themeColorString isEqualToString:@"shanchahong"]) {
+        return HEXCOLORV5(0xFA648D);
+    } else if ([themeColorString isEqualToString:@"zhulv"]) {
+        return HEXCOLORV5(0x00AD82);
+    } else if ([themeColorString isEqualToString:@"caolv"]) {
+        return HEXCOLORV5(0x19C349);
+    } else if ([themeColorString isEqualToString:@"bohelv"]) {
+        return HEXCOLORV5(0x00D3B5);
+    } else if ([themeColorString isEqualToString:@"nanguacheng"]) {
+        return HEXCOLORV5(0xFF7C03);
+    } else if ([themeColorString isEqualToString:@"zise"]) {
+        return HEXCOLORV5(0x6665FF);
+    }
     return HEXCOLORV5(0x5191FF);
 }
 
 /** 按钮不可点击颜色 */
 + (UIColor *)buttonDisableColor {
+    NSString *themeColorString = [[NSUserDefaults standardUserDefaults] objectForKey:@"color"];
+    if ([themeColorString isEqualToString:@"haiyanglan"]) {
+        return HEXCOLORV5(0x97BDFF);
+    } else if ([themeColorString isEqualToString:@"shenhailan"]) {
+        return HEXCOLORV5(0x809EFF);
+    } else if ([themeColorString isEqualToString:@"tiankonglan"]) {
+        return HEXCOLORV5(0x8EDDFB);
+    } else if ([themeColorString isEqualToString:@"shiliuhong"]) {
+        return HEXCOLORV5(0xF46666);
+    } else if ([themeColorString isEqualToString:@"shanchahong"]) {
+        return HEXCOLORV5(0xFCA2BB);
+    } else if ([themeColorString isEqualToString:@"zhulv"]) {
+        return HEXCOLORV5(0x66CEB4);
+    } else if ([themeColorString isEqualToString:@"caolv"]) {
+        return HEXCOLORV5(0x75DB92);
+    } else if ([themeColorString isEqualToString:@"bohelv"]) {
+        return HEXCOLORV5(0x66E5D3);
+    } else if ([themeColorString isEqualToString:@"nanguacheng"]) {
+        return HEXCOLORV5(0xFFB068);
+    } else if ([themeColorString isEqualToString:@"zise"]) {
+        return HEXCOLORV5(0xA3A3FF);
+    }
     return HEXCOLORV5(0x97BDFF);
 }
 
 /** 按钮弱化颜色 */
 + (UIColor *)buttonWeakeColor {
-    return HEXCOLORV5(0x5191FF);
+    NSString *themeColorString = [[NSUserDefaults standardUserDefaults] objectForKey:@"color"];
+    if ([themeColorString isEqualToString:@"haiyanglan"]) {
+        return HEXCOLORV5(0x97BDFF);
+    } else if ([themeColorString isEqualToString:@"shenhailan"]) {
+        return HEXCOLORV5(0x809EFF);
+    } else if ([themeColorString isEqualToString:@"tiankonglan"]) {
+        return HEXCOLORV5(0x8EDDFB);
+    } else if ([themeColorString isEqualToString:@"shiliuhong"]) {
+        return HEXCOLORV5(0xF46666);
+    } else if ([themeColorString isEqualToString:@"shanchahong"]) {
+        return HEXCOLORV5(0xFCA2BB);
+    } else if ([themeColorString isEqualToString:@"zhulv"]) {
+        return HEXCOLORV5(0x66CEB4);
+    } else if ([themeColorString isEqualToString:@"caolv"]) {
+        return HEXCOLORV5(0x75DB92);
+    } else if ([themeColorString isEqualToString:@"bohelv"]) {
+        return HEXCOLORV5(0x66E5D3);
+    } else if ([themeColorString isEqualToString:@"nanguacheng"]) {
+        return HEXCOLORV5(0xFFB068);
+    } else if ([themeColorString isEqualToString:@"zise"]) {
+        return HEXCOLORV5(0xA3A3FF);
+    }
+    return HEXCOLORV5(0x97BDFF);
 }
 
 + (UIColor *)starPreColor {

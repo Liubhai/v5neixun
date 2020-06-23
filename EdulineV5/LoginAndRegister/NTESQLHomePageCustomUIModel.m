@@ -84,7 +84,7 @@
     model.appSPrivacyTitleText = atr;
  
     model.uncheckedImg = [UIImage imageNamed:@"checkbox_nor"];
-    model.checkedImg = [UIImage imageNamed:@"checkbox_sel"];
+    model.checkedImg = [UIImage imageNamed:@"checkbox_sel1"];
 //    model.checkboxWH = 20;
     model.privacyState = NO;
     model.checkedHidden = NO;

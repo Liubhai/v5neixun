@@ -133,7 +133,7 @@
     CGFloat space = 2.0;
     
     _openButton = [[UIButton alloc] initWithFrame:CGRectMake(15, _textCountLabel.top, openWidth, 20)];
-    [_openButton setImage:Image(@"checkbox_sel") forState:UIControlStateSelected];
+    [_openButton setImage:[Image(@"checkbox_sel1") converToMainColor] forState:UIControlStateSelected];
     [_openButton setImage:Image(@"checkbox_nor") forState:0];
     [_openButton setTitle:openText forState:0];
     [_openButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
