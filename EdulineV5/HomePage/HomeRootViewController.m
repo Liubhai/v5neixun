@@ -456,9 +456,8 @@
 
 // MARK: - 调整到讲师主页面
 - (void)goToTeacherMainPage:(NSString *)teacherId {
-    TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
-    vc.isChange = YES;
-    vc.typeString = @"0";
+    TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
+    vc.teacherId = teacherId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

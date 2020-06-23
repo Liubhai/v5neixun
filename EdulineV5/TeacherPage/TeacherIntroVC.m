@@ -37,14 +37,8 @@
 }
 
 - (void)makeClassInfoWebView {
-    NSString *jScript = @"var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);";
-
-    WKUserContentController *wkUController = [[WKUserContentController alloc] init];
     
-    WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
-    wkWebConfig.userContentController = wkUController;
-    
-    _ClassIntroWeb = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5) configuration:wkWebConfig];
+    _ClassIntroWeb = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5)];
     _ClassIntroWeb.backgroundColor = [UIColor clearColor];
     _ClassIntroWeb.scrollView.scrollEnabled = NO;
     _ClassIntroWeb.UIDelegate = self;
@@ -54,7 +48,7 @@
 
     [_ClassIntroWeb loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
     UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap1:)];
-    [_ClassIntroWeb addGestureRecognizer:singleTap];
+//    [_ClassIntroWeb addGestureRecognizer:singleTap];
     singleTap.delegate = self;
     singleTap.cancelsTouchesInView = NO;
 }

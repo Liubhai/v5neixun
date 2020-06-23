@@ -343,6 +343,9 @@
         [_faceImageView sd_setImageWithURL:EdulineUrlString([_teacherInfoDict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
         _InstitutionLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"title"]];
         _levelLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"level_text"]];
+        if ([_levelLabel.text isEqualToString:@"<null>"] || [_levelLabel.text isEqualToString:@"null"] || !SWNOTEmptyStr(_levelLabel.text)) {
+            _levelLabel.hidden = YES;
+        }
         [_likeButton setTitle:[[_teacherInfoDict objectForKey:@"is_follow"] boolValue] ? @"已关注" : @"+关注" forState:0];
         CGFloat levelWidth = [_levelLabel.text sizeWithFont:_levelLabel.font].width + 4;
         [_levelLabel setWidth:levelWidth];
@@ -353,6 +356,9 @@
         [_introLabelBtn setTitle:schoolName forState:0];
         [_introLabelBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -_introLabelBtn.currentImage.size.width, 0, _introLabelBtn.currentImage.size.width)];
         [_introLabelBtn setImageEdgeInsets:UIEdgeInsetsMake(0, secondBtnWidth-12, 0, -(secondBtnWidth - 12))];
+        if ([schoolName isEqualToString:@"<null>"] || [schoolName isEqualToString:@"null"] || !SWNOTEmptyStr(schoolName)) {
+            _introLabelBtn.hidden = YES;
+        }
         _guanzhuCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"follow"]];
         _fensiCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"follower"]];
         _visitorsCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"recent_visitors"]];
