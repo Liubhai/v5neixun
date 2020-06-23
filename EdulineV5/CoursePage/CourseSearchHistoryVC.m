@@ -248,6 +248,7 @@
     
     if (!SWNOTEmptyStr(_institutionSearch.text)) {
         [self showHudInView:self.view showHint:@"请输入搜索课程的名字"];
+        return;
     }
     // 把搜索历史数据存本地
     if ([_searchDataSource containsObject:_institutionSearch.text]) {
