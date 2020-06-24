@@ -14,6 +14,7 @@
 #import "WkWebViewController.h"
 #import <WXApi.h>
 #import <WXApiObject.h>
+#import <AlipaySDK/AlipaySDK.h>
 
 @interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
@@ -102,6 +103,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserBalanceInfo) name:@"orderFinished" object:nil];
 }
 
 - (void)makeUserAccountUI {
@@ -283,9 +286,12 @@
 }
 
 - (void)makeOrderView {
-    _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _moneyView.bottom + 10, MainScreenWidth, 168)];
-    _orderTypeView.backgroundColor = [UIColor whiteColor];
-    [_mainScrollView addSubview:_orderTypeView];
+    if (!_orderTypeView) {
+        _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _moneyView.bottom + 10, MainScreenWidth, 168)];
+        _orderTypeView.backgroundColor = [UIColor whiteColor];
+        [_mainScrollView addSubview:_orderTypeView];
+    }
+    [_orderTypeView removeAllSubviews];
 }
 
 - (void)makeOrderType1View1 {
@@ -420,9 +426,13 @@
 }
 
 - (void)makeAgreeView {
-    _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _orderTypeView.bottom +10, MainScreenWidth, 60)];
-    _agreeBackView.backgroundColor = [UIColor whiteColor];
-    [_mainScrollView addSubview:_agreeBackView];
+    if (!_agreeBackView) {
+        _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _orderTypeView.bottom +10, MainScreenWidth, 60)];
+        _agreeBackView.backgroundColor = [UIColor whiteColor];
+        [_mainScrollView addSubview:_agreeBackView];
+    }
+    
+    [_agreeBackView removeAllSubviews];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
     NSString *atr = [NSString stringWithFormat:@"《%@购买协议》",appName];
@@ -494,7 +504,6 @@
     _submitButton.layer.cornerRadius = _submitButton.height/2.0;
     [_submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:_submitButton];
-    
 }
 
 - (void)seleteAgreementButtonClick:(UIButton *)sender {
@@ -712,7 +721,7 @@
                     if ([typeString isEqualToString:@"wxpay"]) {
                         [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     } else if ([typeString isEqualToString:@"alipay"]) {
-                        [self addWkWebView:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
+                        [self orderFinish:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     }
                 }
             }
@@ -720,6 +729,13 @@
             
         }];
     }
+}
+
+- (void)orderFinish:(NSString *)orderS {
+    // NOTE: 调用支付结果开始支付
+    [[AlipaySDK defaultService] payOrder:orderS fromScheme:AlipayBundleId callback:^(NSDictionary *resultDic) {
+        NSLog(@"reslut = %@",resultDic);
+    }];
 }
 
 //- (void)addWkWebView:(NSString *)urlS {
@@ -856,6 +872,8 @@
                     [_orderTypeView setHeight:_orderTypeView3.bottom];
                     
                     [self makeAgreeView];
+                    
+                    _priceLabel.text = @"¥0.00";
                 }
             }
         }

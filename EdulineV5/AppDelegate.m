@@ -16,6 +16,8 @@
 #import <UMShare/UMShare.h>
 #import <UMShare/UMSocialManager.h>
 #import <WXApi.h>
+
+#import <AlipaySDK/AlipaySDK.h>
 //
 #import "Net_Path.h"
 #import "SurePwViewController.h"
@@ -221,7 +223,9 @@
     if (result == FALSE) {
         //如果极简 SDK 不可用,会跳转支付宝钱包进行支付,需要将支付宝钱包的支付结果回传给 SDK
         if ([url.host isEqualToString:@"safepay"]) {
-            return YES;
+            [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+                NSLog(@"result = %@",resultDic);
+            }];
         }else if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
             return YES;
         }
@@ -236,6 +240,19 @@
         // 其他如支付等SDK的回调
     }
     return result;
+}
+
+// NOTE: 9.0以后使用新API接口
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+{
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            NSLog(@"result = %@",resultDic);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
+        }];
+    }
+    return YES;
 }
 
 //-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {

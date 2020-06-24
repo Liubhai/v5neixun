@@ -11,10 +11,11 @@
 #import "Net_Path.h"
 #import "ScoreDetailVC.h"
 #import "WkWebViewController.h"
+#import <AlipaySDK/AlipaySDK.h>
 
 @interface MyScoreVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
-    NSString *sple_score_str;//比例
+    NSString *ratio_string;
 }
 
 @property (strong, nonatomic) UILabel *priceLabel;
@@ -67,9 +68,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserScoreInfo) name:@"orderFinished" object:nil];
     
     
-    sple_score_str = @"10";
+    ratio_string = @"10";
     
     _typeArray = [NSMutableArray new];
     _titleImage.backgroundColor = EdlineV5_Color.themeColor;
@@ -181,24 +183,24 @@
     [_orderRightBtn1 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView1 addSubview:_orderRightBtn1];
     
-//    BOOL hasMoubao = NO;
-//
-//    if (SWNOTEmptyArr(_typeArray)) {
-//        if ([_typeArray containsObject:@"alipay"]) {
-//            hasMoubao = YES;
-//        } else {
-//            hasMoubao = NO;
-//        }
-//    } else {
-//        hasMoubao = NO;
-//    }
-//
-//    if (!hasMoubao) {
-//        [_orderTypeView1 setHeight:0];
-//        _orderTypeView1.hidden = YES;
-//    } else {
-//        [self seleteButtonClick:_orderRightBtn1];
-//    }
+    BOOL hasMoubao = NO;
+
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"alipay"]) {
+            hasMoubao = YES;
+        } else {
+            hasMoubao = NO;
+        }
+    } else {
+        hasMoubao = NO;
+    }
+
+    if (!hasMoubao) {
+        [_orderTypeView1 setHeight:0];
+        _orderTypeView1.hidden = YES;
+    } else {
+        [self seleteButtonClick:_orderRightBtn1];
+    }
 }
 
 - (void)makeOrderType1View2 {
@@ -223,26 +225,26 @@
     [_orderRightBtn2 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView2 addSubview:_orderRightBtn2];
     
-//    BOOL hasW = NO;
-//
-//    if (SWNOTEmptyArr(_typeArray)) {
-//        if ([_typeArray containsObject:@"wxpay"]) {
-//            hasW = YES;
-//        } else {
-//            hasW = NO;
-//        }
-//    } else {
-//        hasW = NO;
-//    }
-//
-//    if (!hasW) {
-//        [_orderTypeView2 setHeight:0];
-//        _orderTypeView2.hidden = YES;
-//    } else {
-//        if (_orderTypeView1.height == 0) {
-//            [self seleteButtonClick:_orderRightBtn2];
-//        }
-//    }
+    BOOL hasW = NO;
+
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"wxpay"]) {
+            hasW = YES;
+        } else {
+            hasW = NO;
+        }
+    } else {
+        hasW = NO;
+    }
+
+    if (!hasW) {
+        [_orderTypeView2 setHeight:0];
+        _orderTypeView2.hidden = YES;
+    } else {
+        if (_orderTypeView1.height == 0) {
+            [self seleteButtonClick:_orderRightBtn2];
+        }
+    }
 }
 
 - (void)makeOrderType1View3 {
@@ -267,26 +269,26 @@
     [_orderRightBtn3 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView3 addSubview:_orderRightBtn3];
     
-//    BOOL hasW = NO;
-//
-//    if (SWNOTEmptyArr(_typeArray)) {
-//        if ([_typeArray containsObject:@"applepay"]) {
-//            hasW = YES;
-//        } else {
-//            hasW = NO;
-//        }
-//    } else {
-//        hasW = NO;
-//    }
-//
-//    if (!hasW) {
-//        [_orderTypeView3 setHeight:0];
-//        _orderTypeView3.hidden = YES;
-//    } else {
-//        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
-//            [self seleteButtonClick:_orderRightBtn3];
-//        }
-//    }
+    BOOL hasW = NO;
+
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"lcnpay"]) {
+            hasW = YES;
+        } else {
+            hasW = NO;
+        }
+    } else {
+        hasW = NO;
+    }
+
+    if (!hasW) {
+        [_orderTypeView3 setHeight:0];
+        _orderTypeView3.hidden = YES;
+    } else {
+        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
+            [self seleteButtonClick:_orderRightBtn3];
+        }
+    }
 }
 
 - (void)makeOrderType1View4 {
@@ -311,26 +313,26 @@
     [_orderRightBtn4 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView4 addSubview:_orderRightBtn4];
     
-//    BOOL hasW = NO;
-//
-//    if (SWNOTEmptyArr(_typeArray)) {
-//        if ([_typeArray containsObject:@"income"]) {
-//            hasW = YES;
-//        } else {
-//            hasW = NO;
-//        }
-//    } else {
-//        hasW = NO;
-//    }
-//
-//    if (!hasW) {
-//        [_orderTypeView4 setHeight:0];
-//        _orderTypeView4.hidden = YES;
-//    } else {
-//        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0 && _orderTypeView3.height == 0) {
-//            [self seleteButtonClick:_orderRightBtn4];
-//        }
-//    }
+    BOOL hasW = NO;
+
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"income"]) {
+            hasW = YES;
+        } else {
+            hasW = NO;
+        }
+    } else {
+        hasW = NO;
+    }
+
+    if (!hasW) {
+        [_orderTypeView4 setHeight:0];
+        _orderTypeView4.hidden = YES;
+    } else {
+        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0 && _orderTypeView3.height == 0) {
+            [self seleteButtonClick:_orderRightBtn4];
+        }
+    }
 }
 
 - (void)makeAgreeView {
@@ -449,6 +451,82 @@
         _submitButton.enabled = YES;
         return;
     }
+    
+    if (SWNOTEmptyStr(typeString)) {
+        if ([typeString isEqualToString:@"wxpay"]) {
+            [self showHudInView:self.view showHint:@"目前不支持微信支付"];
+            _submitButton.enabled = YES;
+            return;
+        }
+        if (SWNOTEmptyStr(_scoreInputText.text)) {
+            // 这里先处理普通流程
+            NSMutableDictionary *param = [NSMutableDictionary new];
+            [param setObject:_scoreInputText.text forKey:@"credit"];
+            NSString *price = [_priceLabel.text substringFromIndex:1];
+            [param setObject:price forKey:@"payment"];
+            // 生成余额订单
+            [self createBalanceOrder:param];
+        } else {
+            [self showHudInView:self.view showHint:@"请输入需要充值的金额"];
+            _submitButton.enabled = YES;
+            return;
+        }
+    } else {
+        [self showHudInView:self.view showHint:@"请选择充值方式"];
+        _submitButton.enabled = YES;
+        return;
+    }
+}
+
+// MARK: - 生成余额订单
+- (void)createBalanceOrder:(NSDictionary *)dict {
+    if (SWNOTEmptyDictionary(dict)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path userScoreDetail] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [self submiteOrder:[responseObject objectForKey:@"data"]];
+                } else {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK: - 支付
+- (void)submiteOrder:(NSDictionary *)dict {
+    if (SWNOTEmptyDictionary(dict) && SWNOTEmptyStr(typeString)) {
+        NSMutableDictionary *pass = [NSMutableDictionary new];
+        [pass setObject:[dict objectForKey:@"order_no"] forKey:@"order_no"];
+        [pass setObject:typeString forKey:@"pay_type"];
+        [Net_API requestPOSTWithURLStr:[Net_Path subMitOrder] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    if ([typeString isEqualToString:@"wxpay"]) {
+                        
+                    } else if ([typeString isEqualToString:@"alipay"]) {
+                        [self orderFinish:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
+                    } else {
+                        [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                        [self getUserScoreInfo];
+                    }
+                } else {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+- (void)orderFinish:(NSString *)orderS {
+    // NOTE: 调用支付结果开始支付
+    [[AlipaySDK defaultService] payOrder:orderS fromScheme:AlipayBundleId callback:^(NSDictionary *resultDic) {
+        NSLog(@"reslut = %@",resultDic);
+    }];
 }
 
 - (void)attributedLabel:(TYAttributedLabel *)attributedLabel textStorageClicked:(id<TYTextStorageProtocol>)textStorage atPoint:(CGPoint)point {
@@ -476,8 +554,8 @@
 - (void)textfieldDidChanged:(NSNotification *)notice {
     UITextField *textfield = (UITextField *)notice.object;
     if (textfield.text.length>0) {
-        _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] / [sple_score_str integerValue]];
-        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] / [sple_score_str integerValue]];
+        _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] * [ratio_string integerValue] / 100.00];
+        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [ratio_string integerValue] / 100.00];
     } else {
         _needPriceLabel.text = @"需花费¥0.00";
         _priceLabel.text = @"¥0.00";
@@ -524,6 +602,14 @@
                     _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"credit"]];
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
+                    
+                    NSString *ratio = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"ratio"]];
+                    NSArray *ratioArray = [ratio componentsSeparatedByString:@":"];
+                    if (SWNOTEmptyArr(ratioArray)) {
+                        ratio_string = [NSString stringWithFormat:@"%@",ratioArray[0]];
+                    }
+                    
+                    [_mainScrollView removeAllSubviews];
                     
                     [self makeUserAccountUI];
                     

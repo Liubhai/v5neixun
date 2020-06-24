@@ -99,7 +99,7 @@
 #define SinaAppSecret @"da07bcf6c9f30281e684f8abfd0b4fca"
 
 // 支付宝h5支付之后需要回到app
-#define AlipayBundleId @"com.saixin.edulineV5"
+#define AlipayBundleId @"com.seition.edulineV5"
 
 #define WangyiQuickLoginBusenissID @"0956a7a27f934c8dabeb19e598852111"
 #define WangyiId @"abea082ce1e2211c0aa721126d900928"

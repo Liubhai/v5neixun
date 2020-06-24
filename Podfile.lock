@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - AlipaySDK-iOS (15.7.4)
   - Bugly (2.5.2)
   - FMDB (2.7):
     - FMDB/standard (= 2.7)
@@ -69,6 +70,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (= 3.2.1)
+  - AlipaySDK-iOS
   - Bugly
   - FMDB (from `https://github.com/ccgus/fmdb.git`, tag `2.7`)
   - JSONModel (~> 1.7.0)
@@ -94,6 +96,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AFNetworking
+    - AlipaySDK-iOS
     - Bugly
     - JSONModel
     - LBXScan
@@ -123,6 +126,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  AlipaySDK-iOS: 8659cdb4403de7e5f26ad8b699864a9cbe53384c
   Bugly: dbac48b55ad469a97cc4321045cd50df8f63d44f
   FMDB: 115114e988a7c92a5191f1334c46c99b0a477700
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
@@ -141,6 +145,6 @@ SPEC CHECKSUMS:
   UMCShare: a250203b34a56cde25cc4c28335449b542f0255d
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 8ed94335fe1350a62f8c9d389fa9339224c52211
+PODFILE CHECKSUM: c13982f56e461143e61777218f37dbc90054f8f3
 
 COCOAPODS: 1.9.1
