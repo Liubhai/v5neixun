@@ -12,6 +12,8 @@
 #import "BalanceDetailVC.h"
 #import "CardInterVC.h"
 #import "WkWebViewController.h"
+#import <WXApi.h>
+#import <WXApiObject.h>
 
 @interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
@@ -664,9 +666,9 @@
             }
         } else {
             if (SWNOTEmptyStr(_otherMoneyText.text)) {
-                [param setObject:@([_otherMoneyText.text floatValue]) forKey:@"balance"];
+                [param setObject:_otherMoneyText.text forKey:@"balance"];//@([_otherMoneyText.text floatValue])
                 NSString *price = [_priceLabel.text substringFromIndex:1];
-                [param setObject:@([price floatValue]) forKey:@"payment"];
+                [param setObject:price forKey:@"payment"];//
                 [param setObject:@"0" forKey:@"recharge_id"];
             } else {
                 [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
@@ -675,7 +677,7 @@
             }
         }
         // 生成余额订单
-        
+        [self createBalanceOrder:param];
     }
     
     
@@ -708,9 +710,9 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     if ([typeString isEqualToString:@"wxpay"]) {
-                        
+                        [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     } else if ([typeString isEqualToString:@"alipay"]) {
-                        
+                        [self addWkWebView:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     }
                 }
             }
@@ -718,6 +720,80 @@
             
         }];
     }
+}
+
+//- (void)addWkWebView:(NSString *)urlS {
+//    if (_wkWebView && [_wkWebView superview]) {
+//        [_wkWebView removeFromSuperview];
+//    }
+//    if (!_wkWebView) {
+//        _wkWebView = [[WKWebIntroview alloc] initWithFrame:CGRectMake(0, MainScreenHeight * 2, MainScreenWidth,MainScreenHeight)];
+//        _wkWebView.backgroundColor = [UIColor whiteColor];
+//        [_wkWebView setUserInteractionEnabled:YES];
+//        _wkWebView.scrollView.scrollEnabled = NO;
+//        _wkWebView.UIDelegate = self;
+//        _wkWebView.navigationDelegate = self;
+//    }
+//    [self.view addSubview:_wkWebView];
+//    NSString *allStr = [NSString stringWithFormat:@"%@",urlS];
+//    [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
+//}
+//
+//- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+//    NSString *url = navigationAction.request.URL.absoluteString;
+//    NSString *schme = [navigationAction.request.URL scheme];
+//    if ([url containsString:@"alipay://alipayclient"]) {
+//        NSMutableString *param = [NSMutableString stringWithFormat:@"%@", (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)url, CFSTR(""), CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding))];
+//
+//        NSRange range = [param rangeOfString:@"{"];
+//        // 截取 json 部分
+//        NSString *param1 = [param substringFromIndex:range.location];
+//        if ([param1 rangeOfString:@"\"fromAppUrlScheme\":"].length > 0) {
+//            NSData *data = [param1 dataUsingEncoding:NSUTF8StringEncoding];
+//            NSDictionary *tempDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//
+//            if (![tempDic isKindOfClass:[NSDictionary class]]) {
+//                WKNavigationActionPolicy actionPolicy = WKNavigationActionPolicyCancel;
+//                //这句是必须加上的，不然会异常
+//                decisionHandler(actionPolicy);
+//                return;
+//            }
+//
+//            NSMutableDictionary *dicM = [NSMutableDictionary dictionaryWithDictionary:tempDic];
+//            dicM[@"fromAppUrlScheme"] = AlipayBundleId;
+//
+//            NSError *error;
+//            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dicM options:NSJSONWritingPrettyPrinted error:&error];
+//            NSString *jsonStr = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+//
+//            NSString *encodedString = (NSString*) CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,                           (CFStringRef)jsonStr, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
+//
+//            // 只替换 json 部分
+//            [param replaceCharactersInRange:NSMakeRange(range.location, param.length - range.location)  withString:encodedString];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:param]];
+//        }
+//    }
+//    WKNavigationActionPolicy actionPolicy = WKNavigationActionPolicyAllow;
+//    //这句是必须加上的，不然会异常
+//    decisionHandler(actionPolicy);
+//}
+
+- (void)otherOrderTypeWx:(NSDictionary *)dict {
+    NSString * timeString = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
+    NSLog(@"=====%@",timeString);
+//    PayReq *request = [[PayReq alloc] init];
+//    request.partnerId = [NSString stringWithFormat:@"%@",[dict objectForKey:@"partnerid"]];
+//    request.prepayId= [NSString stringWithFormat:@"%@",[dict objectForKey:@"prepayid"]];
+//    request.package = [NSString stringWithFormat:@"%@",[dict objectForKey:@"package"]];
+//    request.nonceStr= [NSString stringWithFormat:@"%@",[dict objectForKey:@"noncestr"]];
+//    request.timeStamp= timeString.intValue;
+//    request.timeStamp= [[NSString stringWithFormat:@"%@",[dict objectForKey:@"timestamp"]] intValue];
+//    request.sign= [NSString stringWithFormat:@"%@",[dict objectForKey:@"sign"]];
+//    [WXApi sendReq:request completion:^(BOOL success) {
+//        if (success) {
+//
+//        }
+//    }];
 }
 
 // MARK: - 协议点击代理
