@@ -11,8 +11,9 @@
 #import "Net_Path.h"
 #import "ZiXunListCell.h"
 #import "ZiXunDetailVC.h"
+#import "TeacherCategoryVC.h"
 
-@interface ZiXunListVC () {
+@interface ZiXunListVC ()<TeacherCategoryVCDelegate> {
     NSInteger page;
     NSString *typeString;
 }
@@ -136,6 +137,19 @@
             [_tableView.mj_footer endRefreshing];
         }
     }];
+}
+
+- (void)rightButtonClick:(id)sender {
+    TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+    vc.typeString = @"5";
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 选择更换资讯类型代理
+- (void)chooseCategoryId:(NSString *)categoryId {
+    typeString = categoryId;
+    [self.tableView.mj_header beginRefreshing];
 }
 
 @end

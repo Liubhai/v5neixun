@@ -44,6 +44,11 @@
         _rightButton.hidden = YES;
     }
     
+    if ([_typeString isEqualToString:@"5"]) {
+        _titleLabel.text = @"资讯";
+        _rightButton.hidden = YES;
+    }
+    
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     
@@ -243,6 +248,12 @@
     if ([_typeString isEqualToString:@"0"]) {
         [self changeFavoriteCourse:model.cateGoryId];
         return;
+    } else if ([_typeString isEqualToString:@"5"]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
+            [_delegate chooseCategoryId:model.cateGoryId];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        return;
     }
     
     model.selected = sender.selected;
@@ -276,6 +287,12 @@
     // 如果是意向课程选择 就是单选 这里直接请求更换意向课程接口
     if ([_typeString isEqualToString:@"0"]) {
         [self changeFavoriteCourse:secondModel.cateGoryId];
+        return;
+    } else if ([_typeString isEqualToString:@"5"]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
+            [_delegate chooseCategoryId:secondModel.cateGoryId];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
         return;
     }
     
@@ -322,6 +339,12 @@
     // 如果是意向课程选择 就是单选 这里直接请求更换意向课程接口
     if ([_typeString isEqualToString:@"0"]) {
         [self changeFavoriteCourse:thirdModel.cateGoryId];
+        return;
+    } else if ([_typeString isEqualToString:@"5"]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
+            [_delegate chooseCategoryId:thirdModel.cateGoryId];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
         return;
     }
     
