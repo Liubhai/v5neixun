@@ -9,6 +9,7 @@
 #import "OrderSureViewController.h"
 #import "Net_Path.h"
 #import <AlipaySDK/AlipaySDK.h>
+#import <WechatOpenSDK/WXApi.h>
 
 @interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate> {
     NSString *typeString;//支付方式【lcnpay：余额；alipay：支付宝；wxpay：微信；】
@@ -306,11 +307,6 @@
         return;
     }
     if (SWNOTEmptyStr(typeString) && SWNOTEmptyStr(_order_no)) {
-        if ([typeString isEqualToString:@"wxpay"]) {
-            [self showHudInView:self.view showHint:@"暂不支持微信支付"];
-            _submitButton.enabled = YES;
-            return;
-        }
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:typeString forKey:@"pay_type"];
         [param setObject:_order_no forKey:@"order_no"];
@@ -327,6 +323,7 @@
                         shouldPop = YES;
                         [self orderFinish:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     } else if ([typeString isEqualToString:@"wxpay"]) {
+                        [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                         shouldPop = YES;
                     }
                 } else {
@@ -349,6 +346,29 @@
     // NOTE: 调用支付结果开始支付
     [[AlipaySDK defaultService] payOrder:orderS fromScheme:AlipayBundleId callback:^(NSDictionary *resultDic) {
         NSLog(@"reslut = %@",resultDic);
+    }];
+}
+
+- (void)otherOrderTypeWx:(NSString *)str {
+    NSString * timeString = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
+    NSLog(@"=====%@",timeString);
+    str = [str stringByReplacingOccurrencesOfString:@"，" withString:@","];
+    str = [str stringByReplacingOccurrencesOfString:@"”" withString:@""];
+    str = [str stringByReplacingOccurrencesOfString:@"”" withString:@""];
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+    PayReq *request = [[PayReq alloc] init];
+    request.partnerId = [NSString stringWithFormat:@"%@",[dict objectForKey:@"partnerid"]];
+    request.prepayId= [NSString stringWithFormat:@"%@",[dict objectForKey:@"prepayid"]];
+    request.package = [NSString stringWithFormat:@"%@",[dict objectForKey:@"package"]];
+    request.nonceStr= [NSString stringWithFormat:@"%@",[dict objectForKey:@"noncestr"]];
+    request.timeStamp= timeString.intValue;
+    request.timeStamp= [[NSString stringWithFormat:@"%@",[dict objectForKey:@"timestamp"]] intValue];
+    request.sign= [NSString stringWithFormat:@"%@",[dict objectForKey:@"sign"]];
+    [WXApi sendReq:request completion:^(BOOL success) {
+        if (success) {
+
+        }
     }];
 }
 

@@ -64,6 +64,7 @@ PODS:
   - UMCShare/UI (6.9.8):
     - UMCCommon
     - UMCShare/Core
+  - WechatOpenSDK (1.8.7.1)
   - YYKit (1.0.9):
     - YYKit/no-arc (= 1.0.9)
   - YYKit/no-arc (1.0.9)
@@ -91,6 +92,7 @@ DEPENDENCIES:
   - UMCShare/Social/Sina
   - UMCShare/Social/WeChat
   - UMCShare/UI
+  - WechatOpenSDK
   - YYKit (= 1.0.9)
 
 SPEC REPOS:
@@ -112,6 +114,7 @@ SPEC REPOS:
     - TZImagePickerController
     - UMCCommon
     - UMCShare
+    - WechatOpenSDK
     - YYKit
 
 EXTERNAL SOURCES:
@@ -143,8 +146,9 @@ SPEC CHECKSUMS:
   TZImagePickerController: 821b81f83594a736e831a018f2a2ce31822ddf0b
   UMCCommon: b0703b0053323f598e01670ea702b8eb1e66e611
   UMCShare: a250203b34a56cde25cc4c28335449b542f0255d
+  WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: c13982f56e461143e61777218f37dbc90054f8f3
+PODFILE CHECKSUM: 7b82f117f533d35b3f28506dd06e9f89353a1540
 
 COCOAPODS: 1.9.1

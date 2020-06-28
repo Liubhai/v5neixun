@@ -12,8 +12,7 @@
 #import "BalanceDetailVC.h"
 #import "CardInterVC.h"
 #import "WkWebViewController.h"
-#import <WXApi.h>
-#import <WXApiObject.h>
+#import <WechatOpenSDK/WXApi.h>
 #import <AlipaySDK/AlipaySDK.h>
 
 @interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
@@ -794,22 +793,27 @@
 //    decisionHandler(actionPolicy);
 //}
 
-- (void)otherOrderTypeWx:(NSDictionary *)dict {
+- (void)otherOrderTypeWx:(NSString *)str {
     NSString * timeString = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
     NSLog(@"=====%@",timeString);
-//    PayReq *request = [[PayReq alloc] init];
-//    request.partnerId = [NSString stringWithFormat:@"%@",[dict objectForKey:@"partnerid"]];
-//    request.prepayId= [NSString stringWithFormat:@"%@",[dict objectForKey:@"prepayid"]];
-//    request.package = [NSString stringWithFormat:@"%@",[dict objectForKey:@"package"]];
-//    request.nonceStr= [NSString stringWithFormat:@"%@",[dict objectForKey:@"noncestr"]];
-//    request.timeStamp= timeString.intValue;
-//    request.timeStamp= [[NSString stringWithFormat:@"%@",[dict objectForKey:@"timestamp"]] intValue];
-//    request.sign= [NSString stringWithFormat:@"%@",[dict objectForKey:@"sign"]];
-//    [WXApi sendReq:request completion:^(BOOL success) {
-//        if (success) {
-//
-//        }
-//    }];
+    str = [str stringByReplacingOccurrencesOfString:@"，" withString:@","];
+    str = [str stringByReplacingOccurrencesOfString:@"”" withString:@""];
+    str = [str stringByReplacingOccurrencesOfString:@"”" withString:@""];
+    NSData *jsonData = [str dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+    PayReq *request = [[PayReq alloc] init];
+    request.partnerId = [NSString stringWithFormat:@"%@",[dict objectForKey:@"partnerid"]];
+    request.prepayId= [NSString stringWithFormat:@"%@",[dict objectForKey:@"prepayid"]];
+    request.package = [NSString stringWithFormat:@"%@",[dict objectForKey:@"package"]];
+    request.nonceStr= [NSString stringWithFormat:@"%@",[dict objectForKey:@"noncestr"]];
+    request.timeStamp= timeString.intValue;
+    request.timeStamp= [[NSString stringWithFormat:@"%@",[dict objectForKey:@"timestamp"]] intValue];
+    request.sign= [NSString stringWithFormat:@"%@",[dict objectForKey:@"sign"]];
+    [WXApi sendReq:request completion:^(BOOL success) {
+        if (success) {
+
+        }
+    }];
 }
 
 // MARK: - 协议点击代理

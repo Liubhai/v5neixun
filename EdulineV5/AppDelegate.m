@@ -16,6 +16,7 @@
 #import <UMShare/UMShare.h>
 #import <UMShare/UMSocialManager.h>
 #import <WXApi.h>
+//#import <WechatOpenSDK/WXApi.h>
 
 #import <AlipaySDK/AlipaySDK.h>
 //
@@ -59,7 +60,7 @@
 //                  别人笑我忒疯癫，我笑自己命太贱；
 //                  不见满街漂亮妹，哪个归得程序员？
 
-@interface AppDelegate ()<BuglyDelegate,TICStatusListener,UIAlertViewDelegate>
+@interface AppDelegate ()<BuglyDelegate,TICStatusListener,UIAlertViewDelegate,WXApiDelegate>
 
 @property (weak, nonatomic) NTESQuickLoginManager *quickLoginManager;
 
@@ -251,6 +252,8 @@
             NSLog(@"result = %@",resultDic);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
         }];
+    } else if ([url.host isEqualToString:@"wx05293bb7051162ea"]) {
+        return [WXApi handleOpenURL:url delegate:self];
     }
     return YES;
 }
