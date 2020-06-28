@@ -344,4 +344,11 @@
     return [Net_Path fullPath:@"content/agreement/{key}/fetch" repalce:@"{key}" byReplece:agreementKey];
 }
 
++ (NSString *)zixunListPageNet {
+    return [Net_Path fullPath:@"topic/list" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)zixunDetailNet:(NSString *)zixunId {
+    return [Net_Path fullPath:@"topic/{id}/fetch" repalce:@"{id}" byReplece:zixunId];
+}
 @end

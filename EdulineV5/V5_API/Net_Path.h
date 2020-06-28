@@ -275,6 +275,14 @@ struct NetWorkUrl {
 /** 各种协议内容接口 */
 + (NSString *)agreementContentNet:(NSString *)agreementKey;
 
+
+// MARK: - 资讯相关
+/** 资讯主列表 */
++ (NSString *)zixunListPageNet;
+
+/** 资讯详情 */
++ (NSString *)zixunDetailNet:(NSString *)zixunId;
+
 @end
 
 NS_ASSUME_NONNULL_END

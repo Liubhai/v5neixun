@@ -25,6 +25,9 @@
 		7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C99F242313F6002F6595 /* CourseIntroductionVC.m */; };
 		7839C9A32423655B002F6595 /* CourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A22423655A002F6595 /* CourseListVC.m */; };
 		7839C9A6242368A2002F6595 /* CourseCatalogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A5242368A2002F6595 /* CourseCatalogCell.m */; };
+		784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD324A8288200646916 /* ZiXunListCell.m */; };
+		784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD624A8340A00646916 /* ZiXunListVC.m */; };
+		784E5CDA24A8450700646916 /* ZiXunDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD924A8450700646916 /* ZiXunDetailVC.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -417,6 +420,12 @@
 		7839C9A22423655A002F6595 /* CourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListVC.m; sourceTree = "<group>"; };
 		7839C9A4242368A2002F6595 /* CourseCatalogCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCatalogCell.h; sourceTree = "<group>"; };
 		7839C9A5242368A2002F6595 /* CourseCatalogCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCatalogCell.m; sourceTree = "<group>"; };
+		784E5CD224A8288200646916 /* ZiXunListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListCell.h; sourceTree = "<group>"; };
+		784E5CD324A8288200646916 /* ZiXunListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunListCell.m; sourceTree = "<group>"; };
+		784E5CD524A8340A00646916 /* ZiXunListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListVC.h; sourceTree = "<group>"; };
+		784E5CD624A8340A00646916 /* ZiXunListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunListVC.m; sourceTree = "<group>"; };
+		784E5CD824A8450700646916 /* ZiXunDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunDetailVC.h; sourceTree = "<group>"; };
+		784E5CD924A8450700646916 /* ZiXunDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunDetailVC.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1232,6 +1241,8 @@
 			children = (
 				7876572124347DB2008F475D /* FindListCell.h */,
 				7876572224347DB2008F475D /* FindListCell.m */,
+				784E5CD224A8288200646916 /* ZiXunListCell.h */,
+				784E5CD324A8288200646916 /* ZiXunListCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1402,6 +1413,10 @@
 			children = (
 				78795664240E605A0013F95F /* FindRootViewController.h */,
 				78795665240E605A0013F95F /* FindRootViewController.m */,
+				784E5CD524A8340A00646916 /* ZiXunListVC.h */,
+				784E5CD624A8340A00646916 /* ZiXunListVC.m */,
+				784E5CD824A8450700646916 /* ZiXunDetailVC.h */,
+				784E5CD924A8450700646916 /* ZiXunDetailVC.m */,
 				7876571F24347D9F008F475D /* View */,
 			);
 			path = FindPage;
@@ -2879,6 +2894,7 @@
 				78C549E0241B674F00A33FC4 /* UIImage+AlivcHelper.m in Sources */,
 				7839C972241F174D002F6595 /* LBHTableView.m in Sources */,
 				7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */,
+				784E5CDA24A8450700646916 /* ZiXunDetailVC.m in Sources */,
 				787F1E90247381A400108F7B /* AVCVideoConfig.m in Sources */,
 				787F1E65247381A400108F7B /* AlivcVideoPlayerListsTableViewCell.m in Sources */,
 				78795650240E3FB60013F95F /* EdulineV5_Tool.m in Sources */,
@@ -2967,6 +2983,7 @@
 				7839C97D24206AD1002F6595 /* CourseContentView.m in Sources */,
 				78C936C3248DE4C700D5F1ED /* HomePageHotRecommendedCell.m in Sources */,
 				7879572E240FA3840013F95F /* UIView+ZLExtension.m in Sources */,
+				784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */,
 				787F1E86247381A400108F7B /* AVC_VP_BaseViewController.m in Sources */,
 				7839C9972421CB1C002F6595 /* CommentBaseView.m in Sources */,
 				78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */,
@@ -2978,6 +2995,7 @@
 				78C936CF248FBA2D00D5F1ED /* UserCommenListVC.m in Sources */,
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
 				78C549D1241B674E00A33FC4 /* AlivcBaseViewController.m in Sources */,
+				784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */,
 				78795731240FA3840013F95F /* ZLPhotoAssets.m in Sources */,
 				785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */,
 				7839C9912420DEC9002F6595 /* CourseCommentListVC.m in Sources */,

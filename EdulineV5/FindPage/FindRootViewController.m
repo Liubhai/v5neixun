@@ -11,6 +11,7 @@
 #import "FindListCell.h"
 #import "Net_Path.h"
 #import "InstitutionListVC.h"
+#import "ZiXunListVC.h"
 
 @interface FindRootViewController ()
 
@@ -94,6 +95,9 @@
     NSString *keyType = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"key"]];
     if ([keyType isEqualToString:@"school"]) {
         InstitutionListVC *vc = [[InstitutionListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([keyType isEqualToString:@"news"]) {
+        ZiXunListVC *vc = [[ZiXunListVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
