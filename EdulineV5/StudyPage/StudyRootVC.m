@@ -16,8 +16,9 @@
 #import "AppDelegate.h"
 #import "Net_Path.h"
 #import "LearnRecordVC.h"
+#import "CourseMainViewController.h"
 
-@interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource> {
+@interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource,StudyLatestCellDelegate> {
     NSInteger currentCourseType;
     NSString *dataType;// add加入的优先 learn学习优先
 }
@@ -220,6 +221,7 @@
             cell = [[StudyLatestCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         [cell setLatestLearnInfo:[[_studyInfo objectForKey:@"data"] objectForKey:@"latest"]];
+        cell.delegate = self;
         return cell;
     } else {
         static NSString *reuse = @"StudyCourseCell";
@@ -371,7 +373,25 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.section == 2) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        NSDictionary *info;
+        if (currentCourseType == 0) {
+            info = _courseArray[indexPath.row];
+        } else if (currentCourseType == 1) {
+            info = _liveArray[indexPath.row];
+        } else if (currentCourseType == 2) {
+            info = _classArray[indexPath.row];
+        } else {
+            info = _offlineArray[indexPath.row];
+        }
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_id"]];
+        vc.courselayer = [NSString stringWithFormat:@"%@",[info objectForKey:@"section_level"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+        vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -381,6 +401,16 @@
     if (_changeTypeBackView) {
         _changeTypeBackView.hidden = YES;
     }
+}
+
+// MARK: - StudyLatestCellDelegate(最近在学课程点击跳转)
+- (void)jumpToCourseDetailVC:(NSDictionary *)info {
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_id"]];
+    vc.courselayer = [NSString stringWithFormat:@"%@",[info objectForKey:@"section_level"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)typeBtnClick:(UIButton *)sender {

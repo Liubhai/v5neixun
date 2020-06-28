@@ -15,6 +15,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        _userLearnCourseArray = [NSMutableArray new];
+        [_userLearnCourseArray removeAllObjects];
         [self makeSubView];
     }
     return self;
@@ -27,6 +29,9 @@
 }
 
 - (void)setLatestLearnInfo:(NSArray *)learnArray {
+    
+    [_userLearnCourseArray removeAllObjects];
+    [_userLearnCourseArray addObjectsFromArray:learnArray];
     
     [_mainScrollView removeAllSubviews];
     CGFloat maxHeight = 0;
@@ -68,6 +73,12 @@
         maxHeight = MAX(thmeLabel.bottom + 10, maxHeight);
         maxWidth = MAX(face.right, maxWidth);
         [_mainScrollView addSubview:thmeLabel];
+        
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(face.left, face.top, face.width, thmeLabel.bottom - face.top)];
+        btn.backgroundColor = [UIColor clearColor];
+        btn.tag = i;
+        [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_mainScrollView addSubview:btn];
     }
     _mainScrollView.contentSize = CGSizeMake(maxWidth + 10, 0);
     [_mainScrollView setHeight:maxHeight];
@@ -75,6 +86,11 @@
     [self setHeight:_mainScrollView.bottom];
 }
 
+- (void)btnClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(jumpToCourseDetailVC:)]) {
+        [_delegate jumpToCourseDetailVC:_userLearnCourseArray[sender.tag]];
+    }
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

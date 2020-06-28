@@ -10,9 +10,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol StudyLatestCellDelegate <NSObject>
+
+@optional
+- (void)jumpToCourseDetailVC:(NSDictionary *)info;
+
+@end
+
 @interface StudyLatestCell : UITableViewCell
 
+@property (weak, nonatomic) id<StudyLatestCellDelegate> delegate;
+
 @property (strong, nonatomic) UIScrollView *mainScrollView;
+
+@property (strong, nonatomic) NSMutableArray *userLearnCourseArray;
 
 - (void)setLatestLearnInfo:(NSArray *)learnArray;
 
