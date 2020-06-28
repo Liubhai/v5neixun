@@ -45,7 +45,8 @@
     
     UIView *view = [[UIView alloc] init];
     view.frame = CGRectMake(15,theme.bottom - 10,themeWidth,10);
-    view.layer.backgroundColor = [UIColor colorWithRed:81/255.0 green:145/255.0 blue:255/255.0 alpha:0.2].CGColor;
+    const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.themeColor];
+    view.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.2].CGColor;
     [_titleImage addSubview:view];
     
     [self makeCollectionView];
