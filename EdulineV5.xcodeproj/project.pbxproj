@@ -28,6 +28,10 @@
 		784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD324A8288200646916 /* ZiXunListCell.m */; };
 		784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD624A8340A00646916 /* ZiXunListVC.m */; };
 		784E5CDA24A8450700646916 /* ZiXunDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD924A8450700646916 /* ZiXunDetailVC.m */; };
+		784E5CE824A9802D00646916 /* LanchAnimationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 784E5CDE24A9802C00646916 /* LanchAnimationVC.xib */; };
+		784E5CEA24A9802D00646916 /* HcdGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CE124A9802C00646916 /* HcdGuideView.m */; };
+		784E5CEB24A9802D00646916 /* HcdGuideViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CE324A9802C00646916 /* HcdGuideViewCell.m */; };
+		784E5CEC24A9802D00646916 /* LanchAnimationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CE424A9802C00646916 /* LanchAnimationVC.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -426,6 +430,13 @@
 		784E5CD624A8340A00646916 /* ZiXunListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunListVC.m; sourceTree = "<group>"; };
 		784E5CD824A8450700646916 /* ZiXunDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunDetailVC.h; sourceTree = "<group>"; };
 		784E5CD924A8450700646916 /* ZiXunDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunDetailVC.m; sourceTree = "<group>"; };
+		784E5CDC24A9802C00646916 /* HcdGuideViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HcdGuideViewCell.h; sourceTree = "<group>"; };
+		784E5CDE24A9802C00646916 /* LanchAnimationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LanchAnimationVC.xib; sourceTree = "<group>"; };
+		784E5CDF24A9802C00646916 /* LanchAnimationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanchAnimationVC.h; sourceTree = "<group>"; };
+		784E5CE124A9802C00646916 /* HcdGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HcdGuideView.m; sourceTree = "<group>"; };
+		784E5CE324A9802C00646916 /* HcdGuideViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HcdGuideViewCell.m; sourceTree = "<group>"; };
+		784E5CE424A9802C00646916 /* LanchAnimationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanchAnimationVC.m; sourceTree = "<group>"; };
+		784E5CE524A9802C00646916 /* HcdGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HcdGuideView.h; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1148,6 +1159,20 @@
 			path = CourseCell;
 			sourceTree = "<group>";
 		};
+		784E5CDB24A9802C00646916 /* 启动页面 */ = {
+			isa = PBXGroup;
+			children = (
+				784E5CDC24A9802C00646916 /* HcdGuideViewCell.h */,
+				784E5CE324A9802C00646916 /* HcdGuideViewCell.m */,
+				784E5CDF24A9802C00646916 /* LanchAnimationVC.h */,
+				784E5CE424A9802C00646916 /* LanchAnimationVC.m */,
+				784E5CDE24A9802C00646916 /* LanchAnimationVC.xib */,
+				784E5CE524A9802C00646916 /* HcdGuideView.h */,
+				784E5CE124A9802C00646916 /* HcdGuideView.m */,
+			);
+			path = "启动页面";
+			sourceTree = "<group>";
+		};
 		7853164F2451317F007E239E /* LivePage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1315,6 +1340,7 @@
 				789DB066246D6550001302B4 /* InstitutionsPage */,
 				787F1E912479196000108F7B /* TeacherPage */,
 				7879566E240F929A0013F95F /* EdulineToolLib */,
+				784E5CDB24A9802C00646916 /* 启动页面 */,
 				78795610240DE7A50013F95F /* AppDelegate.h */,
 				78795611240DE7A50013F95F /* AppDelegate.m */,
 				78795616240DE7A50013F95F /* ViewController.h */,
@@ -2643,6 +2669,7 @@
 				787F1E8B247381A400108F7B /* AliyunImageSource.bundle in Resources */,
 				787F1E8A247381A400108F7B /* AVC_VP_Main.storyboard in Resources */,
 				78A16C862452F7C100391430 /* Notes in Resources */,
+				784E5CE824A9802D00646916 /* LanchAnimationVC.xib in Resources */,
 				787F1E89247381A400108F7B /* readMe_videoPlay.txt in Resources */,
 				78C549C5241B674E00A33FC4 /* readMe_Helpers.txt in Resources */,
 				78C549D9241B674F00A33FC4 /* readMe_Categories.txt in Resources */,
@@ -2798,6 +2825,7 @@
 				789DB041246A4436001302B4 /* MycouponsRootVC.m in Sources */,
 				78C549CC241B674E00A33FC4 /* AlivcLocalDatabaseManager.m in Sources */,
 				78AA13822440543D007087F7 /* TAPageControl.m in Sources */,
+				784E5CEA24A9802D00646916 /* HcdGuideView.m in Sources */,
 				789DB0272466B38F001302B4 /* BalanceDetailVC.m in Sources */,
 				78C54971241B642B00A33FC4 /* AlivcVideoPlayManager.m in Sources */,
 				78795738240FA3840013F95F /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
@@ -2871,6 +2899,7 @@
 				78C5497C241B642B00A33FC4 /* _AlivcLiveBeautifyLevelView.m in Sources */,
 				787F1E6E247381A400108F7B /* AliyunDataSource.m in Sources */,
 				7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */,
+				784E5CEC24A9802D00646916 /* LanchAnimationVC.m in Sources */,
 				78C549C8241B674E00A33FC4 /* AlivcScanViewController.m in Sources */,
 				789DB01E2465785C001302B4 /* MyScoreVC.m in Sources */,
 				7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */,
@@ -2907,6 +2936,7 @@
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
 				78795725240FA3840013F95F /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				7839C98624209FAF002F6595 /* CourseCommentViewController.m in Sources */,
+				784E5CEB24A9802D00646916 /* HcdGuideViewCell.m in Sources */,
 				787F1E7A247381A400108F7B /* AliyunGestureModel.m in Sources */,
 				78C936D52490DAFF00D5F1ED /* InstitutionCourseMainVC.m in Sources */,
 				78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */,

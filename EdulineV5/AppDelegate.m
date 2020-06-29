@@ -27,6 +27,9 @@
 #import "TICManager.h"
 #import "TICConfig.h"
 
+#import "LanchAnimationVC.h"
+#import "HcdGuideView.h"
+
 //
 //                       _oo0oo_
 //                      o8888888o
@@ -82,11 +85,10 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-//    self.window.tintColor = [UIColor redColor];//EdlineV5_Color.faildColor;
     
-    self.tabbar = [RootV5VC sharedBaseTabBarViewController];
-    self.window.rootViewController = self.tabbar;
-    [self.window makeKeyAndVisible];
+//    self.tabbar = [RootV5VC sharedBaseTabBarViewController];
+//    self.window.rootViewController = self.tabbar;
+//    [self.window makeKeyAndVisible];
     [self configureBugly];
     // 分享
     // U-Share 平台设置
@@ -102,6 +104,41 @@
     
     _noticeLogoutAlert = [[UIAlertView alloc]initWithTitle:LoginInvalid_TXT message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     _noticeLogoutAlert.tag = 101;
+    
+    LanchAnimationVC* lanchVC = [[LanchAnimationVC alloc]init];
+    
+    self.window.rootViewController = lanchVC;
+    [self.window makeKeyAndVisible];
+    lanchVC.animationFinished = ^(BOOL successed){
+        if ([Show_Config isEqualToString:@"1"]) {
+//            InstitutionsChooseVC* institutionsVC = [[InstitutionsChooseVC alloc]init];
+//            self.window.rootViewController = institutionsVC;
+//            [self.window makeKeyAndVisible];
+//            institutionsVC.institutionChooseFinished = ^(BOOL succesed) {
+//                self.tabbar = [rootViewController sharedBaseTabBarViewController];
+//                self.window.rootViewController = self.tabbar;
+//                [self.window makeKeyAndVisible];
+//            };
+        } else {
+            self.tabbar = [RootV5VC sharedBaseTabBarViewController];
+            self.window.rootViewController = self.tabbar;
+            [self.window makeKeyAndVisible];
+        }
+        
+        NSMutableArray *images = [NSMutableArray new];
+        
+        [images addObject:[UIImage imageNamed:@"guide1.png"]];
+        [images addObject:[UIImage imageNamed:@"guide2.png"]];
+        [images addObject:[UIImage imageNamed:@"guide3.png"]];
+        
+        HcdGuideView *guideView = [HcdGuideView sharedInstance];
+        guideView.window = self.window;
+        [guideView showGuideViewWithImages:images
+                            andButtonTitle:@""
+                       andButtonTitleColor:[UIColor clearColor]
+                          andButtonBGColor:[UIColor clearColor]
+                      andButtonBorderColor:[UIColor clearColor]];
+    };
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logout) name:@"logout" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFinishLogin) name:@"LOGINFINISH" object:nil];

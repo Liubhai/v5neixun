@@ -34,6 +34,8 @@
 #define WebTitleContenDistance 10
 #define WebDistanceLeft 15//内容和左右的边距
 
+#define Show_Config [[NSUserDefaults standardUserDefaults] objectForKey:@"show_config"] == nil ? @"0" : [[NSUserDefaults standardUserDefaults] objectForKey:@"show_config"]
+
 #define TXSDKID [[NSUserDefaults standardUserDefaults] objectForKey:@"sdk_appid"]
 
 #define PROFILELAYOUT [[NSUserDefaults standardUserDefaults] objectForKey:@"profile"]
@@ -74,6 +76,18 @@
 #define ShowMissHid(X) [self showHudInView:self.view showHint:(X)]
 #define ShowInViewHud(X) [self showHudInView:self hint:(X)]
 #define ShowInViewMiss(X) [self showHint:(X)]
+
+#define iPhone4SOriPhone4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)//iphone4 4s屏幕
+
+#define iPhone5o5Co5S ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)//iphone5/5c/5s屏幕
+
+#define iPhone6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size) : NO)//iphone6屏幕
+
+#define iPhone6Plus ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) : NO)//iphone6plus屏幕
+
+#define iPhone6PlusBIG ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2001), [[UIScreen mainScreen] currentMode].size) : NO)//iphone6plus放大版屏幕
+
+#define iPhoneX [EdulineV5_Tool judgeIphoneX]
 
 // iPhoneX状态栏增加的高度
 #define MACRO_UI_STATUSBAR_ADD_HEIGHT [EdulineV5_Tool statusBarAddHeightWithIPhoneX]

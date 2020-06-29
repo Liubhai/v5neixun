@@ -28,8 +28,12 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     AppDelegate *app = [AppDelegate delegate];
-    RootV5VC * nv = (RootV5VC *)app.window.rootViewController;
-    [nv isHiddenCustomTabBarByBoolean:!_notHiddenNav];
+    if (app.window.rootViewController) {
+        if ([app.window.rootViewController isKindOfClass:[RootV5VC class]]) {
+            RootV5VC * nv = (RootV5VC *)app.window.rootViewController;
+            [nv isHiddenCustomTabBarByBoolean:!_notHiddenNav];
+        }
+    }
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     self.navigationController.navigationBar.hidden = YES;
 }
@@ -37,8 +41,12 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     AppDelegate *app = [AppDelegate delegate];
-    RootV5VC * nv = (RootV5VC *)app.window.rootViewController;
-    [nv isHiddenCustomTabBarByBoolean:_hiddenNavDisappear];
+    if (app.window.rootViewController) {
+        if ([app.window.rootViewController isKindOfClass:[RootV5VC class]]) {
+            RootV5VC * nv = (RootV5VC *)app.window.rootViewController;
+            [nv isHiddenCustomTabBarByBoolean:_hiddenNavDisappear];
+        }
+    }
     [super viewWillDisappear:animated];
     self.navigationController.navigationBar.hidden = YES;
 }
