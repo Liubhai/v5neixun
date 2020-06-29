@@ -240,6 +240,14 @@
     return [Net_Path fullPath:@"user/order/{type}" repalce:@"{type}" byReplece:orderListType];
 }
 
++ (NSString *)cancelOrder {
+    return [Net_Path fullPath:@"user/order/cancel" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)deleteOrderNet {
+    return [Net_Path fullPath:@"user/order" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userCenterInfo {
     return [Net_Path fullPath:@"user/profile" repalce:@"" byReplece:@""];
 }

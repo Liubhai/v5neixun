@@ -191,6 +191,12 @@ struct NetWorkUrl {
 /** 用户订单 */
 + (NSString *)userOrderList:(NSString *)orderListType;
 
+/** 取消订单 */
++ (NSString *)cancelOrder;
+
+/** 删除订单 */
++ (NSString *)deleteOrderNet;
+
 /** 用户信息 */
 + (NSString *)userCenterInfo;
 

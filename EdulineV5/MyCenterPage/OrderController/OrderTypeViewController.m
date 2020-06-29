@@ -162,7 +162,7 @@
     } else if ([orderStatus isEqualToString:@"10"]) {
         // 待支付
         [button2 setTitle:@"去支付" forState:0];
-        button1.hidden = YES;
+        [button1 setTitle:@"取消订单" forState:0];
     } else if ([orderStatus isEqualToString:@"20"]) {
         // 已完成
         button2.hidden = YES;
@@ -279,7 +279,19 @@
 }
 
 - (void)button1Click:(UIButton *)sender {
-    
+    NSString *orderStatus = [NSString stringWithFormat:@"%@",_dataSource[sender.tag][@"status"]];
+    if ([orderStatus isEqualToString:@"0"]) {
+        // 已取消
+        // 去删除订单
+        [self doDeleteOrder:_dataSource[sender.tag][@"order_no"]];
+    } else if ([orderStatus isEqualToString:@"10"]) {
+        // 待支付
+        // 去取消订单
+        [self doCancelOrder:_dataSource[sender.tag][@"order_no"]];
+    } else if ([orderStatus isEqualToString:@"20"]) {
+        // 已完成
+        // 不做任何操作
+    }
 }
 
 - (void)button2Click:(UIButton *)sender {
@@ -288,6 +300,36 @@
     vc.payment = [NSString stringWithFormat:@"%@",_dataSource[sender.tag][@"payment"]];
     vc.orderTypeString = @"orderList";
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)doDeleteOrder:(NSString *)order_num {
+    if (SWNOTEmptyStr(order_num)) {
+        [Net_API requestDeleteWithURLStr:[Net_Path deleteOrderNet] paramDic:@{@"order_no":order_num} Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                [self getOrderList];
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"删除订单超时,请稍后重试"];
+        }];
+    } else {
+        [self showHudInView:self.view showHint:@"订单号有误"];
+    }
+}
+
+- (void)doCancelOrder:(NSString *)order_num {
+    if (SWNOTEmptyStr(order_num)) {
+        [Net_API requestPUTWithURLStr:[Net_Path cancelOrder] paramDic:@{@"order_no":order_num} Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                [self getOrderList];
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"取消订单超时,请稍后重试"];
+        }];
+    } else {
+        [self showHudInView:self.view showHint:@"订单号有误"];
+    }
 }
 
 @end
