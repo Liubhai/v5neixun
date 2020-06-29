@@ -45,6 +45,8 @@
     _userFaceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _leftBtn.bottom + 15, 64, 64)];
     _userFaceImageView.layer.masksToBounds = YES;
     _userFaceImageView.layer.cornerRadius = _userFaceImageView.height / 2.0;
+    _userFaceImageView.clipsToBounds = YES;
+    _userFaceImageView.contentMode = UIViewContentModeScaleAspectFill;
     _userFaceImageView.userInteractionEnabled = YES;
     _userFaceImageView.image = DefaultUserImage;
     UITapGestureRecognizer *faceTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(faceTapClick)];
@@ -110,6 +112,7 @@
 
 - (void)setUserInfo:(NSDictionary *)info {
     if (SWNOTEmptyStr([UserModel oauthToken])) {
+        [_userFaceImageView sd_setImageWithURL:EdulineUrlString([UserModel avatar]) placeholderImage:DefaultUserImage];
         [_nameLabel setTop:_userFaceImageView.top];
         _introLabel.hidden = NO;
         _introLabel.text = [NSString stringWithFormat:@"%@",[UserModel intro]];

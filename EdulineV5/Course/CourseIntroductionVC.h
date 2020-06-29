@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CourseIntroductionVC : BaseViewController<UIScrollViewDelegate,UIGestureRecognizerDelegate,WKUIDelegate,WKNavigationDelegate,ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource>
 
 @property (strong, nonatomic) UIScrollView *mainScroll;
+@property (strong, nonatomic) UILabel *introTitleL;
 @property (strong ,nonatomic) WKWebView *ClassIntroWeb;
 @property (assign, nonatomic) CGFloat tabelHeight;
 @property (strong, nonatomic) CourseMainViewController *vc;

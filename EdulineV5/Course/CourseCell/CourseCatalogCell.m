@@ -269,7 +269,8 @@
     [_titleLabel setWidth:titleWidth];
     [_priceLabel setWidth:priceWidth];
     [_freeImageView setLeft:_titleLabel.right + 3];
-    [_priceLabel setLeft:_freeImageView.right + 3];
+    
+    [_priceLabel setLeft:(_freeImageView.hidden ? _titleLabel.right : _freeImageView.right) + 3];
     if ([_allLayar isEqualToString:@"1"]) {
         [self setHeight:50];
         if (!_isMainPage) {

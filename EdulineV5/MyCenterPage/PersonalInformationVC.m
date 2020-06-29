@@ -397,9 +397,11 @@
         } else {
             return NO;
         }
-    } else {
-        return YES;
+    } else if (textField == _phoneTextField) {
+        [self jumpToChangePhonePage];
+        return NO;
     }
+    return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -514,7 +516,7 @@
 - (void)setInfoData {
     if (SWNOTEmptyDictionary(_userInfo)) {
         if (![[_userInfo objectForKey:@"rest_times"] integerValue]) {
-            _accountTextField.textColor = EdlineV5_Color.fengeLineColor;
+            _accountTextField.textColor = HEXCOLOR(0xB7BAC1);
         }
     }
 }

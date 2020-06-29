@@ -33,12 +33,19 @@
     _mainScroll.contentSize = CGSizeMake(MainScreenWidth, _tabelHeight + 10);
     [self.view addSubview:_mainScroll];
     _mainScroll.contentSize = CGSizeMake(MainScreenWidth, _ClassIntroWeb.bottom > _tabelHeight ? _ClassIntroWeb.bottom : (_tabelHeight + 10));
+    
+    _introTitleL = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, MainScreenWidth - 30, 21)];
+    _introTitleL.text = @"课程信息";
+    _introTitleL.font = SYSTEMFONT(15);
+    _introTitleL.textColor = EdlineV5_Color.textFirstColor;
+    [_mainScroll addSubview:_introTitleL];
+    
     [self getCourseInfo];
 }
 
 - (void)makeClassInfoWebView {
     
-    _ClassIntroWeb = [[WKWebIntroview alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5)];
+    _ClassIntroWeb = [[WKWebIntroview alloc] initWithFrame:CGRectMake(0, _introTitleL.bottom + 12, MainScreenWidth, 0.5)];
     _ClassIntroWeb.backgroundColor = [UIColor whiteColor];
     _ClassIntroWeb.scrollView.scrollEnabled = NO;
     _ClassIntroWeb.UIDelegate = self;
