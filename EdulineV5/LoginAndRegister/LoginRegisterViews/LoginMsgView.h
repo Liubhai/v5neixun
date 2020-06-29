@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface LoginMsgView : UIView
+@interface LoginMsgView : UIView<UITextFieldDelegate>
 
 @property (assign, nonatomic) id<LoginMsgViewDelegate> delegate;
 @property (strong, nonatomic) UILabel *areaNumLabel;

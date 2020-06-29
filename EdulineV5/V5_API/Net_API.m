@@ -187,6 +187,7 @@
             finish(responseObject);
             
         }else{
+            finish(responseObject);
             #ifdef DEBUG
                 NSString *errmsg = [responseObject objectForKey:@"msg"];
                 NSLog(@"EdulineV4 DELETE request failure \n%@\n",errmsg);

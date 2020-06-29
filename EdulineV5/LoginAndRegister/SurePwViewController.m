@@ -45,7 +45,7 @@
     _sureButton = [[UIButton alloc] initWithFrame:CGRectMake(15 * WidthRatio, _passWordView.bottom + 40, MainScreenWidth - 30 * WidthRatio, 40)];
     _sureButton.layer.masksToBounds = YES;
     _sureButton.layer.cornerRadius = 5;
-    [_sureButton setTitle:@"确定" forState:0];
+    [_sureButton setTitle:_registerOrForget ? @"注册" : @"确定" forState:0];
     _sureButton.titleLabel.font = SYSTEMFONT(18);
     [_sureButton addTarget:self action:@selector(sureButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
@@ -103,7 +103,9 @@
     [self.view endEditing:YES];
     if (_registerOrForget) {
         if (!_seleteBtn.selected) {
-            [self showHudInView:self.view showHint:@"请阅读协议并勾选"];
+            NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
+            NSString *atr = [NSString stringWithFormat:@"请同意《%@服务协议》",appName];
+            [self showHudInView:self.view showHint:atr];
             return;
         }
     }

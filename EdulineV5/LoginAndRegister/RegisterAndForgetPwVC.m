@@ -91,10 +91,15 @@
 
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
-    if (_loginMsg.phoneNumTextField.text.length<11) {
-        [self showHudInView:self.view showHint:@"请正确填写手机号"];
-        return;
+    NSMutableDictionary *param;
+    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
     }
+    [param setObject:_registerOrForget ? @"login" : @"retrieve" forKey:@"type"];
+//    if (_loginMsg.phoneNumTextField.text.length<11) {
+//        [self showHudInView:self.view showHint:@"手机号码格式不正确"];
+//        return;
+//    }
     // reset 重置密码
     [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:@{@"phone":_loginMsg.phoneNumTextField.text,@"type":(_registerOrForget ? @"login" : @"retrieve")} finish:^(id  _Nonnull responseObject) {
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
@@ -103,6 +108,8 @@
                 remainTime = 59;
                 sender.enabled = NO;
                 codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -115,7 +122,7 @@
         [self loginRequest];
     } else {
         if (_changePhone) {
-            
+            [self userChangePhone];
         } else {
             [self jumpPassWordSetVc];
         }
@@ -167,6 +174,8 @@
                 } else {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -198,6 +207,8 @@
                     vc.pkString = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"pk"]];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -214,9 +225,12 @@
     [Net_API requestPOSTWithURLStr:[Net_Path userAccountChangePhone] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
         NSLog(@"%@",responseObject);
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"changeUserInfoPagePhone" object:nil userInfo:@{@"phone":_loginMsg.phoneNumTextField.text}];
-                [self.navigationController popViewControllerAnimated:YES];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
             }
         }
     } enError:^(NSError * _Nonnull error) {

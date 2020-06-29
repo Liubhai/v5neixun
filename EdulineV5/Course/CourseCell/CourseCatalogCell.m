@@ -438,9 +438,9 @@
     } else if ([model.model.section_data.data_type isEqualToString:@"2"]) {
         _typeIcon.image = Image(@"contents_icon_vioce");
     } else if ([model.model.section_data.data_type isEqualToString:@"3"]) {
-        _typeIcon.image = Image(@"contents_icon_word");
+        _typeIcon.image = Image(@"img_text_icon");
     } else if ([model.model.section_data.data_type isEqualToString:@"4"]) {
-        _typeIcon.image = Image(@"contents_icon_text");
+        _typeIcon.image = Image(@"ebook_icon_word");
     } else {
         _typeIcon.image = Image(@"contents_icon_video");
     }

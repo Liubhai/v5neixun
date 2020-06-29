@@ -20,7 +20,7 @@
 }
 
 - (void)makeSubviews {
-    _methodArray = [NSMutableArray arrayWithArray:@[@"login_icon_qq",@"login_icon_wechat",@"login_icon_weibo"]];
+    _methodArray = [NSMutableArray arrayWithArray:@[@"login_icon_wechat",@"login_icon_qq",@"login_icon_weibo"]];
     
     UILabel *titleL = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 20)];
     titleL.text = @"第三方登录";

@@ -25,7 +25,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _couponsArray = [NSMutableArray new];
-    _titleLabel.text = @"订单支付";
+    _titleLabel.text = @"确认订单";
     [self makeScrollView];
     [self makeSubView];
     [self makeDownView];
@@ -395,9 +395,9 @@
             } else if ([courseHourseType isEqualToString:@"2"]) {
                 _courseFaceImageView.image = Image(@"contents_icon_vioce");
             } else if ([courseHourseType isEqualToString:@"3"]) {
-                _courseFaceImageView.image = Image(@"contents_icon_word");
+                _courseFaceImageView.image = Image(@"img_text_icon");
             } else if ([courseHourseType isEqualToString:@"4"]) {
-                _courseFaceImageView.image = Image(@"contents_icon_text");
+                _courseFaceImageView.image = Image(@"ebook_icon_word");
             } else {
                 _courseFaceImageView.image = Image(@"contents_icon_video");
             }

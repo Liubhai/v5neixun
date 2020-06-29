@@ -37,6 +37,8 @@
     [self addSubview:_areaBtn];
     
     _phoneNumTextField = [[UITextField alloc] initWithFrame:CGRectMake(_jiantouImage.right + 15 * WidthRatio, 0, MainScreenWidth - 48 * WidthRatio - (_jiantouImage.right + 15 * WidthRatio), 50)];
+    _phoneNumTextField.delegate = self;
+    _phoneNumTextField.returnKeyType = UIReturnKeyDone;
     _phoneNumTextField.font = SYSTEMFONT(14);
     _phoneNumTextField.textColor = EdlineV5_Color.textFirstColor;
     _phoneNumTextField.keyboardType = UIKeyboardTypeNumberPad;
@@ -58,6 +60,8 @@
     [self addSubview:_yanzhengCode];
     
     _codeTextField = [[UITextField alloc] initWithFrame:CGRectMake(_yanzhengCode.right, pass.bottom, MainScreenWidth - 48 * WidthRatio - _yanzhengCode.right, 50)];
+    _codeTextField.delegate = self;
+    _codeTextField.returnKeyType = UIReturnKeyDone;
     _codeTextField.font = SYSTEMFONT(14);
     _codeTextField.textColor = EdlineV5_Color.textFirstColor;
     _codeTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
@@ -97,6 +101,15 @@
     if (_delegate && [_delegate respondsToSelector:@selector(getMsgCode:)]) {
         [_delegate getMsgCode:sender];
     }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string isEqualToString:@"\n"]) {
+        [_phoneNumTextField resignFirstResponder];
+        [_codeTextField resignFirstResponder];
+        return NO;
+    }
+    return YES;
 }
 
 @end

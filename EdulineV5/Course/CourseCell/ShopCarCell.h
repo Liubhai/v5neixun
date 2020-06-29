@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ShopCarModel.h"
+#import "V5_Constant.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *selectedIconBtn;
 @property (strong,nonatomic) UIImageView *courseFaceImageView;
 @property (strong,nonatomic) UIImageView *courseTypeImageView;
-@property (strong,nonatomic) UILabel *themeLabel;
+@property (strong,nonatomic) TYAttributedLabel *themeLabel;
+@property (strong,nonatomic) UIImageView *course_card;
 @property (strong,nonatomic) UILabel *courseHourLabel;
 @property (strong,nonatomic) UILabel *priceLabel;
 @property (strong,nonatomic) UILabel *timeLabel;

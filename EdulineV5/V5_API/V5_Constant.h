@@ -34,6 +34,8 @@
 #define WebTitleContenDistance 10
 #define WebDistanceLeft 15//内容和左右的边距
 
+#define APP_NAME [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"]
+
 #define Show_Config [[NSUserDefaults standardUserDefaults] objectForKey:@"show_config"] == nil ? @"0" : [[NSUserDefaults standardUserDefaults] objectForKey:@"show_config"]
 
 #define TXSDKID [[NSUserDefaults standardUserDefaults] objectForKey:@"sdk_appid"]

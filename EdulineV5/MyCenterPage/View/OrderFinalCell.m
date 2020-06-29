@@ -87,11 +87,11 @@
         _faceImageView.frame = CGRectMake(12, 7.5, 32, 16);
     } else if ([courseType isEqualToString:@"7"]) {
         _courseTypeImage.hidden = YES;
-        _faceImageView.image = Image(@"contents_icon_word");
+        _faceImageView.image = Image(@"img_text_icon");
         _faceImageView.frame = CGRectMake(12, 7.5, 32, 16);
     } else if ([courseType isEqualToString:@"8"]) {
         _courseTypeImage.hidden = YES;
-        _faceImageView.image = Image(@"contents_icon_text");
+        _faceImageView.image = Image(@"ebook_icon_word");
         _faceImageView.frame = CGRectMake(12, 7.5, 32, 16);
     } else if ([courseType isEqualToString:@"9"]) {
         _courseTypeImage.hidden = YES;

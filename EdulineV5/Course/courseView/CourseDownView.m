@@ -81,6 +81,7 @@
     _shopCountLabel.font = SYSTEMFONT(10);
     _shopCountLabel.textAlignment = NSTextAlignmentCenter;
     _shopCountLabel.text = @"12";
+    _shopCountLabel.hidden = YES;
     [self addSubview:_shopCountLabel];
     
     _joinShopCarButton = [[UIButton alloc] initWithFrame:CGRectMake(_shopCarButton.right + 10, 5, 120, 40)];
@@ -103,6 +104,7 @@
     [_joinStudyButton setTitleColor:[UIColor whiteColor] forState:0];
     _joinStudyButton.backgroundColor = EdlineV5_Color.themeColor;
     [_joinStudyButton addTarget:self action:@selector(joinStudyButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _joinStudyButton.hidden = YES;
     [self addSubview:_joinStudyButton];
     
     _recordButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 7, 120, 36)];
@@ -125,9 +127,9 @@
         _recordButton.hidden = YES;
         _serviceButton.hidden = NO;
         _shopCarButton.hidden = NO;
-        _shopCountLabel.hidden = NO;
+        _shopCountLabel.hidden = YES;
         _joinShopCarButton.hidden = YES;
-        _joinStudyButton.hidden = NO;
+        _joinStudyButton.hidden = YES;
     }
     
 }
@@ -166,9 +168,13 @@
     if (SWNOTEmptyDictionary(courseInfo)) {
         if ([[courseInfo objectForKey:@"is_buy"] boolValue]) {
             _joinShopCarButton.hidden = YES;
+            [_joinStudyButton setLeft:_joinShopCarButton.left];
+            [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
             [_joinStudyButton setTitle:@"开始学习" forState:0];
+            _joinStudyButton.hidden = NO;
         } else {
             _joinShopCarButton.hidden = NO;
+            _joinStudyButton.hidden = NO;
         }
     }
 }

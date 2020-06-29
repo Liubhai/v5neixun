@@ -159,10 +159,15 @@
 
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
-    if (_loginMsg.phoneNumTextField.text.length<11) {
-        [self showHudInView:self.view showHint:@"请正确填写手机号"];
-        return;
+    NSMutableDictionary *param;
+    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
     }
+    [param setObject:@"login" forKey:@"type"];
+//    if (_loginMsg.phoneNumTextField.text.length<11) {
+//        [self showHudInView:self.view showHint:@"请正确填写手机号"];
+//        return;
+//    }
     [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:@{@"phone":_loginMsg.phoneNumTextField.text,@"type":@"login"} finish:^(id  _Nonnull responseObject) {
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -170,6 +175,8 @@
                 remainTime = 59;
                 sender.enabled = NO;
                 codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -208,30 +215,24 @@
     [self.view endEditing:YES];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     if (_pwLoginBtn.selected) {
-        if (_loginPw.accountTextField.text.length<=0) {
-            [self showHudInView:self.view showHint:@"用户名不能为空"];
-            return;
-        }
         if (![EdulineV5_Tool validatePassWord:_loginPw.pwTextField.text]) {
             [self showHudInView:self.view showHint:@"请输入正确格式的密码"];
             return;
         }
+        if (SWNOTEmptyStr(_loginPw.pwTextField.text)) {
+            [dict setObject:_loginPw.accountTextField.text forKey:@"user"];
+        }
         [dict setObject:@"user" forKey:@"logintype"];
-        [dict setObject:_loginPw.accountTextField.text forKey:@"user"];
         [dict setObject:[[EdulineV5_Tool getmd5WithString:_loginPw.pwTextField.text] lowercaseString] forKey:@"password"];
     }
     if (_msgLoginBtn.selected) {
-        if (_loginMsg.phoneNumTextField.text.length<11) {
-            [self showHudInView:self.view showHint:@"请正确填写手机号"];
-            return;
+        if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+            [dict setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
         }
-        if (_loginMsg.codeTextField.text.length<=0) {
-            [self showHudInView:self.view showHint:@"请输入验证码"];
-            return;
+        if (SWNOTEmptyStr(_loginMsg.codeTextField.text)) {
+            [dict setObject:_loginMsg.codeTextField.text forKey:@"verify"];
         }
         [dict setObject:@"verify" forKey:@"logintype"];
-        [dict setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
-        [dict setObject:_loginMsg.codeTextField.text forKey:@"verify"];
     }
     [Net_API requestPOSTWithURLStr:[Net_Path userLoginPath:nil] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
         NSLog(@"%@",responseObject);
@@ -257,6 +258,8 @@
                 } else {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -285,7 +288,7 @@
 // MARK: - 其他login
 - (void)loginButtonClickKKK:(UIButton *)sender {
     if (sender.tag == 10) {
-        [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_QQ currentViewController:self completion:^(id result, NSError *error) {
+        [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self completion:^(id result, NSError *error) {
             if (!error) {
                 UMSocialUserInfoResponse *resp = result;
                 // 第三方登录数据(为空表示平台未提供)
@@ -304,7 +307,7 @@
             }
         }];
     } else if (sender.tag == 11) {
-        [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self completion:^(id result, NSError *error) {
+        [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_QQ currentViewController:self completion:^(id result, NSError *error) {
             if (!error) {
                 UMSocialUserInfoResponse *resp = result;
                 // 第三方登录数据(为空表示平台未提供)

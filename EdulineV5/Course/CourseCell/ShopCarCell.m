@@ -7,7 +7,6 @@
 //
 
 #import "ShopCarCell.h"
-#import "V5_Constant.h"
 
 @implementation ShopCarCell
 
@@ -39,11 +38,15 @@
     _courseTypeImageView.image = Image(@"album_icon");
     [self addSubview:_courseTypeImageView];
     
-    _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 10, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
+    _themeLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 10, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(14);
     _themeLabel.text = @"课程显示课程标题，课时显示课时名称";
     [self addSubview:_themeLabel];
+    
+    _course_card = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 36, 15)];
+    _course_card.image = Image(@"lessoncard_icon");
+    _course_card.hidden = YES;
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, _courseFaceImageView.bottom - 15, 150, 15)];
     _timeLabel.font = SYSTEMFONT(11);
@@ -92,7 +95,20 @@
         _selectedIconBtn.selected = model.selected;
         _hasCourseCardImageView.hidden = !model.has_course_card;
     }
-    _themeLabel.text = model.title;
+    _hasCourseCardImageView.hidden = YES;
+    _course_card.hidden = YES;
+    if (model.has_course_card) {
+        _themeLabel.text = [NSString stringWithFormat:@"    %@",model.title];
+        _course_card.hidden = NO;
+        [_course_card setWidth:36];
+        [_themeLabel addView:_course_card range:NSMakeRange(0, 3) alignment:TYDrawAlignmentCenter];
+    } else {
+        _themeLabel.text = model.title;
+        _course_card.hidden = YES;
+        [_course_card setWidth:0];
+        [_themeLabel addView:_course_card range:NSMakeRange(0, 0) alignment:TYDrawAlignmentCenter];
+    }
+    
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
     if ([model.course_type isEqualToString:@"1"]) {
         _courseTypeImageView.image = Image(@"dianbo");

@@ -25,6 +25,8 @@
     [self addSubview:_accountIcon];
     
     _accountTextField = [[UITextField alloc] initWithFrame:CGRectMake(_accountIcon.right + 14 * WidthRatio, 0, MainScreenWidth - 48 * 2 * WidthRatio - 18 - 14 * WidthRatio, 50)];
+    _accountTextField.delegate = self;
+    _accountTextField.returnKeyType = UIReturnKeyDone;
     _accountTextField.font = SYSTEMFONT(14);
     _accountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入账号" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     [self addSubview:_accountTextField];
@@ -43,6 +45,8 @@
     [self addSubview:_pwIcon];
     
     _pwTextField = [[UITextField alloc] initWithFrame:CGRectMake(_pwIcon.right + 14 * WidthRatio, pass.bottom, MainScreenWidth - 48 * 2 * WidthRatio - 18 - 14 * WidthRatio, 50)];
+    _pwTextField.delegate = self;
+    _pwTextField.returnKeyType = UIReturnKeyDone;
     _pwTextField.font = SYSTEMFONT(14);
     _pwTextField.secureTextEntry = YES;
     _pwTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入密码" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
@@ -52,6 +56,15 @@
     _line2 = [[UIView alloc] initWithFrame:CGRectMake(48 * WidthRatio, _pwTextField.bottom, MainScreenWidth - 48 * 2 * WidthRatio, 0.5)];
     _line2.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_line2];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string isEqualToString:@"\n"]) {
+        [_accountTextField resignFirstResponder];
+        [_pwTextField resignFirstResponder];
+        return NO;
+    }
+    return YES;
 }
 
 @end

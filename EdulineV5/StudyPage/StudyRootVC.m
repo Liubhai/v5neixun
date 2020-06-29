@@ -324,6 +324,23 @@
         view.backgroundColor = EdlineV5_Color.fengeLineColor;
         return view;
     } else {
+        if (currentCourseType == 0) {
+            if (!SWNOTEmptyArr(_courseArray)) {
+                return nil;
+            }
+        } else if (currentCourseType == 1) {
+            if (!SWNOTEmptyArr(_liveArray)) {
+                return nil;
+            }
+        } else if (currentCourseType == 2) {
+            if (!SWNOTEmptyArr(_classArray)) {
+                return nil;
+            }
+        } else {
+            if (!SWNOTEmptyArr(_offlineArray)) {
+                return nil;
+            }
+        }
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 18 * 3)];
         view.backgroundColor = [UIColor whiteColor];
@@ -358,6 +375,23 @@
     } else if (section == 1) {
         return 10;
     } else {
+        if (currentCourseType == 0) {
+            if (!SWNOTEmptyArr(_courseArray)) {
+                return 0.001;
+            }
+        } else if (currentCourseType == 1) {
+            if (!SWNOTEmptyArr(_liveArray)) {
+                return 0.001;
+            }
+        } else if (currentCourseType == 2) {
+            if (!SWNOTEmptyArr(_classArray)) {
+                return 0.001;
+            }
+        } else {
+            if (!SWNOTEmptyArr(_offlineArray)) {
+                return 0.001;
+            }
+        }
         return 18 * 3;
     }
 }
@@ -517,6 +551,10 @@
                 [_tableView.mj_header endRefreshing];
             }
         }];
+    } else {
+        if ([_tableView.mj_header isRefreshing]) {
+            [_tableView.mj_header endRefreshing];
+        }
     }
 }
 
