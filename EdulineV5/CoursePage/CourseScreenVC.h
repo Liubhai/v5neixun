@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) NSString *priceMin;
 @property (assign, nonatomic) NSString *priceMax;
+@property (assign, nonatomic) NSString *screenType;;
 
 @end
 

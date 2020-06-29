@@ -99,9 +99,15 @@
     NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
     
     if (!_cellType) {
-        _titleL.frame = CGRectMake(0, 0, _titleL.width, 100);
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
+        _titleL.numberOfLines = 0;
+        _titleL.lineBreakMode = NSLineBreakByTruncatingTail;
         [_titleL sizeToFit];
-        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
+        if (_titleL.height > 40) {
+            _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, 40);
+        } else {
+            _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
+        }
     }
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if ([[info objectForKey:@"is_buy"] integerValue]) {

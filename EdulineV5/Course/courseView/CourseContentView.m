@@ -78,6 +78,7 @@
     _courseTitleLabel.text = [NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"title"]];
     _courseScore.text = [NSString stringWithFormat:@"%@分",[contentInfo objectForKey:@"score_average"]];
     [_courseStar setStarValue:[[NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"score_average"]] floatValue]];
+    _courseLearn.text = [NSString stringWithFormat:@"%@人在学",[contentInfo objectForKey:@"sale_count"]];
     
     NSString *price = [NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"price"]];
     NSString *scribing_price = [NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"scribing_price"]];

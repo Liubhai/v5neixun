@@ -182,7 +182,7 @@
                     btn.backgroundColor = EdlineV5_Color.backColor;
                     btn.selected = ((CateGoryModelThird *)_thirdArray[i]).selected;
                     if (btn.selected) {
-                        btn.backgroundColor = HEXCOLOR(0xF4F9FE);
+                        btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
                     } else {
                         btn.backgroundColor = EdlineV5_Color.backColor;
                     }
@@ -319,7 +319,7 @@
     UIView *view = (UIView *)sender.superview;
     sender.selected = !sender.selected;
     if (sender.selected) {
-        sender.backgroundColor = HEXCOLOR(0xF4F9FE);
+        sender.backgroundColor = EdlineV5_Color.buttonWeakeColor;
     } else {
         sender.backgroundColor = EdlineV5_Color.backColor;
     }

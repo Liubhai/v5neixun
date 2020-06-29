@@ -174,6 +174,14 @@
             isMine = YES;
         }
     }
+    if (isMine) {
+        return;
+    } else {
+        replayUserId = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]];
+        [_commentView.inputTextView becomeFirstResponder];
+        _commentView.placeHoderLab.text = [NSString stringWithFormat:@"回复@%@",[[pass objectForKey:@"user"] objectForKey:@"nick_name"]];
+        return;
+    }
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     if (isMine) {
         UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

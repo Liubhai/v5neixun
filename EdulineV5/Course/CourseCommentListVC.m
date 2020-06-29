@@ -13,6 +13,7 @@
 #import "CourseCommentViewController.h"
 #import "Net_Path.h"
 #import "UserModel.h"
+#import "AppDelegate.h"
 
 @interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate,UIScrollViewDelegate> {
     NSInteger page;
@@ -99,6 +100,15 @@
     if (_cellType) {
         return;
     }
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
+    NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
+    if (![isBuy isEqualToString:@"1"]) {
+        [self showHudInView:self.view showHint:@"请先购买课程"];
+        return;
+    }
+    
     NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
     BOOL isMine = NO;
     if (SWNOTEmptyDictionary(pass)) {
@@ -106,53 +116,90 @@
             isMine = YES;
         }
     }
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     if (isMine) {
-        UIAlertAction *editAction = [UIAlertAction actionWithTitle:@"编辑" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-            vc.isComment = !_cellType;
-            vc.courseId = _courseId;
-            vc.originCommentInfo = pass;
-            [self.navigationController pushViewController:vc animated:YES];
-        }];
-        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-        [alertController addAction:editAction];
-        [alertController addAction:deleteAction];
-    }
-    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"评论" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+        vc.isComment = !_cellType;
+        vc.courseId = _courseId;
+        vc.originCommentInfo = pass;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
         CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
         vc.cellType = _cellType;
         vc.topCellInfo = pass;
         [self.navigationController pushViewController:vc animated:YES];
-    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [alertController addAction:commentAction];
-    [alertController addAction:cancelAction];
-    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:alertController animated:YES completion:nil];
+    }
+    
+    return;
+    
+//    NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
+//    BOOL isMine = NO;
+//    if (SWNOTEmptyDictionary(pass)) {
+//        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+//            isMine = YES;
+//        }
+//    }
+//
+//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//    if (isMine) {
+//        UIAlertAction *editAction = [UIAlertAction actionWithTitle:@"编辑" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+//            vc.isComment = !_cellType;
+//            vc.courseId = _courseId;
+//            vc.originCommentInfo = pass;
+//            [self.navigationController pushViewController:vc animated:YES];
+//        }];
+//        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//
+//        }];
+//        [alertController addAction:editAction];
+//        [alertController addAction:deleteAction];
+//    }
+//    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"评论" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
+//        vc.cellType = _cellType;
+//        vc.topCellInfo = pass;
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }];
+//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//
+//    }];
+//    [alertController addAction:commentAction];
+//    [alertController addAction:cancelAction];
+//    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+//    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)replayComment:(CourseCommentCell *)cell {
-    CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
-    vc.cellType = _cellType;
-    vc.topCellInfo = cell.userCommentInfo;
-    [self.navigationController pushViewController:vc animated:YES];
+    NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
+    if ([isBuy isEqualToString:@"1"]) {
+        CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
+        vc.cellType = _cellType;
+        vc.topCellInfo = cell.userCommentInfo;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [self showHudInView:self.view showHint:@"请先购买课程"];
+    }
 }
 
 - (void)jumpToCommentVC {
-    CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-    vc.isComment = !_cellType;
-    vc.courseId = _courseId;
-    vc.courseType = [NSString stringWithFormat:@"%@",[_detailVC.dataSource objectForKey:@"course_type"]];
-    vc.courseHourseId = [NSString stringWithFormat:@"%@",_detailVC.currentHourseId];
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
+    if ([isBuy isEqualToString:@"1"]) {
+        CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+        vc.isComment = !_cellType;
+        vc.courseId = _courseId;
+        vc.courseType = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"course_type"]];
+        vc.courseHourseId = [NSString stringWithFormat:@"%@",_detailVC.currentHourseId];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [self showHudInView:self.view showHint:@"请先购买课程"];
+    }
 }
 
 - (void)editContent:(CourseCommentCell *)cell {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
     vc.isComment = !_cellType;
     vc.courseId = _courseId;
@@ -161,6 +208,9 @@
 }
 
 - (void)zanComment:(CourseCommentCell *)cell {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
     // 判断是点赞还是取消点赞  然后再判断是展示我的还是展示所有的
     if (!SWNOTEmptyDictionary(cell.userCommentInfo)) {
         return;
@@ -314,9 +364,14 @@
 - (void)reloadCourseCommentListVCData:(NSNotification *)notice {
     if (SWNOTEmptyDictionary(notice.userInfo)) {
         if ([[notice.userInfo objectForKey:@"type"] isEqualToString:@"comment"]) {
-            [self getCourseCommentList];
+            if (!_cellType) {
+                [self getCourseCommentList];
+            }
         } else {
-            [self getNoteList];
+            if (_cellType) {
+                _courseHourseId = _detailVC.currentHourseId;
+                [self getNoteList];
+            }
         }
     }
 }

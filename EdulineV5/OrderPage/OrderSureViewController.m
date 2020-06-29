@@ -409,4 +409,17 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)leftButtonClick:(id)sender {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃本次付款" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续付款" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"放弃" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popViewControllerAnimated:YES];
+        }];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 @end

@@ -798,7 +798,21 @@
         [self getLiveCourseHourseInfo:model.model.classHourId];
         return;
     }
-
+    
+    _currentHourseId = model.model.classHourId;
+    
+    for (UIViewController *vc in self.childViewControllers) {
+        if ([vc isKindOfClass:[CourseCommentListVC class]]) {
+            CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
+            if (vccomment.cellType) {
+                // 笔记
+                vccomment.detailVC = self;
+                break;
+            }
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
     [wekself destroyPlayVideo];

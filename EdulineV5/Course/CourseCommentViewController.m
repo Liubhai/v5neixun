@@ -223,7 +223,9 @@
         } else {
             [param setObject:_commentTextView.text forKey:@"content"];
             [param setObject:_courseId forKey:@"course_id"];
-            [param setObject:_courseHourseId forKey:@"section_id"];
+            if (SWNOTEmptyStr(_courseHourseId)) {
+                [param setObject:_courseHourseId forKey:@"section_id"];
+            }
             [param setObject:_courseType forKey:@"course_type"];
             [param setObject:_openButton.selected ? @"1" : @"0"  forKey:@"open_status"];
             [Net_API requestPOSTWithURLStr:_isComment ? [Net_Path courseCommentList:_courseId] : (SWNOTEmptyDictionary(_originCommentInfo) ? [Net_Path modificationCourseNote:[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"id"]]] : [Net_Path addCourseHourseNote]) WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {

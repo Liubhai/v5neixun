@@ -433,7 +433,7 @@ static EdulineV5_Tool *_sharedInstance;
     
     NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];//当前年月日
     
-    return currentDay;
+    return theDay;
 }
 
 + (NSString *)timeForYYYY:(NSString *)time {

@@ -23,17 +23,21 @@
 #import "LingquanViewController.h"
 #import "InstitutionRootVC.h"
 #import "TeacherMainPageVC.h"
+#import "WkWebViewController.h"
 
 //
 #import "OrderViewController.h"
 #import "ShopCarManagerVC.h"
 #import <UShareUI/UShareUI.h>
+#import "UserModel.h"
+#import "AppDelegate.h"
 
 #define FaceImageHeight 207
 
 @interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate> {
     // 新增内容
     CGFloat sectionHeight;
+    BOOL shouldLoad;
 }
 
 /**三大子页面*/
@@ -84,6 +88,14 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (shouldLoad) {
+        [self getCourseInfo];
+    }
+    shouldLoad = YES;
 }
 
 - (void)viewDidLoad {
@@ -284,7 +296,16 @@
             [self addChildViewController:_courseListVC];
 //            [self addBlockCategory:_courseListVC];
         } else {
+            _courseListVC.courseId = _ID;
+            _courseListVC.courselayer = _courselayer;
+            _courseListVC.isMainPage = YES;
+            _courseListVC.isClassCourse = _isClassNew;
+            _courseListVC.sid = _sid;
+            _courseListVC.tabelHeight = sectionHeight - 47;
+            _courseListVC.vc = self;
+            _courseListVC.delegate = self;
             _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _courseListVC.videoInfoDict = _dataSource;
             _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
             _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
@@ -299,6 +320,9 @@
             [self.mainScroll addSubview:_commentVC.view];
             [self addChildViewController:_commentVC];
         } else {
+            _commentVC.courseId = _ID;
+            _commentVC.tabelHeight = sectionHeight - 47;
+            _commentVC.vc = self;
             _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
             _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
@@ -309,6 +333,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if ([_courselayer isEqualToString:@"1"]) {
         CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
         vc.courselayer = _courselayer;
@@ -443,6 +471,9 @@
 
 // MARK: - 讲师机构点击事件(讲师)
 - (void)jumpToOrganization:(NSDictionary *)schoolInfo {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
     InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
     vc.institutionId = [NSString stringWithFormat:@"%@",_dataSource[@"mhm_info"][@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
@@ -450,6 +481,9 @@
 
 // MARK: - 讲师机构点击事件(机构)
 - (void)jumpToTeacher:(NSDictionary *)teacherInfoDict tapTag:(NSInteger)viewTag {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
     vc.teacherId = [NSString stringWithFormat:@"%@",_dataSource[@"teacher_info"][@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
@@ -457,6 +491,9 @@
 
 // MARK: - 优惠卷点击事件
 - (void)jumpToCouponsVC {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
     LingquanViewController *vc = [[LingquanViewController alloc] init];
 //    vc.mhm_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"mhm_info"] objectForKey:@"id"]];
     vc.courseId = _ID;
@@ -548,15 +585,24 @@
 
 // MARK: - 底部按钮点击事件
 - (void)jumpServiceVC:(CourseDownView *)downView {
-    
+//    WkWebViewController *vc = [[WkWebViewController alloc] init];
+//    vc.titleString = @"客服";
+//    vc.agreementKey = @"kehu";
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)jumpToShopCarVC:(CourseDownView *)downView {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
     ShopCarManagerVC *vc = [[ShopCarManagerVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)joinShopCarEvent:(CourseDownView *)downView {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
     if (SWNOTEmptyStr(_ID)) {
         [Net_API requestPOSTWithURLStr:[Net_Path addCourseIntoShopcar] WithAuthorization:nil paramDic:@{@"course_id":_ID} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
@@ -569,6 +615,10 @@
 }
 
 - (void)joinStudyEvent:(CourseDownView *)downView {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if (SWNOTEmptyDictionary(_dataSource)) {
         if ([[_dataSource objectForKey:@"is_buy"] boolValue]) {
             CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
@@ -587,6 +637,9 @@
 }
 
 - (void)jumpToCommentVC {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
     vc.isComment = NO;
     vc.courseId = _ID;
@@ -594,6 +647,10 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell{
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if (cell.listFinalModel.model.audition <= 0 && !cell.listFinalModel.model.is_buy) {
         if ([cell.listFinalModel.model.price floatValue] > 0) {
             OrderViewController *vc = [[OrderViewController alloc] init];

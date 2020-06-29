@@ -24,6 +24,8 @@
 @property (strong, nonatomic) UIButton *clearBtn;
 @property (strong, nonatomic) UIButton *sureBtn;
 
+@property (strong, nonatomic) NSMutableArray *dataSource;
+
 @end
 
 @implementation CourseScreenVC
@@ -32,6 +34,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
     _titleImage.hidden = YES;
+    _dataSource = [NSMutableArray new];
+    [_dataSource addObjectsFromArray:@[@{@"title":@"免费",@"type":@"free"},@{@"title":@"可试听",@"type":@"audition"},@{@"title":@"习题练习",@"type":@"exam"},@{@"title":@"会员",@"type":@"vip"},@{@"title":@"活动",@"type":@"event"}]];
     [self makeSubViews];
     [self makeBottomView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCourseTypeVC:) name:@"hiddenCourseAll" object:nil];
@@ -53,9 +57,51 @@
     
     [_mainScrollView removeAllSubviews];
     
-    _priceBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _mainScrollView.height - (77 + 32 + 60), MainScreenWidth, 77 + 32 + 60)];
+    UILabel *screenTheme = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 60)];
+    screenTheme.text = @"筛选";
+    screenTheme.font = SYSTEMFONT(14);
+    screenTheme.textColor = EdlineV5_Color.textThirdColor;
+    [_mainScrollView addSubview:screenTheme];
+    
+    _screenBackView = [[UIView alloc] initWithFrame:CGRectMake(0, screenTheme.bottom, MainScreenWidth, 0)];
+    _screenBackView.backgroundColor = [UIColor whiteColor];
+    [_mainScrollView addSubview:_screenBackView];
+    [_screenBackView removeAllSubviews];
+    
+    CGFloat XX = 15.0;
+    CGFloat YY = 0.0;
+    CGFloat topSpacee = 20.0;
+    CGFloat rightSpace = 15.0;
+    CGFloat btnInSpace = 10.0;
+    CGFloat btnHeight = 32.0;
+    for (int i = 0; i<_dataSource.count; i++) {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, 90, btnHeight)];
+        btn.tag = 400 + i;
+        [btn addTarget:self action:@selector(screenBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [btn setTitle:_dataSource[i][@"title"] forState:0];
+        btn.titleLabel.font = SYSTEMFONT(14);
+        [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+        [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
+        btn.backgroundColor = EdlineV5_Color.backColor;
+        btn.layer.masksToBounds = YES;
+        btn.layer.cornerRadius = btnHeight / 2.0;
+        CGFloat btnWidth = 90.0;//[btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2;
+        if ((btnWidth + XX) > (MainScreenWidth - 30)) {
+            XX = 15.0;
+            YY = YY + topSpacee + btnHeight;
+        }
+        btn.frame = CGRectMake(XX, YY, btnWidth, btnHeight);
+        XX = btn.right + rightSpace;
+        if (i == _dataSource.count - 1) {
+            [_screenBackView setHeight:btn.bottom];
+        }
+        [_screenBackView addSubview:btn];
+    }
+    
+    _priceBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _screenBackView.bottom, MainScreenWidth, 77 + 32 + 60)];
     _priceBackView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_priceBackView];
+    [_mainScrollView setHeight:_priceBackView.bottom];
     
     UILabel *themeTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 60)];
     themeTitle.text = @"价格";
@@ -188,14 +234,28 @@
     _upAndDown = @"";
     _priceMax = @"";
     _priceMin = @"";
+    _screenType = @"";
     [self makeSubViews];
 }
 
 - (void)sureButtonClicked:(UIButton *)sender {
     _priceMin = [NSString stringWithFormat:@"%@",_lowPriceTextField.text];
     _priceMax = [NSString stringWithFormat:@"%@",_highPriceTextField.text];
-    if (_delegate && [_delegate respondsToSelector:@selector(cleanChooseScreen:)]) {
-        [_delegate sureChooseScreen:@{@"screenId":(SWNOTEmptyStr(_screenId) ? _screenId : @""),@"screenUpAndDown":(SWNOTEmptyStr(_upAndDown) ? _upAndDown : @""),@"priceMin":(SWNOTEmptyStr(_priceMin) ? _priceMin : @""),@"priceMax":(SWNOTEmptyStr(_priceMax) ? _priceMax : @"")}];
+    if (_delegate && [_delegate respondsToSelector:@selector(sureChooseScreen:)]) {
+        [_delegate sureChooseScreen:@{@"screenId":(SWNOTEmptyStr(_screenId) ? _screenId : @""),@"screenUpAndDown":(SWNOTEmptyStr(_upAndDown) ? _upAndDown : @""),@"priceMin":(SWNOTEmptyStr(_priceMin) ? _priceMin : @""),@"priceMax":(SWNOTEmptyStr(_priceMax) ? _priceMax : @""),@"screenType":(SWNOTEmptyStr(_screenType) ? _screenType : @"")}];
+    }
+}
+
+- (void)screenBtnClick:(UIButton *)sender {
+    for (UIButton *btn in _screenBackView.subviews) {
+        if (btn.tag == sender.tag) {
+            btn.selected = YES;
+            btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+            _screenType = _dataSource[sender.tag - 400][@"type"];
+        } else {
+            btn.selected = NO;
+            btn.backgroundColor = EdlineV5_Color.backColor;
+        }
     }
 }
 

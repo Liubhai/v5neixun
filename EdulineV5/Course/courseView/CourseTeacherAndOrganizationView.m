@@ -31,6 +31,7 @@
 
 // MARK: - 机构讲师信息赋值
 - (void)setTeacherAndOrganizationData:(NSDictionary *)schoolInfo teacherInfo:(NSDictionary *)teacherInfoDict {
+    [_teachersHeaderScrollView removeAllSubviews];
     _schoolInfo = schoolInfo;
     _teacherInfoDict = teacherInfoDict;
     if (SWNOTEmptyDictionary(_schoolInfo)) {

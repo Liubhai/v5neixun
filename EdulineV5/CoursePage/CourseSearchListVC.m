@@ -19,6 +19,8 @@
 #import "CourseSortVC.h"
 #import "CourseScreenVC.h"
 #import "CourseClassifyVC.h"
+#import "AppDelegate.h"
+#import "UserModel.h"
 
 // test
 #import "TeacherCourseListHeaderView.h"
@@ -43,6 +45,7 @@
     NSString *screenPriceUpAndDown;
     NSString *minPrice;
     NSString *maxPrice;
+    NSString *screenType;
 }
 
 @property (strong ,nonatomic) UIView *headerView;
@@ -321,6 +324,10 @@
         [param setObject:maxPrice forKey:@"price_max"];
     }
     
+    if (SWNOTEmptyStr(screenType)) {
+        [param setObject:screenType forKey:@"param"];
+    }
+    
     if (SWNOTEmptyStr(_institutionSearch.text)) {
         [param setObject:_institutionSearch.text forKey:@"title"];
     }
@@ -372,6 +379,9 @@
     }
     if (SWNOTEmptyStr(maxPrice)) {
         [param setObject:maxPrice forKey:@"price_max"];
+    }
+    if (SWNOTEmptyStr(screenType)) {
+        [param setObject:screenType forKey:@"param"];
     }
     if (SWNOTEmptyStr(_institutionSearch.text)) {
         [param setObject:_institutionSearch.text forKey:@"title"];
@@ -462,10 +472,11 @@
         _moreButton.selected = NO;
         if (_screeningButton.selected) {
             CourseScreenVC *vc = [[CourseScreenVC alloc] init];
-            vc.screenId = screenId;
-            vc.upAndDown = screenPriceUpAndDown;
-            vc.priceMax = maxPrice;
-            vc.priceMin = minPrice;
+//            vc.screenId = screenId;
+//            vc.upAndDown = screenPriceUpAndDown;
+//            vc.screenType = screenType;
+//            vc.priceMax = maxPrice;
+//            vc.priceMin = minPrice;
             vc.notHiddenNav = !_isSearch;
             vc.isMainPage = !_isSearch;
             vc.hiddenNavDisappear = _isSearch;
@@ -478,6 +489,10 @@
 }
 
 - (void)rightButtonClick:(id)sender {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     ShopCarManagerVC *vc = [[ShopCarManagerVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -533,6 +548,7 @@
     screenPriceUpAndDown = @"";
     maxPrice = @"";
     minPrice = @"";
+    screenType = @"";
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
     [self getCourseMainList];
 }
@@ -542,6 +558,7 @@
     if (SWNOTEmptyDictionary(info)) {
         screenId = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenId"]];
         screenPriceUpAndDown = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenUpAndDown"]];
+        screenType = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenType"]];
         maxPrice = [[NSString stringWithFormat:@"%@",[info objectForKey:@"priceMax"]] stringByReplacingOccurrencesOfString:@"¥" withString:@""];
         minPrice = [[NSString stringWithFormat:@"%@",[info objectForKey:@"priceMin"]] stringByReplacingOccurrencesOfString:@"¥" withString:@""];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
