@@ -77,7 +77,7 @@
     _menberImageView = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 86, 0, 86, 32)];
     _menberImageView.image = Image(@"pre_vip_button");
     _menberImageView.centerY = _userFaceImageView.centerY;
-    _menberImageView.hidden = YES;
+//    _menberImageView.hidden = YES;
     [self addSubview:_menberImageView];
     
     _menberBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -87,7 +87,7 @@
     [_menberBtn setTitle:@" 开通会员》" forState:0];
     [_menberBtn setTitleColor:HEXCOLOR(0xA87941) forState:0];
     [_menberBtn addTarget:self action:@selector(menberButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    _menberBtn.hidden = YES;
+//    _menberBtn.hidden = YES;
     [self addSubview:_menberBtn];
     
 }
@@ -129,8 +129,13 @@
             _levelImageView.hidden = NO;
             _levelImageView.image = Image(@"vip_grey_icon");
             [_menberBtn setTitle:@" 续费会员》" forState:0];
+        } else if ([[UserModel vipStatus] isEqualToString:@"0"]) {
+            _levelImageView.hidden = YES;
+            [_menberBtn setTitle:@" 开通会员》" forState:0];
         } else {
             _levelImageView.hidden = YES;
+            _menberBtn.hidden = YES;
+            _menberImageView.hidden = YES;
             [_menberBtn setTitle:@" 开通会员》" forState:0];
         }
     } else {

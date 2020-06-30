@@ -179,7 +179,7 @@
 
 - (void)thirdBtnClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
-        [_delegate chooseCourseClassify:_thirdArray[sender.tag - 200]];
+        [_delegate chooseCourseClassify:[_secondArray[sender.superview.tag - 10] objectForKey:@"child"][sender.tag - 200]];
     }
 }
 
