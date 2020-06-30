@@ -109,18 +109,7 @@
     themeTitle.textColor = EdlineV5_Color.textThirdColor;
     [_priceBackView addSubview:themeTitle];
     
-    _lowBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, themeTitle.bottom, 90, 32)];
-    [_lowBtn setTitle:@"价格降序" forState:0];
-    [_lowBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
-    [_lowBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
-    _lowBtn.titleLabel.font = SYSTEMFONT(14);
-    _lowBtn.backgroundColor = EdlineV5_Color.backColor;
-    _lowBtn.layer.masksToBounds = YES;
-    _lowBtn.layer.cornerRadius = _lowBtn.height / 2.0;
-    [_lowBtn addTarget:self action:@selector(upAndDownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_priceBackView addSubview:_lowBtn];
-    
-    _highBtn = [[UIButton alloc] initWithFrame:CGRectMake(_lowBtn.right + 15, themeTitle.bottom, 90, 32)];
+    _highBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, themeTitle.bottom, 90, 32)];
     [_highBtn setTitle:@"价格升序" forState:0];
     [_highBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
     [_highBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
@@ -130,6 +119,17 @@
     _highBtn.layer.cornerRadius = _highBtn.height / 2.0;
     [_highBtn addTarget:self action:@selector(upAndDownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_priceBackView addSubview:_highBtn];
+    
+    _lowBtn = [[UIButton alloc] initWithFrame:CGRectMake(_highBtn.right + 15, themeTitle.bottom, 90, 32)];
+    [_lowBtn setTitle:@"价格降序" forState:0];
+    [_lowBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+    [_lowBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
+    _lowBtn.titleLabel.font = SYSTEMFONT(14);
+    _lowBtn.backgroundColor = EdlineV5_Color.backColor;
+    _lowBtn.layer.masksToBounds = YES;
+    _lowBtn.layer.cornerRadius = _lowBtn.height / 2.0;
+    [_lowBtn addTarget:self action:@selector(upAndDownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_priceBackView addSubview:_lowBtn];
     
     _lowPriceTextField = [[UITextField alloc] initWithFrame:CGRectMake(15, _lowBtn.bottom + 12, 115, 32)];
     _lowPriceTextField.font = SYSTEMFONT(14);

@@ -57,7 +57,7 @@
         _passWordView.firstPwLabel.text = @"设置密码";
         
         NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-        NSString *atr = [NSString stringWithFormat:@"《%@服务协议》",appName];
+        NSString *atr = [NSString stringWithFormat:@"《%@用户使用协议》",appName];
         NSString *fullString = [NSString stringWithFormat:@"   注册即表示阅读并同意%@",atr];
         NSRange atrRange = [fullString rangeOfString:atr];
         
@@ -104,7 +104,7 @@
     if (_registerOrForget) {
         if (!_seleteBtn.selected) {
             NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-            NSString *atr = [NSString stringWithFormat:@"请同意《%@服务协议》",appName];
+            NSString *atr = [NSString stringWithFormat:@"请同意《%@用户使用协议》",appName];
             [self showHudInView:self.view showHint:atr];
             return;
         }
@@ -180,7 +180,7 @@
         }
     }
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"%@服务协议",appName];
+    NSString *atr = [NSString stringWithFormat:@"%@用户使用协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
     vc.agreementKey = @"agreement";

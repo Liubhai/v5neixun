@@ -43,9 +43,6 @@
 
 +(void)saveUname:(NSString *)uname
 {
-    if (!SWNOTEmptyStr(uname)) {
-        return;
-    }
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:uname forKey:@"uname"];
     [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
@@ -53,10 +50,6 @@
 }
 
 +(void)saveGender:(NSString *)gender {
-    
-    if (!SWNOTEmptyStr(gender)) {
-        return;
-    }
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:gender forKey:@"gender"];
     [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
@@ -103,9 +96,6 @@
 
 +(void)saveIntro:(NSString *)intro
 {
-    if (!SWNOTEmptyStr(intro)) {
-        return;
-    }
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:intro forKey:@"intro"];
     [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
@@ -114,9 +104,6 @@
 
 +(void)saveAvatar:(NSString *)avatar
 {
-    if (!SWNOTEmptyStr(avatar)) {
-        return;
-    }
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:avatar forKey:@"avatar"];
     [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
@@ -181,9 +168,6 @@
 }
 
 + (void)saveVipStatus:(NSString *)status {
-    if (!SWNOTEmptyStr(status)) {
-        return;
-    }
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:status forKey:@"vipStatus"];
     [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];

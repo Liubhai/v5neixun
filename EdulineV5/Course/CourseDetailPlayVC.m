@@ -723,12 +723,18 @@
     if (!SWNOTEmptyDictionary(_dataSource)) {
         return;
     }
-    CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-    vc.isComment = NO;
-    vc.courseId = _ID;
-    vc.courseHourseId = _currentHourseId;
-    vc.courseType = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"course_type"]];
-    [self.navigationController pushViewController:vc animated:YES];
+    NSString *isBuy = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"is_buy"]];
+    if ([isBuy isEqualToString:@"1"]) {
+        CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+        vc.isComment = NO;
+        vc.courseId = _ID;
+        vc.courseHourseId = _currentHourseId;
+        vc.courseType = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"course_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [self showHudInView:self.view showHint:@"购买后才能记笔记"];
+        return;
+    }
 }
 
 - (void)getCourseInfo {

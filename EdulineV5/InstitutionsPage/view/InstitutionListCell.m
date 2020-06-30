@@ -45,7 +45,7 @@
 
 - (void)setInstitutionListInfo:(NSDictionary *)info {
     
-    [_faceImageView sd_setImageWithURL:EdulineUrlString([info objectForKey:@"logo"]) placeholderImage:DefaultUserImage];
+    [_faceImageView sd_setImageWithURL:EdulineUrlString([info objectForKey:@"logo_url"]) placeholderImage:DefaultUserImage];
     
     _nameLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     

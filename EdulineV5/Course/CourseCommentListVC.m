@@ -105,7 +105,11 @@
     }
     NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
     if (![isBuy isEqualToString:@"1"]) {
-        [self showHudInView:self.view showHint:@"请先购买课程"];
+//        if (_detailVC) {
+//            [_detailVC showHudInView:_detailVC.view showHint:@"购买课程后方可进入他人评论详情页"];
+//        } else {
+//            [_vc showHudInView:_vc.view showHint:@"购买课程后方可进入他人评论详情页"];
+//        }
         return;
     }
     
@@ -177,7 +181,12 @@
         vc.topCellInfo = cell.userCommentInfo;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [self showHudInView:self.view showHint:@"请先购买课程"];
+        return;
+        if (_detailVC) {
+            [_detailVC showHudInView:_detailVC.view showHint:@"购买后才能点评课程"];
+        } else {
+            [_vc showHudInView:_vc.view showHint:@"购买后才能点评课程"];
+        }
     }
 }
 
@@ -192,7 +201,11 @@
         vc.courseHourseId = [NSString stringWithFormat:@"%@",_detailVC.currentHourseId];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [self showHudInView:self.view showHint:@"请先购买课程"];
+        if (_detailVC) {
+            [_detailVC showHudInView:_detailVC.view showHint:@"购买后才能点评课程"];
+        } else {
+            [_vc showHudInView:_vc.view showHint:@"购买后才能点评课程"];
+        }
     }
 }
 
@@ -227,7 +240,11 @@
     BOOL likeStatus = [[cell.userCommentInfo objectForKey:@"like"] boolValue];
     [Net_API requestPUTWithURLStr:[Net_Path zanComment:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
-            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if (_detailVC) {
+                [_detailVC showHudInView:_detailVC.view showHint:[responseObject objectForKey:@"msg"]];
+            } else {
+                [_vc showHudInView:_vc.view showHint:[responseObject objectForKey:@"msg"]];
+            }
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 // 改变UI
                 NSString *zanCount = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"like_count"]];
@@ -280,7 +297,11 @@
             }
         }
     } enError:^(NSError * _Nonnull error) {
-        [self showHudInView:self.view showHint:[[cell.userCommentInfo objectForKey:@"like"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
+        if (_detailVC) {
+            [_detailVC showHudInView:_detailVC.view showHint:[[cell.userCommentInfo objectForKey:@"like"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
+        } else {
+            [_vc showHudInView:_vc.view showHint:[[cell.userCommentInfo objectForKey:@"like"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
+        }
     }];
 }
 

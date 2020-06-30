@@ -16,7 +16,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        _cellType = cellType;
         _getOrUse = getOrUse;
         _useful = useful;
         [self makeSubViews];
@@ -63,6 +62,13 @@
     [_rightButton addTarget:self action:@selector(userButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     _rightButton.centerY = _backView.centerY;
     [self addSubview:_rightButton];
+}
+
+- (void)setCouponInfo:(CouponModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath {
+    _couponModel = model;
+    _cellIndexpath = cellIndexPath;
+    _cellType = model.coupon_type;
+    
     UIColor *cellColor = EdlineV5_Color.youhuijuanColor;
     // 1 优惠卷 2 打折卡 3 课程卡
     if (_useful) {
@@ -97,11 +103,7 @@
     [_rightButton setBackgroundColor:cellColor];
     [_rightButton setTitleColor:cellColor forState:UIControlStateSelected];
     _rightButton.layer.borderColor = cellColor.CGColor;
-}
-
-- (void)setCouponInfo:(CouponModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath {
-    _couponModel = model;
-    _cellIndexpath = cellIndexPath;
+    
     if ([_cellType isEqualToString:@"1"]) {
         _themeLabel.text = [NSString stringWithFormat:@"满%@减%@",model.maxprice,model.price];
     } else if ([_cellType isEqualToString:@"2"]) {
@@ -118,7 +120,6 @@
         _rightButton.selected = model.IsUsed;
     }
     
-    UIColor *cellColor = EdlineV5_Color.youhuijuanColor;
     if ([_cellType isEqualToString:@"1"]) {
         cellColor = EdlineV5_Color.youhuijuanColor;
     } else if ([_cellType isEqualToString:@"2"]) {
