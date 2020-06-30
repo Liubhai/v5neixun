@@ -191,11 +191,18 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_courseListArray removeAllObjects];
                     NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
+                    _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
+                    if ([_courselayer isEqualToString:@"1"]) {
+                        cellCouserlayar = @"3";
+                    } else if ([_courselayer isEqualToString:@"2"]) {
+                        cellCouserlayar = @"2";
+                    } else {
+                        cellCouserlayar = @"1";
+                    }
                     for (CourseListModel *object in pass) {
                         CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                         [_courseListArray addObject:model];
                     }
-                    _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
                     [_tableView reloadData];
                 }
             }

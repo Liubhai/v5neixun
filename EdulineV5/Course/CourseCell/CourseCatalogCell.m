@@ -226,6 +226,19 @@
         model.cellIndex = indexPath;
         [cell setListInfo:model];
         return cell;
+    } else if ([_courselayer isEqualToString:@"2"]) {
+        static NSString *cellReuse = @"classnew2";
+        CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuse];
+        if (!cell) {
+            cell = [[CourseCatalogCell alloc] initWithReuseIdentifier:cellReuse isClassNew:NO cellSection:0 cellRow:0 courselayer:@"3" isMainPage:_isMainPage allLayar:_allLayar isLive:_isLive];
+        }
+        cell.delegate = self;
+        CourseListModelFinal *model = _listFinalModel.child[indexPath.row];
+        model.allLayar = _allLayar;
+        model.courselayer = @"3";
+        model.cellIndex = indexPath;
+        [cell setListInfo:model];
+        return cell;
     }
     static NSString *cellReuse = @"classnew2";
     CourseCatalogCell *cell = [tableView dequeueReusableCellWithIdentifier:cellReuse];
