@@ -158,6 +158,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if ([PROFILELAYOUT isEqualToString:@"1"]) {
         NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[indexPath.row] objectForKey:@"key"]];
         if ([iconKey isEqualToString:@"wenda"]) {
@@ -223,6 +227,10 @@
 
 // MARK: -
 - (void)jumpToOtherPage:(UIButton *)sender {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[sender.tag - 66] objectForKey:@"key"]];
     if ([iconKey isEqualToString:@"wenda"]) {
         
@@ -276,12 +284,20 @@
 }
 
 - (void)goToMenberCenter {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     MenberRootVC *vc = [[MenberRootVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 // MARK: - MyCenterOrderViewDelegate(进入订单页面)
 - (void)goToOrderVC:(UIButton *)sender {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     OrderRootVC *vc = [[OrderRootVC alloc] init];
     if (sender.tag == 0) {
        vc.currentType = @"waiting";
@@ -299,6 +315,10 @@
 
 // MARK: - MyCenterBalanceViewDelegate(进入余额积分等页面)
 - (void)jumpToOtherVC:(UIButton *)sender {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if (sender.tag == 0) {
         MyBalanceVC *vc = [[MyBalanceVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];

@@ -31,6 +31,8 @@
 // 工具类
 #import "SDCycleScrollView.h"
 #import "ZPScrollerScaleView.h"
+#import "AppDelegate.h"
+#import "UserModel.h"
 
 @interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate> {
     BOOL isWeek;// 显示周榜还是月榜
@@ -439,6 +441,10 @@
         vc.sortIdStr = @"splendid";
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"favoriteCourse"]) {
+        if (!SWNOTEmptyStr([UserModel oauthToken])) {
+            [AppDelegate presentLoginNav:self];
+            return;
+        }
         TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
         vc.isChange = YES;
         vc.typeString = @"0";
@@ -482,6 +488,10 @@
 }
 
 - (void)rightButtonClick:(id)sender {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
     vc.isChange = YES;
     vc.typeString = @"0";

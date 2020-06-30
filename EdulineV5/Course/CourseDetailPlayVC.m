@@ -688,10 +688,18 @@
 
 // MARK: - 免费试看结束后点击事件
 - (void)freeLookTapClick:(UITapGestureRecognizer *)tap {
-    OrderViewController *vc = [[OrderViewController alloc] init];
-    vc.orderTypeString = @"courseHourse";
-    vc.orderId = currentCourseFinalModel.model.classHourId;
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    if ([currentCourseFinalModel.model.price floatValue]>0) {
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"courseHourse";
+        vc.orderId = currentCourseFinalModel.model.classHourId;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"course";
+        vc.orderId = currentCourseFinalModel.model.course_id;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 // MARK: - 底部按钮点击事件
@@ -979,6 +987,7 @@
             } else {
                 [wekself.headerView addSubview:wekself.freeLookShowImageView];
             }
+            _titleImage.hidden = NO;
             return;
         }
     }
