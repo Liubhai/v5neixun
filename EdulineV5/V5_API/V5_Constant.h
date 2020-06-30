@@ -54,7 +54,7 @@
 
 #define SWNOTEmptyArr(X) (NOTNULL(X)&&[X isKindOfClass:[NSArray class]]&&[X count])
 #define SWNOTEmptyDictionary(X) (NOTNULL(X)&&[X isKindOfClass:[NSDictionary class]]&&[[X allKeys]count])
-#define SWNOTEmptyStr(X) (NOTNULL(X)&&[X isKindOfClass:[NSString class]]&&((NSString *)X).length)
+#define SWNOTEmptyStr(X) (NOTNULL(X)&&[X isKindOfClass:[NSString class]]&&((NSString *)X).length&&(![X isEqualToString:@"<null>"])&&(![X isEqualToString:@"(null)"]&&(![X isEqualToString:@"null"])))
 #define NOTNULL(x) ((![x isKindOfClass:[NSNull class]])&&x)
 #define EdulineUrlString(X) [NSURL URLWithString:[NSString stringWithFormat:@"%@",X]]
 
