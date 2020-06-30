@@ -74,7 +74,7 @@
     if (_useful) {
         if ([_cellType isEqualToString:@"1"]) {
             _backView.image = Image(@"youhuiquan");
-            _themeLabel.font = SYSTEMFONT(20);
+            _themeLabel.font = SYSTEMFONT(14);
             cellColor = EdlineV5_Color.youhuijuanColor;
         } else if ([_cellType isEqualToString:@"2"]) {
             _backView.image = Image(@"dazhe_bg");
@@ -89,7 +89,7 @@
         _backView.image = Image(@"kaquan_grey");
         cellColor = EdlineV5_Color.textThirdColor;
         if ([_cellType isEqualToString:@"1"]) {
-            _themeLabel.font = SYSTEMFONT(20);
+            _themeLabel.font = SYSTEMFONT(14);
         } else if ([_cellType isEqualToString:@"2"]) {
             _themeLabel.font = SYSTEMFONT(20);
         } else if ([_cellType isEqualToString:@"3"]) {
@@ -105,13 +105,21 @@
     _rightButton.layer.borderColor = cellColor.CGColor;
     
     if ([_cellType isEqualToString:@"1"]) {
-        _themeLabel.text = [NSString stringWithFormat:@"满%@减%@",model.maxprice,model.price];
+        NSString *origin = [NSString stringWithFormat:@"¥%@ 满%@使用",model.price,model.maxprice];
+        NSRange range1 = NSMakeRange(0, 1);
+        NSRange range2 = NSMakeRange(1, [origin rangeOfString:@"满"].location - 1);
+        NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:origin];
+        [atr addAttributes:@{NSFontAttributeName: SYSTEMFONT(12)} range:range1];
+        [atr addAttributes:@{NSFontAttributeName: SYSTEMFONT(20)} range:range2];
+        _themeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr];
+        _fanweiLabel.text = [NSString stringWithFormat:@"仅限%@使用",model.school_name];
     } else if ([_cellType isEqualToString:@"2"]) {
         _themeLabel.text = [NSString stringWithFormat:@"%@折",model.discount];
+        _fanweiLabel.text = [NSString stringWithFormat:@"仅限%@使用",model.school_name];
     } else if ([_cellType isEqualToString:@"3"]) {
         _themeLabel.text = @"课程卡";
+        _fanweiLabel.text = [NSString stringWithFormat:@"仅限%@使用",model.course_title];
     }
-    _fanweiLabel.text = [NSString stringWithFormat:@"仅限%@使用",model.school_name];
     _timeLabel.text = [NSString stringWithFormat:@"有效期%@至%@",[EdulineV5_Tool timeForYYYYMMDDHHMM:model.use_stime],[EdulineV5_Tool timeForYYYYMMDDHHMM:model.use_etime]];
     
     if (_getOrUse) {

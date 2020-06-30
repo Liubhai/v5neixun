@@ -107,8 +107,14 @@
     _userCommentInfo = info;
     _editButton.hidden = YES;
     if (SWNOTEmptyDictionary(info)) {
-        if ([[NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
-            _editButton.hidden = NO;
+        if (!(SWNOTEmptyDictionary([info objectForKey:@"user"]))) {
+            [self setHeight:_lineView.bottom];
+            return;
+        }
+        if (SWNOTEmptyDictionary([info objectForKey:@"user"])) {
+            if ([[NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+                _editButton.hidden = NO;
+            }
         }
     }
     if (_cellType) {
