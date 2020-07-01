@@ -25,6 +25,7 @@
 #import "MyCollectCourseVC.h"
 #import "TeacherApplyVC.h"
 #import "InstitutionApplyVC.h"
+#import "MyRecommendViewController.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -188,7 +189,8 @@
         } else if ([iconKey isEqualToString:@"exchange"]) {
             
         } else if ([iconKey isEqualToString:@"subordinate"]) {
-            
+            MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"teacher"]) {
             TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -256,7 +258,8 @@
     } else if ([iconKey isEqualToString:@"exchange"]) {
         
     } else if ([iconKey isEqualToString:@"subordinate"]) {
-        
+        MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"teacher"]) {
         TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];

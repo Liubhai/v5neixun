@@ -33,6 +33,10 @@
 		784E5CEB24A9802D00646916 /* HcdGuideViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CE324A9802C00646916 /* HcdGuideViewCell.m */; };
 		784E5CEC24A9802D00646916 /* LanchAnimationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CE424A9802C00646916 /* LanchAnimationVC.m */; };
 		784E5CFE24AC693100646916 /* MoubaoBindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CFD24AC693000646916 /* MoubaoBindViewController.m */; };
+		784E5D0124AC8A9500646916 /* MyRecommendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5D0024AC8A9400646916 /* MyRecommendViewController.m */; };
+		784FC8DF24AC9C8000CAE7A6 /* MyRecommendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8DE24AC9C8000CAE7A6 /* MyRecommendCell.m */; };
+		784FC8E224ACA2CD00CAE7A6 /* MyMenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E124ACA2CD00CAE7A6 /* MyMenberCell.m */; };
+		784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -440,6 +444,14 @@
 		784E5CE524A9802C00646916 /* HcdGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HcdGuideView.h; sourceTree = "<group>"; };
 		784E5CFC24AC693000646916 /* MoubaoBindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoubaoBindViewController.h; sourceTree = "<group>"; };
 		784E5CFD24AC693000646916 /* MoubaoBindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoubaoBindViewController.m; sourceTree = "<group>"; };
+		784E5CFF24AC8A9400646916 /* MyRecommendViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRecommendViewController.h; sourceTree = "<group>"; };
+		784E5D0024AC8A9400646916 /* MyRecommendViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRecommendViewController.m; sourceTree = "<group>"; };
+		784FC8DD24AC9C8000CAE7A6 /* MyRecommendCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRecommendCell.h; sourceTree = "<group>"; };
+		784FC8DE24AC9C8000CAE7A6 /* MyRecommendCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRecommendCell.m; sourceTree = "<group>"; };
+		784FC8E024ACA2CD00CAE7A6 /* MyMenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyMenberCell.h; sourceTree = "<group>"; };
+		784FC8E124ACA2CD00CAE7A6 /* MyMenberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyMenberCell.m; sourceTree = "<group>"; };
+		784FC8E324ACA3B800CAE7A6 /* MySubordinateVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MySubordinateVC.h; sourceTree = "<group>"; };
+		784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MySubordinateVC.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1492,6 +1504,10 @@
 				789DB058246C1858001302B4 /* CollectionListVC.m */,
 				789DB05D246CE3B1001302B4 /* MyCollectionCourseManagerVC.h */,
 				789DB05E246CE3B1001302B4 /* MyCollectionCourseManagerVC.m */,
+				784E5CFF24AC8A9400646916 /* MyRecommendViewController.h */,
+				784E5D0024AC8A9400646916 /* MyRecommendViewController.m */,
+				784FC8E324ACA3B800CAE7A6 /* MySubordinateVC.h */,
+				784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */,
 				785A3E112497A14D00298054 /* ApplyPage */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
@@ -2256,6 +2272,10 @@
 				789DB049246AC624001302B4 /* LearnRecordCell.m */,
 				789DB060246CF042001302B4 /* CourseCollectionManagerCell.h */,
 				789DB061246CF042001302B4 /* CourseCollectionManagerCell.m */,
+				784FC8DD24AC9C8000CAE7A6 /* MyRecommendCell.h */,
+				784FC8DE24AC9C8000CAE7A6 /* MyRecommendCell.m */,
+				784FC8E024ACA2CD00CAE7A6 /* MyMenberCell.h */,
+				784FC8E124ACA2CD00CAE7A6 /* MyMenberCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2771,6 +2791,7 @@
 			files = (
 				78795728240FA3840013F95F /* ZLPhotoPickerBrowserViewController.m in Sources */,
 				787957672410E7700013F95F /* LoginPwView.m in Sources */,
+				784FC8E224ACA2CD00CAE7A6 /* MyMenberCell.m in Sources */,
 				78795737240FA3840013F95F /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				787F1E8E247381A400108F7B /* DownloadManager.m in Sources */,
 				78795729240FA3840013F95F /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */,
@@ -2830,6 +2851,7 @@
 				789DB041246A4436001302B4 /* MycouponsRootVC.m in Sources */,
 				78C549CC241B674E00A33FC4 /* AlivcLocalDatabaseManager.m in Sources */,
 				78AA13822440543D007087F7 /* TAPageControl.m in Sources */,
+				784E5D0124AC8A9500646916 /* MyRecommendViewController.m in Sources */,
 				784E5CEA24A9802D00646916 /* HcdGuideView.m in Sources */,
 				789DB0272466B38F001302B4 /* BalanceDetailVC.m in Sources */,
 				78C54971241B642B00A33FC4 /* AlivcVideoPlayManager.m in Sources */,
@@ -2892,6 +2914,7 @@
 				78A16C872452F7C100391430 /* NetAssociation.m in Sources */,
 				7853164824502E49007E239E /* MenberCell.m in Sources */,
 				7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */,
+				784FC8DF24AC9C8000CAE7A6 /* MyRecommendCell.m in Sources */,
 				7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */,
 				78C936CC248F846200D5F1ED /* TeahcerCourseListVC.m in Sources */,
 				78C548372416212300A33FC4 /* RegisterAndForgetPwVC.m in Sources */,
@@ -3031,6 +3054,7 @@
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
 				78C549D1241B674E00A33FC4 /* AlivcBaseViewController.m in Sources */,
 				784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */,
+				784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */,
 				78795731240FA3840013F95F /* ZLPhotoAssets.m in Sources */,
 				785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */,
 				7839C9912420DEC9002F6595 /* CourseCommentListVC.m in Sources */,
