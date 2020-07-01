@@ -37,6 +37,7 @@
 		784FC8DF24AC9C8000CAE7A6 /* MyRecommendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8DE24AC9C8000CAE7A6 /* MyRecommendCell.m */; };
 		784FC8E224ACA2CD00CAE7A6 /* MyMenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E124ACA2CD00CAE7A6 /* MyMenberCell.m */; };
 		784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */; };
+		784FC8E824ACB48F00CAE7A6 /* MyErweimaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -452,6 +453,8 @@
 		784FC8E124ACA2CD00CAE7A6 /* MyMenberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyMenberCell.m; sourceTree = "<group>"; };
 		784FC8E324ACA3B800CAE7A6 /* MySubordinateVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MySubordinateVC.h; sourceTree = "<group>"; };
 		784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MySubordinateVC.m; sourceTree = "<group>"; };
+		784FC8E624ACB48F00CAE7A6 /* MyErweimaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyErweimaViewController.h; sourceTree = "<group>"; };
+		784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyErweimaViewController.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1508,6 +1511,8 @@
 				784E5D0024AC8A9400646916 /* MyRecommendViewController.m */,
 				784FC8E324ACA3B800CAE7A6 /* MySubordinateVC.h */,
 				784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */,
+				784FC8E624ACB48F00CAE7A6 /* MyErweimaViewController.h */,
+				784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */,
 				785A3E112497A14D00298054 /* ApplyPage */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
@@ -2856,6 +2861,7 @@
 				789DB0272466B38F001302B4 /* BalanceDetailVC.m in Sources */,
 				78C54971241B642B00A33FC4 /* AlivcVideoPlayManager.m in Sources */,
 				78795738240FA3840013F95F /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
+				784FC8E824ACB48F00CAE7A6 /* MyErweimaViewController.m in Sources */,
 				78795730240FA3840013F95F /* ZLPhotoPickerGroup.m in Sources */,
 				78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */,
 				789DB04D246B9031001302B4 /* IncomeDetailVC.m in Sources */,

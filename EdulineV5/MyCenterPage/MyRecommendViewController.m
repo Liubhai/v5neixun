@@ -11,6 +11,7 @@
 #import "Net_Path.h"
 #import "MyRecommendCell.h"
 #import "MySubordinateVC.h"
+#import "MyErweimaViewController.h"
 
 @interface MyRecommendViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -69,7 +70,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
-        
+        MyErweimaViewController *vc = [[MyErweimaViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     } else if (indexPath.row == 1) {
         MySubordinateVC *vc = [[MySubordinateVC alloc] init];
         vc.isFirst = YES;

@@ -171,7 +171,7 @@
         _cateScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _imageBannerBackView.bottom + 20, MainScreenWidth, 0)];
         _cateScrollView.backgroundColor = [UIColor whiteColor];
         _cateScrollView.pagingEnabled = YES;
-        _cateScrollView.scrollEnabled = NO;
+        _cateScrollView.scrollEnabled = YES;
         _cateScrollView.delegate = self;
         _cateScrollView.showsHorizontalScrollIndicator = NO;
         _cateScrollView.showsVerticalScrollIndicator = NO;
