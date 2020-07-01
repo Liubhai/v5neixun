@@ -32,6 +32,7 @@
 		784E5CEA24A9802D00646916 /* HcdGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CE124A9802C00646916 /* HcdGuideView.m */; };
 		784E5CEB24A9802D00646916 /* HcdGuideViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CE324A9802C00646916 /* HcdGuideViewCell.m */; };
 		784E5CEC24A9802D00646916 /* LanchAnimationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CE424A9802C00646916 /* LanchAnimationVC.m */; };
+		784E5CFE24AC693100646916 /* MoubaoBindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CFD24AC693000646916 /* MoubaoBindViewController.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -437,6 +438,8 @@
 		784E5CE324A9802C00646916 /* HcdGuideViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HcdGuideViewCell.m; sourceTree = "<group>"; };
 		784E5CE424A9802C00646916 /* LanchAnimationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanchAnimationVC.m; sourceTree = "<group>"; };
 		784E5CE524A9802C00646916 /* HcdGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HcdGuideView.h; sourceTree = "<group>"; };
+		784E5CFC24AC693000646916 /* MoubaoBindViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoubaoBindViewController.h; sourceTree = "<group>"; };
+		784E5CFD24AC693000646916 /* MoubaoBindViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoubaoBindViewController.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1467,6 +1470,8 @@
 				789DB01D2465785C001302B4 /* MyScoreVC.m */,
 				789DB02224663EC9001302B4 /* MyIncomeVC.h */,
 				789DB02324663ECA001302B4 /* MyIncomeVC.m */,
+				784E5CFC24AC693000646916 /* MoubaoBindViewController.h */,
+				784E5CFD24AC693000646916 /* MoubaoBindViewController.m */,
 				789DB0252466B38F001302B4 /* BalanceDetailVC.h */,
 				789DB0262466B38F001302B4 /* BalanceDetailVC.m */,
 				789DB04B246B9031001302B4 /* IncomeDetailVC.h */,
@@ -3048,6 +3053,7 @@
 				789DB06F246D7E04001302B4 /* TeacherCourseListHeaderView.m in Sources */,
 				787F1E67247381A400108F7B /* AVCSelectSharpnessView.m in Sources */,
 				78795755240FAA7A0013F95F /* NSString+Hashing.m in Sources */,
+				784E5CFE24AC693100646916 /* MoubaoBindViewController.m in Sources */,
 				789DB05C246C2680001302B4 /* LBHScrollView.m in Sources */,
 				78A16C8C2452F7C100391430 /* TICRenderView.m in Sources */,
 				787F1E70247381A400108F7B /* AliyunLog.m in Sources */,

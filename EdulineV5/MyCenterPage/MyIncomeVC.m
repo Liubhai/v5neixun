@@ -11,6 +11,9 @@
 #import "Net_Path.h"
 #import "IncomeDetailVC.h"
 #import "WkWebViewController.h"
+#import <UMShare/UMShare.h>
+#import "UserModel.h"
+#import "MoubaoBindViewController.h"
 
 @interface MyIncomeVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
@@ -57,6 +60,9 @@
 
 @property (strong, nonatomic) UIButton *submitButton;
 
+@property (strong, nonatomic) UIView *moubaoSureView;
+@property (strong, nonatomic) UITextField *moubaoSureNameTextField;
+
 @property (strong, nonatomic) NSMutableArray *typeArray;
 
 @property (strong, nonatomic) NSDictionary *balanceInfo;
@@ -70,6 +76,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserIncomeInfo) name:@"reloadIncomeData" object:nil];
     
     sple_score_str_first = @"";
     sple_score_str_second = @"";
@@ -471,6 +478,28 @@
     }
     if ([typeString isEqualToString:@"lcnpay"]) {
         [self toBalance];
+    } else if ([typeString isEqualToString:@"wxpay"]) {
+        [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self completion:^(id result, NSError *error) {
+            if (!error) {
+                UMSocialUserInfoResponse *resp = result;
+                // 第三方登录数据(为空表示平台未提供)
+                // 授权数据
+                NSLog(@" uid: %@", resp.uid);
+                NSLog(@" openid: %@", resp.openid);
+                NSLog(@" accessToken: %@", resp.accessToken);
+                NSLog(@" refreshToken: %@", resp.refreshToken);
+                NSLog(@" expiration: %@", resp.expiration);
+                // 用户数据
+                NSLog(@" name: %@", resp.name);
+                NSLog(@" iconurl: %@", resp.iconurl);
+                NSLog(@" gender: %@", resp.unionGender);
+                // 第三方平台SDK原始数据
+                NSLog(@" originalResponse: %@", resp.originalResponse);
+                [self toMouxin:resp.openid];
+            }
+        }];
+    } else if ([typeString isEqualToString:@"alipay"]) {
+        [self showMoubaoSureView];
     }
 }
 
@@ -498,23 +527,33 @@
 
 - (void)textfieldDidChanged:(NSNotification *)notice {
     UITextField *textfield = (UITextField *)notice.object;
-    if (textfield.text.length>0) {
-        _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
-        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
-    } else {
-        _needPriceLabel.text = @"需花费¥0.00";
-        _priceLabel.text = @"¥0.00";
+    if (textfield == _scoreInputText) {
+        if (textfield.text.length>0) {
+            _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
+            _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
+        } else {
+            _needPriceLabel.text = @"需花费¥0.00";
+            _priceLabel.text = @"¥0.00";
+        }
     }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if ([string isEqualToString:@"\n"]) {
-        [_scoreInputText resignFirstResponder];
-        return NO;
+    if (textField == _scoreInputText) {
+        if ([string isEqualToString:@"\n"]) {
+            [_scoreInputText resignFirstResponder];
+            return NO;
+        } else {
+            return [self validateNumber:string];
+        }
+        return YES;
     } else {
-        return [self validateNumber:string];
+        if ([string isEqualToString:@"\n"]) {
+            [_moubaoSureNameTextField resignFirstResponder];
+            return NO;
+        }
+        return YES;
     }
-    return YES;
 }
 
 - (BOOL)validateNumber:(NSString*)number {
@@ -591,6 +630,134 @@
         _submitButton.enabled = YES;
         [self showHudInView:self.view showHint:@"提现失败"];
     }];
+}
+
+- (void)toMouxin:(NSString *)mouxinId {
+    if (SWNOTEmptyStr(mouxinId)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path incomeForMouxin] WithAuthorization:nil paramDic:@{@"money":[_priceLabel.text substringFromIndex:1],@"wxpay_openid":mouxinId} finish:^(id  _Nonnull responseObject) {
+            _submitButton.enabled = YES;
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [self getUserIncomeInfo];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            _submitButton.enabled = YES;
+            [self showHudInView:self.view showHint:@"提现失败"];
+        }];
+    }
+}
+
+- (void)showMoubaoSureView {
+    if (!_moubaoSureView) {
+        _moubaoSureView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
+        _moubaoSureView.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3].CGColor;
+        [_moubaoSureView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(moubaoSureViewTap)]];
+    }
+    [self.view addSubview:_moubaoSureView];
+    [_moubaoSureView removeAllSubviews];
+    
+    UIView *whiteBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth - 105, 240)];
+    whiteBack.backgroundColor = [UIColor whiteColor];
+    whiteBack.layer.masksToBounds = YES;
+    whiteBack.layer.cornerRadius = 7;
+    [_moubaoSureView addSubview:whiteBack];
+    whiteBack.center = CGPointMake(MainScreenWidth / 2.0, MainScreenHeight / 2.0);
+    
+    UILabel *tip = [[UILabel alloc] initWithFrame: CGRectMake(0, 12, whiteBack.width, 36)];
+    tip.text = @"账户确认";
+    tip.font = SYSTEMFONT(18);
+    tip.textColor = EdlineV5_Color.textFirstColor;
+    tip.textAlignment = NSTextAlignmentCenter;
+    [whiteBack addSubview:tip];
+    
+    UILabel *tip1 = [[UILabel alloc] initWithFrame: CGRectMake(0, tip.bottom, whiteBack.width, 22.5)];
+    tip1.text = @"是否提现到默认账号：";
+    tip1.font = SYSTEMFONT(15);
+    tip1.textColor = EdlineV5_Color.textSecendColor;
+    tip1.textAlignment = NSTextAlignmentCenter;
+    [whiteBack addSubview:tip1];
+    
+    UILabel *phoneL = [[UILabel alloc] initWithFrame: CGRectMake(0, tip1.bottom + 5, whiteBack.width, 22.5)];
+    if (SWNOTEmptyStr([UserModel userPhone])) {
+        if ([UserModel userPhone].length > 7) {
+            phoneL.text = [[UserModel userPhone] stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
+        }
+    }
+    phoneL.font = SYSTEMFONT(15);
+    phoneL.textColor = EdlineV5_Color.textFirstColor;
+    phoneL.textAlignment = NSTextAlignmentCenter;
+    [whiteBack addSubview:phoneL];
+    
+    _moubaoSureNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0, phoneL.bottom + 8, whiteBack.width - 42, 36)];
+    _moubaoSureNameTextField.layer.masksToBounds = YES;
+    _moubaoSureNameTextField.layer.cornerRadius = 4;
+    _moubaoSureNameTextField.layer.borderWidth = 0.5;
+    _moubaoSureNameTextField.layer.borderColor = HEXCOLOR(0xDDDDDD).CGColor;
+    _moubaoSureNameTextField.font = SYSTEMFONT(14);
+    _moubaoSureNameTextField.textColor = HEXCOLOR(0xBBBBBB);
+    _moubaoSureNameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"输入姓名" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:HEXCOLOR(0xBBBBBB)}];
+    _moubaoSureNameTextField.returnKeyType = UIReturnKeyDone;
+    _moubaoSureNameTextField.delegate = self;
+    _moubaoSureNameTextField.centerX = whiteBack.width / 2.0;
+    [whiteBack addSubview:_moubaoSureNameTextField];
+    
+    UIButton *moubaoSureBtn = [[UIButton alloc] initWithFrame:CGRectMake(_moubaoSureNameTextField.left, _moubaoSureNameTextField.bottom + 14.5, _moubaoSureNameTextField.width, 36)];
+    moubaoSureBtn.layer.cornerRadius = 4;
+    [moubaoSureBtn setTitle:@"立即提现" forState:0];
+    [moubaoSureBtn setTitleColor:[UIColor whiteColor] forState:0];
+    moubaoSureBtn.backgroundColor = EdlineV5_Color.themeColor;
+    moubaoSureBtn.titleLabel.font = SYSTEMFONT(16);
+    [moubaoSureBtn addTarget:self action:@selector(moubaoSureBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [whiteBack addSubview:moubaoSureBtn];
+    
+    UIButton *moubaoOtherBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, moubaoSureBtn.bottom + 12, 200, 22.5)];
+    [moubaoOtherBtn setTitle:@"提现至其他账户 >" forState:0];
+    [moubaoOtherBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    moubaoOtherBtn.titleLabel.font = SYSTEMFONT(15);
+    moubaoOtherBtn.centerX = whiteBack.width / 2.0;
+    [moubaoOtherBtn addTarget:self action:@selector(moubaoOtherBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [whiteBack addSubview:moubaoOtherBtn];
+}
+
+- (void)moubaoSureBtnClick:(UIButton *)sender {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if ([UserModel userPhone]) {
+        [param setObject:[UserModel userPhone] forKey:@"alipay_account"];
+    }
+    if (SWNOTEmptyStr(_moubaoSureNameTextField.text)) {
+        [param setObject:_moubaoSureNameTextField.text forKey:@"alipay_user_name"];
+    }
+    if (SWNOTEmptyStr(_priceLabel.text)) {
+        [param setObject:[_priceLabel.text substringFromIndex:1] forKey:@"money"];
+    }
+    [self moubaoSureViewTap];
+    [Net_API requestPOSTWithURLStr:[Net_Path incomeForMoubao] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        _submitButton.enabled = YES;
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self getUserIncomeInfo];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        _submitButton.enabled = YES;
+        [self showHudInView:self.view showHint:@"提现失败"];
+    }];
+}
+
+- (void)moubaoOtherBtnClick:(UIButton *)sender {
+    [self moubaoSureViewTap];
+    MoubaoBindViewController *vc = [[MoubaoBindViewController alloc] init];
+    vc.priceString = [_priceLabel.text substringFromIndex:1];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)moubaoSureViewTap {
+    _moubaoSureView.hidden = YES;
+    [_moubaoSureView removeAllSubviews];
+    [_moubaoSureView removeFromSuperview];
 }
 
 @end

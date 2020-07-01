@@ -275,7 +275,14 @@
 {
     BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
     if (!result) {
-        // 其他如支付等SDK的回调
+        //如果极简 SDK 不可用,会跳转支付宝钱包进行支付,需要将支付宝钱包的支付结果回传给 SDK
+        if ([url.host isEqualToString:@"safepay"]) {
+            [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+                NSLog(@"result = %@",resultDic);
+            }];
+        }else if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
+            return YES;
+        }
     }
     return result;
 }
@@ -283,14 +290,19 @@
 // NOTE: 9.0以后使用新API接口
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
 {
-    if ([url.host isEqualToString:@"safepay"]) {
-        //跳转支付宝钱包进行支付，处理支付结果
-        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            NSLog(@"result = %@",resultDic);
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
-        }];
-    } else if ([url.host isEqualToString:@"wx05293bb7051162ea"]) {
+    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
+    if (!result) {
+        if ([url.host isEqualToString:@"safepay"]) {
+            //跳转支付宝钱包进行支付，处理支付结果
+            [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+                NSLog(@"result = %@",resultDic);
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
+            }];
+        }
+    } else if ([url.host isEqualToString:WXAppId]) {
         return [WXApi handleOpenURL:url delegate:self];
+    } else if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
+        return YES;
     }
     return YES;
 }
@@ -556,8 +568,8 @@
 - (void)configUSharePlatforms
 {
     /* 设置微信的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WXAppId appSecret:WXAppSecret redirectURL:@"https://t.v4.51eduline.com/"];
-    [WXApi registerApp:WXAppId universalLink:@"https://t.v4.51eduline.com/"];
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WXAppId appSecret:WXAppSecret redirectURL:@"https://api.weixin.qq.com/cgi-bin/menu/create?access_token="];
+    [WXApi registerApp:WXAppId universalLink:@"https://api.weixin.qq.com/cgi-bin/menu/create?access_token="];
 //    /*设置小程序回调app的回调*/
 //        [[UMSocialManager defaultManager] setLauchFromPlatform:(UMSocialPlatformType_WechatSession) completion:^(id userInfoResponse, NSError *error) {
 //        NSLog(@"setLauchFromPlatform:userInfoResponse:%@",userInfoResponse);
