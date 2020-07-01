@@ -212,6 +212,18 @@
     return [Net_Path fullPath:@"user/credit/flow" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)incomeForMouxin {
+    return [Net_Path fullPath:@"user/income/encashment/wxpay" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)incomeForMoubao {
+    return [Net_Path fullPath:@"user/income/encashment/alipay" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)incomeForBalance {
+    return [Net_Path fullPath:@"user/income/encashment/balance" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userPayInfo {
     return [Net_Path fullPath:@"order/pay" repalce:@"" byReplece:@""];
 }

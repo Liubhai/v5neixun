@@ -168,6 +168,15 @@ struct NetWorkUrl {
 /** 积分明细 */
 + (NSString *)userScoreDetailInfo;
 
+/** 你懂的 */
++ (NSString *)incomeForMoubao;
+
+/**  */
++ (NSString *)incomeForMouxin;
+
+/** 到余额 */
++ (NSString *)incomeForBalance;
+
 /** 余额配置信息 */
 + (NSString *)userPayInfo;
 

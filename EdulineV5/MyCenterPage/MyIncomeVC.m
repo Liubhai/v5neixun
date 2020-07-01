@@ -14,7 +14,8 @@
 
 @interface MyIncomeVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
-    NSString *sple_score_str;//比例
+    NSString *sple_score_str_first;//比例
+    NSString *sple_score_str_second;//比例
 }
 
 @property (strong, nonatomic) UILabel *priceLabel;
@@ -52,6 +53,8 @@
 @property (strong, nonatomic) TYAttributedLabel *agreementTyLabel;
 @property (strong, nonatomic) UIButton *seleteBtn;
 
+@property (strong, nonatomic) UIView *bottomView;
+
 @property (strong, nonatomic) UIButton *submitButton;
 
 @property (strong, nonatomic) NSMutableArray *typeArray;
@@ -68,7 +71,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
     
-    sple_score_str = @"10";
+    sple_score_str_first = @"";
+    sple_score_str_second = @"";
     
     _typeArray = [NSMutableArray new];
     _titleImage.backgroundColor = EdlineV5_Color.themeColor;
@@ -90,6 +94,7 @@
 }
 
 - (void)makeUserAccountUI {
+    [_mainScrollView removeAllSubviews];
     UIView *account = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 175 - 44)];
     account.backgroundColor = EdlineV5_Color.themeColor;
     [_mainScrollView addSubview:account];
@@ -176,28 +181,28 @@
     
     _orderRightBtn1 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
     [_orderRightBtn1 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn1 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
+    [_orderRightBtn1 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_orderRightBtn1 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView1 addSubview:_orderRightBtn1];
     
-//    BOOL hasMoubao = NO;
-//
-//    if (SWNOTEmptyArr(_typeArray)) {
-//        if ([_typeArray containsObject:@"alipay"]) {
-//            hasMoubao = YES;
-//        } else {
-//            hasMoubao = NO;
-//        }
-//    } else {
-//        hasMoubao = NO;
-//    }
-//
-//    if (!hasMoubao) {
-//        [_orderTypeView1 setHeight:0];
-//        _orderTypeView1.hidden = YES;
-//    } else {
-//        [self seleteButtonClick:_orderRightBtn1];
-//    }
+    BOOL hasMoubao = NO;
+
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"alipay"]) {
+            hasMoubao = YES;
+        } else {
+            hasMoubao = NO;
+        }
+    } else {
+        hasMoubao = NO;
+    }
+
+    if (!hasMoubao) {
+        [_orderTypeView1 setHeight:0];
+        _orderTypeView1.hidden = YES;
+    } else {
+        [self seleteButtonClick:_orderRightBtn1];
+    }
 }
 
 - (void)makeOrderType1View2 {
@@ -218,30 +223,30 @@
     
     _orderRightBtn2 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
     [_orderRightBtn2 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn2 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
+    [_orderRightBtn2 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_orderRightBtn2 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView2 addSubview:_orderRightBtn2];
     
-//    BOOL hasW = NO;
-//
-//    if (SWNOTEmptyArr(_typeArray)) {
-//        if ([_typeArray containsObject:@"wxpay"]) {
-//            hasW = YES;
-//        } else {
-//            hasW = NO;
-//        }
-//    } else {
-//        hasW = NO;
-//    }
-//
-//    if (!hasW) {
-//        [_orderTypeView2 setHeight:0];
-//        _orderTypeView2.hidden = YES;
-//    } else {
-//        if (_orderTypeView1.height == 0) {
-//            [self seleteButtonClick:_orderRightBtn2];
-//        }
-//    }
+    BOOL hasW = NO;
+
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"wxpay"]) {
+            hasW = YES;
+        } else {
+            hasW = NO;
+        }
+    } else {
+        hasW = NO;
+    }
+
+    if (!hasW) {
+        [_orderTypeView2 setHeight:0];
+        _orderTypeView2.hidden = YES;
+    } else {
+        if (_orderTypeView1.height == 0) {
+            [self seleteButtonClick:_orderRightBtn2];
+        }
+    }
 }
 
 - (void)makeOrderType1View3 {
@@ -262,30 +267,30 @@
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
     [_orderRightBtn3 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn3 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
+    [_orderRightBtn3 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_orderRightBtn3 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView3 addSubview:_orderRightBtn3];
     
-//    BOOL hasW = NO;
-//
-//    if (SWNOTEmptyArr(_typeArray)) {
-//        if ([_typeArray containsObject:@"applepay"]) {
-//            hasW = YES;
-//        } else {
-//            hasW = NO;
-//        }
-//    } else {
-//        hasW = NO;
-//    }
-//
-//    if (!hasW) {
-//        [_orderTypeView3 setHeight:0];
-//        _orderTypeView3.hidden = YES;
-//    } else {
-//        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
-//            [self seleteButtonClick:_orderRightBtn3];
-//        }
-//    }
+    BOOL hasW = NO;
+
+    if (SWNOTEmptyArr(_typeArray)) {
+        if ([_typeArray containsObject:@"lcnpay"]) {
+            hasW = YES;
+        } else {
+            hasW = NO;
+        }
+    } else {
+        hasW = NO;
+    }
+
+    if (!hasW) {
+        [_orderTypeView3 setHeight:0];
+        _orderTypeView3.hidden = YES;
+    } else {
+        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
+            [self seleteButtonClick:_orderRightBtn3];
+        }
+    }
 }
 
 - (void)makeOrderType1View4 {
@@ -306,7 +311,7 @@
     
     _orderRightBtn4 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
     [_orderRightBtn4 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn4 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
+    [_orderRightBtn4 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_orderRightBtn4 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView4 addSubview:_orderRightBtn4];
     
@@ -381,22 +386,26 @@
 }
 
 - (void)makeBottomView {
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT, MainScreenWidth, MACRO_UI_TABBAR_HEIGHT)];
-    bottomView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:bottomView];
+    if (!_bottomView) {
+        _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT, MainScreenWidth, MACRO_UI_TABBAR_HEIGHT)];
+        _bottomView.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:_bottomView];
+    }
+    
+    [_bottomView removeAllSubviews];
     
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 32 + 15, 49)];
     label1.text = @"提现:";
     label1.textAlignment = NSTextAlignmentRight;
     label1.font = SYSTEMFONT(15);
     label1.textColor = EdlineV5_Color.textFirstColor;
-    [bottomView addSubview:label1];
+    [_bottomView addSubview:label1];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(label1.right + 3, 0, 100, 49)];
     _priceLabel.text = @"¥0.00";
     _priceLabel.font = SYSTEMFONT(16);
     _priceLabel.textColor = EdlineV5_Color.faildColor;
-    [bottomView addSubview:_priceLabel];
+    [_bottomView addSubview:_priceLabel];
     
     _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 130, (49 - 36)/2.0, 130, 36)];
     _submitButton.backgroundColor = EdlineV5_Color.themeColor;
@@ -406,7 +415,7 @@
     _submitButton.layer.masksToBounds = YES;
     _submitButton.layer.cornerRadius = _submitButton.height/2.0;
     [_submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [bottomView addSubview:_submitButton];
+    [_bottomView addSubview:_submitButton];
     
 }
 
@@ -443,10 +452,25 @@
 }
 
 - (void)submitButtonClick:(UIButton *)sender {
+    if (!SWNOTEmptyStr(_scoreInputText.text)) {
+        [self showHudInView:self.view showHint:@"请输入提现金额"];
+        _submitButton.enabled = YES;
+        return;
+    }
+    
+    if (!SWNOTEmptyStr(typeString)) {
+        [self showHudInView:self.view showHint:@"请选择提现方式"];
+        _submitButton.enabled = YES;
+        return;
+    }
+    
     if (!_seleteBtn.selected) {
         [self showHudInView:self.view showHint:@"请勾选并确认阅读购买协议"];
         _submitButton.enabled = YES;
         return;
+    }
+    if ([typeString isEqualToString:@"lcnpay"]) {
+        [self toBalance];
     }
 }
 
@@ -475,8 +499,8 @@
 - (void)textfieldDidChanged:(NSNotification *)notice {
     UITextField *textfield = (UITextField *)notice.object;
     if (textfield.text.length>0) {
-        _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] / [sple_score_str integerValue]];
-        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] / [sple_score_str integerValue]];
+        _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
+        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
     } else {
         _needPriceLabel.text = @"需花费¥0.00";
         _priceLabel.text = @"¥0.00";
@@ -520,11 +544,20 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                 if (SWNOTEmptyDictionary(_balanceInfo[@"data"])) {
-                    _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"income"]];
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"encashment_way"]];
                     
+                    NSString *ratio = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"ratio"]];
+                    NSArray *ratioArray = [ratio componentsSeparatedByString:@":"];
+                    if (SWNOTEmptyArr(ratioArray)) {
+                        sple_score_str_first = [NSString stringWithFormat:@"%@",ratioArray[0]];
+                        sple_score_str_second = [NSString stringWithFormat:@"%@",ratioArray[1]];
+                    }
+                    
                     [self makeUserAccountUI];
+                    
+                    _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"income"]];
+                    
                     [self makeMoneyView];
                     
                     [self makeOrderView];
@@ -542,6 +575,21 @@
         }
     } enError:^(NSError * _Nonnull error) {
         
+    }];
+}
+
+- (void)toBalance {
+    [Net_API requestPOSTWithURLStr:[Net_Path incomeForBalance] WithAuthorization:nil paramDic:@{@"money":[_priceLabel.text substringFromIndex:1]} finish:^(id  _Nonnull responseObject) {
+        _submitButton.enabled = YES;
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self getUserIncomeInfo];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        _submitButton.enabled = YES;
+        [self showHudInView:self.view showHint:@"提现失败"];
     }];
 }
 

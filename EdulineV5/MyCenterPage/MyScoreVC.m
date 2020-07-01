@@ -180,7 +180,7 @@
     
     _orderRightBtn1 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
     [_orderRightBtn1 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn1 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
+    [_orderRightBtn1 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_orderRightBtn1 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView1 addSubview:_orderRightBtn1];
     
@@ -222,7 +222,7 @@
     
     _orderRightBtn2 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
     [_orderRightBtn2 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn2 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
+    [_orderRightBtn2 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_orderRightBtn2 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView2 addSubview:_orderRightBtn2];
     
@@ -266,7 +266,7 @@
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
     [_orderRightBtn3 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn3 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
+    [_orderRightBtn3 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_orderRightBtn3 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView3 addSubview:_orderRightBtn3];
     
@@ -310,7 +310,7 @@
     
     _orderRightBtn4 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
     [_orderRightBtn4 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn4 setImage:Image(@"checkbox_blue") forState:UIControlStateSelected];
+    [_orderRightBtn4 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_orderRightBtn4 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView4 addSubview:_orderRightBtn4];
     
