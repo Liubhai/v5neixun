@@ -161,7 +161,7 @@
         NSString *zanCount = [NSString stringWithFormat:@"%@",[info objectForKey:@"like_count"]];
         CGFloat commentWidth = [commentCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
         CGFloat zanWidth = [zanCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
-        BOOL isZan = [[NSString stringWithFormat:@"%@",[info objectForKey:@"liked_count"]] boolValue];
+        BOOL isZan = [[NSString stringWithFormat:@"%@",[info objectForKey:@"like"]] boolValue];
         CGFloat space = 2.0;
         _zanCountButton.frame = CGRectMake(MainScreenWidth - 15 - zanWidth, _timeLabel.top, zanWidth, 20);
         [_zanCountButton setImage:isZan ? Image(@"dianzan_icon") : Image(@"dianzan_icon_norm") forState:0];

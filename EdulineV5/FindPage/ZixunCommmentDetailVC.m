@@ -54,6 +54,8 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getCommentReplayList)];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     
@@ -261,7 +263,7 @@
         return;
     }
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if ([[cell.userCommentInfo objectForKey:@"liked_count"] boolValue]) {
+    if ([[cell.userCommentInfo objectForKey:@"like"] boolValue]) {
         // 取消点赞
         [param setObject:@"0" forKey:@"status"];
     } else {
@@ -269,9 +271,9 @@
         [param setObject:@"1" forKey:@"status"];
     }
     NSString *commentId = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"id"]];
-    BOOL likeStatus = [[cell.userCommentInfo objectForKey:@"liked_count"] boolValue];
+    BOOL likeStatus = [[cell.userCommentInfo objectForKey:@"like"] boolValue];
     if (cell.commentOrReplay) {
-        [Net_API requestPUTWithURLStr:[Net_Path zanCommentReplay:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+        [Net_API requestPUTWithURLStr:[Net_Path zixunCommentReplayLikeNet:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -292,7 +294,7 @@
                         NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:listDataArray[i]];
                         if ([[NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]] isEqualToString:commentId]) {
                             [pass setObject:zanCount forKey:@"like_count"];
-                            [pass setObject:@(!likeStatus) forKey:@"liked_count"];
+                            [pass setObject:@(!likeStatus) forKey:@"like"];
                             [listDataArray replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:pass]];
                             [listPass setObject:[NSArray arrayWithArray:listDataArray] forKey:@"data"];
                             [allCommentInfoPass setObject:listPass forKey:@"commentReply"];
@@ -310,7 +312,7 @@
             [self showHudInView:self.view showHint:[[cell.userCommentInfo objectForKey:@"like"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
         }];
     } else {
-        [Net_API requestPUTWithURLStr:[Net_Path zanComment:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+        [Net_API requestPUTWithURLStr:[Net_Path zixunCommentLikeNet:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -330,7 +332,7 @@
                     if ([[my_commentInfo allKeys] count]) {
                         if ([[NSString stringWithFormat:@"%@",[my_commentInfo objectForKey:@"id"]] isEqualToString:commentId]) {
                             [my_commentInfo setObject:zanCount forKey:@"like_count"];
-                            [my_commentInfo setObject:@(!likeStatus) forKey:@"liked_count"];
+                            [my_commentInfo setObject:@(!likeStatus) forKey:@"like"];
                             [allCommentInfoPass setObject:my_commentInfo forKey:@"comment"];
                         }
                     }
@@ -371,6 +373,7 @@
 }
 
 - (void)getCommentReplayList {
+    page = 1;
     if (SWNOTEmptyStr(_commentId)) {
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:@(page) forKey:@"page"];
@@ -385,6 +388,11 @@
                     [_dataSource removeAllObjects];
                     [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"commentReply"] objectForKey:@"data"]];
                     _commentInfo = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                    if (_dataSource.count<10) {
+                        _tableView.mj_footer.hidden = YES;
+                    } else {
+                        _tableView.mj_footer.hidden = NO;
+                    }
                     [_tableView reloadData];
                 }
             }
@@ -398,6 +406,37 @@
             [_tableView.mj_header endRefreshing];
         }
     }
+}
+
+- (void)getMoreList {
+    page = page + 1;
+    NSMutableDictionary *pass = [NSMutableDictionary new];
+    [pass setObject:@(page) forKey:@"page"];
+    [pass setObject:@"10" forKey:@"count"];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunPostCommentReplay:_commentId] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _topCellInfo = [NSDictionary dictionaryWithDictionary:[[responseObject objectForKey:@"data"] objectForKey:@"comment"]];
+                _commentInfo = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                NSArray *passArray = [NSArray arrayWithArray:[[[responseObject objectForKey:@"data"] objectForKey:@"commentReply"] objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:passArray];
+                if (pass.count<10) {
+                    _tableView.mj_footer.hidden = YES;
+                } else {
+                    _tableView.mj_footer.hidden = NO;
+                }
+            }
+        }
+        [_tableView reloadData];
+    } enError:^(NSError * _Nonnull error) {
+        page--;
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+    }];
 }
 
 @end

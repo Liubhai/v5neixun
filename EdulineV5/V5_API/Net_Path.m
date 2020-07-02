@@ -380,6 +380,10 @@
     return [Net_Path fullPath:@"topic/comment/{id}/like" repalce:@"{id}" byReplece:zixunId];
 }
 
++ (NSString *)zixunCommentReplayLikeNet:(NSString *)zixunId {
+    return [Net_Path fullPath:@"topic/reply/{id}/like" repalce:@"{id}" byReplece:zixunId];
+}
+
 + (NSString *)zixunPostCommentReplay:(NSString *)zixunId {
     return [Net_Path fullPath:@"topic/comment/{id}/reply" repalce:@"{id}" byReplece:zixunId];
 }

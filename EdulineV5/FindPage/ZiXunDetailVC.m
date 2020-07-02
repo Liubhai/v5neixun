@@ -54,7 +54,7 @@
     _recommendNewArray = [NSMutableArray new];
     [self makeTableView];
     [self makeCommentToolView];
-    [self getZiXunDetail];
+//    [self getZiXunDetail];
 }
 
 - (void)makeHeaderView {
@@ -129,13 +129,13 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstData)];
-//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreDataList)];
-//    _tableView.mj_footer.hidden = YES;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getZiXunDetail)];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     _tableView.tableHeaderView = _headerView;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (void)makeCommentToolView {
@@ -257,8 +257,15 @@
 }
 
 - (void)getZiXunDetail {
+    page = 1;
+    NSMutableDictionary *pass = [NSMutableDictionary new];
+    [pass setObject:@(page) forKey:@"page"];
+    [pass setObject:@"10" forKey:@"count"];
     if (SWNOTEmptyStr(_zixunId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunDetailNet:_zixunId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunDetailNet:_zixunId] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
+            if (_tableView.mj_header.isRefreshing) {
+                [_tableView.mj_header endRefreshing];
+            }
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _newsInfo = [NSDictionary dictionaryWithDictionary:responseObject];
@@ -271,10 +278,46 @@
                     [_contenView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
                 }
             }
+            if (_dataSource.count<10) {
+                _tableView.mj_footer.hidden = YES;
+            } else {
+                _tableView.mj_footer.hidden = NO;
+            }
         } enError:^(NSError * _Nonnull error) {
-            
+            if (_tableView.mj_header.isRefreshing) {
+                [_tableView.mj_header endRefreshing];
+            }
         }];
     }
+}
+
+- (void)getMoreList {
+    page = page + 1;
+    NSMutableDictionary *pass = [NSMutableDictionary new];
+    [pass setObject:@(page) forKey:@"page"];
+    [pass setObject:@"10" forKey:@"count"];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path learnRecordList] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSArray *passArray = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:passArray];
+                if (pass.count<10) {
+                    _tableView.mj_footer.hidden = YES;
+                } else {
+                    _tableView.mj_footer.hidden = NO;
+                }
+            }
+        }
+        [_tableView reloadData];
+    } enError:^(NSError * _Nonnull error) {
+        page--;
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+    }];
 }
 
 - (void)makeRecommendNewsUi {
@@ -424,7 +467,7 @@
         return;
     }
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if ([[cell.userCommentInfo objectForKey:@"liked_count"] boolValue]) {
+    if ([[cell.userCommentInfo objectForKey:@"like"] boolValue]) {
         // 取消点赞
         [param setObject:@"0" forKey:@"status"];
     } else {
@@ -432,7 +475,7 @@
         [param setObject:@"1" forKey:@"status"];
     }
     NSString *commentId = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"id"]];
-    BOOL likeStatus = [[cell.userCommentInfo objectForKey:@"liked_count"] boolValue];
+    BOOL likeStatus = [[cell.userCommentInfo objectForKey:@"like"] boolValue];
     [Net_API requestPUTWithURLStr:[Net_Path zixunCommentLikeNet:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
@@ -452,7 +495,7 @@
                     NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[i]];
                     if ([[NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]] isEqualToString:commentId]) {
                         [pass setObject:zanCount forKey:@"like_count"];
-                        [pass setObject:@(!likeStatus) forKey:@"liked_count"];
+                        [pass setObject:@(!likeStatus) forKey:@"like"];
                         [_dataSource replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:pass]];
                         break;
                     }
@@ -461,7 +504,7 @@
             }
         }
     } enError:^(NSError * _Nonnull error) {
-        [self showHudInView:self.view showHint:[[cell.userCommentInfo objectForKey:@"liked_count"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
+        [self showHudInView:self.view showHint:[[cell.userCommentInfo objectForKey:@"like"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
     }];
 }
 

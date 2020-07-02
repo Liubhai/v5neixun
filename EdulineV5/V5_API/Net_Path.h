@@ -304,6 +304,9 @@ struct NetWorkUrl {
 /** 资讯评论点赞 */
 + (NSString *)zixunCommentLikeNet:(NSString *)zixunId;
 
+/** 资讯回复评论点赞 */
++ (NSString *)zixunCommentReplayLikeNet:(NSString *)zixunId;
+
 /** 资讯评论 或者 评论回复列表 post get */
 + (NSString *)zixunPostCommentReplay:(NSString *)zixunId;
 @end
