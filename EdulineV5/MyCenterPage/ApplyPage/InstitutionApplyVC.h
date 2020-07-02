@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *nameLeftLabel;
 @property (strong, nonatomic) UILabel *nameRightLabel;
 
+@property (strong, nonatomic) UILabel *willBeManagerLabel;
+
 @property (strong, nonatomic) UIView *line1;
 
 @property (strong, nonatomic) UILabel *statusLeftLabel;

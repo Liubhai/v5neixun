@@ -52,9 +52,9 @@
     
     _nameLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     
-    _levelLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"level_text"]];
+    _levelLabel.text = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([info objectForKey:@"level_text"]) ? [info objectForKey:@"level_text"] : @""];
     
-    NSString *intro = [NSString stringWithFormat:@"%@",[info objectForKey:@"signature"]];
+    NSString *intro = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([info objectForKey:@"signature"]) ? [info objectForKey:@"signature"] : @""];
     _introLabel.text = intro;
     _introLabel.numberOfLines = 0;
     [_introLabel sizeToFit];

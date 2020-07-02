@@ -59,6 +59,10 @@
     _lineTL.hidden = NO;
     // Do any additional setup after loading the view.
     
+    [_rightButton setImage:nil forState:0];
+    [_rightButton setTitle:@"上一步" forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    
     whichPic = @"";
     idCardIDFont = @"";
     idCardIDBack = @"";
@@ -120,7 +124,14 @@
     _nameRightLabel.text = [UserModel userPhone];
     [_mainScrollView addSubview:_nameRightLabel];
     
-    _line1 = [[UIView alloc] initWithFrame:CGRectMake(15, _nameLeftLabel.bottom, MainScreenWidth - 15, 1)];
+    _willBeManagerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _nameLeftLabel.bottom + 30 - 12 - 18.5, MainScreenWidth - 15, 18.5)];
+    _willBeManagerLabel.font = SYSTEMFONT(13);
+    _willBeManagerLabel.textAlignment = NSTextAlignmentRight;
+    _willBeManagerLabel.text = @"*该帐号将成为机构管理员";
+    _willBeManagerLabel.textColor = HEXCOLOR(0xB7BAC1);
+    [_mainScrollView addSubview:_willBeManagerLabel];
+    
+    _line1 = [[UIView alloc] initWithFrame:CGRectMake(15, _nameLeftLabel.bottom + 30, MainScreenWidth - 15, 1)];
     _line1.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_mainScrollView addSubview:_line1];
     
@@ -340,6 +351,7 @@
     _idCardPictureTip.font = SYSTEMFONT(15);
     _idCardPictureTip.textColor = EdlineV5_Color.textThirdColor;
     _idCardPictureTip.textAlignment = NSTextAlignmentRight;
+    _idCardPictureTip.hidden = YES;
     [_otherBackView addSubview:_idCardPictureTip];
     
     _idCardPictureLeft = [[UIImageView alloc] initWithFrame:CGRectMake(15, _idCardPictureTitle.bottom, 169, 107)];
@@ -372,6 +384,7 @@
     _teacherPictureTip.font = SYSTEMFONT(15);
     _teacherPictureTip.textColor = EdlineV5_Color.textThirdColor;
     _teacherPictureTip.textAlignment = NSTextAlignmentRight;
+    _teacherPictureTip.hidden = YES;
     [_otherBackView addSubview:_teacherPictureTip];
     
     _teacherPicture = [[UIImageView alloc] initWithFrame:CGRectMake(15, _teacherPictureTitle.bottom, 169, 169)];
@@ -396,7 +409,7 @@
     [_bottomBackView addSubview:_agreeBackView];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@机构认证协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@机构用户服务协议》",appName];
     NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
     NSRange atrRange = [fullString rangeOfString:atr];
     
@@ -1050,6 +1063,9 @@
         _institutionTextField.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"title"]];
         
         _idCardText.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"legal_IDcard"]];
+        if ([verified_status isEqualToString:@"3"]) {
+            _idCardText.text = @"";
+        }
         
         idCardIDFont = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"legal_IDcard_positive"]];
         [_imageArray removeAllObjects];
@@ -1077,7 +1093,7 @@
             }
         }];
         
-        [_logoImageView sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"logo"]) placeholderImage:DefaultImage];
+        [_logoImageView sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"logo_url"]) placeholderImage:DefaultImage];
         
         _phoneTextField.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"telephone"]];
         
@@ -1307,7 +1323,7 @@
     }
     
     if (!_seleteBtn.selected) {
-        [self showHudInView:self.view showHint:@"请确认阅读并同意认证协议"];
+        [self showHudInView:self.view showHint:@"请确认阅读并同意机构用户服务协议"];
         return;
     }
     
@@ -1349,16 +1365,12 @@
 - (void)nextButtonClick:(UIButton *)sender {
     _mainScrollView.hidden = YES;
     _nextScrollView.hidden = NO;
+    _rightButton.hidden = NO;
 }
 
 - (void)leftButtonClick:(id)sender {
     [self.view endEditing:YES];
-    if (_nextScrollView.hidden) {
-        [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        _mainScrollView.hidden = NO;
-        _nextScrollView.hidden = YES;
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 // MARK: - 协议点击代理
@@ -1377,11 +1389,17 @@
         }
     }
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"%@机构认证协议",appName];
+    NSString *atr = [NSString stringWithFormat:@"%@机构用户服务协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
     vc.agreementKey = @"school_service";
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)rightButtonClick:(id)sender {
+    _rightButton.hidden = YES;
+    _mainScrollView.hidden = NO;
+    _nextScrollView.hidden = YES;
 }
 
 @end

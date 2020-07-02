@@ -217,6 +217,7 @@
     _idCardPictureTip.font = SYSTEMFONT(15);
     _idCardPictureTip.textColor = EdlineV5_Color.textThirdColor;
     _idCardPictureTip.textAlignment = NSTextAlignmentRight;
+    _idCardPictureTip.hidden = YES;
     [_otherBackView addSubview:_idCardPictureTip];
     
     _idCardPictureLeft = [[UIImageView alloc] initWithFrame:CGRectMake(15, _idCardPictureTitle.bottom, 169, 107)];
@@ -249,6 +250,7 @@
     _teacherPictureTip.font = SYSTEMFONT(15);
     _teacherPictureTip.textColor = EdlineV5_Color.textThirdColor;
     _teacherPictureTip.textAlignment = NSTextAlignmentRight;
+    _teacherPictureTip.hidden = YES;
     [_otherBackView addSubview:_teacherPictureTip];
     
     _teacherPicture = [[UIImageView alloc] initWithFrame:CGRectMake(15, _teacherPictureTitle.bottom, 169, 169)];
@@ -273,7 +275,7 @@
     [_bottomBackView addSubview:_agreeBackView];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@讲师认证协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@讲师用户服务协议》",appName];
     NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
     NSRange atrRange = [fullString rangeOfString:atr];
     
@@ -840,6 +842,10 @@
         
         _idCardText.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard"]];
         
+        if ([verified_status isEqualToString:@"3"]) {
+            _idCardText.text = @"";
+        }
+        
         idCardIDFont = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive"]];
         [_imageArray removeAllObjects];
         [_idCardPictureLeft sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard_positive_url"]) placeholderImage:Image(@"id_front") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
@@ -992,7 +998,7 @@
         }
     }
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"%@讲师认证协议",appName];
+    NSString *atr = [NSString stringWithFormat:@"%@讲师用户服务协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
     vc.agreementKey = @"teacher_service";
@@ -1089,7 +1095,7 @@
     }
     
     if (!_seleteBtn.selected) {
-        [self showHudInView:self.view showHint:@"请确认阅读并同意认证协议"];
+        [self showHudInView:self.view showHint:@"请确认阅读并同意讲师用户服务协议"];
         return;
     }
     

@@ -38,7 +38,7 @@
 
 - (void)makeClassInfoWebView {
     
-    _ClassIntroWeb = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5)];
+    _ClassIntroWeb = [[WKWebIntroview alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5)];
     _ClassIntroWeb.backgroundColor = [UIColor clearColor];
     _ClassIntroWeb.scrollView.scrollEnabled = NO;
     _ClassIntroWeb.UIDelegate = self;
