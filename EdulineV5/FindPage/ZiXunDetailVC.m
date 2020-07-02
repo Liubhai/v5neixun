@@ -18,9 +18,20 @@
 }
 
 @property (strong, nonatomic) UITableView *tableView;
+
+@property (strong, nonatomic) NSDictionary *newsInfo;
+
 @property (strong, nonatomic) NSMutableArray *dataSource;
+
+@property (strong, nonatomic) NSMutableArray *recommendNewArray;
+
 @property (strong, nonatomic) UIView *headerView;
+
+@property (strong, nonatomic) UIView *topView;
 @property (strong, nonatomic) WKWebIntroview *contenView;
+
+// 推荐资讯部分
+@property (strong, nonatomic) UIScrollView *recommendZixunView;
 
 // 底部评论
 @property (strong, nonatomic) CommentBaseView *commentView;
@@ -38,7 +49,7 @@
     // Do any additional setup after loading the view.
     
     _dataSource = [NSMutableArray new];
-    [self makeHeaderView];
+    _recommendNewArray = [NSMutableArray new];
     [self makeTableView];
     [self makeCommentToolView];
     [self getZiXunDetail];
@@ -46,10 +57,52 @@
 
 - (void)makeHeaderView {
     
-    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.1)];
-    _headerView.backgroundColor = [UIColor whiteColor];
+    if (!_headerView) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.1)];
+        _headerView.backgroundColor = [UIColor whiteColor];
+    }
+    [_headerView removeAllSubviews];
     
-    _contenView = [[WKWebIntroview alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5)];
+    _topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 100)];
+    _topView.backgroundColor = [UIColor whiteColor];
+    [_headerView addSubview:_topView];
+    
+    UILabel *zixunTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
+    zixunTitle.font = SYSTEMFONT(14);
+    zixunTitle.textColor = EdlineV5_Color.textFirstColor;
+    zixunTitle.text = [NSString stringWithFormat:@"%@",_newsInfo[@"data"][@"detail"][@"title"]];
+    zixunTitle.numberOfLines = 0;
+    [zixunTitle sizeToFit];
+    zixunTitle.frame = CGRectMake(15, 0, MainScreenWidth - 30, zixunTitle.height);
+    [_topView addSubview:zixunTitle];
+    
+    UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, zixunTitle.bottom, 200, 43)];
+    timeLabel.font = SYSTEMFONT(13);
+    timeLabel.textColor = EdlineV5_Color.textThirdColor;
+    timeLabel.text = [EdulineV5_Tool formatterDate:[NSString stringWithFormat:@"%@",_newsInfo[@"data"][@"detail"][@"publish_time"]]];
+    [_topView addSubview:timeLabel];
+    
+    UILabel *lookCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, zixunTitle.bottom, 200, 43)];
+    lookCountLabel.font = SYSTEMFONT(13);
+    lookCountLabel.textColor = EdlineV5_Color.textThirdColor;
+    lookCountLabel.textAlignment = NSTextAlignmentRight;
+    lookCountLabel.text = [NSString stringWithFormat:@"%@",_newsInfo[@"data"][@"detail"][@"read_count"]];
+    CGFloat lookCountLabelWidth = [lookCountLabel.text sizeWithFont:lookCountLabel.font].width + 4;
+    lookCountLabel.frame = CGRectMake(MainScreenWidth - 15 - lookCountLabelWidth, zixunTitle.bottom, lookCountLabelWidth, 43);
+    [_topView addSubview:lookCountLabel];
+    
+    UIImageView *lookIcon = [[UIImageView alloc] initWithFrame:CGRectMake(lookCountLabel.left - 5.5 - 13, 0, 13, 8)];
+    lookIcon.centerY = lookCountLabel.centerY;
+    lookIcon.image = Image(@"news_view_icon");
+    [_topView addSubview:lookIcon];
+    
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, timeLabel.bottom, MainScreenWidth, 1)];
+    line.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_topView addSubview:line];
+    
+    [_topView setHeight:line.bottom];
+    
+    _contenView = [[WKWebIntroview alloc] initWithFrame:CGRectMake(0, _topView.bottom, MainScreenWidth, 0.5)];
     _contenView.backgroundColor = [UIColor whiteColor];
     _contenView.scrollView.scrollEnabled = NO;
     _contenView.UIDelegate = self;
@@ -160,7 +213,9 @@
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunDetailNet:_zixunId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    NSString *allStr = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"content"]];
+                    _newsInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    NSString *allStr = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"detail"][@"content"]];
+                    [self makeHeaderView];
                     [_contenView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
                 }
             }
