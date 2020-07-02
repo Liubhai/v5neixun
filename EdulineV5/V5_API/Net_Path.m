@@ -371,4 +371,17 @@
 + (NSString *)zixunDetailNet:(NSString *)zixunId {
     return [Net_Path fullPath:@"topic/{id}/fetch" repalce:@"{id}" byReplece:zixunId];
 }
+
++ (NSString *)zixunPostComment:(NSString *)zixunId {
+    return [Net_Path fullPath:@"topic/{id}/comment" repalce:@"{id}" byReplece:zixunId];
+}
+
++ (NSString *)zixunCommentLikeNet:(NSString *)zixunId {
+    return [Net_Path fullPath:@"topic/comment/{id}/like" repalce:@"{id}" byReplece:zixunId];
+}
+
++ (NSString *)zixunPostCommentReplay:(NSString *)zixunId {
+    return [Net_Path fullPath:@"topic/comment/{id}/reply" repalce:@"{id}" byReplece:zixunId];
+}
+
 @end

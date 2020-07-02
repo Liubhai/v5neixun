@@ -11,6 +11,8 @@
 #import "Net_Path.h"
 #import "ZixunCommentCell.h"
 #import "CommentBaseView.h"
+#import "UserModel.h"
+#import "ZixunCommmentDetailVC.h"
 
 @interface ZiXunDetailVC ()<UITableViewDelegate, UITableViewDataSource, ZixunCommentCellDelegate, WKUIDelegate, WKNavigationDelegate, CommentBaseViewDelegate> {
     NSInteger page;
@@ -170,16 +172,24 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 42)];
-    view.backgroundColor = [UIColor whiteColor];
-    
-    UILabel *tip = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 15, 42)];
-    tip.font = SYSTEMFONT(16);
-    tip.textColor = EdlineV5_Color.textFirstColor;
-    tip.text = [NSString stringWithFormat:@"评论(%@)",@(_dataSource.count)];
-    [view addSubview:tip];
-    
-    return view;
+    if (SWNOTEmptyDictionary(_newsInfo)) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 42)];
+        view.backgroundColor = [UIColor whiteColor];
+        
+        UILabel *tip = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 15, 42)];
+        tip.font = SYSTEMFONT(16);
+        tip.textColor = EdlineV5_Color.textFirstColor;
+        if (SWNOTEmptyDictionary(_newsInfo)) {
+            tip.text = [NSString stringWithFormat:@"评论(%@)",_newsInfo[@"data"][@"comments"][@"total"]];
+        } else {
+            tip.text = @"评论(0)";
+        }
+        [view addSubview:tip];
+        
+        return view;
+    } else {
+        return nil;
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -187,7 +197,10 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 42.0;
+    if (SWNOTEmptyDictionary(_newsInfo)) {
+        return 42.0;
+    }
+    return 0.001;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -201,6 +214,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ZixunCommmentDetailVC *vc = [[ZixunCommmentDetailVC alloc] init];
+    vc.cellType = NO;
+    vc.topCellInfo = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
@@ -247,6 +264,8 @@
                     _newsInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [_recommendNewArray removeAllObjects];
                     [_recommendNewArray addObjectsFromArray:responseObject[@"data"][@"splendid"]];
+                    [_dataSource removeAllObjects];
+                    [_dataSource addObjectsFromArray:responseObject[@"data"][@"comments"][@"data"]];
                     NSString *allStr = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"detail"][@"content"]];
                     [self makeHeaderView];
                     [_contenView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
@@ -370,6 +389,80 @@
 
 - (void)commentBackViewTap:(UIGestureRecognizer *)tap {
     [_commentView.inputTextView resignFirstResponder];
+}
+
+- (void)sendReplayMsg:(CommentBaseView *)view {
+    [view.inputTextView resignFirstResponder];
+    if (!SWNOTEmptyStr(view.inputTextView.text)) {
+        [self showHudInView:self.view showHint:@"请输入评论内容"];
+        return;
+    }
+    NSString *content = [NSString stringWithFormat:@"%@",view.inputTextView.text];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:content forKey:@"content"];
+    [Net_API requestPOSTWithURLStr:[Net_Path zixunPostComment:_zixunId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _commentView.placeHoderLab.text = @"评论";
+                [self getZiXunDetail];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:@"评论失败"];
+    }];
+    view.inputTextView.text = @"";
+    view.placeHoderLab.hidden = NO;
+}
+
+- (void)zanComment:(ZixunCommentCell *)cell {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        return;
+    }
+    // 判断是点赞还是取消点赞  然后再判断是展示我的还是展示所有的
+    if (!SWNOTEmptyDictionary(cell.userCommentInfo)) {
+        return;
+    }
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if ([[cell.userCommentInfo objectForKey:@"liked_count"] boolValue]) {
+        // 取消点赞
+        [param setObject:@"0" forKey:@"status"];
+    } else {
+        // 点赞
+        [param setObject:@"1" forKey:@"status"];
+    }
+    NSString *commentId = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"id"]];
+    BOOL likeStatus = [[cell.userCommentInfo objectForKey:@"liked_count"] boolValue];
+    [Net_API requestPUTWithURLStr:[Net_Path zixunCommentLikeNet:commentId] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                // 改变UI
+                NSString *zanCount = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"like_count"]];
+                if (likeStatus) {
+                    zanCount = [NSString stringWithFormat:@"%@",@(zanCount.integerValue - 1)];
+                    [cell changeZanButtonInfo:zanCount zanOrNot:NO];
+                } else {
+                    zanCount = [NSString stringWithFormat:@"%@",@(zanCount.integerValue + 1)];
+                    [cell changeZanButtonInfo:zanCount zanOrNot:YES];
+                }
+                // 改变数据源 先改变所有数据源 用id匹配
+                // 点赞数 点赞状态(脑壳昏 想直接请求接口)
+                for (int i = 0; i<_dataSource.count; i++) {
+                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[i]];
+                    if ([[NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]] isEqualToString:commentId]) {
+                        [pass setObject:zanCount forKey:@"like_count"];
+                        [pass setObject:@(!likeStatus) forKey:@"liked_count"];
+                        [_dataSource replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                        break;
+                    }
+                }
+                [_tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:[[cell.userCommentInfo objectForKey:@"liked_count"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
+    }];
 }
 
 /*

@@ -298,6 +298,14 @@ struct NetWorkUrl {
 /** 资讯详情 */
 + (NSString *)zixunDetailNet:(NSString *)zixunId;
 
+/** 资讯评论提交 */
++ (NSString *)zixunPostComment:(NSString *)zixunId;
+
+/** 资讯评论点赞 */
++ (NSString *)zixunCommentLikeNet:(NSString *)zixunId;
+
+/** 资讯评论 或者 评论回复列表 post get */
++ (NSString *)zixunPostCommentReplay:(NSString *)zixunId;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -96,7 +96,7 @@
     _commentCountButton.titleLabel.font = SYSTEMFONT(12);
     _commentCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _commentCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
-    [_commentCountButton addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [_commentCountButton addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_commentCountButton];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left, _timeLabel.bottom + 10, MainScreenWidth - _nameLabel.left - 15, 0.5)];
@@ -107,119 +107,75 @@
 - (void)setCommentInfo:(NSDictionary *)info showAllContent:(BOOL)showAllContent {
     _userCommentInfo = info;
     _editButton.hidden = YES;
+    _commentCountButton.hidden = NO;
+    _zanCountButton.hidden = NO;
+    _scoreStar.hidden = YES;
     if (SWNOTEmptyDictionary(info)) {
-        if (!(SWNOTEmptyDictionary([info objectForKey:@"user"]))) {
-            [self setHeight:_lineView.bottom];
-            return;
+        _nameLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"nick_name"]];
+        if (SWNOTEmptyStr([info objectForKey:@"avatar_url"])) {
+            [_userFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
+        } else {
+            _userFace.image = DefaultUserImage;
         }
-        if (SWNOTEmptyDictionary([info objectForKey:@"user"])) {
-            if ([[NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
-                _editButton.hidden = NO;
-            }
+        CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+        [_nameLabel setWidth:nameWidth];
+        NSString *replayUsername = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user"]]];
+        NSString *replayUserId = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user_id"]]];
+        if ([replayUserId isEqualToString:@"0"] || ![info objectForKey:@"reply_user_id"]) {
+            _contentLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
+            _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
+            _contentLabel.numberOfLines = 0;
+            [_contentLabel sizeToFit];
+            [_contentLabel setHeight:_contentLabel.height];
+        } else {
+            _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
+            _contentLabel.numberOfLines = 0;
+            
+            NSString *insertString = [NSString stringWithFormat:@"@%@",replayUsername];
+            NSString *final = [NSString stringWithFormat:@"回复%@:%@",insertString,[NSString stringWithFormat:@"%@",[info objectForKey:@"content"]]];
+            TYLinkTextStorage *textStorage = [[TYLinkTextStorage alloc]init];
+            textStorage.textColor = EdlineV5_Color.themeColor;
+            textStorage.font = SYSTEMFONT(14);
+            textStorage.linkData = @{@"type":@"user",@"userId":replayUserId};
+            textStorage.underLineStyle = kCTUnderlineStyleNone;
+            textStorage.range = [final rangeOfString:insertString];
+            textStorage.text = insertString;
+            
+            // 属性文本生成器
+            TYTextContainer *attStringCreater = [[TYTextContainer alloc]init];
+            attStringCreater.text = final;
+            _contentLabel.textContainer = attStringCreater;
+            _contentLabel.textContainer.linesSpacing = 4;
+            attStringCreater.font = SYSTEMFONT(13);
+            attStringCreater.textAlignment = kCTTextAlignmentLeft;
+            attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
+            [_contentLabel setHeight:_contentLabel.textContainer.textHeight];
+            [attStringCreater addTextStorageArray:@[textStorage]];
         }
-    }
-    if (_cellType) {
-        _commentCountButton.hidden = YES;
-        _zanCountButton.hidden = YES;
-        _scoreStar.hidden = YES;
-        if (SWNOTEmptyDictionary(info)) {
-            _nameLabel.text = [NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"nick_name"]];
-            if (SWNOTEmptyStr([[info objectForKey:@"user"] objectForKey:@"avatar_url"])) {
-                [_userFace sd_setImageWithURL:EdulineUrlString([[info objectForKey:@"user"] objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
-            } else {
-                _userFace.image = DefaultUserImage;
-            }
-            
-            CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
-            [_nameLabel setWidth:nameWidth];
-            
-            _tokenLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
-            if (showAllContent) {
-                _tokenLabel.numberOfLines = 0;
-            } else {
-                _tokenLabel.numberOfLines = 4;
-            }
-            [_tokenLabel sizeToFit];
-            [_tokenLabel setHeight:_tokenLabel.height];
-            
-            [_timeLabel setTop:_tokenLabel.bottom + 15];
-            _timeLabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",[info objectForKey:@"create_time"]]];
-            
-            [_lineView setTop:_timeLabel.bottom + 10];
-        }
-    } else {
-        _commentCountButton.hidden = NO;
-        _zanCountButton.hidden = NO;
-        _scoreStar.hidden = YES;
-        if (SWNOTEmptyDictionary(info)) {
-            _nameLabel.text = [NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"nick_name"]];
-            if (SWNOTEmptyStr([[info objectForKey:@"user"] objectForKey:@"avatar_url"])) {
-                [_userFace sd_setImageWithURL:EdulineUrlString([[info objectForKey:@"user"] objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
-            } else {
-                _userFace.image = DefaultUserImage;
-            }
-            CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
-            [_nameLabel setWidth:nameWidth];
-//            [_scoreStar setLeft:_nameLabel.right + 10];
-//            [_scoreStar setStarValue:[[NSString stringWithFormat:@"%@",[info objectForKey:@"star"]] floatValue]];
-            NSString *replayUsername = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user"]]];
-            NSString *replayUserId = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user_id"]]];
-            if ([replayUserId isEqualToString:@"0"] || ![info objectForKey:@"reply_user_id"]) {
-                _contentLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
-                _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
-                _contentLabel.numberOfLines = 0;
-                [_contentLabel sizeToFit];
-                [_contentLabel setHeight:_contentLabel.height];
-            } else {
-                _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
-                _contentLabel.numberOfLines = 0;
-                
-                NSString *insertString = [NSString stringWithFormat:@"@%@",replayUsername];
-                NSString *final = [NSString stringWithFormat:@"回复%@:%@",insertString,[NSString stringWithFormat:@"%@",[info objectForKey:@"content"]]];
-                TYLinkTextStorage *textStorage = [[TYLinkTextStorage alloc]init];
-                textStorage.textColor = EdlineV5_Color.themeColor;
-                textStorage.font = SYSTEMFONT(14);
-                textStorage.linkData = @{@"type":@"user",@"userId":replayUserId};
-                textStorage.underLineStyle = kCTUnderlineStyleNone;
-                textStorage.range = [final rangeOfString:insertString];
-                textStorage.text = insertString;
-                
-                // 属性文本生成器
-                TYTextContainer *attStringCreater = [[TYTextContainer alloc]init];
-                attStringCreater.text = final;
-                _contentLabel.textContainer = attStringCreater;
-                _contentLabel.textContainer.linesSpacing = 4;
-                attStringCreater.font = SYSTEMFONT(13);
-                attStringCreater.textAlignment = kCTTextAlignmentLeft;
-                attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
-                [_contentLabel setHeight:_contentLabel.textContainer.textHeight];
-                [attStringCreater addTextStorageArray:@[textStorage]];
-            }
-            
-            
-            [_timeLabel setTop:_contentLabel.bottom + 15];
-            _timeLabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",[info objectForKey:@"create_time"]]];
-            
-            NSString *commentCount = [NSString stringWithFormat:@"%@",[info objectForKey:@"reply_count"]];
-            NSString *zanCount = [NSString stringWithFormat:@"%@",[info objectForKey:@"like_count"]];
-            CGFloat commentWidth = [commentCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
-            CGFloat zanWidth = [zanCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
-            BOOL isZan = [[NSString stringWithFormat:@"%@",[info objectForKey:@"like"]] boolValue];
-            CGFloat space = 2.0;
-            _zanCountButton.frame = CGRectMake(MainScreenWidth - 15 - zanWidth, _timeLabel.top, zanWidth, 20);
-            [_zanCountButton setImage:isZan ? Image(@"dianzan_icon") : Image(@"dianzan_icon_norm") forState:0];
-            [_zanCountButton setTitle:zanCount forState:0];
-            [_zanCountButton setTitleColor:isZan ? EdlineV5_Color.textzanColor : EdlineV5_Color.textThirdColor forState:0];
-            _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
-            _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
-            
-            _commentCountButton.frame = CGRectMake(_zanCountButton.left - 18 - commentWidth, _timeLabel.top, commentWidth, 20);
-            [_commentCountButton setTitle:commentCount forState:0];
-            _commentCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
-            _commentCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
-            
-            [_lineView setTop:_timeLabel.bottom + 10];
-        }
+        
+        
+        [_timeLabel setTop:_contentLabel.bottom + 15];
+        _timeLabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",[info objectForKey:@"create_time"]]];
+        
+        NSString *commentCount = [NSString stringWithFormat:@"%@",[info objectForKey:@"reply_count"]];
+        NSString *zanCount = [NSString stringWithFormat:@"%@",[info objectForKey:@"like_count"]];
+        CGFloat commentWidth = [commentCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
+        CGFloat zanWidth = [zanCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
+        BOOL isZan = [[NSString stringWithFormat:@"%@",[info objectForKey:@"liked_count"]] boolValue];
+        CGFloat space = 2.0;
+        _zanCountButton.frame = CGRectMake(MainScreenWidth - 15 - zanWidth, _timeLabel.top, zanWidth, 20);
+        [_zanCountButton setImage:isZan ? Image(@"dianzan_icon") : Image(@"dianzan_icon_norm") forState:0];
+        [_zanCountButton setTitle:zanCount forState:0];
+        [_zanCountButton setTitleColor:isZan ? EdlineV5_Color.textzanColor : EdlineV5_Color.textThirdColor forState:0];
+        _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+        _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+        
+        _commentCountButton.frame = CGRectMake(_zanCountButton.left - 18 - commentWidth, _timeLabel.top, commentWidth, 20);
+        [_commentCountButton setTitle:commentCount forState:0];
+        _commentCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+        _commentCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+        
+        [_lineView setTop:_timeLabel.bottom + 10];
     }
     [self setHeight:_lineView.bottom];
 }

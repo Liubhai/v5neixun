@@ -39,6 +39,7 @@
 		784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */; };
 		784FC8E824ACB48F00CAE7A6 /* MyErweimaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */; };
 		784FC8EB24ADBAB400CAE7A6 /* ZixunCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */; };
+		784FC8EE24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8ED24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -458,6 +459,8 @@
 		784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyErweimaViewController.m; sourceTree = "<group>"; };
 		784FC8E924ADBAB400CAE7A6 /* ZixunCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZixunCommentCell.h; sourceTree = "<group>"; };
 		784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZixunCommentCell.m; sourceTree = "<group>"; };
+		784FC8EC24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZixunCommmentDetailVC.h; sourceTree = "<group>"; };
+		784FC8ED24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZixunCommmentDetailVC.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1466,6 +1469,8 @@
 				784E5CD624A8340A00646916 /* ZiXunListVC.m */,
 				784E5CD824A8450700646916 /* ZiXunDetailVC.h */,
 				784E5CD924A8450700646916 /* ZiXunDetailVC.m */,
+				784FC8EC24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.h */,
+				784FC8ED24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m */,
 				7876571F24347D9F008F475D /* View */,
 			);
 			path = FindPage;
@@ -3035,6 +3040,7 @@
 				78AA13802440543D007087F7 /* SDCollectionViewCell.m in Sources */,
 				78C5483424124B4000A33FC4 /* AreaTableViewCell.m in Sources */,
 				78C549CD241B674E00A33FC4 /* AlivcAlertView.m in Sources */,
+				784FC8EE24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m in Sources */,
 				78AA139D2445AE58007087F7 /* MyCenterUserInfoView.m in Sources */,
 				7853BDB92428957600F096EC /* CourseListModel.m in Sources */,
 				789DB044246A4499001302B4 /* MycouponsListVC.m in Sources */,
