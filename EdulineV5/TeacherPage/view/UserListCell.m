@@ -49,6 +49,7 @@
     [_followButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     [_followButton setTitle:@"+ 关注" forState:0];
     [_followButton addTarget:self action:@selector(followButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _followButton.hidden = YES;
     [self addSubview:_followButton];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 97 - 1, MainScreenWidth, 1)];
@@ -56,12 +57,19 @@
     [self addSubview:_lineView];
 }
 
-- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(nonnull NSIndexPath *)cellIndexPath {
-    _cellIndex = cellIndexPath;
-    _nameLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"nick_name"]];
-    _introLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"signature"]];
-    [_faceImageView sd_setImageWithURL:EdulineUrlString([dict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
-    [_followButton setTitle:[[dict objectForKey:@"is_follow"] boolValue] ? @"已关注" : @"+关注" forState:0];
+- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(nonnull NSIndexPath *)cellIndexPath cellType:(BOOL)cellType {
+    if (cellType) {
+        _cellIndex = cellIndexPath;
+        _nameLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"nick_name"]];
+        _introLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"signature"]];
+        [_faceImageView sd_setImageWithURL:EdulineUrlString([dict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
+    } else {
+        _cellIndex = cellIndexPath;
+        _nameLabel.text = [NSString stringWithFormat:@"%@",[dict[@"visitor_info"] objectForKey:@"nick_name"]];
+        _introLabel.text = [NSString stringWithFormat:@"%@",[dict[@"visitor_info"] objectForKey:@"signature"]];
+        [_faceImageView sd_setImageWithURL:EdulineUrlString([dict[@"visitor_info"] objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
+    }
+//    [_followButton setTitle:[[dict objectForKey:@"is_follow"] boolValue] ? @"已关注" : @"+关注" forState:0];
 }
 
 - (void)followButtonClick:(UIButton *)sender {

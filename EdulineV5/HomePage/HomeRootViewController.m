@@ -72,7 +72,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     isWeek = YES;
-    _rightButton.hidden = NO;
+//    _rightButton.hidden = NO;
     [_rightButton setImage:Image(@"home_intentionlesson_icon") forState:0];
     
     _bannerImageArray = [NSMutableArray new];
@@ -97,7 +97,7 @@
 
 - (void)makeTopSearch {
     // 顶部搜索框和 取消按钮
-    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(15, _titleLabel.top, MainScreenWidth - 15 - _rightButton.width, 36)];
+    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(15, _titleLabel.top, MainScreenWidth - 30, 36)];
     _institutionSearch.font = SYSTEMFONT(14);
     _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索课程" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     _institutionSearch.delegate = self;

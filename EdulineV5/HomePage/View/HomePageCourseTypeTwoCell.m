@@ -136,7 +136,20 @@
         
         titleL.text = [NSString stringWithFormat:@"%@",infoArray[i][@"title"]];
         learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",infoArray[i][@"sale_count"]];
-        priceLabel.text = [NSString stringWithFormat:@"¥%@",infoArray[i][@"price"]];
+        NSString *priceValue = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"price"]];
+        priceLabel.textColor = EdlineV5_Color.faildColor;
+        if ([[infoArray[i] objectForKey:@"is_buy"] integerValue]) {
+            priceLabel.text = @"已购买";
+            priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+        } else {
+            if ([priceValue isEqualToString:@"0.00"]) {
+                priceLabel.text = @"免费";
+                priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+            } else {
+                priceLabel.text = [NSString stringWithFormat:@"¥%@",[infoArray[i] objectForKey:@"price"]];
+                priceLabel.textColor = EdlineV5_Color.faildColor;
+            }
+        }
     }
     if (SWNOTEmptyArr(infoArray)) {
         [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight + 10 : ((infoArray.count + 1)/2.0) * TwoCellHeight + 10];

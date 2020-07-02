@@ -136,7 +136,7 @@
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, MainScreenWidth - _nameLabel.width - 30, _nameLabel.height)];
     _introLabel.textColor = HEXCOLOR(0x946A38);
     _introLabel.font = SYSTEMFONT(13);
-    _introLabel.text = @"VIP5";
+    _introLabel.text = @"开通会员获得更多权益";
     [_topBackView addSubview:_introLabel];
     
     _otherTypeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _topBackView.bottom, MainScreenWidth, 80)];
@@ -333,7 +333,7 @@
                     _levelImageView.hidden = NO;
                     _levelImageView.image = Image(@"vip_icon");
                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+                    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
                     NSDate *nowDate = [NSDate dateWithTimeIntervalSince1970:expierTime.integerValue];
                     NSString *theDay = [dateFormatter stringFromDate:nowDate];//日期的年月日
                     _introLabel.text = [NSString stringWithFormat:@"会员有效期至 %@",theDay];

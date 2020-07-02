@@ -58,7 +58,7 @@
     if (!cell) {
         cell = [[UserListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setUserInfo:_dataSource[indexPath.row] cellIndexPath:indexPath];
+    [cell setUserInfo:_dataSource[indexPath.row] cellIndexPath:indexPath cellType:[_themeString isEqualToString:@"最近访客"] ? NO : YES];
     cell.delegate = self;
     return cell;
 }
@@ -132,7 +132,11 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                if ([_themeString isEqualToString:@"最近访客"]) {
+                    [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+                } else {
+                    [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                }
                 if (_dataSource.count<10) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
@@ -173,12 +177,21 @@
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                if (pass.count<10) {
-                    [_tableView.mj_footer endRefreshingWithNoMoreData];
+                if ([_themeString isEqualToString:@"最近访客"]) {
+                    NSArray *pass = [NSArray arrayWithArray:[responseObject objectForKey:@"data"]];
+                    if (pass.count<10) {
+                        [_tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+                    [_dataSource addObjectsFromArray:pass];
+                    [_tableView reloadData];
+                } else {
+                    NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                    if (pass.count<10) {
+                        [_tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
+                    [_dataSource addObjectsFromArray:pass];
+                    [_tableView reloadData];
                 }
-                [_dataSource addObjectsFromArray:pass];
-                [_tableView reloadData];
             }
         }
     } enError:^(NSError * _Nonnull error) {
