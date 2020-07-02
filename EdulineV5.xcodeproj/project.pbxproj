@@ -38,6 +38,7 @@
 		784FC8E224ACA2CD00CAE7A6 /* MyMenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E124ACA2CD00CAE7A6 /* MyMenberCell.m */; };
 		784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */; };
 		784FC8E824ACB48F00CAE7A6 /* MyErweimaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */; };
+		784FC8EB24ADBAB400CAE7A6 /* ZixunCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -455,6 +456,8 @@
 		784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MySubordinateVC.m; sourceTree = "<group>"; };
 		784FC8E624ACB48F00CAE7A6 /* MyErweimaViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyErweimaViewController.h; sourceTree = "<group>"; };
 		784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyErweimaViewController.m; sourceTree = "<group>"; };
+		784FC8E924ADBAB400CAE7A6 /* ZixunCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZixunCommentCell.h; sourceTree = "<group>"; };
+		784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZixunCommentCell.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1286,6 +1289,8 @@
 				7876572224347DB2008F475D /* FindListCell.m */,
 				784E5CD224A8288200646916 /* ZiXunListCell.h */,
 				784E5CD324A8288200646916 /* ZiXunListCell.m */,
+				784FC8E924ADBAB400CAE7A6 /* ZixunCommentCell.h */,
+				784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2968,6 +2973,7 @@
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
+				784FC8EB24ADBAB400CAE7A6 /* ZixunCommentCell.m in Sources */,
 				78795725240FA3840013F95F /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				7839C98624209FAF002F6595 /* CourseCommentViewController.m in Sources */,
 				784E5CEB24A9802D00646916 /* HcdGuideViewCell.m in Sources */,

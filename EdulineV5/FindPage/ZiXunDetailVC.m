@@ -9,10 +9,10 @@
 #import "ZiXunDetailVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
-#import "CourseCommentCell.h"
+#import "ZixunCommentCell.h"
 #import "CommentBaseView.h"
 
-@interface ZiXunDetailVC ()<UITableViewDelegate, UITableViewDataSource, CourseCommentCellDelegate, WKUIDelegate, WKNavigationDelegate, CommentBaseViewDelegate> {
+@interface ZiXunDetailVC ()<UITableViewDelegate, UITableViewDataSource, ZixunCommentCellDelegate, WKUIDelegate, WKNavigationDelegate, CommentBaseViewDelegate> {
     NSInteger page;
     CGFloat keyHeight;
 }
@@ -159,18 +159,39 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuse = @"CourseCommentReplayCell";
-    CourseCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+    static NSString *reuse = @"ZixunCommentCell";
+    ZixunCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:YES];
+        cell = [[ZixunCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:NO];
     }
     cell.delegate = self;
-    [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:YES];
-    cell.scoreStar.hidden = YES;
-    cell.commentCountButton.hidden = YES;
-    cell.commentOrReplay = YES;
-    cell.editButton.hidden = YES;
+    [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:NO];
     return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 42)];
+    view.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *tip = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 15, 42)];
+    tip.font = SYSTEMFONT(16);
+    tip.textColor = EdlineV5_Color.textFirstColor;
+    tip.text = [NSString stringWithFormat:@"评论(%@)",@(_dataSource.count)];
+    [view addSubview:tip];
+    
+    return view;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 42.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.001;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
