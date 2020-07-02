@@ -31,7 +31,7 @@
 @property (strong, nonatomic) WKWebIntroview *contenView;
 
 // 推荐资讯部分
-@property (strong, nonatomic) UIScrollView *recommendZixunView;
+@property (strong, nonatomic) UIView *recommendZixunView;
 
 // 底部评论
 @property (strong, nonatomic) CommentBaseView *commentView;
@@ -108,6 +108,15 @@
     _contenView.UIDelegate = self;
     _contenView.navigationDelegate = self;
     [_headerView addSubview:_contenView];
+    
+    _recommendZixunView = [[UIView alloc] initWithFrame:CGRectMake(0, _contenView.bottom, MainScreenWidth, 155 + 56 + 20)];
+    _recommendZixunView.backgroundColor = [UIColor whiteColor];
+    [self makeRecommendNewsUi];
+    if (!SWNOTEmptyArr(_recommendNewArray)) {
+        [_recommendZixunView setHeight:0];
+        _recommendZixunView.hidden = YES;
+    }
+    [_headerView addSubview:_recommendZixunView];
 }
 
 - (void)makeTableView {
@@ -197,7 +206,8 @@
     [webView evaluateJavaScript:@"document.body.offsetHeight;" completionHandler:^(id _Nullable heigh, NSError * _Nullable error) {
         NSString *height = [NSString stringWithFormat:@"%@", heigh];
         [self.contenView setHeight:[height floatValue] + 20];
-        [self.headerView setHeight:self.contenView.bottom];
+        [self.recommendZixunView setTop:self.contenView.bottom];
+        [self.headerView setHeight:self.recommendZixunView.bottom];
         self.tableView.tableHeaderView = self.headerView;
         [self.tableView reloadData];
     }];
@@ -214,6 +224,8 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _newsInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    [_recommendNewArray removeAllObjects];
+                    [_recommendNewArray addObjectsFromArray:responseObject[@"data"][@"splendid"]];
                     NSString *allStr = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"detail"][@"content"]];
                     [self makeHeaderView];
                     [_contenView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
@@ -223,6 +235,81 @@
             
         }];
     }
+}
+
+- (void)makeRecommendNewsUi {
+    [_recommendZixunView removeAllSubviews];
+    UILabel *tip = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, 56)];
+    tip.font = SYSTEMFONT(16);
+    tip.text = @"推荐资讯";
+    tip.textColor = EdlineV5_Color.textFirstColor;
+    [_recommendZixunView addSubview:tip];
+    
+    UIScrollView *recommendScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, tip.bottom, MainScreenWidth, 155)];
+    recommendScroll.backgroundColor = [UIColor whiteColor];
+    recommendScroll.showsVerticalScrollIndicator = NO;
+    recommendScroll.showsHorizontalScrollIndicator = NO;
+    recommendScroll.pagingEnabled = YES;
+    [_recommendZixunView addSubview:recommendScroll];
+    
+    CGFloat WW = 167.0;
+    
+    for (int i = 0; i<_recommendNewArray.count; i++) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(15 + i * (11 + 167), 0, WW, 155)];
+        view.tag = i;
+        view.layer.masksToBounds = YES;
+        view.layer.cornerRadius = 2;
+        view.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+        view.layer.borderWidth = 1;
+        [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(recommendNewsTap:)]];
+        [recommendScroll addSubview:view];
+        
+        UIImageView *face = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, WW, 93)];
+        [face sd_setImageWithURL:EdulineUrlString(_recommendNewArray[i][@"cover_url"]) placeholderImage:DefaultImage];
+        face.clipsToBounds = YES;
+        face.contentMode = UIViewContentModeScaleAspectFill;
+        [view addSubview:face];
+        
+        UILabel *newsTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, face.bottom + 5, WW, 20)];
+        newsTitleLabel.font = SYSTEMFONT(13);
+        newsTitleLabel.textColor = EdlineV5_Color.textFirstColor;
+        newsTitleLabel.textAlignment = NSTextAlignmentCenter;
+        newsTitleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        newsTitleLabel.text = [NSString stringWithFormat:@"%@",_recommendNewArray[i][@"title"]];
+        [view addSubview:newsTitleLabel];
+        
+        UIButton *lookIcon = [[UIButton alloc] initWithFrame:CGRectMake(0, newsTitleLabel.bottom + 10, 20, 18.5)];
+        [lookIcon setImage:Image(@"news_view_icon") forState:0];
+        [view addSubview:lookIcon];
+        
+        UILabel *lookCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(lookIcon.right, newsTitleLabel.bottom + 10, 200, 18.5)];
+        lookCountLabel.font = SYSTEMFONT(13);
+        lookCountLabel.textColor = EdlineV5_Color.textThirdColor;
+        lookCountLabel.text = [NSString stringWithFormat:@"%@",_recommendNewArray[i][@"read_count"]];
+        CGFloat lookCountLabelWidth = [lookCountLabel.text sizeWithFont:lookCountLabel.font].width;
+        lookCountLabel.frame = CGRectMake(lookIcon.right, newsTitleLabel.bottom + 10, lookCountLabelWidth, 18.5);
+        [view addSubview:lookCountLabel];
+        
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(lookCountLabel.right + 5, 0, 0.5, 8)];
+        line.backgroundColor = EdlineV5_Color.layarLineColor;
+        line.centerY = lookCountLabel.centerY;
+        [view addSubview:line];
+        
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(line.right + 5, lookCountLabel.top, WW - line.right - 5, 18.5)];
+        timeLabel.font = SYSTEMFONT(13);
+        timeLabel.textColor = EdlineV5_Color.textThirdColor;
+        timeLabel.text = [EdulineV5_Tool formatterDate:[NSString stringWithFormat:@"%@",_recommendNewArray[i][@"publish_time"]]];
+        [view addSubview:timeLabel];
+        if (i == (_recommendNewArray.count - 1)) {
+            recommendScroll.contentSize = CGSizeMake(view.right + 15, 0);
+        }
+    }
+}
+
+- (void)recommendNewsTap:(UITapGestureRecognizer *)tap {
+    ZiXunDetailVC *vc = [[ZiXunDetailVC alloc] init];
+    vc.zixunId = [NSString stringWithFormat:@"%@",_recommendNewArray[tap.view.tag][@"id"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)textViewValueDidChanged:(NSNotification *)notice {
