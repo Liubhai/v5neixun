@@ -36,22 +36,26 @@
     
     _wkwebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT) configuration:wkWebConfig];
     [_wkwebView setUserInteractionEnabled:YES];//是否支持交互
-    _wkwebView.scrollView.scrollEnabled = NO;
+    _wkwebView.scrollView.scrollEnabled = YES;
     [self.view addSubview:_wkwebView];
     [self getAgreementContent];
 }
 
 - (void)getAgreementContent {
-    if (SWNOTEmptyStr(_agreementKey)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path agreementContentNet:_agreementKey] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
-            if (SWNOTEmptyDictionary(responseObject)) {
-                if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    [_wkwebView loadRequest:[NSURLRequest requestWithURL:EdulineUrlString(responseObject[@"data"][@"content"])]];
+    if (SWNOTEmptyStr(_urlString)) {
+        [_wkwebView loadRequest:[NSURLRequest requestWithURL:EdulineUrlString(_urlString)]];
+    } else {
+        if (SWNOTEmptyStr(_agreementKey)) {
+            [Net_API requestGETSuperAPIWithURLStr:[Net_Path agreementContentNet:_agreementKey] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        [_wkwebView loadRequest:[NSURLRequest requestWithURL:EdulineUrlString(responseObject[@"data"][@"content"])]];
+                    }
                 }
-            }
-        } enError:^(NSError * _Nonnull error) {
-            
-        }];
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        }
     }
 }
 

@@ -262,7 +262,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
                 [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                if (_dataSource.count<15) {
+                if (_dataSource.count<10) {
                     _collectionView.mj_footer.hidden = YES;
                 } else {
                     _collectionView.mj_footer.hidden = NO;
@@ -313,7 +313,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                if (pass.count<15) {
+                if (pass.count<10) {
                     [_collectionView.mj_footer endRefreshingWithNoMoreData];
                 }
                 [_dataSource addObjectsFromArray:pass];

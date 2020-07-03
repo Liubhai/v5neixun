@@ -11,8 +11,9 @@
 #import "Net_Path.h"
 #import "InstitutionListCell.h"
 #import "InstitutionRootVC.h"
+#import "TeacherCategoryVC.h"
 
-@interface InstitutionListVC ()<UITableViewDelegate, UITableViewDataSource> {
+@interface InstitutionListVC ()<UITableViewDelegate, UITableViewDataSource, TeacherCategoryVCDelegate> {
     NSInteger page;
     NSString *categoryString;// 类型
 }
@@ -140,6 +141,19 @@
             [_tableView.mj_footer endRefreshing];
         }
     }];
+}
+
+- (void)rightButtonClick:(id)sender {
+    TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+    vc.typeString = @"2";
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 选择更换资讯类型代理
+- (void)chooseCategoryId:(NSString *)categoryId {
+    categoryString = categoryId;
+    [self.tableView.mj_header beginRefreshing];
 }
 
 @end

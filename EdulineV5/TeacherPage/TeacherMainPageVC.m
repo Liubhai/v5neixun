@@ -12,6 +12,7 @@
 #import "TeahcerCourseListVC.h"
 #import "Net_Path.h"
 #import "UserCommenListVC.h"
+#import "InstitutionRootVC.h"
 
 @interface TeacherMainPageVC ()<UIScrollViewDelegate>
 
@@ -112,6 +113,7 @@
     _introLabelBtn = [[UIButton alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.bottom - 20, MainScreenWidth - (_faceImageView.right + 10), 18)];
     _introLabelBtn.titleLabel.font = SYSTEMFONT(13);
     [_introLabelBtn setTitleColor:[UIColor whiteColor] forState:0];
+    [_introLabelBtn addTarget:self action:@selector(jumpToInstitution:) forControlEvents:UIControlEventTouchUpInside];
     [_topView addSubview:_introLabelBtn];
     //9*9
     NSString *secondTitle = @"提问";
@@ -273,6 +275,12 @@
             self.answerButton.selected = YES;
         }
     }
+}
+
+- (void)jumpToInstitution:(UIButton *)sender {
+    InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
+    vc.institutionId = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"mhm_id"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)goToUserCommenListVC:(UIButton *)sender {

@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *agreementKey;
 @property (strong, nonatomic) NSString *titleString;
 
+@property (strong, nonatomic) NSString *urlString;
+
 @end
 
 NS_ASSUME_NONNULL_END

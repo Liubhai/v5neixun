@@ -33,6 +33,7 @@
 #import "ZPScrollerScaleView.h"
 #import "AppDelegate.h"
 #import "UserModel.h"
+#import "WkWebViewController.h"
 
 @interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate> {
     BOOL isWeek;// 显示周榜还是月榜
@@ -185,11 +186,14 @@
     CGFloat space = 10;
     for (int i = 0; i<_cateSourceArray.count; i++) {
         UIImageView *cateImage = [[UIImageView alloc] initWithFrame:CGRectMake(XX + (150 + space) * i, YY, 150, 88)];
+        cateImage.userInteractionEnabled = YES;
+        cateImage.tag = i;
         cateImage.layer.masksToBounds = YES;
         cateImage.layer.cornerRadius = 5;
         cateImage.clipsToBounds = YES;
         cateImage.contentMode = UIViewContentModeScaleAspectFill;
         [cateImage sd_setImageWithURL:EdulineUrlString(_cateSourceArray[i][@"image_url"]) placeholderImage:DefaultImage];
+        [cateImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cateImageTap:)]];
         [_cateScrollView addSubview:cateImage];
         if (i == (_cateSourceArray.count - 1)) {
             _cateScrollView.contentSize = CGSizeMake(cateImage.right + 10, 0);
@@ -424,6 +428,56 @@
         vc.isLive = [[NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
         vc.courseType = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"course_type"]];
         [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+// MARK: - SDCycleScrollViewDelegate
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
+    if (SWNOTEmptyStr(_bannerImageSourceArray[index][@"link_data_type"])) {
+        NSString *bannerType = [NSString stringWithFormat:@"%@",_bannerImageSourceArray[index][@"link_data_type"]];
+        if ([bannerType isEqualToString:@"video"]) {
+            CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+            vc.ID = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_data_id"]];
+            vc.isLive = NO;
+            vc.courseType = @"1";
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if ([bannerType isEqualToString:@"public"]) {
+            WkWebViewController *vc = [[WkWebViewController alloc] init];
+            vc.titleString = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_type_text"]];
+            vc.urlString = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_href"]];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if ([bannerType isEqualToString:@"live"] || [bannerType isEqualToString:@"live_small"]) {
+            CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+            vc.ID = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_data_id"]];
+            vc.isLive = YES;
+            vc.courseType = @"2";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+}
+
+// MARK: - 广告位点击事件
+- (void)cateImageTap:(UITapGestureRecognizer *)tap {
+    if (SWNOTEmptyStr(_cateSourceArray[tap.view.tag][@"link_data_type"])) {
+        NSString *bannerType = [NSString stringWithFormat:@"%@",_cateSourceArray[tap.view.tag][@"link_data_type"]];
+        if ([bannerType isEqualToString:@"video"]) {
+            CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+            vc.ID = [NSString stringWithFormat:@"%@",[_cateSourceArray[tap.view.tag] objectForKey:@"link_data_id"]];
+            vc.isLive = NO;
+            vc.courseType = @"1";
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if ([bannerType isEqualToString:@"public"]) {
+            WkWebViewController *vc = [[WkWebViewController alloc] init];
+            vc.titleString = [NSString stringWithFormat:@"%@",[_cateSourceArray[tap.view.tag] objectForKey:@"link_type_text"]];
+            vc.urlString = [NSString stringWithFormat:@"%@",[_cateSourceArray[tap.view.tag] objectForKey:@"link_href"]];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if ([bannerType isEqualToString:@"live"] || [bannerType isEqualToString:@"live_small"]) {
+            CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+            vc.ID = [NSString stringWithFormat:@"%@",[_cateSourceArray[tap.view.tag] objectForKey:@"link_data_id"]];
+            vc.isLive = YES;
+            vc.courseType = @"2";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 

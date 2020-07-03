@@ -49,6 +49,16 @@
         _rightButton.hidden = YES;
     }
     
+    if ([_typeString isEqualToString:@"1"]) {
+        _titleLabel.text = @"讲师";
+        _rightButton.hidden = YES;
+    }
+    
+    if ([_typeString isEqualToString:@"2"]) {
+        _titleLabel.text = @"机构";
+        _rightButton.hidden = YES;
+    }
+    
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     
@@ -248,7 +258,7 @@
     if ([_typeString isEqualToString:@"0"]) {
         [self changeFavoriteCourse:model.cateGoryId];
         return;
-    } else if ([_typeString isEqualToString:@"5"]) {
+    } else if ([_typeString isEqualToString:@"5"] || [_typeString isEqualToString:@"1"] || [_typeString isEqualToString:@"2"]) {
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:model.cateGoryId];
             [self.navigationController popViewControllerAnimated:YES];
@@ -288,7 +298,7 @@
     if ([_typeString isEqualToString:@"0"]) {
         [self changeFavoriteCourse:secondModel.cateGoryId];
         return;
-    } else if ([_typeString isEqualToString:@"5"]) {
+    } else if ([_typeString isEqualToString:@"5"] || [_typeString isEqualToString:@"1"] || [_typeString isEqualToString:@"2"]) {
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:secondModel.cateGoryId];
             [self.navigationController popViewControllerAnimated:YES];
@@ -340,7 +350,7 @@
     if ([_typeString isEqualToString:@"0"]) {
         [self changeFavoriteCourse:thirdModel.cateGoryId];
         return;
-    } else if ([_typeString isEqualToString:@"5"]) {
+    } else if ([_typeString isEqualToString:@"5"] || [_typeString isEqualToString:@"1"] || [_typeString isEqualToString:@"2"]) {
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:thirdModel.cateGoryId];
             [self.navigationController popViewControllerAnimated:YES];
