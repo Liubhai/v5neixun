@@ -43,6 +43,7 @@
 		784FC8F724AF29C000CAE7A6 /* MessageRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8F624AF29C000CAE7A6 /* MessageRootVC.m */; };
 		784FC8FA24AF2F5A00CAE7A6 /* MessageListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8F924AF2F5A00CAE7A6 /* MessageListVC.m */; };
 		784FC8FD24AF2FA900CAE7A6 /* MessageListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8FC24AF2FA900CAE7A6 /* MessageListCell.m */; };
+		784FC90024AF5DEF00CAE7A6 /* MessageDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8FF24AF5DEF00CAE7A6 /* MessageDetailVC.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -470,6 +471,8 @@
 		784FC8F924AF2F5A00CAE7A6 /* MessageListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListVC.m; sourceTree = "<group>"; };
 		784FC8FB24AF2FA900CAE7A6 /* MessageListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageListCell.h; sourceTree = "<group>"; };
 		784FC8FC24AF2FA900CAE7A6 /* MessageListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListCell.m; sourceTree = "<group>"; };
+		784FC8FE24AF5DEF00CAE7A6 /* MessageDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageDetailVC.h; sourceTree = "<group>"; };
+		784FC8FF24AF5DEF00CAE7A6 /* MessageDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDetailVC.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1213,6 +1216,8 @@
 				784FC8F624AF29C000CAE7A6 /* MessageRootVC.m */,
 				784FC8F824AF2F5A00CAE7A6 /* MessageListVC.h */,
 				784FC8F924AF2F5A00CAE7A6 /* MessageListVC.m */,
+				784FC8FE24AF5DEF00CAE7A6 /* MessageDetailVC.h */,
+				784FC8FF24AF5DEF00CAE7A6 /* MessageDetailVC.m */,
 			);
 			path = MessageRoot;
 			sourceTree = "<group>";
@@ -2866,6 +2871,7 @@
 				7879564D240E36FA0013F95F /* EdulineV5Client.m in Sources */,
 				784FC8F724AF29C000CAE7A6 /* MessageRootVC.m in Sources */,
 				78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */,
+				784FC90024AF5DEF00CAE7A6 /* MessageDetailVC.m in Sources */,
 				787F1E82247381A400108F7B /* AliyunSpeedButton.m in Sources */,
 				789DB02124658C8D001302B4 /* OrderFinalCell.m in Sources */,
 				78C549D3241B674F00A33FC4 /* AlivcImage.m in Sources */,
