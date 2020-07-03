@@ -26,6 +26,7 @@
 #import "TeacherApplyVC.h"
 #import "InstitutionApplyVC.h"
 #import "MyRecommendViewController.h"
+#import "MessageRootVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -222,6 +223,11 @@
     NSLog(@"返回按钮被点击了");
 }
 
+- (void)rightButtonClick:(id)sender {
+    MessageRootVC *vc = [[MessageRootVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)setingButtonClick:(UIButton *)sender {
     SetingViewController *vc = [[SetingViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -292,6 +298,11 @@
         return;
     }
     MenberRootVC *vc = [[MenberRootVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)goToMessageVC {
+    MessageRootVC *vc = [[MessageRootVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

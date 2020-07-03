@@ -34,6 +34,7 @@
     _rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _rightBtn.frame = CGRectMake(MainScreenWidth-52, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 53, 44);
     [_rightBtn setImage:Image(@"pre_nav_mes") forState:0];
+    [_rightBtn addTarget:self action:@selector(rightClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_rightBtn];
     
     _setBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -101,6 +102,12 @@
 - (void)setBtnClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(goToSetingVC)]) {
         [_delegate goToSetingVC];
+    }
+}
+
+- (void)rightClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(goToMessageVC)]) {
+        [_delegate goToMessageVC];
     }
 }
 

@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)goToUserInfoVC;
 - (void)goToSetingVC;
 - (void)goToMenberCenter;
-
+- (void)goToMessageVC;
 @end
 
 @interface MyCenterUserInfoView : UIView

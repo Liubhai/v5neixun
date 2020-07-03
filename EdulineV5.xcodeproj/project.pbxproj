@@ -40,6 +40,9 @@
 		784FC8E824ACB48F00CAE7A6 /* MyErweimaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */; };
 		784FC8EB24ADBAB400CAE7A6 /* ZixunCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */; };
 		784FC8EE24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8ED24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m */; };
+		784FC8F724AF29C000CAE7A6 /* MessageRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8F624AF29C000CAE7A6 /* MessageRootVC.m */; };
+		784FC8FA24AF2F5A00CAE7A6 /* MessageListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8F924AF2F5A00CAE7A6 /* MessageListVC.m */; };
+		784FC8FD24AF2FA900CAE7A6 /* MessageListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784FC8FC24AF2FA900CAE7A6 /* MessageListCell.m */; };
 		78531645244FF60C007E239E /* MenberRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78531644244FF60C007E239E /* MenberRootVC.m */; };
 		7853164824502E49007E239E /* MenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164724502E49007E239E /* MenberCell.m */; };
 		7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853164D245040CF007E239E /* UINavigationController+EdulineStatusBar.m */; };
@@ -461,6 +464,12 @@
 		784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZixunCommentCell.m; sourceTree = "<group>"; };
 		784FC8EC24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZixunCommmentDetailVC.h; sourceTree = "<group>"; };
 		784FC8ED24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZixunCommmentDetailVC.m; sourceTree = "<group>"; };
+		784FC8F524AF29C000CAE7A6 /* MessageRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageRootVC.h; sourceTree = "<group>"; };
+		784FC8F624AF29C000CAE7A6 /* MessageRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageRootVC.m; sourceTree = "<group>"; };
+		784FC8F824AF2F5A00CAE7A6 /* MessageListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageListVC.h; sourceTree = "<group>"; };
+		784FC8F924AF2F5A00CAE7A6 /* MessageListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListVC.m; sourceTree = "<group>"; };
+		784FC8FB24AF2FA900CAE7A6 /* MessageListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageListCell.h; sourceTree = "<group>"; };
+		784FC8FC24AF2FA900CAE7A6 /* MessageListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListCell.m; sourceTree = "<group>"; };
 		78531643244FF60C007E239E /* MenberRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRootVC.h; sourceTree = "<group>"; };
 		78531644244FF60C007E239E /* MenberRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRootVC.m; sourceTree = "<group>"; };
 		7853164624502E49007E239E /* MenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberCell.h; sourceTree = "<group>"; };
@@ -1197,6 +1206,17 @@
 			path = "启动页面";
 			sourceTree = "<group>";
 		};
+		784FC8F324AF29AA00CAE7A6 /* MessageRoot */ = {
+			isa = PBXGroup;
+			children = (
+				784FC8F524AF29C000CAE7A6 /* MessageRootVC.h */,
+				784FC8F624AF29C000CAE7A6 /* MessageRootVC.m */,
+				784FC8F824AF2F5A00CAE7A6 /* MessageListVC.h */,
+				784FC8F924AF2F5A00CAE7A6 /* MessageListVC.m */,
+			);
+			path = MessageRoot;
+			sourceTree = "<group>";
+		};
 		7853164F2451317F007E239E /* LivePage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1524,6 +1544,7 @@
 				784FC8E624ACB48F00CAE7A6 /* MyErweimaViewController.h */,
 				784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */,
 				785A3E112497A14D00298054 /* ApplyPage */,
+				784FC8F324AF29AA00CAE7A6 /* MessageRoot */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 				785A3E1F2499C18D00298054 /* CategoryCommonModel */,
@@ -2291,6 +2312,8 @@
 				784FC8DE24AC9C8000CAE7A6 /* MyRecommendCell.m */,
 				784FC8E024ACA2CD00CAE7A6 /* MyMenberCell.h */,
 				784FC8E124ACA2CD00CAE7A6 /* MyMenberCell.m */,
+				784FC8FB24AF2FA900CAE7A6 /* MessageListCell.h */,
+				784FC8FC24AF2FA900CAE7A6 /* MessageListCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2841,6 +2864,7 @@
 				7839C97A241F7B3E002F6595 /* CourseDownView.m in Sources */,
 				7879575F2410A1650013F95F /* QuickLoginVC.m in Sources */,
 				7879564D240E36FA0013F95F /* EdulineV5Client.m in Sources */,
+				784FC8F724AF29C000CAE7A6 /* MessageRootVC.m in Sources */,
 				78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */,
 				787F1E82247381A400108F7B /* AliyunSpeedButton.m in Sources */,
 				789DB02124658C8D001302B4 /* OrderFinalCell.m in Sources */,
@@ -2927,6 +2951,8 @@
 				789DB02424663ECA001302B4 /* MyIncomeVC.m in Sources */,
 				78C54979241B642B00A33FC4 /* _AlivcLiveBeautifySliderView.m in Sources */,
 				78AA1356243C214D007087F7 /* CourseClassifyVC.m in Sources */,
+				784FC8FA24AF2F5A00CAE7A6 /* MessageListVC.m in Sources */,
+				784FC8FD24AF2FA900CAE7A6 /* MessageListCell.m in Sources */,
 				78A16C872452F7C100391430 /* NetAssociation.m in Sources */,
 				7853164824502E49007E239E /* MenberCell.m in Sources */,
 				7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */,
@@ -3277,7 +3303,7 @@
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3308,7 +3334,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.11;
+				MARKETING_VERSION = 5.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
 				PRODUCT_NAME = "eduline网校";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3327,7 +3353,7 @@
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3358,7 +3384,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.11;
+				MARKETING_VERSION = 5.12;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
 				PRODUCT_NAME = "eduline网校";
