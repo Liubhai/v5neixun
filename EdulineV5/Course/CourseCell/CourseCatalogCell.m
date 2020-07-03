@@ -276,6 +276,9 @@
         }
     } else {
         _priceLabel.hidden = YES;
+        if (model.model.is_buy) {
+            _freeImageView.hidden = YES;
+        }
     }
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     CGFloat titleWidth = ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4) > 150 ? 150 : ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4);

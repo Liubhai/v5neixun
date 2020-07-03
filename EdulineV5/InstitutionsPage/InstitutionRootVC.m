@@ -15,8 +15,9 @@
 #import "Net_Path.h"
 #import "TeacherMainPageVC.h"
 #import "InstitutionCourseMainVC.h"
+#import "CourseMainViewController.h"
 
-@interface InstitutionRootVC ()<UITableViewDelegate, UITableViewDataSource,HomePageTeacherCellDelegate>
+@interface InstitutionRootVC ()<UITableViewDelegate, UITableViewDataSource,HomePageTeacherCellDelegate,HomePageCourseTypeTwoCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -86,7 +87,7 @@
     _InstitutionLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_InstitutionLabel];
     
-    _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 20, _InstitutionLabel.bottom + 7.5, MainScreenWidth - (_faceImageView.right + 20), 23)];
+    _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 20, _InstitutionLabel.bottom + 7.5, MainScreenWidth - (_faceImageView.right + 20) - 15, 33)];
     _introLabel.font = SYSTEMFONT(12);
     _introLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_introLabel];
@@ -166,6 +167,7 @@
             cell = [[HomePageCourseTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         [cell setHomePageCourseTypeTwoCellInfo:_cateSourceArray];
+        cell.delegate = self;
         return cell;
     } else if (indexPath.section == 1) {
         static NSString *reuse = @"HomePageTeacherInstitutionCell";
@@ -210,6 +212,16 @@
 - (void)goToTeacherMainPage:(NSString *)teacherId {
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
     vc.teacherId = teacherId;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 课程点击事件
+- (void)categoryCourseTapJump:(NSDictionary *)courseInfo {
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"id"]];
+    vc.courselayer = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"section_level"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_type"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -263,7 +275,20 @@
             [_faceImageView sd_setImageWithURL:EdulineUrlString(_institutionInfo[@"data"][@"info"][@"logo"]) placeholderImage:DefaultImage];
             _InstitutionLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"title"]];
             _titleLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"title"]];
-            _introLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"info"]];
+            if (SWNOTEmptyStr(_institutionInfo[@"data"][@"info"][@"intro"])) {
+                _introLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"intro"]];
+            } else {
+                _introLabel.text = @"";
+            }
+            _introLabel.numberOfLines = 0;
+            _introLabel.frame = CGRectMake(_faceImageView.right + 20, _InstitutionLabel.bottom + 7.5, MainScreenWidth - (_faceImageView.right + 20) - 15, 33);
+            [_introLabel sizeToFit];
+            if (_introLabel.height > 33) {
+                _introLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+                _introLabel.frame = CGRectMake(_faceImageView.right + 20, _InstitutionLabel.bottom + 7.5, MainScreenWidth - (_faceImageView.right + 20) - 15, 33);
+            } else {
+                _introLabel.frame = CGRectMake(_faceImageView.right + 20, _InstitutionLabel.bottom + 7.5, MainScreenWidth - (_faceImageView.right + 20) - 15, _introLabel.height);
+            }
         }
     }
 }

@@ -119,7 +119,7 @@
     if (!cell) {
         cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:model1.coupon_type getOrUse:_getOrUse useful:((SWNOTEmptyStr(_mhm_id) && _carModel) ? model.useful : YES)];
     }
-    [cell setCouponInfo:model1 cellIndexPath:indexPath];
+    [cell setCouponInfo:model1 cellIndexPath:indexPath isMyCouponsList:NO];
     cell.delegate = self;
     return cell;
 }

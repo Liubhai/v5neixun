@@ -24,6 +24,8 @@
     _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, 84, 112)];
     _faceImageView.layer.masksToBounds = YES;
     _faceImageView.layer.cornerRadius = 2;
+    _faceImageView.clipsToBounds = YES;
+    _faceImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_faceImageView];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _faceImageView.top + 5, MainScreenWidth - 15 - (_faceImageView.right + 15), 22)];

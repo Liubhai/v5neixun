@@ -11,6 +11,8 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "CouponModel.h"
+#import "CourseMainViewController.h"
+#import "InstitutionRootVC.h"
 
 @interface MycouponsListVC ()<UITableViewDelegate, UITableViewDataSource,KaquanCellDelegate> {
     NSInteger page;
@@ -60,7 +62,7 @@
     if (!cell) {
         cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:model1.coupon_type getOrUse:NO useful:([_couponType isEqualToString:@"usable"] ? YES : NO)];
     }
-    [cell setCouponInfo:model1 cellIndexPath:indexPath];
+    [cell setCouponInfo:model1 cellIndexPath:indexPath isMyCouponsList:YES];
     cell.delegate = self;
     return cell;
 }
@@ -125,6 +127,21 @@
                 [_tableView.mj_footer endRefreshing];
             }
         }];
+    }
+}
+
+- (void)useOrGetAction:(KaquanCell *)cell {
+    if ([cell.cellType isEqualToString:@"3"]) {
+        // 跳转对应的课程详情
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",cell.couponModel.course_id];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        // 跳转对应机构
+        InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
+        vc.institutionId = [NSString stringWithFormat:@"%@",cell.couponModel.mhm_id];
+        [self.navigationController pushViewController:vc animated:YES];
+        
     }
 }
 

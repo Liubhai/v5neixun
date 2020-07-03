@@ -49,7 +49,7 @@
     
     _nameLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     
-    NSString *intro = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([info objectForKey:@"info"]) ? [info objectForKey:@"info"] : @""];
+    NSString *intro = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([info objectForKey:@"intro"]) ? [info objectForKey:@"intro"] : @""];
     _introLabel.text = intro;
     _introLabel.numberOfLines = 0;
     [_introLabel sizeToFit];

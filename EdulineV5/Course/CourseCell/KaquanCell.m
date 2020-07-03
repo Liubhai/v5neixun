@@ -64,10 +64,11 @@
     [self addSubview:_rightButton];
 }
 
-- (void)setCouponInfo:(CouponModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath {
+- (void)setCouponInfo:(CouponModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath isMyCouponsList:(BOOL)isMyCouponsList {
     _couponModel = model;
     _cellIndexpath = cellIndexPath;
     _cellType = model.coupon_type;
+    _isMyCouponsList = isMyCouponsList;
     
     UIColor *cellColor = EdlineV5_Color.youhuijuanColor;
     // 1 优惠卷 2 打折卡 3 课程卡
@@ -149,6 +150,15 @@
 }
 
 - (void)userButtonClick:(UIButton *)sender {
+    
+    if (_isMyCouponsList) {
+        if (_useful) {
+            if (_delegate && [_delegate respondsToSelector:@selector(useOrGetAction:)]) {
+                [_delegate useOrGetAction:self];
+            }
+            return;
+        }
+    }
     
     if (_getOrUse && _couponModel.user_has) {
         return;
