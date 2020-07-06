@@ -388,4 +388,21 @@
     return [Net_Path fullPath:@"topic/comment/{id}/reply" repalce:@"{id}" byReplece:zixunId];
 }
 
+/** 互动消息 */
++ (NSString *)notifyCommentMessageNet {
+    return [Net_Path fullPath:@"user/notify/comment" repalce:@"" byReplece:@""];
+}
+/** 提问消息 */
++ (NSString *)notifyQuestionMessageNet {
+    return [Net_Path fullPath:@"user/notify/question" repalce:@"" byReplece:@""];
+}
+/** 系统消息 */
++ (NSString *)notifySystemMessageNet {
+    return [Net_Path fullPath:@"user/system/message" repalce:@"" byReplece:@""];
+}
+/** 互动消息 */
++ (NSString *)notifyCourseMessageNet {
+    return [Net_Path fullPath:@"user/system/course" repalce:@"" byReplece:@""];
+}
+
 @end

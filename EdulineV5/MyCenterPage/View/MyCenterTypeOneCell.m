@@ -33,29 +33,24 @@
     for (int i = 0; i<info.count; i++) {
         m = i/count;
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake((i%count)*(MainScreenWidth/count), m * MainScreenWidth/count, MainScreenWidth/count, MainScreenWidth/count);;//CGRectMake((i%4)*(MainScreenWidth/4.0), m * (28 + 8 + 20 + 33 / 2.0) + 33 / 2.0, MainScreenWidth/4.0, 28 + 8 + 20 + 33 / 2.0);
-        btn.titleLabel.font = SYSTEMFONT(14);
-        NSString *imageName = [info[i] objectForKey:@"image"];
-//        [btn sd_setImageWithURL:EdulineUrlString([info[i] objectForKey:@"icon"]) forState:0];
-        [btn setImage:Image(@"pre_list_wenku") forState:0];
-        [btn setTitle:[info[i] objectForKey:@"title"] forState:0];
-        [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
-        // 1. 得到imageView和titleLabel的宽、高
-        CGFloat imageWith = btn.imageView.frame.size.width;
-        CGFloat imageHeight = btn.imageView.frame.size.height;
-        
-        CGFloat labelWidth = 0.0;
-        CGFloat labelHeight = 0.0;
-        if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
-            // 由于iOS8中titleLabel的size为0，用下面的这种设置
-            labelWidth = btn.titleLabel.intrinsicContentSize.width;
-            labelHeight = btn.titleLabel.intrinsicContentSize.height;
+        btn.frame = CGRectMake((i%count)*(MainScreenWidth/count), m * MainScreenWidth/count, MainScreenWidth/count, MainScreenWidth/count);
+        UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(0, (MainScreenWidth/count - 56) / 2.0, 28, 28)];
+        img.clipsToBounds = YES;
+        img.contentMode = UIViewContentModeScaleAspectFill;
+        img.centerX = btn.width / 2.0;
+        NSString *imageName = [info[i] objectForKey:@"icon"];
+        if (SWNOTEmptyStr(imageName)) {
+            [img sd_setImageWithURL:EdulineUrlString(imageName) placeholderImage:DefaultImage];
         } else {
-            labelWidth = btn.titleLabel.frame.size.width;
-            labelHeight = btn.titleLabel.frame.size.height;
+            img.image = DefaultImage;
         }
-        btn.imageEdgeInsets = UIEdgeInsetsMake(-labelHeight-8/2.0, 0, 0, -labelWidth);
-        btn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith, -imageHeight-8/2.0, 0);
+        [btn addSubview:img];
+        UILabel *titlelL = [[UILabel alloc] initWithFrame:CGRectMake(0, img.bottom + 8, MainScreenWidth/count, 20)];
+        titlelL.font = SYSTEMFONT(14);
+        titlelL.textColor = EdlineV5_Color.textSecendColor;
+        titlelL.textAlignment = NSTextAlignmentCenter;
+        titlelL.text = [info[i] objectForKey:@"title"];
+        [btn addSubview:titlelL];
         btn.tag = 66 + i;
         [btn addTarget:self action:@selector(typeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_cellView addSubview:btn];

@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) NSDictionary *currentMessageInfo;
 
-- (void)setMessageInfo:(NSDictionary *)info;
+- (void)setMessageInfo:(NSDictionary *)info typeString:(NSString *)typeS;
 
 @end
 

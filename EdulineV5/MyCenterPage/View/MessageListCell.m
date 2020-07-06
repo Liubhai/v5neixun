@@ -63,8 +63,36 @@
     [self addSubview:_lineView];
 }
 
-- (void)setMessageInfo:(NSDictionary *)info {
+- (void)setMessageInfo:(NSDictionary *)info typeString:(nonnull NSString *)typeS {
+    
+    if ([typeS isEqualToString:@"course"] || [typeS isEqualToString:@"system"]) {
+        _userFace.hidden = YES;
+        _nameLabel.hidden = YES;
+        _themeLabel.hidden = NO;
+        _themeLabel.text = [NSString stringWithFormat:@"%@",info[@"title"]];
+    } else {
+        _userFace.hidden = NO;
+        _nameLabel.hidden = NO;
+        _themeLabel.hidden = YES;
+        [_userFace sd_setImageWithURL:EdulineUrlString(info[@"send_user_avatar_url"]) placeholderImage:DefaultUserImage];
+        _nameLabel.text = [NSString stringWithFormat:@"%@",info[@"send_user_nick_name"]];
+    }
+    
+    _redView.hidden = [[NSString stringWithFormat:@"%@",info[@"is_read"]] boolValue];
+    
     _currentMessageInfo = info;
+    
+    _contentLabel.text = [NSString stringWithFormat:@"%@",info[@"content"]];
+    _contentLabel.frame = CGRectMake(_userFace.left, _userFace.bottom + 15, MainScreenWidth - _userFace.left - 15, 50);
+    _contentLabel.numberOfLines = 0;
+    [_contentLabel sizeToFit];
+    [_contentLabel setHeight:_contentLabel.height];
+    
+    _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",info[@"create_time"]]]];
+    _timeLabel.frame = CGRectMake(_userFace.left, _contentLabel.bottom + 15, 100, 20);
+    
+    _lineView.frame = CGRectMake(_userFace.left, _timeLabel.bottom + 10, MainScreenWidth - _userFace.left, 0.5);
+    
     [self setHeight:_lineView.bottom];
 }
 

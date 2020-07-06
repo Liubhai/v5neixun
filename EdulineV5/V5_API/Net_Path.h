@@ -309,6 +309,16 @@ struct NetWorkUrl {
 
 /** 资讯评论 或者 评论回复列表 post get */
 + (NSString *)zixunPostCommentReplay:(NSString *)zixunId;
+
+// MARK: - 我的消息
+/** 互动消息 */
++ (NSString *)notifyCommentMessageNet;
+/** 提问消息 */
++ (NSString *)notifyQuestionMessageNet;
+/** 系统消息 */
++ (NSString *)notifySystemMessageNet;
+/** 互动消息 */
++ (NSString *)notifyCourseMessageNet;
 @end
 
 NS_ASSUME_NONNULL_END

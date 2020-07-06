@@ -49,7 +49,7 @@
     _lineTL.hidden = NO;
     
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"课程提醒",@"type":@"course"},@{@"title":@"互动消息",@"type":@"live"},@{@"title":@"系统消息",@"type":@"calss"},@{@"title":@"提问",@"type":@"offline"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"课程提醒",@"type":@"course"},@{@"title":@"互动消息",@"type":@"comment"},@{@"title":@"系统消息",@"type":@"system"},@{@"title":@"提问",@"type":@"question"}]];
     
     [self makeTopView];
     [self makeScrollView];
