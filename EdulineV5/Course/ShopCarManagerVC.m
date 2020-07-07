@@ -271,6 +271,7 @@
         _finalPriceLabel.hidden = NO;
         _submitButton.hidden = NO;
     }
+    [self dealDataSource];
 }
 
 - (void)lingquanButtonClicked:(UIButton *)sender {
@@ -425,11 +426,14 @@
             }
         }
     }
-    _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",allMoney];
-    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
-    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
-    _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
-    [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%@)",@(_selectedArray.count)] forState:0];
+    if (_rightButton.selected) {
+        [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%@)",@(_selectedArray.count)] forState:0];
+    } else {
+        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",allMoney];
+        NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+        [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+        _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+    }
 }
 
 - (void)getUserShopCarInfo {
@@ -439,6 +443,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSourse removeAllObjects];
                 [_dataSourse addObjectsFromArray:[ShopCarModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                [self dealDataSource];
                 [_tableView reloadData];
             }
         }
