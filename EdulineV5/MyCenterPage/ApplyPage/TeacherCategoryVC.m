@@ -51,12 +51,12 @@
     
     if ([_typeString isEqualToString:@"1"]) {
         _titleLabel.text = @"讲师";
-        _rightButton.hidden = YES;
+        _rightButton.hidden = NO;
     }
     
     if ([_typeString isEqualToString:@"2"]) {
         _titleLabel.text = @"机构";
-        _rightButton.hidden = YES;
+        _rightButton.hidden = NO;
     }
     
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;

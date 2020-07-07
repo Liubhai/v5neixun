@@ -43,7 +43,7 @@
 
 - (void)setMyCenterTypeTwoCellInfo:(NSDictionary *)info {
     if (SWNOTEmptyDictionary(info)) {
-        [_iconImage sd_setImageWithURL:EdulineUrlString([info objectForKey:@"icon"]) placeholderImage:Image(@"pre_list_kaquan")];
+        [_iconImage sd_setImageWithURL:EdulineUrlString([info objectForKey:@"icon"]) placeholderImage:DefaultImage];
         _themeLabel.text = [info objectForKey:@"title"];
     }
 }

@@ -377,6 +377,7 @@
                 } else if ([vipStatus isEqualToString:@"2"]) {
                     _levelImageView.hidden = NO;
                     _levelImageView.image = Image(@"vip_grey_icon");
+                    _introLabel.text = @"会员已过期";
                 } else {
                     _levelImageView.hidden = YES;
                 }

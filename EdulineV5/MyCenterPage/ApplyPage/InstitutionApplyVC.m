@@ -1095,6 +1095,7 @@
         }];
         
         [_logoImageView sd_setImageWithURL:EdulineUrlString(_teacherApplyInfo[@"data"][@"auth_info"][@"logo_url"]) placeholderImage:DefaultImage];
+        logoId = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"logo"]];
         
         _phoneTextField.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"telephone"]];
         

@@ -265,6 +265,7 @@
                 if (_dataSource.count<10) {
                     _collectionView.mj_footer.hidden = YES;
                 } else {
+                    [_collectionView.mj_footer setState:MJRefreshStateIdle];
                     _collectionView.mj_footer.hidden = NO;
                 }
                 [_collectionView reloadData];

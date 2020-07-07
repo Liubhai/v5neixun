@@ -144,7 +144,7 @@
 
 - (void)rightButtonClick:(id)sender {
     TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
-    vc.typeString = @"2";
+    vc.typeString = @"1";
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
