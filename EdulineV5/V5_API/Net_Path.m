@@ -184,6 +184,10 @@
     return [Net_Path fullPath:@"user/vip" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userMemberRecord {
+    return [Net_Path fullPath:@"user/vip/log" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userBalanceInfo {
     return [Net_Path fullPath:@"user/balance" repalce:@"" byReplece:@""];
 }

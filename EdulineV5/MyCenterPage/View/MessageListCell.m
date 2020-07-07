@@ -47,7 +47,7 @@
     _contentLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_userFace.left, _userFace.bottom + 15, MainScreenWidth - _userFace.left - 15, 50)];
     _contentLabel.text = @"但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦";
     _contentLabel.textColor = EdlineV5_Color.textSecendColor;
-    _contentLabel.font = SYSTEMFONT(13);
+    _contentLabel.font = SYSTEMFONT(15);
     _contentLabel.numberOfLines = 0;
     _contentLabel.delegate = self;
     [self addSubview:_contentLabel];
@@ -81,12 +81,33 @@
     _redView.hidden = [[NSString stringWithFormat:@"%@",info[@"is_read"]] boolValue];
     
     _currentMessageInfo = info;
+    if ([typeS isEqualToString:@"system"]) {
+        if ([info[@"is_link"] boolValue]) {
+            _contentLabel.text = [NSString stringWithFormat:@"%@",info[@"content"]];
+            _contentLabel.frame = CGRectMake(_userFace.left, _userFace.bottom + 15, MainScreenWidth - _userFace.left - 15, 50);
+            _contentLabel.numberOfLines = 0;
+            [_contentLabel sizeToFit];
+            [_contentLabel setHeight:_contentLabel.height];
+        } else {
+            _contentLabel.text = [NSString stringWithFormat:@"%@",info[@"content"]];
+            _contentLabel.frame = CGRectMake(_userFace.left, _userFace.bottom + 15, MainScreenWidth - _userFace.left - 15, 50);
+            _contentLabel.numberOfLines = 0;
+            _contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+            [_contentLabel sizeToFit];
+            if (_contentLabel.height > 40) {
+                [_contentLabel setHeight:40];
+            } else {
+                [_contentLabel setHeight:_contentLabel.height];
+            }
+        }
+    } else {
+        _contentLabel.text = [NSString stringWithFormat:@"%@",info[@"content"]];
+        _contentLabel.frame = CGRectMake(_userFace.left, _userFace.bottom + 15, MainScreenWidth - _userFace.left - 15, 50);
+        _contentLabel.numberOfLines = 0;
+        [_contentLabel sizeToFit];
+        [_contentLabel setHeight:_contentLabel.height];
+    }
     
-    _contentLabel.text = [NSString stringWithFormat:@"%@",info[@"content"]];
-    _contentLabel.frame = CGRectMake(_userFace.left, _userFace.bottom + 15, MainScreenWidth - _userFace.left - 15, 50);
-    _contentLabel.numberOfLines = 0;
-    [_contentLabel sizeToFit];
-    [_contentLabel setHeight:_contentLabel.height];
     
     _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",info[@"create_time"]]]];
     _timeLabel.frame = CGRectMake(_userFace.left, _contentLabel.bottom + 15, 100, 20);

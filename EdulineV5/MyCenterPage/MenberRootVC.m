@@ -13,6 +13,7 @@
 #import "Net_Path.h"
 #import "UserModel.h"
 #import "OrderSureViewController.h"
+#import "MenberRecordVC.h"
 
 @interface MenberRootVC ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UITextFieldDelegate> {
     NSIndexPath *currentIndexpath;
@@ -189,6 +190,24 @@
     tipLabel.textColor = EdlineV5_Color.textFirstColor;
     [_menberTypeBackView addSubview:tipLabel];
     
+    UILabel *recordLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 60, 20, 60, 22)];
+    recordLabel.text = @"充值记录";
+    recordLabel.font = SYSTEMFONT(14);
+    recordLabel.textColor = EdlineV5_Color.textSecendColor;
+    [_menberTypeBackView addSubview:recordLabel];
+    
+    UIImageView *recordIcon = [[UIImageView alloc] initWithFrame:CGRectMake(recordLabel.left - 3 - 16, 0, 16, 14)];
+    recordIcon.centerY = recordLabel.centerY;
+    recordIcon.image = Image(@"vipcenter_record_icon");
+    recordIcon.clipsToBounds = YES;
+    recordIcon.contentMode = UIViewContentModeScaleAspectFill;
+    [_menberTypeBackView addSubview:recordIcon];
+    
+    UIButton *recordBtn = [[UIButton alloc] initWithFrame:CGRectMake(recordIcon.left - 3 - 16, recordLabel.top, recordLabel.right - recordIcon.left, 22)];
+    recordBtn.backgroundColor = [UIColor clearColor];
+    [recordBtn addTarget:self action:@selector(recordBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [_menberTypeBackView addSubview:recordBtn];
+    
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tipLabel.bottom + 6, _menberTypeBackView.width, _menberTypeBackView.height - (tipLabel.bottom + 6))];//[[UIScrollView alloc] initWithFrame:CGRectMake(0, tipLabel.bottom + 6, _menberTypeBackView.width, _menberTypeBackView.height - (tipLabel.bottom + 6))];
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.showsHorizontalScrollIndicator = NO;
@@ -283,11 +302,16 @@
     
 }
 
+- (void)recordBtnClick {
+    MenberRecordVC *vc = [[MenberRecordVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 // MARK: - 提交按钮点击事件
 - (void)submitButtonClick:(UIButton *)sender {
     if (SWNOTEmptyArr(_memberTypeArray)) {
         NSString *vip_id = [NSString stringWithFormat:@"%@",[_memberTypeArray[currentIndexpath.row] objectForKey:@"id"]];
-        [Net_API requestPOSTWithURLStr:[Net_Path userMemberInfo] WithAuthorization:nil paramDic:@{@"vip_id":vip_id} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestPOSTWithURLStr:[Net_Path userMemberInfo] WithAuthorization:nil paramDic:@{@"vip_id":vip_id,@"from":@"ios"} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     OrderSureViewController *vc = [[OrderSureViewController alloc] init];

@@ -196,6 +196,8 @@
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
+		7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */; };
+		7898F93D24B4124C00C9A1F7 /* MenberRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93C24B4124C00C9A1F7 /* MenberRecordCell.m */; };
 		789DB01524593041001302B4 /* CouponModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01424593041001302B4 /* CouponModel.m */; };
 		789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB017245A76A1001302B4 /* ShopCarModel.m */; };
 		789DB01B24654571001302B4 /* MyBalanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01A24654571001302B4 /* MyBalanceVC.m */; };
@@ -771,6 +773,10 @@
 		7888A35224A1D3CF00DB078D /* WkWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WkWebViewController.m; sourceTree = "<group>"; };
 		7888A35424A1DB1800DB078D /* WKWebIntroview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebIntroview.h; sourceTree = "<group>"; };
 		7888A35524A1DB1800DB078D /* WKWebIntroview.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebIntroview.m; sourceTree = "<group>"; };
+		7898F93824B40D3400C9A1F7 /* MenberRecordVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRecordVC.h; sourceTree = "<group>"; };
+		7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRecordVC.m; sourceTree = "<group>"; };
+		7898F93B24B4124C00C9A1F7 /* MenberRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRecordCell.h; sourceTree = "<group>"; };
+		7898F93C24B4124C00C9A1F7 /* MenberRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRecordCell.m; sourceTree = "<group>"; };
 		789DB01324593041001302B4 /* CouponModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouponModel.h; sourceTree = "<group>"; };
 		789DB01424593041001302B4 /* CouponModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CouponModel.m; sourceTree = "<group>"; };
 		789DB016245A76A1001302B4 /* ShopCarModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarModel.h; sourceTree = "<group>"; };
@@ -1514,6 +1520,8 @@
 				787E19A8245576E000E2E016 /* PWResetViewController.m */,
 				78531643244FF60C007E239E /* MenberRootVC.h */,
 				78531644244FF60C007E239E /* MenberRootVC.m */,
+				7898F93824B40D3400C9A1F7 /* MenberRecordVC.h */,
+				7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */,
 				789DB01924654571001302B4 /* MyBalanceVC.h */,
 				789DB01A24654571001302B4 /* MyBalanceVC.m */,
 				789DB01C2465785C001302B4 /* MyScoreVC.h */,
@@ -2305,6 +2313,8 @@
 				78AA13AB24470EB2007087F7 /* SetingCell.m */,
 				7853164624502E49007E239E /* MenberCell.h */,
 				7853164724502E49007E239E /* MenberCell.m */,
+				7898F93B24B4124C00C9A1F7 /* MenberRecordCell.h */,
+				7898F93C24B4124C00C9A1F7 /* MenberRecordCell.m */,
 				789DB0282466B3D6001302B4 /* BalanceDetailCell.h */,
 				789DB0292466B3D6001302B4 /* BalanceDetailCell.m */,
 				789DB04E246BC68C001302B4 /* ScoreCell.h */,
@@ -2877,6 +2887,7 @@
 				78C549D3241B674F00A33FC4 /* AlivcImage.m in Sources */,
 				78C54977241B642B00A33FC4 /* AlivcLivePresentationController.m in Sources */,
 				78C548792418CC7400A33FC4 /* TYViewStorage.m in Sources */,
+				7898F93D24B4124C00C9A1F7 /* MenberRecordCell.m in Sources */,
 				78A16C8E2452F7C100391430 /* GCDAsyncUdpSocket.m in Sources */,
 				78AA13842440543D007087F7 /* TAAbstractDotView.m in Sources */,
 				7879572C240FA3840013F95F /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
@@ -2979,6 +2990,7 @@
 				78C549C8241B674E00A33FC4 /* AlivcScanViewController.m in Sources */,
 				789DB01E2465785C001302B4 /* MyScoreVC.m in Sources */,
 				7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */,
+				7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */,
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
 				78531653245131AF007E239E /* LiveRoomViewController.m in Sources */,
 				78C936C0248DE41900D5F1ED /* ZPScrollerScaleView.m in Sources */,
