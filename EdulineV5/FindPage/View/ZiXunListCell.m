@@ -82,7 +82,8 @@
     }
     
     _themeLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
-    _introLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"abstract"]];
+    
+    _introLabel.text = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([info objectForKey:@"abstract"]) ? [info objectForKey:@"abstract"] : @""];
     
     _lookCountLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"read_count"]];
     

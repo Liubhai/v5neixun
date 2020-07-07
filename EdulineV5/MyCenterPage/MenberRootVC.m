@@ -14,6 +14,7 @@
 #import "UserModel.h"
 #import "OrderSureViewController.h"
 #import "MenberRecordVC.h"
+#import "WkWebViewController.h"
 
 @interface MenberRootVC ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UITextFieldDelegate> {
     NSIndexPath *currentIndexpath;
@@ -57,7 +58,7 @@
     currentIndexpath = [NSIndexPath indexPathForRow:0 inSection:0];
     _otherTypeArray = [NSMutableArray new];
     _memberTypeArray = [NSMutableArray new];
-    [_otherTypeArray addObjectsFromArray:@[@{@"title":@"免费课程",@"image":@"vip_icon1",@"type":@"course"},@{@"title":@"付费课程",@"image":@"vip_icon_course",@"type":@"menberCourse"},@{@"title":@"权益说明",@"image":@"vip_icon3",@"type":@"menberIntro"}]];
+    [_otherTypeArray addObjectsFromArray:@[@{@"title":@"免费课程",@"image":@"vip_icon1",@"type":@"course"},@{@"title":@"付费课程",@"image":@"vip_icon_course",@"type":@"menberCourse"},@{@"title":@"权益说明   ",@"image":@"vip_icon3",@"type":@"menberIntro"}]];
     
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"兑换" forState:0];
@@ -171,6 +172,11 @@
         }
         btn.imageEdgeInsets = UIEdgeInsetsMake(-labelHeight-10/2.0, 0, 0, -labelWidth);
         btn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith, -imageHeight-10/2.0, 0);
+        if (i == 2) {
+            UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(btn.width / 2.0 + labelWidth / 2.0 - 13, btn.imageView.bottom + 5 + 2 , 13, 13)];
+            img.image = Image(@"vipexplain_icon");
+            [btn addSubview:img];
+        }
         [btn addTarget:self action:@selector(otherTypeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_otherTypeBackView addSubview:btn];
     }
@@ -299,7 +305,14 @@
 }
 
 - (void)otherTypeButtonClick:(UIButton *)sender {
-    
+    if (sender.tag == 2) {
+        NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
+        NSString *atr = [NSString stringWithFormat:@"%@vip权益说明",appName];
+        WkWebViewController *vc = [[WkWebViewController alloc] init];
+        vc.titleString = atr;
+        vc.agreementKey = @"vip";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)recordBtnClick {

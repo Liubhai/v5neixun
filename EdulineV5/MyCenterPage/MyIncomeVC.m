@@ -350,7 +350,7 @@
     [_mainScrollView addSubview:_agreeBackView];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@购买协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@用户服务协议》",appName];
     NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
     NSRange atrRange = [fullString rangeOfString:atr];
     
@@ -472,7 +472,7 @@
     }
     
     if (!_seleteBtn.selected) {
-        [self showHudInView:self.view showHint:@"请勾选并确认阅读购买协议"];
+        [self showHudInView:self.view showHint:@"请勾选并确认阅读用户服务协议"];
         _submitButton.enabled = YES;
         return;
     }
@@ -518,7 +518,7 @@
         }
     }
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"%@购买协议",appName];
+    NSString *atr = [NSString stringWithFormat:@"%@用户服务协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
     vc.agreementKey = @"proService";
@@ -618,7 +618,7 @@
 }
 
 - (void)toBalance {
-    [Net_API requestPOSTWithURLStr:[Net_Path incomeForBalance] WithAuthorization:nil paramDic:@{@"money":[_priceLabel.text substringFromIndex:1]} finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPOSTWithURLStr:[Net_Path incomeForBalance] WithAuthorization:nil paramDic:@{@"from":@"ios",@"money":[_priceLabel.text substringFromIndex:1]} finish:^(id  _Nonnull responseObject) {
         _submitButton.enabled = YES;
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
@@ -634,7 +634,7 @@
 
 - (void)toMouxin:(NSString *)mouxinId {
     if (SWNOTEmptyStr(mouxinId)) {
-        [Net_API requestPOSTWithURLStr:[Net_Path incomeForMouxin] WithAuthorization:nil paramDic:@{@"money":[_priceLabel.text substringFromIndex:1],@"wxpay_openid":mouxinId} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestPOSTWithURLStr:[Net_Path incomeForMouxin] WithAuthorization:nil paramDic:@{@"from":@"ios",@"money":[_priceLabel.text substringFromIndex:1],@"wxpay_openid":mouxinId} finish:^(id  _Nonnull responseObject) {
             _submitButton.enabled = YES;
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
@@ -732,6 +732,7 @@
     if (SWNOTEmptyStr(_priceLabel.text)) {
         [param setObject:[_priceLabel.text substringFromIndex:1] forKey:@"money"];
     }
+    [param setObject:@"ios" forKey:@"from"];
     [self moubaoSureViewTap];
     [Net_API requestPOSTWithURLStr:[Net_Path incomeForMoubao] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         _submitButton.enabled = YES;

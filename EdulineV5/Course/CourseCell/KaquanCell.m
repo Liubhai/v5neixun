@@ -12,12 +12,13 @@
 @implementation KaquanCell
 
 // 110 = 10 + 90 + 10
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(nonnull NSString *)cellType getOrUse:(BOOL)getOrUse useful:(BOOL)useful {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier cellType:(nonnull NSString *)cellType getOrUse:(BOOL)getOrUse useful:(BOOL)useful myCouponListtype:(nonnull NSString *)type {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         _getOrUse = getOrUse;
         _useful = useful;
+        _myCouponsType = type;
         [self makeSubViews];
     }
     return self;
@@ -56,7 +57,11 @@
         }
         [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
     } else {
-        [_rightButton setTitle:@"不可使用" forState:0];
+        if ([_myCouponsType isEqualToString:@"used"]) {
+            [_rightButton setTitle:@"已使用" forState:0];
+        } else {
+            [_rightButton setTitle:@"已过期" forState:0];
+        }
         [_rightButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
     }
     [_rightButton addTarget:self action:@selector(userButtonClick:) forControlEvents:UIControlEventTouchUpInside];

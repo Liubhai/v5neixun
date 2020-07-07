@@ -342,7 +342,7 @@
     [_mainScrollView addSubview:_agreeBackView];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@购买协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@用户服务协议》",appName];
     NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
     NSRange atrRange = [fullString rangeOfString:atr];
     
@@ -448,7 +448,7 @@
 
 - (void)submitButtonClick:(UIButton *)sender {
     if (!_seleteBtn.selected) {
-        [self showHudInView:self.view showHint:@"请勾选并确认阅读购买协议"];
+        [self showHudInView:self.view showHint:@"请勾选并确认阅读用户服务协议"];
         _submitButton.enabled = YES;
         return;
     }
@@ -460,6 +460,7 @@
             [param setObject:_scoreInputText.text forKey:@"credit"];
             NSString *price = [_priceLabel.text substringFromIndex:1];
             [param setObject:price forKey:@"payment"];
+            [param setObject:@"ios" forKey:@"from"];
             // 生成余额订单
             [self createBalanceOrder:param];
         } else {
@@ -563,7 +564,7 @@
         }
     }
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"%@购买协议",appName];
+    NSString *atr = [NSString stringWithFormat:@"%@用户服务协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
     vc.agreementKey = @"proService";

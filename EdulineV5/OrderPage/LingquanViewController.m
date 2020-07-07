@@ -117,7 +117,7 @@
     CouponModel *model1 = model.list[indexPath.row];
     KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:model1.coupon_type getOrUse:_getOrUse useful:((SWNOTEmptyStr(_mhm_id) && _carModel) ? model.useful : YES)];
+        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId cellType:model1.coupon_type getOrUse:_getOrUse useful:((SWNOTEmptyStr(_mhm_id) && _carModel) ? model.useful : YES) myCouponListtype:@""];
     }
     [cell setCouponInfo:model1 cellIndexPath:indexPath isMyCouponsList:NO];
     cell.delegate = self;

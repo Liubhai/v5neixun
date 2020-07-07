@@ -311,7 +311,7 @@
 //    NSString *string = [[NSString alloc] initWithData:data
 //                                             encoding:NSUTF8StringEncoding];
     if (SWNOTEmptyArr(paramArray)) {
-        [Net_API requestPOSTWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course":paramArray} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestPOSTWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course":paramArray,@"from":@"ios"} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     OrderSureViewController *vc = [[OrderSureViewController alloc] init];

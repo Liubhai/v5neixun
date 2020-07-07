@@ -334,6 +334,7 @@
     if (_couponModel) {
         [param setObject:_couponModel.couponId forKey:@"coupon_id"];
     }
+    [param setObject:@"ios" forKey:@"from"];
     [Net_API requestPOSTWithURLStr:courseOrderInfoUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -372,6 +373,8 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
         [self setCourseUIData];

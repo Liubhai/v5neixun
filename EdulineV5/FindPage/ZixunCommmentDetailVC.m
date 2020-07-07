@@ -363,6 +363,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 replayUserId = @"";
                 _commentView.placeHoderLab.text = @"评论";
+                [self getCommentReplayList];
             }
         }
     } enError:^(NSError * _Nonnull error) {

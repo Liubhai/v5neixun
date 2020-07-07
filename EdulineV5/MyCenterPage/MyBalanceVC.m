@@ -434,7 +434,7 @@
     [_agreeBackView removeAllSubviews];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@购买协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@用户服务协议》",appName];
     NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
     NSRange atrRange = [fullString rangeOfString:atr];
     
@@ -642,7 +642,7 @@
 
 - (void)submitButtonClick:(UIButton *)sender {
     if (!_seleteBtn.selected) {
-        [self showHudInView:self.view showHint:@"请勾选并确认阅读购买协议"];
+        [self showHudInView:self.view showHint:@"请勾选并确认阅读用户服务协议"];
         _submitButton.enabled = YES;
         return;
     }
@@ -660,12 +660,14 @@
                 NSString *price = [_priceLabel.text substringFromIndex:1];
                 [param setObject:@([price floatValue]) forKey:@"payment"];
                 [param setObject:pass_chargeId forKey:@"recharge_id"];
+                [param setObject:@"ios" forKey:@"from"];
             } else {
                 if (SWNOTEmptyStr(_otherMoneyText.text)) {
                     [param setObject:@([_otherMoneyText.text floatValue]) forKey:@"balance"];
                     NSString *price = [_priceLabel.text substringFromIndex:1];
                     [param setObject:@([price floatValue]) forKey:@"payment"];
                     [param setObject:@"0" forKey:@"recharge_id"];
+                    [param setObject:@"ios" forKey:@"from"];
                 } else {
                     [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
                     _submitButton.enabled = YES;
@@ -678,6 +680,7 @@
                 NSString *price = [_priceLabel.text substringFromIndex:1];
                 [param setObject:price forKey:@"payment"];//
                 [param setObject:@"0" forKey:@"recharge_id"];
+                [param setObject:@"ios" forKey:@"from"];
             } else {
                 [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
                 _submitButton.enabled = YES;
@@ -832,7 +835,7 @@
         }
     }
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"%@购买协议",appName];
+    NSString *atr = [NSString stringWithFormat:@"%@用户服务协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
     vc.agreementKey = @"proService";

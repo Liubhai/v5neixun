@@ -60,7 +60,7 @@
     CouponModel *model1 = _dataSource[indexPath.row];
     KaquanCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:model1.coupon_type getOrUse:NO useful:([_couponType isEqualToString:@"usable"] ? YES : NO)];
+        cell = [[KaquanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:model1.coupon_type getOrUse:NO useful:([_couponType isEqualToString:@"usable"] ? YES : NO) myCouponListtype:_couponType];
     }
     [cell setCouponInfo:model1 cellIndexPath:indexPath isMyCouponsList:YES];
     cell.delegate = self;

@@ -1053,6 +1053,7 @@
     if ([verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"]) {
         _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
         _submitButton.enabled = NO;
+        _submitButton.hidden = YES;
         _seleteBtn.enabled = NO;
     }
     if ([verified_status isEqualToString:@"0"] || [verified_status isEqualToString:@"1"] || [verified_status isEqualToString:@"2"] || [verified_status isEqualToString:@"3"]) {
