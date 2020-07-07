@@ -93,6 +93,11 @@
 // 播放器
 @property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
 @property (nonatomic,strong) UIImageView  *freeLookShowImageView;
+@property (strong, nonatomic) UIView *freeLookView;
+@property (strong, nonatomic) UILabel *freeLabel;
+@property (strong, nonatomic) UIButton *buyCourseButton;
+@property (strong, nonatomic) UIButton *buyhourseButton;
+
 @property (strong, nonatomic) WKWebView *wkWebView;
 @property (strong, nonatomic) NSTimer *recordTimer;
 
@@ -175,15 +180,39 @@
     if (!_isLive) {
         [_headerView addSubview:self.playerView];
         [self makeWkWebView];
-        _freeLookShowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, self.playerView.height)];
-        _freeLookShowImageView.image  = Image(@"freeLook");
-    } else {
-        _freeLookShowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, self.faceImageView.height)];
-        _freeLookShowImageView.image  = Image(@"freeLook");
     }
-    _freeLookShowImageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *freeLookTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(freeLookTapClick:)];
-    [_freeLookShowImageView addGestureRecognizer:freeLookTap];
+    
+    _freeLookView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.playerView.width, self.playerView.height)];
+    _freeLookView.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.6].CGColor;
+    _freeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 22)];
+    _freeLabel.font = SYSTEMFONT(16);
+    _freeLabel.text = @"试看已结束";
+    _freeLabel.textColor = HEXCOLOR(0xEBEEF5);
+    _freeLabel.textAlignment = NSTextAlignmentCenter;
+    _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
+    [_freeLookView addSubview:_freeLabel];
+    
+    _buyCourseButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _freeLabel.bottom + 12, 105, 30)];
+    [_buyCourseButton setTitle:@"去购买该课程" forState:0];
+    [_buyCourseButton setTitleColor:[UIColor whiteColor] forState:0];
+    _buyCourseButton.backgroundColor = EdlineV5_Color.themeColor;
+    _buyCourseButton.titleLabel.font = SYSTEMFONT(14);
+    _buyhourseButton.hidden = YES;
+    [_buyCourseButton addTarget:self action:@selector(buyCourseAndHourseButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _buyCourseButton.layer.masksToBounds = YES;
+    _buyCourseButton.layer.cornerRadius = 4;
+    [_freeLookView addSubview:_buyCourseButton];
+    
+    _buyhourseButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _freeLabel.bottom + 12, 105, 30)];
+    [_buyhourseButton setTitle:@"去购买该课时" forState:0];
+    [_buyhourseButton setTitleColor:[UIColor whiteColor] forState:0];
+    _buyhourseButton.backgroundColor = EdlineV5_Color.themeColor;
+    _buyhourseButton.titleLabel.font = SYSTEMFONT(14);
+    _buyhourseButton.hidden = YES;
+    [_buyhourseButton addTarget:self action:@selector(buyCourseAndHourseButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _buyhourseButton.layer.masksToBounds = YES;
+    _buyhourseButton.layer.cornerRadius = 4;
+    [_freeLookView addSubview:_buyhourseButton];
     
 //    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT - (_isLive ? 0 : 50);
     [self makeTableView];
@@ -311,7 +340,7 @@
 // MARK: - headerview的子视图
 - (void)makeSubViews {
     _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight)];
-    _faceImageView.image = Image(@"lesson_img");
+    _faceImageView.image = DefaultImage;
     [_headerView addSubview:_faceImageView];
     
     _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4)];
@@ -702,6 +731,20 @@
     }
 }
 
+- (void)buyCourseAndHourseButtonClick:(UIButton *)sender {
+    if (sender == _buyCourseButton) {
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"course";
+        vc.orderId = currentCourseFinalModel.model.course_id;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"courseHourse";
+        vc.orderId = currentCourseFinalModel.model.classHourId;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 // MARK: - 底部按钮点击事件
 - (void)jumpServiceVC:(CourseDownView *)downView {
     
@@ -755,9 +798,9 @@
 
 - (void)setCourseInfoData {
     if (SWNOTEmptyDictionary(_dataSource)) {
-        NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover"]];
+        NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover_url"]];
         if ([faceUrlString containsString:@"http"]) {
-            [_faceImageView sd_setImageWithURL:EdulineUrlString([_dataSource objectForKey:@"cover"]) placeholderImage:DefaultImage];
+            [_faceImageView sd_setImageWithURL:EdulineUrlString([_dataSource objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
         } else {
             _faceImageView.image = DefaultImage;
         }
@@ -988,10 +1031,30 @@
         if (currentTime * 100 / duration >= currentCourseFinalModel.model.audition) {
             [wekself stopRecordTimer];
             [wekself.playerView stop];
-            if ([wekself.freeLookShowImageView superview]) {
-                wekself.freeLookShowImageView.hidden = NO;
+            if ([wekself.freeLookView superview]) {
+                wekself.freeLookView.hidden = NO;
+                if ([currentCourseFinalModel.model.price floatValue]>0) {
+                    [_buyCourseButton setRight:wekself.playerView.width / 2.0 - 10];
+                    [_buyhourseButton setLeft:wekself.playerView.width / 2.0 + 10];
+                    _buyCourseButton.hidden = NO;
+                    _buyhourseButton.hidden = NO;
+                } else {
+                    _buyCourseButton.centerX = wekself.playerView.width / 2.0;
+                    _buyCourseButton.hidden = NO;
+                    _buyhourseButton.hidden = YES;
+                }
             } else {
-                [wekself.headerView addSubview:wekself.freeLookShowImageView];
+                [wekself.headerView addSubview:wekself.freeLookView];
+                if ([currentCourseFinalModel.model.price floatValue]>0) {
+                    [_buyCourseButton setRight:wekself.playerView.width / 2.0 - 10];
+                    [_buyhourseButton setLeft:wekself.playerView.width / 2.0 + 10];
+                    _buyCourseButton.hidden = NO;
+                    _buyhourseButton.hidden = NO;
+                } else {
+                    _buyCourseButton.centerX = wekself.playerView.width / 2.0;
+                    _buyCourseButton.hidden = NO;
+                    _buyhourseButton.hidden = YES;
+                }
             }
             _titleImage.hidden = NO;
             return;

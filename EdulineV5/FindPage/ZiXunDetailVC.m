@@ -13,6 +13,7 @@
 #import "CommentBaseView.h"
 #import "UserModel.h"
 #import "ZixunCommmentDetailVC.h"
+#import <UShareUI/UShareUI.h>
 
 @interface ZiXunDetailVC ()<UITableViewDelegate, UITableViewDataSource, ZixunCommentCellDelegate, WKUIDelegate, WKNavigationDelegate, CommentBaseViewDelegate> {
     NSInteger page;
@@ -38,6 +39,9 @@
 // 底部评论
 @property (strong, nonatomic) CommentBaseView *commentView;
 @property (strong, nonatomic) UIView *commentBackView;
+
+/**更多按钮弹出视图*/
+@property (strong ,nonatomic)UIView   *allWindowView;
 
 
 @end
@@ -506,6 +510,86 @@
     } enError:^(NSError * _Nonnull error) {
         [self showHudInView:self.view showHint:[[cell.userCommentInfo objectForKey:@"like"] boolValue] ? @"取消点赞失败" : @"点赞失败"];
     }];
+}
+
+// MARK: - 右边按钮点击事件(收藏、下载、分享)
+- (void)rightButtonClick:(id)sender {
+    
+    UIView *allWindowView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MainScreenWidth, MainScreenHeight)];
+    allWindowView.backgroundColor = [UIColor clearColor];//[UIColor colorWithWhite:0.2 alpha:0.5];
+    allWindowView.layer.masksToBounds =YES;
+    [allWindowView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(allWindowViewClick:)]];
+    //获取当前UIWindow 并添加一个视图
+    UIApplication *app = [UIApplication sharedApplication];
+    [app.keyWindow addSubview:allWindowView];
+    _allWindowView = allWindowView;
+    
+    NSArray *titleArray = @[@"收藏",@"分享"];
+    
+    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 78 - 15,MACRO_UI_UPHEIGHT,78,titleArray.count * 36.0)];
+    moreView.backgroundColor = [UIColor whiteColor];
+    moreView.layer.masksToBounds = YES;
+    [allWindowView addSubview:moreView];
+    
+    CGFloat ButtonW = 78;
+    CGFloat ButtonH = 36;
+    for (int i = 0 ; i < titleArray.count ; i ++) {
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, ButtonH * i, ButtonW, ButtonH)];
+        button.tag = i;
+        [button setTitle:titleArray[i] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithHexString:@"#333"] forState:UIControlStateNormal];
+        button.titleLabel.font = SYSTEMFONT(14);
+        [button addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [moreView addSubview:button];
+    }
+}
+
+// MARK: - 更多按钮点击事件
+- (void)moreButtonClick:(UIButton *)sender {
+    [_allWindowView removeFromSuperview];
+    if (!SWNOTEmptyDictionary(_newsInfo)) {
+        return;
+    }
+    if (!SWNOTEmptyStr(_newsInfo[@"data"][@"detail"][@"content"])) {
+        return;
+    }
+    if (sender.tag == 1) {
+        //显示分享面板
+        [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_QQ),@(UMSocialPlatformType_Sina)]];
+        [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+            // 根据获取的platformType确定所选平台进行下一步操作
+            //创建分享消息对象
+            UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+            //创建网页内容对象
+            NSString* thumbURL = [NSString stringWithFormat:@"%@",_newsInfo[@"data"][@"detail"][@"cover_url"]];
+            UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:[NSString stringWithFormat:@"%@",_newsInfo[@"data"][@"detail"][@"title"]] descr:@"资讯详情" thumImage:SWNOTEmptyStr(thumbURL) ? thumbURL : DefaultImage];
+            //设置网页地址
+            shareObject.webpageUrl = [NSString stringWithFormat:@"%@",_newsInfo[@"data"][@"detail"][@"content"]];
+            //分享消息对象设置分享内容对象
+            messageObject.shareObject = shareObject;
+            //调用分享接口
+            [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+                if (error) {
+                    UMSocialLogInfo(@"************Share fail with error %@*********",error);
+                }else{
+                    if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                        UMSocialShareResponse *resp = data;
+                        //分享结果消息
+                        UMSocialLogInfo(@"response message is %@",resp.message);
+                        //第三方原始返回的数据
+                        UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                    }else{
+                        UMSocialLogInfo(@"response data is %@",data);
+                    }
+                }
+            }];
+        }];
+    }
+}
+
+// MARK: - 更多视图背景图点击事件
+- (void)allWindowViewClick:(UITapGestureRecognizer *)tap {
+    [_allWindowView removeFromSuperview];
 }
 
 /*

@@ -153,7 +153,7 @@
 // MARK: - headerview的子视图
 - (void)makeSubViews {
     _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, FaceImageHeight)];
-    _faceImageView.image = Image(@"lesson_img");
+    _faceImageView.image = DefaultImage;
     [_headerView addSubview:_faceImageView];
     
     _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4)];

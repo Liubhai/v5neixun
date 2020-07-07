@@ -177,9 +177,9 @@
     if (isMine) {
         return;
     } else {
-        replayUserId = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]];
+        replayUserId = [NSString stringWithFormat:@"%@",[pass objectForKey:@"user_id"]];
         [_commentView.inputTextView becomeFirstResponder];
-        _commentView.placeHoderLab.text = [NSString stringWithFormat:@"回复@%@",[[pass objectForKey:@"user"] objectForKey:@"nick_name"]];
+        _commentView.placeHoderLab.text = [NSString stringWithFormat:@"回复@%@",[pass objectForKey:@"nick_name"]];
         return;
     }
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -190,9 +190,9 @@
         [alertController addAction:deleteAction];
     } else {
         UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"回复" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            replayUserId = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]];
+            replayUserId = [NSString stringWithFormat:@"%@",[pass objectForKey:@"user_id"]];
             [_commentView.inputTextView becomeFirstResponder];
-            _commentView.placeHoderLab.text = [NSString stringWithFormat:@"回复@%@",[[pass objectForKey:@"user"] objectForKey:@"nick_name"]];
+            _commentView.placeHoderLab.text = [NSString stringWithFormat:@"回复@%@",[pass objectForKey:@"nick_name"]];
             }];
         [alertController addAction:commentAction];
     }
