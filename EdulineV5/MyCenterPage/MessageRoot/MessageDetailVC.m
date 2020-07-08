@@ -29,7 +29,9 @@
 
 - (void)makeSubView {
     _contentLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(15, MACRO_UI_UPHEIGHT + 10, MainScreenWidth - 30, 100)];
-    _contentLabel.text = @"但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦,但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦,但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦,但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦";
+    if (SWNOTEmptyDictionary(_info)) {
+        _contentLabel.text = [NSString stringWithFormat:@"%@",_info[@"content"]];
+    }
     _contentLabel.textColor = EdlineV5_Color.textSecendColor;
     _contentLabel.font = SYSTEMFONT(14);
     _contentLabel.numberOfLines = 0;
@@ -39,9 +41,11 @@
     [self.view addSubview:_contentLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _contentLabel.bottom + 15, MainScreenWidth - 30, 20)];
-    _timeLabel.text = @"18:23";
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
+    if (SWNOTEmptyDictionary(_info)) {
+        _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",_info[@"create_time"]]]];
+    }
     [self.view addSubview:_timeLabel];
 }
 
