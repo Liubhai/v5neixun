@@ -101,7 +101,7 @@
         NSString *typeS = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"notify_type"]];
         if ([typeS isEqualToString:@"1"]) {
             CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
-            vc.cellType = YES;
+            vc.cellType = NO;
             vc.commentId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"notify_data"][@"id"]];
             [self.navigationController pushViewController:vc animated:YES];
         } else if ([typeS isEqualToString:@"2"]) {
