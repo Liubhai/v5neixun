@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "LBHScrollView.h"
 #import "MessageListVC.h"
+#import "Net_Path.h"
 
 @interface MessageRootVC ()<UIScrollViewDelegate>
 
@@ -28,6 +29,7 @@
 @property (strong, nonatomic) NSMutableArray *typeArray;
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
+@property (strong, nonatomic) NSDictionary *messageInfo;
 
 @end
 
@@ -53,7 +55,8 @@
     
     [self makeTopView];
     [self makeScrollView];
-    
+    [self getUnreadMessageCount];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUnreadMessageCount) name:@"reloadAllMessage" object:nil];
 }
 
 - (void)makeTopView {
@@ -77,6 +80,7 @@
         redLabel.layer.masksToBounds = YES;
         redLabel.layer.cornerRadius = redLabel.height / 2.0;
         redLabel.backgroundColor = EdlineV5_Color.faildColor;
+        redLabel.hidden = YES;
         
         CGFloat titleWidth = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + 4;
         [redLabel setOrigin:CGPointMake(btn.centerX + titleWidth / 2.0, btn.centerY - 14 / 2.0 - 2)];
@@ -160,7 +164,91 @@
 }
 
 - (void)rightButtonClick:(id)sender {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@"2" forKey:@"operate"];
+    if (_allButton.selected) {
+        [param setObject:@"2" forKey:@"object"];
+    }
+    if (_needDealButton.selected) {
+        [param setObject:@"3" forKey:@"object"];
+    }
+    if (_cancelButton.selected) {
+        [param setObject:@"1" forKey:@"object"];
+    }
+    if (_finishButton.selected) {
+        [param setObject:@"4" forKey:@"object"];
+    }
+    [Net_API requestPOSTWithURLStr:[Net_Path messageReadNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _messageInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                if (_allButton.selected) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMessageList" object:nil userInfo:@{@"type":@"course"}];
+                }
+                if (_needDealButton.selected) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMessageList" object:nil userInfo:@{@"type":@"comment"}];
+                }
+                if (_cancelButton.selected) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMessageList" object:nil userInfo:@{@"type":@"system"}];
+                }
+                if (_finishButton.selected) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMessageList" object:nil userInfo:@{@"type":@"question"}];
+                }
+                [self setMessageCountInfo];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
 
+/*
+operate
+2
+必填
+【0：进入列表页；1：单个消息已读；2：一键已读；】
+object
+1
+选填
+operate不等于0时必传【1系统消息；2课程提醒）；3互动消息；4提问消息；】
+id
+1
+必填
+operate等于1时必传，消息ID
+ */
+- (void)getUnreadMessageCount {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@"0" forKey:@"operate"];
+    [Net_API requestPOSTWithURLStr:[Net_Path messageReadNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _messageInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                [self setMessageCountInfo];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+/**
+ "comment_unread": 2,
+ "question_unread": 1,
+ "system_unread": 0,
+ "course_unread": 0
+ */
+
+- (void)setMessageCountInfo {
+    if (SWNOTEmptyDictionary(_messageInfo)) {
+        NSString *comment_unread = [NSString stringWithFormat:@"%@",_messageInfo[@"data"][@"comment_unread"]];
+        NSString *question_unread = [NSString stringWithFormat:@"%@",_messageInfo[@"data"][@"question_unread"]];
+        NSString *system_unread = [NSString stringWithFormat:@"%@",_messageInfo[@"data"][@"system_unread"]];
+        NSString *course_unread = [NSString stringWithFormat:@"%@",_messageInfo[@"data"][@"course_unread"]];
+        _unReadLabel1.hidden = ![course_unread integerValue];
+        _unReadLabel2.hidden = ![comment_unread integerValue];
+        _unReadLabel3.hidden = ![system_unread integerValue];
+        _unReadLabel4.hidden = ![question_unread integerValue];
+    }
 }
 
 /*

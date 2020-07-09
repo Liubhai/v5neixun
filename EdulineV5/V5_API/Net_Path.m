@@ -409,4 +409,8 @@
     return [Net_Path fullPath:@"user/system/course" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)messageReadNet {
+    return [Net_Path fullPath:@"user/message/read" repalce:@"" byReplece:@""];
+}
+
 @end

@@ -42,7 +42,7 @@
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
-    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
@@ -104,7 +104,7 @@
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
-    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
@@ -170,7 +170,7 @@
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
-    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
@@ -239,7 +239,7 @@
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
-    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
@@ -320,7 +320,7 @@
         [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
-    [manager.requestSerializer setValue:@"app" forHTTPHeaderField:@"E-DEVICE-TYPE"];
+    [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];

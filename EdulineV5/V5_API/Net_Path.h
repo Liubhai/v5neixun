@@ -322,6 +322,9 @@ struct NetWorkUrl {
 + (NSString *)notifySystemMessageNet;
 /** 互动消息 */
 + (NSString *)notifyCourseMessageNet;
+
+/** 消息设置已读 */
++ (NSString *)messageReadNet;
 @end
 
 NS_ASSUME_NONNULL_END
