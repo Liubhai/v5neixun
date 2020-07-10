@@ -363,6 +363,8 @@
 		78C936CF248FBA2D00D5F1ED /* UserCommenListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936CE248FBA2D00D5F1ED /* UserCommenListVC.m */; };
 		78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936D1248FBC5400D5F1ED /* UserListCell.m */; };
 		78C936D52490DAFF00D5F1ED /* InstitutionCourseMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */; };
+		78D97FF124B83C58000DE0E4 /* ClassCourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */; };
+		78D97FF424B83C9D000DE0E4 /* ClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF324B83C9D000DE0E4 /* ClassCourseCell.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -1082,6 +1084,10 @@
 		78C936D1248FBC5400D5F1ED /* UserListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserListCell.m; sourceTree = "<group>"; };
 		78C936D32490DAFE00D5F1ED /* InstitutionCourseMainVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionCourseMainVC.h; sourceTree = "<group>"; };
 		78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionCourseMainVC.m; sourceTree = "<group>"; };
+		78D97FEF24B83C58000DE0E4 /* ClassCourseListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassCourseListVC.h; sourceTree = "<group>"; };
+		78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassCourseListVC.m; sourceTree = "<group>"; };
+		78D97FF224B83C9D000DE0E4 /* ClassCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassCourseCell.h; sourceTree = "<group>"; };
+		78D97FF324B83C9D000DE0E4 /* ClassCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassCourseCell.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1556,6 +1562,7 @@
 				784FC8E424ACA3B800CAE7A6 /* MySubordinateVC.m */,
 				784FC8E624ACB48F00CAE7A6 /* MyErweimaViewController.h */,
 				784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */,
+				78D97FED24B83C08000DE0E4 /* MyClassCourse */,
 				785A3E112497A14D00298054 /* ApplyPage */,
 				784FC8F324AF29AA00CAE7A6 /* MessageRoot */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
@@ -2605,6 +2612,17 @@
 			path = HomeScrollThird;
 			sourceTree = "<group>";
 		};
+		78D97FED24B83C08000DE0E4 /* MyClassCourse */ = {
+			isa = PBXGroup;
+			children = (
+				78D97FEF24B83C58000DE0E4 /* ClassCourseListVC.h */,
+				78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */,
+				78D97FF224B83C9D000DE0E4 /* ClassCourseCell.h */,
+				78D97FF324B83C9D000DE0E4 /* ClassCourseCell.m */,
+			);
+			path = MyClassCourse;
+			sourceTree = "<group>";
+		};
 		7B328A11FE82EEC19F082C22 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2891,6 +2909,7 @@
 				78A16C8E2452F7C100391430 /* GCDAsyncUdpSocket.m in Sources */,
 				78AA13842440543D007087F7 /* TAAbstractDotView.m in Sources */,
 				7879572C240FA3840013F95F /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
+				78D97FF424B83C9D000DE0E4 /* ClassCourseCell.m in Sources */,
 				78795736240FA3840013F95F /* ZLPhotoPickerCollectionView.m in Sources */,
 				78C549E1241B674F00A33FC4 /* UIColor+AlivcHelper.m in Sources */,
 				78795669240E606F0013F95F /* MyRootViewController.m in Sources */,
@@ -3108,6 +3127,7 @@
 				7839C9972421CB1C002F6595 /* CommentBaseView.m in Sources */,
 				78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */,
 				78795734240FA3840013F95F /* ZLNavigationController.m in Sources */,
+				78D97FF124B83C58000DE0E4 /* ClassCourseListVC.m in Sources */,
 				7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */,
 				7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */,
 				789DB032246924CF001302B4 /* StudyTimeCell.m in Sources */,
