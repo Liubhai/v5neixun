@@ -325,6 +325,16 @@ struct NetWorkUrl {
 
 /** 消息设置已读 */
 + (NSString *)messageReadNet;
+
+// MARK: - 任教授课
+/** 任教授课列表 */
++ (NSString *)classCourseListNet;
+
+/** 班级课下学员列表 */
++ (NSString *)classCourseStudentListNet:(NSString *)courseId;
+
+/** 移除班级课里面的学员 */
++ (NSString *)removeClassCourseStudent:(NSString *)courseId studentId:(NSString *)studentId;
 @end
 
 NS_ASSUME_NONNULL_END

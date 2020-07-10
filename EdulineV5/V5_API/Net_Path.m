@@ -413,4 +413,19 @@
     return [Net_Path fullPath:@"user/message/read" repalce:@"" byReplece:@""];
 }
 
+/** 任教授课列表 */
++ (NSString *)classCourseListNet {
+    return [Net_Path fullPath:@"course/classes/teach" repalce:@"" byReplece:@""];
+}
+
+/** 班级课下学员列表 */
++ (NSString *)classCourseStudentListNet:(NSString *)courseId {
+    return [Net_Path fullPath:@"course/classes/{id}/students" repalce:@"{id}" byReplece:courseId];
+}
+
+/** 移除班级课里面的学员 */
++ (NSString *)removeClassCourseStudent:(NSString *)courseId studentId:(NSString *)studentId {
+    return [Net_Path fullPath:@"course/classes/{id}/student/{user_id}" repalceArray:@[@"{id}",@"{user_id}"] byRepleceArray:@[courseId,studentId]];
+}
+
 @end

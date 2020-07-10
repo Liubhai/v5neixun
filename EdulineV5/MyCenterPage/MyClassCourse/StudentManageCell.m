@@ -63,6 +63,7 @@
 
 - (void)setStudentInfo:(NSDictionary *)dict cellIndexPath:(NSIndexPath *)cellIndexPath {
     _cellIndex = cellIndexPath;
+    
 }
 
 - (void)followButtonClick:(UIButton *)sender {

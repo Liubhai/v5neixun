@@ -62,6 +62,7 @@
     if (!cell) {
         cell = [[StudentManageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
+    [cell setStudentInfo:_dataSource[indexPath.row] cellIndexPath:indexPath];
     return cell;
 }
 
@@ -78,7 +79,7 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path classCourseStudentListNet:_courseId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -106,7 +107,7 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageJoinCourseList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path classCourseStudentListNet:_courseId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }

@@ -46,11 +46,11 @@
     _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;//_dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -59,6 +59,7 @@
     if (!cell) {
         cell = [[ClassCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
+    [cell setClassCourseInfo:_dataSource[indexPath.row]];
     cell.delegate = self;
     return cell;
 }
@@ -76,7 +77,7 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path classCourseListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -104,7 +105,7 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageJoinCourseList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path classCourseListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }

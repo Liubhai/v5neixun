@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface StudentManageVC : BaseViewController
 
+@property (strong, nonatomic) NSString *courseId;
+
 @end
 
 NS_ASSUME_NONNULL_END
