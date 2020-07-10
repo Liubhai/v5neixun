@@ -262,8 +262,8 @@
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:model.cateGoryId];
             [self.navigationController popViewControllerAnimated:YES];
+            return;
         }
-        return;
     }
     
     model.selected = sender.selected;
@@ -302,8 +302,8 @@
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:secondModel.cateGoryId];
             [self.navigationController popViewControllerAnimated:YES];
+            return;
         }
-        return;
     }
     
     NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
@@ -354,8 +354,8 @@
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:thirdModel.cateGoryId];
             [self.navigationController popViewControllerAnimated:YES];
+            return;
         }
-        return;
     }
     
     // 置换第三层model

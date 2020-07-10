@@ -27,6 +27,7 @@
 @property (strong, nonatomic) UILabel *userPriceLabel;
 @property (strong, nonatomic) UIScrollView *mainScrollView;
 @property (strong, nonatomic) UIView *moneyView;
+@property (strong, nonatomic) UILabel *tipSwitchLabel;
 
 @property (strong, nonatomic) UIView *orderTypeView;
 
@@ -277,6 +278,18 @@
         if (_iosArray.count>0 && (_orderRightBtn3.selected || (!isAddAilpayView && !isAddWxpayView && !isAddRechargeCardView))) {
             _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 30);
         }
+    }
+    
+    _tipSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _moneyView.height - 25, _moneyView.width - 15, 20)];
+    _tipSwitchLabel.text = [NSString stringWithFormat:@"注：充值比例为%@",[_balanceInfo[@"data"][@"recharge"] objectForKey:@"ratio"]];
+    _tipSwitchLabel.font = SYSTEMFONT(12);
+    _tipSwitchLabel.textColor = EdlineV5_Color.textThirdColor;
+    [_moneyView addSubview:_tipSwitchLabel];
+    _tipSwitchLabel.hidden = YES;
+    if (_orderRightBtn3.selected) {
+        _tipSwitchLabel.hidden = YES;
+    } else {
+        _tipSwitchLabel.hidden = NO;
     }
     
     [_orderTypeView setTop:CGRectGetMaxY(_moneyView.frame) + 10];

@@ -56,11 +56,16 @@
     
     _levelLabel.text = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([info objectForKey:@"level_text"]) ? [info objectForKey:@"level_text"] : @""];
     
+    _introLabel.frame = CGRectMake(_faceImageView.right + 15, _levelLabel.bottom + 13, MainScreenWidth - 15 - (_faceImageView.right + 15), 18);
     NSString *intro = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([info objectForKey:@"signature"]) ? [info objectForKey:@"signature"] : @""];
     _introLabel.text = intro;
     _introLabel.numberOfLines = 0;
     [_introLabel sizeToFit];
-    [_introLabel setHeight:_introLabel.height];
+    if (_introLabel.height > 40) {
+        [_introLabel setHeight:40];
+    } else {
+        [_introLabel setHeight:_introLabel.height];
+    }
 }
 
 - (void)awakeFromNib {

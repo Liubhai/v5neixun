@@ -49,11 +49,17 @@
     
     _nameLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     
+    _introLabel.frame = CGRectMake(_faceImageView.right + 20, _nameLabel.bottom + 6, MainScreenWidth - 15 - (_faceImageView.right + 20), 18);
+    
     NSString *intro = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([info objectForKey:@"intro"]) ? [info objectForKey:@"intro"] : @""];
     _introLabel.text = intro;
     _introLabel.numberOfLines = 0;
     [_introLabel sizeToFit];
-    [_introLabel setHeight:_introLabel.height];
+    if (_introLabel.height > 40) {
+        [_introLabel setHeight:40];
+    } else {
+        [_introLabel setHeight:_introLabel.height];
+    }
 }
 
 - (void)awakeFromNib {
