@@ -27,6 +27,7 @@
 #import "InstitutionApplyVC.h"
 #import "MyRecommendViewController.h"
 #import "MessageRootVC.h"
+#import "ClassCourseListVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -200,6 +201,9 @@
             [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"address"]) {
             
+        } else if ([iconKey isEqualToString:@"my_classes"]) {
+            ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
 }
@@ -274,6 +278,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"address"]) {
         
+    } else if ([iconKey isEqualToString:@"my_classes"]) {
+        ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

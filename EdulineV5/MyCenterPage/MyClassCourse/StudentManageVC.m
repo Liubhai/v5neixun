@@ -1,18 +1,17 @@
 //
-//  ClassCourseListVC.m
+//  StudentManageVC.m
 //  EdulineV5
 //
 //  Created by 刘邦海 on 2020/7/10.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
-#import "ClassCourseListVC.h"
-#import "V5_Constant.h"
-#import "ClassCourseCell.h"
-#import "Net_Path.h"
 #import "StudentManageVC.h"
+#import "StudentManageCell.h"
+#import "V5_Constant.h"
+#import "Net_Path.h"
 
-@interface ClassCourseListVC ()<UITableViewDelegate, UITableViewDataSource, ClassCourseCellDelegate> {
+@interface StudentManageVC ()<UITableViewDelegate, UITableViewDataSource, StudentManageCellDelegate> {
     NSInteger page;
 }
 
@@ -21,12 +20,16 @@
 
 @end
 
-@implementation ClassCourseListVC
+@implementation StudentManageVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _titleLabel.text = @"任教班级";
+    _titleLabel.text = @"学员管理";
+//    _rightButton.hidden = NO;
+//    [_rightButton setImage:nil forState:0];
+//    [_rightButton setTitle:@"添加" forState:0];
+//    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _dataSource = [NSMutableArray new];
     page = 1;
@@ -46,25 +49,24 @@
     _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;//_dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuse = @"ClassCourseCell";
-    ClassCourseCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+    static NSString *reuse = @"StudentManageCell";
+    StudentManageCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[ClassCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        cell = [[StudentManageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    cell.delegate = self;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 106;
+    return 97;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -126,9 +128,26 @@
     }];
 }
 
-- (void)jumpStudentManageVC {
-    StudentManageVC *vc = [[StudentManageVC alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+- (void)removeStudent:(NSIndexPath *)cellIndexPath {
+    if (SWNOTEmptyArr(_dataSource)) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确定移除该学员吗？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self removeWhichStudent:cellIndexPath];
+        }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [alertController addAction:commentAction];
+        [alertController addAction:cancelAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
+- (void)rightButtonClick:(id)sender {
+    
+}
+
+- (void)removeWhichStudent:(NSIndexPath *)cellIndexPath {
+    
+}
 @end
