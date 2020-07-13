@@ -39,10 +39,11 @@
     _introLabel.textColor = EdlineV5_Color.textThirdColor;
     [self addSubview:_introLabel];
     
-    _dateLineLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _introLabel.top - 5 - 13, MainScreenWidth - 55 - 15 - (_faceImageView.right + 15), 13)];
-    _dateLineLabel.font = SYSTEMFONT(12);
-    _dateLineLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_dateLineLabel];
+//    _dateLineLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _introLabel.top - 5 - 13, MainScreenWidth - 55 - 15 - (_faceImageView.right + 15), 13)];
+//    _dateLineLabel.font = SYSTEMFONT(12);
+//    _dateLineLabel.textColor = EdlineV5_Color.textThirdColor;
+//
+//    [self addSubview:_dateLineLabel];
     
     _followButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 55, 0, 55, 21)];
     _followButton.centerY = _faceImageView.centerY;
@@ -63,7 +64,11 @@
 
 - (void)setStudentInfo:(NSDictionary *)dict cellIndexPath:(NSIndexPath *)cellIndexPath {
     _cellIndex = cellIndexPath;
+    [_faceImageView sd_setImageWithURL:EdulineUrlString([dict objectForKey:@"avatar_url"]) placeholderImage:DefaultImage];
     
+    _nameLabel.text = [NSString stringWithFormat:@"%@",SWNOTEmptyStr([dict objectForKey:@"nick_name"]) ? [dict objectForKey:@"nick_name"] : @""];
+    
+    _introLabel.text = [NSString stringWithFormat:@"获取方式：%@",SWNOTEmptyStr([dict objectForKey:@"from_text"]) ? [dict objectForKey:@"from_text"] : @""];
 }
 
 - (void)followButtonClick:(UIButton *)sender {

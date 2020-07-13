@@ -84,7 +84,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
                 if (_dataSource.count<10) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
@@ -111,7 +111,7 @@
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                NSArray *pass = [NSArray arrayWithArray:[responseObject objectForKey:@"data"]];
                 if (pass.count<10) {
                     [_tableView.mj_footer endRefreshingWithNoMoreData];
                 }
@@ -127,8 +127,9 @@
     }];
 }
 
-- (void)jumpStudentManageVC {
+- (void)jumpStudentManageVC:(NSDictionary *)info {
     StudentManageVC *vc = [[StudentManageVC alloc] init];
+    vc.courseId = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

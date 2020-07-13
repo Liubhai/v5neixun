@@ -14,6 +14,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self makeSubViews];
     }
     return self;
@@ -32,16 +33,13 @@
     [self addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
-    _titleL.text = @"你是个傻屌";
     _titleL.textColor = EdlineV5_Color.textFirstColor;
     _titleL.font = SYSTEMFONT(15);
     [self addSubview:_titleL];
     
     _learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 18, 100, 16)];
     _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
-    _learnCountLabel.text = @"1214人报名";
     _learnCountLabel.font = SYSTEMFONT(12);
-    _learnCountLabel.hidden = YES;
     [self addSubview:_learnCountLabel];
     
     _manageButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 63, 0, 63, 21)];
@@ -55,6 +53,7 @@
 }
 
 - (void)setClassCourseInfo:(NSDictionary *)info {
+    _classCourseInfo = info;
     [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
     // 1 点播 2 直播 3 面授 4 专辑
 //    NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
@@ -78,12 +77,12 @@
         _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
     }
     
-//    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"student_count"]];
 }
 
 - (void)manageButtonClick:(UIButton *)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(jumpStudentManageVC)]) {
-        [_delegate jumpStudentManageVC];
+    if (_delegate && [_delegate respondsToSelector:@selector(jumpStudentManageVC:)]) {
+        [_delegate jumpStudentManageVC:_classCourseInfo];
     }
 }
 

@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ClassCourseCellDelegate <NSObject>
 
 @optional
-- (void)jumpStudentManageVC;
+- (void)jumpStudentManageVC:(NSDictionary *)info;
 
 @end
 
@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *titleL;
 @property (strong, nonatomic) UILabel *learnCountLabel;
 @property (strong, nonatomic) UIButton *manageButton;
+@property (strong, nonatomic) NSDictionary *classCourseInfo;
 
 - (void)setClassCourseInfo:(NSDictionary *)info;
 

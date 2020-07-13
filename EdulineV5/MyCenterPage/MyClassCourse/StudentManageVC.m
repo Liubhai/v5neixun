@@ -86,7 +86,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
                 if (_dataSource.count<10) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
@@ -113,7 +113,7 @@
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                NSArray *pass = [NSArray arrayWithArray:[responseObject objectForKey:@"data"]];
                 if (pass.count<10) {
                     [_tableView.mj_footer endRefreshingWithNoMoreData];
                 }
@@ -149,6 +149,18 @@
 }
 
 - (void)removeWhichStudent:(NSIndexPath *)cellIndexPath {
-    
+    if (_dataSource.count > cellIndexPath.row) {
+        NSString *userId = [NSString stringWithFormat:@"%@",_dataSource[cellIndexPath.row][@"user_id"]];
+        if (SWNOTEmptyStr(userId) && SWNOTEmptyStr(_courseId)) {
+            [Net_API requestDeleteWithURLStr:[Net_Path removeClassCourseStudent:_courseId studentId:userId] paramDic:nil Api_key:nil finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                }
+                [self getFirstList];
+            } enError:^(NSError * _Nonnull error) {
+                [self showHudInView:self.view showHint:@"网络飞走了"];
+            }];
+        }
+    }
 }
 @end
