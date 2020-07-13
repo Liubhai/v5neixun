@@ -146,6 +146,7 @@
             _tableView.mj_footer.hidden = YES;
         } else {
             _tableView.mj_footer.hidden = NO;
+            [_tableView.mj_footer setState:MJRefreshStateIdle];
         }
         [_timeArray removeAllObjects];
         [_allDateArray removeAllObjects];
@@ -179,6 +180,10 @@
                 }
             }
         }
+        [_timeArray removeAllObjects];
+        [_allDateArray removeAllObjects];
+        [_shouldShowYearSectionArray removeAllObjects];
+        [self dealDataSource];
         [_tableView reloadData];
     } enError:^(NSError * _Nonnull error) {
         page--;
