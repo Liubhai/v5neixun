@@ -31,6 +31,7 @@
     
     _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(_selectedIconBtn.right + 10, 10, 153, 86)];
     _courseFace.image = DefaultImage;
+    _courseFace.clipsToBounds = YES;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_courseFace];
     

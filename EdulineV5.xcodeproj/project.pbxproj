@@ -367,6 +367,8 @@
 		78D97FF424B83C9D000DE0E4 /* ClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF324B83C9D000DE0E4 /* ClassCourseCell.m */; };
 		78D97FF724B8458B000DE0E4 /* StudentManageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF624B8458B000DE0E4 /* StudentManageVC.m */; };
 		78D97FFA24B845B2000DE0E4 /* StudentManageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF924B845B2000DE0E4 /* StudentManageCell.m */; };
+		78D980B224BD48A6000DE0E4 /* MyTeachingRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B124BD48A6000DE0E4 /* MyTeachingRootVC.m */; };
+		78D980B524BD48F5000DE0E4 /* MyTeachListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B424BD48F5000DE0E4 /* MyTeachListVC.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -1094,6 +1096,10 @@
 		78D97FF624B8458B000DE0E4 /* StudentManageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StudentManageVC.m; sourceTree = "<group>"; };
 		78D97FF824B845B2000DE0E4 /* StudentManageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudentManageCell.h; sourceTree = "<group>"; };
 		78D97FF924B845B2000DE0E4 /* StudentManageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StudentManageCell.m; sourceTree = "<group>"; };
+		78D980B024BD48A6000DE0E4 /* MyTeachingRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTeachingRootVC.h; sourceTree = "<group>"; };
+		78D980B124BD48A6000DE0E4 /* MyTeachingRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTeachingRootVC.m; sourceTree = "<group>"; };
+		78D980B324BD48F5000DE0E4 /* MyTeachListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTeachListVC.h; sourceTree = "<group>"; };
+		78D980B424BD48F5000DE0E4 /* MyTeachListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTeachListVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1571,6 +1577,7 @@
 				78D97FED24B83C08000DE0E4 /* MyClassCourse */,
 				785A3E112497A14D00298054 /* ApplyPage */,
 				784FC8F324AF29AA00CAE7A6 /* MessageRoot */,
+				78D980AE24BD4886000DE0E4 /* MyTearchRoot */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
 				785A3E1F2499C18D00298054 /* CategoryCommonModel */,
@@ -2633,6 +2640,17 @@
 			path = MyClassCourse;
 			sourceTree = "<group>";
 		};
+		78D980AE24BD4886000DE0E4 /* MyTearchRoot */ = {
+			isa = PBXGroup;
+			children = (
+				78D980B024BD48A6000DE0E4 /* MyTeachingRootVC.h */,
+				78D980B124BD48A6000DE0E4 /* MyTeachingRootVC.m */,
+				78D980B324BD48F5000DE0E4 /* MyTeachListVC.h */,
+				78D980B424BD48F5000DE0E4 /* MyTeachListVC.m */,
+			);
+			path = MyTearchRoot;
+			sourceTree = "<group>";
+		};
 		7B328A11FE82EEC19F082C22 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -3030,6 +3048,7 @@
 				7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */,
 				78AA137F2440543D007087F7 /* UIView+SDExtension.m in Sources */,
 				789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */,
+				78D980B524BD48F5000DE0E4 /* MyTeachListVC.m in Sources */,
 				7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */,
 				78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
@@ -3126,6 +3145,7 @@
 				787F1E66247381A400108F7B /* AVCSlider.m in Sources */,
 				78795721240FA3840013F95F /* ZLCameraViewController.m in Sources */,
 				78C5487E2418CC7400A33FC4 /* TYAttributedLabel.m in Sources */,
+				78D980B224BD48A6000DE0E4 /* MyTeachingRootVC.m in Sources */,
 				78AA139A2445A702007087F7 /* MyCenterBalanceView.m in Sources */,
 				78795739240FA3840013F95F /* ZLPhotoPickerImageView.m in Sources */,
 				787657302435DC81008F475D /* SearchHistoryListCell.m in Sources */,

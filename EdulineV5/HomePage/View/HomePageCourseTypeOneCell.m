@@ -24,6 +24,7 @@
     _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 153, 86)];
     
     _courseFace.image = DefaultImage;
+    _courseFace.clipsToBounds = YES;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_courseFace];
     
@@ -84,6 +85,36 @@
             _priceLabel.textColor = EdlineV5_Color.faildColor;
         }
     }
+    
+    _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
+    _titleL.numberOfLines = 0;
+    _titleL.lineBreakMode = NSLineBreakByTruncatingTail;
+    [_titleL sizeToFit];
+    if (_titleL.height > 40) {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, 40);
+    } else {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
+    }
+}
+
+- (void)setMyTeachingInfo:(NSDictionary *)info {
+    _learnCountLabel.hidden = YES;
+    _priceLabel.hidden = YES;
+    _courseInfoDict = info;
+    [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+    _courseFace.contentMode = UIViewContentModeScaleAspectFill;
+    // 1 点播 2 直播 3 面授 4 专辑
+    NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+    if ([courseType isEqualToString:@"1"]) {
+        _courseTypeImage.image = Image(@"dianbo");
+    } else if ([courseType isEqualToString:@"2"]) {
+        _courseTypeImage.image = Image(@"live");
+    } else if ([courseType isEqualToString:@"3"]) {
+        _courseTypeImage.image = Image(@"mianshou");
+    } else if ([courseType isEqualToString:@"4"]) {
+        _courseTypeImage.image = Image(@"album_icon");
+    }
+    _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     
     _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
     _titleL.numberOfLines = 0;

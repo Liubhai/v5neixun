@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setHomePageCourseTypeOneCellInfo:(NSDictionary *)info;
 
+- (void)setMyTeachingInfo:(NSDictionary *)info;
+
 @end
 
 NS_ASSUME_NONNULL_END
