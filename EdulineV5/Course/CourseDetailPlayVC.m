@@ -767,7 +767,7 @@
         return;
     }
     NSString *isBuy = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"is_buy"]];
-    if ([isBuy isEqualToString:@"1"]) {
+    if ([isBuy isEqualToString:@"1"] || currentCourseFinalModel.model.is_buy) {
         CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
         vc.isComment = NO;
         vc.courseId = _ID;
