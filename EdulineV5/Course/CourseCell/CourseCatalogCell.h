@@ -11,6 +11,7 @@
 #import "CourseListModel.h"
 #import "CourseListModelFinal.h"
 #import "playAnimationView.h"
+#import "NewClassCourseModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

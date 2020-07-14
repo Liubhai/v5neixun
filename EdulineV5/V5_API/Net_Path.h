@@ -63,6 +63,9 @@ struct NetWorkUrl {
 /** 课程课时目录列表 */
 + (NSString *)courseList:(NSString *)courseId pid:(NSString *)pid;
 
+/** 班级课目录列表 */
++ (NSString *)classCourseList:(NSString *)classCourseId;
+
 /** 课程主页课程列表 */
 + (NSString *)courseMainList;
 

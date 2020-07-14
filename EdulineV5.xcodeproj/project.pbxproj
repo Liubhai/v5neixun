@@ -369,6 +369,8 @@
 		78D97FFA24B845B2000DE0E4 /* StudentManageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF924B845B2000DE0E4 /* StudentManageCell.m */; };
 		78D980B224BD48A6000DE0E4 /* MyTeachingRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B124BD48A6000DE0E4 /* MyTeachingRootVC.m */; };
 		78D980B524BD48F5000DE0E4 /* MyTeachListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B424BD48F5000DE0E4 /* MyTeachListVC.m */; };
+		78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */; };
+		78D980BB24BDB737000DE0E4 /* NewClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -1100,6 +1102,10 @@
 		78D980B124BD48A6000DE0E4 /* MyTeachingRootVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTeachingRootVC.m; sourceTree = "<group>"; };
 		78D980B324BD48F5000DE0E4 /* MyTeachListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTeachListVC.h; sourceTree = "<group>"; };
 		78D980B424BD48F5000DE0E4 /* MyTeachListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTeachListVC.m; sourceTree = "<group>"; };
+		78D980B624BDB385000DE0E4 /* NewClassCourseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewClassCourseModel.h; sourceTree = "<group>"; };
+		78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseModel.m; sourceTree = "<group>"; };
+		78D980B924BDB737000DE0E4 /* NewClassCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewClassCourseCell.h; sourceTree = "<group>"; };
+		78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseCell.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1207,6 +1213,8 @@
 				7839C99C2423044A002F6595 /* CourseRecordCell.m */,
 				7839C9A4242368A2002F6595 /* CourseCatalogCell.h */,
 				7839C9A5242368A2002F6595 /* CourseCatalogCell.m */,
+				78D980B924BDB737000DE0E4 /* NewClassCourseCell.h */,
+				78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */,
 				7853BDBD2428A43D00F096EC /* CourseSearchListCell.h */,
 				7853BDBE2428A43D00F096EC /* CourseSearchListCell.m */,
 				7853BDD1242D964300F096EC /* ShitikaCell.h */,
@@ -1291,6 +1299,8 @@
 				7853BDB82428957600F096EC /* CourseListModel.m */,
 				7853BDC32429F4FC00F096EC /* CourseListModelFinal.h */,
 				7853BDC42429F4FC00F096EC /* CourseListModelFinal.m */,
+				78D980B624BDB385000DE0E4 /* NewClassCourseModel.h */,
+				78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */,
 				789DB01324593041001302B4 /* CouponModel.h */,
 				789DB01424593041001302B4 /* CouponModel.m */,
 				789DB016245A76A1001302B4 /* ShopCarModel.h */,
@@ -2953,6 +2963,7 @@
 				78795733240FA3840013F95F /* ZLPhotoPickerAssetsViewController.m in Sources */,
 				789DB041246A4436001302B4 /* MycouponsRootVC.m in Sources */,
 				78C549CC241B674E00A33FC4 /* AlivcLocalDatabaseManager.m in Sources */,
+				78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */,
 				78AA13822440543D007087F7 /* TAPageControl.m in Sources */,
 				784E5D0124AC8A9500646916 /* MyRecommendViewController.m in Sources */,
 				784E5CEA24A9802D00646916 /* HcdGuideView.m in Sources */,
@@ -3079,6 +3090,7 @@
 				78C936D52490DAFF00D5F1ED /* InstitutionCourseMainVC.m in Sources */,
 				78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */,
 				78795759240FAA7A0013F95F /* NSDateFormatter+Category.m in Sources */,
+				78D980BB24BDB737000DE0E4 /* NewClassCourseCell.m in Sources */,
 				78D97FFA24B845B2000DE0E4 /* StudentManageCell.m in Sources */,
 				78C549C3241B674E00A33FC4 /* AlivcStringDrawing.m in Sources */,
 				7879572A240FA3840013F95F /* ZLPhotoPickerBrowserPhotoView.m in Sources */,

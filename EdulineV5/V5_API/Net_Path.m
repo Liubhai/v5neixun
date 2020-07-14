@@ -76,6 +76,10 @@
     return [Net_Path fullPath:@"/course/base/{id}/section/{pid}" repalceArray:@[@"{id}",@"{pid}"] byRepleceArray:@[courseId,pid]];
 }
 
++ (NSString *)classCourseList:(NSString *)classCourseId {
+    return [Net_Path fullPath:@"course/classes/{id}/menu" repalce:@"{id}" byReplece:classCourseId];
+}
+
 + (NSString *)courseMainList {
     return [Net_Path fullPath:@"/course/base/list" repalce:@"" byReplece:@""];
 }
