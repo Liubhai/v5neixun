@@ -101,6 +101,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    _isClassNew = YES;
     /// 新增内容
     self.canScroll = YES;
     self.canScrollAfterVideoPlay = YES;
@@ -676,11 +677,7 @@
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
-                    if (_isClassNew) {
-                        _courselayer = @"4";
-                    } else {
-                        _courselayer = [NSString stringWithFormat:@"%@",_dataSource[@"section_level"]];
-                    }
+                    _courselayer = [NSString stringWithFormat:@"%@",_dataSource[@"section_level"]];
                     [self setCourseInfoData];
                 }
             }

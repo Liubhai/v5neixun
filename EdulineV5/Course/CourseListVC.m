@@ -185,58 +185,30 @@
 }
 
 - (void)getCourseListData {
-    if (_isClassCourse) {
-        if (SWNOTEmptyStr(_courseId)) {
-            [Net_API requestGETSuperAPIWithURLStr:[Net_Path classCourseList:_courseId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
-                if (SWNOTEmptyDictionary(responseObject)) {
-                    if ([[responseObject objectForKey:@"code"] integerValue]) {
-                        [_courseListArray removeAllObjects];
-                        NSArray *pass = [NSArray arrayWithArray:[NewClassCourseModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
-//                        _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
-//                        if ([_courselayer isEqualToString:@"1"]) {
-//                            cellCouserlayar = @"3";
-//                        } else if ([_courselayer isEqualToString:@"2"]) {
-//                            cellCouserlayar = @"2";
-//                        } else {
-//                            cellCouserlayar = @"1";
-//                        }
-//                        for (NewClassCourseModel *object in pass) {
-//                            CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
-//                            [_courseListArray addObject:model];
-//                        }
-                        [_tableView reloadData];
+    if (SWNOTEmptyStr(_courseId)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:@"0"] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [_courseListArray removeAllObjects];
+                    NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
+                    _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
+                    if ([_courselayer isEqualToString:@"1"]) {
+                        cellCouserlayar = @"3";
+                    } else if ([_courselayer isEqualToString:@"2"]) {
+                        cellCouserlayar = @"2";
+                    } else {
+                        cellCouserlayar = @"1";
                     }
-                }
-            } enError:^(NSError * _Nonnull error) {
-                NSLog(@"课程目录请求失败 = %@",error);
-            }];
-        }
-    } else {
-        if (SWNOTEmptyStr(_courseId)) {
-            [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:@"0"] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
-                if (SWNOTEmptyDictionary(responseObject)) {
-                    if ([[responseObject objectForKey:@"code"] integerValue]) {
-                        [_courseListArray removeAllObjects];
-                        NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
-                        _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
-                        if ([_courselayer isEqualToString:@"1"]) {
-                            cellCouserlayar = @"3";
-                        } else if ([_courselayer isEqualToString:@"2"]) {
-                            cellCouserlayar = @"2";
-                        } else {
-                            cellCouserlayar = @"1";
-                        }
-                        for (CourseListModel *object in pass) {
-                            CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
-                            [_courseListArray addObject:model];
-                        }
-                        [_tableView reloadData];
+                    for (CourseListModel *object in pass) {
+                        CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
+                        [_courseListArray addObject:model];
                     }
+                    [_tableView reloadData];
                 }
-            } enError:^(NSError * _Nonnull error) {
-                NSLog(@"课程目录请求失败 = %@",error);
-            }];
-        }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            NSLog(@"课程目录请求失败 = %@",error);
+        }];
     }
 }
 
