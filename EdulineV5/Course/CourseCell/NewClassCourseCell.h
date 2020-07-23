@@ -16,11 +16,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class NewClassCourseCell;
+
+@protocol NewClassCourseCellDelegate <NSObject>
+
+@optional
+- (void)getCourseFirstList:(NewClassCourseCell *)cell;
+
+@end
+
 @interface NewClassCourseCell : UITableViewCell<UITableViewDelegate, UITableViewDataSource,CourseCatalogCellDelegate>
 
 @property (strong, nonatomic) UIImageView *typeIcon;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UIButton *courseRightBtn;
+
+@property (assign, nonatomic) id<NewClassCourseCellDelegate> delegate;
 
 
 @property (strong, nonatomic) UITableView *cellTableView;
@@ -37,6 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) CourseListModelFinal *listFinalModel;//CourseListModelFinal
 
 @property (strong, nonatomic) NewClassCourseModel *newClassModel;
+
+- (void)setNewClassCourseModelInfo:(NewClassCourseModel *)model;
+
 @end
 
 NS_ASSUME_NONNULL_END

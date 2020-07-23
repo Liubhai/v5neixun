@@ -117,6 +117,14 @@
     return cell;
 }
 
+- (void)setNewClassCourseModelInfo:(NewClassCourseModel *)model {
+    _typeIcon.image = [model.course_type isEqualToString:@"1"] ? Image(@"zj_dianbo") : Image(@"zj_live");
+    _titleLabel.text = SWNOTEmptyStr(model.title) ? model.title : @"";
+    if (<#condition#>) {
+        <#statements#>
+    }
+}
+
 - (void)setListInfo:(CourseListModelFinal *)model {
     _listFinalModel = model;
     _listModel = model.model;
