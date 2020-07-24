@@ -25,31 +25,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface NewClassCourseCell : UITableViewCell<UITableViewDelegate, UITableViewDataSource,CourseCatalogCellDelegate>
+@interface NewClassCourseCell : UITableViewCell<CourseCatalogCellDelegate>
 
+
+@property (strong, nonatomic) UIImageView *CourseTypeIcon;
+@property (strong, nonatomic) UIView *blueView;
 @property (strong, nonatomic) UIImageView *typeIcon;
+@property (strong, nonatomic) UIImageView *lockIcon;
 @property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) UIButton *courseRightBtn;
+@property (strong, nonatomic) UIImageView *freeImageView;
+@property (strong, nonatomic) UILabel *priceLabel;
+@property (strong, nonatomic) UIImageView *courseRightBtn;
+@property (strong, nonatomic) UIImageView *learnIcon;
+@property (strong, nonatomic) UILabel *learnTimeLabel;
+@property (strong, nonatomic) playAnimationView *isLearningIcon;
+@property (strong, nonatomic) CourseListModel *treeItem;
 
-@property (assign, nonatomic) id<NewClassCourseCellDelegate> delegate;
+- (void)updateItem;
 
-
-@property (strong, nonatomic) UITableView *cellTableView;
-@property (strong, nonatomic) NSMutableArray *dataSource;
-@property (strong, nonatomic) UIView *cellTableViewSpace;
-@property (assign, nonatomic) NSInteger cellRow;
-@property (assign, nonatomic) NSInteger cellSection;
-
-@property (strong, nonatomic) NSString *courselayer; // 1 一层 2 二层 3 三层(涉及到目录布局) 自己属于第几层样式
-@property (strong, nonatomic) NSString *allLayar;// 总共有几层
-@property (assign, nonatomic) BOOL isMainPage; // yes 详情页面目录 no 播放页面目录
-@property (assign, nonatomic) BOOL isLive;//是不是直播  区分直播详情页和其他类型详情页
-@property (strong, nonatomic) CourseListModel *listModel;
-@property (strong, nonatomic) CourseListModelFinal *listFinalModel;//CourseListModelFinal
-
-@property (strong, nonatomic) NewClassCourseModel *newClassModel;
-
-- (void)setNewClassCourseModelInfo:(NewClassCourseModel *)model;
+- (void)setCourseInfo:(CourseListModel *)model;
 
 @end
 

@@ -74,6 +74,9 @@
 		7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFB2432028E00F096EC /* NTESQLHomePageCustomUIModel.m */; };
 		7853BE002433352E00F096EC /* LingquanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BDFF2433352D00F096EC /* LingquanViewController.m */; };
 		7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */; };
+		7859FE3724C979F0006C7D4E /* CourseTreeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7859FE3624C979F0006C7D4E /* CourseTreeListViewController.m */; };
+		7859FE3C24C97B8A006C7D4E /* MYTreeTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7859FE3924C97B89006C7D4E /* MYTreeTableManager.m */; };
+		7859FE3D24C97B8A006C7D4E /* MYTreeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7859FE3B24C97B8A006C7D4E /* MYTreeItem.m */; };
 		785A3E152497A16B00298054 /* TeacherApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E142497A16B00298054 /* TeacherApplyVC.m */; };
 		785A3E1A2498757200298054 /* ScanPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E182498757200298054 /* ScanPhotoViewController.m */; };
 		785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E192498757200298054 /* UIActionSheet+Blocks.m */; };
@@ -534,6 +537,12 @@
 		7853BDFF2433352D00F096EC /* LingquanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LingquanViewController.m; sourceTree = "<group>"; };
 		7853BE0124342A0900F096EC /* ShopCarManagerFinalVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopCarManagerFinalVC.h; sourceTree = "<group>"; };
 		7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopCarManagerFinalVC.m; sourceTree = "<group>"; };
+		7859FE3524C979F0006C7D4E /* CourseTreeListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseTreeListViewController.h; sourceTree = "<group>"; };
+		7859FE3624C979F0006C7D4E /* CourseTreeListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTreeListViewController.m; sourceTree = "<group>"; };
+		7859FE3824C97B89006C7D4E /* MYTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTreeItem.h; sourceTree = "<group>"; };
+		7859FE3924C97B89006C7D4E /* MYTreeTableManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTreeTableManager.m; sourceTree = "<group>"; };
+		7859FE3A24C97B89006C7D4E /* MYTreeTableManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTreeTableManager.h; sourceTree = "<group>"; };
+		7859FE3B24C97B8A006C7D4E /* MYTreeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTreeItem.m; sourceTree = "<group>"; };
 		785A3E132497A16B00298054 /* TeacherApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherApplyVC.h; sourceTree = "<group>"; };
 		785A3E142497A16B00298054 /* TeacherApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherApplyVC.m; sourceTree = "<group>"; };
 		785A3E162498757000298054 /* ScanPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanPhotoViewController.h; sourceTree = "<group>"; };
@@ -1178,6 +1187,7 @@
 				7853BDDB2431A1AE00F096EC /* ShopCarManagerVC.m */,
 				7853BE0124342A0900F096EC /* ShopCarManagerFinalVC.h */,
 				7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */,
+				7859FE3324C978C5006C7D4E /* TreeTableView */,
 				7853BDB52428956B00F096EC /* CourseModel */,
 				7839C98A2420D036002F6595 /* CourseCell */,
 				7839C976241F7B25002F6595 /* courseView */,
@@ -1320,6 +1330,19 @@
 				7853BDFF2433352D00F096EC /* LingquanViewController.m */,
 			);
 			path = OrderPage;
+			sourceTree = "<group>";
+		};
+		7859FE3324C978C5006C7D4E /* TreeTableView */ = {
+			isa = PBXGroup;
+			children = (
+				7859FE3824C97B89006C7D4E /* MYTreeItem.h */,
+				7859FE3B24C97B8A006C7D4E /* MYTreeItem.m */,
+				7859FE3A24C97B89006C7D4E /* MYTreeTableManager.h */,
+				7859FE3924C97B89006C7D4E /* MYTreeTableManager.m */,
+				7859FE3524C979F0006C7D4E /* CourseTreeListViewController.h */,
+				7859FE3624C979F0006C7D4E /* CourseTreeListViewController.m */,
+			);
+			path = TreeTableView;
 			sourceTree = "<group>";
 		};
 		785A3E112497A14D00298054 /* ApplyPage */ = {
@@ -3088,6 +3111,7 @@
 				784E5CEB24A9802D00646916 /* HcdGuideViewCell.m in Sources */,
 				787F1E7A247381A400108F7B /* AliyunGestureModel.m in Sources */,
 				78C936D52490DAFF00D5F1ED /* InstitutionCourseMainVC.m in Sources */,
+				7859FE3C24C97B8A006C7D4E /* MYTreeTableManager.m in Sources */,
 				78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */,
 				78795759240FAA7A0013F95F /* NSDateFormatter+Category.m in Sources */,
 				78D980BB24BDB737000DE0E4 /* NewClassCourseCell.m in Sources */,
@@ -3130,6 +3154,7 @@
 				785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */,
 				7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */,
 				78A16C8D2452F7C100391430 /* TICDevice.m in Sources */,
+				7859FE3D24C97B8A006C7D4E /* MYTreeItem.m in Sources */,
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,
 				7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */,
 				789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */,
@@ -3151,6 +3176,7 @@
 				7853BDB92428957600F096EC /* CourseListModel.m in Sources */,
 				789DB044246A4499001302B4 /* MycouponsListVC.m in Sources */,
 				787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */,
+				7859FE3724C979F0006C7D4E /* CourseTreeListViewController.m in Sources */,
 				7879572B240FA3840013F95F /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				78A16C882452F7C100391430 /* NetworkClock.m in Sources */,
 				78C54975241B642B00A33FC4 /* AlivcPushBeautyParams.m in Sources */,

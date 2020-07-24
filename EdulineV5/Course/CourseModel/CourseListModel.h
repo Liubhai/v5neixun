@@ -47,8 +47,21 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL is_buy;
 @property (assign, nonatomic) unsigned int audition;
 @property (strong, nonatomic) NSString *course_type;
+@property (strong, nonatomic) NSString *course_type_text;
 @property (strong, nonatomic) section_data_model *section_data;
 @property (strong, nonatomic) section_rate_model *section_rate;
+
+@property (nonatomic, weak)   CourseListModel *parentItem;
+@property (nonatomic, strong) NSMutableArray<CourseListModel *> *childItems;
+@property (nonatomic, assign) BOOL isLeaf;       // 是否叶子节点
+@property (nonatomic, assign) NSUInteger level;
+@property (nonatomic, assign) BOOL isExpand;
+@property (nonatomic, strong) NSString *parentID;  // 父级节点唯一标识
+@property (nonatomic, strong) NSString *orderNo;   // 序号
+@property (nonatomic, strong) NSString *type;      // 类型
+
+@property (assign, nonatomic) BOOL isMainPage; // yes 详情页面目录 no 播放页面目录
+@property (assign, nonatomic) BOOL isPlaying; // yes 正在播放 no
 
 
 @end
