@@ -16,7 +16,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol CourseTreeListViewControllerDelegate <NSObject>
+
+@optional
+- (void)newClassCourseCellDidSelected:(CourseListModel *)model indexpath:(NSIndexPath *)indexpath;
+
+@end
+
 @interface CourseTreeListViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
+
+@property (weak, nonatomic) id<CourseTreeListViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) MYTreeTableManager *manager;
 @property (strong, nonatomic) NSString *courseId;

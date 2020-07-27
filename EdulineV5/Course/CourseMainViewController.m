@@ -19,6 +19,7 @@
 #import "CourseCommentViewController.h"
 #import "CourseIntroductionVC.h"
 #import "CourseListVC.h"
+#import "CourseTreeListViewController.h"
 #import "CourseDetailPlayVC.h"
 #import "LingquanViewController.h"
 #import "InstitutionRootVC.h"
@@ -34,7 +35,7 @@
 
 #define FaceImageHeight 207
 
-@interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate> {
+@interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate> {
     // 新增内容
     CGFloat sectionHeight;
     BOOL shouldLoad;
@@ -43,6 +44,7 @@
 /**三大子页面*/
 @property (strong, nonatomic) CourseIntroductionVC *courseIntroduce;
 @property (strong, nonatomic) CourseListVC *courseListVC;
+@property (strong, nonatomic) CourseTreeListViewController *courseTreeListVC;
 @property (strong, nonatomic) CourseCommentListVC *commentVC;
 
 /**封面*/
@@ -107,6 +109,9 @@
     self.canScrollAfterVideoPlay = YES;
     
     _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评"]];
+    if ([_courseType isEqualToString:@"4"]) {
+        _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评",@"新增学员"]];
+    }
     
     self.canScroll = YES;
     _titleLabel.text = @"课程详情";
@@ -234,6 +239,8 @@
                     self.courseButton = btn;
                 } else if (i == 2) {
                     self.commentButton = btn;
+                } else if (i == 3) {
+                    self.recordButton = btn;
                 }
                 [_bg addSubview:btn];
             }
@@ -281,35 +288,64 @@
             [_courseIntroduce changeMainScrollViewHeight:sectionHeight - 47];
         }
         
-        if (_courseListVC == nil) {
-            _courseListVC = [[CourseListVC alloc] init];
-            _courseListVC.courseId = _ID;
-            _courseListVC.courselayer = _courselayer;
-            _courseListVC.isMainPage = YES;
-            _courseListVC.isClassCourse = _isClassNew;
-            _courseListVC.sid = _sid;
-            _courseListVC.tabelHeight = sectionHeight - 47;
-            _courseListVC.vc = self;
-            _courseListVC.delegate = self;
-            _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-            _courseListVC.videoInfoDict = _dataSource;
-            _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
-            [self.mainScroll addSubview:_courseListVC.view];
-            [self addChildViewController:_courseListVC];
-//            [self addBlockCategory:_courseListVC];
+        if ([_courseType isEqualToString:@"4"]) {
+            if (_courseTreeListVC == nil) {
+                _courseTreeListVC = [[CourseTreeListViewController alloc] init];
+                _courseTreeListVC.courseId = _ID;
+                _courseTreeListVC.courselayer = _courselayer;
+                _courseTreeListVC.isMainPage = YES;
+                _courseTreeListVC.sid = _sid;
+                _courseTreeListVC.tabelHeight = sectionHeight - 47;
+                _courseTreeListVC.vc = self;
+                _courseTreeListVC.delegate = self;
+                _courseTreeListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+                _courseTreeListVC.videoInfoDict = _dataSource;
+                _courseTreeListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                [self.mainScroll addSubview:_courseTreeListVC.view];
+                [self addChildViewController:_courseTreeListVC];
+            } else {
+                _courseTreeListVC.courseId = _ID;
+                _courseTreeListVC.courselayer = _courselayer;
+                _courseTreeListVC.isMainPage = YES;
+                _courseTreeListVC.sid = _sid;
+                _courseTreeListVC.tabelHeight = sectionHeight - 47;
+                _courseTreeListVC.vc = self;
+                _courseTreeListVC.delegate = self;
+                _courseTreeListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+                _courseTreeListVC.videoInfoDict = _dataSource;
+                _courseTreeListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                _courseTreeListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+            }
         } else {
-            _courseListVC.courseId = _ID;
-            _courseListVC.courselayer = _courselayer;
-            _courseListVC.isMainPage = YES;
-            _courseListVC.isClassCourse = _isClassNew;
-            _courseListVC.sid = _sid;
-            _courseListVC.tabelHeight = sectionHeight - 47;
-            _courseListVC.vc = self;
-            _courseListVC.delegate = self;
-            _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-            _courseListVC.videoInfoDict = _dataSource;
-            _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
-            _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+            if (_courseListVC == nil) {
+                _courseListVC = [[CourseListVC alloc] init];
+                _courseListVC.courseId = _ID;
+                _courseListVC.courselayer = _courselayer;
+                _courseListVC.isMainPage = YES;
+                _courseListVC.isClassCourse = _isClassNew;
+                _courseListVC.sid = _sid;
+                _courseListVC.tabelHeight = sectionHeight - 47;
+                _courseListVC.vc = self;
+                _courseListVC.delegate = self;
+                _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+                _courseListVC.videoInfoDict = _dataSource;
+                _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                [self.mainScroll addSubview:_courseListVC.view];
+                [self addChildViewController:_courseListVC];
+            } else {
+                _courseListVC.courseId = _ID;
+                _courseListVC.courselayer = _courselayer;
+                _courseListVC.isMainPage = YES;
+                _courseListVC.isClassCourse = _isClassNew;
+                _courseListVC.sid = _sid;
+                _courseListVC.tabelHeight = sectionHeight - 47;
+                _courseListVC.vc = self;
+                _courseListVC.delegate = self;
+                _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+                _courseListVC.videoInfoDict = _dataSource;
+                _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+            }
         }
         
         if (_commentVC == nil) {
@@ -413,9 +449,16 @@
                 self.canScroll = NO;
                 for (UIViewController *vc in self.childViewControllers) {
                     if (self.courseButton.selected) {
-                        if ([vc isKindOfClass:[CourseListVC class]]) {
-                            CourseListVC *vccomment = (CourseListVC *)vc;
-                            vccomment.cellTabelCanScroll = YES;
+                        if ([_courseType isEqualToString:@"4"]) {
+                            if ([vc isKindOfClass:[CourseTreeListViewController class]]) {
+                                CourseTreeListViewController *vccomment = (CourseTreeListViewController *)vc;
+                                vccomment.cellTabelCanScroll = YES;
+                            }
+                        } else {
+                            if ([vc isKindOfClass:[CourseListVC class]]) {
+                                CourseListVC *vccomment = (CourseListVC *)vc;
+                                vccomment.cellTabelCanScroll = YES;
+                            }
                         }
                     }
                     if (self.introButton.selected) {
@@ -665,6 +708,32 @@
     vc.ID = _ID;
     vc.courselayer = _courselayer;
     vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
+    vc.isLive = _isLive;
+    vc.courseType = _courseType;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)newClassCourseCellDidSelected:(CourseListModel *)model indexpath:(nonnull NSIndexPath *)indexpath {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    if (model.audition <= 0 && !model.is_buy) {
+        if ([model.price floatValue] > 0) {
+            OrderViewController *vc = [[OrderViewController alloc] init];
+            vc.orderTypeString = @"courseHourse";
+            vc.orderId = model.classHourId;
+            [self.navigationController pushViewController:vc animated:YES];
+            [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
+        } else {
+            [self showHudInView:self.view showHint:@"需解锁该课程"];
+        }
+        return;
+    }
+    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+    vc.ID = _ID;
+    vc.courselayer = _courselayer;
+    vc.currentHourseId = [NSString stringWithFormat:@"%@",model.classHourId];
     vc.isLive = _isLive;
     vc.courseType = _courseType;
     [self.navigationController pushViewController:vc animated:YES];

@@ -19,13 +19,6 @@
 
 @implementation CourseTreeListViewController
 
-//- (void)setManager:(MYTreeTableManager *)manager {
-//    _manager = manager;
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.tableView reloadData];
-//    });
-//}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -43,8 +36,8 @@
 }
 
 - (void)addTableView {
-//    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _tabelHeight)];
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _tabelHeight)];
+//    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
@@ -79,6 +72,9 @@
     CourseListModel *item = self.manager.showItems[indexPath.row];
     if ([item.type isEqualToString:@"课时"]) {
         // 跳转到播放页面
+        if (_delegate && [_delegate respondsToSelector:@selector(newClassCourseCellDidSelected:indexpath:)]) {
+            [_delegate newClassCourseCellDidSelected:item indexpath:indexPath];
+        }
     } else {
         if (!item.isExpand) {
             item.isExpand = !item.isExpand;
@@ -133,6 +129,27 @@
     for (NSIndexPath *indexPath in updateIndexPaths) {
         NewClassCourseCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         [cell updateItem];
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (!self.cellTabelCanScroll) {
+        scrollView.contentOffset = CGPointZero;
+    }
+    if (scrollView.contentOffset.y <= 0) {
+        if (self.vc) {
+            if (self.vc.canScrollAfterVideoPlay == YES) {
+                self.cellTabelCanScroll = NO;
+                scrollView.contentOffset = CGPointZero;
+                self.vc.canScroll = YES;
+            }
+        } else {
+            if (self.detailVC.canScrollAfterVideoPlay == YES) {
+                self.cellTabelCanScroll = NO;
+                scrollView.contentOffset = CGPointZero;
+                self.detailVC.canScroll = YES;
+            }
+        }
     }
 }
 

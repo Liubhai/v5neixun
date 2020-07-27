@@ -47,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *vip_date;
 @property (strong, nonatomic) NSString *recharge_price;
 @property (strong, nonatomic) NSString *course_id;
+@property (strong, nonatomic) NSString *course_type;
 @property (strong, nonatomic) NSString *use_stime;
 @property (strong, nonatomic) NSString *use_etime;
 @property (strong, nonatomic) NSString *count;

@@ -155,6 +155,8 @@
         _courseRightBtn.hidden = YES;
         
         
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
+        
         if (model.audition > 0) {
             _freeImageView.hidden = NO;
         } else {
@@ -173,8 +175,6 @@
                 _freeImageView.hidden = YES;
             }
         }
-        
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
         
         CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
         CGFloat titleWidth = ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4) > 150 ? 150 : ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4);

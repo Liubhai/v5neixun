@@ -135,6 +135,8 @@
         // 跳转对应的课程详情
         CourseMainViewController *vc = [[CourseMainViewController alloc] init];
         vc.ID = [NSString stringWithFormat:@"%@",cell.couponModel.course_id];
+        // 这里必须要传值是什么课程类型 1 点播 2 直播  3 面授  4 班级课
+        vc.courseType = [NSString stringWithFormat:@"%@",cell.couponModel.course_type];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 跳转对应机构
