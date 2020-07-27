@@ -70,20 +70,25 @@
         cell = [[NewClassCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
     CourseListModel *item = self.manager.showItems[indexPath.row];
-    [cell setCourseInfo:item];
+    [cell setCourseInfo:item isMainPage:_isMainPage];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     CourseListModel *item = self.manager.showItems[indexPath.row];
-    if (!item.isExpand) {
-        item.isExpand = !item.isExpand;
-        [self.manager.showItems replaceObjectAtIndex:indexPath.row withObject:item];
-        [self getCourseListArray:item indepath:indexPath];
+    if ([item.type isEqualToString:@"课时"]) {
+        // 跳转到播放页面
     } else {
-        [self tableView:tableView didSelectItems:@[item] isExpand:!item.isExpand];
+        if (!item.isExpand) {
+            item.isExpand = !item.isExpand;
+            [self.manager.showItems replaceObjectAtIndex:indexPath.row withObject:item];
+            [self getCourseListArray:item indepath:indexPath];
+        } else {
+            [self tableView:tableView didSelectItems:@[item] isExpand:!item.isExpand];
+        }
     }
+    
 }
 
 #pragma mark - Private Method
@@ -120,7 +125,9 @@
     if (isExpand) {
         [tableView insertRowsAtIndexPaths:editIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
-        [tableView deleteRowsAtIndexPaths:editIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+//        [tableView deleteRowsAtIndexPaths:editIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        // 上面 delete 方法有弊端  暂不清楚原因 这里直接 table 刷新
+        [_tableView reloadData];
     }
     
     for (NSIndexPath *indexPath in updateIndexPaths) {
@@ -212,17 +219,36 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     NSMutableArray *newArray = [NSMutableArray new];
                     NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
+                    NSString *section_level = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"section_level"]];
                     if (SWNOTEmptyArr(pass)) {
                         [pass enumerateObjectsUsingBlock:^(CourseListModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
                             obj.parentID = model.course_id;
                             obj.parentItem = model;
                             obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
-                            if ([model.type isEqualToString:@"课程"]) {
-                                obj.type = @"章";
-                            } else if ([model.type isEqualToString:@"章"]) {
-                                obj.type = @"节";
-                            } else if ([model.type isEqualToString:@"节"]) {
-                                obj.type = @"课时";
+                            if ([section_level isEqualToString:@"1"]) {
+                                if ([model.type isEqualToString:@"课程"]) {
+                                    obj.type = @"课时";
+                                } else if ([model.type isEqualToString:@"章"]) {
+                                    obj.type = @"节";
+                                } else if ([model.type isEqualToString:@"节"]) {
+                                    obj.type = @"课时";
+                                }
+                            } else if ([section_level isEqualToString:@"2"]) {
+                                if ([model.type isEqualToString:@"课程"]) {
+                                    obj.type = @"节";
+                                } else if ([model.type isEqualToString:@"章"]) {
+                                    obj.type = @"节";
+                                } else if ([model.type isEqualToString:@"节"]) {
+                                    obj.type = @"课时";
+                                }
+                            } else if ([section_level isEqualToString:@"3"]) {
+                                if ([model.type isEqualToString:@"课程"]) {
+                                    obj.type = @"章";
+                                } else if ([model.type isEqualToString:@"章"]) {
+                                    obj.type = @"节";
+                                } else if ([model.type isEqualToString:@"节"]) {
+                                    obj.type = @"课时";
+                                }
                             }
                             [newArray addObject:obj];
                         }];
@@ -230,8 +256,6 @@
                         model.childItems = newArray;
                         
                         [_manager.showItems insertObjects:newArray atIndex:path.row + 1];
-                        
-                        [_tableView reloadData];
                     }
 //                    for (CourseListModel *object in pass) {
 //                        object.parentID = model.course_id;

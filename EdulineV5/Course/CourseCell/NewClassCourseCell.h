@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateItem;
 
-- (void)setCourseInfo:(CourseListModel *)model;
+- (void)setCourseInfo:(CourseListModel *)model isMainPage:(BOOL)isMainPage;
 
 @end
 
