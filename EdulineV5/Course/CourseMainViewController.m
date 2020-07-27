@@ -19,6 +19,7 @@
 #import "CourseCommentViewController.h"
 #import "CourseIntroductionVC.h"
 #import "CourseListVC.h"
+#import "CourseStudentListViewController.h"
 #import "CourseTreeListViewController.h"
 #import "CourseDetailPlayVC.h"
 #import "LingquanViewController.h"
@@ -46,6 +47,7 @@
 @property (strong, nonatomic) CourseListVC *courseListVC;
 @property (strong, nonatomic) CourseTreeListViewController *courseTreeListVC;
 @property (strong, nonatomic) CourseCommentListVC *commentVC;
+@property (strong, nonatomic) CourseStudentListViewController *courseStudentListVC;
 
 /**封面*/
 @property (strong, nonatomic) UIImageView *faceImageView;
@@ -365,6 +367,27 @@
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
             _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
+        
+        if ([_courseType isEqualToString:@"4"]) {
+            if (_courseStudentListVC == nil) {
+                _courseStudentListVC = [[CourseStudentListViewController alloc] init];
+                _courseStudentListVC.courseId = _ID;
+                _courseStudentListVC.tabelHeight = sectionHeight - 47;
+                _courseStudentListVC.vc = self;
+                _courseStudentListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+                _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
+                [self.mainScroll addSubview:_courseStudentListVC.view];
+                [self addChildViewController:_courseStudentListVC];
+            } else {
+                _courseStudentListVC.courseId = _ID;
+                _courseStudentListVC.tabelHeight = sectionHeight - 47;
+                _courseStudentListVC.vc = self;
+                _courseStudentListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+                _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
+                _courseStudentListVC.collectionView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+            }
+        }
+        
     }
     return _bg;
 }
@@ -473,12 +496,12 @@
                             vccomment.cellTabelCanScroll = YES;
                         }
                     }
-//                    if (self.recordButton.selected) {
-//                        if ([vc isKindOfClass:[Good_ClassNotesViewController class]]) {
-//                            Good_ClassNotesViewController *vccomment = (Good_ClassNotesViewController *)vc;
-//                            vccomment.cellTabelCanScroll = YES;
-//                        }
-//                    }
+                    if (self.recordButton.selected) {
+                        if ([vc isKindOfClass:[CourseStudentListViewController class]]) {
+                            CourseStudentListViewController *vccomment = (CourseStudentListViewController *)vc;
+                            vccomment.cellTabelCanScroll = YES;
+                        }
+                    }
 //                    if (self.questionButton.selected) {
 //                        if ([vc isKindOfClass:[Good_ClassAskQuestionsViewController class]]) {
 //                            Good_ClassAskQuestionsViewController *vccomment = (Good_ClassAskQuestionsViewController *)vc;

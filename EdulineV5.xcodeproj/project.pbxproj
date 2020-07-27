@@ -77,6 +77,8 @@
 		7859FE3724C979F0006C7D4E /* CourseTreeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7859FE3624C979F0006C7D4E /* CourseTreeListViewController.m */; };
 		7859FE3C24C97B8A006C7D4E /* MYTreeTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7859FE3924C97B89006C7D4E /* MYTreeTableManager.m */; };
 		7859FE3D24C97B8A006C7D4E /* MYTreeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7859FE3B24C97B8A006C7D4E /* MYTreeItem.m */; };
+		7859FE4024CED174006C7D4E /* CourseStudentsCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7859FE3F24CED174006C7D4E /* CourseStudentsCollectionCell.m */; };
+		7859FE4324CED497006C7D4E /* CourseStudentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7859FE4224CED497006C7D4E /* CourseStudentListViewController.m */; };
 		785A3E152497A16B00298054 /* TeacherApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E142497A16B00298054 /* TeacherApplyVC.m */; };
 		785A3E1A2498757200298054 /* ScanPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E182498757200298054 /* ScanPhotoViewController.m */; };
 		785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E192498757200298054 /* UIActionSheet+Blocks.m */; };
@@ -543,6 +545,10 @@
 		7859FE3924C97B89006C7D4E /* MYTreeTableManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTreeTableManager.m; sourceTree = "<group>"; };
 		7859FE3A24C97B89006C7D4E /* MYTreeTableManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTreeTableManager.h; sourceTree = "<group>"; };
 		7859FE3B24C97B8A006C7D4E /* MYTreeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTreeItem.m; sourceTree = "<group>"; };
+		7859FE3E24CED174006C7D4E /* CourseStudentsCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseStudentsCollectionCell.h; sourceTree = "<group>"; };
+		7859FE3F24CED174006C7D4E /* CourseStudentsCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseStudentsCollectionCell.m; sourceTree = "<group>"; };
+		7859FE4124CED497006C7D4E /* CourseStudentListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseStudentListViewController.h; sourceTree = "<group>"; };
+		7859FE4224CED497006C7D4E /* CourseStudentListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseStudentListViewController.m; sourceTree = "<group>"; };
 		785A3E132497A16B00298054 /* TeacherApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherApplyVC.h; sourceTree = "<group>"; };
 		785A3E142497A16B00298054 /* TeacherApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherApplyVC.m; sourceTree = "<group>"; };
 		785A3E162498757000298054 /* ScanPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanPhotoViewController.h; sourceTree = "<group>"; };
@@ -1181,6 +1187,8 @@
 				7839C99F242313F6002F6595 /* CourseIntroductionVC.m */,
 				7839C9A12423655A002F6595 /* CourseListVC.h */,
 				7839C9A22423655A002F6595 /* CourseListVC.m */,
+				7859FE4124CED497006C7D4E /* CourseStudentListViewController.h */,
+				7859FE4224CED497006C7D4E /* CourseStudentListViewController.m */,
 				7853BDCE242D8F4300F096EC /* ShitikaViewController.h */,
 				7853BDCF242D8F4300F096EC /* ShitikaViewController.m */,
 				7853BDDA2431A1AE00F096EC /* ShopCarManagerVC.h */,
@@ -1233,6 +1241,8 @@
 				7853BDD5242DD87000F096EC /* KaquanCell.m */,
 				7853BDD7242DF82800F096EC /* ShopCarCell.h */,
 				7853BDD8242DF82800F096EC /* ShopCarCell.m */,
+				7859FE3E24CED174006C7D4E /* CourseStudentsCollectionCell.h */,
+				7859FE3F24CED174006C7D4E /* CourseStudentsCollectionCell.m */,
 			);
 			path = CourseCell;
 			sourceTree = "<group>";
@@ -3142,6 +3152,7 @@
 				78795720240FA3840013F95F /* DACircularProgressView.m in Sources */,
 				787F1E8D247381A400108F7B /* AlivcVideoDataBase.m in Sources */,
 				78C548772418CC7400A33FC4 /* TYLinkTextStorage.m in Sources */,
+				7859FE4324CED497006C7D4E /* CourseStudentListViewController.m in Sources */,
 				78C5487F2418CC7400A33FC4 /* TYTextContainer+Extended.m in Sources */,
 				78C549D0241B674E00A33FC4 /* AlivcDefine.m in Sources */,
 				78C549CE241B674E00A33FC4 /* AliyunReachability.m in Sources */,
@@ -3201,6 +3212,7 @@
 				7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */,
 				7853BDBF2428A43D00F096EC /* CourseSearchListCell.m in Sources */,
 				789DB032246924CF001302B4 /* StudyTimeCell.m in Sources */,
+				7859FE4024CED174006C7D4E /* CourseStudentsCollectionCell.m in Sources */,
 				78C549DC241B674F00A33FC4 /* NSArray+AliyunDeepCopy.m in Sources */,
 				78C936CF248FBA2D00D5F1ED /* UserCommenListVC.m in Sources */,
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
