@@ -72,6 +72,18 @@
     return [Net_Path fullPath:@"/course/base/{id}" repalce:@"{id}" byReplece:courseId];
 }
 
++ (NSString *)courseCollectionNet {
+    return [Net_Path fullPath:@"user/collection" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)userCollectionListNet {
+    return [Net_Path fullPath:@"user/collection" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)unCollectNet {
+    return [Net_Path fullPath:@"user/collection/batch" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)courseList:(NSString *)courseId pid:(nonnull NSString *)pid {
     return [Net_Path fullPath:@"/course/base/{id}/section/{pid}" repalceArray:@[@"{id}",@"{pid}"] byRepleceArray:@[courseId,pid]];
 }

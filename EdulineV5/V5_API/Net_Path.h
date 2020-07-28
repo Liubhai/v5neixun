@@ -60,6 +60,25 @@ struct NetWorkUrl {
 /** 课程详情数据接口 */
 + (NSString *)courseInfo:(NSString *)courseId;
 
+/** 课程收藏取消收藏 */
+/**
+ source_type
+ video
+ 必填
+ 资源类型【video、live、offline、classes、exams、goods、topic】
+ source_id
+ 1
+ 必填
+ 资源ID
+ */
++ (NSString *)courseCollectionNet;
+
+/** 个人中心收藏列表 */
++ (NSString *)userCollectionListNet;
+
+/** 批量取消收藏 */
++ (NSString *)unCollectNet;
+
 /** 课程课时目录列表 */
 + (NSString *)courseList:(NSString *)courseId pid:(NSString *)pid;
 

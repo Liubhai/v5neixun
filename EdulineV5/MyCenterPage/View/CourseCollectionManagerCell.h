@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) ShopCarCourseModel *courseModel;
 
 
-- (void)setCourseCollectionManagerModel:(ShopCarCourseModel *)model;
+- (void)setCourseCollectionManagerModel:(ShopCarCourseModel *)model indexpath:(NSIndexPath *)indexpath;
 
 @end
 

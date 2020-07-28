@@ -60,8 +60,47 @@
     [self addSubview:_priceLabel];
 }
 
-- (void)setCourseCollectionManagerModel:(ShopCarCourseModel *)model {
+- (void)setCourseCollectionManagerModel:(ShopCarCourseModel *)model indexpath:(nonnull NSIndexPath *)indexpath {
+    _courseModel = model;
+    _cellIndex= indexpath;
     
+    _selectedIconBtn.selected = model.selected;
+    
+    [_courseFace sd_setImageWithURL:EdulineUrlString(model.cover_url) placeholderImage:DefaultImage];
+    _courseFace.contentMode = UIViewContentModeScaleAspectFill;
+    // 1 点播 2 直播 3 面授 4 专辑
+    NSString *courseType = [NSString stringWithFormat:@"%@",model.course_type];
+    if ([courseType isEqualToString:@"1"]) {
+        _courseTypeImage.image = Image(@"dianbo");
+    } else if ([courseType isEqualToString:@"2"]) {
+        _courseTypeImage.image = Image(@"live");
+    } else if ([courseType isEqualToString:@"3"]) {
+        _courseTypeImage.image = Image(@"mianshou");
+    } else if ([courseType isEqualToString:@"4"]) {
+        _courseTypeImage.image = Image(@"album_icon");
+    }
+    _titleL.text = [NSString stringWithFormat:@"%@",model.title];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",model.sale_count];
+
+    NSString *priceValue = [NSString stringWithFormat:@"%@",model.price];
+    _priceLabel.textColor = EdlineV5_Color.faildColor;
+    if ([priceValue isEqualToString:@"0.00"]) {
+        _priceLabel.text = @"免费";
+        _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+    } else {
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",priceValue];
+        _priceLabel.textColor = EdlineV5_Color.faildColor;
+    }
+    
+    _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
+    _titleL.numberOfLines = 0;
+    _titleL.lineBreakMode = NSLineBreakByTruncatingTail;
+    [_titleL sizeToFit];
+    if (_titleL.height > 40) {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, 40);
+    } else {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
+    }
 }
 
 - (void)selectedBtnClick:(UIButton *)sender {

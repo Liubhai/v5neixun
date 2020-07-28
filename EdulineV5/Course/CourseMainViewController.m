@@ -589,6 +589,10 @@
     [allWindowView addSubview:moreView];
     
     NSArray *titleArray = @[@"下载",@"收藏",@"分享"];
+    if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
+        titleArray = @[@"下载",@"已收藏",@"分享"];
+    }
+    
     CGFloat ButtonW = 78;
     CGFloat ButtonH = 36;
     for (int i = 0 ; i < 3 ; i ++) {
@@ -639,6 +643,48 @@
                 }
             }];
         }];
+    } else if (sender.tag == 1) {
+        // 收藏
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:_ID forKey:@"source_id"];
+        if ([_courseType isEqualToString:@"1"]) {
+            [param setObject:@"video" forKey:@"source_type"];
+        } else if ([_courseType isEqualToString:@"2"]) {
+            [param setObject:@"live" forKey:@"source_type"];
+        } else if ([_courseType isEqualToString:@"3"]) {
+            [param setObject:@"offline" forKey:@"source_type"];
+        } else if ([_courseType isEqualToString:@"4"]) {
+            [param setObject:@"classes" forKey:@"source_type"];
+        }
+        if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
+            // 取消收藏 并改变数据源
+            [Net_API requestDeleteWithURLStr:[Net_Path courseCollectionNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
+                        [pass setObject:@"0" forKey:@"collected"];
+                        _dataSource = [NSDictionary dictionaryWithDictionary:pass];
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+                [self showHudInView:self.view showHint:@"网络请求失败"];
+            }];
+        } else {
+            // 收藏 并改变数据源
+            [Net_API requestPOSTWithURLStr:[Net_Path courseCollectionNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
+                        [pass setObject:@"1" forKey:@"collected"];
+                        _dataSource = [NSDictionary dictionaryWithDictionary:pass];
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+                [self showHudInView:self.view showHint:@"网络请求失败"];
+            }];
+        }
     }
 }
 

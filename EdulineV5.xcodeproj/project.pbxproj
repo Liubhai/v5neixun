@@ -3454,7 +3454,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.12;
+				MARKETING_VERSION = 5.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
 				PRODUCT_NAME = "eduline网校";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3504,7 +3504,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.12;
+				MARKETING_VERSION = 5.13;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
 				PRODUCT_NAME = "eduline网校";
