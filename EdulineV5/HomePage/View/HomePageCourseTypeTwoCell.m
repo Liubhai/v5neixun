@@ -104,7 +104,7 @@
         } else if ([courseType isEqualToString:@"3"]) {
             courseTypeImage.image = Image(@"mianshou");
         } else if ([courseType isEqualToString:@"4"]) {
-            courseTypeImage.image = Image(@"album_icon");
+            courseTypeImage.image = Image(@"class_icon");
         }
         
         courseFace.frame = CGRectMake(singleLeftSpace, topSpace, MainScreenWidth/2.0 - singleRightSpace * 2 - singleLeftSpace, faceImageHeight);

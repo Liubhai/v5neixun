@@ -76,7 +76,7 @@
     } else if ([courseType isEqualToString:@"3"]) {
         _courseTypeImage.image = Image(@"mianshou");
     } else if ([courseType isEqualToString:@"4"]) {
-        _courseTypeImage.image = Image(@"album_icon");
+        _courseTypeImage.image = Image(@"class_icon");
     } else if ([courseType isEqualToString:@"5"]) {
         _courseTypeImage.hidden = YES;
         _faceImageView.image = Image(@"contents_icon_video");

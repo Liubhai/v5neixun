@@ -48,6 +48,20 @@
         face.layer.cornerRadius = 8;
         [backView addSubview:face];
         
+        UIImageView *courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(face.right - 32, face.top + 8, 32, 18)];
+        // 1 点播 2 直播 3 面授 4 专辑
+        NSString *courseType = [NSString stringWithFormat:@"%@",[recommendArray[i] objectForKey:@"course_type"]];
+        if ([courseType isEqualToString:@"1"]) {
+            courseTypeImage.image = Image(@"dianbo");
+        } else if ([courseType isEqualToString:@"2"]) {
+            courseTypeImage.image = Image(@"live");
+        } else if ([courseType isEqualToString:@"3"]) {
+            courseTypeImage.image = Image(@"mianshou");
+        } else if ([courseType isEqualToString:@"4"]) {
+            courseTypeImage.image = Image(@"class_icon");
+        }
+        [backView addSubview:courseTypeImage];
+        
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, face.bottom + 5, face.width, 21)];
         titleLabel.text = [NSString stringWithFormat:@"%@",[recommendArray[i] objectForKey:@"title"]];
         titleLabel.textAlignment = NSTextAlignmentCenter;

@@ -25,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) id<CourseTeacherAndOrganizationViewDelegate> delegate;
 @property (strong, nonatomic) UIScrollView *teachersHeaderScrollView;
 @property (strong, nonatomic) NSDictionary *schoolInfo;
-@property (strong, nonatomic) NSDictionary *teacherInfoDict;
+@property (strong, nonatomic) NSArray *teacherInfoDict;
 
-- (void)setTeacherAndOrganizationData:(NSDictionary *)schoolInfo teacherInfo:(NSDictionary *)teacherInfoDict;
+- (void)setTeacherAndOrganizationData:(NSDictionary *)schoolInfo teacherInfo:(NSArray *)teacherInfoDict;
 
 @end
 

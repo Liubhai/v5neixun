@@ -54,7 +54,7 @@
     [_backView addSubview:_faceImageView];
     
     _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_faceImageView.right - 32, _faceImageView.top + 8, 32, 18)];
-    _courseTypeImage.image = Image(@"album_icon");
+    _courseTypeImage.image = Image(@"class_icon");
     [_backView addSubview:_courseTypeImage];
     
     _theme = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top, _backView.width - _faceImageView.right - 64 - 10, 24)];
@@ -134,7 +134,7 @@
     } else if ([courseType isEqualToString:@"3"]) {
         _courseTypeImage.image = Image(@"mianshou");
     } else if ([courseType isEqualToString:@"4"]) {
-        _courseTypeImage.image = Image(@"album_icon");
+        _courseTypeImage.image = Image(@"class_icon");
     }
     
     [_backView setHeight:_button1.bottom + 10];

@@ -353,7 +353,7 @@
             if (!cell) {
                 cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
             }
-            [cell setHomePageCourseTypeOneCellInfo:pass[indexPath.row]];
+            [cell setHomePageCourseTypeOneWeekCellInfo:pass[indexPath.row] indexparh:indexPath];
             return cell;
         } else {
             NSMutableArray *pass = [NSMutableArray new];
@@ -367,7 +367,7 @@
             if (!cell) {
                 cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
             }
-            [cell setHomePageCourseTypeOneCellInfo:pass[indexPath.row]];
+            [cell setHomePageCourseTypeOneWeekCellInfo:pass[indexPath.row] indexparh:indexPath];
             return cell;
         }
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"]) {

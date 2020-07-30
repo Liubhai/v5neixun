@@ -30,10 +30,12 @@
 }
 
 // MARK: - 机构讲师信息赋值
-- (void)setTeacherAndOrganizationData:(NSDictionary *)schoolInfo teacherInfo:(NSDictionary *)teacherInfoDict {
+- (void)setTeacherAndOrganizationData:(NSDictionary *)schoolInfo teacherInfo:(NSArray *)teacherInfoDict {
     [_teachersHeaderScrollView removeAllSubviews];
     _schoolInfo = schoolInfo;
     _teacherInfoDict = teacherInfoDict;
+    CGFloat schoolnameWidth;
+    CGFloat schoolOwnWidth;
     if (SWNOTEmptyDictionary(_schoolInfo)) {
         [self setHeight:59];
         self.hidden = NO;
@@ -57,12 +59,16 @@
         schoolOwn.textColor = EdlineV5_Color.textThirdColor;
         schoolOwn.font = SYSTEMFONT(10);
         [_teachersHeaderScrollView addSubview:schoolOwn];
-        CGFloat schoolnameWidth = [schoolName.text sizeWithFont:schoolName.font].width + 4;
-        CGFloat schoolOwnWidth = [schoolOwn.text sizeWithFont:schoolOwn.font].width + 4;
+        schoolnameWidth = [schoolName.text sizeWithFont:schoolName.font].width + 4;
+        schoolOwnWidth = [schoolOwn.text sizeWithFont:schoolOwn.font].width + 4;
         [schoolName setWidth:schoolnameWidth];
         [schoolOwn setWidth:schoolOwnWidth];
-        if (SWNOTEmptyDictionary(_teacherInfoDict)) {
-            UIImageView *teacherFace = [[UIImageView alloc] initWithFrame:CGRectMake(schoolnameWidth > schoolOwnWidth ? (schoolName.right + 20) : (schoolOwn.right + 20), 7, 40, 40)];
+    }
+    CGFloat XX = SWNOTEmptyDictionary(_schoolInfo) ? (schoolnameWidth > schoolOwnWidth ? (15 + 40 + schoolnameWidth + 20) : (15 + 40 + schoolOwnWidth + 20)) : 15;
+    if (SWNOTEmptyArr(_teacherInfoDict)) {
+        for (int i = 0; i<_teacherInfoDict.count; i++) {
+            UIImageView *teacherFace = [[UIImageView alloc] initWithFrame:CGRectMake(XX, 7, 40, 40)];
+            teacherFace.tag = i;
             UITapGestureRecognizer *teacherTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(teacherViewClick:)];
             [teacherFace addGestureRecognizer:teacherTap];
             teacherFace.userInteractionEnabled = YES;
@@ -70,18 +76,22 @@
             teacherFace.layer.cornerRadius = 20;
             teacherFace.clipsToBounds = YES;
             teacherFace.contentMode = UIViewContentModeScaleAspectFill;
-            [teacherFace sd_setImageWithURL:[NSURL URLWithString:[_teacherInfoDict objectForKey:@"avatar_url"]] placeholderImage:DefaultImage];
+            if (SWNOTEmptyStr([_teacherInfoDict[i] objectForKey:@"avatar_url"])) {
+                [teacherFace sd_setImageWithURL:[NSURL URLWithString:[_teacherInfoDict[i] objectForKey:@"avatar_url"]] placeholderImage:DefaultUserImage];
+            } else {
+                teacherFace.image = DefaultUserImage;
+            }
             [_teachersHeaderScrollView addSubview:teacherFace];
             UILabel *teacherName = [[UILabel alloc] initWithFrame:CGRectMake(teacherFace.right + 5, 15, 0, 14)];
             teacherName.textColor = EdlineV5_Color.textFirstColor;
             teacherName.font = SYSTEMFONT(13);
-            teacherName.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"title"]];
+            teacherName.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict[i] objectForKey:@"title"]];
             if ([teacherName.text isEqualToString:@"<null>"]) {
                 teacherName.text = @"";
             }
             [_teachersHeaderScrollView addSubview:teacherName];
             UILabel *taecherOwn = [[UILabel alloc] initWithFrame:CGRectMake(teacherFace.right + 5, teacherName.bottom, 0, 18)];
-            taecherOwn.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"level_text"]];//@"主讲老师";
+            taecherOwn.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict[i] objectForKey:@"level_text"]];//@"主讲老师";
             if ([taecherOwn.text isEqualToString:@"<null>"]) {
                 taecherOwn.text = @"";
             }
@@ -92,14 +102,16 @@
             CGFloat taecherOwnWidth = [taecherOwn.text sizeWithFont:taecherOwn.font].width + 4;
             [teacherName setWidth:teacherNameWidth];
             [taecherOwn setWidth:taecherOwnWidth];
+            XX = teacherNameWidth > taecherOwnWidth ? (teacherName.right + 20) : (taecherOwn.right + 20);
         }
     }
+    _teachersHeaderScrollView.contentSize = CGSizeMake(XX, 0);
 }
 
 // MARK: - 讲师点击事件
 - (void)teacherViewClick:(UIGestureRecognizer *)ges {
     if (_delegate && [_delegate respondsToSelector:@selector(jumpToTeacher:tapTag:)]) {
-        [_delegate jumpToTeacher:_teacherInfoDict tapTag:0];
+        [_delegate jumpToTeacher:_teacherInfoDict[ges.view.tag] tapTag:0];
     }
 }
 

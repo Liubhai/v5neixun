@@ -28,8 +28,15 @@
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_courseFace];
     
+    _weekSortIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 37, 33)];
+    _weekSortIcon.center = CGPointMake(_courseFace.origin.x, _courseFace.origin.y + 5);
+    _weekSortIcon.clipsToBounds = YES;
+    _weekSortIcon.contentMode = UIViewContentModeScaleAspectFill;
+    [self addSubview:_weekSortIcon];
+    
+    
     _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18)];
-    _courseTypeImage.image = Image(@"album_icon");
+    _courseTypeImage.image = Image(@"class_icon");
     [self addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
@@ -66,7 +73,61 @@
     } else if ([courseType isEqualToString:@"3"]) {
         _courseTypeImage.image = Image(@"mianshou");
     } else if ([courseType isEqualToString:@"4"]) {
-        _courseTypeImage.image = Image(@"album_icon");
+        _courseTypeImage.image = Image(@"class_icon");
+    }
+    _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
+
+    NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
+    _priceLabel.textColor = EdlineV5_Color.faildColor;
+    if ([[info objectForKey:@"is_buy"] integerValue]) {
+        _priceLabel.text = @"已购买";
+        _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+    } else {
+        if ([priceValue isEqualToString:@"0.00"]) {
+            _priceLabel.text = @"免费";
+            _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+        } else {
+            _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+            _priceLabel.textColor = EdlineV5_Color.faildColor;
+        }
+    }
+    
+    _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
+    _titleL.numberOfLines = 0;
+    _titleL.lineBreakMode = NSLineBreakByTruncatingTail;
+    [_titleL sizeToFit];
+    if (_titleL.height > 40) {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, 40);
+    } else {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
+    }
+}
+
+// MARK: - 周榜月榜
+- (void)setHomePageCourseTypeOneWeekCellInfo:(NSDictionary *)info indexparh:(NSIndexPath *)indexpath {
+    _courseInfoDict = info;
+    _weekSortIcon.image = [UIImage imageNamed:[NSString stringWithFormat:@"home_top%@_icon",@(indexpath.row + 1)]];
+    if (indexpath.row>2) {
+        _weekSortIcon.frame = CGRectMake(0, 0, 26, 26);
+    } else {
+        _weekSortIcon.frame = CGRectMake(0, 0, 37, 33);
+    }
+    _weekSortIcon.center = CGPointMake(_courseFace.origin.x, _courseFace.origin.y + 5);;
+    [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+    _courseFace.contentMode = UIViewContentModeScaleAspectFill;
+    _courseFace.layer.masksToBounds = YES;
+    _courseFace.layer.cornerRadius = 8;
+    // 1 点播 2 直播 3 面授 4 专辑
+    NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+    if ([courseType isEqualToString:@"1"]) {
+        _courseTypeImage.image = Image(@"dianbo");
+    } else if ([courseType isEqualToString:@"2"]) {
+        _courseTypeImage.image = Image(@"live");
+    } else if ([courseType isEqualToString:@"3"]) {
+        _courseTypeImage.image = Image(@"mianshou");
+    } else if ([courseType isEqualToString:@"4"]) {
+        _courseTypeImage.image = Image(@"class_icon");
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
@@ -112,7 +173,7 @@
     } else if ([courseType isEqualToString:@"3"]) {
         _courseTypeImage.image = Image(@"mianshou");
     } else if ([courseType isEqualToString:@"4"]) {
-        _courseTypeImage.image = Image(@"album_icon");
+        _courseTypeImage.image = Image(@"class_icon");
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     

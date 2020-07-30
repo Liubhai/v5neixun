@@ -35,7 +35,7 @@
     [self addSubview:_courseFaceImageView];
     
     _courseTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.right - 32, _courseFaceImageView.top + 8, 32, 18)];
-    _courseTypeImageView.image = Image(@"album_icon");
+    _courseTypeImageView.image = Image(@"class_icon");
     [self addSubview:_courseTypeImageView];
     
     _themeLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 10, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
@@ -117,7 +117,7 @@
     } else if ([model.course_type isEqualToString:@"3"]) {
         _courseTypeImageView.image = Image(@"mianshou");
     } else if ([model.course_type isEqualToString:@"4"]) {
-        _courseTypeImageView.image = Image(@"album_icon");
+        _courseTypeImageView.image = Image(@"class_icon");
     }
     _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",model.section_count];
 }

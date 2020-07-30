@@ -28,7 +28,7 @@
     [self addSubview:_courseFace];
     
     _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18)];
-    _courseTypeImage.image = Image(@"album_icon");
+    _courseTypeImage.image = Image(@"class_icon");
     [self addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
@@ -66,7 +66,7 @@
     } else if ([courseType isEqualToString:@"3"]) {
         _courseTypeImage.image = Image(@"mianshou");
     } else if ([courseType isEqualToString:@"4"]) {
-        _courseTypeImage.image = Image(@"album_icon");
+        _courseTypeImage.image = Image(@"class_icon");
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_title"]];
     _learnProgress.progress = [[courseInfo objectForKey:@"finished_rate"] integerValue] / 100;
@@ -89,7 +89,7 @@
     } else if ([courseType isEqualToString:@"3"]) {
         _courseTypeImage.image = Image(@"mianshou");
     } else if ([courseType isEqualToString:@"4"]) {
-        _courseTypeImage.image = Image(@"album_icon");
+        _courseTypeImage.image = Image(@"class_icon");
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"product_title"]];
     _learnProgress.progress = [[courseInfo objectForKey:@"finished_rate"] integerValue] / 100;

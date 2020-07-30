@@ -553,7 +553,7 @@
         return;
     }
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
-    vc.teacherId = [NSString stringWithFormat:@"%@",_dataSource[@"teacher_info"][@"id"]];
+    vc.teacherId = [NSString stringWithFormat:@"%@",teacherInfoDict[@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -835,11 +835,12 @@
         }
         [_courseDownView setCOurseInfoData:_dataSource];
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:NO];
-        if (SWNOTEmptyDictionary([_dataSource objectForKey:@"mhm_info"]) || SWNOTEmptyDictionary([_dataSource objectForKey:@"teacher_info"])) {
+        NSArray *teacherArray = [NSArray arrayWithArray:_dataSource[@"teachers"]];
+        if (SWNOTEmptyDictionary([_dataSource objectForKey:@"mhm_info"]) || SWNOTEmptyArr(teacherArray)) {
             [_teachersHeaderBackView setHeight:59];
             [_headerView setHeight:_teachersHeaderBackView.bottom];
         }
-        [_teachersHeaderBackView setTeacherAndOrganizationData:[_dataSource objectForKey:@"mhm_info"] teacherInfo:SWNOTEmptyDictionary([_dataSource objectForKey:@"teacher_info"]) ? [_dataSource objectForKey:@"teacher_info"] : nil];
+        [_teachersHeaderBackView setTeacherAndOrganizationData:[_dataSource objectForKey:@"mhm_info"] teacherInfo:[_dataSource objectForKey:@"teachers"]];
         _tableView.tableHeaderView = _headerView;
         [self.tableView reloadData];
     }

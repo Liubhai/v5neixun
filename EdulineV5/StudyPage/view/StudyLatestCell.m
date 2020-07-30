@@ -50,7 +50,7 @@
         } else if ([courseType isEqualToString:@"3"]) {
             icon.image = Image(@"mianshou");
         } else if ([courseType isEqualToString:@"4"]) {
-            icon.image = Image(@"album_icon");
+            icon.image = Image(@"class_icon");
         }
         [_mainScrollView addSubview:icon];
         

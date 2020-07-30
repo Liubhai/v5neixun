@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HomePageCourseTypeOneCell : UITableViewCell
 
+
+@property (strong, nonatomic) UIImageView *weekSortIcon;
+
 @property (strong, nonatomic) UIImageView *courseFace;
 @property (strong, nonatomic) UIImageView *courseTypeImage;
 @property (strong, nonatomic) UILabel *titleL;
@@ -25,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setHomePageCourseTypeOneCellInfo:(NSDictionary *)info;
 
 - (void)setMyTeachingInfo:(NSDictionary *)info;
+
+- (void)setHomePageCourseTypeOneWeekCellInfo:(NSDictionary *)info indexparh:(NSIndexPath *)indexpath;
 
 @end
 
