@@ -139,6 +139,9 @@
 #define singleRightSpace 3
 #define faceImageHeight (MainScreenWidth/2.0 - singleRightSpace - singleLeftSpace) * 90 / 165
 
+// 提问对话框消息内容最大宽度
+#define questionChatContentWidth 182
+
 // `APP_ID`:`WASD123456`
 
 // `APP_KEY`:`7WFDuCGYa1XEBj6Y`

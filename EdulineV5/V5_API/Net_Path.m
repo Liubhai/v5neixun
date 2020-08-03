@@ -430,6 +430,21 @@
     return [Net_Path fullPath:@"user/system/course" repalce:@"" byReplece:@""];
 }
 
+/** 提问会话框内容列表 */
++ (NSString *)questionChatListNet:(NSString *)chatId {
+    return [Net_Path fullPath:@"user/question/{id}" repalce:@"{id}" byReplece:chatId];
+}
+
+/** 提问 */
++ (NSString *)askQuestionNet {
+    return [Net_Path fullPath:@"user/question" repalce:@"" byReplece:@""];
+}
+
+/** 提问回复 */
++ (NSString *)questionReplayNet {
+    return [Net_Path fullPath:@"user/question/reply" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)messageReadNet {
     return [Net_Path fullPath:@"user/message/read" repalce:@"" byReplece:@""];
 }

@@ -348,6 +348,15 @@ struct NetWorkUrl {
 /** 互动消息 */
 + (NSString *)notifyCourseMessageNet;
 
+// MARK: - 提问会话框内容列表
++ (NSString *)questionChatListNet:(NSString *)chatId;
+
+// MARK: - 提问
++ (NSString *)askQuestionNet;
+
+// MARK: - 提问回复
++ (NSString *)questionReplayNet;
+
 /** 消息设置已读 */
 + (NSString *)messageReadNet;
 

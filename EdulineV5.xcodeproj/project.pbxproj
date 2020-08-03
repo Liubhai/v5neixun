@@ -277,6 +277,10 @@
 		78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */; };
 		78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A8244708B4007087F7 /* SetingViewController.m */; };
 		78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13AB24470EB2007087F7 /* SetingCell.m */; };
+		78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */; };
+		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
+		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
+		78BCF95624D7C2B7002F691C /* QuestionChatTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95524D7C2B7002F691C /* QuestionChatTimeCell.m */; };
 		78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548262411F34100A33FC4 /* LoginMsgView.m */; };
 		78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548292412229900A33FC4 /* AreaNumListVC.m */; };
 		78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */; };
@@ -942,6 +946,14 @@
 		78AA13A8244708B4007087F7 /* SetingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetingViewController.m; sourceTree = "<group>"; };
 		78AA13AA24470EB2007087F7 /* SetingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetingCell.h; sourceTree = "<group>"; };
 		78AA13AB24470EB2007087F7 /* SetingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetingCell.m; sourceTree = "<group>"; };
+		78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatViewController.h; sourceTree = "<group>"; };
+		78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatViewController.m; sourceTree = "<group>"; };
+		78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatRightCell.h; sourceTree = "<group>"; };
+		78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatRightCell.m; sourceTree = "<group>"; };
+		78BCF95124D7C2A1002F691C /* QuestionChatLeftCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatLeftCell.h; sourceTree = "<group>"; };
+		78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatLeftCell.m; sourceTree = "<group>"; };
+		78BCF95424D7C2B7002F691C /* QuestionChatTimeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatTimeCell.h; sourceTree = "<group>"; };
+		78BCF95524D7C2B7002F691C /* QuestionChatTimeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatTimeCell.m; sourceTree = "<group>"; };
 		78C548252411F34100A33FC4 /* LoginMsgView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginMsgView.h; sourceTree = "<group>"; };
 		78C548262411F34100A33FC4 /* LoginMsgView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginMsgView.m; sourceTree = "<group>"; };
 		78C548282412229900A33FC4 /* AreaNumListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaNumListVC.h; sourceTree = "<group>"; };
@@ -1270,6 +1282,8 @@
 				784FC8F924AF2F5A00CAE7A6 /* MessageListVC.m */,
 				784FC8FE24AF5DEF00CAE7A6 /* MessageDetailVC.h */,
 				784FC8FF24AF5DEF00CAE7A6 /* MessageDetailVC.m */,
+				78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */,
+				78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */,
 			);
 			path = MessageRoot;
 			sourceTree = "<group>";
@@ -2392,6 +2406,12 @@
 				784FC8E124ACA2CD00CAE7A6 /* MyMenberCell.m */,
 				784FC8FB24AF2FA900CAE7A6 /* MessageListCell.h */,
 				784FC8FC24AF2FA900CAE7A6 /* MessageListCell.m */,
+				78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */,
+				78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */,
+				78BCF95124D7C2A1002F691C /* QuestionChatLeftCell.h */,
+				78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */,
+				78BCF95424D7C2B7002F691C /* QuestionChatTimeCell.h */,
+				78BCF95524D7C2B7002F691C /* QuestionChatTimeCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2951,6 +2971,7 @@
 				787F1E68247381A400108F7B /* AlivcVideoPlayThumbnailView.m in Sources */,
 				787F1E7E247381A400108F7B /* AliyunPlayerViewSlider.m in Sources */,
 				78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */,
+				78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */,
 				78795660240E60320013F95F /* HomeRootViewController.m in Sources */,
 				787F1E75247381A400108F7B /* AliyunPlayerViewErrorView.m in Sources */,
 				78795722240FA3840013F95F /* ZLCameraImageView.m in Sources */,
@@ -2985,6 +3006,7 @@
 				78C549E1241B674F00A33FC4 /* UIColor+AlivcHelper.m in Sources */,
 				78795669240E606F0013F95F /* MyRootViewController.m in Sources */,
 				78A16C812452F7C100391430 /* TICManager.m in Sources */,
+				78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */,
 				78C5496F241B642B00A33FC4 /* AlivcProfile.m in Sources */,
 				787F1E84247381A400108F7B /* AliyunPlayerViewFirstStartGuideView.m in Sources */,
 				78C549DB241B674F00A33FC4 /* UIApplication+AlivcHelper.m in Sources */,
@@ -3031,6 +3053,7 @@
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
 				78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */,
 				7853167F24518B4D007E239E /* TICConfig.m in Sources */,
+				78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */,
 				789DB059246C1858001302B4 /* CollectionListVC.m in Sources */,
 				7853BDCD242C486E00F096EC /* OrderViewController.m in Sources */,
 				78795753240FAA7A0013F95F /* NSDate+Category.m in Sources */,
@@ -3142,6 +3165,7 @@
 				78AA13A32446AB00007087F7 /* MyCenterTypeTwoCell.m in Sources */,
 				7839C9A32423655B002F6595 /* CourseListVC.m in Sources */,
 				78C936C9248F816D00D5F1ED /* TeacherIntroVC.m in Sources */,
+				78BCF95624D7C2B7002F691C /* QuestionChatTimeCell.m in Sources */,
 				7853BDD0242D8F4300F096EC /* ShitikaViewController.m in Sources */,
 				7839C9892420CA15002F6595 /* CourseCommentTopView.m in Sources */,
 				78795655240E5B1C0013F95F /* RootV5VC.m in Sources */,

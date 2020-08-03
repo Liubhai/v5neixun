@@ -15,6 +15,7 @@
 #import "ZiXunDetailVC.h"
 #import "CourseCommentDetailVC.h"
 #import "ZixunCommmentDetailVC.h"
+#import "QuestionChatViewController.h"
 
 @interface MessageListVC ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate> {
     NSInteger page;
@@ -110,7 +111,10 @@
             vc.commentId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"notify_data"][@"id"]];
             [self.navigationController pushViewController:vc animated:YES];
         } else if ([typeS isEqualToString:@"3"]) {
-            
+            QuestionChatViewController *vc = [[QuestionChatViewController alloc] init];
+            vc.questionId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"notify_data"][@"id"]];
+            vc.questionInfo = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
     
