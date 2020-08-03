@@ -168,6 +168,11 @@
     return [Net_Path fullPath:@"order/course/one" repalce:@"" byReplece:@""];
 }
 
+/** 免费课程加入学习 */
++ (NSString *)joinFreeCourseNet {
+    return [Net_Path fullPath:@"course/student/join" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)courseHourseOrderInfo {
     return [Net_Path fullPath:@"order/section" repalce:@"" byReplece:@""];
 }

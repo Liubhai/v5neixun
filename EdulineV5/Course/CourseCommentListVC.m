@@ -181,7 +181,6 @@
         vc.topCellInfo = cell.userCommentInfo;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        return;
         if (_detailVC) {
             [_detailVC showHudInView:_detailVC.view showHint:@"购买后才能点评课程"];
         } else {
@@ -204,7 +203,9 @@
         if (_detailVC) {
             [_detailVC showHudInView:_detailVC.view showHint:@"购买后才能点评课程"];
         } else {
-            [_vc showHudInView:_vc.view showHint:@"购买后才能点评课程"];
+            if (_vc) {
+                [_vc showHudInView:_vc.view showHint:@"购买后才能点评课程"];
+            }
         }
     }
 }

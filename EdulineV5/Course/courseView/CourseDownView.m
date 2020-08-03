@@ -176,6 +176,10 @@
             _joinShopCarButton.hidden = NO;
             _joinStudyButton.hidden = NO;
         }
+        NSString *priceValue = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"price"]];
+        if ([priceValue isEqualToString:@"0.00"]) {
+            _joinShopCarButton.hidden = YES;
+        }
     }
 }
 

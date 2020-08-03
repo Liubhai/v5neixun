@@ -112,7 +112,7 @@
     
     _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评"]];
     if ([_courseType isEqualToString:@"4"]) {
-        _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评",@"新增学员"]];
+        _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评",@"学员"]];
     }
     
     self.canScroll = YES;
@@ -317,6 +317,7 @@
                 _courseTreeListVC.videoInfoDict = _dataSource;
                 _courseTreeListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
                 _courseTreeListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                [_courseTreeListVC getClassCourseList];
             }
         } else {
             if (_courseListVC == nil) {
@@ -347,6 +348,7 @@
                 _courseListVC.videoInfoDict = _dataSource;
                 _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
                 _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                [_courseListVC getCourseListData];
             }
         }
         
@@ -366,6 +368,7 @@
             _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
             _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+            [_commentVC getCourseCommentList];
         }
         
         if ([_courseType isEqualToString:@"4"]) {
@@ -385,6 +388,7 @@
                 _courseStudentListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
                 _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
                 _courseStudentListVC.collectionView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                [_courseStudentListVC getStudentListInfo];
             }
         }
         
@@ -738,10 +742,25 @@
             vc.courseType = _courseType;
             [self.navigationController pushViewController:vc animated:YES];
         } else {
-            OrderViewController *vc = [[OrderViewController alloc] init];
-            vc.orderTypeString = @"course";
-            vc.orderId = _ID;
-            [self.navigationController pushViewController:vc animated:YES];
+            NSString *priceCount = [NSString stringWithFormat:@"%@",_dataSource[@"price"]];
+            if ([priceCount isEqualToString:@"0.00"]) {
+                // 免费课程
+                [Net_API requestPOSTWithURLStr:[Net_Path joinFreeCourseNet] WithAuthorization:nil paramDic:@{@"course_id":_ID} finish:^(id  _Nonnull responseObject) {
+                    if (SWNOTEmptyDictionary(responseObject)) {
+                        [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                        if ([[responseObject objectForKey:@"code"] integerValue]) {
+                            [self getCourseInfo];
+                        }
+                    }
+                } enError:^(NSError * _Nonnull error) {
+                    [self showHudInView:self.view showHint:@"网络超时"];
+                }];
+            } else {
+                OrderViewController *vc = [[OrderViewController alloc] init];
+                vc.orderTypeString = @"course";
+                vc.orderId = _ID;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
         }
     }
 }

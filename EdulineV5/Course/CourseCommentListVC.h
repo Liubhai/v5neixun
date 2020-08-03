@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL cellType;// yes 是笔记 no 是点评
 
+- (void)getCourseCommentList;
 
 @end
 

@@ -144,6 +144,9 @@ struct NetWorkUrl {
 /** 课程订单信息 */
 + (NSString *)courseOrderInfo;
 
+// MARK: - 免费课程加入学习
++ (NSString *)joinFreeCourseNet;
+
 /** 单课时购买信息 */
 + (NSString *)courseHourseOrderInfo;
 
