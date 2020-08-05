@@ -495,8 +495,8 @@
 }
 
 - (void)popButtonClick:(UIButton *)sender {
+    [_popTextView resignFirstResponder];
     if (sender == _popCancelButton) {
-        [_popTextView resignFirstResponder];
         _popBackView.hidden = YES;
     } else if (sender == _popSureButton) {
         _popBackView.hidden = YES;

@@ -194,8 +194,18 @@
             MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"teacher"]) {
-            TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
+            if (SWNOTEmptyDictionary(_userInfo)) {
+                NSString *userSchoolId = [NSString stringWithFormat:@"%@",[[[_userInfo objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"mhm_id"]];
+                if (SWNOTEmptyStr(userSchoolId)) {
+                    TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
+                    vc.userSchoolId = userSchoolId;
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
+                }
+            } else {
+                [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
+            }
         } else if ([iconKey isEqualToString:@"school"]) {
             InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -271,8 +281,18 @@
         MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"teacher"]) {
-        TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+        if (SWNOTEmptyDictionary(_userInfo)) {
+            NSString *userSchoolId = [NSString stringWithFormat:@"%@",[[[_userInfo objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"mhm_id"]];
+            if (SWNOTEmptyStr(userSchoolId)) {
+                TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
+                vc.userSchoolId = userSchoolId;
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
+            }
+        } else {
+            [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
+        }
     } else if ([iconKey isEqualToString:@"school"]) {
         InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];

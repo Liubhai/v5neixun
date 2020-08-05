@@ -17,6 +17,7 @@
 
 @interface QuestionChatViewController ()<UITableViewDelegate, UITableViewDataSource, CommentBaseViewDelegate> {
     NSInteger page;
+    NSString *reply_user_id;
     CGFloat keyHeight;
 }
 
@@ -38,9 +39,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    reply_user_id = @"";
     _dataSource = [NSMutableArray new];
     if (SWNOTEmptyDictionary(_questionInfo)) {
         _titleLabel.text = [NSString stringWithFormat:@"%@",_questionInfo[@"send_user_nick_name"]];
+        reply_user_id = [NSString stringWithFormat:@"%@",_questionInfo[@"send_user_id"]];
     }
     [self makeHeaderView];
     [self makeTableView];
@@ -160,11 +163,14 @@
         [self showHudInView:self.view showHint:@"请输入内容"];
         return;
     }
+    if (!SWNOTEmptyStr(reply_user_id)) {
+        return;
+    }
     NSString *content = [NSString stringWithFormat:@"%@",view.inputTextView.text];
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:content forKey:@"content"];
     [param setObject:_questionId forKey:@"question_id"];
-    [param setObject:[NSString stringWithFormat:@"%@",_questionInfo[@"notify_data"][@"send_user_id"]] forKey:@"reply_user_id"];
+    [param setObject:reply_user_id forKey:@"reply_user_id"];
     [Net_API requestPOSTWithURLStr:[Net_Path questionReplayNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -193,7 +199,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"reply"] objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"reply"]];
                 if (_dataSource.count<10) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
@@ -227,7 +233,7 @@
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSArray *pass = [NSArray arrayWithArray:[[[responseObject objectForKey:@"data"] objectForKey:@"reply"] objectForKey:@"data"]];
+                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"reply"]];
                 if (pass.count<10) {
                     [_tableView.mj_footer endRefreshingWithNoMoreData];
                 }
