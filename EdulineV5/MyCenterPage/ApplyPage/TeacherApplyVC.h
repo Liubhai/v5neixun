@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TeacherApplyVC : BaseViewController<UIPickerViewDelegate, UIPickerViewDataSource,TYAttributedLabelDelegate,UIScrollViewDelegate,UIActionSheetDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,sendPhotoArrDelegate,UITextFieldDelegate,TeacherCategoryVCDelegate>
 
+@property (strong, nonatomic) NSString *userSchoolId;//用户信息里面自带的机构id
+
 @property (strong, nonatomic) UIScrollView *mainScrollView;
 
 @property (strong, nonatomic) UILabel *nameLeftLabel;

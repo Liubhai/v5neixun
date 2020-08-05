@@ -58,6 +58,9 @@
     teacherId = @"";
     verified_status = @"";
     schoolID = @"";
+    if (SWNOTEmptyStr(_userSchoolId)) {
+        schoolID = _userSchoolId;
+    }
     currentPickerRow = 0;
     _imageArray = [NSMutableArray new];
     _imageArrayIdCardBack = [NSMutableArray new];
@@ -132,43 +135,43 @@
     [_mainScrollView addSubview:_line2];
     
     // 所属机构
-    _institutionLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _line2.bottom, 100, 50)];
-    _institutionLeftLabel.text = @"所属机构";
-    _institutionLeftLabel.font = SYSTEMFONT(15);
-    _institutionLeftLabel.textColor = EdlineV5_Color.textFirstColor;
-    [_mainScrollView addSubview:_institutionLeftLabel];
-    
-    _institutionRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30 - 200, _line2.bottom, 200, 50)];
-    _institutionRightLabel.text = @"请选择所属机构";
-    _institutionRightLabel.font = SYSTEMFONT(15);
-    _institutionRightLabel.textColor = EdlineV5_Color.textThirdColor;
-    _institutionRightLabel.textAlignment = NSTextAlignmentRight;
-    [_mainScrollView addSubview:_institutionRightLabel];
-    
-    _institutionIcon = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line2.bottom, 30, 50)];
-    [_institutionIcon setImage:Image(@"list_more") forState:0];
-    [_institutionIcon addTarget:self action:@selector(coverButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_mainScrollView addSubview:_institutionIcon];
-    
-    _line3 = [[UIView alloc] initWithFrame:CGRectMake(15, _institutionLeftLabel.bottom, MainScreenWidth - 15, 1)];
-    _line3.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [_mainScrollView addSubview:_line3];
+//    _institutionLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _line2.bottom, 100, 50)];
+//    _institutionLeftLabel.text = @"所属机构";
+//    _institutionLeftLabel.font = SYSTEMFONT(15);
+//    _institutionLeftLabel.textColor = EdlineV5_Color.textFirstColor;
+//    [_mainScrollView addSubview:_institutionLeftLabel];
+//
+//    _institutionRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30 - 200, _line2.bottom, 200, 50)];
+//    _institutionRightLabel.text = @"请选择所属机构";
+//    _institutionRightLabel.font = SYSTEMFONT(15);
+//    _institutionRightLabel.textColor = EdlineV5_Color.textThirdColor;
+//    _institutionRightLabel.textAlignment = NSTextAlignmentRight;
+//    [_mainScrollView addSubview:_institutionRightLabel];
+//
+//    _institutionIcon = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line2.bottom, 30, 50)];
+//    [_institutionIcon setImage:Image(@"list_more") forState:0];
+//    [_institutionIcon addTarget:self action:@selector(coverButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [_mainScrollView addSubview:_institutionIcon];
+//
+//    _line3 = [[UIView alloc] initWithFrame:CGRectMake(15, _institutionLeftLabel.bottom, MainScreenWidth - 15, 1)];
+//    _line3.backgroundColor = EdlineV5_Color.fengeLineColor;
+//    [_mainScrollView addSubview:_line3];
     
     // 所属行业
-    _industryLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _line3.bottom, 100, 50)];
+    _industryLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _line2.bottom, 100, 50)];
     _industryLeftLabel.text = @"所属行业";
     _industryLeftLabel.font = SYSTEMFONT(15);
     _industryLeftLabel.textColor = EdlineV5_Color.textFirstColor;
     [_mainScrollView addSubview:_industryLeftLabel];
     
-    _industryRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30 - 200, _line3.bottom, 200, 50)];
+    _industryRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30 - 200, _line2.bottom, 200, 50)];
     _industryRightLabel.text = @"请选择所属行业";
     _industryRightLabel.font = SYSTEMFONT(15);
     _industryRightLabel.textColor = EdlineV5_Color.textThirdColor;
     _industryRightLabel.textAlignment = NSTextAlignmentRight;
     [_mainScrollView addSubview:_industryRightLabel];
     
-    _industryIcon = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line3.bottom, 30, 50)];
+    _industryIcon = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, _line2.bottom, 30, 50)];
     [_industryIcon setImage:Image(@"list_more") forState:0];
     [_industryIcon addTarget:self action:@selector(coverButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_mainScrollView addSubview:_industryIcon];
@@ -838,8 +841,8 @@
         
         _statusRightLabel.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_status_text"]];
         
-        schoolID = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"mhm_id"]];
-        _institutionRightLabel.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"school_name"]];
+//        schoolID = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"mhm_id"]];
+//        _institutionRightLabel.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"school_name"]];
         
         _idCardText.text = [NSString stringWithFormat:@"%@",_teacherApplyInfo[@"data"][@"auth_info"][@"IDcard"]];
         
