@@ -40,6 +40,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     reply_user_id = @"";
+    page = 0;
     _dataSource = [NSMutableArray new];
     if (SWNOTEmptyDictionary(_questionInfo)) {
         _titleLabel.text = [NSString stringWithFormat:@"%@",_questionInfo[@"send_user_nick_name"]];
@@ -84,8 +85,8 @@
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
-    _tableView.mj_footer.hidden = YES;
+//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+//    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     _tableView.tableHeaderView = _headView;
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
@@ -174,7 +175,7 @@
     [Net_API requestPOSTWithURLStr:[Net_Path questionReplayNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                [self getFirstList];
+                [self getFirstPageList];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -188,6 +189,46 @@
 }
 
 - (void)getFirstList {
+    page = page + 1;
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path questionChatListNet:_questionId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_header.refreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                if (page == 1) {
+                    [_dataSource removeAllObjects];
+                }
+                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"reply"]];
+                [_dataSource insertObjects:pass atIndex:0];
+                if (pass.count<10) {
+                    _tableView.mj_header.hidden = YES;
+                } else {
+                    _tableView.mj_header.hidden = NO;
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [CATransaction setDisableActions:YES];
+
+                    [_tableView reloadSection:0 withRowAnimation:UITableViewRowAnimationNone];
+
+                    [CATransaction commit];
+                });
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        page--;
+        if (_tableView.mj_header.refreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+    }];
+}
+
+// MARK: - 回复消息后请求第一页数据
+- (void)getFirstPageList {
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
@@ -201,9 +242,9 @@
                 [_dataSource removeAllObjects];
                 [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"reply"]];
                 if (_dataSource.count<10) {
-                    _tableView.mj_footer.hidden = YES;
+                    _tableView.mj_header.hidden = YES;
                 } else {
-                    _tableView.mj_footer.hidden = NO;
+                    _tableView.mj_header.hidden = NO;
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
