@@ -19,6 +19,7 @@
     NSInteger page;
     NSString *reply_user_id;
     CGFloat keyHeight;
+    BOOL isScrollBottom;
 }
 
 @property (strong, nonatomic) UITableView *tableView;
@@ -36,9 +37,14 @@
 
 @implementation QuestionChatViewController
 
+- (void)viewDidAppear {
+    isScrollBottom = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    isScrollBottom = YES;
     reply_user_id = @"";
     page = 0;
     _dataSource = [NSMutableArray new];
@@ -108,6 +114,14 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (isScrollBottom) { //只在初始化的时候执行
+       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.005 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (self.dataSource.count > 0) {
+               NSIndexPath *indexPath = [NSIndexPath indexPathForRow:([self.tableView numberOfRowsInSection:0]-1) inSection:0];
+               [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+            }
+       });
+    }
     return _dataSource.count;
 }
 
