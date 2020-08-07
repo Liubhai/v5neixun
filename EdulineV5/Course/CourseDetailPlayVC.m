@@ -1187,11 +1187,23 @@
         }
     }
     
-    [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
-        NSLog(@"%@",responseObject);
-    } enError:^(NSError * _Nonnull error) {
-        
-    }];
+    if ([_courseType isEqualToString:@"4"]) {
+        CourseListModel *parentModel  = currentCourseFinalModel.model.parentItem;
+        while (parentModel) {
+            parentModel = parentModel.parentItem;
+        }
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":parentModel.course_id,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    } else {
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 - (void)willResignActive {
