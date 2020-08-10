@@ -198,6 +198,7 @@
 		787F1E9A24791A6300108F7B /* TeacherListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9924791A6300108F7B /* TeacherListCell.m */; };
 		787F1E9D247925AD00108F7B /* InstitutionListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9C247925AD00108F7B /* InstitutionListVC.m */; };
 		787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9F2479263200108F7B /* InstitutionListCell.m */; };
+		7887451224E13B1300257029 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7887451124E13B1300257029 /* FeedBackViewController.m */; };
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
@@ -794,6 +795,8 @@
 		787F1E9C247925AD00108F7B /* InstitutionListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionListVC.m; sourceTree = "<group>"; };
 		787F1E9E2479263200108F7B /* InstitutionListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionListCell.h; sourceTree = "<group>"; };
 		787F1E9F2479263200108F7B /* InstitutionListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionListCell.m; sourceTree = "<group>"; };
+		7887451024E13B1300257029 /* FeedBackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
+		7887451124E13B1300257029 /* FeedBackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
 		7888A34E249C8D1B00DB078D /* InstitutionApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionApplyVC.h; sourceTree = "<group>"; };
 		7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionApplyVC.m; sourceTree = "<group>"; };
 		7888A35124A1D3CF00DB078D /* WkWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WkWebViewController.h; sourceTree = "<group>"; };
@@ -1591,6 +1594,8 @@
 				78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */,
 				78AA13A7244708B4007087F7 /* SetingViewController.h */,
 				78AA13A8244708B4007087F7 /* SetingViewController.m */,
+				7887451024E13B1300257029 /* FeedBackViewController.h */,
+				7887451124E13B1300257029 /* FeedBackViewController.m */,
 				787E19A7245576E000E2E016 /* PWResetViewController.h */,
 				787E19A8245576E000E2E016 /* PWResetViewController.m */,
 				78531643244FF60C007E239E /* MenberRootVC.h */,
@@ -2972,6 +2977,7 @@
 				787F1E7E247381A400108F7B /* AliyunPlayerViewSlider.m in Sources */,
 				78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */,
 				78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */,
+				7887451224E13B1300257029 /* FeedBackViewController.m in Sources */,
 				78795660240E60320013F95F /* HomeRootViewController.m in Sources */,
 				787F1E75247381A400108F7B /* AliyunPlayerViewErrorView.m in Sources */,
 				78795722240FA3840013F95F /* ZLCameraImageView.m in Sources */,

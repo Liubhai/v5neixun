@@ -13,6 +13,8 @@
 #import "UserModel.h"
 #import "AppDelegate.h"
 #import "TeacherCategoryVC.h"
+#import "FeedBackViewController.h"
+#import "WkWebViewController.h"
 
 #import "SetingCell.h"
 
@@ -143,6 +145,18 @@
         TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
         vc.isChange = YES;
         vc.typeString = @"0";
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"feedback"]) {
+        if (!SWNOTEmptyStr([UserModel oauthToken])) {
+            [AppDelegate presentLoginNav:self];
+            return;
+        }
+        FeedBackViewController *vc = [[FeedBackViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"about"]) {
+        WkWebViewController *vc = [[WkWebViewController alloc] init];
+        vc.titleString = @"关于我们";
+        vc.agreementKey = @"about_us";
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

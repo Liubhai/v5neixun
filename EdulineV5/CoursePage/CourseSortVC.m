@@ -29,7 +29,11 @@
     } else if ([_pageClass isEqualToString:@"incomeTime"]) {
         [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"本月",@"id":@"month"}]];
     } else if ([_pageClass isEqualToString:@"incomeType"]) {
-        [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"分成",@"id":@"user"},@{@"title":@"推广",@"id":@"teacher"}]];
+        if (_isTeacher) {
+            [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"分成",@"id":@"user"},@{@"title":@"推广",@"id":@"teacher"}]];
+        } else {
+            [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"推广",@"id":@"teacher"}]];
+        }
     } else {
         [_dataSource addObjectsFromArray:@[@{@"title":@"综合排序",@"id":@"default"},@{@"title":@"推荐",@"id":@"splendid"},@{@"title":@"畅销",@"id":@"popular"},@{@"title":@"最新",@"id":@"latest"}]];
     }

@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *typeId;// 当前选中的类型
 
 @property (strong, nonatomic) NSString *pageClass;// 当前页面是啥 // 课程主页、加入的课程
+@property (assign, nonatomic) BOOL isTeacher;// 是不是讲师(针对收入明细)
 
 
 @end

@@ -19,6 +19,7 @@
     NSString *timeIdString;
     NSString *timeString;
     NSInteger page;
+    BOOL isTeacher;
 }
 
 @property (strong, nonatomic) UITableView *tableView;
@@ -131,6 +132,7 @@
         vc.hiddenNavDisappear = YES;
         vc.isMainPage = NO;
         vc.pageClass = (sender == _incomeButton) ? @"incomeType" : @"incomeTime";
+        vc.isTeacher = isTeacher;
         vc.delegate = self;
         if (sender == _incomeButton) {
             if (SWNOTEmptyStr(courseSortIdString)) {
@@ -187,6 +189,7 @@
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                isTeacher = [[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"is_teacher"]] boolValue];
                 [_dataSource removeAllObjects];
                 [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"flow"] objectForKey:@"data"]];
                 _sourceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
