@@ -70,6 +70,11 @@
     [_courseRightBtn addTarget:self action:@selector(courseRightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_courseRightBtn];
     
+    _coverButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 50)];
+    _coverButton.backgroundColor = [UIColor clearColor];
+    [_coverButton addTarget:self action:@selector(courseRightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_coverButton];
+    
     _isLearningIcon = [[playAnimationView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 16, 0, 16, 17)];
     _isLearningIcon.centerY = 50 / 2.0;
     _isLearningIcon.image = Image(@"comment_playing");
@@ -96,6 +101,7 @@
     if ([_allLayar isEqualToString:@"1"]) {
         _blueView.hidden = YES;
         _courseRightBtn.hidden = YES;
+        _coverButton.hidden = YES;
         if (_isMainPage) {
             _learnIcon.hidden = YES;
             _learnTimeLabel.hidden = YES;
@@ -104,6 +110,7 @@
         _blueView.hidden = YES;
         if ([_courselayer isEqualToString:@"2"]) {
             _courseRightBtn.hidden = NO;
+            _coverButton.hidden = NO;
             _typeIcon.hidden = YES;
             _lockIcon.hidden = YES;
             _priceLabel.hidden = YES;
@@ -113,6 +120,7 @@
             [_titleLabel setLeft:15];
         } else if ([_courselayer isEqualToString:@"3"]) {
             _courseRightBtn.hidden = YES;
+            _coverButton.hidden = YES;
             if (!_isMainPage) {
                 if (_listFinalModel.isPlaying) {
                     _learnIcon.hidden = YES;
@@ -129,6 +137,7 @@
         if ([_courselayer isEqualToString:@"1"] || [_courselayer isEqualToString:@"2"]) {
             _blueView.hidden = [_courselayer isEqualToString:@"1"] ? NO : YES;
             _courseRightBtn.hidden = NO;
+            _coverButton.hidden = NO;
             _typeIcon.hidden = YES;
             _lockIcon.hidden = YES;
             _priceLabel.hidden = YES;
@@ -138,6 +147,7 @@
             [_titleLabel setLeft:([_courselayer isEqualToString:@"1"] ? (15 + 3 + 8) : 15)];
         } else if ([_courselayer isEqualToString:@"3"]) {
             _courseRightBtn.hidden = YES;
+            _coverButton.hidden = YES;
             _blueView.hidden = YES;
             if (!_isMainPage) {
                 if (_listFinalModel.isPlaying) {
@@ -255,6 +265,7 @@
 }
 
 - (void)setListInfo:(CourseListModelFinal *)model {
+    _courseRightBtn.selected = NO;
     _listFinalModel = model;
     _listModel = model.model;
     
@@ -327,6 +338,7 @@
     } else if ([_allLayar isEqualToString:@"2"]) {
         if ([_courselayer isEqualToString:@"2"]) {
             _priceLabel.hidden = YES;
+            _courseRightBtn.selected = model.isExpanded;
             if (model.isExpanded) {
                 [self setHeight:50 + model.child.count * 50];
                 [_cellTableView setHeight:model.child.count * 50];
@@ -377,6 +389,7 @@
     } else if ([_allLayar isEqualToString:@"3"]) {
         if ([_courselayer isEqualToString:@"1"]) {
             _priceLabel.hidden = YES;
+            _courseRightBtn.selected = model.isExpanded;
             if (model.isExpanded) {
                 CGFloat cellHeight = 50;
                 for (CourseListModelFinal *object in model.child) {
@@ -400,6 +413,7 @@
             }
         } else if ([_courselayer isEqualToString:@"2"]) {
             _priceLabel.hidden = YES;
+            _courseRightBtn.selected = model.isExpanded;
             if (model.isExpanded) {
                 [self setHeight:50 + model.child.count * 50];
                 [_cellTableView setHeight:model.child.count * 50];

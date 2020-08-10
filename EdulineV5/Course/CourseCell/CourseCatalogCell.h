@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImageView *freeImageView;
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UIButton *courseRightBtn;
+@property (strong, nonatomic) UIButton *coverButton;
 @property (strong, nonatomic) UIImageView *learnIcon;
 @property (strong, nonatomic) UILabel *learnTimeLabel;
 @property (strong, nonatomic) playAnimationView *isLearningIcon;

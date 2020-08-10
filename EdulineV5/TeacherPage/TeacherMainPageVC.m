@@ -13,6 +13,8 @@
 #import "Net_Path.h"
 #import "UserCommenListVC.h"
 #import "InstitutionRootVC.h"
+#import "UserModel.h"
+#import "AppDelegate.h"
 
 @interface TeacherMainPageVC ()<UIScrollViewDelegate,UITextViewDelegate> {
     NSInteger wordMax;
@@ -321,6 +323,10 @@
 }
 
 - (void)likeButtonClick:(UIButton *)sender {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if (sender == _likeButton) {
         [self followUserAction];
     } else if (sender == _questionButton) {

@@ -39,7 +39,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"uid"] || [property.name isEqualToString:@"attach_id"] || [property.name isEqualToString:@"fileurl"] || [property.name isEqualToString:@"data_type"] || [property.name isEqualToString:@"data_type_text"]) {
+    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"uid"] || [property.name isEqualToString:@"attach_id"] || [property.name isEqualToString:@"fileurl"] || [property.name isEqualToString:@"data_type"] || [property.name isEqualToString:@"data_type_text"] || [property.name isEqualToString:@"data_txt"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){

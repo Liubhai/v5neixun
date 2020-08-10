@@ -543,9 +543,9 @@
 
 // MARK: - 讲师机构点击事件(讲师)
 - (void)jumpToOrganization:(NSDictionary *)schoolInfo {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
-        return;
-    }
+//    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+//        return;
+//    }
     InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
     vc.institutionId = [NSString stringWithFormat:@"%@",_dataSource[@"mhm_info"][@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
@@ -553,9 +553,9 @@
 
 // MARK: - 讲师机构点击事件(机构)
 - (void)jumpToTeacher:(NSDictionary *)teacherInfoDict tapTag:(NSInteger)viewTag {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
-        return;
-    }
+//    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+//        return;
+//    }
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
     vc.teacherId = [NSString stringWithFormat:@"%@",teacherInfoDict[@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
@@ -564,6 +564,7 @@
 // MARK: - 优惠卷点击事件
 - (void)jumpToCouponsVC {
     if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
         return;
     }
     LingquanViewController *vc = [[LingquanViewController alloc] init];
@@ -577,7 +578,10 @@
 
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
-    
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     UIView *allWindowView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MainScreenWidth, MainScreenHeight)];
     allWindowView.backgroundColor = [UIColor clearColor];//[UIColor colorWithWhite:0.2 alpha:0.5];
     allWindowView.layer.masksToBounds =YES;
@@ -707,6 +711,7 @@
 
 - (void)jumpToShopCarVC:(CourseDownView *)downView {
     if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
         return;
     }
     ShopCarManagerVC *vc = [[ShopCarManagerVC alloc] init];
@@ -715,6 +720,7 @@
 
 - (void)joinShopCarEvent:(CourseDownView *)downView {
     if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
         return;
     }
     if (SWNOTEmptyStr(_ID)) {

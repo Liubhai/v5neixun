@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 - (void)sendReplayMsg:(CommentBaseView *)view;
+- (void)judgeLogin;
 
 @end
 

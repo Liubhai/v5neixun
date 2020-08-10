@@ -71,7 +71,7 @@
 {
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.layer.masksToBounds = YES;
-    imageView.layer.cornerRadius = 15;
+    imageView.layer.cornerRadius = 5;//15
     imageView.clipsToBounds = YES;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     _imageView = imageView;

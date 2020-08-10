@@ -156,8 +156,9 @@
     [_phoneRightBtn setImage:Image(@"list_more") forState:0];
     [_phoneRightBtn addTarget:self action:@selector(jumpToChangePhonePage) forControlEvents:UIControlEventTouchUpInside];
     [_mainScrollView addSubview:_phoneRightBtn];
+    _phoneRightBtn.hidden = YES;
     
-    _phoneTextField = [[UITextField alloc] initWithFrame:CGRectMake(_phoneRightBtn.left - 5 - 200, _phoneTitle.top, 200, 50)];
+    _phoneTextField = [[UITextField alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _phoneTitle.top, 200, 50)];//_phoneRightBtn.left - 5 - 200
     _phoneTextField.textColor = EdlineV5_Color.textSecendColor;
     _phoneTextField.font = SYSTEMFONT(15);
     _phoneTextField.textAlignment = NSTextAlignmentRight;
@@ -398,7 +399,7 @@
             return NO;
         }
     } else if (textField == _phoneTextField) {
-        [self jumpToChangePhonePage];
+//        [self jumpToChangePhonePage];
         return NO;
     }
     return YES;

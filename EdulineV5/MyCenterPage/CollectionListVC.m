@@ -11,6 +11,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "LBHTableView.h"
+#import "CourseMainViewController.h"
 
 @interface CollectionListVC ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate> {
     NSInteger page;
@@ -73,7 +74,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"source_id"]];
+    vc.courselayer = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"section_level"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"course_type"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /**

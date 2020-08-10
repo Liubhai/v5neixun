@@ -54,7 +54,7 @@
         [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:selectBtn];
     }
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - 10, self.bounds.size.width, 10)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 90 - 10, self.bounds.size.width, 10)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView];
 }

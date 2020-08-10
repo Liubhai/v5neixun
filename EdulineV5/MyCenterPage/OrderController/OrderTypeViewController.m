@@ -283,11 +283,33 @@
     if ([orderStatus isEqualToString:@"0"]) {
         // 已取消
         // 去删除订单
-        [self doDeleteOrder:_dataSource[sender.tag][@"order_no"]];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确定要删除该订单吗？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self doDeleteOrder:_dataSource[sender.tag][@"order_no"]];
+        }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [commentAction setValue:EdlineV5_Color.themeColor forKey:@"titleTextColor"];
+        [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"titleTextColor"];
+        [alertController addAction:cancelAction];
+        [alertController addAction:commentAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
     } else if ([orderStatus isEqualToString:@"10"]) {
         // 待支付
         // 去取消订单
-        [self doCancelOrder:_dataSource[sender.tag][@"order_no"]];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确定要取消该订单吗？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self doCancelOrder:_dataSource[sender.tag][@"order_no"]];
+        }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [commentAction setValue:EdlineV5_Color.themeColor forKey:@"titleTextColor"];
+        [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"titleTextColor"];
+        [alertController addAction:cancelAction];
+        [alertController addAction:commentAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
     } else if ([orderStatus isEqualToString:@"20"]) {
         // 已完成
         // 不做任何操作

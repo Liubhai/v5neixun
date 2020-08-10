@@ -174,6 +174,10 @@
 }
 
 - (void)replayComment:(CourseCommentCell *)cell {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
+        return;
+    }
     NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
     if ([isBuy isEqualToString:@"1"]) {
         CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
@@ -190,6 +194,11 @@
 }
 
 - (void)jumpToCommentVC {
+    
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
+        return;
+    }
     
     NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
     if ([isBuy isEqualToString:@"1"]) {

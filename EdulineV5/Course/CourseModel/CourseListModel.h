@@ -86,6 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *data_type;
 @property (strong, nonatomic) NSString *data_type_text;
 @property (strong, nonatomic) NSString *fileurl;
+@property (strong, nonatomic) NSString *data_txt;
 
 @end
 

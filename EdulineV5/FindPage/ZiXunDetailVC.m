@@ -12,6 +12,7 @@
 #import "ZixunCommentCell.h"
 #import "CommentBaseView.h"
 #import "UserModel.h"
+#import "AppDelegate.h"
 #import "ZixunCommmentDetailVC.h"
 #import <UShareUI/UShareUI.h>
 
@@ -462,8 +463,16 @@
     view.placeHoderLab.hidden = NO;
 }
 
+- (void)judgeLogin {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+}
+
 - (void)zanComment:(ZixunCommentCell *)cell {
     if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
         return;
     }
     // 判断是点赞还是取消点赞  然后再判断是展示我的还是展示所有的
@@ -514,7 +523,10 @@
 
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
-    
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if (!SWNOTEmptyDictionary(_newsInfo)) {
         return;
     }

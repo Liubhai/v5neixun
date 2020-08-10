@@ -936,12 +936,30 @@
         return;
     }
     
-    if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
+    if ([model.model.section_data.data_type isEqualToString:@"3"]) {
+        if (!SWNOTEmptyStr(model.model.section_data.data_txt)) {
+            [_courseListVC.tableView reloadData];
+            [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+            return;
+        }
+    } else {
+        if (!SWNOTEmptyStr(model.model.section_data.fileurl)) {
+            [_courseListVC.tableView reloadData];
+            [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+            return;
+        }
+    }
+    
+    if ([model.model.section_data.data_type isEqualToString:@"3"]) {
+        _wkWebView.hidden = NO;
+        _playerView.hidden = YES;
+        [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:model.model.section_data.data_txt]]];
+        [_tableView setContentOffset:CGPointZero animated:YES];
         [_courseListVC.tableView reloadData];
-        [self showHudInView:wekself.view showHint:@"该课时内容无效"];
         return;
     }
-    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+    
+    if ([model.model.section_data.data_type isEqualToString:@"4"]) {
         _wkWebView.hidden = NO;
         _playerView.hidden = YES;
         [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:model.model.section_data.fileurl]]];
@@ -1058,12 +1076,30 @@
         return;
     }
     
-    if (!SWNOTEmptyStr(model.section_data.fileurl)) {
-        [_courseTreeListVC.tableView reloadData];
-        [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+    if ([model.section_data.data_type isEqualToString:@"3"]) {
+        if (!SWNOTEmptyStr(model.section_data.data_txt)) {
+            [_courseListVC.tableView reloadData];
+            [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+            return;
+        }
+    } else {
+        if (!SWNOTEmptyStr(model.section_data.fileurl)) {
+            [_courseListVC.tableView reloadData];
+            [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+            return;
+        }
+    }
+    
+    if ([model.section_data.data_type isEqualToString:@"3"]) {
+        _wkWebView.hidden = NO;
+        _playerView.hidden = YES;
+        [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:model.section_data.data_txt]]];
+        [_tableView setContentOffset:CGPointZero animated:YES];
+        [_courseListVC.tableView reloadData];
         return;
     }
-    if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
+    
+    if ([model.section_data.data_type isEqualToString:@"4"]) {
         _wkWebView.hidden = NO;
         _playerView.hidden = YES;
         [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:model.section_data.fileurl]]];

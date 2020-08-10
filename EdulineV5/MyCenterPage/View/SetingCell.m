@@ -32,7 +32,7 @@
     [self addSubview:_rightIcon];
     
     _rightLabel = [[UILabel alloc] initWithFrame:CGRectMake(_rightIcon.right - 15 - 100, 0, 100, 50)];
-    _rightLabel.textColor = EdlineV5_Color.textSecendColor;
+    _rightLabel.textColor = EdlineV5_Color.textThirdColor;
     _rightLabel.textAlignment = NSTextAlignmentRight;
     _rightLabel.font = SYSTEMFONT(15);
     [self addSubview:_rightLabel];
@@ -58,7 +58,8 @@
 - (void)setSetingCellInfo:(NSDictionary *)info {
     if (SWNOTEmptyDictionary(info)) {
         _themeLabel.text = [info objectForKey:@"title"];
-        if ([[info objectForKey:@"type"] isEqualToString:@"switch"]) {
+        _rightLabel.frame = CGRectMake(_rightIcon.right - 15 - 100, 0, 100, 50);
+        if ([[info objectForKey:@"type"] isEqualToString:@"switchDownLoad"] || [[info objectForKey:@"type"] isEqualToString:@"switchPlay"]) {
             _rightIcon.hidden = YES;
             _switchOther.hidden = NO;
             _rightLabel.hidden = YES;
@@ -66,10 +67,13 @@
             _rightIcon.hidden = NO;
             _switchOther.hidden = YES;
             _rightLabel.hidden = NO;
+            _rightLabel.text = [info objectForKey:@"rightTitle"];
         } else if ([[info objectForKey:@"type"] isEqualToString:@"memory"]) {
             _rightIcon.hidden = YES;
             _switchOther.hidden = YES;
+            _rightLabel.text = [info objectForKey:@"rightTitle"];
             _rightLabel.hidden = NO;
+            _rightLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, 0, 100, 50);
         } else if ([[info objectForKey:@"type"] isEqualToString:@"logout"]) {
             _rightIcon.hidden = YES;
             _switchOther.hidden = YES;

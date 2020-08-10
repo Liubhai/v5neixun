@@ -70,6 +70,7 @@
     _quesrionContentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, _quesrionContentBackView.width - 20, 22)];
     _quesrionContentLabel.font = SYSTEMFONT(13);
     _quesrionContentLabel.textColor = EdlineV5_Color.textThirdColor;
+    _quesrionContentLabel.numberOfLines = 0;
     _quesrionContentLabel.backgroundColor = HEXCOLOR(0xF0F0F0);
     if (SWNOTEmptyDictionary(_questionInfo)) {
         _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",_questionInfo[@"notify_data"][@"content"]];

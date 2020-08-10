@@ -272,7 +272,7 @@
 - (void)setInstitutionInfoData {
     if (SWNOTEmptyDictionary(_institutionInfo)) {
         if ([[_institutionInfo objectForKey:@"code"] integerValue]) {
-            [_faceImageView sd_setImageWithURL:EdulineUrlString(_institutionInfo[@"data"][@"info"][@"logo"]) placeholderImage:DefaultImage];
+            [_faceImageView sd_setImageWithURL:EdulineUrlString(_institutionInfo[@"data"][@"info"][@"logo_url"]) placeholderImage:DefaultImage];
             _InstitutionLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"title"]];
             _titleLabel.text = [NSString stringWithFormat:@"%@",_institutionInfo[@"data"][@"info"][@"title"]];
             if (SWNOTEmptyStr(_institutionInfo[@"data"][@"info"][@"intro"])) {

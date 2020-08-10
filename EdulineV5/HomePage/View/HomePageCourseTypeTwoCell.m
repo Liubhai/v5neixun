@@ -142,7 +142,7 @@
             priceLabel.text = @"已购买";
             priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
-            if ([priceValue isEqualToString:@"0.00"]) {
+            if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"]) {
                 priceLabel.text = @"免费";
                 priceLabel.textColor = EdlineV5_Color.priceFreeColor;
             } else {

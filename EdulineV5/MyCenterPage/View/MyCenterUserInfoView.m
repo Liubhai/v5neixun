@@ -37,6 +37,14 @@
     [_rightBtn addTarget:self action:@selector(rightClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_rightBtn];
     
+    _redLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
+    _redLabel.layer.masksToBounds = YES;
+    _redLabel.layer.cornerRadius = _redLabel.height / 2.0;
+    _redLabel.backgroundColor = EdlineV5_Color.faildColor;
+    _redLabel.hidden = YES;
+    _redLabel.center = CGPointMake(_rightBtn.width / 2.0 + 10, _rightBtn.height / 2.0 - 10);
+    [_rightBtn addSubview:_redLabel];
+    
     _setBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _setBtn.frame = CGRectMake(_rightBtn.left - 44, _rightBtn.top, 44, 44);
     [_setBtn setImage:Image(@"pre_nav_set") forState:0];

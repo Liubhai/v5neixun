@@ -377,7 +377,7 @@
     if ([_orderTypeString isEqualToString:@"course"]) {
         [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:NO];
     } else if ([_orderTypeString isEqualToString:@"shopcar"]) {
-        [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:NO];
+        [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 4] animated:NO];
     } else if ([_orderTypeString isEqualToString:@"orderList"]) {
         // 刷新订单所有页面
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadOrderList" object:nil];

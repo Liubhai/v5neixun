@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *leftBtn;
 @property (strong, nonatomic) UIButton *rightBtn;
 @property (strong, nonatomic) UIButton *setBtn;
+@property (strong, nonatomic) UILabel *redLabel;
 @property (strong, nonatomic) UIImageView *backImageView;
 
 @property (strong, nonatomic) UIImageView *userFaceImageView;

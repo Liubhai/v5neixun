@@ -52,8 +52,12 @@
 }
 
 - (void)placeLabelTap:(UIGestureRecognizer *)tap {
-    _placeHoderLab.hidden = YES;
-    [_inputTextView becomeFirstResponder];
+    if (_delegate && [_delegate respondsToSelector:@selector(judgeLogin)]) {
+        [_delegate judgeLogin];
+    } else {
+        _placeHoderLab.hidden = YES;
+        [_inputTextView becomeFirstResponder];
+    }
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {

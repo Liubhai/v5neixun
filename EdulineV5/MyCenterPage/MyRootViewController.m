@@ -52,6 +52,7 @@
 
 
 @property (strong, nonatomic) UIButton *setButton;
+@property (strong, nonatomic) UILabel *redLabel;
 
 @end
 
@@ -72,6 +73,15 @@
     [_leftButton setImage:[Image(@"pre_nav_home") converToOtherColor:EdlineV5_Color.textFirstColor] forState:0];
     [_rightButton setImage:Image(@"pre_nav_mes_blue") forState:0];
     _rightButton.hidden = NO;
+    
+    _redLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
+    _redLabel.layer.masksToBounds = YES;
+    _redLabel.layer.cornerRadius = _redLabel.height / 2.0;
+    _redLabel.backgroundColor = EdlineV5_Color.faildColor;
+    _redLabel.hidden = YES;
+    _redLabel.center = CGPointMake(_rightButton.width / 2.0 + 10, _rightButton.height / 2.0 - 10);
+    [_rightButton addSubview:_redLabel];
+    
     _setButton = [[UIButton alloc] initWithFrame:CGRectMake(_rightButton.left - 44, _rightButton.top, 44, 44)];
     [_setButton setImage:Image(@"pre_nav_set_blue") forState:0];
     [_setButton addTarget:self action:@selector(setingButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -104,7 +114,8 @@
     _mycenterOrderView = [[MyCenterOrderView alloc] initWithFrame:CGRectMake(15, _myCenterUserInfoView.bottom - 80, MainScreenWidth - 30, 140)];
     _mycenterOrderView.delegate = self;
     [_headerView addSubview:_mycenterOrderView];
-    _myCenterBalanceView = [[MyCenterBalanceView alloc] initWithFrame:CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, 90)];
+    _myCenterBalanceView = [[MyCenterBalanceView alloc] initWithFrame:CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, SWNOTEmptyStr([UserModel oauthToken]) ? 90 : 0)];
+    _myCenterBalanceView.hidden = SWNOTEmptyStr([UserModel oauthToken]) ? NO : YES;
     _myCenterBalanceView.delegate = self;
     [_headerView addSubview:_myCenterBalanceView];
     [_headerView setHeight:_myCenterBalanceView.bottom];
@@ -238,6 +249,10 @@
 }
 
 - (void)rightButtonClick:(id)sender {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     MessageRootVC *vc = [[MessageRootVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -329,6 +344,10 @@
 }
 
 - (void)goToMessageVC {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     MessageRootVC *vc = [[MessageRootVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -396,8 +415,19 @@
                         [_iconArray addObjectsFromArray:[listArray[i] objectForKey:@"list"]];
                     }
                 }
-                
+                NSString *notifyCount = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"notify"]];
+                if (notifyCount.integerValue > 0) {
+                    _redLabel.hidden = NO;
+                    _myCenterUserInfoView.redLabel.hidden = NO;
+                } else {
+                    _redLabel.hidden = YES;
+                    _myCenterUserInfoView.redLabel.hidden = YES;
+                }
+                _myCenterBalanceView.frame = CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, SWNOTEmptyStr([UserModel oauthToken]) ? 90 : 0);
+                _myCenterBalanceView.hidden = SWNOTEmptyStr([UserModel oauthToken]) ? NO : YES;
+                [_headerView setHeight:_myCenterBalanceView.bottom];
                 [self.myCenterBalanceView setBalanceInfo:_userInfo];
+                _tableView.tableHeaderView = _headerView;
                 [self reloadUserInfo];
             }
         }

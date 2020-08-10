@@ -84,7 +84,7 @@
         _priceLabel.text = @"已购买";
         _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
     } else {
-        if ([priceValue isEqualToString:@"0.00"]) {
+        if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"]) {
             _priceLabel.text = @"免费";
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
@@ -138,7 +138,7 @@
         _priceLabel.text = @"已购买";
         _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
     } else {
-        if ([priceValue isEqualToString:@"0.00"]) {
+        if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"]) {
             _priceLabel.text = @"免费";
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
