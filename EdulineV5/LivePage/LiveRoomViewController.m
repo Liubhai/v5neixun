@@ -82,7 +82,6 @@
     [_liveBackView addSubview:_topBlackView];
     
     [self makeBoardView];
-    [self makeCollectionView];
     
     _topToolBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _liveBackView.width, 37)];
     _topToolBackView.layer.masksToBounds = YES;
@@ -158,6 +157,7 @@
     _roomPersonCountBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space1/2.0, 0, -space1/2.0);
     [_bottomToolBackView addSubview:_roomPersonCountBtn];
     
+    [self makeCollectionView];
 }
 
 // MARK: - 白板
@@ -187,6 +187,7 @@
     _collectionView.dataSource = self;
     _collectionView.showsVerticalScrollIndicator = NO;
     [_liveBackView addSubview:_collectionView];
+    [_collectionView reloadData];
 }
 
 // MARK: - UICollectionViewDataSource
@@ -195,6 +196,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    [self changeRoomMenberCountUI];
     return _livePersonArray.count;
 }
 
@@ -325,7 +327,14 @@
         
         _collectionView.frame = CGRectMake(_liveBackView.width - 113, _topBlackView.bottom, 113, _boardView.height);
     }
-    [_collectionView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [CATransaction setDisableActions:YES];
+        
+        [_collectionView reloadData];
+        
+        [CATransaction commit];
+    });
 }
 
 // MARK: - 白板代理
@@ -371,8 +380,17 @@
     [_livePersonArray removeObject:_userId];
     if (sender.selected) {
         [_livePersonArray addObject:_userId];
+    } else {
+        [[[TICManager sharedInstance] getTRTCCloud] stopLocalPreview];
     }
-    [_collectionView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [CATransaction setDisableActions:YES];
+        
+        [_collectionView reloadData];
+        
+        [CATransaction commit];
+    });
 }
 
 // MARK: - 开关麦克风
@@ -395,19 +413,33 @@
         [_livePersonArray removeObject:userId];
         [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
     }
-    [_collectionView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [CATransaction setDisableActions:YES];
+        
+        [_collectionView reloadData];
+        
+        [CATransaction commit];
+    });
 }
 
 - (void)onTICUserSubStreamAvailable:(NSString *)userId available:(BOOL)available
 {
-    if(available){
-        [_livePersonArray addObject:userId];
-    }
-    else{
-        [_livePersonArray removeObject:userId];
-        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteSubStreamView:userId];
-    }
-    [_collectionView reloadData];
+//    if(available){
+//        [_livePersonArray addObject:userId];
+//    }
+//    else{
+//        [_livePersonArray removeObject:userId];
+//        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//
+//        [CATransaction setDisableActions:YES];
+//
+//        [_collectionView reloadData];
+//
+//        [CATransaction commit];
+//    });
 }
 
 
@@ -435,6 +467,25 @@
         [self.navigationController popViewControllerAnimated:YES];
     }];
     
+}
+
+// MARK: - 改变房间人数显示UI
+- (void)changeRoomMenberCountUI {
+    NSInteger roomcount = 0;
+    if ([_livePersonArray containsObject:_userId]) {
+        roomcount = _livePersonArray.count;
+    } else {
+        roomcount = _livePersonArray.count + 1;
+    }
+    NSString *roomMember = [NSString stringWithFormat:@"%@",@(roomcount)];
+    CGFloat roomMemberWidth = [roomMember sizeWithFont:SYSTEMFONT(14)].width + 4 + 11 + 7.5 *2;
+    CGFloat space1 = 5.0;
+    _roomPersonCountBtn.frame= CGRectMake(_fullScreenBtn.left - 7.5 - roomMemberWidth, 0, roomMemberWidth, 37);
+    _roomPersonCountBtn.centerY = 37/2.0;
+    [_roomPersonCountBtn setImage:Image(@"live_member") forState:0];
+    [_roomPersonCountBtn setTitle:roomMember forState:0];
+    _roomPersonCountBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space1/2.0, 0, space1/2.0);
+    _roomPersonCountBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space1/2.0, 0, -space1/2.0);
 }
 
 @end

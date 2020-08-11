@@ -191,8 +191,10 @@ id makeWeakRef (id object) {
         if(!initParam){
             initParam = [[TEduBoardInitParam alloc] init];
         }
+        initParam.drawEnable = NO;
         [ws report:TIC_REPORT_INIT_BOARD_START];
         ws.boardController = [[TEduBoardController alloc] initWithAuthParam:authParam roomId:ws.option.classId initParam:initParam];
+        [ws.boardController setDrawEnable:false];
         [ws.boardController addDelegate:ws];
         if(option.boardDelegate){
             [ws.boardController addDelegate:option.boardDelegate];
