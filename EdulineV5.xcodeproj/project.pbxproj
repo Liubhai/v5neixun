@@ -199,6 +199,7 @@
 		787F1E9D247925AD00108F7B /* InstitutionListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9C247925AD00108F7B /* InstitutionListVC.m */; };
 		787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9F2479263200108F7B /* InstitutionListCell.m */; };
 		7887451224E13B1300257029 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7887451124E13B1300257029 /* FeedBackViewController.m */; };
+		7887451524E29C5F00257029 /* InstitutionsChooseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7887451424E29C5F00257029 /* InstitutionsChooseVC.m */; };
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
@@ -797,6 +798,8 @@
 		787F1E9F2479263200108F7B /* InstitutionListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionListCell.m; sourceTree = "<group>"; };
 		7887451024E13B1300257029 /* FeedBackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
 		7887451124E13B1300257029 /* FeedBackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
+		7887451324E29C5F00257029 /* InstitutionsChooseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionsChooseVC.h; sourceTree = "<group>"; };
+		7887451424E29C5F00257029 /* InstitutionsChooseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionsChooseVC.m; sourceTree = "<group>"; };
 		7888A34E249C8D1B00DB078D /* InstitutionApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionApplyVC.h; sourceTree = "<group>"; };
 		7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionApplyVC.m; sourceTree = "<group>"; };
 		7888A35124A1D3CF00DB078D /* WkWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WkWebViewController.h; sourceTree = "<group>"; };
@@ -1911,6 +1914,8 @@
 			children = (
 				7879575D2410A1650013F95F /* QuickLoginVC.h */,
 				7879575E2410A1650013F95F /* QuickLoginVC.m */,
+				7887451324E29C5F00257029 /* InstitutionsChooseVC.h */,
+				7887451424E29C5F00257029 /* InstitutionsChooseVC.m */,
 				787957602410E1F40013F95F /* LoginViewController.h */,
 				787957612410E1F40013F95F /* LoginViewController.m */,
 				78C548282412229900A33FC4 /* AreaNumListVC.h */,
@@ -3145,6 +3150,7 @@
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
 				784FC8EB24ADBAB400CAE7A6 /* ZixunCommentCell.m in Sources */,
+				7887451524E29C5F00257029 /* InstitutionsChooseVC.m in Sources */,
 				78795725240FA3840013F95F /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				7839C98624209FAF002F6595 /* CourseCommentViewController.m in Sources */,
 				784E5CEB24A9802D00646916 /* HcdGuideViewCell.m in Sources */,

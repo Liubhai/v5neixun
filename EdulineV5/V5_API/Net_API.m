@@ -47,6 +47,9 @@
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    if ([Show_Config isEqualToString:@"1"]) {
+        [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    }
     
     [manager GET:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
@@ -108,6 +111,9 @@
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    if ([Show_Config isEqualToString:@"1"]) {
+        [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    }
     
    [manager POST:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
@@ -175,6 +181,9 @@
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    if ([Show_Config isEqualToString:@"1"]) {
+        [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    }
     
     [manager PUT:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
     #ifdef DEBUG
@@ -244,6 +253,9 @@
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    if ([Show_Config isEqualToString:@"1"]) {
+        [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    }
     manager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithArray:@[@""]];
  
     [manager DELETE:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -325,6 +337,9 @@
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
+    if ([Show_Config isEqualToString:@"1"]) {
+        [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    }
     
     return  [manager POST:URLString parameters:mutaDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         //

@@ -37,6 +37,7 @@
 
 // 测试班级课
 #import "CourseTreeListViewController.h"
+#import "InstitutionsChooseVC.h"
 
 @interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate> {
     BOOL isWeek;// 显示周榜还是月榜
@@ -120,8 +121,7 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
-    CourseTreeListViewController *vc = [[CourseTreeListViewController alloc] init];
-    vc.courseId = @"51";
+    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
     return NO;
 //    CourseSearchHistoryVC *vc = [[CourseSearchHistoryVC alloc] init];
