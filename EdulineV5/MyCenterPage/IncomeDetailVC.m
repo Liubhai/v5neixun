@@ -48,11 +48,14 @@
     timeString = @"全部";
     timeIdString = @"all";
     
-    [self makeTopView];
+//    [self makeTopView];
     [self makeTabelView];
 }
 
 - (void)makeTopView {
+    if (_timeButton != nil) {
+        return;
+    }
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 54)];
     topView.backgroundColor = EdlineV5_Color.backColor;
     [self.view addSubview:topView];
@@ -67,9 +70,10 @@
     [_incomeButton setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
     [EdulineV5_Tool dealButtonImageAndTitleUI:_incomeButton];
     [_incomeButton addTarget:self action:@selector(headerButtonCilck:) forControlEvents:UIControlEventTouchUpInside];
+    _incomeButton.hidden = !isTeacher;
     [topView addSubview:_incomeButton];
     
-    _timeButton = [[UIButton alloc] initWithFrame:CGRectMake(_incomeButton.right, 0, 70, 54)];
+    _timeButton = [[UIButton alloc] initWithFrame:CGRectMake(isTeacher ? _incomeButton.right : 0, 0, 70, 54)];
     _timeButton.titleLabel.font = SYSTEMFONT(14);
     _timeButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [_timeButton setTitle:@"时间" forState:UIControlStateNormal];
@@ -190,6 +194,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 isTeacher = [[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"is_teacher"]] boolValue];
+                [self makeTopView];
                 [_dataSource removeAllObjects];
                 [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"flow"] objectForKey:@"data"]];
                 _sourceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
