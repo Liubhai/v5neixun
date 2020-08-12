@@ -200,6 +200,9 @@
 		787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9F2479263200108F7B /* InstitutionListCell.m */; };
 		7887451224E13B1300257029 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7887451124E13B1300257029 /* FeedBackViewController.m */; };
 		7887451524E29C5F00257029 /* InstitutionsChooseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7887451424E29C5F00257029 /* InstitutionsChooseVC.m */; };
+		7887451824E3830C00257029 /* InstitutionSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7887451724E3830C00257029 /* InstitutionSearchVC.m */; };
+		7887451F24E3C73900257029 /* UITableView+EmptyData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7887451E24E3C73900257029 /* UITableView+EmptyData.m */; };
+		7887452224E3CE2600257029 /* UICollectionView+EmptyData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7887452124E3CE2600257029 /* UICollectionView+EmptyData.m */; };
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
@@ -800,6 +803,12 @@
 		7887451124E13B1300257029 /* FeedBackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
 		7887451324E29C5F00257029 /* InstitutionsChooseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionsChooseVC.h; sourceTree = "<group>"; };
 		7887451424E29C5F00257029 /* InstitutionsChooseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionsChooseVC.m; sourceTree = "<group>"; };
+		7887451624E3830C00257029 /* InstitutionSearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionSearchVC.h; sourceTree = "<group>"; };
+		7887451724E3830C00257029 /* InstitutionSearchVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionSearchVC.m; sourceTree = "<group>"; };
+		7887451D24E3C73900257029 /* UITableView+EmptyData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+EmptyData.h"; sourceTree = "<group>"; };
+		7887451E24E3C73900257029 /* UITableView+EmptyData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+EmptyData.m"; sourceTree = "<group>"; };
+		7887452024E3CE2600257029 /* UICollectionView+EmptyData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+EmptyData.h"; sourceTree = "<group>"; };
+		7887452124E3CE2600257029 /* UICollectionView+EmptyData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+EmptyData.m"; sourceTree = "<group>"; };
 		7888A34E249C8D1B00DB078D /* InstitutionApplyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionApplyVC.h; sourceTree = "<group>"; };
 		7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionApplyVC.m; sourceTree = "<group>"; };
 		7888A35124A1D3CF00DB078D /* WkWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WkWebViewController.h; sourceTree = "<group>"; };
@@ -1661,6 +1670,10 @@
 				7839C96E241F174D002F6595 /* LBHProgressView.m */,
 				7839C96D241F174D002F6595 /* LBHTableView.h */,
 				7839C96F241F174D002F6595 /* LBHTableView.m */,
+				7887451D24E3C73900257029 /* UITableView+EmptyData.h */,
+				7887451E24E3C73900257029 /* UITableView+EmptyData.m */,
+				7887452024E3CE2600257029 /* UICollectionView+EmptyData.h */,
+				7887452124E3CE2600257029 /* UICollectionView+EmptyData.m */,
 				789DB05A246C2680001302B4 /* LBHScrollView.h */,
 				789DB05B246C2680001302B4 /* LBHScrollView.m */,
 				7839C973241F5C57002F6595 /* StarEvaluator.h */,
@@ -1916,6 +1929,8 @@
 				7879575E2410A1650013F95F /* QuickLoginVC.m */,
 				7887451324E29C5F00257029 /* InstitutionsChooseVC.h */,
 				7887451424E29C5F00257029 /* InstitutionsChooseVC.m */,
+				7887451624E3830C00257029 /* InstitutionSearchVC.h */,
+				7887451724E3830C00257029 /* InstitutionSearchVC.m */,
 				787957602410E1F40013F95F /* LoginViewController.h */,
 				787957612410E1F40013F95F /* LoginViewController.m */,
 				78C548282412229900A33FC4 /* AreaNumListVC.h */,
@@ -3013,6 +3028,7 @@
 				78AA13842440543D007087F7 /* TAAbstractDotView.m in Sources */,
 				7879572C240FA3840013F95F /* ZLPhotoPickerBrowserPhotoScrollView.m in Sources */,
 				78D97FF424B83C9D000DE0E4 /* ClassCourseCell.m in Sources */,
+				7887452224E3CE2600257029 /* UICollectionView+EmptyData.m in Sources */,
 				78795736240FA3840013F95F /* ZLPhotoPickerCollectionView.m in Sources */,
 				78C549E1241B674F00A33FC4 /* UIColor+AlivcHelper.m in Sources */,
 				78795669240E606F0013F95F /* MyRootViewController.m in Sources */,
@@ -3053,6 +3069,7 @@
 				7839C98E2420D089002F6595 /* CourseCommentCell.m in Sources */,
 				78AA138924406009007087F7 /* HomePageTeacherCell.m in Sources */,
 				787F1E83247381A400108F7B /* AliyunPlayerViewSpeedView.m in Sources */,
+				7887451F24E3C73900257029 /* UITableView+EmptyData.m in Sources */,
 				7839C9A6242368A2002F6595 /* CourseCatalogCell.m in Sources */,
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				78C549DD241B674F00A33FC4 /* UIResponder+AlivcHelper.m in Sources */,
@@ -3098,6 +3115,7 @@
 				784FC8FD24AF2FA900CAE7A6 /* MessageListCell.m in Sources */,
 				78A16C872452F7C100391430 /* NetAssociation.m in Sources */,
 				7853164824502E49007E239E /* MenberCell.m in Sources */,
+				7887451824E3830C00257029 /* InstitutionSearchVC.m in Sources */,
 				7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */,
 				784FC8DF24AC9C8000CAE7A6 /* MyRecommendCell.m in Sources */,
 				7853BDD6242DD87000F096EC /* KaquanCell.m in Sources */,

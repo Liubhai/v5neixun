@@ -16,6 +16,9 @@
 #import "TeacherMainPageVC.h"
 #import "InstitutionCourseMainVC.h"
 #import "CourseMainViewController.h"
+#import "ZiXunListCell.h"
+#import "ZiXunDetailVC.h"
+#import "ZiXunListVC.h"
 
 @interface InstitutionRootVC ()<UITableViewDelegate, UITableViewDataSource,HomePageTeacherCellDelegate,HomePageCourseTypeTwoCellDelegate>
 
@@ -26,6 +29,10 @@
 @property (strong, nonatomic) NSMutableArray *cateSourceArray;
 // 讲师
 @property (strong, nonatomic) NSMutableArray *teacherArray;
+
+@property (strong, nonatomic) NSMutableArray *topicArray;
+
+
 
 @property (strong, nonatomic) UIView *topView;
 @property (strong, nonatomic) UIImageView *topBackImageView;
@@ -54,6 +61,7 @@
     _lineTL.backgroundColor = EdlineV5_Color.themeColor;
     _teacherArray = [NSMutableArray new];
     _cateSourceArray = [NSMutableArray new];
+    _topicArray = [NSMutableArray new];
     
     [self makeHeaderView];
     [self makeTableView];
@@ -115,6 +123,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0 || section == 1) {
         return 1;
+    } else if (section == 2) {
+        return _topicArray.count;
     }
     return 0;
 }
@@ -178,6 +188,14 @@
         [cell setTeacherArrayInfo:_teacherArray];
         cell.delegate = self;
         return cell;
+    } else if (indexPath.section == 2) {
+        static NSString *reuse = @"ZiXunListCell";
+        ZiXunListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[ZiXunListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setZiXunInfo:_topicArray[indexPath.row]];
+        return cell;
     } else {
         static NSString *reuse = @"homeCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
@@ -193,8 +211,19 @@
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
     } else if (indexPath.section == 1) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
+    } else if (indexPath.section == 2) {
+        return 101.5;
     } else {
         return 0.0;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 2) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        ZiXunDetailVC *vc = [[ZiXunDetailVC alloc] init];
+        vc.zixunId = [NSString stringWithFormat:@"%@",[_topicArray[indexPath.row] objectForKey:@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -233,6 +262,10 @@
         InstitutionCourseMainVC *vc = [[InstitutionCourseMainVC alloc] init];
         vc.institutionID = _institutionId;
         [self.navigationController pushViewController:vc animated:YES];
+    } else if (sender.tag == 2) {
+        ZiXunListVC *vc = [[ZiXunListVC alloc] init];
+        vc.mhm_id = _institutionId;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -253,6 +286,9 @@
                     
                     [_teacherArray removeAllObjects];
                     [_teacherArray addObjectsFromArray:responseObject[@"data"][@"teacher"]];
+                    
+                    [_topicArray removeAllObjects];
+                    [_topicArray addObjectsFromArray:responseObject[@"data"][@"topic"]];
                     
                     _institutionInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     

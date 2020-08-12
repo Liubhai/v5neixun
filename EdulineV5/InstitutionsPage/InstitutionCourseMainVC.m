@@ -255,7 +255,7 @@
     if (SWNOTEmptyStr(maxPrice)) {
         [param setObject:maxPrice forKey:@"price_max"];
     }
-    
+    [_collectionView collectionViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_collectionView.height];
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionCourseListNet:_institutionID] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         [_collectionView.mj_header endRefreshing];
         if (SWNOTEmptyDictionary(responseObject)) {
@@ -268,6 +268,7 @@
                     [_collectionView.mj_footer setState:MJRefreshStateIdle];
                     _collectionView.mj_footer.hidden = NO;
                 }
+                [_collectionView collectionViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_collectionView.height];
                 [_collectionView reloadData];
             }
         }

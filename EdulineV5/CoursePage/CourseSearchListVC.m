@@ -53,12 +53,18 @@
 @property (strong ,nonatomic)UIButton         *classTypeButton;
 @property (strong ,nonatomic)UIButton         *moreButton;
 @property (strong ,nonatomic)UIButton         *screeningButton;
+@property (strong, nonatomic) UILabel *shopCountLabel;
 
 @property (strong, nonatomic) UITextField *institutionSearch;
 
 @end
 
 @implementation CourseSearchListVC
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self getShopCarCount];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -92,6 +98,16 @@
         courseSortString = _sortStr;
         courseSortIdString = _sortIdStr;
     }
+    
+    _shopCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_rightButton.centerX, _rightButton.top + 3, 18, 12)];
+    _shopCountLabel.layer.masksToBounds = YES;
+    _shopCountLabel.layer.cornerRadius = 6;
+    _shopCountLabel.backgroundColor = EdlineV5_Color.faildColor;
+    _shopCountLabel.textColor = [UIColor whiteColor];
+    _shopCountLabel.font = SYSTEMFONT(10);
+    _shopCountLabel.textAlignment = NSTextAlignmentCenter;
+    _shopCountLabel.hidden = YES;
+    [_titleImage addSubview:_shopCountLabel];
     
     [self makeTopSearch];
     [self addHeaderView];
@@ -564,6 +580,23 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
         [self getCourseMainList];
     }
+}
+
+- (void)getShopCarCount {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userShopCarCountNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _shopCountLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"]];
+                if ([_shopCountLabel.text integerValue]>0) {
+                    _shopCountLabel.hidden = NO;
+                } else {
+                    _shopCountLabel.hidden = YES;
+                }
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 @end

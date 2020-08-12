@@ -85,6 +85,9 @@
     if (SWNOTEmptyStr(typeString)) {
         [param setObject:typeString forKey:@"category"];
     }
+    if (SWNOTEmptyStr(_mhm_id)) {
+        [param setObject:_mhm_id forKey:@"mhm_id"];
+    }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunListPageNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
@@ -116,6 +119,9 @@
     [param setObject:@"10" forKey:@"count"];
     if (SWNOTEmptyStr(typeString)) {
         [param setObject:typeString forKey:@"category"];
+    }
+    if (SWNOTEmptyStr(_mhm_id)) {
+        [param setObject:_mhm_id forKey:@"mhm_id"];
     }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunListPageNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {

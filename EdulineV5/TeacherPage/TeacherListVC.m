@@ -88,6 +88,9 @@
     if (SWNOTEmptyStr(categoryString)) {
         [param setObject:categoryString forKey:@"category"];
     }
+    if (SWNOTEmptyStr(_mhm_id)) {
+        [param setObject:_mhm_id forKey:@"mhm_id"];
+    }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
@@ -119,6 +122,9 @@
     // 大类型
     if (SWNOTEmptyStr(categoryString)) {
         [param setObject:categoryString forKey:@"category"];
+    }
+    if (SWNOTEmptyStr(_mhm_id)) {
+        [param setObject:_mhm_id forKey:@"mhm_id"];
     }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageJoinCourseList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {

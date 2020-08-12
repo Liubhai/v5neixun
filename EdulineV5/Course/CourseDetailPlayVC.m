@@ -1385,6 +1385,12 @@
     
     TICClassroomOption *option = [[TICClassroomOption alloc] init];
     option.classId = [classId intValue];
+    if ([[NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]] integerValue]) {
+        option.boardInitParam.drawEnable = YES;
+    } else {
+        option.boardInitParam.drawEnable = NO;
+    }
+    
     
     [[TICManager sharedInstance] addMessageListener:vc];
     [[TICManager sharedInstance] addEventListener:vc];

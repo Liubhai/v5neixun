@@ -257,6 +257,10 @@
     return [Net_Path fullPath:@"course/payment/cart" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userShopCarCountNet {
+    return [Net_Path fullPath:@"user/cart/num" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)shopcarOrderInfo {
     return [Net_Path fullPath:@"order/course/cart" repalce:@"" byReplece:@""];
 }

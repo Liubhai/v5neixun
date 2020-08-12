@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
+@property (strong, nonatomic) NSString *mhm_id;//机构id
+
 @end
 
 NS_ASSUME_NONNULL_END

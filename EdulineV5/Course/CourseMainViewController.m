@@ -98,6 +98,7 @@
     [super viewWillAppear:animated];
     if (shouldLoad) {
         [self getCourseInfo];
+        [self getShopCarCount];
     }
     shouldLoad = YES;
 }
@@ -133,6 +134,7 @@
     [_rightButton setImage:Image(@"nav_more_white") forState:0];
     [self makeDownView];
     [self getCourseInfo];
+    [self getShopCarCount];
     
 }
 
@@ -727,6 +729,7 @@
         [Net_API requestPOSTWithURLStr:[Net_Path addCourseIntoShopcar] WithAuthorization:nil paramDic:@{@"course_id":_ID} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                [self getShopCarCount];
             }
         } enError:^(NSError * _Nonnull error) {
             [self showHudInView:self.view showHint:@"网络超时"];
@@ -749,7 +752,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             NSString *priceCount = [NSString stringWithFormat:@"%@",_dataSource[@"price"]];
-            if ([priceCount isEqualToString:@"0.00"]) {
+            if ([priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
                 // 免费课程
                 [Net_API requestPOSTWithURLStr:[Net_Path joinFreeCourseNet] WithAuthorization:nil paramDic:@{@"course_id":_ID} finish:^(id  _Nonnull responseObject) {
                     if (SWNOTEmptyDictionary(responseObject)) {
@@ -871,4 +874,21 @@
     }
 }
 
+// MARK: - 获取购物车数量
+- (void)getShopCarCount {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userShopCarCountNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _courseDownView.shopCountLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"]];
+                if ([_courseDownView.shopCountLabel.text integerValue]>0) {
+                    _courseDownView.shopCountLabel.hidden = NO;
+                } else {
+                    _courseDownView.shopCountLabel.hidden = YES;
+                }
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
 @end

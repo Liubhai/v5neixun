@@ -1,8 +1,8 @@
 //
-//  TeacherListVC.h
+//  InstitutionSearchVC.h
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2020/5/23.
+//  Created by 刘邦海 on 2020/8/12.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
@@ -10,9 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TeacherListVC : BaseViewController
-
-@property (strong, nonatomic) NSString *mhm_id;//机构id
+@interface InstitutionSearchVC : BaseViewController
 
 @end
 

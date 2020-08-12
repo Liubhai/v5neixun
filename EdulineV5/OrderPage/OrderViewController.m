@@ -405,9 +405,9 @@
                 _courseFaceImageView.image = Image(@"contents_icon_video");
             }
         }
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         
-        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
         [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
         _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
@@ -435,28 +435,28 @@
     if (_couponModel) {
         if ([_couponModel.coupon_type isEqualToString:@"1"]) {
             _kaquanLabel.text = [NSString stringWithFormat:@"满%@减%@",_couponModel.maxprice,_couponModel.price];
-            float max_price = [[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue];
+            float max_price = [[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"] floatValue];
             if (max_price>=[_couponModel.maxprice floatValue]) {
-                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue] - [_couponModel.price floatValue]];
+                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"] floatValue] - [_couponModel.price floatValue]];
                 _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%@",_couponModel.price];
             } else {
                 _kaquanLabel.text = [NSString stringWithFormat:@"满%@减%@(不满足要求,无法使用)",_couponModel.maxprice,_couponModel.price];
-                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
                 _youhuiLabel.text = @"优惠：¥0.00";
             }
         } else if ([_couponModel.coupon_type isEqualToString:@"2"]) {
             _kaquanLabel.text = [NSString stringWithFormat:@"%@折",_couponModel.discount];
             float discount1 = [_couponModel.discount floatValue];
-            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue] * discount1 / 10];
-            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue] - [[[_orderInfo objectForKey:@"data"] objectForKey:@"price"] floatValue] * discount1 / 10];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"] floatValue] * discount1 / 10];
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%.2f",[[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"] floatValue] - [[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"] floatValue] * discount1 / 10];
         } else if ([_couponModel.coupon_type isEqualToString:@"3"]) {
             _kaquanLabel.text = @"课程卡";
             _finalPriceLabel.text = @"合计: ¥0.00";
-            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         }
     } else {
         _kaquanLabel.text = @"";
-        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"price"]];
+        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         _youhuiLabel.text = @"优惠：¥0.00";
     }
     NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];

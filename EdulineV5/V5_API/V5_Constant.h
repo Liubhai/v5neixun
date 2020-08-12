@@ -27,6 +27,8 @@
 #import "UIViewController+Utils.h"
 #import "UIImage+Util.h"
 #import "WKWebIntroview.h"
+#import "UITableView+EmptyData.h"
+#import "UICollectionView+EmptyData.h"
 
 #ifndef V5_Constant_h
 #define V5_Constant_h

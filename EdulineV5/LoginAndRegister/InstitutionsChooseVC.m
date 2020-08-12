@@ -8,6 +8,7 @@
 
 #import "InstitutionsChooseVC.h"
 #import "V5_Constant.h"
+#import "InstitutionSearchVC.h"
 
 @interface InstitutionsChooseVC ()<UITextFieldDelegate, UIScrollViewDelegate>
 
@@ -21,6 +22,7 @@
     _searchDataSource = [NSMutableArray new];
     [self makeSubView];
     [self getLocalInstitutionSearchData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getLocalInstitutionSearchData) name:@"reloadLocalInstitutionData" object:nil];
     // Do any additional setup after loading the view.
 }
 
@@ -95,6 +97,8 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    InstitutionSearchVC *vc = [[InstitutionSearchVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
     return NO;
 }
 
@@ -163,6 +167,10 @@
             [_mainScrollView addSubview:btn];
         }
     }
+}
+
+- (void)courseTitleButClick:(UIButton *)sender {
+    
 }
 
 /*

@@ -121,6 +121,7 @@
     if (SWNOTEmptyStr(_courseType)) {
         [param setObject:_courseType forKey:@"source_type"];
     }
+    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
@@ -134,6 +135,7 @@
                 } else {
                     _tableView.mj_footer.hidden = NO;
                 }
+                [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
                 [_tableView reloadData];
             }
         }

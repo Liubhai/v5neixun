@@ -211,6 +211,9 @@ struct NetWorkUrl {
 /** 购物车信息 */
 + (NSString *)userShopcarInfo;
 
+/** 购物车数量 */
++ (NSString *)userShopCarCountNet;
+
 /** 订单—购物车信息
  和生成订单y同一接口 只是请求方式不同
  */
