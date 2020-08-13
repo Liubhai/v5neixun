@@ -229,7 +229,14 @@
 }
 
 - (void)getTeacherClassifyList {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path commonCategoryNet] WithAuthorization:nil paramDic:@{@"type":_typeString} finish:^(id  _Nonnull responseObject) {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_typeString)) {
+        [param setObject:_typeString forKey:@"type"];
+    }
+    if (SWNOTEmptyStr(_mhm_id)) {
+        [param setObject:_mhm_id forKey:@"mhm_id"];
+    }
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path commonCategoryNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if ([[responseObject objectForKey:@"code"] integerValue]) {
             NSMutableArray *pass = [NSMutableArray arrayWithArray:[responseObject objectForKey:@"data"]];
             for (int i = 0; i<pass.count; i ++) {

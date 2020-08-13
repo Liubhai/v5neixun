@@ -7,6 +7,7 @@
 //
 
 #import "ShopCarCell.h"
+#import "UserModel.h"
 
 @implementation ShopCarCell
 
@@ -110,6 +111,9 @@
     }
     
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
+    if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+        _priceLabel.text = [NSString stringWithFormat:@"VIP:¥%@",model.user_price];
+    }
     if ([model.course_type isEqualToString:@"1"]) {
         _courseTypeImageView.image = Image(@"dianbo");
     } else if ([model.course_type isEqualToString:@"2"]) {

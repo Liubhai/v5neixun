@@ -528,7 +528,7 @@
 
 - (void)getStudyInfo {
     if (SWNOTEmptyStr([UserModel oauthToken])) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageData] WithAuthorization:nil paramDic:@{@"order":@"add"} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageData] WithAuthorization:nil paramDic:@{@"order":dataType} finish:^(id  _Nonnull responseObject) {
             if ([_tableView.mj_header isRefreshing]) {
                 [_tableView.mj_header endRefreshing];
             }

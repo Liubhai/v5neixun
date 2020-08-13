@@ -149,6 +149,7 @@
     TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
     vc.typeString = @"5";
     vc.delegate = self;
+    vc.mhm_id = _mhm_id;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

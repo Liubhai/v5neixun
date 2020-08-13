@@ -8,6 +8,7 @@
 
 #import "OrderFinalCell.h"
 #import "V5_Constant.h"
+#import "UserModel.h"
 
 @implementation OrderFinalCell
 
@@ -127,6 +128,9 @@
     }
     
     _priceLabel.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"price"]];
+    if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+        _priceLabel.text = [NSString stringWithFormat:@"VIP:¥%@",[OrderFinalInfo objectForKey:@"user_price"]];
+    }
     _scribing_price.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"scribing_price"]];
     NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_scribing_price.text];
     [mut addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:NSMakeRange(0, _scribing_price.text.length)];

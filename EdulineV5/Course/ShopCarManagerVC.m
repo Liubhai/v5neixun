@@ -14,6 +14,7 @@
 #import "ShopCarManagerFinalVC.h"
 #import "Net_Path.h"
 #import "ShopCarModel.h"
+#import "UserModel.h"
 
 @interface ShopCarManagerVC ()<UITableViewDelegate,UITableViewDataSource,ShopCarCellDelegate> {
     NSString *course_ids;
@@ -422,7 +423,11 @@
             ShopCarCourseModel *courseModel = carModel.course_list[j];
             if (courseModel.selected) {
                 [_selectedArray addObject:courseModel];
-                allMoney = allMoney + courseModel.price.floatValue;
+                if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+                    allMoney = allMoney + courseModel.user_price.floatValue;
+                } else {
+                    allMoney = allMoney + courseModel.price.floatValue;
+                }
             }
         }
     }

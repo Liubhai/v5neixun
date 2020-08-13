@@ -121,12 +121,12 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
-    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-    return NO;
-//    CourseSearchHistoryVC *vc = [[CourseSearchHistoryVC alloc] init];
+//    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
 //    return NO;
+    CourseSearchHistoryVC *vc = [[CourseSearchHistoryVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    return NO;
 }
 
 - (void)makeTableView {

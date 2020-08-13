@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) id<TeacherCategoryVCDelegate> delegate;
 @property (strong, nonatomic) NSString *typeString;//默认0【0：课程；1：讲师；2：机构；3：考试；4：文库；5：资讯】
 
+@property (strong, nonatomic) NSString *mhm_id;//机构id
+
 @property (assign, nonatomic) BOOL isChange;// yes 首页过来的 no启动时候选择
 
 @end
