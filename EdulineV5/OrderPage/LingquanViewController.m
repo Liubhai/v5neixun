@@ -181,6 +181,7 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_dataSource removeAllObjects];
                     [_dataSource addObjectsFromArray:[CouponArrayModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                    [self removeUsedCoupon];
                     [self changeDataSourceIsUseStatus];
                     [_tableView reloadData];
                 }
@@ -195,6 +196,7 @@
                     if ([[responseObject objectForKey:@"code"] integerValue]) {
                         [_dataSource removeAllObjects];
                         [_dataSource addObjectsFromArray:[CouponArrayModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                        [self removeUsedCoupon];
                         [self changeDataSourceIsUseStatus];
                         [_tableView reloadData];
                     }
@@ -262,6 +264,22 @@
                 }
             }
         }
+    }
+}
+
+- (void)removeUsedCoupon {
+    for (int i = 0; i<_dataSource.count; i++) {
+        CouponArrayModel *model1 = _dataSource[i];
+        NSMutableArray *pass = [NSMutableArray new];
+        [pass addObjectsFromArray:model1.list];
+        for (NSInteger j = (pass.count - 1); j>=0; j--) {
+            CouponModel *model2 = pass[j];
+            if (model2.user_use) {
+                [pass removeObject:model2];
+            }
+        }
+        model1.list = [NSArray arrayWithArray:pass];
+        [_dataSource replaceObjectAtIndex:i withObject:model1];
     }
 }
 

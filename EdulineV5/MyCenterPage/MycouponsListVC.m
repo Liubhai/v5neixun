@@ -78,6 +78,7 @@
 - (void)getCouponList {
     if (SWNOTEmptyStr(_couponType)) {
         page = 1;
+        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path myCouponsList:_couponType] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
             if (_tableView.mj_header.isRefreshing) {
                 [_tableView.mj_header endRefreshing];
@@ -93,6 +94,7 @@
             } else {
                 _tableView.mj_footer.hidden = NO;
             }
+            [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
             [_tableView reloadData];
         } enError:^(NSError * _Nonnull error) {
             if (_tableView.mj_header.isRefreshing) {

@@ -54,6 +54,7 @@
     _textLabel.textColor = EdlineV5_Color.textFirstColor;
     _textLabel.font = SYSTEMFONT(14);
     _textLabel.numberOfLines = 0;
+    _textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [_topContentView addSubview:_textLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, _courseFaceImageView.bottom - 15, 150, 15)];
@@ -387,7 +388,12 @@
     if (SWNOTEmptyDictionary(_orderInfo)) {
         _textLabel.text = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"title"]];
         [_textLabel sizeToFit];
-        [_textLabel setHeight:_textLabel.height];
+        if (_textLabel.height > 40) {
+            [_textLabel setHeight:40];
+        } else {
+            [_textLabel setHeight:_textLabel.height];
+        }
+        
         if ([_orderTypeString isEqualToString:@"course"]) {
             [_courseFaceImageView sd_setImageWithURL:EdulineUrlString([[_orderInfo objectForKey:@"data"] objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
             _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",[[_orderInfo objectForKey:@"data"] objectForKey:@"section_count"]];

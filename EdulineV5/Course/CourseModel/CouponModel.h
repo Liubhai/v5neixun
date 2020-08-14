@@ -59,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *school_name;
 @property (strong, nonatomic) NSString *course_title;
 @property (assign, nonatomic) BOOL user_has;
+@property (assign, nonatomic) BOOL user_use;
 @property (assign, nonatomic) BOOL IsUsed;
 
 @end
