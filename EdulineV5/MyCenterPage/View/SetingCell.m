@@ -56,6 +56,7 @@
 }
 
 - (void)setSetingCellInfo:(NSDictionary *)info {
+    _setInfo = info;
     if (SWNOTEmptyDictionary(info)) {
         _themeLabel.text = [info objectForKey:@"title"];
         _rightLabel.frame = CGRectMake(_rightIcon.right - 15 - 100, 0, 100, 50);
@@ -63,6 +64,11 @@
             _rightIcon.hidden = YES;
             _switchOther.hidden = NO;
             _rightLabel.hidden = YES;
+            if ([info[@"status"] isEqualToString:@"on"]) {
+                _switchOther.on = YES;
+            } else {
+                _switchOther.on = NO;
+            }
         } else if ([[info objectForKey:@"type"] isEqualToString:@"third"]) {
             _rightIcon.hidden = NO;
             _switchOther.hidden = YES;
@@ -87,8 +93,8 @@
 }
 
 - (void)switchIsChanged:(UISwitch *)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(switchClick:)]) {
-        [_delegate switchClick:sender];
+    if (_delegate && [_delegate respondsToSelector:@selector(switchClick:setInfo:)]) {
+        [_delegate switchClick:sender setInfo:_setInfo];
     }
 }
 

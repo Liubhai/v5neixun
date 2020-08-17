@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SetingCellDelegate <NSObject>
 
 @optional
-- (void)switchClick:(UISwitch *)sender;
+- (void)switchClick:(UISwitch *)sender setInfo:(NSDictionary *)setInfo;
 
 @end
 
@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImageView *rightIcon;
 
 @property (strong, nonatomic) UISwitch *switchOther;
+
+@property (strong, nonatomic) NSDictionary *setInfo;
 
 - (void)setSetingCellInfo:(NSDictionary *)info;
 

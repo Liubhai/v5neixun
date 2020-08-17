@@ -18,7 +18,7 @@
 
 #import "SetingCell.h"
 
-@interface SetingViewController ()<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
+@interface SetingViewController ()<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, SetingCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -72,6 +72,10 @@
 //    NSLog(@"%ld  %ld",oneSize,twoSize);
 //    _totaiZise = oneSize + twoSize;
     [self dealDataSourceArrayKey:@"memory" replayKey:@"rightTitle" objectValue:_totaiZise];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"allow4G"]) {
+        BOOL allow4G = [[[NSUserDefaults standardUserDefaults] objectForKey:@"allow4G"] boolValue];
+        [self dealDataSourceArrayKey:@"switchPlay" replayKey:@"status" objectValue:allow4G ? @"on" : @"off"];
+    }
     [_tableView reloadData];
 }
 
@@ -120,6 +124,7 @@
         cell = [[SetingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
     [cell setSetingCellInfo:_dataSource[indexPath.section][indexPath.row]];
+    cell.delegate = self;
     return cell;
 }
 
@@ -316,6 +321,15 @@
             }
         }
     }
+}
+
+- (void)switchClick:(UISwitch *)sender setInfo:(NSDictionary *)setInfo {
+    [self dealDataSourceArrayKey:setInfo[@"type"] replayKey:@"status" objectValue:[setInfo[@"status"] isEqualToString:@"off"] ? @"on" : @"off"];
+    if ([setInfo[@"type"] isEqualToString:@"switchPlay"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[setInfo[@"status"] isEqualToString:@"off"] ? @"1" : @"0" forKey:@"allow4G"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    [_tableView reloadData];
 }
 
 @end
