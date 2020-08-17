@@ -79,9 +79,12 @@
     
     _topBlackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _liveBackView.width, 37)];
     _topBlackView.backgroundColor = EdlineV5_Color.textFirstColor;
-    [_liveBackView addSubview:_topBlackView];
     
     [self makeBoardView];
+    
+    [self makeCollectionView];
+    
+    [_liveBackView addSubview:_topBlackView];
     
     _topToolBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _liveBackView.width, 37)];
     _topToolBackView.layer.masksToBounds = YES;
@@ -156,8 +159,6 @@
     _roomPersonCountBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space1/2.0, 0, space1/2.0);
     _roomPersonCountBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space1/2.0, 0, -space1/2.0);
     [_bottomToolBackView addSubview:_roomPersonCountBtn];
-    
-    [self makeCollectionView];
 }
 
 // MARK: - 白板
@@ -298,7 +299,7 @@
         
         [_roomPersonCountBtn setRight:_fullScreenBtn.left - 7.5];
         
-        _collectionView.frame = CGRectMake(_liveBackView.width - (113 * 2 + 2), _topBlackView.bottom, 113 * 2 + 2, _boardView.height);
+        _collectionView.frame = CGRectMake(_liveBackView.width - (113 * 2 + 2), 24, 113 * 2 + 2, MainScreenWidth - 24 * 2);
     } else {
         
         _liveBackView.frame = CGRectMake(0, MACRO_UI_STATUSBAR_HEIGHT, MainScreenWidth, (MainScreenWidth - 113)*3/4.0 + 37 * 2);//画板高度+上下黑色背景高度

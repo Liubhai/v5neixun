@@ -855,7 +855,7 @@
         _tableView.contentOffset = CGPointMake(0, 0);
 //        [self tableViewCanNotScroll];
     } else {
-        _titleImage.hidden = YES;
+        _titleImage.hidden = NO;
         _playerView.controlView.topView.hidden = YES;
         _playerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight);
         _headerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight + 90);
