@@ -43,16 +43,27 @@
     [self addSubview:_lineView];
 }
 
-- (void)setInfoData:(NSDictionary *)infoData {
+- (void)setInfoData:(NSDictionary *)infoData listType:(nonnull NSString *)listType {
     
     if (SWNOTEmptyDictionary(infoData)) {
         _titleLabel.text = [NSString stringWithFormat:@"%@",[infoData objectForKey:@"note"]];
-        if ([[infoData objectForKey:@"alter_type"] boolValue]) {
-            _priceLabel.text = [NSString stringWithFormat:@"+¥%@",[infoData objectForKey:@"num"]];
-            _priceLabel.textColor = EdlineV5_Color.faildColor;
+        NSString *alter_type = [NSString stringWithFormat:@"%@",[infoData objectForKey:@"alter_type"]];
+        if ([listType isEqualToString:@"balance"]) {
+            if ([[infoData objectForKey:@"alter_type"] boolValue]) {
+                _priceLabel.text = [NSString stringWithFormat:@"+¥%@",[infoData objectForKey:@"num"]];
+                _priceLabel.textColor = EdlineV5_Color.faildColor;
+            } else {
+                _priceLabel.text = [NSString stringWithFormat:@"-¥%@",[infoData objectForKey:@"num"]];
+                _priceLabel.textColor = EdlineV5_Color.textFirstColor;
+            }
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"-¥%@",[infoData objectForKey:@"num"]];
-            _priceLabel.textColor = EdlineV5_Color.textFirstColor;
+            if ([alter_type isEqualToString:@"2"] || [alter_type isEqualToString:@"4"] || [alter_type isEqualToString:@"8"]) {
+                _priceLabel.text = [NSString stringWithFormat:@"-¥%@",[infoData objectForKey:@"num"]];
+                _priceLabel.textColor = EdlineV5_Color.textFirstColor;
+            } else {
+                _priceLabel.text = [NSString stringWithFormat:@"+¥%@",[infoData objectForKey:@"num"]];
+                _priceLabel.textColor = EdlineV5_Color.faildColor;
+            }
         }
         _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForBalanceYYMMDDHHMM:[infoData objectForKey:@"create_time"]]];
     }

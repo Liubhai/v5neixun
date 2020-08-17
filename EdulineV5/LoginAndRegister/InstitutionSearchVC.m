@@ -124,6 +124,24 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadLocalInstitutionData" object:nil];
     
+    [self searchInstitution];
+    
+}
+
+- (void)searchInstitution {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionSearchNet] WithAuthorization:nil paramDic:@{@"title":_institutionSearch.text} finish:^(id  _Nonnull responseObject) {
+        
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([responseObject objectForKey:@"code"]) {
+                [_searchDataSource removeAllObjects];
+                [_searchDataSource addObjectsFromArray:responseObject[@"data"]];
+                [_tableView reloadData];
+            }
+        }
+        
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 /*

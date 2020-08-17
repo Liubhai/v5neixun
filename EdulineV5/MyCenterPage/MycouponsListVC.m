@@ -134,18 +134,36 @@
 
 - (void)useOrGetAction:(KaquanCell *)cell {
     if ([cell.cellType isEqualToString:@"3"]) {
-        // 跳转对应的课程详情
-        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
-        vc.ID = [NSString stringWithFormat:@"%@",cell.couponModel.course_id];
-        // 这里必须要传值是什么课程类型 1 点播 2 直播  3 面授  4 班级课
-        vc.courseType = [NSString stringWithFormat:@"%@",cell.couponModel.course_type];
-        [self.navigationController pushViewController:vc animated:YES];
+        
+        // 直接兑换
+        
+        [self couponDirectExchange:cell.couponModel.couponId];
+        
+//        // 跳转对应的课程详情
+//        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+//        vc.ID = [NSString stringWithFormat:@"%@",cell.couponModel.course_id];
+//        // 这里必须要传值是什么课程类型 1 点播 2 直播  3 面授  4 班级课
+//        vc.courseType = [NSString stringWithFormat:@"%@",cell.couponModel.course_type];
+//        [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 跳转对应机构
         InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
         vc.institutionId = [NSString stringWithFormat:@"%@",cell.couponModel.mhm_id];
         [self.navigationController pushViewController:vc animated:YES];
         
+    }
+}
+
+- (void)couponDirectExchange:(NSString *)couponCode {
+    if (SWNOTEmptyStr(couponCode)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path couponDirectExchangeNet] WithAuthorization:nil paramDic:@{@"id":couponCode} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                [self getCouponList];
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"卡券使用失败"];
+        }];
     }
 }
 

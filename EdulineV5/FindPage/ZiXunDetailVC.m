@@ -468,6 +468,8 @@
         [AppDelegate presentLoginNav:self];
         return;
     }
+    _commentView.placeHoderLab.hidden = YES;
+    [_commentView.inputTextView becomeFirstResponder];
 }
 
 - (void)zanComment:(ZixunCommentCell *)cell {

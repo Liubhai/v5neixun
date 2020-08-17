@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UIView *lineView;
 
-- (void)setInfoData:(NSDictionary *)infoData;
+- (void)setInfoData:(NSDictionary *)infoData listType:(NSString *)listType;
 
 @end
 

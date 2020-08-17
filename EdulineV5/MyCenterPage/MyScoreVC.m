@@ -104,6 +104,9 @@
     _userPriceLabel.text = @"0";
     _userPriceLabel.textColor = [UIColor whiteColor];
     _userPriceLabel.textAlignment = NSTextAlignmentCenter;
+    if (SWNOTEmptyDictionary(_balanceInfo)) {
+        _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"credit"]];
+    }
     [account addSubview:_userPriceLabel];
     
     UILabel * priceType = [[UILabel alloc] initWithFrame:CGRectMake(0, _userPriceLabel.bottom, MainScreenWidth, 45)];
@@ -619,7 +622,6 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                 if (SWNOTEmptyDictionary(_balanceInfo[@"data"])) {
-                    _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"credit"]];
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
                     

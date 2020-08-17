@@ -11,6 +11,7 @@
 #import <AlipaySDK/AlipaySDK.h>
 #import <WechatOpenSDK/WXApi.h>
 #import "WkWebViewController.h"
+#import "UserModel.h"
 
 @interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate> {
     NSString *typeString;//支付方式【lcnpay：余额；alipay：支付宝；wxpay：微信；】
@@ -45,6 +46,9 @@
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
         _payment = [NSString stringWithFormat:@"¥%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+        if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+            _payment = [NSString stringWithFormat:@"VIP:¥%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+        }
         _order_no = [NSString stringWithFormat:@"%@",[[_orderSureInfo objectForKey:@"data"] objectForKey:@"order_no"]];
     }
     _priceLabel.text = _payment;
@@ -381,6 +385,9 @@
     } else if ([_orderTypeString isEqualToString:@"orderList"]) {
         // 刷新订单所有页面
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadOrderList" object:nil];
+        [self.navigationController popViewControllerAnimated:YES];
+    } else if ([_orderTypeString isEqualToString:@"member"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMember" object:nil];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [self.navigationController popViewControllerAnimated:YES];

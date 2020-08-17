@@ -75,6 +75,7 @@
     [self getMemBerInfo];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getMemBerInfo) name:@"reloadMember" object:nil];
 }
 
 - (void)makeSearchText {
@@ -329,6 +330,7 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     OrderSureViewController *vc = [[OrderSureViewController alloc] init];
                     vc.orderSureInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    vc.orderTypeString = @"member";
                     [self.navigationController pushViewController:vc animated:YES];
                 }
             }

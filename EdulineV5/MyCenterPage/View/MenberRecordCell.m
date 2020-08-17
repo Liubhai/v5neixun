@@ -90,12 +90,12 @@
     [mut1 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor} range:NSMakeRange(0, 5)];
     _numberLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut1];
 
-    _openTimeLabel.text = [NSString stringWithFormat:@"充值时间：%@",[EdulineV5_Tool timeForBalanceYYMMDDHHMM:info[@"payment_time"]]];
+    _openTimeLabel.text = [NSString stringWithFormat:@"充值时间：%@",[EdulineV5_Tool timeForBalanceYYMMDDHHMM:[NSString stringWithFormat:@"%@",info[@"payment_time"]]]];
     NSMutableAttributedString *mut2 = [[NSMutableAttributedString alloc] initWithString:_openTimeLabel.text];
     [mut2 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor} range:NSMakeRange(0, 5)];
     _openTimeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut2];
 
-    _timeLineLabel.text = [NSString stringWithFormat:@"有效期至：%@",[EdulineV5_Tool timeForYYYYMMDD:info[@"expire_time"]]];
+    _timeLineLabel.text = [NSString stringWithFormat:@"有效期至：%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",info[@"expire_time"]]]];
     NSMutableAttributedString *mut3 = [[NSMutableAttributedString alloc] initWithString:_timeLineLabel.text];
     [mut3 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor} range:NSMakeRange(0, 5)];
     _timeLineLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut3];

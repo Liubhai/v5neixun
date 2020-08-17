@@ -246,6 +246,11 @@ struct NetWorkUrl {
 /** 兑换 */
 + (NSString *)couponExchange;
 
+/**
+ *课程卡直接兑换
+ */
++ (NSString *)couponDirectExchangeNet;
+
 /** 添加学习记录 */
 + (NSString *)addRecord;
 
@@ -287,6 +292,9 @@ struct NetWorkUrl {
 
 /** 机构列表 */
 + (NSString *)institutionListNet;
+
+/** 机构搜索 */
++ (NSString *)institutionSearchNet;
 
 /** 机构主页信息 */
 + (NSString *)institutionMainPageNet:(NSString *)institutionId;

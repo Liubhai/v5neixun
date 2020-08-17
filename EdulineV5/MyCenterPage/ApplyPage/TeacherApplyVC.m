@@ -782,6 +782,7 @@
         // 跳转到选择分类页面
         TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
         vc.typeString = @"1";
+        vc.mhm_id = schoolID;
         vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }

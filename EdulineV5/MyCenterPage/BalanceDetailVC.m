@@ -59,7 +59,7 @@
     if (!cell) {
         cell = [[BalanceDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setInfoData:_dataSource[indexPath.row]];
+    [cell setInfoData:_dataSource[indexPath.row] listType:@"balance"];
     return cell;
 }
 

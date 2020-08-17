@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OrderSureViewController : BaseViewController<TYAttributedLabelDelegate>
 
-@property (strong, nonatomic) NSString *orderTypeString;//course shopcar
+@property (strong, nonatomic) NSString *orderTypeString;//course shopcar member
 
 @property (strong, nonatomic) NSString *order_no;
 @property (strong, nonatomic) NSString *payment;

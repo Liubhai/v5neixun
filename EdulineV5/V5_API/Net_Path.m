@@ -301,6 +301,10 @@
     return [Net_Path fullPath:@"user/coupon/exchange" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)couponDirectExchangeNet {
+    return [Net_Path fullPath:@"course/coupon/exchange" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)addRecord {
     return [Net_Path fullPath:@"course/base/record" repalce:@"" byReplece:@""];
 }
@@ -355,6 +359,10 @@
 
 + (NSString *)institutionListNet {
     return [Net_Path fullPath:@"school/list" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)institutionSearchNet {
+    return [Net_Path fullPath:@"school/search" repalce:@"" byReplece:@""];
 }
 
 + (NSString *)institutionMainPageNet:(NSString *)institutionId {

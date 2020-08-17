@@ -12,6 +12,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "LingquanViewController.h"
+#import "UserModel.h"
 
 @interface OrderViewController ()<LingquanViewControllerDelegate>
 
@@ -316,6 +317,15 @@
     if (!SWNOTEmptyDictionary(_orderInfo)) {
         return;
     }
+    
+    if (_couponModel) {
+        if ([_couponModel.coupon_type isEqualToString:@"3"]) {
+            // 直接兑换
+            [self couponDirectExchange:_couponModel.couponId];
+            return;
+        }
+    }
+    
     NSString *courseOrderInfoUrl = [Net_Path courseOrderInfo];
     if ([_orderTypeString isEqualToString:@"course"]) {
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
@@ -411,8 +421,11 @@
                 _courseFaceImageView.image = Image(@"contents_icon_video");
             }
         }
-        _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         
+        _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
+        if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+            _priceLabel.text = [NSString stringWithFormat:@"VIP:¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
+        }
         _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
         [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
@@ -468,6 +481,24 @@
     NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
     [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
     _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+}
+
+// MARK: - 课程卡的时候直接兑换课程 不需要生成订单
+- (void)couponDirectExchange:(NSString *)couponCode {
+    if (SWNOTEmptyStr(couponCode)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path couponDirectExchangeNet] WithAuthorization:nil paramDic:@{@"id":couponCode} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"卡券使用失败"];
+        }];
+    }
 }
 
 @end
