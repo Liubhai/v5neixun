@@ -172,6 +172,11 @@
             [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
             [_joinStudyButton setTitle:@"开始学习" forState:0];
             _joinStudyButton.hidden = NO;
+            if ([courseInfo objectForKey:@"recent_learn"]) {
+                if (SWNOTEmptyDictionary([courseInfo objectForKey:@"recent_learn"])) {
+                    [_joinStudyButton setTitle:@"继续学习" forState:0];
+                }
+            }
         } else {
             _joinShopCarButton.hidden = NO;
             _joinStudyButton.hidden = NO;

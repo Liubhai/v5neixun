@@ -749,6 +749,12 @@
             vc.courselayer = _courselayer;
             vc.isLive = _isLive;
             vc.courseType = _courseType;
+            if ([_dataSource objectForKey:@"recent_learn"]) {
+                if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+                    vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
+                    vc.shouldContinueLearn = YES;
+                }
+            }
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             NSString *priceCount = [NSString stringWithFormat:@"%@",_dataSource[@"price"]];

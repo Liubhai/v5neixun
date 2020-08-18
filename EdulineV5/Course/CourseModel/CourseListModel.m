@@ -18,7 +18,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"pid"] || [property.name isEqualToString:@"course_id"] || [property.name isEqualToString:@"video_url"] || [property.name isEqualToString:@"course_type"]) {
+    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"section_id"] || [property.name isEqualToString:@"pid"] || [property.name isEqualToString:@"course_id"] || [property.name isEqualToString:@"video_url"] || [property.name isEqualToString:@"course_type"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){

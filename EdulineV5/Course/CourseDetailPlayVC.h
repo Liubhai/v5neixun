@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL isLive;//是不是直播  区分直播详情页和其他类型详情页
 
 @property (strong ,nonatomic)NSDictionary   *dataSource;
+@property (strong ,nonatomic)NSDictionary   *recent_learn_Source;
+@property (assign, nonatomic) BOOL shouldContinueLearn;
 @property (strong ,nonatomic)NSString         *ID;
 @property (strong ,nonatomic)NSString         *currentHourseId;
 /** 是不是活动(由列表传入) */

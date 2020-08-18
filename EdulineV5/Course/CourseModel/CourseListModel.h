@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (strong, nonatomic) NSString *classHourId;
+@property (strong, nonatomic) NSString *section_id;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *pid;
 @property (strong, nonatomic) NSString *course_id;

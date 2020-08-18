@@ -132,11 +132,12 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                if ([_themeString isEqualToString:@"最近访客"]) {
-                    [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
-                } else {
-                    [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                }
+                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+//                if ([_themeString isEqualToString:@"最近访客"]) {
+//                    [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+//                } else {
+//                    [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+//                }
                 if (_dataSource.count<10) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
@@ -177,21 +178,27 @@
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                if ([_themeString isEqualToString:@"最近访客"]) {
-                    NSArray *pass = [NSArray arrayWithArray:[responseObject objectForKey:@"data"]];
-                    if (pass.count<10) {
-                        [_tableView.mj_footer endRefreshingWithNoMoreData];
-                    }
-                    [_dataSource addObjectsFromArray:pass];
-                    [_tableView reloadData];
-                } else {
-                    NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                    if (pass.count<10) {
-                        [_tableView.mj_footer endRefreshingWithNoMoreData];
-                    }
-                    [_dataSource addObjectsFromArray:pass];
-                    [_tableView reloadData];
+                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                if (pass.count<10) {
+                    [_tableView.mj_footer endRefreshingWithNoMoreData];
                 }
+                [_dataSource addObjectsFromArray:pass];
+                [_tableView reloadData];
+//                if ([_themeString isEqualToString:@"最近访客"]) {
+//                    NSArray *pass = [NSArray arrayWithArray:[responseObject objectForKey:@"data"]];
+//                    if (pass.count<10) {
+//                        [_tableView.mj_footer endRefreshingWithNoMoreData];
+//                    }
+//                    [_dataSource addObjectsFromArray:pass];
+//                    [_tableView reloadData];
+//                } else {
+//                    NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+//                    if (pass.count<10) {
+//                        [_tableView.mj_footer endRefreshingWithNoMoreData];
+//                    }
+//                    [_dataSource addObjectsFromArray:pass];
+//                    [_tableView reloadData];
+//                }
             }
         }
     } enError:^(NSError * _Nonnull error) {
