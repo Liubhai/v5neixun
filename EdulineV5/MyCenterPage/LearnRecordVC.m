@@ -10,6 +10,7 @@
 #import "LearnRecordCell.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "CourseMainViewController.h"
 
 @interface LearnRecordVC ()<UITableViewDataSource,UITableViewDelegate> {
     NSInteger page;
@@ -125,6 +126,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 0.001;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getlearnRecordList {
