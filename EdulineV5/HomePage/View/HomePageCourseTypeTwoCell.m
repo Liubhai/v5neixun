@@ -9,7 +9,7 @@
 #import "HomePageCourseTypeTwoCell.h"
 #import "V5_Constant.h"
 
-#define TwoCellHeight ((MainScreenWidth/2 - singleRightSpace * 2 - singleLeftSpace) * 90 / 165 + 6 + 20 + 13 + 16 + 10)
+#define TwoCellHeight ((MainScreenWidth/2 - singleRightSpace * 2 - singleLeftSpace) * 90 / 165 + 6 + 20 + 13 + 16 + 10 + 15)
 
 @implementation HomePageCourseTypeTwoCell
 
@@ -65,6 +65,8 @@
         UIImageView *courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 153, 86)];
         
         [courseFace sd_setImageWithURL:EdulineUrlString(infoArray[i][@"cover_url"]) placeholderImage:DefaultImage];
+        courseFace.layer.masksToBounds = YES;
+        courseFace.layer.cornerRadius = 4;
         courseFace.clipsToBounds = YES;
         courseFace.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:courseFace];
@@ -152,7 +154,7 @@
         }
     }
     if (SWNOTEmptyArr(infoArray)) {
-        [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight + 10 : ((infoArray.count + 1)/2.0) * TwoCellHeight + 10];
+        [self setHeight:(infoArray.count%2 == 0) ? (infoArray.count/2.0) * TwoCellHeight + 30 : ((infoArray.count + 1)/2.0) * TwoCellHeight + 30];
     } else {
         [self setHeight:0];
     }

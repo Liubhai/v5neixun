@@ -70,7 +70,7 @@
         if (thmeLabel.height > 20) {
             [thmeLabel setHeight:38];
         }
-        maxHeight = MAX(thmeLabel.bottom + 10, maxHeight);
+        maxHeight = MAX(thmeLabel.bottom + 20, maxHeight);
         maxWidth = MAX(face.right, maxWidth);
         [_mainScrollView addSubview:thmeLabel];
         

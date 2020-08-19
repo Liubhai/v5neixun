@@ -214,11 +214,19 @@
         vc.courseType = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([courseType isEqualToString:@"2"]) {
-        
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+        vc.courseType = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
     } else if ([courseType isEqualToString:@"3"]) {
         
     } else if ([courseType isEqualToString:@"4"]) {
-        
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+        vc.courseType = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
     }
     
 }

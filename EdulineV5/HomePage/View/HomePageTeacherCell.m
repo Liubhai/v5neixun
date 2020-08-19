@@ -33,7 +33,7 @@
     [_teacherInfoArray removeAllObjects];
     [_teacherInfoArray addObjectsFromArray:infoArray];
     [_teacherScrollView removeAllSubviews];
-    CGFloat TeaViewWidth = 115;
+    CGFloat TeaViewWidth = 140;
     CGFloat TeaViewHight = 160;
     
     _teacherScrollView.contentSize = CGSizeMake(15 * 2 + (TeaViewWidth + 12) * infoArray.count - 12, 160 + 30);

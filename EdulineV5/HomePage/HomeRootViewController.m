@@ -110,10 +110,10 @@
     _institutionSearch.layer.cornerRadius = 18;
     _institutionSearch.backgroundColor = EdlineV5_Color.backColor;
     _institutionSearch.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 17 + 15 + 10, 30)];
     _institutionSearch.leftViewMode = UITextFieldViewModeAlways;
 
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(5, 6, 15, 15)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(17, 7.5, 15, 15)];
     [button setImage:Image(@"home_serch_icon") forState:UIControlStateNormal];
     [_institutionSearch.leftView addSubview:button];
     [_titleImage addSubview:_institutionSearch];
@@ -177,7 +177,7 @@
 
 - (void)makeCateView {
     if (_cateScrollView == nil) {
-        _cateScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _imageBannerBackView.bottom + 20, MainScreenWidth, 0)];
+        _cateScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _imageBannerBackView.bottom, MainScreenWidth, 0)];
         _cateScrollView.backgroundColor = [UIColor whiteColor];
         _cateScrollView.pagingEnabled = YES;
         _cateScrollView.scrollEnabled = YES;
@@ -186,10 +186,10 @@
         _cateScrollView.showsVerticalScrollIndicator = NO;
     }
     [_headerView addSubview:_cateScrollView];
-    _cateScrollView.frame = CGRectMake(0, _imageBannerBackView.bottom, MainScreenWidth, SWNOTEmptyArr(_cateSourceArray) ? 116 : 0);
+    _cateScrollView.frame = CGRectMake(0, _imageBannerBackView.bottom, MainScreenWidth, SWNOTEmptyArr(_cateSourceArray) ? (88 + 8) : 0);
     [_cateScrollView removeAllSubviews];
     
-    CGFloat YY = 14;
+    CGFloat YY = 4;
     CGFloat XX = 15;
     CGFloat space = 10;
     for (int i = 0; i<_cateSourceArray.count; i++) {
@@ -208,10 +208,10 @@
         }
     }
     
-    UIView *fenge = [[UIView alloc] initWithFrame:CGRectMake(0, _cateScrollView.bottom, MainScreenWidth, (SWNOTEmptyArr(_bannerImageArray) || SWNOTEmptyArr(_cateSourceArray)) ? 10 : 0.01)];
-    fenge.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [_headerView addSubview:fenge];
-    _headerView.frame = CGRectMake(0, 0, MainScreenWidth, fenge.bottom);
+//    UIView *fenge = [[UIView alloc] initWithFrame:CGRectMake(0, _cateScrollView.bottom, MainScreenWidth, (SWNOTEmptyArr(_bannerImageArray) || SWNOTEmptyArr(_cateSourceArray)) ? 10 : 0.01)];
+//    fenge.backgroundColor = EdlineV5_Color.fengeLineColor;
+//    [_headerView addSubview:fenge];
+    _headerView.frame = CGRectMake(0, 0, MainScreenWidth, _cateScrollView.bottom);
 }
 
 // MARK: - tableview 代理
@@ -245,7 +245,7 @@
     sectionHead.backgroundColor = [UIColor whiteColor];
     
     UILabel *themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, sectionHead.height)];
-    themeLabel.font = SYSTEMFONT(20);
+    themeLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:20];//SYSTEMFONT(20);
     themeLabel.textColor = EdlineV5_Color.textFirstColor;
     themeLabel.text = [NSString stringWithFormat:@"%@",_sortArray[section][@"title"]];
     [sectionHead addSubview:themeLabel];

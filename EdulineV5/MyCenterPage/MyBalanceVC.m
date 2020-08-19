@@ -137,7 +137,7 @@
     [_moneyView removeAllSubviews];
     
     //名字
-    UILabel *title = [[UILabel  alloc] initWithFrame:CGRectMake(15, 10 , 100, 20)];
+    UILabel *title = [[UILabel  alloc] initWithFrame:CGRectMake(15, 20 , 100, 20)];
     title.text = @"充值";
     title.textColor = EdlineV5_Color.textFirstColor;
     title.font = SYSTEMFONT(15);
@@ -194,7 +194,7 @@
         allNumber = _netWorkBalanceArray.count;
     }
     for (int i  = 0 ; i < _netWorkBalanceArray.count; i ++) {
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(15 + (buttonW + 10) * (i % 3), 40 + (buttonH + 15) * (i / 3), buttonW, buttonH)];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(15 + (buttonW + 10) * (i % 3), 60 + (buttonH + 15) * (i / 3), buttonW, buttonH)];
         button.backgroundColor = [UIColor whiteColor];
         button.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
         button.layer.borderWidth = 1;
@@ -237,7 +237,7 @@
     }
     
     if ((isAddAilpayView || isAddWxpayView || isAddRechargeCardView) && !_orderRightBtn3.selected) {
-        _cardButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 40 + (buttonH + 15) * (_netWorkBalanceArray.count % 3 == 0 ? (_netWorkBalanceArray.count / 3) : (_netWorkBalanceArray.count / 3 + 1)), buttonW, 50)];
+        _cardButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 60 + (buttonH + 15) * (_netWorkBalanceArray.count % 3 == 0 ? (_netWorkBalanceArray.count / 3) : (_netWorkBalanceArray.count / 3 + 1)), buttonW, 50)];
         _cardButton.backgroundColor = [UIColor whiteColor];
         _cardButton.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
         _cardButton.layer.borderWidth = 1;
@@ -269,14 +269,14 @@
     }
     
     if (_netWorkBalanceArray.count % 3 == 0) {//能整除的时候
-        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 50 + 30);
+        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 60 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 50 + 30);
         if (_iosArray.count>0 && (_orderRightBtn3.selected || (!isAddAilpayView && !isAddWxpayView && !isAddRechargeCardView))) {
-            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 30);
+            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 60 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 30);
         }
     } else {//不能整除的时候
-        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3 + 1) * (buttonH + 15) + 50 + 30);
+        _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 60 + (_netWorkBalanceArray.count / 3 + 1) * (buttonH + 15) + 50 + 30);
         if (_iosArray.count>0 && (_orderRightBtn3.selected || (!isAddAilpayView && !isAddWxpayView && !isAddRechargeCardView))) {
-            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 40 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 30);
+            _moneyView.frame = CGRectMake(0, CGRectGetMaxY(_account.frame), MainScreenWidth, 60 + (_netWorkBalanceArray.count / 3) * (buttonH + 15) + 30);
         }
     }
     

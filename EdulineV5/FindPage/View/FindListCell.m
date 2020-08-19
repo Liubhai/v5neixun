@@ -78,6 +78,7 @@
         _typeIcon.frame = CGRectMake(15, 14, 22, 22);
         _typeTitle.frame = CGRectMake(_typeIcon.right + 10, 0, 200, 50);
         _typeTitle.textAlignment = NSTextAlignmentLeft;
+        _lineView.frame = CGRectMake(_typeIcon.right + 10, 49.5, MainScreenWidth - (_typeIcon.right + 10), 0.5);
     }
 //    _typeIcon.image = Image([info objectForKey:@"image"]);
     [_typeIcon sd_setImageWithURL:EdulineUrlString([info objectForKey:@"icon_url"]) placeholderImage:nil];

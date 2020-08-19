@@ -24,7 +24,7 @@
     _selectImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, MainScreenWidth - 30, 80)];
     _selectImage.image = Image(@"");
     _selectImage.layer.masksToBounds = YES;
-    _selectImage.layer.borderColor = EdlineV5_Color.textThirdColor.CGColor;
+    _selectImage.layer.borderColor = EdlineV5_Color.starNoColor.CGColor;
     _selectImage.layer.borderWidth = 0.5;
     [self addSubview:_selectImage];
     
@@ -61,8 +61,11 @@
 - (void)setMemberInfo:(NSDictionary *)info indexpath:(NSIndexPath *)indexpath currentIndexpath:(NSIndexPath *)currentIndexpath {
     if (indexpath.row == currentIndexpath.row) {
         _selectImage.image = Image(@"card_pre");
+        _selectImage.layer.borderColor = HEXCOLOR(0xF8CB9B).CGColor;
     } else {
         _selectImage.image = Image(@"");
+        _selectImage.layer.borderColor = EdlineV5_Color.starNoColor.CGColor;
+        
     }
     
     _titleLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
@@ -72,9 +75,9 @@
     NSRange rangOld = NSMakeRange(scribing_price.length, price.length);
     NSRange rangNow = NSMakeRange(1, scribing_price.length - 1);
     NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
-    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(14),NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
-    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(24),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:rangNow];
-    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(16),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 1)];
+    [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:14],NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
+    [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:24],NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:rangNow];
+    [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:16],NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 1)];
     _priceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
     _freeLabel.text = [NSString stringWithFormat:@"赠送 %@积分",[info objectForKey:@"give_credit"]];
     

@@ -184,6 +184,7 @@
         NSString *priceValue = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"price"]];
         if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"]) {
             _joinShopCarButton.hidden = YES;
+            [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
         }
     }
 }

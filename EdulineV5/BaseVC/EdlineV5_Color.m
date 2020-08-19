@@ -100,7 +100,7 @@
 
 /** 分割线颜色 */
 + (UIColor *)fengeLineColor {
-    return HEXCOLORV5(0xEBEEF5);
+    return HEXCOLORV5(0xF7F7F7);
 }
 
 /** 线框边框颜色 */

@@ -46,7 +46,7 @@
     _topView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 45)];
     _topView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_topView];
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45 - 2, 20, 2)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45 / 2.0 + 7 + 5, 20, 2)];
     _lineView.backgroundColor = EdlineV5_Color.baseColor;
     [_topView addSubview:_lineView];
     CGFloat WW = MainScreenWidth / _typeArray.count;

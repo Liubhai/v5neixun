@@ -108,6 +108,7 @@
 
 - (void)makeHeaderView {
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0)];
+    _headerView.backgroundColor = [UIColor whiteColor];
     _myCenterUserInfoView = [[MyCenterUserInfoView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 234)];
     _myCenterUserInfoView.delegate = self;
     [_headerView addSubview:_myCenterUserInfoView];

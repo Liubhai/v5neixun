@@ -24,6 +24,8 @@
     _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 153, 86)];
     
     _courseFace.image = DefaultImage;
+    _courseFace.layer.masksToBounds = YES;
+    _courseFace.layer.cornerRadius = 4;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_courseFace];
     
@@ -72,10 +74,13 @@
     _learnProgress.progress = [[courseInfo objectForKey:@"finished_rate"] integerValue] / 100;
     if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 0) {
         _learnCountLabel.text = @"开始学习";
+        _learnCountLabel.textColor = EdlineV5_Color.themeColor;
     } else if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 100) {
         _learnCountLabel.text = @"已完成";
+        _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
     } else {
         _learnCountLabel.text = [NSString stringWithFormat:@"%@%%",@([[courseInfo objectForKey:@"finished_rate"] integerValue])];
+        _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
     }
 }
 

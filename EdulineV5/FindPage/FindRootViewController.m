@@ -34,11 +34,11 @@
     _titleLabel.hidden = YES;
     
     NSString *themeString = @"发现";
-    CGFloat themeWidth = [themeString sizeWithFont:SYSTEMFONT(22)].width + 4;
+    CGFloat themeWidth = [themeString sizeWithFont:[UIFont fontWithName:@"PingFangSC-Medium" size:22]].width + 4;
     
     UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, _titleLabel.bottom - 25, themeWidth, 25)];
     theme.text = themeString;
-    theme.font = SYSTEMFONT(22);
+    theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:22];//SYSTEMFONT(22);
     theme.textColor = EdlineV5_Color.textFirstColor;
     theme.textAlignment = NSTextAlignmentCenter;
     [_titleImage addSubview:theme];

@@ -61,11 +61,11 @@
     _institutionSearch.layer.cornerRadius = 18;
     _institutionSearch.backgroundColor = EdlineV5_Color.backColor;
     _institutionSearch.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 17 + 15 + 10, 30)];
     _institutionSearch.leftViewMode = UITextFieldViewModeAlways;
     _institutionSearch.clearButtonMode = UITextFieldViewModeAlways;
 
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(5, 6, 15, 15)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(17, 7.5, 15, 15)];
     [button setImage:Image(@"home_serch_icon") forState:UIControlStateNormal];
     [_institutionSearch.leftView addSubview:button];
     [_titleImage addSubview:_institutionSearch];

@@ -138,7 +138,7 @@
 
 // 课程cell布局所需
 #define singleLeftSpace 15
-#define topSpace 10
+#define topSpace 20
 #define bottomSpace 7
 #define singleRightSpace 3
 #define faceImageHeight (MainScreenWidth/2.0 - singleRightSpace - singleLeftSpace) * 90 / 165

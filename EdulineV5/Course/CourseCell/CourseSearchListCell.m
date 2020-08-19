@@ -23,6 +23,8 @@
     _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 153, 86)];
     
     _courseFace.image = DefaultImage;
+    _courseFace.layer.masksToBounds = YES;
+    _courseFace.layer.cornerRadius = 4;
     _courseFace.clipsToBounds = YES;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_courseFace];

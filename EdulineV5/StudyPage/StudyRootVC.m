@@ -251,7 +251,7 @@
         
         UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 40)];
         theme.text = @"最近在学";
-        theme.font = SYSTEMFONT(16);
+        theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];//SYSTEMFONT(16);
         theme.textColor = EdlineV5_Color.textFirstColor;
         [view addSubview:theme];
         
@@ -271,7 +271,7 @@
         
         UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 100, 22)];
         theme.text = @"加入的课程";
-        theme.font = SYSTEMFONT(16);
+        theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];//SYSTEMFONT(16);
         theme.textColor = EdlineV5_Color.textFirstColor;
         [view addSubview:theme];
         
@@ -325,19 +325,19 @@
         return view;
     } else {
         if (currentCourseType == 0) {
-            if (!SWNOTEmptyArr(_courseArray)) {
+            if (_courseArray.count < 4) {
                 return nil;
             }
         } else if (currentCourseType == 1) {
-            if (!SWNOTEmptyArr(_liveArray)) {
+            if (_liveArray.count < 4) {
                 return nil;
             }
         } else if (currentCourseType == 2) {
-            if (!SWNOTEmptyArr(_classArray)) {
+            if (_classArray.count < 4) {
                 return nil;
             }
         } else {
-            if (!SWNOTEmptyArr(_offlineArray)) {
+            if (_offlineArray.count < 4) {
                 return nil;
             }
         }
@@ -376,19 +376,19 @@
         return 10;
     } else {
         if (currentCourseType == 0) {
-            if (!SWNOTEmptyArr(_courseArray)) {
+            if (_courseArray.count < 4) {
                 return 0.001;
             }
         } else if (currentCourseType == 1) {
-            if (!SWNOTEmptyArr(_liveArray)) {
+            if (_liveArray.count < 4) {
                 return 0.001;
             }
         } else if (currentCourseType == 2) {
-            if (!SWNOTEmptyArr(_classArray)) {
+            if (_classArray.count < 4) {
                 return 0.001;
             }
         } else {
-            if (!SWNOTEmptyArr(_offlineArray)) {
+            if (_offlineArray.count < 4) {
                 return 0.001;
             }
         }
