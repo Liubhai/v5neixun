@@ -1263,6 +1263,7 @@
                             } else {
                                 wekself.playerView.unHiddenCoverImage = NO;
                             }
+                            wekself.playerView.trackInfoArray = [NSArray arrayWithArray:_playFileUrlArray];
                             [wekself.playerView playViewPrepareWithURL:EdulineUrlString(firstFileUrlInfo[@"play_url"])];
                             wekself.playerView.userInteractionEnabled = YES;
                             [AppDelegate delegate]._allowRotation = YES;
@@ -1281,6 +1282,7 @@
     }];
     
     /**
+     *原逻辑
     if ([model.section_data.data_type isEqualToString:@"3"]) {
         if (!SWNOTEmptyStr(model.section_data.data_txt)) {
             [_courseListVC.tableView reloadData];
@@ -1349,18 +1351,6 @@
 - (void)recordLearnContinuePlay:(CourseListModel *)model {
     freeLook = NO;
     if ([_courseType isEqualToString:@"2"]) {
-//        if (model.audition <= 0 && !model.is_buy) {
-//            if ([model.price floatValue] > 0) {
-//                OrderViewController *vc = [[OrderViewController alloc] init];
-//                vc.orderTypeString = @"courseHourse";
-//                vc.orderId = model.classHourId;
-//                [self.navigationController pushViewController:vc animated:YES];
-//                [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
-//            } else {
-//                [self showHudInView:self.view showHint:@"需解锁该课程"];
-//            }
-//            return;
-//        }
         [self getLiveCourseHourseInfo:model.classHourId];
         return;
     }
@@ -1384,28 +1374,90 @@
     [wekself destroyPlayVideo];
     [AppDelegate delegate]._allowRotation = NO;
     _titleImage.hidden = NO;
-    //首先全部重置为没有再播放
     
-//    for (int i = 0; i<_courseTreeListVC.manager.showItems.count; i++) {
-//        CourseListModel *model = _courseTreeListVC.manager.showItems[i];
-//        model.isPlaying = NO;
-//        [_courseTreeListVC.manager.showItems replaceObjectAtIndex:i withObject:model];
-//    }
+    [_playFileUrlArray removeAllObjects];
     
-//    if (model.audition <= 0 && !model.is_buy) {
-//        if ([model.price floatValue] > 0) {
-//            OrderViewController *vc = [[OrderViewController alloc] init];
-//            vc.orderTypeString = @"courseHourse";
-//            vc.orderId = model.classHourId;
-//            [self.navigationController pushViewController:vc animated:YES];
-//            [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
-//        } else {
-//            [self showHudInView:self.view showHint:@"需解锁该课程"];
-//        }
-//        [_courseTreeListVC.tableView reloadData];
-//        return;
-//    }
+    NSString *courseId = model.course_id;
     
+    CourseListModel *pmodel = model.parentItem;
+    while (pmodel) {
+        courseId = pmodel.course_id;
+        pmodel = pmodel.parentItem;
+    }
+    
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:courseId pid:model.classHourId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
+                    if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
+                        [_courseListVC.tableView reloadData];
+                        [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+                        return;
+                    } else {
+                        _wkWebView.hidden = NO;
+                        _playerView.hidden = YES;
+                        [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
+                        [_tableView setContentOffset:CGPointZero animated:YES];
+                        [_courseTreeListVC.tableView reloadData];
+                        return;
+                    }
+                } else {
+                    [_playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                    if (!SWNOTEmptyArr(_playFileUrlArray)) {
+                        [_courseTreeListVC.tableView reloadData];
+                        [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+                        return;
+                    } else {
+                        NSDictionary *firstFileUrlInfo = [NSDictionary dictionaryWithDictionary:_playFileUrlArray[0]];
+                        if (SWNOTEmptyStr(firstFileUrlInfo[@"play_url"])) {
+                            
+                            CourseListModel *newClassCurrentModel = model;
+                            newClassCurrentModel.isPlaying = YES;
+                            
+                            CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
+                            curent.model = newClassCurrentModel;
+                            currentCourseFinalModel = curent;
+                            
+                            // 目前生成了继续学习数据的 是可以直接看的音视频 不存在处理试看情况
+//                            if (model.audition > 0 && !model.is_buy) {
+//                                freeLook = YES;
+//                            }
+                            
+                            [wekself.headerView addSubview:wekself.playerView];
+                            _wkWebView.hidden = YES;
+                            _playerView.hidden = NO;
+                            _titleImage.hidden = YES;
+                            NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover_url"]];
+                            if ([faceUrlString containsString:@"http"]) {
+                                wekself.playerView.coverUrl = EdulineUrlString([_dataSource objectForKey:@"cover_url"]);
+                            }
+                            if ([model.section_data.data_type isEqualToString:@"2"]) {
+                                wekself.playerView.unHiddenCoverImage = YES;
+                            } else {
+                                wekself.playerView.unHiddenCoverImage = NO;
+                            }
+                            wekself.playerView.trackInfoArray = [NSArray arrayWithArray:_playFileUrlArray];
+                            [wekself.playerView playViewPrepareWithURL:EdulineUrlString(firstFileUrlInfo[@"play_url"])];
+                            wekself.playerView.userInteractionEnabled = YES;
+                            [AppDelegate delegate]._allowRotation = YES;
+                        } else {
+                            [_courseTreeListVC.tableView reloadData];
+                            [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        
+    } enError:^(NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:@"课时信息请求失败"];
+    }];
+    
+    
+    /**
+     *原逻辑
     if ([model.section_data.data_type isEqualToString:@"3"]) {
         if (!SWNOTEmptyStr(model.section_data.data_txt)) {
             [_courseListVC.tableView reloadData];
@@ -1467,6 +1519,7 @@
     [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.section_data.fileurl)];
     wekself.playerView.userInteractionEnabled = YES;
     [AppDelegate delegate]._allowRotation = YES;
+    */
 }
 
 //// MARK: - 音视频开始播放
