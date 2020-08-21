@@ -51,6 +51,11 @@
     }
     [_topContentView addSubview:_courseFaceImageView];
     
+    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.right - 32, _courseFaceImageView.top + 8, 32, 18)];
+    _courseTypeImage.image = Image(@"class_icon");
+    [_topContentView addSubview:_courseTypeImage];
+    _courseTypeImage.hidden = YES;
+    
     _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 15, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
     _textLabel.textColor = EdlineV5_Color.textFirstColor;
     _textLabel.font = SYSTEMFONT(14);
@@ -112,7 +117,7 @@
             }
             UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
             icon.image = Image(@"list_more");
-            icon.centerY = themelabel.centerY;;
+            icon.centerY = themelabel.centerY;
             [_otherView addSubview:icon];
             
             UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
@@ -405,7 +410,19 @@
         }
         
         if ([_orderTypeString isEqualToString:@"course"]) {
+            _courseTypeImage.hidden = NO;
             [_courseFaceImageView sd_setImageWithURL:EdulineUrlString([[_orderInfo objectForKey:@"data"] objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+            // 1 点播 2 直播 3 面授 4 专辑
+            NSString *courseType = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"course_type"]];
+            if ([courseType isEqualToString:@"1"]) {
+                _courseTypeImage.image = Image(@"dianbo");
+            } else if ([courseType isEqualToString:@"2"]) {
+                _courseTypeImage.image = Image(@"live");
+            } else if ([courseType isEqualToString:@"3"]) {
+                _courseTypeImage.image = Image(@"mianshou");
+            } else if ([courseType isEqualToString:@"4"]) {
+                _courseTypeImage.image = Image(@"class_icon");
+            }
             _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",[[_orderInfo objectForKey:@"data"] objectForKey:@"section_count"]];
         } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
             NSString *courseHourseType = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"data_type"]];
