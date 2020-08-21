@@ -28,6 +28,14 @@
     return [Net_Path fullPath:@"config/init" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)appLoginTypeConfigNet {
+    return [Net_Path fullPath:@"config/login" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)appthirdloginTypeConfigNet {
+    return [Net_Path fullPath:@"config/thirdlogin" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)layoutConfig {
     return [Net_Path fullPath:@"config/typeset" repalce:@"" byReplece:@""];
 }

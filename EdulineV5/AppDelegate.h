@@ -21,6 +21,7 @@ typedef void (^configTXSDK)(NSString *success);
 @property (assign, nonatomic) BOOL _allowRotation;
 @property (nonatomic, strong) RootV5VC * tabbar;
 @property (assign, nonatomic) BOOL hasPhone;
+@property (assign, nonatomic) BOOL hasPhoneLoginType;//后台是否开启一键登录权限
 @property (weak, nonatomic) UIViewController *currentViewController;
 
 +(AppDelegate *)delegate;

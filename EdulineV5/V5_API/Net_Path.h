@@ -26,6 +26,12 @@ struct NetWorkUrl {
 /** app初始化信息 */
 + (NSString *)appConfig;
 
+// MARK: - 登录配置
++ (NSString *)appLoginTypeConfigNet;
+
+// MARK: - 另外登录配置
++ (NSString *)appthirdloginTypeConfigNet;
+
 /** 排版布局配置信息 */
 + (NSString *)layoutConfig;
 

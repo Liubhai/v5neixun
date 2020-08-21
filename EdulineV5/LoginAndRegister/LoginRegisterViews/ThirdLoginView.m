@@ -11,16 +11,32 @@
 
 @implementation ThirdLoginView
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame methodTypeConfigArray:(nonnull NSMutableArray *)methodTypeConfigArray {
     self = [super initWithFrame:frame];
     if (self) {
+        _methodTypeConfigArray = methodTypeConfigArray;
         [self makeSubviews];
     }
     return self;
 }
 
 - (void)makeSubviews {
-    _methodArray = [NSMutableArray arrayWithArray:@[@"login_icon_wechat",@"login_icon_qq",@"login_icon_weibo"]];
+    
+    _methodArray = [NSMutableArray new];
+    
+    if (SWNOTEmptyArr(_methodTypeConfigArray)) {
+        if ([_methodTypeConfigArray containsObject:@"weixin"]) {
+            [_methodArray addObject:@"login_icon_wechat"];
+        }
+        
+        if ([_methodTypeConfigArray containsObject:@"qq"]) {
+            [_methodArray addObject:@"login_icon_qq"];
+        }
+        
+        if ([_methodTypeConfigArray containsObject:@"sina"]) {
+            [_methodArray addObject:@"login_icon_weibo"];
+        }
+    }
     
     UILabel *titleL = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 20)];
     titleL.text = @"第三方登录";
@@ -51,7 +67,7 @@
 
 - (void)iconButtonClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(loginButtonClickKKK:)]) {
-        [_delegate loginButtonClickKKK:sender];
+        [_delegate loginButtonClickKKK:_methodTypeConfigArray[sender.tag - 10]];
     }
 }
 

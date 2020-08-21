@@ -25,6 +25,10 @@
 @interface LoginViewController ()<LoginMsgViewDelegate,ThirdLoginViewDelegate> {
     NSTimer *codeTimer;
     int remainTime;
+    // 判断后台配置的登录方式
+    BOOL hasPwType;
+    BOOL hasMsg;
+    BOOL hasThird;
 }
 
 @property (strong, nonatomic) UIButton *pwLoginBtn;
@@ -35,6 +39,8 @@
 @property (strong, nonatomic) UIButton *forgetPwBtn;
 @property (strong, nonatomic) UIButton *registerBtn;
 @property (strong, nonatomic) UIButton *loginBtn;
+@property (strong, nonatomic) NSDictionary *loginTypeDict;
+@property (strong, nonatomic) NSMutableArray *otherTypeArray;
 
 @end
 
@@ -44,7 +50,12 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleImage.backgroundColor = [UIColor whiteColor];
-    [self makeSubViews];
+    _otherTypeArray = [NSMutableArray new];
+    _loginTypeDict = [NSDictionary new];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]) {
+        _loginTypeDict = [NSDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]];
+    }
+    [self getLoginConfigNet];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
@@ -101,10 +112,32 @@
     [_loginBtn addTarget:self action:@selector(loginRequest) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_loginBtn];
     
+    if (hasPwType && hasMsg) {
+        //不作修改
+    } else {
+        if (hasPwType && !hasMsg) {
+            // 只有账号密码登录
+            _msgLoginBtn.hidden = YES;
+            _loginMsg.hidden = YES;
+            _pwLoginBtn.centerX = MainScreenWidth / 2.0;
+        } else if (!hasPwType && hasMsg) {
+            // 只有验证码登录
+            _msgLoginBtn.selected = YES;
+            _msgLoginBtn.centerX = MainScreenWidth / 2.0;
+            _loginMsg.hidden = NO;
+            _pwLoginBtn.hidden = YES;
+            _loginPw.hidden = YES;
+        } else {
+            // 后台说这种情况不存在
+        }
+    }
+    
+}
+
+- (void)makeOtherType {
     _thirdLoginView = [[ThirdLoginView alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 32, MainScreenWidth, 90)];
     _thirdLoginView.delegate = self;
     [self.view addSubview:_thirdLoginView];
-    
 }
 
 // MARK: - 返回按钮判断
@@ -286,8 +319,8 @@
 }
 
 // MARK: - 其他login
-- (void)loginButtonClickKKK:(UIButton *)sender {
-    if (sender.tag == 10) {
+- (void)loginButtonClickKKK:(NSString *)typeString {
+    if ([typeString isEqualToString:@"weixin"]) {
         [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self completion:^(id result, NSError *error) {
             if (!error) {
                 UMSocialUserInfoResponse *resp = result;
@@ -306,7 +339,7 @@
                 NSLog(@" originalResponse: %@", resp.originalResponse);
             }
         }];
-    } else if (sender.tag == 11) {
+    } else if ([typeString isEqualToString:@"qq"]) {
         [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_QQ currentViewController:self completion:^(id result, NSError *error) {
             if (!error) {
                 UMSocialUserInfoResponse *resp = result;
@@ -326,6 +359,46 @@
             }
         }];
     }
+}
+
+// MARK: - 请求登录配置
+- (void)getLoginConfigNet {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path appLoginTypeConfigNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [[NSUserDefaults standardUserDefaults] setObject:[responseObject objectForKey:@"data"] forKey:@"login_config"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                _loginTypeDict = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                if (SWNOTEmptyDictionary(_loginTypeDict)) {
+                    if ([[_loginTypeDict objectForKey:@"user"] integerValue]) {
+                        hasPwType = YES;
+                    }
+                    if ([[_loginTypeDict objectForKey:@"verify"] integerValue]) {
+                        hasMsg = YES;
+                    }
+                }
+                [self makeSubViews];
+                [self getOtherTypeConfigNet];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+// MARK: - 其他方式配置
+- (void)getOtherTypeConfigNet {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path appthirdloginTypeConfigNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_otherTypeArray removeAllObjects];
+                [_otherTypeArray addObjectsFromArray:responseObject[@"data"]];
+                [self makeOtherType];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 @end

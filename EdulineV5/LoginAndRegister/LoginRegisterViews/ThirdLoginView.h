@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ThirdLoginViewDelegate <NSObject>
 
 @optional
-- (void)loginButtonClickKKK:(UIButton *)sender;
+- (void)loginButtonClickKKK:(NSString *)typeString;
 
 @end
 
@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) id<ThirdLoginViewDelegate> delegate;
 @property (strong, nonatomic) NSMutableArray *methodArray;
+@property (strong, nonatomic) NSMutableArray *methodTypeConfigArray;
+
+- (instancetype)initWithFrame:(CGRect)frame methodTypeConfigArray:(NSMutableArray *)methodTypeConfigArray;
 
 
 @end

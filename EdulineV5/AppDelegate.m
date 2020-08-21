@@ -72,6 +72,7 @@
 @property (nonatomic, assign) BOOL precheckSuccess;
 @property (nonatomic, copy) NSString *token;
 @property (nonatomic, copy) NSString *accessToken;
+@property (strong, nonatomic) NSDictionary *loginTypeDict;
 
 @end
 
@@ -96,6 +97,7 @@
     [self confitUShareSettings];
     [self configUSharePlatforms];
     _hasPhone = NO;
+    _loginTypeDict = [NSDictionary new];
     self.quickLoginManager = [NTESQuickLoginManager sharedInstance];
     [self registerQuickLogin];
     
@@ -189,9 +191,20 @@
     if (!currentViewController) {
         return;
     }
+
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]) {
+        [AppDelegate delegate].loginTypeDict = [NSDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]];
+    }
+    [AppDelegate delegate].hasPhoneLoginType = NO;
+    if (SWNOTEmptyDictionary([AppDelegate delegate].loginTypeDict)) {
+        if ([[[AppDelegate delegate].loginTypeDict objectForKey:@"phone"] integerValue]) {
+            [AppDelegate delegate].hasPhoneLoginType = YES;
+        }
+    }
+    
     [AppDelegate delegate].currentViewController = currentViewController;
     if ([currentViewController isKindOfClass:[UINavigationController class]]) {
-        if ([AppDelegate delegate].hasPhone) {
+        if ([AppDelegate delegate].hasPhone && [AppDelegate delegate].hasPhoneLoginType) {
             [[AppDelegate delegate] setCustomUI];
             if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 1) {
                 [[AppDelegate delegate] authorizeCTLoginWithText:nil];
@@ -212,7 +225,7 @@
             [currentViewController presentViewController:Nav animated:YES completion:nil];
         }
     } else if ([currentViewController isKindOfClass:[UIViewController class]]) {
-        if ([AppDelegate delegate].hasPhone) {
+        if ([AppDelegate delegate].hasPhone && [AppDelegate delegate].hasPhoneLoginType) {
             [[AppDelegate delegate] setCustomUI];
             if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 1) {
                 [[AppDelegate delegate] authorizeCTLoginWithText:nil];
@@ -612,6 +625,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"sdk_appid"] forKey:@"sdk_appid"];
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"theme_color"] forKey:@"color"];
+                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"login_config"] forKey:@"login_config"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         }
