@@ -53,14 +53,14 @@
     _freeImageView.hidden = YES;
     [self addSubview:_freeImageView];
     
-    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_freeImageView.right + 10, (50 - 16) / 2.0, 100, 16)];
+    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_freeImageView.right + 10, (50 - 13) / 2.0, 100, 13)];
     _priceLabel.textAlignment = NSTextAlignmentCenter;
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     _priceLabel.layer.masksToBounds = YES;
     _priceLabel.layer.cornerRadius = 1;
     _priceLabel.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
     _priceLabel.layer.borderWidth = 1;
-    _priceLabel.font = SYSTEMFONT(14);
+    _priceLabel.font = SYSTEMFONT(11);
     [self addSubview:_priceLabel];
     
     _courseRightBtn = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 14, 0, 14, 8)];
@@ -119,6 +119,7 @@
         _learnTimeLabel.hidden = YES;
         _isLearningIcon.hidden = YES;
         _titleLabel.frame = CGRectMake(_CourseTypeIcon.right + 5, 0, 150, 50);
+        _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:16];
         if ([model.course_type isEqualToString:@"1"]) {
             _CourseTypeIcon.image = Image(@"zj_dianbo");
         } else if ([model.course_type isEqualToString:@"2"]) {
@@ -135,6 +136,7 @@
         _learnTimeLabel.hidden = YES;
         _isLearningIcon.hidden = YES;
         _titleLabel.frame = CGRectMake(_blueView.right + 5, 0, 150, 50);
+        _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:15];
     } else if ([model.type isEqualToString:@"节"]) {
         _CourseTypeIcon.hidden = YES;
         _blueView.hidden = YES;
@@ -145,7 +147,8 @@
         _learnIcon.hidden = YES;
         _learnTimeLabel.hidden = YES;
         _isLearningIcon.hidden = YES;
-        _titleLabel.frame = CGRectMake(36, 0, 150, 50);
+        _titleLabel.frame = CGRectMake(_blueView.right + 5, 0, 150, 50);
+        _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:14];
     } else if ([model.type isEqualToString:@"课时"]) {
         _CourseTypeIcon.hidden = YES;
         _blueView.hidden = YES;
@@ -153,6 +156,7 @@
         _freeImageView.hidden = NO;
         _priceLabel.hidden = YES;
         _courseRightBtn.hidden = YES;
+        _titleLabel.font = SYSTEMFONT(14);
         
         
         _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];

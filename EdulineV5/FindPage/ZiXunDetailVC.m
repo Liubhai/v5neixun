@@ -75,7 +75,7 @@
     [_headerView addSubview:_topView];
     
     UILabel *zixunTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
-    zixunTitle.font = SYSTEMFONT(14);
+    zixunTitle.font = [UIFont fontWithName:@"PingFangSC-Medium" size:18];//SYSTEMFONT(18);
     zixunTitle.textColor = EdlineV5_Color.textFirstColor;
     zixunTitle.text = [NSString stringWithFormat:@"%@",_newsInfo[@"data"][@"detail"][@"title"]];
     zixunTitle.numberOfLines = 0;

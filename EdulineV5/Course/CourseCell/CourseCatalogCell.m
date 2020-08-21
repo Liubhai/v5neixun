@@ -54,14 +54,14 @@
     _freeImageView.hidden = YES;
     [self addSubview:_freeImageView];
     
-    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_freeImageView.right + 10, (50 - 16) / 2.0, 100, 16)];
+    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_freeImageView.right + 10, (50 - 13) / 2.0, 100, 13)];
     _priceLabel.textAlignment = NSTextAlignmentCenter;
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     _priceLabel.layer.masksToBounds = YES;
     _priceLabel.layer.cornerRadius = 1;
     _priceLabel.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
     _priceLabel.layer.borderWidth = 1;
-    _priceLabel.font = SYSTEMFONT(14);
+    _priceLabel.font = SYSTEMFONT(11);
     [self addSubview:_priceLabel];
     
     _courseRightBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, 0, 30, 50)];
@@ -106,6 +106,7 @@
             _learnIcon.hidden = YES;
             _learnTimeLabel.hidden = YES;
         }
+        _titleLabel.font = SYSTEMFONT(14);
     } else if ([_allLayar isEqualToString:@"2"]) {
         _blueView.hidden = YES;
         if ([_courselayer isEqualToString:@"2"]) {
@@ -118,7 +119,9 @@
             _learnTimeLabel.hidden = YES;
             _isLearningIcon.hidden = YES;
             [_titleLabel setLeft:15];
+            _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:14];
         } else if ([_courselayer isEqualToString:@"3"]) {
+            _titleLabel.font = SYSTEMFONT(14);
             _courseRightBtn.hidden = YES;
             _coverButton.hidden = YES;
             if (!_isMainPage) {
@@ -144,8 +147,14 @@
             _learnIcon.hidden = YES;
             _learnTimeLabel.hidden = YES;
             _isLearningIcon.hidden = YES;
-            [_titleLabel setLeft:([_courselayer isEqualToString:@"1"] ? (15 + 3 + 8) : 15)];
+            [_titleLabel setLeft:15 + 3 + 8];//([_courselayer isEqualToString:@"1"] ? (15 + 3 + 8) : 15)
+            if ([_courselayer isEqualToString:@"1"]) {
+                _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:15];
+            } else {
+                _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:14];
+            }
         } else if ([_courselayer isEqualToString:@"3"]) {
+            _titleLabel.font = SYSTEMFONT(14);
             _courseRightBtn.hidden = YES;
             _coverButton.hidden = YES;
             _blueView.hidden = YES;

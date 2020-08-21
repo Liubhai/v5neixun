@@ -195,8 +195,8 @@
         
         [_topView addSubview:typeBtn];
     }
-    [_topBackImageView setHeight:_faceImageView.bottom + 20 + 40 + 10];
-    [_topView setHeight:_faceImageView.bottom + 20 + 40 + 10];
+    [_topBackImageView setHeight:_faceImageView.bottom + 10 + 40 + 10];
+    [_topView setHeight:_faceImageView.bottom + 10 + 40 + 10];
 }
 
 - (void)makeButtonBackView {
