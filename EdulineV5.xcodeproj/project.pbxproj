@@ -385,6 +385,10 @@
 		78D980B524BD48F5000DE0E4 /* MyTeachListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B424BD48F5000DE0E4 /* MyTeachListVC.m */; };
 		78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */; };
 		78D980BB24BDB737000DE0E4 /* NewClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */; };
+		78F7C5D024EFC2AF0010F1E9 /* XLCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5C824EFC2AD0010F1E9 /* XLCardCell.m */; };
+		78F7C5D124EFC2AF0010F1E9 /* XLCardSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CA24EFC2AD0010F1E9 /* XLCardSwitch.m */; };
+		78F7C5D224EFC2AF0010F1E9 /* XLCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */; };
+		78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -1148,6 +1152,14 @@
 		78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseModel.m; sourceTree = "<group>"; };
 		78D980B924BDB737000DE0E4 /* NewClassCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewClassCourseCell.h; sourceTree = "<group>"; };
 		78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseCell.m; sourceTree = "<group>"; };
+		78F7C5C824EFC2AD0010F1E9 /* XLCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardCell.m; sourceTree = "<group>"; };
+		78F7C5C924EFC2AD0010F1E9 /* XLCardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardModel.h; sourceTree = "<group>"; };
+		78F7C5CA24EFC2AD0010F1E9 /* XLCardSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardSwitch.m; sourceTree = "<group>"; };
+		78F7C5CB24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardSwitchFlowLayout.h; sourceTree = "<group>"; };
+		78F7C5CC24EFC2AD0010F1E9 /* XLCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardCell.h; sourceTree = "<group>"; };
+		78F7C5CD24EFC2AD0010F1E9 /* XLCardSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardSwitch.h; sourceTree = "<group>"; };
+		78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardModel.m; sourceTree = "<group>"; };
+		78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardSwitchFlowLayout.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1695,6 +1707,7 @@
 		7879566E240F929A0013F95F /* EdulineToolLib */ = {
 			isa = PBXGroup;
 			children = (
+				78F7C5C724EFC2AD0010F1E9 /* XLCardSwitch */,
 				78C936BD248DE41900D5F1ED /* HomeScrollThird */,
 				78AA136E2440543C007087F7 /* SDCycleScrollView */,
 				78C548622418CC7400A33FC4 /* TYAttributedLabel */,
@@ -2739,6 +2752,21 @@
 			path = MyTearchRoot;
 			sourceTree = "<group>";
 		};
+		78F7C5C724EFC2AD0010F1E9 /* XLCardSwitch */ = {
+			isa = PBXGroup;
+			children = (
+				78F7C5C824EFC2AD0010F1E9 /* XLCardCell.m */,
+				78F7C5C924EFC2AD0010F1E9 /* XLCardModel.h */,
+				78F7C5CA24EFC2AD0010F1E9 /* XLCardSwitch.m */,
+				78F7C5CB24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.h */,
+				78F7C5CC24EFC2AD0010F1E9 /* XLCardCell.h */,
+				78F7C5CD24EFC2AD0010F1E9 /* XLCardSwitch.h */,
+				78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */,
+				78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */,
+			);
+			path = XLCardSwitch;
+			sourceTree = "<group>";
+		};
 		7B328A11FE82EEC19F082C22 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -3113,6 +3141,7 @@
 				78AA1356243C214D007087F7 /* CourseClassifyVC.m in Sources */,
 				784FC8FA24AF2F5A00CAE7A6 /* MessageListVC.m in Sources */,
 				784FC8FD24AF2FA900CAE7A6 /* MessageListCell.m in Sources */,
+				78F7C5D124EFC2AF0010F1E9 /* XLCardSwitch.m in Sources */,
 				78A16C872452F7C100391430 /* NetAssociation.m in Sources */,
 				7853164824502E49007E239E /* MenberCell.m in Sources */,
 				7887451824E3830C00257029 /* InstitutionSearchVC.m in Sources */,
@@ -3202,6 +3231,7 @@
 				787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */,
 				787F1E7B247381A400108F7B /* AliyunPlayerViewProgressView.m in Sources */,
 				78C549C7241B674E00A33FC4 /* AlivcLiveUserCountTool.m in Sources */,
+				78F7C5D024EFC2AF0010F1E9 /* XLCardCell.m in Sources */,
 				78C5487B2418CC7400A33FC4 /* NSMutableAttributedString+TY.m in Sources */,
 				78795720240FA3840013F95F /* DACircularProgressView.m in Sources */,
 				787F1E8D247381A400108F7B /* AlivcVideoDataBase.m in Sources */,
@@ -3221,6 +3251,7 @@
 				78A16C8D2452F7C100391430 /* TICDevice.m in Sources */,
 				7859FE3D24C97B8A006C7D4E /* MYTreeItem.m in Sources */,
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,
+				78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */,
 				7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */,
 				789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */,
 				787F1E74247381A400108F7B /* AliyunPlayerViewPopLayer.m in Sources */,
@@ -3242,6 +3273,7 @@
 				789DB044246A4499001302B4 /* MycouponsListVC.m in Sources */,
 				787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */,
 				7859FE3724C979F0006C7D4E /* CourseTreeListViewController.m in Sources */,
+				78F7C5D224EFC2AF0010F1E9 /* XLCardModel.m in Sources */,
 				7879572B240FA3840013F95F /* ZLPhotoPickerCustomToolBarView.m in Sources */,
 				78A16C882452F7C100391430 /* NetworkClock.m in Sources */,
 				78C54975241B642B00A33FC4 /* AlivcPushBeautyParams.m in Sources */,

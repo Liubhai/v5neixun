@@ -135,7 +135,7 @@
 }
 
 - (void)makeOtherType {
-    _thirdLoginView = [[ThirdLoginView alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 32, MainScreenWidth, 90)];
+    _thirdLoginView = [[ThirdLoginView alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 32, MainScreenWidth, 90) methodTypeConfigArray:_otherTypeArray];
     _thirdLoginView.delegate = self;
     [self.view addSubview:_thirdLoginView];
 }
