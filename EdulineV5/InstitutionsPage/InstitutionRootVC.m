@@ -257,6 +257,7 @@
 - (void)moreButtonClick:(UIButton *)sender {
     if (sender.tag == 1) {
         TeacherListVC *vc = [[TeacherListVC alloc] init];
+        vc.mhm_id = _institutionId;
         [self.navigationController pushViewController:vc animated:YES];
     } else if (sender.tag == 0) {
         InstitutionCourseMainVC *vc = [[InstitutionCourseMainVC alloc] init];

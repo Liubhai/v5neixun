@@ -64,7 +64,7 @@
         UILabel *thmeLabel = [[UILabel alloc] initWithFrame:CGRectMake(face.left, face.bottom + 10, face.width, 20)];
         thmeLabel.font = SYSTEMFONT(13);
         thmeLabel.textColor = EdlineV5_Color.textFirstColor;
-        thmeLabel.text = [NSString stringWithFormat:@"%@",[learnArray[i] objectForKey:@"course_title"]];
+        thmeLabel.text = [NSString stringWithFormat:@"%@",[learnArray[i] objectForKey:@"section_title"]];
         thmeLabel.numberOfLines = 0;
         [thmeLabel sizeToFit];
         if (thmeLabel.height > 20) {

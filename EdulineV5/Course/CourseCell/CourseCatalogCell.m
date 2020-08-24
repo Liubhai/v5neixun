@@ -317,31 +317,49 @@
                 _isLearningIcon.hidden = NO;
                 [self setAnimation:_isLearningIcon];
             } else {
-                if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+                _learnIcon.hidden = NO;
+                _learnTimeLabel.hidden = NO;
+                _isLearningIcon.hidden = YES;
+                [_isLearningIcon stopAnimating];
+                if (model.model.section_rate.status == 957) {
                     _learnIcon.hidden = YES;
                     _learnTimeLabel.hidden = YES;
-                    _isLearningIcon.hidden = YES;
-                    [_isLearningIcon stopAnimating];
+                } else if (model.model.section_rate.status == 999) {
+                    _learnIcon.hidden = NO;
+                    _learnTimeLabel.hidden = NO;
+                    _learnIcon.image = Image(@"comment_his_icon");
+                    _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
                 } else {
                     _learnIcon.hidden = NO;
                     _learnTimeLabel.hidden = NO;
-                    _isLearningIcon.hidden = YES;
-                    [_isLearningIcon stopAnimating];
-                    if (model.model.section_rate.status == 957) {
-                        _learnIcon.hidden = YES;
-                        _learnTimeLabel.hidden = YES;
-                    } else if (model.model.section_rate.status == 999) {
-                        _learnIcon.hidden = NO;
-                        _learnTimeLabel.hidden = NO;
-                        _learnIcon.image = Image(@"comment_his_icon");
-                        _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
-                    } else {
-                        _learnIcon.hidden = NO;
-                        _learnTimeLabel.hidden = NO;
-                        _learnIcon.image = Image(@"comment_fin_icon");
-                        _learnTimeLabel.text = @"已完成";
-                    }
+                    _learnIcon.image = Image(@"comment_fin_icon");
+                    _learnTimeLabel.text = @"已完成";
                 }
+//                if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+//                    _learnIcon.hidden = YES;
+//                    _learnTimeLabel.hidden = YES;
+//                    _isLearningIcon.hidden = YES;
+//                    [_isLearningIcon stopAnimating];
+//                } else {
+//                    _learnIcon.hidden = NO;
+//                    _learnTimeLabel.hidden = NO;
+//                    _isLearningIcon.hidden = YES;
+//                    [_isLearningIcon stopAnimating];
+//                    if (model.model.section_rate.status == 957) {
+//                        _learnIcon.hidden = YES;
+//                        _learnTimeLabel.hidden = YES;
+//                    } else if (model.model.section_rate.status == 999) {
+//                        _learnIcon.hidden = NO;
+//                        _learnTimeLabel.hidden = NO;
+//                        _learnIcon.image = Image(@"comment_his_icon");
+//                        _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
+//                    } else {
+//                        _learnIcon.hidden = NO;
+//                        _learnTimeLabel.hidden = NO;
+//                        _learnIcon.image = Image(@"comment_fin_icon");
+//                        _learnTimeLabel.text = @"已完成";
+//                    }
+//                }
             }
         }
     } else if ([_allLayar isEqualToString:@"2"]) {
@@ -367,31 +385,49 @@
                     _isLearningIcon.hidden = NO;
                     [self setAnimation:_isLearningIcon];
                 } else {
-                    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+                    _learnIcon.hidden = NO;
+                    _learnTimeLabel.hidden = NO;
+                    _isLearningIcon.hidden = YES;
+                    [_isLearningIcon stopAnimating];
+                    if (model.model.section_rate.status == 957) {
                         _learnIcon.hidden = YES;
                         _learnTimeLabel.hidden = YES;
-                        _isLearningIcon.hidden = YES;
-                        [_isLearningIcon stopAnimating];
+                    } else if (model.model.section_rate.status == 999) {
+                        _learnIcon.hidden = NO;
+                        _learnTimeLabel.hidden = NO;
+                        _learnIcon.image = Image(@"comment_his_icon");
+                        _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
                     } else {
                         _learnIcon.hidden = NO;
                         _learnTimeLabel.hidden = NO;
-                        _isLearningIcon.hidden = YES;
-                        [_isLearningIcon stopAnimating];
-                        if (model.model.section_rate.status == 957) {
-                            _learnIcon.hidden = YES;
-                            _learnTimeLabel.hidden = YES;
-                        } else if (model.model.section_rate.status == 999) {
-                            _learnIcon.hidden = NO;
-                            _learnTimeLabel.hidden = NO;
-                            _learnIcon.image = Image(@"comment_his_icon");
-                            _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
-                        } else {
-                            _learnIcon.hidden = NO;
-                            _learnTimeLabel.hidden = NO;
-                            _learnIcon.image = Image(@"comment_fin_icon");
-                            _learnTimeLabel.text = @"已完成";
-                        }
+                        _learnIcon.image = Image(@"comment_fin_icon");
+                        _learnTimeLabel.text = @"已完成";
                     }
+//                    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+//                        _learnIcon.hidden = YES;
+//                        _learnTimeLabel.hidden = YES;
+//                        _isLearningIcon.hidden = YES;
+//                        [_isLearningIcon stopAnimating];
+//                    } else {
+//                        _learnIcon.hidden = NO;
+//                        _learnTimeLabel.hidden = NO;
+//                        _isLearningIcon.hidden = YES;
+//                        [_isLearningIcon stopAnimating];
+//                        if (model.model.section_rate.status == 957) {
+//                            _learnIcon.hidden = YES;
+//                            _learnTimeLabel.hidden = YES;
+//                        } else if (model.model.section_rate.status == 999) {
+//                            _learnIcon.hidden = NO;
+//                            _learnTimeLabel.hidden = NO;
+//                            _learnIcon.image = Image(@"comment_his_icon");
+//                            _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
+//                        } else {
+//                            _learnIcon.hidden = NO;
+//                            _learnTimeLabel.hidden = NO;
+//                            _learnIcon.image = Image(@"comment_fin_icon");
+//                            _learnTimeLabel.text = @"已完成";
+//                        }
+//                    }
                 }
             }
         }
@@ -444,31 +480,49 @@
                     _isLearningIcon.hidden = NO;
                     [self setAnimation:_isLearningIcon];
                 } else {
-                    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+                    _learnIcon.hidden = NO;
+                    _learnTimeLabel.hidden = NO;
+                    _isLearningIcon.hidden = YES;
+                    [_isLearningIcon stopAnimating];
+                    if (model.model.section_rate.status == 957) {
                         _learnIcon.hidden = YES;
                         _learnTimeLabel.hidden = YES;
-                        _isLearningIcon.hidden = YES;
-                        [_isLearningIcon stopAnimating];
+                    } else if (model.model.section_rate.status == 999) {
+                        _learnIcon.hidden = NO;
+                        _learnTimeLabel.hidden = NO;
+                        _learnIcon.image = Image(@"comment_his_icon");
+                        _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
                     } else {
                         _learnIcon.hidden = NO;
                         _learnTimeLabel.hidden = NO;
-                        _isLearningIcon.hidden = YES;
-                        [_isLearningIcon stopAnimating];
-                        if (model.model.section_rate.status == 957) {
-                            _learnIcon.hidden = YES;
-                            _learnTimeLabel.hidden = YES;
-                        } else if (model.model.section_rate.status == 999) {
-                            _learnIcon.hidden = NO;
-                            _learnTimeLabel.hidden = NO;
-                            _learnIcon.image = Image(@"comment_his_icon");
-                            _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
-                        } else {
-                            _learnIcon.hidden = NO;
-                            _learnTimeLabel.hidden = NO;
-                            _learnIcon.image = Image(@"comment_fin_icon");
-                            _learnTimeLabel.text = @"已完成";
-                        }
+                        _learnIcon.image = Image(@"comment_fin_icon");
+                        _learnTimeLabel.text = @"已完成";
                     }
+//                    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+//                        _learnIcon.hidden = YES;
+//                        _learnTimeLabel.hidden = YES;
+//                        _isLearningIcon.hidden = YES;
+//                        [_isLearningIcon stopAnimating];
+//                    } else {
+//                        _learnIcon.hidden = NO;
+//                        _learnTimeLabel.hidden = NO;
+//                        _isLearningIcon.hidden = YES;
+//                        [_isLearningIcon stopAnimating];
+//                        if (model.model.section_rate.status == 957) {
+//                            _learnIcon.hidden = YES;
+//                            _learnTimeLabel.hidden = YES;
+//                        } else if (model.model.section_rate.status == 999) {
+//                            _learnIcon.hidden = NO;
+//                            _learnTimeLabel.hidden = NO;
+//                            _learnIcon.image = Image(@"comment_his_icon");
+//                            _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
+//                        } else {
+//                            _learnIcon.hidden = NO;
+//                            _learnTimeLabel.hidden = NO;
+//                            _learnIcon.image = Image(@"comment_fin_icon");
+//                            _learnTimeLabel.text = @"已完成";
+//                        }
+//                    }
                 }
             }
         }

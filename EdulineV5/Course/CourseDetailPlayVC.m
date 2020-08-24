@@ -970,6 +970,49 @@
                         [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
                         [_tableView setContentOffset:CGPointZero animated:YES];
                         [_courseListVC.tableView reloadData];
+                        
+                        // 直接请求一次添加学习记录
+                        
+                        // 重置当前选择的课时模型
+                        if (superIndex) {
+                            CourseListModelFinal *supermodel = _courseListVC.courseListArray[superIndex.row];
+                            CourseListModelFinal *parentmodel = supermodel.child[panrentCellIndex.row];
+                            CourseListModelFinal *model = parentmodel.child[cellIndex.row];
+                            model.isPlaying = YES;
+                            CourseListModelFinal *curent = model;
+                            currentCourseFinalModel = curent;
+                            [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
+                            [supermodel.child replaceObjectAtIndex:panrentCellIndex.row withObject:parentmodel];
+                            [_courseListVC.courseListArray replaceObjectAtIndex:superIndex.row withObject:supermodel];
+                            [_courseListVC.tableView reloadData];
+                        } else {
+                            if (panrentCellIndex) {
+                                CourseListModelFinal *parentmodel = _courseListVC.courseListArray[panrentCellIndex.row];
+                                CourseListModelFinal *model = parentmodel.child[cellIndex.row];
+                                model.isPlaying = YES;
+                                CourseListModelFinal *curent = model;
+                                currentCourseFinalModel = curent;
+                                [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
+                                [_courseListVC.courseListArray replaceObjectAtIndex:panrentCellIndex.row withObject:parentmodel];
+                                [_courseListVC.tableView reloadData];
+                            } else {
+                                if (cellIndex) {
+                                    CourseListModelFinal *model = _courseListVC.courseListArray[cellIndex.row];
+                                    model.isPlaying = YES;
+                                    CourseListModelFinal *curent = model;
+                                    currentCourseFinalModel = curent;
+                                    [_courseListVC.courseListArray replaceObjectAtIndex:cellIndex.row withObject:model];
+                                    [_courseListVC.tableView reloadData];
+                                }
+                            }
+                        }
+                        
+                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":cell.listFinalModel.model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
+                            NSLog(@"%@",responseObject);
+                        } enError:^(NSError * _Nonnull error) {
+                            
+                        }];
+                        
                         return;
                     }
                 } else {
@@ -1225,6 +1268,23 @@
                         [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
                         [_tableView setContentOffset:CGPointZero animated:YES];
                         [_courseTreeListVC.tableView reloadData];
+                        
+                        CourseListModel *newClassCurrentModel = model;
+                        newClassCurrentModel.isPlaying = YES;
+                        [_courseTreeListVC.manager.showItems replaceObjectAtIndex:indexpath.row withObject:newClassCurrentModel];
+                        [_courseTreeListVC.tableView reloadData];
+                        
+                        CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
+                        curent.model = newClassCurrentModel;
+                        currentCourseFinalModel = curent;
+                        
+                        // 请求一次添加学习记录
+                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":courseId,@"section_id":model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
+                            NSLog(@"%@",responseObject);
+                        } enError:^(NSError * _Nonnull error) {
+                            
+                        }];
+                        
                         return;
                     }
                 } else {
