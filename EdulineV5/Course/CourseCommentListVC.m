@@ -101,6 +101,7 @@
         return;
     }
     if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
     NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
@@ -221,6 +222,7 @@
 
 - (void)editContent:(CourseCommentCell *)cell {
     if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
@@ -232,6 +234,7 @@
 
 - (void)zanComment:(CourseCommentCell *)cell {
     if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
     // 判断是点赞还是取消点赞  然后再判断是展示我的还是展示所有的

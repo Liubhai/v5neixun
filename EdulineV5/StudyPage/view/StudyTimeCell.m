@@ -29,7 +29,7 @@
     _studyIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 40, MainScreenWidth - 30, 100)];
     _studyIcon.image = Image(@"study_card_img");
     _studyIcon.layer.masksToBounds = YES;
-    _studyIcon.layer.cornerRadius = 16;
+    _studyIcon.layer.cornerRadius = 8;
     _studyIcon.backgroundColor = EdlineV5_Color.themeColor;
     [self addSubview:_studyIcon];
     

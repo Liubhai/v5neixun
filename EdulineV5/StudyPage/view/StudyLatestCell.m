@@ -25,6 +25,8 @@
 - (void)makeSubView {
     _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 20)];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
+    _mainScrollView.showsHorizontalScrollIndicator = NO;
+    _mainScrollView.showsVerticalScrollIndicator = NO;
     [self addSubview:_mainScrollView];
 }
 
@@ -39,6 +41,8 @@
     for (int i = 0; i<learnArray.count; i ++) {
         UIImageView *face = [[UIImageView alloc] initWithFrame:CGRectMake(15 + (125 + 8) * i, 10, 125, 70)];
         [face sd_setImageWithURL:EdulineUrlString([learnArray[i] objectForKey:@"course_cover"]) placeholderImage:DefaultImage];
+        face.layer.masksToBounds = YES;
+        face.layer.cornerRadius = 4;
         [_mainScrollView addSubview:face];
         
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(face.right - 32, face.top + 8, 32, 18)];

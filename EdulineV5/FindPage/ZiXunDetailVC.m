@@ -218,6 +218,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ZixunCommmentDetailVC *vc = [[ZixunCommmentDetailVC alloc] init];
     vc.cellType = NO;
