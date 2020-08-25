@@ -899,8 +899,8 @@
         _tableView.contentOffset = CGPointMake(0, 0);
 //        [self tableViewCanNotScroll];
     } else {
-        _titleImage.hidden = NO;
-        _playerView.controlView.topView.hidden = YES;
+        _titleImage.hidden = YES;
+        _playerView.controlView.topView.hidden = NO;
         _playerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight);
         _headerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight + 90);
         _freeLookView.frame = _playerView.frame;
@@ -909,6 +909,9 @@
             [_buyhourseButton setLeft:_playerView.width / 2.0 + 10];
         } else {
             _buyCourseButton.centerX = _playerView.width / 2.0;
+        }
+        if ([_freeLookView superview] && !_freeLookView.hidden) {
+            _titleImage.hidden = NO;
         }
         _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
         [_buyCourseButton setTop:_freeLabel.bottom + 12];
@@ -1127,6 +1130,7 @@
                             } else {
                                 wekself.playerView.unHiddenCoverImage = NO;
                             }
+                            [wekself.playerView setTitle:cell.listFinalModel.model.title];
                             wekself.playerView.trackInfoArray = [NSArray arrayWithArray:_playFileUrlArray];
                             [wekself.playerView playViewPrepareWithURL:EdulineUrlString(firstFileUrlInfo[@"play_url"])];
                             wekself.playerView.userInteractionEnabled = YES;
@@ -1375,6 +1379,7 @@
                             } else {
                                 wekself.playerView.unHiddenCoverImage = NO;
                             }
+                            [wekself.playerView setTitle:model.title];
                             wekself.playerView.trackInfoArray = [NSArray arrayWithArray:_playFileUrlArray];
                             [wekself.playerView playViewPrepareWithURL:EdulineUrlString(firstFileUrlInfo[@"play_url"])];
                             wekself.playerView.userInteractionEnabled = YES;
@@ -1549,6 +1554,7 @@
                             } else {
                                 wekself.playerView.unHiddenCoverImage = NO;
                             }
+                            [wekself.playerView setTitle:model.title];
                             wekself.playerView.trackInfoArray = [NSArray arrayWithArray:_playFileUrlArray];
                             [wekself.playerView playViewPrepareWithURL:EdulineUrlString(firstFileUrlInfo[@"play_url"])];
                             wekself.playerView.userInteractionEnabled = YES;
@@ -1637,6 +1643,7 @@
 //// MARK: - 音视频开始播放
 - (void)aliyunVodPlayerView:(AliyunVodPlayerView*)playerView happen:(AVPEventType )event {
     if (event == AVPEventFirstRenderedStart) {
+        _titleImage.hidden = YES;
         __weak CourseDetailPlayVC *wekself = self;
         [wekself starRecordTimer];
     } else if (event == AVPEventCompletion) {
@@ -1665,6 +1672,7 @@
 // MARK: - 功能：播放完成事件 ，请区别stop（停止播放）
 - (void)onFinishWithAliyunVodPlayerView:(AliyunVodPlayerView*)playerView {
     __weak CourseDetailPlayVC *wekself = self;
+    _titleImage.hidden = NO;
     [wekself.playerView setUIStatusToReplay];
     [wekself stopRecordTimer];
     [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
