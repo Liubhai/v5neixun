@@ -49,6 +49,7 @@
     CourseListModelFinal *currentCourseFinalModel;
     BOOL     isWebViewBig;//文档 是否放大
     BOOL freeLook;
+    BOOL isFullS;//当前是否全屏
 }
 
 /**三大子页面*/
@@ -740,6 +741,15 @@
     }
 }
 
+- (void)leftButtonClick:(id)sender {
+    if (isFullS) {
+        [self changeOrientation:UIInterfaceOrientationPortrait];
+        [self aliyunVodPlayerView:_playerView fullScreen:NO];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 // MARK: - 更多按钮点击事件
 - (void)moreButtonClick:(UIButton *)sender {
     
@@ -767,6 +777,10 @@
 }
 
 - (void)buyCourseAndHourseButtonClick:(UIButton *)sender {
+    if (isFullS) {
+        [self changeOrientation:UIInterfaceOrientationPortrait];
+        [self aliyunVodPlayerView:_playerView fullScreen:NO];
+    }
     if (sender == _buyCourseButton) {
         OrderViewController *vc = [[OrderViewController alloc] init];
         vc.orderTypeString = @"course";
@@ -859,6 +873,7 @@
 
 - (void)aliyunVodPlayerView:(AliyunVodPlayerView *)playerView fullScreen:(BOOL)isFullScreen{
     NSLog(@"isfullScreen --%d",isFullScreen);
+    isFullS = isFullScreen;
     if (![AppDelegate delegate]._allowRotation) {
         return;
     }
@@ -868,6 +883,18 @@
         _playerView.controlView.topView.hidden = NO;
         _playerView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
         _headerView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
+        _freeLookView.frame = _playerView.frame;
+        
+        if ([currentCourseFinalModel.model.price floatValue]>0) {
+            [_buyCourseButton setRight:_playerView.width / 2.0 - 10];
+            [_buyhourseButton setLeft:_playerView.width / 2.0 + 10];
+        } else {
+            _buyCourseButton.centerX = _playerView.width / 2.0;
+        }
+        
+        _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
+        [_buyCourseButton setTop:_freeLabel.bottom + 12];
+        [_buyhourseButton setTop:_freeLabel.bottom + 12];
         _tableView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
         _tableView.contentOffset = CGPointMake(0, 0);
 //        [self tableViewCanNotScroll];
@@ -876,12 +903,37 @@
         _playerView.controlView.topView.hidden = YES;
         _playerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight);
         _headerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight + 90);
+        _freeLookView.frame = _playerView.frame;
+        if ([currentCourseFinalModel.model.price floatValue]>0) {
+            [_buyCourseButton setRight:_playerView.width / 2.0 - 10];
+            [_buyhourseButton setLeft:_playerView.width / 2.0 + 10];
+        } else {
+            _buyCourseButton.centerX = _playerView.width / 2.0;
+        }
+        _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
+        [_buyCourseButton setTop:_freeLabel.bottom + 12];
+        [_buyhourseButton setTop:_freeLabel.bottom + 12];
         _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - 50);
 //        [self tableViewCanScroll];
     }
+
     _tableView.tableHeaderView = _headerView;
     [_tableView reloadData];
     [self setNeedsStatusBarAppearanceUpdate];
+}
+
+// MARK: - 处理强制竖屏
+- (void)changeOrientation:(UIInterfaceOrientation)orientation
+{
+    int val = orientation;
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
@@ -1647,6 +1699,7 @@
             [wekself stopRecordTimer];
             [wekself.playerView stop];
             if ([wekself.freeLookView superview]) {
+                wekself.freeLookView.frame = wekself.playerView.frame;
                 wekself.freeLookView.hidden = NO;
                 if ([currentCourseFinalModel.model.price floatValue]>0) {
                     [_buyCourseButton setRight:wekself.playerView.width / 2.0 - 10];
@@ -1659,6 +1712,7 @@
                     _buyhourseButton.hidden = YES;
                 }
             } else {
+                wekself.freeLookView.frame = wekself.playerView.frame;
                 [wekself.headerView addSubview:wekself.freeLookView];
                 if ([currentCourseFinalModel.model.price floatValue]>0) {
                     [_buyCourseButton setRight:wekself.playerView.width / 2.0 - 10];
@@ -1671,6 +1725,11 @@
                     _buyhourseButton.hidden = YES;
                 }
             }
+
+            _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
+            [_buyCourseButton setTop:_freeLabel.bottom + 12];
+            [_buyhourseButton setTop:_freeLabel.bottom + 12];
+            
             _titleImage.hidden = NO;
             return;
         }
