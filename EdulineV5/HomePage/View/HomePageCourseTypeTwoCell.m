@@ -44,7 +44,7 @@
 //
 //    _learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 18, 100, 16)];
 //    _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
-//    _learnCountLabel.text = @"1214人报名";
+//    _learnCountLabel.text = @"1214人在学";
 //    _learnCountLabel.font = SYSTEMFONT(12);
 //    [self addSubview:_learnCountLabel];
 //
@@ -137,7 +137,7 @@
         tapButton.frame = CGRectMake(courseFace.left, courseFace.top, courseFace.width, priceLabel.bottom - courseFace.top);
         
         titleL.text = [NSString stringWithFormat:@"%@",infoArray[i][@"title"]];
-        learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",infoArray[i][@"sale_count"]];
+        learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",infoArray[i][@"sale_count"]];
         NSString *priceValue = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"price"]];
         priceLabel.textColor = EdlineV5_Color.faildColor;
         if ([[infoArray[i] objectForKey:@"is_buy"] integerValue]) {

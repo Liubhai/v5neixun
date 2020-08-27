@@ -13,6 +13,7 @@
     NSInteger indexPathSection;//
     NSInteger indexPathRow;//记录当前数据的相关
     NSString *cellCouserlayar;// 当前第一个cell类型
+    BOOL canSelect;//开关阀门 连续点击一个cell会出问题(由于网络延迟问题)
 }
 
 @end
@@ -22,6 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    canSelect = YES;
     if ([_courselayer isEqualToString:@"1"]) {
         cellCouserlayar = @"3";
     } else if ([_courselayer isEqualToString:@"2"]) {
@@ -77,10 +79,22 @@
         }
     } else {
         if (!item.isExpand) {
+            if (!canSelect) {
+                return;
+            }
+            canSelect = NO;
+            NSLog(@"展开");
             item.isExpand = !item.isExpand;
             [self.manager.showItems replaceObjectAtIndex:indexPath.row withObject:item];
             [self getCourseListArray:item indepath:indexPath];
         } else {
+            if (!canSelect) {
+                return;
+            }
+            canSelect = NO;
+            NSLog(@"收起");
+//            item.isExpand = !item.isExpand;
+//            [self.manager.showItems replaceObjectAtIndex:indexPath.row withObject:item];
             [self tableView:tableView didSelectItems:@[item] isExpand:!item.isExpand];
         }
     }
@@ -130,6 +144,7 @@
         NewClassCourseCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         [cell updateItem];
     }
+    canSelect = YES;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -234,6 +249,8 @@
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:courseId pid:(SWNOTEmptyStr(model.classHourId) ? model.classHourId : @"0")] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                    model.isExpand = !model.isExpand;
+//                    [self.manager.showItems replaceObjectAtIndex:path.row withObject:model];
                     NSMutableArray *newArray = [NSMutableArray new];
                     NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
                     NSString *section_level = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"section_level"]];
@@ -281,6 +298,7 @@
 //                    }
 //                    model.childItems = newArray;
                     [_tableView reloadData];
+                    canSelect = YES;
                 }
             }
         } enError:^(NSError * _Nonnull error) {

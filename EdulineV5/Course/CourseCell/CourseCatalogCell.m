@@ -94,6 +94,10 @@
     _learnIcon.image = Image(@"comment_his_icon");
     [self addSubview:_learnIcon];
     
+    _cellTableViewSpace = [[UIView alloc] initWithFrame:CGRectMake(0, 49, MainScreenWidth, 1)];
+    _cellTableViewSpace.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [self addSubview:_cellTableViewSpace];
+    
     // 当目录为3层的时候 这个实际上是二层视图 table是三层视图
     // 当目录为2层的时候 这个实际上是二层视图 没有table
     // 当目录为1层的时候 这个实际上是一层视图 没有table是三层视图
@@ -107,6 +111,7 @@
             _learnTimeLabel.hidden = YES;
         }
         _titleLabel.font = SYSTEMFONT(14);
+        _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
     } else if ([_allLayar isEqualToString:@"2"]) {
         _blueView.hidden = YES;
         if ([_courselayer isEqualToString:@"2"]) {
@@ -120,6 +125,7 @@
             _isLearningIcon.hidden = YES;
             [_titleLabel setLeft:15];
             _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:14];
+            _cellTableViewSpace.frame = CGRectMake(_titleLabel.left, 49, MainScreenWidth - _titleLabel.left, 1);
         } else if ([_courselayer isEqualToString:@"3"]) {
             _titleLabel.font = SYSTEMFONT(14);
             _courseRightBtn.hidden = YES;
@@ -135,6 +141,7 @@
                     _isLearningIcon.hidden = YES;
                 }
             }
+            _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
         }
     } else if ([_allLayar isEqualToString:@"3"]) {
         if ([_courselayer isEqualToString:@"1"] || [_courselayer isEqualToString:@"2"]) {
@@ -150,10 +157,13 @@
             [_titleLabel setLeft:15 + 3 + 8];//([_courselayer isEqualToString:@"1"] ? (15 + 3 + 8) : 15)
             if ([_courselayer isEqualToString:@"1"]) {
                 _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:15];
+                _cellTableViewSpace.frame = CGRectMake(_blueView.left, 49, MainScreenWidth - _blueView.left, 1);
             } else {
                 _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:14];
+                _cellTableViewSpace.frame = CGRectMake(_titleLabel.left, 49, MainScreenWidth - _titleLabel.left, 1);
             }
         } else if ([_courselayer isEqualToString:@"3"]) {
+            _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
             _titleLabel.font = SYSTEMFONT(14);
             _courseRightBtn.hidden = YES;
             _coverButton.hidden = YES;
@@ -174,11 +184,9 @@
     
     
     if ([_courselayer isEqualToString:@"1"] || [_courselayer isEqualToString:@"2"]) {
-        _cellTableViewSpace = [[UIView alloc] initWithFrame:CGRectMake(0, 49.5, MainScreenWidth, 0.5)];
-        _cellTableViewSpace.backgroundColor = EdlineV5_Color.fengeLineColor;
-        [self addSubview:_cellTableViewSpace];
         _dataSource = [NSMutableArray new];
         _cellTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 50, MainScreenWidth, 0)];
+        _cellTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _cellTableView.dataSource = self;
         _cellTableView.delegate = self;
         _cellTableView.showsVerticalScrollIndicator = NO;
@@ -308,6 +316,7 @@
     
     [_priceLabel setLeft:(_freeImageView.hidden ? _titleLabel.right : _freeImageView.right) + 3];
     if ([_allLayar isEqualToString:@"1"]) {
+        _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
         [self setHeight:50];
         if (!_isMainPage) {
 //            [_priceLabel setRight:_learnIcon.left - 5];
@@ -375,8 +384,10 @@
                 [_cellTableView setHeight:0];
                 _cellTableView.hidden = YES;
             }
+            _cellTableViewSpace.frame = CGRectMake(_titleLabel.left, 49, MainScreenWidth - _titleLabel.left, 1);
         } else if ([_courselayer isEqualToString:@"3"]) {
             [self setHeight:50];
+            _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
             if (!_isMainPage) {
 //                [_priceLabel setRight:_learnIcon.left - 5];
                 if (_listFinalModel.isPlaying) {
@@ -456,6 +467,7 @@
                 [_cellTableView setHeight:0];
                 _cellTableView.hidden = YES;
             }
+            _cellTableViewSpace.frame = CGRectMake(_blueView.left, 49, MainScreenWidth - _blueView.left, 1);
         } else if ([_courselayer isEqualToString:@"2"]) {
             _priceLabel.hidden = YES;
             _courseRightBtn.selected = model.isExpanded;
@@ -468,6 +480,7 @@
                 [_cellTableView setHeight:0];
                 _cellTableView.hidden = YES;
             }
+            _cellTableViewSpace.frame = CGRectMake(_titleLabel.left, 49, MainScreenWidth - _titleLabel.left, 1);
         } else if ([_courselayer isEqualToString:@"3"]) {
             [self setHeight:50];
             [_cellTableView setHeight:0];
@@ -498,6 +511,7 @@
                         _learnIcon.image = Image(@"comment_fin_icon");
                         _learnTimeLabel.text = @"已完成";
                     }
+                    _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
 //                    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
 //                        _learnIcon.hidden = YES;
 //                        _learnTimeLabel.hidden = YES;
@@ -538,6 +552,7 @@
     } else {
         _typeIcon.image = Image(@"contents_icon_video");
     }
+    
     
 //    if (!_isMainPage) {
 //        _learnIcon.hidden = YES;

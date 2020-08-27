@@ -159,7 +159,7 @@
 }
 
 - (void)getCourseClassifyList {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseClassifyList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path commonCategoryNet] WithAuthorization:nil paramDic:@{@"type":@"0",@"mhm_id":@"1"} finish:^(id  _Nonnull responseObject) {
         if ([[responseObject objectForKey:@"code"] integerValue]) {
             [_firstArray addObjectsFromArray:[responseObject objectForKey:@"data"]];
             _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MIN(MAX(_firstArray.count * 60, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT));

@@ -71,7 +71,8 @@
         _courseTypeImage.image = Image(@"class_icon");
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_title"]];
-    _learnProgress.progress = [[courseInfo objectForKey:@"finished_rate"] integerValue] / 100;
+    NSString *progressString = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"finished_rate"]];
+    _learnProgress.progress = [progressString integerValue] * 0.01;
     if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 0) {
         _learnCountLabel.text = @"开始学习";
         _learnCountLabel.textColor = EdlineV5_Color.themeColor;

@@ -1866,6 +1866,13 @@
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
     [wekself performSelector:@selector(startTimer) afterDelay:10];
+//    if (currentCourseFinalModel) {
+//        if (currentCourseFinalModel.model.is_buy) {
+//            __weak CourseDetailPlayVC *wekself = self;
+//            [wekself stopRecordTimer];
+//            [wekself performSelector:@selector(startTimer) afterDelay:10];
+//        }
+//    }
 }
 
 - (void)startTimer {

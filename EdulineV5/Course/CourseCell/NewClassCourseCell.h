@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *learnTimeLabel;
 @property (strong, nonatomic) playAnimationView *isLearningIcon;
 @property (strong, nonatomic) CourseListModel *treeItem;
+@property (strong, nonatomic) UIView *cellTableViewSpace;
 
 - (void)updateItem;
 

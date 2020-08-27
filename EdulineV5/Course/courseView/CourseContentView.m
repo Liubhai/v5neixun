@@ -76,7 +76,15 @@
         [_courseTitleLabel setWidth:MainScreenWidth - _courseTitleLabel.left - 15];
     }
     _courseTitleLabel.text = [NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"title"]];
+    
     _courseScore.text = [NSString stringWithFormat:@"%@分",[contentInfo objectForKey:@"score_star"]];
+    
+    CGFloat courseScoreWidth = [_courseScore.text sizeWithFont:_courseScore.font].width + 4;
+    [_courseScore setWidth:courseScoreWidth];
+    [_courseStar setLeft:_courseScore.right + 3];
+    [_courseLearn setLeft:_courseStar.right + 8];
+    [_coursePrice setLeft:_courseLearn.right];
+    
     [_courseStar setStarValue:[[NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"score_star"]] floatValue]];
     _courseLearn.text = [NSString stringWithFormat:@"%@人在学",[contentInfo objectForKey:@"sale_count"]];
     

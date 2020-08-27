@@ -77,7 +77,7 @@
         _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
     }
     
-    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"student_count"]];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",[info objectForKey:@"student_count"]];
 }
 
 - (void)manageButtonClick:(UIButton *)sender {

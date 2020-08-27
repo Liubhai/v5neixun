@@ -41,7 +41,7 @@
     
     _learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 18, 100, 16)];
     _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
-    _learnCountLabel.text = @"1214人报名";
+    _learnCountLabel.text = @"1214人在学";
     _learnCountLabel.font = SYSTEMFONT(12);
     [self addSubview:_learnCountLabel];
     
@@ -96,7 +96,7 @@
         }
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
-    _learnCountLabel.text = [NSString stringWithFormat:@"%@人报名",[info objectForKey:@"sale_count"]];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",[info objectForKey:@"sale_count"]];
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
     NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
     
