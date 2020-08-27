@@ -10,7 +10,6 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "CourseCommonCell.h"
-#import "TeacherCategoryModel.h"
 
 @interface TeacherCategoryVC ()<UITableViewDelegate,UITableViewDataSource> {
     NSInteger currentSelectRow;
@@ -31,6 +30,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCourseTypeVC:) name:@"hiddenCourseAll" object:nil];
+    
     currentSelectRow = 0;
     _titleLabel.text = @"选择所属行业";
     [_leftButton setImage:Image(@"close") forState:0];
@@ -59,6 +61,10 @@
         _rightButton.hidden = NO;
     }
     
+    if (_isDownExpend) {
+        _titleImage.hidden = YES;
+    }
+    
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     
@@ -72,14 +78,14 @@
 }
 
 - (void)maketableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth / 4.0, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _isDownExpend ? 0 : MACRO_UI_UPHEIGHT, MainScreenWidth / 4.0, _isDownExpend ? _tableviewHeight : (MainScreenHeight - MACRO_UI_UPHEIGHT))];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     
-    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(MainScreenWidth / 4.0, MACRO_UI_UPHEIGHT, MainScreenWidth * 3 / 4.0, _tableView.height)];
+    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(MainScreenWidth / 4.0, _isDownExpend ? 0 : MACRO_UI_UPHEIGHT, MainScreenWidth * 3 / 4.0, _tableView.height)];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_mainScrollView];
 }
@@ -245,6 +251,11 @@
                 [passdict setObject:allDict forKey:@"all"];
                 [pass replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:passdict]];
             }
+            NSMutableDictionary *passdict = [NSMutableDictionary new];
+            [passdict setObject:@"全部" forKey:@"title"];
+            [passdict setObject:@"0" forKey:@"id"];
+            [passdict setObject:@{@"title":@"全部",@"id":@"0"} forKey:@"all"];
+            [pass insertObject:passdict atIndex:0];
             [_firstArray addObjectsFromArray:[NSArray arrayWithArray:[TeacherCategoryModel mj_objectArrayWithKeyValuesArray:[NSArray arrayWithArray:pass]]]];
             [_tableView reloadData];
             if (SWNOTEmptyArr(_firstArray)) {
@@ -263,8 +274,14 @@
     
     // 如果是意向课程选择 就是单选 这里直接请求更换意向课程接口
     if ([_typeString isEqualToString:@"0"]) {
-        [self changeFavoriteCourse:model.cateGoryId];
-        return;
+        if (_isDownExpend) {
+            if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryModel:)]) {
+                [_delegate chooseCategoryModel:model];
+            }
+        } else {
+            [self changeFavoriteCourse:model.cateGoryId];
+            return;
+        }
     } else if ([_typeString isEqualToString:@"5"] || [_typeString isEqualToString:@"1"] || [_typeString isEqualToString:@"2"]) {
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:model.cateGoryId];
@@ -303,8 +320,14 @@
     
     // 如果是意向课程选择 就是单选 这里直接请求更换意向课程接口
     if ([_typeString isEqualToString:@"0"]) {
-        [self changeFavoriteCourse:secondModel.cateGoryId];
-        return;
+        if (_isDownExpend) {
+            if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryModel:)]) {
+                [_delegate chooseCategoryModel:secondModel];
+            }
+        } else {
+            [self changeFavoriteCourse:secondModel.cateGoryId];
+            return;
+        }
     } else if ([_typeString isEqualToString:@"5"] || [_typeString isEqualToString:@"1"] || [_typeString isEqualToString:@"2"]) {
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:secondModel.cateGoryId];
@@ -355,8 +378,14 @@
     
     // 如果是意向课程选择 就是单选 这里直接请求更换意向课程接口
     if ([_typeString isEqualToString:@"0"]) {
-        [self changeFavoriteCourse:thirdModel.cateGoryId];
-        return;
+        if (_isDownExpend) {
+            if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryModel:)]) {
+                [_delegate chooseCategoryModel:thirdModel];
+            }
+        } else {
+            [self changeFavoriteCourse:thirdModel.cateGoryId];
+            return;
+        }
     } else if ([_typeString isEqualToString:@"5"] || [_typeString isEqualToString:@"1"] || [_typeString isEqualToString:@"2"]) {
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryId:)]) {
             [_delegate chooseCategoryId:thirdModel.cateGoryId];

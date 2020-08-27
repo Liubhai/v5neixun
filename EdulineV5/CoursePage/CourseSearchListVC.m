@@ -22,10 +22,12 @@
 #import "AppDelegate.h"
 #import "UserModel.h"
 
+#import "TeacherCategoryVC.h"
+
 // test
 #import "TeacherCourseListHeaderView.h"
 
-@interface CourseSearchListVC ()<UITextFieldDelegate,CourseTypeVCDelegate,CourseClassifyVCDelegate,CourseSortVCDelegate,CourseScreenVCDelegate> {
+@interface CourseSearchListVC ()<UITextFieldDelegate,CourseTypeVCDelegate,CourseClassifyVCDelegate,CourseSortVCDelegate,CourseScreenVCDelegate,TeacherCategoryVCDelegate> {
     NSInteger page;
     
     // 课程类型
@@ -450,18 +452,31 @@
         _moreButton.selected = NO;
         _screeningButton.selected = NO;
         if (_classTypeButton.selected) {
-            CourseClassifyVC *vc = [[CourseClassifyVC alloc] init];
+            
+            TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
             vc.notHiddenNav = !_isSearch;
-            vc.isMainPage = !_isSearch;
             vc.hiddenNavDisappear = _isSearch;
+            vc.typeString = @"0";
             vc.delegate = self;
-            vc.isMainPage = !_isSearch;
-            if (SWNOTEmptyStr(courseClassifyIdString)) {
-                vc.typeId = courseClassifyIdString;
-            }
+            vc.isChange = YES;
+            vc.isDownExpend = YES;
+            vc.tableviewHeight = MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT);
             vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
             [self.view addSubview:vc.view];
             [self addChildViewController:vc];
+            
+//            CourseClassifyVC *vc = [[CourseClassifyVC alloc] init];
+//            vc.notHiddenNav = !_isSearch;
+//            vc.isMainPage = !_isSearch;
+//            vc.hiddenNavDisappear = _isSearch;
+//            vc.delegate = self;
+//            vc.isMainPage = !_isSearch;
+//            if (SWNOTEmptyStr(courseClassifyIdString)) {
+//                vc.typeId = courseClassifyIdString;
+//            }
+//            vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - (_isSearch ? 0 : MACRO_UI_TABBAR_HEIGHT));
+//            [self.view addSubview:vc.view];
+//            [self addChildViewController:vc];
         }
     } else if (button == _moreButton) {
         _moreButton.selected = !_moreButton.selected;
@@ -597,6 +612,16 @@
     } enError:^(NSError * _Nonnull error) {
         
     }];
+}
+
+- (void)chooseCategoryModel:(TeacherCategoryModel *)model {
+    courseClassifyString = [NSString stringWithFormat:@"%@",model.title];
+    courseClassifyIdString = [NSString stringWithFormat:@"%@",model.cateGoryId];
+    _classTypeButton.selected = NO;
+    [_classTypeButton setTitle:courseClassifyString forState:0];
+    [EdulineV5_Tool dealButtonImageAndTitleUI:_classTypeButton];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    [self getCourseMainList];
 }
 
 @end

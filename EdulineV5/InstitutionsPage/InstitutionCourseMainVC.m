@@ -19,7 +19,9 @@
 #import "CourseScreenVC.h"
 #import "CourseClassifyVC.h"
 
-@interface InstitutionCourseMainVC ()<UITextFieldDelegate,CourseTypeVCDelegate,CourseClassifyVCDelegate,CourseSortVCDelegate,CourseScreenVCDelegate> {
+#import "TeacherCategoryVC.h"
+
+@interface InstitutionCourseMainVC ()<UITextFieldDelegate,CourseTypeVCDelegate,CourseClassifyVCDelegate,CourseSortVCDelegate,CourseScreenVCDelegate,TeacherCategoryVCDelegate> {
     NSInteger page;
     
     // 课程类型
@@ -356,14 +358,22 @@
         _moreButton.selected = NO;
         _screeningButton.selected = NO;
         if (_classTypeButton.selected) {
-            CourseClassifyVC *vc = [[CourseClassifyVC alloc] init];
-            vc.notHiddenNav = NO;
-            vc.hiddenNavDisappear = YES;
+            TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+            vc.typeString = @"0";
             vc.delegate = self;
-            vc.isMainPage = NO;
-            if (SWNOTEmptyStr(courseClassifyIdString)) {
-                vc.typeId = courseClassifyIdString;
-            }
+            vc.mhm_id = _institutionID;
+            vc.isChange = YES;
+            vc.isDownExpend = YES;
+            vc.tableviewHeight = MainScreenHeight - MACRO_UI_UPHEIGHT - 45;
+//            [self.navigationController pushViewController:vc animated:YES];
+//            CourseClassifyVC *vc = [[CourseClassifyVC alloc] init];
+//            vc.notHiddenNav = NO;
+//            vc.hiddenNavDisappear = YES;
+//            vc.delegate = self;
+//            vc.isMainPage = NO;
+//            if (SWNOTEmptyStr(courseClassifyIdString)) {
+//                vc.typeId = courseClassifyIdString;
+//            }
             vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45);
             [self.view addSubview:vc.view];
             [self addChildViewController:vc];
@@ -431,6 +441,16 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
         [self getCourseMainList];
     }
+}
+
+- (void)chooseCategoryModel:(TeacherCategoryModel *)model {
+    courseClassifyString = [NSString stringWithFormat:@"%@",model.title];
+    courseClassifyIdString = [NSString stringWithFormat:@"%@",model.cateGoryId];
+    _classTypeButton.selected = NO;
+    [_classTypeButton setTitle:courseClassifyString forState:0];
+    [EdulineV5_Tool dealButtonImageAndTitleUI:_classTypeButton];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    [self getCourseMainList];
 }
 
 @end

@@ -11,7 +11,9 @@
 #import "CourseCommonCell.h"
 #import "Net_Path.h"
 
-@interface CourseClassifyVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface CourseClassifyVC ()<UITableViewDelegate,UITableViewDataSource> {
+    NSInteger currentSelectRow;
+}
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *firstArray;
@@ -27,6 +29,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
     self.view.hidden = YES;
+    currentSelectRow = 0;
     _titleImage.hidden = YES;
     _firstArray = [NSMutableArray new];
     _secondArray = [NSMutableArray new];
@@ -37,7 +40,7 @@
 }
 
 - (void)maketableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MIN(MAX(_firstArray.count * 60, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT))];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _isMainPage ? (MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT) : (MainScreenHeight - 45 - MACRO_UI_UPHEIGHT))];//MIN(MAX(_firstArray.count * 60, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT))];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -60,6 +63,15 @@
     if (!cell) {
         cell = [[CourseCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse showOneLine:NO];
     }
+    if (currentSelectRow == indexPath.row) {
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.LeftLineView.hidden = NO;
+        cell.themeLabel.textColor = EdlineV5_Color.textFirstColor;
+    } else {
+        cell.backgroundColor = EdlineV5_Color.backColor;
+        cell.LeftLineView.hidden = YES;
+        cell.themeLabel.textColor = EdlineV5_Color.textSecendColor;
+    }
     [cell setCourseCommonCellInfo:_firstArray[indexPath.row] searchKeyWord:_typeId];
     return cell;
 }
@@ -73,11 +85,12 @@
     _typeId = [NSString stringWithFormat:@"%@",[_firstArray[indexPath.row] objectForKey:@"id"]];
     if (SWNOTEmptyArr([_firstArray[indexPath.row] objectForKey:@"child"])) {
         [self makeScrollViewSubView:_firstArray[indexPath.row]];
-            [UIView animateWithDuration:0.25 animations:^{
-                [_tableView setWidth:MainScreenWidth / 4.0];
-                _mainScrollView.hidden = NO;
-            }];
-            [_tableView reloadData];
+        [UIView animateWithDuration:0.25 animations:^{
+            [_tableView setWidth:MainScreenWidth / 4.0];
+            _mainScrollView.hidden = NO;
+        }];
+        currentSelectRow = indexPath.row;
+        [_tableView reloadData];
     } else {
         if (_delegate && [_delegate respondsToSelector:@selector(chooseCourseClassify:)]) {
             [_delegate chooseCourseClassify:_firstArray[indexPath.row]];
@@ -162,7 +175,11 @@
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path commonCategoryNet] WithAuthorization:nil paramDic:@{@"type":@"0",@"mhm_id":@"1"} finish:^(id  _Nonnull responseObject) {
         if ([[responseObject objectForKey:@"code"] integerValue]) {
             [_firstArray addObjectsFromArray:[responseObject objectForKey:@"data"]];
-            _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MIN(MAX(_firstArray.count * 60, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT));
+            _mainScrollView.hidden = NO;
+            if (SWNOTEmptyArr(_firstArray)) {
+                [self makeScrollViewSubView:_firstArray[currentSelectRow]];
+            }
+            _tableView.frame = CGRectMake(0, 0, MainScreenWidth, (0, 0, MainScreenWidth, _isMainPage ? (MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT) : (MainScreenHeight - 45 - MACRO_UI_UPHEIGHT)));//MIN(MAX(_firstArray.count * 60, MainScreenHeight/2.0), MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 45 - MACRO_UI_UPHEIGHT)
             [_tableView reloadData];
             self.view.hidden = NO;
         }

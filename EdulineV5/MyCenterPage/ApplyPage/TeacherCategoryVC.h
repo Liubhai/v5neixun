@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "TeacherCategoryModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 单选时候(除去选择意向课程) */
 - (void)chooseCategoryId:(NSString *)categoryId;
 
+/** 单选需要展示分类名称的时候 */
+- (void)chooseCategoryModel:(TeacherCategoryModel *)model;
+
 @end
 
 @interface TeacherCategoryVC : BaseViewController
@@ -29,6 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *mhm_id;//机构id
 
 @property (assign, nonatomic) BOOL isChange;// yes 首页过来的 no启动时候选择
+
+@property (assign, nonatomic) BOOL isDownExpend;// 是当前页面展开
+
+@property (assign, nonatomic) CGFloat tableviewHeight;// 是当前页面展开
+
+@property (assign, nonatomic) BOOL isMainPage;// 是不是课程主页
 
 @end
 

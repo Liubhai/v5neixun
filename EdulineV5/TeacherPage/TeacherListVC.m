@@ -126,7 +126,7 @@
     if (SWNOTEmptyStr(_mhm_id)) {
         [param setObject:_mhm_id forKey:@"mhm_id"];
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageJoinCourseList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }
@@ -152,6 +152,7 @@
     TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
     vc.typeString = @"1";
     vc.delegate = self;
+    vc.mhm_id = _mhm_id;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
