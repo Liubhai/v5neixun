@@ -38,7 +38,7 @@
     _priceLabel.centerY = 77 / 2.0;
     [self addSubview:_priceLabel];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 77, MainScreenWidth - 15, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 76.5, MainScreenWidth - 15, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView];
 }

@@ -359,6 +359,8 @@
         _screeningButton.selected = NO;
         if (_classTypeButton.selected) {
             TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+            vc.notHiddenNav = NO;
+            vc.hiddenNavDisappear = YES;
             vc.typeString = @"0";
             vc.delegate = self;
             vc.mhm_id = _institutionID;

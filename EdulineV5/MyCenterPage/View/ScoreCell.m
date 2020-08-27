@@ -58,7 +58,7 @@
     _timeLabel.centerY = _scoreFromLabel.centerY;
     [self addSubview:_timeLabel];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 80 - 0.5, MainScreenWidth - 15, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 80 - 1, MainScreenWidth - 15, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView];
 }

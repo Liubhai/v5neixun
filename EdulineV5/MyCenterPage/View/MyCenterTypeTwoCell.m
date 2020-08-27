@@ -36,7 +36,7 @@
     _rightIcon.image = Image(@"list_more");
     [self addSubview:_rightIcon];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 49.5, MainScreenWidth, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_iconImage.right + 10, 49, MainScreenWidth - (_iconImage.right + 10), 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView];
 }

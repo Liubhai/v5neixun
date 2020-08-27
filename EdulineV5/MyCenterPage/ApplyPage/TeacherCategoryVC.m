@@ -63,6 +63,7 @@
     
     if (_isDownExpend) {
         _titleImage.hidden = YES;
+        self.view.hidden = YES;
     }
     
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
@@ -260,6 +261,9 @@
             [_tableView reloadData];
             if (SWNOTEmptyArr(_firstArray)) {
                 [self makeScrollViewSubView:_firstArray[currentSelectRow]];
+            }
+            if (_isDownExpend) {
+                self.view.hidden = NO;
             }
         }
     } enError:^(NSError * _Nonnull error) {
