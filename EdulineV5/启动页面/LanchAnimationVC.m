@@ -9,6 +9,7 @@
 
 #import "LanchAnimationVC.h"
 #import "V5_Constant.h"
+#import "Net_Path.h"
 
 // 放大倍数 建议：1.1
 #define BgSale 1.1
@@ -65,7 +66,7 @@
     _timerbutton.titleLabel.font = SYSTEMFONT(14);
     [self.view addSubview:_timerbutton];
     _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerCount) userInfo:nil repeats:YES];
-//    [self getHomeindexConfig];
+    [self getHomeindexConfig];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -113,41 +114,22 @@
     [self.view removeAllSubviews];
 }
 
-//// MARK: - 获取机构app是否开启
-//- (void)getHomeindexConfig {
-//    NSString *endUrlStr = config_indexConfig;
-//    NSString *allUrlStr = [YunKeTang_Api_Tool YunKeTang_GetFullUrl:endUrlStr];
-//
-//    NSMutableDictionary *mutabDict = [NSMutableDictionary dictionaryWithCapacity:0];
-//    //获取当前的时间戳
-//    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[[NSDate  date] timeIntervalSince1970]];
-//    NSString *ggg = [Passport getHexByDecimal:[timeSp integerValue]];
-//
-//    NSString *tokenStr =  [Passport md5:[NSString stringWithFormat:@"%@%@",timeSp,ggg]];
-//    [mutabDict setObject:ggg forKey:@"hextime"];
-//    [mutabDict setObject:tokenStr forKey:@"token"];
-//
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:allUrlStr]];
-//    [request setHTTPMethod:NetWay];
-//    NSString *encryptStr = [YunKeTang_Api_Tool YunKeTang_Api_Tool_GetEncryptStr:mutabDict];
-//    [request setValue:encryptStr forHTTPHeaderField:HeaderKey];
-//
-//    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-//        NSDictionary *dict = [YunKeTang_Api_Tool YunKeTang_Api_Tool_GetDecodeStr_Before:responseObject];
-//        if ([[dict objectForKey:@"code"] integerValue] == 1) {
-//            dict = [YunKeTang_Api_Tool YunKeTang_Api_Tool_GetDecodeStrFromData:responseObject];
-//            [[NSUserDefaults standardUserDefaults] setObject:[dict objectForKey:@"show_config"] forKey:@"show_config"];
-//            [[NSUserDefaults standardUserDefaults] synchronize];
-//        } else {
-//            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"show_config"];
-//            [[NSUserDefaults standardUserDefaults] synchronize];
-//        }
-//
-//    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-//    }];
-//    [op start];
-//}
+// MARK: - 获取机构app是否开启
+- (void)getHomeindexConfig {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path appConfig] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"school_app"]] forKey:@"show_config"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            } else {
+                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"show_config"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

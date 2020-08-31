@@ -29,6 +29,7 @@
 
 #import "LanchAnimationVC.h"
 #import "HcdGuideView.h"
+#import "InstitutionsChooseVC.h"
 
 //
 //                       _oo0oo_
@@ -113,11 +114,23 @@
     [self.window makeKeyAndVisible];
     lanchVC.animationFinished = ^(BOOL successed){
         if ([Show_Config isEqualToString:@"1"]) {
+            
+            InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
+            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            
+            self.window.rootViewController = Nav;
+            [self.window makeKeyAndVisible];
+            vc.institutionChooseFinished = ^(BOOL succesed) {
+                self.tabbar = [RootV5VC sharedBaseTabBarViewController];
+                self.window.rootViewController = self.tabbar;
+                [self.window makeKeyAndVisible];
+            };
+            
 //            InstitutionsChooseVC* institutionsVC = [[InstitutionsChooseVC alloc]init];
 //            self.window.rootViewController = institutionsVC;
 //            [self.window makeKeyAndVisible];
 //            institutionsVC.institutionChooseFinished = ^(BOOL succesed) {
-//                self.tabbar = [rootViewController sharedBaseTabBarViewController];
+//                self.tabbar = [RootV5VC sharedBaseTabBarViewController];
 //                self.window.rootViewController = self.tabbar;
 //                [self.window makeKeyAndVisible];
 //            };

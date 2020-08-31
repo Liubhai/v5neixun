@@ -10,6 +10,8 @@
 #import "V5_Constant.h"
 #import "SearchHistoryListCell.h"
 #import "Net_Path.h"
+#import "RootV5VC.h"
+#import "AppDelegate.h"
 
 @interface InstitutionSearchVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 
@@ -34,6 +36,11 @@
     [self makeTopSearch];
     [self maketableView];
     
+    if (SWNOTEmptyStr(_searchKeyWord)) {
+        [_institutionSearch resignFirstResponder];
+        [self jumpSearchListMainPage];
+    }
+    
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
     // Do any additional setup after loading the view.
 }
@@ -51,6 +58,10 @@
     _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
     _institutionSearch.leftViewMode = UITextFieldViewModeAlways;
     _institutionSearch.clearButtonMode = UITextFieldViewModeAlways;
+    
+    if (SWNOTEmptyStr(_searchKeyWord)) {
+        _institutionSearch.text = _searchKeyWord;
+    }
 
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(5, 6, 15, 15)];
     [button setImage:Image(@"home_serch_icon") forState:UIControlStateNormal];
@@ -83,6 +94,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[_searchDataSource[indexPath.row] objectForKey:@"id"]] forKey:@"institutionId"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [RootV5VC destoryShared];
+    RootV5VC * tabbar = [RootV5VC sharedBaseTabBarViewController];
+    AppDelegate *app = [AppDelegate delegate];
+    app.window.rootViewController = tabbar;
+    [app.window makeKeyAndVisible];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

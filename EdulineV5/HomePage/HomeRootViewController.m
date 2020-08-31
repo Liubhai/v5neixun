@@ -211,7 +211,7 @@
 //    UIView *fenge = [[UIView alloc] initWithFrame:CGRectMake(0, _cateScrollView.bottom, MainScreenWidth, (SWNOTEmptyArr(_bannerImageArray) || SWNOTEmptyArr(_cateSourceArray)) ? 10 : 0.01)];
 //    fenge.backgroundColor = EdlineV5_Color.fengeLineColor;
 //    [_headerView addSubview:fenge];
-    _headerView.frame = CGRectMake(0, 0, MainScreenWidth, _cateScrollView.bottom);
+    _headerView.frame = CGRectMake(0, 0, MainScreenWidth, _cateScrollView.bottom > 1 ? _cateScrollView.bottom : 0.01);
 }
 
 // MARK: - tableview 代理
@@ -401,11 +401,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        return 106;
+        return [_sortArray[indexPath.section][@"list"] count] > 0 ? 106 : 0;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendCourse"]) {
-        return 172 + 15 + 20;
+        return [_sortArray[indexPath.section][@"list"] count] > 0 ? (172 + 15 + 20) : 0;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"]) {
-        return 106;
+        return [_sortArray[indexPath.section][@"list"] count] > 0 ? 106 : 0;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"]) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"categoryCourse"]) {

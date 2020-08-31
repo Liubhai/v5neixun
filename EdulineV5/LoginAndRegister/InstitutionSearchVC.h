@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface InstitutionSearchVC : BaseViewController
 
+@property (strong, nonatomic) NSString *searchKeyWord;
+
 @end
 
 NS_ASSUME_NONNULL_END

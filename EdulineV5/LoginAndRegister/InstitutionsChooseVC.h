@@ -6,12 +6,17 @@
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
+typedef void(^institutionChooseBlock)(BOOL succesed);
+
 #import "BaseViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface InstitutionsChooseVC : BaseViewController
 
+@property (assign, nonatomic) BOOL fromSetingVC;
+
+@property (nonatomic,copy) institutionChooseBlock institutionChooseFinished;
 @property (strong, nonatomic) UIButton *leftBtn;
 @property (strong, nonatomic) UIImageView *backImageView;
 @property (strong, nonatomic) UILabel *nameLabel;

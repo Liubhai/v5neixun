@@ -33,7 +33,7 @@
 #ifndef V5_Constant_h
 #define V5_Constant_h
 
-#define Institution_Id [[NSUserDefaults standardUserDefaults] objectForKey:@"institutionId"] == nil ? @"0" : [[NSUserDefaults standardUserDefaults] objectForKey:@"institutionId"]
+#define Institution_Id [[NSUserDefaults standardUserDefaults] objectForKey:@"institutionId"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"institutionId"]
 
 #define WebTitleContenDistance 10
 #define WebDistanceLeft 15//内容和左右的边距

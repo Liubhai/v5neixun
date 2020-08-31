@@ -34,6 +34,7 @@
     _leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _leftBtn.frame = CGRectMake(0, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 54, 44);
     [_leftBtn setImage:Image(@"close_button_white") forState:0];
+    [_leftBtn addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_leftBtn];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, _backImageView.height - 64 - 40, 200, 40)];
@@ -65,14 +66,17 @@
     
     [self.view addSubview:_searchTextF];
     
-    UIButton *moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 34, 80, 34)];
+    UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    moreBtn.frame = CGRectMake(0, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 34, 80 + 12, 34); //[[UIButton alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT - 34, 80 + 12, 34)];
     [moreBtn setImage:[Image(@"searchorgan_next_icon_blue") converToMainColor] forState:0];
-    [moreBtn setTitle:@"跳过" forState:0];
+    [moreBtn setTitle:@"进入平台" forState:0];
     moreBtn.titleLabel.font = SYSTEMFONT(16);
     [moreBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [moreBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
+    [moreBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateFocused];
     [EdulineV5_Tool dealButtonImageAndTitleUI:moreBtn];
     moreBtn.centerX = MainScreenWidth / 2.0;
-//    [moreBtn addTarget:self action:@selector(moreJoinCourseButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [moreBtn addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:moreBtn];
 }
 
@@ -148,6 +152,7 @@
         for (int i = 0; i<_searchDataSource.count; i++) {
             UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, 0, btnHeight)];
             [btn addTarget:self action:@selector(courseTitleButClick:) forControlEvents:UIControlEventTouchUpInside];
+            btn.tag = i;
             [btn setTitle:_searchDataSource[i] forState:0];
             btn.titleLabel.font = SYSTEMFONT(14);
             [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
@@ -170,7 +175,23 @@
 }
 
 - (void)courseTitleButClick:(UIButton *)sender {
-    
+    InstitutionSearchVC *vc = [[InstitutionSearchVC alloc] init];
+    vc.searchKeyWord = [NSString stringWithFormat:@"%@",_searchDataSource[sender.tag]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)cancelButtonClick:(UIButton *)sender {
+    if (sender == _leftBtn) {
+        if (_fromSetingVC) {
+            [self.navigationController popViewControllerAnimated:YES];
+        } else {
+            self.institutionChooseFinished(YES);
+        }
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"institutionId"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.institutionChooseFinished(YES);
+    }
 }
 
 /*

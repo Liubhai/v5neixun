@@ -15,7 +15,9 @@
 #import "TeacherCategoryVC.h"
 #import "FeedBackViewController.h"
 #import "WkWebViewController.h"
+#import "InstitutionsChooseVC.h"
 
+#import "RootV5VC.h"
 #import "SetingCell.h"
 
 @interface SetingViewController ()<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, SetingCellDelegate>
@@ -36,12 +38,12 @@
     if (SWNOTEmptyStr([UserModel oauthToken])) {
         [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
           @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
-        @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
+        @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
         @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
     } else {
         [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
           @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
-        @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
+        @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
     }
     [self makeTableView];
     
@@ -163,6 +165,17 @@
         WkWebViewController *vc = [[WkWebViewController alloc] init];
         vc.titleString = @"关于我们";
         vc.agreementKey = @"about_us";
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"institution"]) {
+        InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
+        vc.fromSetingVC = YES;
+        vc.institutionChooseFinished = ^(BOOL succesed) {
+            [RootV5VC destoryShared];
+            RootV5VC * tabbar = [RootV5VC sharedBaseTabBarViewController];
+            AppDelegate *app = [AppDelegate delegate];
+            app.window.rootViewController = tabbar;
+            [app.window makeKeyAndVisible];
+        };
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
