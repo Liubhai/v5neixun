@@ -488,4 +488,14 @@
     return [Net_Path fullPath:@"course/classes/{id}/student/{user_id}" repalceArray:@[@"{id}",@"{user_id}"] byRepleceArray:@[courseId,studentId]];
 }
 
+/** banner图 */
++ (NSString *)commenBannerInfoNet {
+    return [Net_Path fullPath:@"config/banner" repalce:@"" byReplece:@""];
+}
+
+/** 我的授课 */
++ (NSString *)myTeacherCourseNet:(NSString *)courseType {
+    return [Net_Path fullPath:@"user/teacher/course/{type}" repalce:@"{type}" byReplece:courseType];
+}
+
 @end

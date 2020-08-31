@@ -28,6 +28,7 @@
 #import "MyRecommendViewController.h"
 #import "MessageRootVC.h"
 #import "ClassCourseListVC.h"
+#import "MyTeachingRootVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -226,6 +227,9 @@
         } else if ([iconKey isEqualToString:@"my_classes"]) {
             ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
+        } else if ([iconKey isEqualToString:@"my_teach"]) {
+            MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
 }
@@ -316,6 +320,9 @@
         
     } else if ([iconKey isEqualToString:@"my_classes"]) {
         ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"my_teach"]) {
+        MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

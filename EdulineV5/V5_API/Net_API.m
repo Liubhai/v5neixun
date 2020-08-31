@@ -49,6 +49,8 @@
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
     if ([Show_Config isEqualToString:@"1"]) {
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    } else {
+        [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
     }
     
     [manager GET:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -113,6 +115,8 @@
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
     if ([Show_Config isEqualToString:@"1"]) {
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    } else {
+        [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
     }
     
    [manager POST:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -183,6 +187,8 @@
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
     if ([Show_Config isEqualToString:@"1"]) {
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    } else {
+        [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
     }
     
     [manager PUT:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -255,6 +261,8 @@
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
     if ([Show_Config isEqualToString:@"1"]) {
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    } else {
+        [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
     }
     manager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithArray:@[@""]];
  
@@ -339,6 +347,8 @@
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
     if ([Show_Config isEqualToString:@"1"]) {
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+    } else {
+        [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
     }
     
     return  [manager POST:URLString parameters:mutaDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {

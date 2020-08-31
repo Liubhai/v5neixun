@@ -23,10 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) id<CourseCouponViewDelegate> delegate;
 
 @property (strong, nonatomic) UIImageView *couponIcon;
+@property (strong, nonatomic) UIView *couponsBackView;
 @property (strong, nonatomic) UILabel *couponLabel;
 @property (strong, nonatomic) UIImageView *couponRightIcon;
 @property (strong, nonatomic) UIView *lineView2;
 @property (strong, nonatomic) UIButton *tapButton;
+
+- (void)setCouponsListInfo:(NSArray *)couponsList;
 
 @end
 

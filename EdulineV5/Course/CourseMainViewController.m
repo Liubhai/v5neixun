@@ -169,7 +169,7 @@
     [_headerView addSubview:_courseContentView];
     
     /**优惠卷*/
-    _couponContentView = [[CourseCouponView alloc] initWithFrame:CGRectMake(0, _courseContentView.bottom, MainScreenWidth, 52)];
+    _couponContentView = [[CourseCouponView alloc] initWithFrame:CGRectMake(0, _courseContentView.bottom, MainScreenWidth, 0)];
     _couponContentView.delegate = self;
     [_headerView addSubview:_couponContentView];
     /**机构讲师*/
@@ -869,6 +869,17 @@
         }
         [_courseDownView setCOurseInfoData:_dataSource];
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:NO];
+        NSArray *coupon_Array = [NSArray arrayWithArray:_dataSource[@"recommend_coupon"]];
+        NSString *coupon_count = [NSString stringWithFormat:@"%@",_dataSource[@"coupon_count"]];
+        if (SWNOTEmptyArr(coupon_Array)) {
+            [_couponContentView setHeight:52];
+            _couponContentView.hidden = NO;
+            [_couponContentView setCouponsListInfo:coupon_Array];
+        } else {
+            [_couponContentView setHeight:0];
+            _couponContentView.hidden = YES;
+        }
+        [_teachersHeaderBackView setTop:_couponContentView.bottom];
         NSArray *teacherArray = [NSArray arrayWithArray:_dataSource[@"teachers"]];
         if (SWNOTEmptyDictionary([_dataSource objectForKey:@"mhm_info"]) || SWNOTEmptyArr(teacherArray)) {
             [_teachersHeaderBackView setHeight:59];

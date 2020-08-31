@@ -36,7 +36,7 @@
     _lineTL.hidden = NO;
     
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"course"},@{@"title":@"直播",@"type":@"live"},@{@"title":@"班级",@"type":@"calss"},@{@"title":@"面授",@"type":@"offline"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"video"},@{@"title":@"直播",@"type":@"live"},@{@"title":@"面授",@"type":@"offline"}]];//@{@"title":@"班级",@"type":@"calss"}
     
     [self makeTopView];
     [self makeScrollView];
@@ -47,7 +47,7 @@
     _topView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 45)];
     _topView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_topView];
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45 - 2, 20, 2)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45 / 2.0 + 7 + 5, 20, 2)];
     _lineView.backgroundColor = EdlineV5_Color.baseColor;
     [_topView addSubview:_lineView];
     CGFloat WW = MainScreenWidth / _typeArray.count;

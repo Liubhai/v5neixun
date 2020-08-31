@@ -134,6 +134,7 @@
                     _tableView.mj_footer.hidden = YES;
                 } else {
                     _tableView.mj_footer.hidden = NO;
+                    [_tableView.mj_footer setState:MJRefreshStateIdle];
                 }
                 [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
                 [_tableView reloadData];

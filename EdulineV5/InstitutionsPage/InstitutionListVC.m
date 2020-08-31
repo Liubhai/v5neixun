@@ -101,6 +101,7 @@
                     _tableView.mj_footer.hidden = YES;
                 } else {
                     _tableView.mj_footer.hidden = NO;
+                    [_tableView.mj_footer setState:MJRefreshStateIdle];
                 }
                 [_tableView reloadData];
             }

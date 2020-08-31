@@ -389,6 +389,12 @@ struct NetWorkUrl {
 
 /** 移除班级课里面的学员 */
 + (NSString *)removeClassCourseStudent:(NSString *)courseId studentId:(NSString *)studentId;
+
+/** banner 图 接口 */
++ (NSString *)commenBannerInfoNet;
+
+/** 我的授课 */
++ (NSString *)myTeacherCourseNet:(NSString *)courseType;
 @end
 
 NS_ASSUME_NONNULL_END
