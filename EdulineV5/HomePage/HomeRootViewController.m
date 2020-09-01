@@ -308,9 +308,68 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
-    sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
-    return sectionHead;
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"])) {
+        if ([_sortArray[section][@"list"] count]) {
+            UIView *footerBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 30)];
+            footerBack.backgroundColor = [UIColor whiteColor];
+            UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 20, MainScreenWidth, 10)];
+            sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
+            [footerBack addSubview:sectionHead];
+            return footerBack;
+        } else {
+            UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+            sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
+            return sectionHead;
+        }
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendCourse"]) {
+        UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+        sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
+        return sectionHead;
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        if (isWeek) {
+            NSMutableArray *pass = [NSMutableArray new];
+            for (NSDictionary *dict in _sortArray[section][@"list"]) {
+                if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
+                    [pass addObjectsFromArray:[dict objectForKey:@"list"]];
+                }
+            }
+            if (SWNOTEmptyArr(pass)) {
+                UIView *footerBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 30)];
+                footerBack.backgroundColor = [UIColor whiteColor];
+                UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 20, MainScreenWidth, 10)];
+                sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
+                [footerBack addSubview:sectionHead];
+                return footerBack;
+            } else {
+                UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+                sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
+                return sectionHead;
+            }
+        } else {
+            NSMutableArray *pass = [NSMutableArray new];
+            for (NSDictionary *dict in _sortArray[section][@"list"]) {
+                if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
+                    [pass addObjectsFromArray:[dict objectForKey:@"list"]];
+                }
+            }
+            if (SWNOTEmptyArr(pass)) {
+                UIView *footerBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 30)];
+                footerBack.backgroundColor = [UIColor whiteColor];
+                UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 20, MainScreenWidth, 10)];
+                sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
+                [footerBack addSubview:sectionHead];
+                return footerBack;
+            } else {
+                UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+                sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
+                return sectionHead;
+            }
+        }
+    } else {
+       UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+       sectionHead.backgroundColor = EdlineV5_Color.fengeLineColor;
+       return sectionHead;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -318,7 +377,43 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 10;
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"])) {
+        if ([_sortArray[section][@"list"] count]) {
+            return 30;
+        } else {
+            return 10;
+        }
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendCourse"]) {
+        return 10;
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        if (isWeek) {
+            NSMutableArray *pass = [NSMutableArray new];
+            for (NSDictionary *dict in _sortArray[section][@"list"]) {
+                if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
+                    [pass addObjectsFromArray:[dict objectForKey:@"list"]];
+                }
+            }
+            if (SWNOTEmptyArr(pass)) {
+                return 30;
+            } else {
+                return 10;
+            }
+        } else {
+            NSMutableArray *pass = [NSMutableArray new];
+            for (NSDictionary *dict in _sortArray[section][@"list"]) {
+                if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
+                    [pass addObjectsFromArray:[dict objectForKey:@"list"]];
+                }
+            }
+            if (SWNOTEmptyArr(pass)) {
+                return 30;
+            } else {
+                return 10;
+            }
+        }
+    } else {
+       return 10;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
