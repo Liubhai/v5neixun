@@ -47,10 +47,20 @@
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
     [manager.requestSerializer setValue:[EdulineV5_Tool getmd5WithString:fullString] forHTTPHeaderField:@"E-APP-sign"];
-    if ([Show_Config isEqualToString:@"1"]) {
-        [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
-    } else {
+    
+    if ([regardlessOrNot isEqualToString:@"1"] && [urlStr isEqualToString:@"category/tree"]) {
         [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
+    } else {
+        if ([Show_Config isEqualToString:@"1"]) {
+            [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
+        } else {
+            [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
+        }
+    }
+    
+    if ([regardlessOrNot isEqualToString:@"1"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"regardless_mhm_id"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
     [manager GET:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

@@ -244,6 +244,12 @@
     if (SWNOTEmptyStr(_mhm_id)) {
         [param setObject:_mhm_id forKey:@"mhm_id"];
     }
+    
+    if (_isInstitutionApply) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"regardless_mhm_id"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path commonCategoryNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if ([[responseObject objectForKey:@"code"] integerValue]) {
             NSMutableArray *pass = [NSMutableArray arrayWithArray:[responseObject objectForKey:@"data"]];

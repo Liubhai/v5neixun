@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL isMainPage;// 是不是课程主页
 
+@property (assign, nonatomic) BOOL isInstitutionApply;// 是不是机构认证请求所属行业
+
 @end
 
 NS_ASSUME_NONNULL_END

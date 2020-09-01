@@ -229,13 +229,11 @@
 
 - (void)getZixunListPageBannerInfo {
     NSMutableDictionary *param = [NSMutableDictionary new];
-//    if (SWNOTEmptyStr(typeString)) {
-//        [param setObject:typeString forKey:@"category"];
-//    }
+
     if (SWNOTEmptyStr(_mhm_id)) {
         [param setObject:_mhm_id forKey:@"mhm_id"];
     } else {
-        [param setObject:@"1" forKey:@"mhm_id"];
+        [param setObject:Institution_Id forKey:@"mhm_id"];
     }
     // topic资讯、school机构、home首页、advert广告
     [param setObject:@"topic" forKey:@"type"];
