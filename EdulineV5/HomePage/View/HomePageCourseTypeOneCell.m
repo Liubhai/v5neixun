@@ -108,14 +108,21 @@
 
 // MARK: - 周榜月榜
 - (void)setHomePageCourseTypeOneWeekCellInfo:(NSDictionary *)info indexparh:(NSIndexPath *)indexpath {
+    
+    _courseFace.frame = CGRectMake(23, 20, 153, 86);
+    _courseFace.layer.cornerRadius = 5;
+    
+    _courseTypeImage.frame = CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18);
+    
     _courseInfoDict = info;
     _weekSortIcon.image = [UIImage imageNamed:[NSString stringWithFormat:@"home_top%@_icon",@(indexpath.row + 1)]];
     if (indexpath.row>2) {
         _weekSortIcon.frame = CGRectMake(0, 0, 26, 26);
+        [_weekSortIcon setOrigin:CGPointMake(_courseFace.left - 11, _courseFace.top - 13)];
     } else {
         _weekSortIcon.frame = CGRectMake(0, 0, 37, 33);
+        [_weekSortIcon setOrigin:CGPointMake(_courseFace.left - 15.5, _courseFace.top - 20)];
     }
-    _weekSortIcon.center = CGPointMake(_courseFace.origin.x, _courseFace.origin.y + 5);;
     [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     _courseFace.layer.masksToBounds = YES;
@@ -158,6 +165,10 @@
     } else {
         _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
     }
+    
+    _learnCountLabel.frame = CGRectMake(_titleL.left, _courseFace.bottom - 18, 100, 16);
+    
+    _priceLabel.centerY = _learnCountLabel.centerY;
 }
 
 - (void)setMyTeachingInfo:(NSDictionary *)info {

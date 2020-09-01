@@ -450,7 +450,7 @@
             grayLine.backgroundColor = EdlineV5_Color.fengeLineColor;
             [_bg addSubview:grayLine];
             
-            self.blueLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45, MainScreenWidth / 5.0, 2)];
+            self.blueLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45, 20, 2)];
             self.blueLineView.backgroundColor = EdlineV5_Color.themeColor;
             self.blueLineView.centerX = self.introButton.centerX;
             [_bg addSubview:self.blueLineView];

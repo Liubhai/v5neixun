@@ -43,16 +43,16 @@
         view.userInteractionEnabled = YES;
         view.tag = i;
         view.layer.masksToBounds = NO;
-        view.layer.cornerRadius = 10;
+        view.layer.cornerRadius = 5;
         view.backgroundColor = EdlineV5_Color.backColor;
-        view.layer.shadowColor = HEXCOLOR(0xCDCDCD).CGColor;
-        //剪切边界 如果视图上的子视图layer超出视图layer部分就截取掉 如果添加阴影这个属性必须是NO 不然会把阴影切掉
-        //阴影半径，默认3
-        view.layer.shadowRadius = 3;
-        //shadowOffset阴影偏移，默认(0, -3),这个跟shadowRadius配合使用
-        view.layer.shadowOffset = CGSizeMake(0.0f,0.0f);
-        // 阴影透明度，默认0
-        view.layer.shadowOpacity = 0.9f;
+//        view.layer.shadowColor = HEXCOLOR(0xCDCDCD).CGColor;
+//        //剪切边界 如果视图上的子视图layer超出视图layer部分就截取掉 如果添加阴影这个属性必须是NO 不然会把阴影切掉
+//        //阴影半径，默认3
+//        view.layer.shadowRadius = 3;
+//        //shadowOffset阴影偏移，默认(0, -3),这个跟shadowRadius配合使用
+//        view.layer.shadowOffset = CGSizeMake(0.0f,0.0f);
+//        // 阴影透明度，默认0
+//        view.layer.shadowOpacity = 0.9f;
         [_teacherScrollView addSubview:view];
         
         //添加头像

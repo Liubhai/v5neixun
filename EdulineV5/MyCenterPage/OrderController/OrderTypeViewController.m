@@ -83,10 +83,22 @@
     orderNum.text = [NSString stringWithFormat:@"订单号：%@",_dataSource[section][@"order_no"]];//@"订单号：AWN8923779294";
     [view addSubview:orderNum];
     
+    // 支付状态:0-已取消 10-未付款 20-已付款 30-已申请退款,待确认 40-退款已确认,退款中 50-已退款 60-交易被关闭  70:已支付,但被管理员移除
+    
+    NSString *statusString = [NSString stringWithFormat:@"%@",_dataSource[section][@"status"]];
     UILabel *orderStatus = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, 0, 100, 39.5)];
     orderStatus.textAlignment = NSTextAlignmentRight;
     orderStatus.font = SYSTEMFONT(14);
     orderStatus.text = [NSString stringWithFormat:@"%@",_dataSource[section][@"status_text"]];
+    
+    if ([statusString isEqualToString:@"20"]) {
+        orderStatus.textColor = HEXCOLOR(0x67C23A);
+    } else if ([statusString isEqualToString:@"10"]) {
+        orderStatus.textColor = EdlineV5_Color.faildColor;
+    } else {
+        orderStatus.textColor = EdlineV5_Color.textSecendColor;
+    }
+    
     [view addSubview:orderStatus];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(15, 39.5, MainScreenWidth - 15, 0.5)];
@@ -115,7 +127,12 @@
     truePriceLabel.textColor = EdlineV5_Color.faildColor;
     truePriceLabel.font = SYSTEMFONT(14);
     truePriceLabel.text = [NSString stringWithFormat:@"¥%@",_dataSource[section][@"payment"]];
+    truePriceLabel.textAlignment = NSTextAlignmentRight;
     [view addSubview:truePriceLabel];
+    
+    CGFloat truePriceLabelWidth = [truePriceLabel.text sizeWithFont:truePriceLabel.font].width + 4;
+    truePriceLabel.frame = CGRectMake(MainScreenWidth - 15 - truePriceLabelWidth, 0, truePriceLabelWidth, 21);
+    truePriceLabel.centerY = timeLabel.centerY;
     
     UILabel *trueLabel = [[UILabel alloc] initWithFrame:CGRectMake(truePriceLabel.left - 40, 0, 40, 21)];
     trueLabel.centerY = timeLabel.centerY;

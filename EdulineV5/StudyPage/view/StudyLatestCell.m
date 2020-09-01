@@ -65,6 +65,14 @@
         learnTime.text = [NSString stringWithFormat:@" 学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:[[learnArray[i] objectForKey:@"current_time"] integerValue]]];
         [_mainScrollView addSubview:learnTime];
         
+        CGFloat radius = 4; // 圆角大小
+        UIRectCorner corner = UIRectCornerBottomLeft | UIRectCornerBottomRight; // 圆角位置
+        UIBezierPath * path = [UIBezierPath bezierPathWithRoundedRect:learnTime.bounds byRoundingCorners:corner cornerRadii:CGSizeMake(radius, radius)];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = learnTime.bounds;
+        maskLayer.path = path.CGPath;
+        learnTime.layer.mask = maskLayer;
+        
         UILabel *thmeLabel = [[UILabel alloc] initWithFrame:CGRectMake(face.left, face.bottom + 10, face.width, 20)];
         thmeLabel.font = SYSTEMFONT(13);
         thmeLabel.textColor = EdlineV5_Color.textFirstColor;

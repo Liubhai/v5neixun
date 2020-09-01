@@ -122,7 +122,7 @@
 
 - (void)makeTopSearch {
     // 顶部搜索框和 取消按钮
-    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_isSearch ? (_leftButton.right + 15) : 15, _titleLabel.top, MainScreenWidth - 15 - _rightButton.width - (_isSearch ? _leftButton.right : 0) , 36)];
+    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_isSearch ? _leftButton.right : 15, _titleLabel.top, MainScreenWidth - _rightButton.width - (_isSearch ? _leftButton.right : 15) , 36)];
     _institutionSearch.font = SYSTEMFONT(14);
     _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索课程" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     _institutionSearch.delegate = self;
@@ -130,14 +130,14 @@
     _institutionSearch.layer.cornerRadius = 18;
     _institutionSearch.backgroundColor = EdlineV5_Color.backColor;
     _institutionSearch.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 42, 30)];
     _institutionSearch.leftViewMode = UITextFieldViewModeAlways;
     
     if (SWNOTEmptyStr(_searchKeyWord)) {
         _institutionSearch.text = _searchKeyWord;
     }
 
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(5, 6, 15, 15)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(17, 7.5, 15, 15)];
     [button setImage:Image(@"home_serch_icon") forState:UIControlStateNormal];
     [_institutionSearch.leftView addSubview:button];
     [_titleImage addSubview:_institutionSearch];
