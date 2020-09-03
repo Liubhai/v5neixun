@@ -133,25 +133,39 @@
 
 // MARK: - SDCycleScrollViewDelegate
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
-    if (SWNOTEmptyStr(_bannerImageSourceArray[index][@"link_data_type"])) {
-        NSString *bannerType = [NSString stringWithFormat:@"%@",_bannerImageSourceArray[index][@"link_data_type"]];
-        if ([bannerType isEqualToString:@"video"]) {
-            CourseMainViewController *vc = [[CourseMainViewController alloc] init];
-            vc.ID = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_data_id"]];
-            vc.isLive = NO;
-            vc.courseType = @"1";
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([bannerType isEqualToString:@"public"]) {
-            WkWebViewController *vc = [[WkWebViewController alloc] init];
-            vc.titleString = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_type_text"]];
-            vc.urlString = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_href"]];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([bannerType isEqualToString:@"live"] || [bannerType isEqualToString:@"live_small"]) {
-            CourseMainViewController *vc = [[CourseMainViewController alloc] init];
-            vc.ID = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_data_id"]];
-            vc.isLive = YES;
-            vc.courseType = @"2";
-            [self.navigationController pushViewController:vc animated:YES];
+    NSString *link_type = [NSString stringWithFormat:@"%@",_bannerImageSourceArray[index][@"link_type"]];
+    if ([link_type isEqualToString:@"0"]) {
+        return;
+    } else if ([link_type isEqualToString:@"1"]) {
+        if (SWNOTEmptyStr(_bannerImageSourceArray[index][@"link_data_type"])) {
+            NSString *bannerType = [NSString stringWithFormat:@"%@",_bannerImageSourceArray[index][@"link_data_type"]];
+            if ([bannerType isEqualToString:@"video"]) {
+                CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+                vc.ID = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_data_id"]];
+                vc.isLive = NO;
+                vc.courseType = @"1";
+                [self.navigationController pushViewController:vc animated:YES];
+            } else if ([bannerType isEqualToString:@"live"] || [bannerType isEqualToString:@"live_small"]) {
+                CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+                vc.ID = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_data_id"]];
+                vc.isLive = YES;
+                vc.courseType = @"2";
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                return;
+            }
+        }
+    } else if ([link_type isEqualToString:@"2"]) {
+        if (SWNOTEmptyStr(_bannerImageSourceArray[index][@"link_data_type"])) {
+            NSString *bannerType = [NSString stringWithFormat:@"%@",_bannerImageSourceArray[index][@"link_data_type"]];
+            if ([bannerType isEqualToString:@"public"]) {
+                WkWebViewController *vc = [[WkWebViewController alloc] init];
+                vc.titleString = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_type_text"]];
+                vc.urlString = [NSString stringWithFormat:@"%@",[_bannerImageSourceArray[index] objectForKey:@"link_href"]];
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                return;
+            }
         }
     }
 }
