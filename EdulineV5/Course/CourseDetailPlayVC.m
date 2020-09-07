@@ -910,7 +910,7 @@
         } else {
             _buyCourseButton.centerX = _playerView.width / 2.0;
         }
-        if ([_freeLookView superview] && !_freeLookView.hidden) {
+        if (([_freeLookView superview] && !_freeLookView.hidden) || [_courseType isEqualToString:@"2"]) {
             _titleImage.hidden = NO;
         }
         _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
@@ -1912,17 +1912,19 @@
     }
 
     LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
+    vc.course_live_type = [NSString stringWithFormat:@"%@",_dataSource[@"course_live_type"]];
     vc.classId = classId;
     vc.userId = userId;
     
     TICClassroomOption *option = [[TICClassroomOption alloc] init];
     option.classId = [classId intValue];
+    TEduBoardInitParam *initParam = [[TEduBoardInitParam alloc] init];
     if ([[NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]] integerValue]) {
-        option.boardInitParam.drawEnable = YES;
+        initParam.drawEnable = YES;
     } else {
-        option.boardInitParam.drawEnable = NO;
+        initParam.drawEnable = NO;
     }
-    
+    option.boardInitParam = initParam;
     
     [[TICManager sharedInstance] addMessageListener:vc];
     [[TICManager sharedInstance] addEventListener:vc];
@@ -1934,23 +1936,26 @@
         }
         else{
             if(code == 10015){
-                [self showHudInView:self.view showHint:@"课堂不存在，请\"创建课堂\""];
-//                [[TICManager sharedInstance] createClassroom:[classId intValue] classScene:TIC_CLASS_SCENE_VIDEO_CALL callback:^(TICModule module, int code, NSString *desc) {
-//                    if(code == 0){
-//                        [self showHudInView:self.view showHint:@"创建课堂成功，请\"加入课堂\""];
-//                    }
-//                    else{
-//                        if(code == 10021){
-//                            [self showHudInView:self.view showHint:@"该课堂已被他人创建，请\"加入课堂\""];
-//                        }
-//                        else if(code == 10025){
-//                            [self showHudInView:self.view showHint:@"该课堂已创建，请\"加入课堂\""];
-//                        }
-//                        else{
-//                            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"创建课堂失败：%d %@", code, desc]];
-//                        }
-//                    }
-//                }];
+                if ([[NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]] integerValue]) {
+                    [[TICManager sharedInstance] createClassroom:[classId intValue] classScene:TIC_CLASS_SCENE_VIDEO_CALL callback:^(TICModule module, int code, NSString *desc) {
+                        if(code == 0){
+                            [self showHudInView:self.view showHint:@"创建课堂成功，请\"加入课堂\""];
+                        }
+                        else{
+                            if(code == 10021){
+                                [self showHudInView:self.view showHint:@"该课堂已被他人创建，请\"加入课堂\""];
+                            }
+                            else if(code == 10025){
+                                [self showHudInView:self.view showHint:@"该课堂已创建，请\"加入课堂\""];
+                            }
+                            else{
+                                [self showHudInView:self.view showHint:[NSString stringWithFormat:@"创建课堂失败：%d %@", code, desc]];
+                            }
+                        }
+                    }];
+                } else {
+                    [self showHudInView:self.view showHint:@"课堂不存在，请\"创建课堂\""];
+                }
             }
             else{
                 [self showHudInView:self.view showHint:[NSString stringWithFormat:@"加入课堂失败：%d %@", code, desc]];

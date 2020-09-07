@@ -106,12 +106,14 @@
     [_cameraBtn setImage:Image(@"cam_open") forState:UIControlStateSelected];
     [_cameraBtn setImage:Image(@"cam_close") forState:0];
     [_cameraBtn addTarget:self action:@selector(swicthCamera:) forControlEvents:UIControlEventTouchUpInside];
+    _cameraBtn.hidden = [_course_live_type isEqualToString:@"1"] ? YES : NO;
     [_topToolBackView addSubview:_cameraBtn];
     
     _voiceBtn = [[UIButton alloc] initWithFrame:CGRectMake(_cameraBtn.left - 37, 0, 37, 37)];
     [_voiceBtn setImage:Image(@"mic_open") forState:UIControlStateSelected];
     [_voiceBtn setImage:Image(@"mic_close") forState:0];
     [_voiceBtn addTarget:self action:@selector(switchVoice:) forControlEvents:UIControlEventTouchUpInside];
+    _voiceBtn.hidden = [_course_live_type isEqualToString:@"1"] ? YES : NO;
     [_topToolBackView addSubview:_voiceBtn];
     
     _lianmaiBtn = [[UIButton alloc] initWithFrame:CGRectMake(_voiceBtn.left - 100, 0, 100, 22)];
@@ -130,6 +132,7 @@
     [_lianmaiBtn setTitleColor:[UIColor whiteColor] forState:0];
     _lianmaiBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _lianmaiBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+    _lianmaiBtn.hidden = YES;
     [_topToolBackView addSubview:_lianmaiBtn];
     
     _bottomBlackView = [[UIView alloc] initWithFrame:CGRectMake(0, (MainScreenWidth - 113)*3/4.0 + 37, _liveBackView.width, 37)];

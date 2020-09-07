@@ -237,8 +237,8 @@
 - (void)otherTypeLoginNet:(NSString *)type unionId:(NSString *)unionId {
     [Net_API requestPOSTWithURLStr:[Net_Path otherTypeBindNet] WithAuthorization:nil paramDic:@{@"type":type,@"oauth":unionId} finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:responseObject[@"msg"]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                
             }
         }
     } enError:^(NSError * _Nonnull error) {

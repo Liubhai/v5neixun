@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *roomPersonCountBtn;
 
 @property (strong, nonatomic) UICollectionView *collectionView;
+@property (strong, nonatomic) NSString *course_live_type;
 
 @end
 
