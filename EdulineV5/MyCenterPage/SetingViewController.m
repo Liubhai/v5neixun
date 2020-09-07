@@ -16,15 +16,18 @@
 #import "FeedBackViewController.h"
 #import "WkWebViewController.h"
 #import "InstitutionsChooseVC.h"
+#import "OtherTypeLoginBindVC.h"
 
 #import "RootV5VC.h"
 #import "SetingCell.h"
+#import "Net_Path.h"
 
 @interface SetingViewController ()<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, SetingCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong ,nonatomic) NSString *totaiZise;
+@property (strong, nonatomic) NSMutableArray *otherTypeArray;
 
 @end
 
@@ -34,32 +37,36 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"设置";
+    _otherTypeArray = [NSMutableArray new];
     _dataSource = [NSMutableArray new];
-    if (SWNOTEmptyStr([UserModel oauthToken])) {
-        if ([Show_Config isEqualToString:@"1"]) {
-            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
-              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
-            @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
-            @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
-        } else {
-            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
-              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
-            @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
-            @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
-        }
-    } else {
-        if ([Show_Config isEqualToString:@"1"]) {
-            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
-              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
-            @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
-        } else {
-            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
-              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
-            @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
-        }
-    }
+//    if (SWNOTEmptyStr([UserModel oauthToken])) {
+//        if ([Show_Config isEqualToString:@"1"]) {
+//            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
+//              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
+//            @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
+//            @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
+//        } else {
+//            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
+//              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
+//            @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
+//            @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
+//        }
+//    } else {
+//        if ([Show_Config isEqualToString:@"1"]) {
+//            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
+//              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
+//            @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
+//        } else {
+//            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
+//              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
+//            @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
+//        }
+//    }
     [self makeTableView];
-    
+    [self getOtherTypeConfigNet];
+}
+
+- (void)canculateLocalMemorySize {
     /** 计算缓存 */
     float count = 0.0;
     
@@ -76,16 +83,7 @@
     count += [self folderSizeAtPath:filePath6];
 
     _totaiZise = [NSString stringWithFormat:@"%.2fM",count];
-    
-    //计算本地缓存
-//    NSString *onePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Private Documents/Cache"];
-//    NSInteger oneSize = [self fileSizeWithPath:onePath];
-//
-//    NSString *twoPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Private Documents/Temp"];
-//    NSInteger twoSize = [self fileSizeWithPath:twoPath];
-//
-//    NSLog(@"%ld  %ld",oneSize,twoSize);
-//    _totaiZise = oneSize + twoSize;
+
     [self dealDataSourceArrayKey:@"memory" replayKey:@"rightTitle" objectValue:_totaiZise];
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"allow4G"]) {
         BOOL allow4G = [[[NSUserDefaults standardUserDefaults] objectForKey:@"allow4G"] boolValue];
@@ -189,6 +187,9 @@
             app.window.rootViewController = tabbar;
             [app.window makeKeyAndVisible];
         };
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"third"]) {
+        OtherTypeLoginBindVC *vc = [[OtherTypeLoginBindVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -357,6 +358,101 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     [_tableView reloadData];
+}
+
+// MARK: - 其他方式配置
+- (void)getOtherTypeConfigNet {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path appthirdloginTypeConfigNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_otherTypeArray removeAllObjects];
+                [_otherTypeArray addObjectsFromArray:responseObject[@"data"]];
+            }
+        }
+        BOOL showOther = NO;
+        
+        if (SWNOTEmptyArr(_otherTypeArray)) {
+            if ([_otherTypeArray containsObject:@"weixin"]) {
+                showOther = YES;
+            }
+            
+            if ([_otherTypeArray containsObject:@"qq"]) {
+                showOther = YES;
+            }
+            
+            if ([_otherTypeArray containsObject:@"sina"]) {
+                showOther = YES;
+            }
+        }
+        [self configOtherShowOrNot:showOther];
+    } enError:^(NSError * _Nonnull error) {
+        BOOL showOther = NO;
+        
+        if (SWNOTEmptyArr(_otherTypeArray)) {
+            if ([_otherTypeArray containsObject:@"weixin"]) {
+                showOther = YES;
+            }
+            
+            if ([_otherTypeArray containsObject:@"qq"]) {
+                showOther = YES;
+            }
+            
+            if ([_otherTypeArray containsObject:@"sina"]) {
+                showOther = YES;
+            }
+        }
+        [self configOtherShowOrNot:showOther];
+    }];
+}
+
+- (void)configOtherShowOrNot:(BOOL)show {
+    [_dataSource removeAllObjects];
+    if (SWNOTEmptyStr([UserModel oauthToken])) {
+        if ([Show_Config isEqualToString:@"1"]) {
+            if (show) {
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
+                  @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
+                @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
+                @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
+            } else {
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"}],
+                @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
+                @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
+            }
+        } else {
+            if (show) {
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
+                  @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
+                @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
+                @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
+            } else {
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"}],
+                @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
+                @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
+            }
+        }
+    } else {
+        if ([Show_Config isEqualToString:@"1"]) {
+            if (show) {
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
+                  @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
+                @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
+            } else {
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"}],
+                @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
+            }
+        } else {
+            if (show) {
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
+                  @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
+                @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
+            } else {
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"}],
+                @[@{@"title":@"调整学习兴趣",@"type":@"study",@"rightTitle":@"",@"status":@"off"},@{@"title":@"视频缓存清晰度",@"type":@"video",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络缓存视频、音频",@"type":@"switchDownLoad",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"反馈",@"type":@"feedback",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}]]];
+            }
+        }
+    }
+    [self canculateLocalMemorySize];
 }
 
 @end

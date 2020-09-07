@@ -29,6 +29,11 @@ struct NetWorkUrl {
 // MARK: - 登录配置
 + (NSString *)appLoginTypeConfigNet;
 
+// MARK: - login
++ (NSString *)otherTypeLogin;
+
++ (NSString *)otherTypeBindNet;
+
 // MARK: - 另外登录配置
 + (NSString *)appthirdloginTypeConfigNet;
 

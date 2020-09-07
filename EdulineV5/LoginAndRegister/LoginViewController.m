@@ -337,6 +337,7 @@
                 NSLog(@" gender: %@", resp.unionGender);
                 // 第三方平台SDK原始数据
                 NSLog(@" originalResponse: %@", resp.originalResponse);
+                [self otherTypeLoginNet:@"weixin" unionId:resp.unionId];
             }
         }];
     } else if ([typeString isEqualToString:@"qq"]) {
@@ -356,6 +357,8 @@
                 NSLog(@" gender: %@", resp.unionGender);
                 // 第三方平台SDK原始数据
                 NSLog(@" originalResponse: %@", resp.originalResponse);
+//                [self otherTypeLoginNet:@"weixin" unionId:resp.usid];
+                [self getTCUnionId:resp];
             }
         }];
     }
@@ -394,6 +397,70 @@
                 [_otherTypeArray removeAllObjects];
                 [_otherTypeArray addObjectsFromArray:responseObject[@"data"]];
                 [self makeOtherType];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)getTCUnionId:(UMSocialUserInfoResponse *)rep {
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
+    
+    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+    AFJSONRequestSerializer *requestSerializer = [AFJSONRequestSerializer serializer];
+    requestSerializer.timeoutInterval = 10.0;
+    
+    manager.responseSerializer = responseSerializer;
+    manager.requestSerializer = requestSerializer;
+    
+    [manager GET:@"https://graph.qq.com/oauth2.0/me" parameters:@{@"access_token":rep.accessToken} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+         NSLog(@"EdulineV4 GET request succece \n%@\n%@",task.currentRequest.URL.absoluteString,responseObject);
+         
+     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+     #ifdef DEBUG
+         NSLog(@"EdulineV4 GET request failure \n%@",task.currentRequest.URL.absoluteString);
+     #endif
+         // 失败回调
+         NSData *errorData = [NSData dataWithData:[error.userInfo objectForKey:@"com.alamofire.serialization.response.error.data"]];
+         NSString *errorString = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
+         NSRange range = [errorString rangeOfString:@"{"];
+         NSRange range1 = [errorString rangeOfString:@"}"];
+         NSString *ppp = [errorString substringWithRange:NSMakeRange(range.location, range1.location - range.location + 1)];
+         NSData *jsonData = [ppp dataUsingEncoding:NSUTF8StringEncoding];
+         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+         if (SWNOTEmptyDictionary(dic)) {
+             [self otherTypeLoginNet:@"qq" unionId:dic[@"openid"]];
+         }
+     }];
+}
+
+- (void)otherTypeLoginNet:(NSString *)type unionId:(NSString *)unionId {
+    [Net_API requestPOSTWithURLStr:[Net_Path otherTypeLogin] WithAuthorization:nil paramDic:@{@"type":type,@"oauth":unionId} finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSString *ak = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"ak"]];
+                NSString *sk = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"sk"]];
+                [UserModel saveUserPassportToken:ak andTokenSecret:sk];
+                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]]];
+                [UserModel saveAuth_scope:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"auth_scope"]]];
+                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
+                [UserModel saveAvatar:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"avatar_url"]]];
+                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"user_name"]]];
+                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
+                [UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"LOGINFINISH" object:nil];
+                if ([[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue] && self.msgLoginBtn.selected) {
+                    SurePwViewController *vc = [[SurePwViewController alloc] init];
+                    vc.phoneNum = self.loginMsg.phoneNumTextField.text;
+                    vc.msgCode = self.loginMsg.codeTextField.text;
+                    vc.registerOrForget = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                }
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
     } enError:^(NSError * _Nonnull error) {

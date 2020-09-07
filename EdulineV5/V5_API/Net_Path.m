@@ -32,6 +32,14 @@
     return [Net_Path fullPath:@"config/login" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)otherTypeLogin {
+    return [Net_Path fullPath:@"user/account/thirdlogin" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)otherTypeBindNet {
+    return [Net_Path fullPath:@"user/thirdlogin/bind" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)appthirdloginTypeConfigNet {
     return [Net_Path fullPath:@"config/thirdlogin" repalce:@"" byReplece:@""];
 }

@@ -206,6 +206,8 @@
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
+		788EB1C2250218B000E30D79 /* OtherTypeLoginBindVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */; };
+		788EB1C5250220B000E30D79 /* OtherTypeBindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */; };
 		7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */; };
 		7898F93D24B4124C00C9A1F7 /* MenberRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93C24B4124C00C9A1F7 /* MenberRecordCell.m */; };
 		789DB01524593041001302B4 /* CouponModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01424593041001302B4 /* CouponModel.m */; };
@@ -819,6 +821,10 @@
 		7888A35224A1D3CF00DB078D /* WkWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WkWebViewController.m; sourceTree = "<group>"; };
 		7888A35424A1DB1800DB078D /* WKWebIntroview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebIntroview.h; sourceTree = "<group>"; };
 		7888A35524A1DB1800DB078D /* WKWebIntroview.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebIntroview.m; sourceTree = "<group>"; };
+		788EB1C0250218AB00E30D79 /* OtherTypeLoginBindVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeLoginBindVC.h; sourceTree = "<group>"; };
+		788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherTypeLoginBindVC.m; sourceTree = "<group>"; };
+		788EB1C3250220B000E30D79 /* OtherTypeBindCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeBindCell.h; sourceTree = "<group>"; };
+		788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherTypeBindCell.m; sourceTree = "<group>"; };
 		7898F93824B40D3400C9A1F7 /* MenberRecordVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRecordVC.h; sourceTree = "<group>"; };
 		7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRecordVC.m; sourceTree = "<group>"; };
 		7898F93B24B4124C00C9A1F7 /* MenberRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRecordCell.h; sourceTree = "<group>"; };
@@ -1618,6 +1624,8 @@
 				78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */,
 				78AA13A7244708B4007087F7 /* SetingViewController.h */,
 				78AA13A8244708B4007087F7 /* SetingViewController.m */,
+				788EB1C0250218AB00E30D79 /* OtherTypeLoginBindVC.h */,
+				788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */,
 				7887451024E13B1300257029 /* FeedBackViewController.h */,
 				7887451124E13B1300257029 /* FeedBackViewController.m */,
 				787E19A7245576E000E2E016 /* PWResetViewController.h */,
@@ -2426,6 +2434,8 @@
 				789DB02024658C8D001302B4 /* OrderFinalCell.m */,
 				78AA13AA24470EB2007087F7 /* SetingCell.h */,
 				78AA13AB24470EB2007087F7 /* SetingCell.m */,
+				788EB1C3250220B000E30D79 /* OtherTypeBindCell.h */,
+				788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */,
 				7853164624502E49007E239E /* MenberCell.h */,
 				7853164724502E49007E239E /* MenberCell.m */,
 				7898F93B24B4124C00C9A1F7 /* MenberRecordCell.h */,
@@ -3079,6 +3089,7 @@
 				784E5CEA24A9802D00646916 /* HcdGuideView.m in Sources */,
 				789DB0272466B38F001302B4 /* BalanceDetailVC.m in Sources */,
 				78C54971241B642B00A33FC4 /* AlivcVideoPlayManager.m in Sources */,
+				788EB1C5250220B000E30D79 /* OtherTypeBindCell.m in Sources */,
 				78795738240FA3840013F95F /* ZLPhotoPickerFooterCollectionReusableView.m in Sources */,
 				784FC8E824ACB48F00CAE7A6 /* MyErweimaViewController.m in Sources */,
 				78D97FF724B8458B000DE0E4 /* StudentManageVC.m in Sources */,
@@ -3105,6 +3116,7 @@
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
 				78531645244FF60C007E239E /* MenberRootVC.m in Sources */,
 				78AA1359243C2278007087F7 /* CourseSortVC.m in Sources */,
+				788EB1C2250218B000E30D79 /* OtherTypeLoginBindVC.m in Sources */,
 				7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
 				78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */,
