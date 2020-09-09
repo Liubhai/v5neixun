@@ -33,7 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *roomPersonCountBtn;
 
 @property (strong, nonatomic) UICollectionView *collectionView;
-@property (strong, nonatomic) NSString *course_live_type;
+@property (strong, nonatomic) NSString *course_live_type;// 大小班课
+@property (strong, nonatomic) NSString *userIdentify;// 当前进入直播间的用户的身份(讲师或者普通观看者)
 
 @end
 

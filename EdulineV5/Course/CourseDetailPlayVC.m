@@ -1915,6 +1915,7 @@
     vc.course_live_type = [NSString stringWithFormat:@"%@",_dataSource[@"course_live_type"]];
     vc.classId = classId;
     vc.userId = userId;
+    vc.userIdentify = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]];
     
     TICClassroomOption *option = [[TICClassroomOption alloc] init];
     option.classId = [classId intValue];
@@ -1940,6 +1941,11 @@
                     [[TICManager sharedInstance] createClassroom:[classId intValue] classScene:TIC_CLASS_SCENE_VIDEO_CALL callback:^(TICModule module, int code, NSString *desc) {
                         if(code == 0){
                             [self showHudInView:self.view showHint:@"创建课堂成功，请\"加入课堂\""];
+                            [Net_API requestPOSTWithURLStr:[Net_Path noteLiveSucNet] WithAuthorization:nil paramDic:@{@"room_no":classId} finish:^(id  _Nonnull responseObject) {
+                                
+                            } enError:^(NSError * _Nonnull error) {
+                                
+                            }];
                         }
                         else{
                             if(code == 10021){

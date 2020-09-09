@@ -280,6 +280,9 @@ struct NetWorkUrl {
 /** 直播用户登录所需信息 */
 + (NSString *)liveLoginInfo;
 
+// MARK: - 直播创建成功通知后台
++ (NSString *)noteLiveSucNet;
+
 /** 讲师列表 */
 + (NSString *)teacherList;
 
