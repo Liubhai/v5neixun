@@ -391,6 +391,7 @@
 		78F7C5D124EFC2AF0010F1E9 /* XLCardSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CA24EFC2AD0010F1E9 /* XLCardSwitch.m */; };
 		78F7C5D224EFC2AF0010F1E9 /* XLCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */; };
 		78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */; };
+		78FB7E0A2508AB5000344437 /* UnBindMsgCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */; };
 		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
@@ -1166,6 +1167,8 @@
 		78F7C5CD24EFC2AD0010F1E9 /* XLCardSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardSwitch.h; sourceTree = "<group>"; };
 		78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardModel.m; sourceTree = "<group>"; };
 		78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardSwitchFlowLayout.m; sourceTree = "<group>"; };
+		78FB7E082508AB5000344437 /* UnBindMsgCodeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnBindMsgCodeVC.h; sourceTree = "<group>"; };
+		78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnBindMsgCodeVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
 		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1626,6 +1629,8 @@
 				78AA13A8244708B4007087F7 /* SetingViewController.m */,
 				788EB1C0250218AB00E30D79 /* OtherTypeLoginBindVC.h */,
 				788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */,
+				78FB7E082508AB5000344437 /* UnBindMsgCodeVC.h */,
+				78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */,
 				7887451024E13B1300257029 /* FeedBackViewController.h */,
 				7887451124E13B1300257029 /* FeedBackViewController.m */,
 				787E19A7245576E000E2E016 /* PWResetViewController.h */,
@@ -3061,6 +3066,7 @@
 				78C549D3241B674F00A33FC4 /* AlivcImage.m in Sources */,
 				78C54977241B642B00A33FC4 /* AlivcLivePresentationController.m in Sources */,
 				78C548792418CC7400A33FC4 /* TYViewStorage.m in Sources */,
+				78FB7E0A2508AB5000344437 /* UnBindMsgCodeVC.m in Sources */,
 				7898F93D24B4124C00C9A1F7 /* MenberRecordCell.m in Sources */,
 				78A16C8E2452F7C100391430 /* GCDAsyncUdpSocket.m in Sources */,
 				78AA13842440543D007087F7 /* TAAbstractDotView.m in Sources */,

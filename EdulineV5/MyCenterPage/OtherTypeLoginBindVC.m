@@ -16,6 +16,7 @@
 #import "FeedBackViewController.h"
 #import "WkWebViewController.h"
 #import "InstitutionsChooseVC.h"
+#import "UnBindMsgCodeVC.h"
 
 #import "RootV5VC.h"
 #import "OtherTypeBindCell.h"
@@ -25,7 +26,9 @@
 #import <UMShare/UMShare.h>
 #import <UMSocialQQHandler.h>
 
-@interface OtherTypeLoginBindVC ()<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
+@interface OtherTypeLoginBindVC ()<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
+    BOOL shouldLoad;
+}
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -35,13 +38,21 @@
 
 @implementation OtherTypeLoginBindVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (shouldLoad) {
+        [self getUserBindStatus];
+    }
+    shouldLoad = YES;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     _titleLabel.text = @"第三方账号绑定";
     _otherTypeArray = [NSMutableArray new];
     _dataSource = [NSMutableArray new];
     [self makeTableView];
-    [self getOtherTypeConfigNet];
+    [self getUserBindStatus];
     // Do any additional setup after loading the view.
 }
 
@@ -92,15 +103,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([_dataSource[indexPath.row][@"status"] isEqualToString:@"unbind"]) {
+    NSString *bindStatus = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"bind"]];
+    if ([bindStatus isEqualToString:@"0"]) {
         // 去绑定
-        [self bindTypeNet:@"bind" type:_dataSource[indexPath.row][@"type"]];
+        [self bindTypeNet:@"bind" type:_dataSource[indexPath.row][@"key"]];
     } else {
         // 解除绑定
-        
-    }
-    if ([_dataSource[indexPath.row][@"type"] isEqualToString:@"weixin"]) {
-        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定要解除绑定吗？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [alertController addAction:cancelAction];
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self bindTypeNet:@"unbind" type:_dataSource[indexPath.row][@"key"]];
+        }];
+        [alertController addAction:commentAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -135,28 +154,72 @@
     }];
 }
 
+// MARK: - 根据接口处理数据(目前就简单排序并且清除掉没有开启的third方式)
+//{
+//    "key": "qq",
+//    "open": 0,
+//    "bind": 0
+//}
 - (void)configOtherShowOrNot:(NSMutableArray *)showArray {
     [_dataSource removeAllObjects];
     if (SWNOTEmptyArr(showArray)) {
-        if ([showArray containsObject:@"weixin"]) {
-            [_dataSource addObject:@{@"type":@"weixin",@"image":@"login_icon_wechat_other",@"status":@"unbind"}];
+        [_dataSource addObjectsFromArray:@[@"1",@"1",@"1"]];
+    }
+    NSMutableArray *indexArray = [NSMutableArray new];// 需要移除的元素下标
+    for (int i = 0; i<showArray.count; i++) {
+        if ([showArray[i][@"key"] isEqualToString:@"weixin"]) {
+            [_dataSource replaceObjectAtIndex:0 withObject:showArray[i]];
         }
-        
-        if ([showArray containsObject:@"qq"]) {
-            [_dataSource addObject:@{@"type":@"qq",@"image":@"login_icon_qq_other",@"status":@"unbind"}];
+        if ([showArray[i][@"key"] isEqualToString:@"qq"]) {
+            [_dataSource replaceObjectAtIndex:1 withObject:showArray[i]];
         }
-        
-        if ([showArray containsObject:@"sina"]) {
-            [_dataSource addObject:@{@"type":@"sina",@"image":@"login_icon_wechat_other",@"status":@"unbind"}];
+        if ([showArray[i][@"key"] isEqualToString:@"sina"]) {
+            [_dataSource replaceObjectAtIndex:2 withObject:showArray[i]];
+        }
+        if ([[NSString stringWithFormat:@"%@",showArray[i][@"open"]] isEqualToString:@"0"]) {
+            // 记录未开启的索引  等下要移除
+            [indexArray addObject:[NSString stringWithFormat:@"%@",@(i)]];
         }
     }
+    for (int i = 0; i<indexArray.count; i++) {
+        [_dataSource removeObjectAtIndex:[indexArray[i] integerValue]];
+    }
+    
+//    if (SWNOTEmptyArr(showArray)) {
+//        if ([showArray containsObject:@"weixin"]) {
+//            [_dataSource addObject:@{@"type":@"weixin",@"image":@"login_icon_wechat_other",@"status":@"unbind"}];
+//        }
+//
+//        if ([showArray containsObject:@"qq"]) {
+//            [_dataSource addObject:@{@"type":@"qq",@"image":@"login_icon_qq_other",@"status":@"unbind"}];
+//        }
+//
+//        if ([showArray containsObject:@"sina"]) {
+//            [_dataSource addObject:@{@"type":@"sina",@"image":@"login_icon_wechat_other",@"status":@"unbind"}];
+//        }
+//    }
     [_tableView reloadData];
 }
 
 - (void)bindTypeNet:(NSString *)status type:(NSString *)bindType {
     if ([status isEqualToString:@"bind"]) {
         [self bindType:bindType];
+    } else {
+        [self unBindNet:bindType];
     }
+}
+
+- (void)unBindNet:(NSString *)typeString {
+    UnBindMsgCodeVC *vc = [[UnBindMsgCodeVC alloc] init];
+    vc.unbindParamString = typeString;
+    if ([typeString isEqualToString:@"weixin"]) {
+        vc.unbindType = @"unbundling_weixin";
+    } else if ([typeString isEqualToString:@"qq"]) {
+        vc.unbindType = @"unbundling_qq";
+    } else if ([typeString isEqualToString:@"sina"]) {
+        vc.unbindType = @"unbundling_sina";
+    }
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)bindType:(NSString *)typeString {
@@ -242,8 +305,24 @@
             }
         }
     } enError:^(NSError * _Nonnull error) {
-        
+        [self showHudInView:self.view showHint:@"网络请求超时"];
     }];
+}
+
+// MARK: - 单独接口请求的当前用户绑定状态
+- (void)getUserBindStatus {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path otherTypeBindNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_otherTypeArray removeAllObjects];
+                [_otherTypeArray addObjectsFromArray:responseObject[@"data"]];
+            }
+        }
+        [self configOtherShowOrNot:_otherTypeArray];
+    } enError:^(NSError * _Nonnull error) {
+        [self configOtherShowOrNot:_otherTypeArray];
+    }];
+    
 }
 
 

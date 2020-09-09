@@ -50,10 +50,35 @@
 
 - (void)setSetingCellInfo:(NSDictionary *)info {
     _setInfo = info;
+//    if (SWNOTEmptyDictionary(info)) {
+//        _typeLog.image = Image(info[@"image"]);
+//        _themeLabel.text = [info objectForKey:@"title"];
+//        if ([info[@"status"] isEqualToString:@"bind"]) {
+//            _rightLabel.text = @"取消绑定";
+//            _rightLabel.textColor = EdlineV5_Color.faildColor;
+//        } else {
+//            _rightLabel.text = @"未绑定";
+//            _rightLabel.textColor = HEXCOLOR(0xB7BAC1);
+//        }
+//
+//    }
     if (SWNOTEmptyDictionary(info)) {
-        _typeLog.image = Image(info[@"image"]);
-        _themeLabel.text = [info objectForKey:@"title"];
-        if ([info[@"status"] isEqualToString:@"bind"]) {
+        NSString *typeS = [NSString stringWithFormat:@"%@",[info objectForKey:@"key"]];
+        if ([typeS isEqualToString:@"weixin"]) {
+            _themeLabel.text = @"微信";
+            _typeLog.image = Image(@"login_icon_wechat_other");
+        } else if ([typeS isEqualToString:@"qq"]) {
+            _themeLabel.text = @"QQ";
+            _typeLog.image = Image(@"login_icon_qq_other");
+        } else if ([typeS isEqualToString:@"sina"]) {
+            _themeLabel.text = @"微博";
+            _typeLog.image = Image(@"weibo_icon");
+        } else {
+            _themeLabel.text = @"";
+            _typeLog.image = DefaultImage;
+        }
+        NSString *bindStatus = [NSString stringWithFormat:@"%@",info[@"bind"]];
+        if ([bindStatus isEqualToString:@"1"]) {
             _rightLabel.text = @"取消绑定";
             _rightLabel.textColor = EdlineV5_Color.faildColor;
         } else {
