@@ -66,6 +66,8 @@
     }
     CGFloat XX = SWNOTEmptyDictionary(_schoolInfo) ? (schoolnameWidth > schoolOwnWidth ? (15 + 40 + schoolnameWidth + 20) : (15 + 40 + schoolOwnWidth + 20)) : 15;
     if (SWNOTEmptyArr(_teacherInfoDict)) {
+        [self setHeight:59];
+        self.hidden = NO;
         for (int i = 0; i<_teacherInfoDict.count; i++) {
             UIImageView *teacherFace = [[UIImageView alloc] initWithFrame:CGRectMake(XX, 7, 40, 40)];
             teacherFace.tag = i;

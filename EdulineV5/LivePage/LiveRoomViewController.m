@@ -99,7 +99,7 @@
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_leftBtn.right, 0, MainScreenWidth, 37)];
     _themeLabel.textColor = [UIColor whiteColor];
     _themeLabel.font = SYSTEMFONT(14);
-    _themeLabel.text = @"欢迎来到本直播间";
+    _themeLabel.text =  SWNOTEmptyStr(_liveTitle) ? _liveTitle : @"欢迎来到本直播间";
     [_topToolBackView addSubview:_themeLabel];
     
     _cameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 7.5 - 37, 0, 37, 37)];
@@ -169,6 +169,7 @@
     [_roomPersonCountBtn setTitleColor:[UIColor whiteColor] forState:0];
     _roomPersonCountBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space1/2.0, 0, space1/2.0);
     _roomPersonCountBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space1/2.0, 0, -space1/2.0);
+    _roomPersonCountBtn.hidden = YES;
     [_bottomToolBackView addSubview:_roomPersonCountBtn];
 }
 

@@ -12,7 +12,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol CourseContentViewDelegate <NSObject>
+
+@optional
+- (void)popToCourseDetailVC;
+
+@end
+
 @interface CourseContentView : UIView
+
+@property (assign, nonatomic) id<CourseContentViewDelegate> delegate;
 
 @property (strong, nonatomic) UIImageView *lianzaiIcon;
 @property (strong, nonatomic) UILabel *courseTitleLabel;
@@ -21,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *courseLearn;
 @property (strong, nonatomic) UILabel *coursePrice;
 @property (strong, nonatomic) UIView *lineView1;
+@property (strong, nonatomic) UIButton *detailButton;
+@property (strong, nonatomic) UILabel *sectionCountLabel;
 @property (strong, nonatomic) NSDictionary *courseInfo;
 
 - (void)setCourseContentInfo:(NSDictionary *)contentInfo showTitleOnly:(BOOL)showTitleOnly;

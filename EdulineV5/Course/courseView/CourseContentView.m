@@ -59,6 +59,22 @@
     _lineView1.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView1];
     [self setHeight:_lineView1.bottom];
+    
+    _detailButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - (32 + 4 + 6), 17, 32 + 4 + 6, 32)];
+    [_detailButton setImage:Image(@"details_icon") forState:0];
+    [_detailButton setTitle:@"详情" forState:0];
+    _detailButton.titleLabel.font = SYSTEMFONT(14);
+    [_detailButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    [EdulineV5_Tool dealButtonImageAndTitleUI:_detailButton];
+    [_detailButton addTarget:self action:@selector(detailButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _detailButton.hidden = YES;
+    [self addSubview:_detailButton];
+    
+    _sectionCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 86 - 35, 150, 20)];
+    _sectionCountLabel.font = SYSTEMFONT(14);
+    _sectionCountLabel.textColor = EdlineV5_Color.textThirdColor;
+    _sectionCountLabel.hidden = YES;
+    [self addSubview:_sectionCountLabel];
 }
 
 - (void)setCourseContentInfo:(NSDictionary *)contentInfo showTitleOnly:(BOOL)showTitleOnly {
@@ -121,12 +137,22 @@
         }
     }
     if (showTitleOnly) {
-        _courseTitleLabel.frame = CGRectMake(15, 0, MainScreenWidth - 30, 86);
+        _courseTitleLabel.frame = CGRectMake(15, 0, MainScreenWidth - 30, 86 - 35);
         _lianzaiIcon.hidden = YES;
         _courseStar.hidden = YES;
         _coursePrice.hidden = YES;
         _courseScore.hidden = YES;
         _courseLearn.hidden = YES;
+        _sectionCountLabel.hidden = NO;
+        _detailButton.hidden = NO;
+        _detailButton.centerY = _courseTitleLabel.centerY;
+        _sectionCountLabel.text = [NSString stringWithFormat:@"共%@课时",_courseInfo[@"section_count"]];
+    }
+}
+
+- (void)detailButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(popToCourseDetailVC)]) {
+        [_delegate popToCourseDetailVC];
     }
 }
 

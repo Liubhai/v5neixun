@@ -42,7 +42,7 @@
 
 //清晰度【FD(流畅)，LD(标清)，SD(高清)，HD(超清)，OD(原画)，2K(2K)，4K(4K)。】
 
-@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,WKUIDelegate,WKNavigationDelegate> {
+@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseContentViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,WKUIDelegate,WKNavigationDelegate> {
     // 新增内容
     CGFloat sectionHeight;
     BOOL shouldStopRecordTimer;//阻止记录定时器方法执行
@@ -352,6 +352,7 @@
     [_headerView addSubview:_faceImageView];
     
     _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4)];
+    _courseContentView.delegate = self;
     [_headerView addSubview:_courseContentView];
     
     /**优惠卷*/
@@ -701,6 +702,11 @@
     
 }
 
+// MARK: - 从播放页返回或者跳转到课程详情页
+- (void)popToCourseDetailVC {
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
     
@@ -954,7 +960,7 @@
             }
             return;
         }
-        [self getLiveCourseHourseInfo:model.model.classHourId];
+        [self getLiveCourseHourseInfo:model.model.classHourId courseHourseModel:model.model];
         return;
     }
     
@@ -1254,7 +1260,7 @@
             }
             return;
         }
-        [self getLiveCourseHourseInfo:model.classHourId];
+        [self getLiveCourseHourseInfo:model.classHourId courseHourseModel:model];
         return;
     }
     
@@ -1468,7 +1474,7 @@
 - (void)recordLearnContinuePlay:(CourseListModel *)model {
     freeLook = NO;
     if ([_courseType isEqualToString:@"2"]) {
-        [self getLiveCourseHourseInfo:model.classHourId];
+        [self getLiveCourseHourseInfo:model.classHourId courseHourseModel:model];
         return;
     }
     
@@ -1886,7 +1892,7 @@
 
 // MARK: - 直播相关
 // 直播相关测试
-- (void)loginLiveRoom:(NSDictionary *)liveInfo {
+- (void)loginLiveRoom:(NSDictionary *)liveInfo courseHourseModel:(CourseListModel *)model {
     __weak CourseDetailPlayVC *wekself = self;
     AppDelegate *app = [AppDelegate delegate];
     app.configTXSDK = ^(NSString *success) {
@@ -1894,7 +1900,7 @@
         NSString *userSig = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_sig"]];
         [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
             if(code == 0){
-                [self joinLiveRoom:liveInfo];
+                [self joinLiveRoom:liveInfo courseHourseModel:model];
             }
             else{
                 [self showHudInView:wekself.view showHint:[NSString stringWithFormat:@"登录失败: %d,%@",code, desc]];
@@ -1904,7 +1910,7 @@
     [app intTXSDK];
 }
 
-- (void)joinLiveRoom:(NSDictionary *)liveInfo {
+- (void)joinLiveRoom:(NSDictionary *)liveInfo courseHourseModel:(CourseListModel *)model {
     NSString *classId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"room_no"]];
     NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
     if (classId.length <= 0) {
@@ -1915,6 +1921,7 @@
     vc.course_live_type = [NSString stringWithFormat:@"%@",_dataSource[@"course_live_type"]];
     vc.classId = classId;
     vc.userId = userId;
+    vc.liveTitle = model.title;
     vc.userIdentify = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]];
     
     TICClassroomOption *option = [[TICClassroomOption alloc] init];
@@ -1946,6 +1953,19 @@
                             } enError:^(NSError * _Nonnull error) {
                                 
                             }];
+                            // 这里说的是直接进入直播间
+                            [[TICManager sharedInstance] joinClassroom:option callback:^(TICModule module, int code, NSString *desc) {
+                                if(code == 0){
+                                    [self.navigationController pushViewController:vc animated:YES];
+                                }
+                                else{
+                                    if(code == 10015){
+                                    }
+                                    else{
+                                        [self showHudInView:self.view showHint:[NSString stringWithFormat:@"加入课堂失败：%d %@", code, desc]];
+                                    }
+                                }
+                            }];
                         }
                         else{
                             if(code == 10021){
@@ -1971,7 +1991,7 @@
 }
 
 // MARK: - 获取直播课时相关信息
-- (void)getLiveCourseHourseInfo:(NSString *)liveHourseSectionId {
+- (void)getLiveCourseHourseInfo:(NSString *)liveHourseSectionId courseHourseModel:(CourseListModel *)model {
     if (SWNOTEmptyStr(liveHourseSectionId)) {
         __weak typeof(self) ws = self;
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path liveLoginInfo] WithAuthorization:nil paramDic:@{@"section_id":liveHourseSectionId} finish:^(id  _Nonnull responseObject) {
@@ -1979,7 +1999,7 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"sdk_appid"]] forKey:@"sdk_appid"];
                     [[NSUserDefaults standardUserDefaults] synchronize];
-                    [self loginLiveRoom:[responseObject objectForKey:@"data"]];
+                    [self loginLiveRoom:[responseObject objectForKey:@"data"] courseHourseModel:model];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
