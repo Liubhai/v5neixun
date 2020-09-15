@@ -443,12 +443,14 @@
 
 - (void)getUserShopCarInfo {
     [_selectedArray removeAllObjects];
+    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path userShopcarInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSourse removeAllObjects];
                 [_dataSourse addObjectsFromArray:[ShopCarModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
                 [self dealDataSource];
+                [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSourse.count isLoading:NO tableViewShowHeight:_tableView.height];
                 [_tableView reloadData];
             }
         }

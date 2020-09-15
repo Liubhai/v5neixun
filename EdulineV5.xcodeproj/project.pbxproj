@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		780487E92510A433001118F3 /* EmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 780487E82510A433001118F3 /* EmptyCell.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -431,6 +432,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		780487E72510A433001118F3 /* EmptyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyCell.h; sourceTree = "<group>"; };
+		780487E82510A433001118F3 /* EmptyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmptyCell.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1699,6 +1702,8 @@
 				7887451E24E3C73900257029 /* UITableView+EmptyData.m */,
 				7887452024E3CE2600257029 /* UICollectionView+EmptyData.h */,
 				7887452124E3CE2600257029 /* UICollectionView+EmptyData.m */,
+				780487E72510A433001118F3 /* EmptyCell.h */,
+				780487E82510A433001118F3 /* EmptyCell.m */,
 				789DB05A246C2680001302B4 /* LBHScrollView.h */,
 				789DB05B246C2680001302B4 /* LBHScrollView.m */,
 				7839C973241F5C57002F6595 /* StarEvaluator.h */,
@@ -3282,6 +3287,7 @@
 				7879573E240FA9B00013F95F /* MBProgressHUD+Add.m in Sources */,
 				78795757240FAA7A0013F95F /* UIView+HUD.m in Sources */,
 				787956D6240F9FCC0013F95F /* STRIAPManager.m in Sources */,
+				780487E92510A433001118F3 /* EmptyCell.m in Sources */,
 				78AA13802440543D007087F7 /* SDCollectionViewCell.m in Sources */,
 				78C5483424124B4000A33FC4 /* AreaTableViewCell.m in Sources */,
 				78C549CD241B674E00A33FC4 /* AlivcAlertView.m in Sources */,

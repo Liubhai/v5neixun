@@ -10,6 +10,7 @@
 #import "StudyTimeCell.h"
 #import "StudyLatestCell.h"
 #import "StudyCourseCell.h"
+#import "EmptyCell.h"
 #import "V5_Constant.h"
 #import "JoinCourseVC.h"
 #import "UserModel.h"
@@ -21,6 +22,7 @@
 @interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource,StudyLatestCellDelegate> {
     NSInteger currentCourseType;
     NSString *dataType;// add加入的优先 learn学习优先
+    BOOL emptyData;
 }
 
 @property (strong, nonatomic) UITableView *tableView;
@@ -183,13 +185,17 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 2) {
         if (currentCourseType == 0) {
-            return _courseArray.count;
+            emptyData = SWNOTEmptyArr(_courseArray) ? NO : YES;
+            return SWNOTEmptyArr(_courseArray) ? _courseArray.count : 1;
         } else if (currentCourseType == 1) {
-            return _liveArray.count;
+            emptyData = SWNOTEmptyArr(_liveArray) ? NO : YES;
+            return SWNOTEmptyArr(_liveArray) ? _liveArray.count : 1;
         } else if (currentCourseType == 2) {
-            return _classArray.count;
+            emptyData = SWNOTEmptyArr(_classArray) ? NO : YES;
+            return SWNOTEmptyArr(_classArray) ? _classArray.count : 1;
         } else {
-            return _offlineArray.count;
+            emptyData = SWNOTEmptyArr(_offlineArray) ? NO : YES;
+            return SWNOTEmptyArr(_offlineArray) ? _offlineArray.count : 1;
         }
     } else if (section == 1) {
         if (SWNOTEmptyDictionary(_studyInfo)) {
@@ -224,21 +230,30 @@
         cell.delegate = self;
         return cell;
     } else {
-        static NSString *reuse = @"StudyCourseCell";
-        StudyCourseCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-        if (!cell) {
-            cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-        }
-        if (currentCourseType == 0) {
-            [cell setStudyCourseInfo:_courseArray[indexPath.row]];
-        } else if (currentCourseType == 1) {
-            [cell setStudyCourseInfo:_liveArray[indexPath.row]];
-        } else if (currentCourseType == 2) {
-            [cell setStudyCourseInfo:_classArray[indexPath.row]];
+        if (emptyData) {
+            static NSString *reuse = @"EmptyCell";
+            EmptyCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+            if (!cell) {
+                cell = [[EmptyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            }
+            return cell;
         } else {
-            [cell setStudyCourseInfo:_offlineArray[indexPath.row]];
+            static NSString *reuse = @"StudyCourseCell";
+            StudyCourseCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+            if (!cell) {
+                cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            }
+            if (currentCourseType == 0) {
+                [cell setStudyCourseInfo:_courseArray[indexPath.row]];
+            } else if (currentCourseType == 1) {
+                [cell setStudyCourseInfo:_liveArray[indexPath.row]];
+            } else if (currentCourseType == 2) {
+                [cell setStudyCourseInfo:_classArray[indexPath.row]];
+            } else {
+                [cell setStudyCourseInfo:_offlineArray[indexPath.row]];
+            }
+            return cell;
         }
-        return cell;
     }
 }
 
@@ -402,12 +417,18 @@
     } else if (indexPath.section == 1) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
     } else {
+        if (emptyData) {
+            return 150;
+        }
         return 106;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 2) {
+        if (emptyData) {
+            return;
+        }
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         NSDictionary *info;
         if (currentCourseType == 0) {
