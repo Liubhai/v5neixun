@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class CourseListModel,section_data_model,section_rate_model;
+@class CourseListModel,section_data_model,section_rate_model,live_rate_model;
 
 @interface CourseListModel : NSObject
 
@@ -51,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *course_type_text;
 @property (strong, nonatomic) section_data_model *section_data;
 @property (strong, nonatomic) section_rate_model *section_rate;
+@property (strong, nonatomic) live_rate_model *live_rate;
 
 @property (nonatomic, weak)   CourseListModel *parentItem;
 @property (nonatomic, strong) NSMutableArray<CourseListModel *> *childItems;
@@ -102,6 +103,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) unsigned int status;//评论数量
 @property (assign, nonatomic) unsigned int current_time;//评论数量
 @property (strong, nonatomic) NSString *status_text;//评论数量
+@end
+
+@interface live_rate_model : NSObject
+
+@property (strong, nonatomic) NSString *callback_url;//评论数量
+@property (strong, nonatomic) NSString *status_text;//评论数量
+@property (assign, nonatomic) unsigned int status;//评论数量
+
 @end
 
 NS_ASSUME_NONNULL_END

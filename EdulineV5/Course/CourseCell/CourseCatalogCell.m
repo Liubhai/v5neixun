@@ -560,6 +560,9 @@
 //        _isLearningIcon.hidden = NO;
 //        [_isLearningIcon startAnimating];
 //    }
+    if (_isLive) {
+        _learnIcon.hidden = YES;
+    }
     [_cellTableView reloadData];
 }
 

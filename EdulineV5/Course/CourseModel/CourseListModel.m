@@ -55,3 +55,8 @@
 
 
 @end
+
+@implementation live_rate_model
+
+
+@end
