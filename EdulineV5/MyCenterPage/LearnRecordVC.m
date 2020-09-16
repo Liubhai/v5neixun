@@ -141,6 +141,7 @@
     NSMutableDictionary *pass = [NSMutableDictionary new];
     [pass setObject:@(page) forKey:@"page"];
     [pass setObject:@"10" forKey:@"count"];
+    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path learnRecordList] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.isRefreshing) {
             [_tableView.mj_header endRefreshing];
@@ -161,6 +162,7 @@
         [_allDateArray removeAllObjects];
         [_shouldShowYearSectionArray removeAllObjects];
         [self dealDataSource];
+        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
         [_tableView reloadData];
     } enError:^(NSError * _Nonnull error) {
         if (_tableView.mj_header.isRefreshing) {

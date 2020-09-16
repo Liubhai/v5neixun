@@ -125,6 +125,7 @@
     if (!SWNOTEmptyStr(netUlr)) {
         return;
     }
+    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:netUlr WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
@@ -144,6 +145,7 @@
                     _tableView.mj_footer.hidden = NO;
                     [_tableView.mj_footer setState:MJRefreshStateIdle];
                 }
+                [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
                 [_tableView reloadData];
             }
         }
