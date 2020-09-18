@@ -98,7 +98,7 @@
     [_commentCountButton addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_commentCountButton];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left, _timeLabel.bottom + 10, MainScreenWidth - _nameLabel.left - 15, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left, _timeLabel.bottom + 10, MainScreenWidth - _nameLabel.left - 15, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView];
 }

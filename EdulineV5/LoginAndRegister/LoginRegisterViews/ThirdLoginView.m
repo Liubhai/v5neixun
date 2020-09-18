@@ -24,16 +24,22 @@
     
     _methodArray = [NSMutableArray new];
     
-    if (SWNOTEmptyArr(_methodTypeConfigArray)) {
-        if ([_methodTypeConfigArray containsObject:@"weixin"]) {
+    NSMutableArray *temp = [NSMutableArray arrayWithArray:_methodTypeConfigArray];
+    [_methodTypeConfigArray removeAllObjects];
+    
+    if (SWNOTEmptyArr(temp)) {
+        if ([temp containsObject:@"weixin"]) {
+            [_methodTypeConfigArray addObject:@"weixin"];
             [_methodArray addObject:@"login_icon_wechat"];
         }
         
-        if ([_methodTypeConfigArray containsObject:@"qq"]) {
+        if ([temp containsObject:@"qq"]) {
+            [_methodTypeConfigArray addObject:@"qq"];
             [_methodArray addObject:@"login_icon_qq"];
         }
         
-        if ([_methodTypeConfigArray containsObject:@"sina"]) {
+        if ([temp containsObject:@"sina"]) {
+            [_methodTypeConfigArray addObject:@"sina"];
             [_methodArray addObject:@"login_icon_weibo"];
         }
     }
