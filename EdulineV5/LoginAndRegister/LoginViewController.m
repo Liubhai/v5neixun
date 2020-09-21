@@ -16,6 +16,7 @@
 #import "Net_Path.h"
 #import "UserModel.h"
 #import "SurePwViewController.h"
+#import "UnBindMsgCodeVC.h"
 
 #import <UMCommon/UMCommon.h>
 #import <UMShare/UMShare.h>
@@ -460,7 +461,19 @@
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
             } else {
-                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                // 没有绑定账号 此时需要去绑定账号(绑定成功会在绑定接口返回用户信息) 绑定逻辑: 手机号没有注册账号 后台处理注册加绑定 ; 手机号注册了账号,就直接绑定账号
+                UnBindMsgCodeVC *vc = [[UnBindMsgCodeVC alloc] init];
+                vc.unbindParamString = type;
+                vc.other_union_id = unionId;
+                if ([type isEqualToString:@"weixin"]) {
+                    vc.unbindType = @"bind_weixin";
+                } else if ([type isEqualToString:@"qq"]) {
+                    vc.unbindType = @"bind_qq";
+                } else if ([type isEqualToString:@"sina"]) {
+                    vc.unbindType = @"bind_sina";
+                }
+                [self.navigationController pushViewController:vc animated:YES];
+//                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
     } enError:^(NSError * _Nonnull error) {

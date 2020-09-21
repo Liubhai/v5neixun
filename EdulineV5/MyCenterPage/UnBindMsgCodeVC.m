@@ -30,6 +30,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"解除绑定";
+    if (_unBindOrBind) {
+        _titleLabel.text = @"绑定账号";
+    }
     [self makeSubViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
@@ -50,6 +53,9 @@
     _nextButton.layer.cornerRadius = 5;
     [_nextButton setTitleColor:[UIColor whiteColor] forState:0];
     [_nextButton setTitle:@"解除绑定" forState:0];
+    if (_unBindOrBind) {
+        [_nextButton setTitle:@"绑定账号" forState:0];
+    }
     _nextButton.titleLabel.font = SYSTEMFONT(18);
     _nextButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     _nextButton.enabled = NO;
@@ -59,25 +65,71 @@
 }
 
 - (void)nextButtonClick:(UIButton *)sender {
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    if (SWNOTEmptyStr(_unbindParamString)) {
-        [param setObject:_unbindParamString forKey:@"type"];
-    }
-    if (SWNOTEmptyStr(_loginMsg.codeTextField.text)) {
-        [param setObject:_loginMsg.codeTextField.text forKey:@"verify"];
-    }
-    [Net_API requestDeleteWithURLStr:[Net_Path otherTypeBindNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
-        if (SWNOTEmptyDictionary(responseObject)) {
-            [self showHudInView:self.view showHint:responseObject[@"msg"]];
-            if ([[responseObject objectForKey:@"code"] integerValue]) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self.navigationController popViewControllerAnimated:YES];
-                });
-            }
+    if (_unBindOrBind) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        if (SWNOTEmptyStr(_unbindParamString)) {
+            [param setObject:_unbindParamString forKey:@"type"];
         }
-    } enError:^(NSError * _Nonnull error) {
-        [self showHudInView:self.view showHint:@"网络请求超时"];
-    }];
+        if (SWNOTEmptyStr(_loginMsg.codeTextField.text)) {
+            [param setObject:_loginMsg.codeTextField.text forKey:@"verify"];
+        }
+        if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+            [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+        }
+        if (SWNOTEmptyStr(_other_union_id)) {
+            [param setObject:_other_union_id forKey:@"oauth"];
+        }
+        [Net_API requestPOSTWithURLStr:[Net_Path otherTypeBindNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    // 保存用户信息并且返回到个人中心页面
+                    
+                    NSString *ak = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"ak"]];
+                    NSString *sk = [NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"auth_token"] objectForKey:@"sk"]];
+                    [UserModel saveUserPassportToken:ak andTokenSecret:sk];
+                    [UserModel saveUid:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]]];
+                    [UserModel saveAuth_scope:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"auth_scope"]]];
+                    [UserModel saveUname:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"nick_name"]]];
+                    [UserModel saveAvatar:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"avatar_url"]]];
+                    [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"user_name"]]];
+                    [UserModel savePhone:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"phone"]]];
+                    [UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"LOGINFINISH" object:nil];
+                    
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    });
+                } else {
+                    [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    });
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络请求超时"];
+        }];
+    } else {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        if (SWNOTEmptyStr(_unbindParamString)) {
+            [param setObject:_unbindParamString forKey:@"type"];
+        }
+        if (SWNOTEmptyStr(_loginMsg.codeTextField.text)) {
+            [param setObject:_loginMsg.codeTextField.text forKey:@"verify"];
+        }
+        [Net_API requestDeleteWithURLStr:[Net_Path otherTypeBindNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络请求超时"];
+        }];
+    }
 }
 
 // MARK: - LoginMsgViewDelegate(验证码登录号码归属地选择)
