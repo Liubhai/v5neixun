@@ -42,9 +42,13 @@
     _loginMsg = [[LoginMsgView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 102.5)];
     _loginMsg.delegate = self;
     _loginMsg.phoneNumTextField.textColor = EdlineV5_Color.textThirdColor;
-    _loginMsg.phoneNumTextField.text = [UserModel userPhone];
-    [_loginMsg.phoneNumTextField setEnabled:NO];
-    _loginMsg.areaBtn.enabled = NO;
+    if (_unBindOrBind) {
+        
+    } else {
+        _loginMsg.phoneNumTextField.text = [UserModel userPhone];
+        [_loginMsg.phoneNumTextField setEnabled:NO];
+        _loginMsg.areaBtn.enabled = NO;
+    }
     [self.view addSubview:_loginMsg];
     
     _nextButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _loginMsg.bottom + 40, 280, 40)];

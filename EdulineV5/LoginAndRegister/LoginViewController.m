@@ -465,6 +465,7 @@
                 UnBindMsgCodeVC *vc = [[UnBindMsgCodeVC alloc] init];
                 vc.unbindParamString = type;
                 vc.other_union_id = unionId;
+                vc.unBindOrBind = YES;
                 if ([type isEqualToString:@"weixin"]) {
                     vc.unbindType = @"bind_weixin";
                 } else if ([type isEqualToString:@"qq"]) {
