@@ -73,7 +73,8 @@
     _quesrionContentLabel.numberOfLines = 0;
     _quesrionContentLabel.backgroundColor = HEXCOLOR(0xF0F0F0);
     if (SWNOTEmptyDictionary(_questionInfo)) {
-        _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",_questionInfo[@"notify_data"][@"content"]];
+//        _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",_questionInfo[@"notify_data"][@"content"]];
+        _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",_questionInfo[@"content"]];
     }
     [_quesrionContentBackView addSubview:_quesrionContentLabel];
     [_quesrionContentLabel sizeToFit];
