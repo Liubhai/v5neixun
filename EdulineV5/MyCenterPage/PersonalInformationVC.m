@@ -156,15 +156,16 @@
     [_phoneRightBtn setImage:Image(@"list_more") forState:0];
     [_phoneRightBtn addTarget:self action:@selector(jumpToChangePhonePage) forControlEvents:UIControlEventTouchUpInside];
     [_mainScrollView addSubview:_phoneRightBtn];
-    _phoneRightBtn.hidden = YES;
     
-    _phoneTextField = [[UITextField alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _phoneTitle.top, 200, 50)];//_phoneRightBtn.left - 5 - 200
+    _phoneTextField = [[UITextField alloc] initWithFrame:CGRectMake(_phoneRightBtn.left - 5 - 200, _phoneTitle.top, 200, 50)];
     _phoneTextField.textColor = EdlineV5_Color.textSecendColor;
     _phoneTextField.font = SYSTEMFONT(15);
     _phoneTextField.textAlignment = NSTextAlignmentRight;
     _phoneTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"手机号" attributes:@{NSFontAttributeName:SYSTEMFONT(15),NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
     _phoneTextField.delegate = self;
-    _phoneTextField.text = [NSString stringWithFormat:@"%@",[UserModel userPhone]];
+    if (SWNOTEmptyStr([UserModel userPhone])) {
+        _phoneTextField.text = [NSString stringWithFormat:@"%@",[UserModel userPhone]];
+    }
     [_mainScrollView addSubview:_phoneTextField];
     _phoneRightBtn.centerY = _phoneTextField.centerY;
     
@@ -399,7 +400,7 @@
             return NO;
         }
     } else if (textField == _phoneTextField) {
-//        [self jumpToChangePhonePage];
+        [self jumpToChangePhonePage];
         return NO;
     }
     return YES;
@@ -439,6 +440,10 @@
     
     if (SWNOTEmptyStr(attachId)) {
         [param setObject:attachId forKey:@"avatar"];
+    }
+    
+    if (SWNOTEmptyStr(_phoneTextField.text)) {
+        [param setObject:_phoneTextField.text forKey:@"phone"];
     }
     
     [param setObject:gender forKey:@"gender"];
@@ -526,6 +531,15 @@
     [self inputTextResign];
     RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
     vc.changePhone = YES;
+    if (SWNOTEmptyStr([UserModel userPhone])) {
+        vc.hasPhone = YES;
+        vc.oldPhone = YES;
+        vc.topTitle = @"*输入下方手机号收到的验证码进行验证";
+    } else {
+        vc.hasPhone = NO;
+        vc.oldPhone = NO;
+        vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 
