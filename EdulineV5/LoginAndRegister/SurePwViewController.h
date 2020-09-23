@@ -11,7 +11,8 @@
 
 @interface SurePwViewController : BaseViewController
 
-@property (assign, nonatomic) BOOL registerOrForget;
+@property (assign, nonatomic) BOOL registerOrForget;// 注册 或者 找回密码
+@property (assign, nonatomic) BOOL justSetPW; // 单纯的在设置里面进入的设置密码
 
 @property (strong, nonatomic) NSString *phoneNum;
 

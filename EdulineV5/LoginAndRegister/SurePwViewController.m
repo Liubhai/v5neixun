@@ -12,6 +12,7 @@
 #import "Net_Path.h"
 #import "EdulineV5_Tool.h"
 #import "WkWebViewController.h"
+#import "UserModel.h"
 
 @interface SurePwViewController ()<TYAttributedLabelDelegate>
 
@@ -30,7 +31,11 @@
     if (_registerOrForget) {
         _titleLabel.text = @"注册";
     } else {
-        _titleLabel.text = @"找回密码";
+        if (_justSetPW) {
+            _titleLabel.text = @"设置密码";
+        } else {
+            _titleLabel.text = @"找回密码";
+        }
     }
     [self makeSubViews];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
@@ -45,16 +50,23 @@
     _sureButton = [[UIButton alloc] initWithFrame:CGRectMake(15 * WidthRatio, _passWordView.bottom + 40, MainScreenWidth - 30 * WidthRatio, 40)];
     _sureButton.layer.masksToBounds = YES;
     _sureButton.layer.cornerRadius = 5;
-    [_sureButton setTitle:_registerOrForget ? @"注册" : @"确定" forState:0];
+    if (_registerOrForget) {
+        [_sureButton setTitle:@"注册" forState:0];
+    } else {
+        [_sureButton setTitle:@"确定" forState:0];
+    }
     _sureButton.titleLabel.font = SYSTEMFONT(18);
     [_sureButton addTarget:self action:@selector(sureButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
     
     [self.view addSubview:_sureButton];
     
-    if (_registerOrForget) {
+    if (_registerOrForget || _justSetPW) {
         
         _passWordView.firstPwLabel.text = @"设置密码";
+        if (_justSetPW) {
+            return;
+        }
         
         NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
         NSString *atr = [NSString stringWithFormat:@"《%@用户使用协议》",appName];
@@ -114,7 +126,7 @@
         return;
     }
     if ([_passWordView.firstPwTextField.text isEqualToString:_passWordView.surePwTextField.text]) {
-        if (_registerOrForget) {
+        if (_registerOrForget || _justSetPW) {
             [self setPassWordRequest];
         } else {
             [self reSetPassWordRequest];
@@ -140,7 +152,12 @@
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                if (_registerOrForget) {
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                } else if (_justSetPW) {
+                    [UserModel saveNeed_set_password:NO];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
         }
     } enError:^(NSError * _Nonnull error) {

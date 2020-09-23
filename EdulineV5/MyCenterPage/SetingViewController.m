@@ -17,6 +17,7 @@
 #import "WkWebViewController.h"
 #import "InstitutionsChooseVC.h"
 #import "OtherTypeLoginBindVC.h"
+#import "SurePwViewController.h"
 
 #import "RootV5VC.h"
 #import "SetingCell.h"
@@ -153,8 +154,16 @@
         [shit showInView:self.view];
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"password"]) {
         if (SWNOTEmptyStr([UserModel oauthToken])) {
-            PWResetViewController *vc = [[PWResetViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
+            if (SWNOTEmptyStr([UserModel userPhone])) {
+                if ([UserModel need_set_password]) {
+                    SurePwViewController *vc = [[SurePwViewController alloc] init];
+                    vc.justSetPW = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    PWResetViewController *vc = [[PWResetViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            }
         }
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"study"]) {
         if (!SWNOTEmptyStr([UserModel oauthToken])) {
@@ -329,6 +338,8 @@
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"schoolID"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Video_Face"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasAlipay"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"user_phone"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"need_set_password"];
     
     
 //    [Passport removeFile];
