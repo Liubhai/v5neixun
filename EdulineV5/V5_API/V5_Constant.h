@@ -71,7 +71,7 @@
 #define ShowInViewMiss(X) [self showHint:(X)]
 
 #define Image(name) [UIImage imageNamed:name]
-#define DefaultImage [UIImage imageNamed:@"defaultImage"]
+#define DefaultImage [UIImage imageNamed:@"placeholder_logo"]
 #define DefaultUserImage [UIImage imageNamed:@"pre_touxaing"]
 #define BasidColor EdlineV5_Color.themeColor
 #define BackColor [UIColor colorWithRed:240.f / 255 green:240.f / 255 blue:240.f / 255 alpha:1]
