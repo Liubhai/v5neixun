@@ -28,22 +28,22 @@
     [_selectedIconBtn setImage:Image(@"checkbox_def") forState:0];
     [_selectedIconBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     _selectedIconBtn.centerY = 92 / 2.0;
-    [self addSubview:_selectedIconBtn];
+    [self.contentView addSubview:_selectedIconBtn];
     
     
     _courseFaceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_cellType ? (_selectedIconBtn.right + 10) : 15, 10, 130, 72)];
     _courseFaceImageView.image = DefaultImage;
-    [self addSubview:_courseFaceImageView];
+    [self.contentView addSubview:_courseFaceImageView];
     
     _courseTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.right - 32, _courseFaceImageView.top + 8, 32, 18)];
     _courseTypeImageView.image = Image(@"class_icon");
-    [self addSubview:_courseTypeImageView];
+    [self.contentView addSubview:_courseTypeImageView];
     
     _themeLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 10, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(14);
     _themeLabel.text = @"课程显示课程标题，课时显示课时名称";
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _course_card = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 36, 15)];
     _course_card.image = Image(@"lessoncard_icon");
@@ -54,24 +54,24 @@
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     _timeLabel.textAlignment = NSTextAlignmentRight;
     _timeLabel.text = @"有效期至2022.12.12";
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, _timeLabel.top, 150, 15)];
     _priceLabel.font = SYSTEMFONT(12);
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     _priceLabel.text = @"VIP:¥200.00";
-    [self addSubview:_priceLabel];
+    [self.contentView addSubview:_priceLabel];
     
     _hasCourseCardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 36, _timeLabel.top, 36, 15)];
     _hasCourseCardImageView.image = Image(@"lessoncard_icon");
-    [self addSubview:_hasCourseCardImageView];
+    [self.contentView addSubview:_hasCourseCardImageView];
     
     _courseHourLabel = [[UILabel alloc] initWithFrame:CGRectMake(_timeLabel.left, _timeLabel.top - 17, _timeLabel.width, 15)];
     _courseHourLabel.font = SYSTEMFONT(11);
     _courseHourLabel.textAlignment = NSTextAlignmentRight;
     _courseHourLabel.textColor = EdlineV5_Color.textThirdColor;
     _courseHourLabel.text = @"12课时";
-    [self addSubview:_courseHourLabel];
+    [self.contentView addSubview:_courseHourLabel];
     
     if (_cellType) {
         _selectedIconBtn.hidden = NO;

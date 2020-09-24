@@ -26,21 +26,21 @@
     _faceImageView.layer.cornerRadius = 35;
     _faceImageView.layer.borderWidth = 2;
     _faceImageView.layer.borderColor = EdlineV5_Color.backColor.CGColor;
-    [self addSubview:_faceImageView];
+    [self.contentView addSubview:_faceImageView];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 20, _faceImageView.top + 5, MainScreenWidth - 15 - (_faceImageView.right + 20), 22)];
     _nameLabel.font = SYSTEMFONT(16);
     _nameLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_nameLabel];
+    [self.contentView addSubview:_nameLabel];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 20, _nameLabel.bottom + 6, MainScreenWidth - 15 - (_faceImageView.right + 20), 18)];
     _introLabel.font = SYSTEMFONT(13);
     _introLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_introLabel];
+    [self.contentView addSubview:_introLabel];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 110 - 1, MainScreenWidth, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setInstitutionListInfo:(NSDictionary *)info {

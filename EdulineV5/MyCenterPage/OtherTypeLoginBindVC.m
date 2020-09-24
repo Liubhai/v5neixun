@@ -213,11 +213,11 @@
     UnBindMsgCodeVC *vc = [[UnBindMsgCodeVC alloc] init];
     vc.unbindParamString = typeString;
     if ([typeString isEqualToString:@"weixin"]) {
-        vc.unbindType = @"unbundling_weixin";
+        vc.unbindType = @"unbind_weixin";
     } else if ([typeString isEqualToString:@"qq"]) {
-        vc.unbindType = @"unbundling_qq";
+        vc.unbindType = @"unbind_qq";
     } else if ([typeString isEqualToString:@"sina"]) {
-        vc.unbindType = @"unbundling_sina";
+        vc.unbindType = @"unbind_sina";
     }
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -302,6 +302,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:responseObject[@"msg"]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self getUserBindStatus];
             }
         }
     } enError:^(NSError * _Nonnull error) {

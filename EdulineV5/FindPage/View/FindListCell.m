@@ -30,25 +30,25 @@
     _backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, findFaceImageHeight, findFaceImageHeight)];
     _backImageView.image = Image(@"find_card");
     _backImageView.hidden = YES;
-    [self addSubview:_backImageView];
+    [self.contentView addSubview:_backImageView];
     
     _typeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
     _typeIcon.hidden = YES;
-    [self addSubview:_typeIcon];
+    [self.contentView addSubview:_typeIcon];
     
     _typeTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, findFaceImageHeight, 50)];
     _typeTitle.textColor = EdlineV5_Color.textFirstColor;
     _typeTitle.font = SYSTEMFONT(15);
-    [self addSubview:_typeTitle];
+    [self.contentView addSubview:_typeTitle];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 49, MainScreenWidth, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
     
     _rightIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 8, 18, 8, 14)];
     _rightIcon.image = Image(@"list_more");
     _rightIcon.hidden = YES;
-    [self addSubview:_rightIcon];
+    [self.contentView addSubview:_rightIcon];
 }
 
 // 如果是 yes 九宫格 no 列表

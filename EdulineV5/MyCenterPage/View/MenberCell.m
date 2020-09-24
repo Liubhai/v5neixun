@@ -26,24 +26,24 @@
     _selectImage.layer.masksToBounds = YES;
     _selectImage.layer.borderColor = EdlineV5_Color.starNoColor.CGColor;
     _selectImage.layer.borderWidth = 0.5;
-    [self addSubview:_selectImage];
+    [self.contentView addSubview:_selectImage];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_selectImage.left + 15, 5, 100, 80)];
     _titleLabel.textColor = HEXCOLOR(0x582F1D);
     _titleLabel.font = SYSTEMFONT(16);
     _titleLabel.text = @"月卡";
-    [self addSubview:_titleLabel];
+    [self.contentView addSubview:_titleLabel];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 5, MainScreenWidth - 110 - 95, 80)];
     _priceLabel.font = SYSTEMFONT(24);
     _priceLabel.textColor = HEXCOLOR(0x582F1D);
-    [self addSubview:_priceLabel];
+    [self.contentView addSubview:_priceLabel];
     
     _freeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 110, 5, 110, 80)];
     _freeLabel.font = SYSTEMFONT(12);
     _freeLabel.textColor = HEXCOLOR(0x582F1D);
     _freeLabel.text = @"赠送 100积分";
-    [self addSubview:_freeLabel];
+    [self.contentView addSubview:_freeLabel];
     
     NSString *price = @"¥100.00";//[NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"price"]];
     NSString *scribing_price = @"¥120.00";//[NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"scribing_price"]];

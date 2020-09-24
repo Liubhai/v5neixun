@@ -26,26 +26,26 @@
     _faceImageView.layer.cornerRadius = 2;
     _faceImageView.clipsToBounds = YES;
     _faceImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:_faceImageView];
+    [self.contentView addSubview:_faceImageView];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _faceImageView.top + 5, MainScreenWidth - 15 - (_faceImageView.right + 15), 22)];
     _nameLabel.font = SYSTEMFONT(16);
     _nameLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_nameLabel];
+    [self.contentView addSubview:_nameLabel];
     
     _levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _nameLabel.bottom + 13, MainScreenWidth - 15 - (_faceImageView.right + 15), 18)];
     _levelLabel.font = SYSTEMFONT(13);
     _levelLabel.textColor = EdlineV5_Color.textSecendColor;
-    [self addSubview:_levelLabel];
+    [self.contentView addSubview:_levelLabel];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _levelLabel.bottom + 13, MainScreenWidth - 15 - (_faceImageView.right + 15), 18)];
     _introLabel.font = SYSTEMFONT(13);
     _introLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_introLabel];
+    [self.contentView addSubview:_introLabel];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 152 - 1, MainScreenWidth, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setTeacherListInfo:(NSDictionary *)info {

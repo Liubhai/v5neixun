@@ -26,23 +26,23 @@
     _userFace.clipsToBounds = YES;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;
     _userFace.image = DefaultUserImage;
-    [self addSubview:_userFace];
+    [self.contentView addSubview:_userFace];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 15, _userFace.top, 200, _userFace.height)];
     _nameLabel.font = SYSTEMFONT(14);
     _nameLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_nameLabel];
+    [self.contentView addSubview:_nameLabel];
     
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 200, 32)];
     _themeLabel.font = SYSTEMFONT(14);
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _redView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 8, 15 + 12, 8, 8)];
     _redView.layer.masksToBounds = YES;
     _redView.layer.cornerRadius = 4;
     _redView.backgroundColor = EdlineV5_Color.faildColor;
-    [self addSubview:_redView];
+    [self.contentView addSubview:_redView];
     
     _contentLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_userFace.left, _userFace.bottom + 15, MainScreenWidth - _userFace.left - 15, 50)];
     _contentLabel.text = @"但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦";
@@ -50,17 +50,17 @@
     _contentLabel.font = SYSTEMFONT(15);
     _contentLabel.numberOfLines = 0;
     _contentLabel.delegate = self;
-    [self addSubview:_contentLabel];
+    [self.contentView addSubview:_contentLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.left, _contentLabel.bottom + 15, 100, 20)];
     _timeLabel.text = @"18:23";
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_userFace.left, _timeLabel.bottom + 10, MainScreenWidth - _userFace.left, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setMessageInfo:(NSDictionary *)info typeString:(nonnull NSString *)typeS {

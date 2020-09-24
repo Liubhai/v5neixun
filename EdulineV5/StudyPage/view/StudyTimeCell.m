@@ -24,14 +24,14 @@
     
     _whiteView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 150)];
     _whiteView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:_whiteView];
+    [self.contentView addSubview:_whiteView];
     
     _studyIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 40, MainScreenWidth - 30, 100)];
     _studyIcon.image = Image(@"study_card_img");
     _studyIcon.layer.masksToBounds = YES;
     _studyIcon.layer.cornerRadius = 8;
     _studyIcon.backgroundColor = EdlineV5_Color.themeColor;
-    [self addSubview:_studyIcon];
+    [self.contentView addSubview:_studyIcon];
     
     for (int i = 0; i<3; i++) {
         UILabel *timeCount = [[UILabel alloc] initWithFrame:CGRectMake(_studyIcon.width * i /3.0, 22, _studyIcon.width / 3.0, 26)];

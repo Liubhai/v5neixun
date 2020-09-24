@@ -31,7 +31,7 @@
 - (void)setRecommendCourseCellInfo:(NSArray *)recommendArray {
     [_recommendCourseArray removeAllObjects];
     [_recommendCourseArray addObjectsFromArray:recommendArray];
-    [self removeAllSubviews];
+    [self.contentView removeAllSubviews];
     [self addCardSwitch];
     
     [self buildData];
@@ -108,7 +108,7 @@
     self.cardSwitch.delegate = self;
     //分页切换
     self.cardSwitch.pagingEnabled = false;
-    [self addSubview:self.cardSwitch];
+    [self.contentView addSubview:self.cardSwitch];
 }
 
 - (void)buildData {

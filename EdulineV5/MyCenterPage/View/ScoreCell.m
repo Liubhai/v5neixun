@@ -25,7 +25,7 @@
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 40, 22)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(16);
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _statusButton = [[UIButton alloc] initWithFrame:CGRectMake(_themeLabel.right + 5, 0, 32, 16)];
     _statusButton.layer.masksToBounds = YES;
@@ -37,30 +37,30 @@
     const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.faildColor];
     _statusButton.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.2].CGColor;
     _statusButton.hidden = YES;
-    [self addSubview:_statusButton];
+    [self.contentView addSubview:_statusButton];
     
     _scoreCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 165, 0, 150, 21)];
     _scoreCountLabel.font = SYSTEMFONT(15);
     _scoreCountLabel.textAlignment = NSTextAlignmentRight;
     _scoreCountLabel.textColor = EdlineV5_Color.textFirstColor;
     _scoreCountLabel.centerY = _themeLabel.centerY;
-    [self addSubview:_scoreCountLabel];
+    [self.contentView addSubview:_scoreCountLabel];
     
     _scoreFromLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _themeLabel.bottom + 10, MainScreenWidth/2.0, 21)];
     _scoreFromLabel.font = SYSTEMFONT(13);
     _scoreFromLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_scoreFromLabel];
+    [self.contentView addSubview:_scoreFromLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 165, 0, 150, 16)];
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textAlignment = NSTextAlignmentRight;
     _timeLabel.textColor = EdlineV5_Color.textSecendColor;
     _timeLabel.centerY = _scoreFromLabel.centerY;
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 80 - 1, MainScreenWidth - 15, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setScoreDetailListInfo:(NSDictionary *)scoreInfo {

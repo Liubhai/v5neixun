@@ -23,10 +23,10 @@
     
     _backIamgeView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0)];
     _backIamgeView.image = Image(@"myorder_bg");
-    [self addSubview:_backIamgeView];
+    [self.contentView addSubview:_backIamgeView];
     
     _backView = [[UIView alloc] initWithFrame:CGRectMake(15, 15, MainScreenWidth - 30, 1)];
-    [self addSubview:_backView];
+    [self.contentView addSubview:_backView];
     
     _orderNum = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, _backView.width - 12, 36)];
     _orderNum.text = @"订单号：AWN8923779294";

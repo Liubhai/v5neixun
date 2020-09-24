@@ -25,19 +25,19 @@
     _userFace.layer.cornerRadius = _userFace.height / 2.0;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;
     _userFace.backgroundColor = EdlineV5_Color.faildColor;
-    [self addSubview:_userFace];
+    [self.contentView addSubview:_userFace];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 10, 0, 50, 20)];
     _nameLabel.textColor = EdlineV5_Color.textSecendColor;
     _nameLabel.font = SYSTEMFONT(14);
     _nameLabel.text = @"卡卡西";
     _nameLabel.centerY = _userFace.centerY;
-    [self addSubview:_nameLabel];
+    [self.contentView addSubview:_nameLabel];
     
     _scoreStar = [[StarEvaluator alloc] initWithFrame:CGRectMake(_nameLabel.right + 10, 0, 76, 12)];
     _scoreStar.userInteractionEnabled = NO;
     _scoreStar.centerY = _userFace.centerY;
-    [self addSubview:_scoreStar];
+    [self.contentView addSubview:_scoreStar];
     _scoreStar.hidden = YES;
     
     _tokenLabel = [[YYLabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 64)];
@@ -45,13 +45,13 @@
     _tokenLabel.text = @"我们可以使用以下方式来指定切断文本; 收起 我们可以使用以下方式来指定切断文本,弄啥呢大哥,一起上呀打死那个龟孙,我们可以使用以下方式来指定切断文本; 收起 我们可以使用以下方式来指定切断文本";
     _tokenLabel.numberOfLines = 4;
     [self addSeeMoreButtonInLabel:_tokenLabel];
-    [self addSubview:_tokenLabel];
+    [self.contentView addSubview:_tokenLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _tokenLabel.bottom + 15, 100, 20)];
     _timeLabel.text = @"18:23";
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
     
     NSString *commentCount = @"323";
     NSString *zanCount = @"1314";
@@ -66,7 +66,7 @@
     _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
     [_zanCountButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_zanCountButton];
+    [self.contentView addSubview:_zanCountButton];
     
     _commentCountButton = [[UIButton alloc] initWithFrame:CGRectMake(_zanCountButton.left - 18 - commentWidth, _timeLabel.top, commentWidth, 20)];
     [_commentCountButton setImage:Image(@"comment_icon") forState:0];
@@ -76,11 +76,11 @@
     _commentCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _commentCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
     [_commentCountButton addTarget:self action:@selector(commentButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_commentCountButton];
+    [self.contentView addSubview:_commentCountButton];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left, _timeLabel.bottom + 10, _tokenLabel.width, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setRecordInfo:(NSDictionary *)info {

@@ -27,17 +27,17 @@
     _courseFace.layer.masksToBounds = YES;
     _courseFace.layer.cornerRadius = 4;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:_courseFace];
+    [self.contentView addSubview:_courseFace];
     
     _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18)];
     _courseTypeImage.image = Image(@"class_icon");
-    [self addSubview:_courseTypeImage];
+    [self.contentView addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
     _titleL.text = @"你是个傻屌";
     _titleL.textColor = EdlineV5_Color.textFirstColor;
     _titleL.font = SYSTEMFONT(15);
-    [self addSubview:_titleL];
+    [self.contentView addSubview:_titleL];
     
     _learnProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 8, MainScreenWidth - _titleL.left - 15, 4)];
     _learnProgress.layer.masksToBounds = YES;
@@ -47,14 +47,14 @@
     _learnProgress.trackTintColor= HEXCOLOR(0xF1F1F1);
     //设置轨道的颜色
     _learnProgress.progressTintColor= EdlineV5_Color.themeColor;
-    [self addSubview:_learnProgress];
+    [self.contentView addSubview:_learnProgress];
     
     _learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16)];
     _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
     _learnCountLabel.text = @"50%";
     _learnCountLabel.font = SYSTEMFONT(12);
     _learnCountLabel.textAlignment = NSTextAlignmentRight;
-    [self addSubview:_learnCountLabel];
+    [self.contentView addSubview:_learnCountLabel];
     
 }
 

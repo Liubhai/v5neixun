@@ -25,14 +25,14 @@
     _faceImageView.contentMode = UIViewContentModeScaleAspectFill;
     _faceImageView.layer.masksToBounds = YES;
     _faceImageView.layer.cornerRadius = _faceImageView.height / 2.0;
-    [self addSubview:_faceImageView];
+    [self.contentView addSubview:_faceImageView];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom + 12, 75, 15)];
     _nameLabel.textColor = EdlineV5_Color.textSecendColor;
     _nameLabel.font = SYSTEMFONT(12);
     _nameLabel.textAlignment = NSTextAlignmentCenter;
     _nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [self addSubview:_nameLabel];
+    [self.contentView addSubview:_nameLabel];
 }
 
 - (void)setStudentInfo:(NSDictionary *)info {

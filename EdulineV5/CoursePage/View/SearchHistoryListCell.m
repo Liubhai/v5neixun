@@ -24,11 +24,11 @@
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 43)];
     _themeLabel.font = SYSTEMFONT(14);
     _themeLabel.textColor = EdlineV5_Color.textSecendColor;
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 43, MainScreenWidth - 30, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setSearchHistoryListCellInfo:(NSDictionary *)info searchKeyWord:(NSString *)searchKeyWord {

@@ -26,21 +26,21 @@
     _courseFace.image = DefaultImage;
     _courseFace.clipsToBounds = YES;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:_courseFace];
+    [self.contentView addSubview:_courseFace];
     
     _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18)];
     _courseTypeImage.image = Image(@"class_icon");
-    [self addSubview:_courseTypeImage];
+    [self.contentView addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
     _titleL.textColor = EdlineV5_Color.textFirstColor;
     _titleL.font = SYSTEMFONT(15);
-    [self addSubview:_titleL];
+    [self.contentView addSubview:_titleL];
     
     _learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 18, 100, 16)];
     _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
     _learnCountLabel.font = SYSTEMFONT(12);
-    [self addSubview:_learnCountLabel];
+    [self.contentView addSubview:_learnCountLabel];
     
     _manageButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 63, 0, 63, 21)];
     _manageButton.centerY = _learnCountLabel.centerY;
@@ -48,7 +48,7 @@
     [_manageButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _manageButton.titleLabel.font = SYSTEMFONT(15);
     [_manageButton addTarget:self action:@selector(manageButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_manageButton];
+    [self.contentView addSubview:_manageButton];
     
 }
 

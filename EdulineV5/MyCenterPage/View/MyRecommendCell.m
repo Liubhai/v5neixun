@@ -24,15 +24,15 @@
     _typeTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, 50)];
     _typeTitle.textColor = EdlineV5_Color.textFirstColor;
     _typeTitle.font = SYSTEMFONT(15);
-    [self addSubview:_typeTitle];
+    [self.contentView addSubview:_typeTitle];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 49.5, MainScreenWidth - 15, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
     
     _rightIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 8, 18, 8, 14)];
     _rightIcon.image = Image(@"list_more");
-    [self addSubview:_rightIcon];
+    [self.contentView addSubview:_rightIcon];
 }
 
 - (void)setInfo:(NSString *)title {

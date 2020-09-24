@@ -25,30 +25,30 @@
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 40, 22)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(16);
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _scoreCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 165, 0, 150, 21)];
     _scoreCountLabel.font = SYSTEMFONT(15);
     _scoreCountLabel.textAlignment = NSTextAlignmentRight;
     _scoreCountLabel.textColor = EdlineV5_Color.textFirstColor;
     _scoreCountLabel.centerY = _themeLabel.centerY;
-    [self addSubview:_scoreCountLabel];
+    [self.contentView addSubview:_scoreCountLabel];
     
     _scoreFromLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _themeLabel.bottom + 10, MainScreenWidth/2.0, 21)];
     _scoreFromLabel.font = SYSTEMFONT(13);
     _scoreFromLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_scoreFromLabel];
+    [self.contentView addSubview:_scoreFromLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 165, 0, 150, 16)];
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textAlignment = NSTextAlignmentRight;
     _timeLabel.textColor = EdlineV5_Color.textSecendColor;
     _timeLabel.centerY = _scoreFromLabel.centerY;
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 80 - 0.5, MainScreenWidth - 15, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setMenberInfo:(NSDictionary *)info {

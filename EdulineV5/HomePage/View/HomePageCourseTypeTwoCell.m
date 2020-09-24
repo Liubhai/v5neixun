@@ -60,7 +60,7 @@
 - (void)setHomePageCourseTypeTwoCellInfo:(NSMutableArray *)infoArray {
     [_categoryCourseArray removeAllObjects];
     [_categoryCourseArray addObjectsFromArray:infoArray];
-    [self removeAllSubviews];
+    [self.contentView removeAllSubviews];
     for (int i = 0; i<infoArray.count; i++) {
         UIImageView *courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 153, 86)];
         
@@ -69,33 +69,33 @@
         courseFace.layer.cornerRadius = 4;
         courseFace.clipsToBounds = YES;
         courseFace.contentMode = UIViewContentModeScaleAspectFill;
-        [self addSubview:courseFace];
+        [self.contentView addSubview:courseFace];
         
         UIImageView *courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(courseFace.right - 32, courseFace.top + 8, 32, 18)];
-        [self addSubview:courseTypeImage];
+        [self.contentView addSubview:courseTypeImage];
         
         UILabel *titleL = [[UILabel alloc] initWithFrame:CGRectMake(courseFace.right + 12, courseFace.top, MainScreenWidth - (courseFace.right + 12) - 15, 50)];
         titleL.textColor = EdlineV5_Color.textFirstColor;
         titleL.font = SYSTEMFONT(15);
-        [self addSubview:titleL];
+        [self.contentView addSubview:titleL];
         
         UILabel *learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleL.left, courseFace.bottom - 18, 100, 16)];
         learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
         learnCountLabel.font = SYSTEMFONT(12);
-        [self addSubview:learnCountLabel];
+        [self.contentView addSubview:learnCountLabel];
         
         UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, 0, 150, 21)];
         priceLabel.textColor = EdlineV5_Color.faildColor;
         priceLabel.font = SYSTEMFONT(15);
         priceLabel.textAlignment = NSTextAlignmentRight;
         priceLabel.centerY = learnCountLabel.centerY;
-        [self addSubview:priceLabel];
+        [self.contentView addSubview:priceLabel];
         
         UIButton *tapButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         tapButton.backgroundColor = [UIColor clearColor];
         tapButton.tag = 666 + i;
         [tapButton addTarget:self action:@selector(tapButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:tapButton];
+        [self.contentView addSubview:tapButton];
         
         // 1 点播 2 直播 3 面授 4 专辑
         NSString *courseType = [NSString stringWithFormat:@"%@",infoArray[i][@"course_type"]];

@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UnBindMsgCodeVC : BaseViewController
 
-//unbundling_weixin：解绑第三方微信；unbundling_qq：解绑第三方QQ；unbundling_sina：解绑第三方新浪
 @property (strong, nonatomic) NSString *unbindType;
 @property (strong, nonatomic) NSString *unbindParamString;// 类型传值
 

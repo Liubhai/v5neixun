@@ -27,25 +27,25 @@
     _faceImage.contentMode = UIViewContentModeScaleAspectFill;
     _faceImage.layer.masksToBounds = YES;
     _faceImage.layer.cornerRadius = _faceImage.height / 2.0;
-    [self addSubview:_faceImage];
+    [self.contentView addSubview:_faceImage];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImage.left - 12 - 100, _faceImage.top, 100, 15)];
     _nameLabel.textAlignment = NSTextAlignmentRight;
     _nameLabel.textColor = EdlineV5_Color.textSecendColor;
     _nameLabel.font = SYSTEMFONT(13);
-    [self addSubview:_nameLabel];
+    [self.contentView addSubview:_nameLabel];
     
     _contentBackView = [[UIView alloc] initWithFrame:CGRectMake(_faceImage.left - 12 - 182, _nameLabel.bottom + 5, questionChatContentWidth, 43)];
     _contentBackView.layer.masksToBounds = YES;
     _contentBackView.layer.cornerRadius = 5;
     _contentBackView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:_contentBackView];
+    [self.contentView addSubview:_contentBackView];
     
     _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImage.left - 12 - 12 - (questionChatContentWidth - 24), _nameLabel.bottom + 5 + 12, questionChatContentWidth - 24, 19)];
     _contentLabel.font = SYSTEMFONT(14);
     _contentLabel.numberOfLines = 0;
     _contentLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_contentLabel];
+    [self.contentView addSubview:_contentLabel];
 }
 
 - (void)setQuestionChatRightInfo:(NSDictionary *)info {

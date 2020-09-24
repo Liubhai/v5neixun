@@ -27,16 +27,16 @@
     _themeLabel.font = SYSTEMFONT(14);
     _themeLabel.textColor = EdlineV5_Color.textSecendColor;
     _themeLabel.numberOfLines = 0;
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _LeftLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 3, 59.5)];
     _LeftLineView.backgroundColor = EdlineV5_Color.themeColor;
-    [self addSubview:_LeftLineView];
+    [self.contentView addSubview:_LeftLineView];
     _LeftLineView.hidden = YES;
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 59.5, _themeLabel.width, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
     _lineView.hidden = !_showOneLine;
 }
 

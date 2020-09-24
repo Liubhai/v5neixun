@@ -271,7 +271,7 @@
     [pass setObject:@(page) forKey:@"page"];
     [pass setObject:@"10" forKey:@"count"];
     if (SWNOTEmptyStr(_zixunId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunDetailNet:_zixunId] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunDetailNet:_zixunId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
             if (_tableView.mj_header.isRefreshing) {
                 [_tableView.mj_header endRefreshing];
             }
@@ -287,7 +287,7 @@
                     [_contenView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
                 }
             }
-            if (_dataSource.count<10) {
+            if (_dataSource.count<20) {
                 _tableView.mj_footer.hidden = YES;
             } else {
                 _tableView.mj_footer.hidden = NO;
@@ -304,8 +304,8 @@
     page = page + 1;
     NSMutableDictionary *pass = [NSMutableDictionary new];
     [pass setObject:@(page) forKey:@"page"];
-    [pass setObject:@"10" forKey:@"count"];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path learnRecordList] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
+    [pass setObject:@"20" forKey:@"count"];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path zixunPostComment:_zixunId] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }
@@ -313,7 +313,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 NSArray *passArray = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
                 [_dataSource addObjectsFromArray:passArray];
-                if (pass.count<10) {
+                if (pass.count<20) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
                     _tableView.mj_footer.hidden = NO;

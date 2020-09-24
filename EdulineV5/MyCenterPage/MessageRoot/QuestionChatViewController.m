@@ -72,10 +72,10 @@
     _quesrionContentLabel.textColor = EdlineV5_Color.textThirdColor;
     _quesrionContentLabel.numberOfLines = 0;
     _quesrionContentLabel.backgroundColor = HEXCOLOR(0xF0F0F0);
-    if (SWNOTEmptyDictionary(_questionInfo)) {
-//        _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",_questionInfo[@"notify_data"][@"content"]];
-        _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",_questionInfo[@"content"]];
-    }
+//    if (SWNOTEmptyDictionary(_questionInfo)) {
+////        _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",_questionInfo[@"notify_data"][@"content"]];
+//        _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",_questionInfo[@"content"]];
+//    }
     [_quesrionContentBackView addSubview:_quesrionContentLabel];
     [_quesrionContentLabel sizeToFit];
     [_quesrionContentLabel setHeight:_quesrionContentLabel.height];
@@ -218,6 +218,12 @@
                 if (page == 1) {
                     [_dataSource removeAllObjects];
                 }
+                _quesrionContentLabel.text = [NSString stringWithFormat:@"问题内容：%@",[[responseObject objectForKey:@"data"] objectForKey:@"content"]];
+                [_quesrionContentLabel sizeToFit];
+                [_quesrionContentLabel setHeight:_quesrionContentLabel.height];
+                [_quesrionContentLabel setWidth:_quesrionContentBackView.width - 20];
+                [_quesrionContentBackView setHeight:_quesrionContentLabel.bottom + 10];
+                [_headView setHeight:_quesrionContentBackView.bottom + 23];
                 NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"reply"]];
                 [_dataSource insertObjects:pass atIndex:0];
                 if (pass.count<10) {

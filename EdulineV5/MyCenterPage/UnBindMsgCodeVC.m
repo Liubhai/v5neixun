@@ -69,6 +69,7 @@
 }
 
 - (void)nextButtonClick:(UIButton *)sender {
+    [self.view endEditing:YES];
     if (_unBindOrBind) {
         NSMutableDictionary *param = [NSMutableDictionary new];
         if (SWNOTEmptyStr(_unbindParamString)) {
@@ -105,9 +106,6 @@
                     });
                 } else {
                     [self showHudInView:self.view showHint:responseObject[@"msg"]];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    });
                 }
             }
         } enError:^(NSError * _Nonnull error) {
@@ -148,7 +146,7 @@
 
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
-    NSMutableDictionary *param;
+    NSMutableDictionary *param = [NSMutableDictionary new];
     if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
         [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
     }

@@ -142,7 +142,7 @@
 
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
-    NSMutableDictionary *param;
+    NSMutableDictionary *param = [NSMutableDictionary new];
     if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
         [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
     }

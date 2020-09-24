@@ -291,6 +291,7 @@
                 NSString *errmsg = [responseObject objectForKey:@"msg"];
                 NSLog(@"EdulineV4 DELETE request failure \n%@\n",errmsg);
             #endif
+            finish(responseObject);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
     #ifdef DEBUG

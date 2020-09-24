@@ -24,18 +24,18 @@
     _nameLabel.textColor = EdlineV5_Color.textFirstColor;
     _nameLabel.font = SYSTEMFONT(14);
     _nameLabel.text = @"中国";
-    [self addSubview:_nameLabel];
+    [self.contentView addSubview:_nameLabel];
     
     _codeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 54 * WidthRatio - 200, 0, 200, 40)];
     _codeLabel.textColor = EdlineV5_Color.textFirstColor;
     _codeLabel.font = SYSTEMFONT(14);
     _codeLabel.textAlignment = NSTextAlignmentRight;
     _codeLabel.text = @"+86";
-    [self addSubview:_codeLabel];
+    [self.contentView addSubview:_codeLabel];
     
     _line = [[UILabel alloc] initWithFrame:CGRectMake(15 * WidthRatio, _nameLabel.bottom, MainScreenWidth - 15 * WidthRatio, 0.5)];
     _line.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_line];
+    [self.contentView addSubview:_line];
 }
 
 - (void)setAreaInfo:(NSArray *)info {

@@ -24,18 +24,18 @@
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 15, 50)];
     _themeLabel.font = SYSTEMFONT(15);
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _rightIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 8, 0, 8, 14)];
     _rightIcon.image = Image(@"list_more");
     _rightIcon.centerY = _themeLabel.centerY;
-    [self addSubview:_rightIcon];
+    [self.contentView addSubview:_rightIcon];
     
     _rightLabel = [[UILabel alloc] initWithFrame:CGRectMake(_rightIcon.right - 15 - 100, 0, 100, 50)];
     _rightLabel.textColor = EdlineV5_Color.textThirdColor;
     _rightLabel.textAlignment = NSTextAlignmentRight;
     _rightLabel.font = SYSTEMFONT(15);
-    [self addSubview:_rightLabel];
+    [self.contentView addSubview:_rightLabel];
     
     _switchOther = [[UISwitch alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 36, 0, 51, 20)];
     _switchOther.onTintColor = HEXCOLOR(0x67C23A);
@@ -43,7 +43,7 @@
     _switchOther.backgroundColor = HEXCOLOR(0xC9C9C9);
     _switchOther.thumbTintColor = [UIColor whiteColor];
     [_switchOther addTarget:self action:@selector(switchIsChanged:) forControlEvents:UIControlEventValueChanged];
-    [self addSubview:_switchOther];
+    [self.contentView addSubview:_switchOther];
     [_switchOther setSize:_switchOther.size];
     _switchOther.centerY = _themeLabel.centerY;
     _switchOther.transform = CGAffineTransformMakeScale(36/51.0, 36/51.0);
@@ -52,7 +52,7 @@
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 49.5, MainScreenWidth - 15, 0.5)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setSetingCellInfo:(NSDictionary *)info {

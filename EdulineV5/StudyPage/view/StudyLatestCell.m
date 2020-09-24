@@ -27,7 +27,7 @@
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     _mainScrollView.showsHorizontalScrollIndicator = NO;
     _mainScrollView.showsVerticalScrollIndicator = NO;
-    [self addSubview:_mainScrollView];
+    [self.contentView addSubview:_mainScrollView];
 }
 
 - (void)setLatestLearnInfo:(NSArray *)learnArray {

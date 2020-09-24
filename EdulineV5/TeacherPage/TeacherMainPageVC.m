@@ -80,7 +80,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     wordMax = 300;
-    _buttonTypeArray = @[@"介绍",@"动态",@"课程",@"问答"];
+//    _buttonTypeArray = @[@"介绍",@"动态",@"课程",@"问答"];
+    _buttonTypeArray = @[@"介绍",@"课程"];
     _titleImage.hidden = YES;
     [self makeHeaderView];
     [self makeButtonBackView];
@@ -214,9 +215,9 @@
     _greenline.layer.masksToBounds = YES;
     _greenline.layer.cornerRadius = 1.5;
     [_buttonBackView addSubview:_greenline];
-    
+    CGFloat WW = MainScreenWidth / _buttonTypeArray.count;
     for (int i = 0; i < _buttonTypeArray.count; i++) {
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth * i / 4.0, 0, MainScreenWidth / 4.0, 47)];
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(WW * i, 0, WW, 47)];
         [btn setTitle:_buttonTypeArray[i] forState:0];
         [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
         [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
@@ -229,16 +230,28 @@
             _introButton = btn;
             _greenline.centerX = btn.centerX;
         } else if (i == 1) {
-            _dynamicButton = btn;
+            _courseButton = btn;
         } else if (i == 2) {
             _courseButton = btn;
         } else if (i == 3) {
             _answerButton = btn;
         }
+//        if (i == 0) {
+//            btn.selected = YES;
+//            _introButton = btn;
+//            _greenline.centerX = btn.centerX;
+//        } else if (i == 1) {
+//            _dynamicButton = btn;
+//        } else if (i == 2) {
+//            _courseButton = btn;
+//        } else if (i == 3) {
+//            _answerButton = btn;
+//        }
     }
 }
 
 - (void)makeMainScrollView {
+    
     _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _topView.bottom, MainScreenWidth, MainScreenHeight - _topView.bottom)];
     _mainScrollView.contentSize = CGSizeMake(MainScreenWidth*_buttonTypeArray.count, 0);
     _mainScrollView.pagingEnabled = YES;
@@ -258,9 +271,32 @@
     _teacherCourseVC = [[TeahcerCourseListVC alloc] init];
     _teacherCourseVC.teacherId = _teacherId;
     _teacherCourseVC.tabelHeight = _mainScrollView.height;
-    _teacherCourseVC.view.frame = CGRectMake(MainScreenWidth * 2,0, MainScreenWidth, _mainScrollView.height);
+    _teacherCourseVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, _mainScrollView.height);
     [_mainScrollView addSubview:_teacherCourseVC.view];
     [self addChildViewController:_teacherCourseVC];
+    
+//    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _topView.bottom, MainScreenWidth, MainScreenHeight - _topView.bottom)];
+//    _mainScrollView.contentSize = CGSizeMake(MainScreenWidth*_buttonTypeArray.count, 0);
+//    _mainScrollView.pagingEnabled = YES;
+//    _mainScrollView.showsHorizontalScrollIndicator = NO;
+//    _mainScrollView.showsVerticalScrollIndicator = NO;
+//    _mainScrollView.bounces = NO;
+//    _mainScrollView.delegate = self;
+//    [self.view addSubview:_mainScrollView];
+//
+//    _teacherIntroVC = [[TeacherIntroVC alloc] init];
+//    _teacherIntroVC.teacherId = _teacherId;
+//    _teacherIntroVC.tabelHeight = _mainScrollView.height;
+//    _teacherIntroVC.view.frame = CGRectMake(0,0, MainScreenWidth, _mainScrollView.height);
+//    [_mainScrollView addSubview:_teacherIntroVC.view];
+//    [self addChildViewController:_teacherIntroVC];
+//
+//    _teacherCourseVC = [[TeahcerCourseListVC alloc] init];
+//    _teacherCourseVC.teacherId = _teacherId;
+//    _teacherCourseVC.tabelHeight = _mainScrollView.height;
+//    _teacherCourseVC.view.frame = CGRectMake(MainScreenWidth * 2,0, MainScreenWidth, _mainScrollView.height);
+//    [_mainScrollView addSubview:_teacherCourseVC.view];
+//    [self addChildViewController:_teacherCourseVC];
     
     
 }
@@ -270,29 +306,44 @@
         if (scrollView.contentOffset.x <= 0) {
             self.greenline.centerX = self.introButton.centerX;
             self.introButton.selected = YES;
-            self.dynamicButton.selected = NO;
+//            self.dynamicButton.selected = NO;
             self.courseButton.selected = NO;
-            self.answerButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= MainScreenWidth * 2 && scrollView.contentOffset.x <= 2 * MainScreenWidth){
+//            self.answerButton.selected = NO;
+        }else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
             self.greenline.centerX = self.courseButton.centerX;
             self.introButton.selected = NO;
-            self.dynamicButton.selected = NO;
+//            self.dynamicButton.selected = NO;
             self.courseButton.selected = YES;
-            self.answerButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
-            self.greenline.centerX = self.dynamicButton.centerX;
-            self.introButton.selected = NO;
-            self.dynamicButton.selected = YES;
-            self.courseButton.selected = NO;
-            self.answerButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= 3*MainScreenWidth && scrollView.contentOffset.x <= 3*MainScreenWidth){
-            self.greenline.centerX = self.answerButton.centerX;
-            self.introButton.selected = NO;
-            self.dynamicButton.selected = NO;
-            self.courseButton.selected = NO;
-            self.answerButton.selected = YES;
+//            self.answerButton.selected = NO;
         }
     }
+//    if (scrollView == _mainScrollView) {
+//        if (scrollView.contentOffset.x <= 0) {
+//            self.greenline.centerX = self.introButton.centerX;
+//            self.introButton.selected = YES;
+//            self.dynamicButton.selected = NO;
+//            self.courseButton.selected = NO;
+//            self.answerButton.selected = NO;
+//        }else if (scrollView.contentOffset.x >= MainScreenWidth * 2 && scrollView.contentOffset.x <= 2 * MainScreenWidth){
+//            self.greenline.centerX = self.courseButton.centerX;
+//            self.introButton.selected = NO;
+//            self.dynamicButton.selected = NO;
+//            self.courseButton.selected = YES;
+//            self.answerButton.selected = NO;
+//        }else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
+//            self.greenline.centerX = self.dynamicButton.centerX;
+//            self.introButton.selected = NO;
+//            self.dynamicButton.selected = YES;
+//            self.courseButton.selected = NO;
+//            self.answerButton.selected = NO;
+//        }else if (scrollView.contentOffset.x >= 3*MainScreenWidth && scrollView.contentOffset.x <= 3*MainScreenWidth){
+//            self.greenline.centerX = self.answerButton.centerX;
+//            self.introButton.selected = NO;
+//            self.dynamicButton.selected = NO;
+//            self.courseButton.selected = NO;
+//            self.answerButton.selected = YES;
+//        }
+//    }
 }
 
 - (void)jumpToInstitution:(UIButton *)sender {

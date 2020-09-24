@@ -23,7 +23,7 @@
 - (void)makeSubView {
     _backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 150 + 23)];
     _backView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:_backView];
+    [self.contentView addSubview:_backView];
     
     _whiteBackView = [[UIView alloc] initWithFrame:CGRectMake(15, 23, MainScreenWidth - 30, 150)];
     _whiteBackView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
@@ -73,15 +73,7 @@
 
 - (void)setMemberInfo:(NSDictionary *)info {
     NSString *typeS = [NSString stringWithFormat:@"%@",info[@"ext_data"][@"vip_title"]];
-    if ([typeS isEqualToString:@"季卡"]) {
-        _themeLabel.text = @"季度会员";
-    } else if ([typeS isEqualToString:@"月卡"]) {
-        _themeLabel.text = @"月会员";
-    } else if ([typeS isEqualToString:@"年卡"]) {
-        _themeLabel.text = @"年度会员";
-    } else if ([typeS isEqualToString:@"周卡"]) {
-        _themeLabel.text = @"周会员";
-    }
+    _themeLabel.text = typeS;
 
     _timeLabel.text = [NSString stringWithFormat:@"¥%@",info[@"payment"]];
 

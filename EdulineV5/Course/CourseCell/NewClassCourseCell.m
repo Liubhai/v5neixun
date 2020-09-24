@@ -25,33 +25,33 @@
     _CourseTypeIcon.centerY = 50 / 2.0;
     _CourseTypeIcon.clipsToBounds = YES;
     _CourseTypeIcon.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:_CourseTypeIcon];
+    [self.contentView addSubview:_CourseTypeIcon];
     
     _blueView = [[UIView alloc] initWithFrame:CGRectMake(26, 17, 3, 16)];
     _blueView.backgroundColor = EdlineV5_Color.themeColor;
     _blueView.layer.masksToBounds = YES;
     _blueView.layer.cornerRadius = 2;
-    [self addSubview:_blueView];
+    [self.contentView addSubview:_blueView];
     
     _typeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(36, 0, 32, 16)];
     _typeIcon.centerY = 50 / 2.0;
-    [self addSubview:_typeIcon];
+    [self.contentView addSubview:_typeIcon];
     
     _lockIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 14, 0, 14, 16)];
     _lockIcon.centerY = 50 / 2.0;
     _lockIcon.image = Image(@"contents_icon_lock");
     _lockIcon.hidden = YES;
-    [self addSubview:_lockIcon];
+    [self.contentView addSubview:_lockIcon];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_typeIcon.right + 5, 0, 150, 50)];
     _titleLabel.textColor = EdlineV5_Color.textSecendColor;
     _titleLabel.font = SYSTEMFONT(14);
-    [self addSubview:_titleLabel];
+    [self.contentView addSubview:_titleLabel];
     
     _freeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_titleLabel.right + 10, (50 - 16) / 2.0, 36, 16)];
     _freeImageView.image = Image(@"contents_icon_free");
     _freeImageView.hidden = YES;
-    [self addSubview:_freeImageView];
+    [self.contentView addSubview:_freeImageView];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_freeImageView.right + 10, (50 - 13) / 2.0, 100, 13)];
     _priceLabel.textAlignment = NSTextAlignmentCenter;
@@ -61,12 +61,12 @@
     _priceLabel.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
     _priceLabel.layer.borderWidth = 1;
     _priceLabel.font = SYSTEMFONT(11);
-    [self addSubview:_priceLabel];
+    [self.contentView addSubview:_priceLabel];
     
     _courseRightBtn = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 14, 0, 14, 8)];
     _courseRightBtn.image = Image(@"contents_down");
     _courseRightBtn.centerY = 50 / 2.0;
-    [self addSubview:_courseRightBtn];
+    [self.contentView addSubview:_courseRightBtn];
     
     _isLearningIcon = [[playAnimationView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 16, 0, 16, 17)];
     _isLearningIcon.centerY = 50 / 2.0;
@@ -74,22 +74,22 @@
     _isLearningIcon.animationImages = @[Image(@"playing1"),Image(@"playing2")];
     _isLearningIcon.highlightedAnimationImages = @[Image(@"playing1"),Image(@"playing2")];
     _isLearningIcon.animationDuration = 0.4;
-    [self addSubview:_isLearningIcon];
+    [self.contentView addSubview:_isLearningIcon];
     
     _learnTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 85, 0, 85, 50)];
     _learnTimeLabel.font = SYSTEMFONT(11);
     _learnTimeLabel.textAlignment = NSTextAlignmentRight;
     _learnTimeLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_learnTimeLabel];
+    [self.contentView addSubview:_learnTimeLabel];
     
     _learnIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14)];
     _learnIcon.centerY = 50 / 2.0;
     _learnIcon.image = Image(@"comment_his_icon");
-    [self addSubview:_learnIcon];
+    [self.contentView addSubview:_learnIcon];
     
     _cellTableViewSpace = [[UIView alloc] initWithFrame:CGRectMake(0, 49, MainScreenWidth, 1)];
     _cellTableViewSpace.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_cellTableViewSpace];
+    [self.contentView addSubview:_cellTableViewSpace];
     
 }
 

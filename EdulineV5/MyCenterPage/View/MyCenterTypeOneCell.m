@@ -23,7 +23,7 @@
 - (void)makeSubView {
     _cellView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0)];
     _cellView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:_cellView];
+    [self.contentView addSubview:_cellView];
 }
 
 - (void)setMyCenterClassifyInfo:(NSMutableArray *)info {

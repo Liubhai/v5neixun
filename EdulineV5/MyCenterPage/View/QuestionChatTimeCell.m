@@ -24,7 +24,7 @@
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     _timeLabel.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
 }
 
 - (void)setTimeInfo:(NSString *)timeString {

@@ -27,45 +27,45 @@
     _themeLabel.font = SYSTEMFONT(15);
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_themeLabel.left, _themeLabel.bottom + 4, _themeLabel.width, 20)];
     _introLabel.font = SYSTEMFONT(15);
     _introLabel.textColor = EdlineV5_Color.textSecendColor;
     _introLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [self addSubview:_introLabel];
+    [self.contentView addSubview:_introLabel];
     
     _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 128, (101 - 72) / 2.0, 128, 72)];
     _faceImageView.layer.masksToBounds = YES;
     _faceImageView.layer.cornerRadius = 2;
     _faceImageView.clipsToBounds = YES;
     _faceImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:_faceImageView];
+    [self.contentView addSubview:_faceImageView];
     
     _lookCountImage = [[UIImageView alloc] initWithFrame: CGRectMake(15, 0, 13, 8)];
     _lookCountImage.image = Image(@"news_view_icon");
-    [self addSubview:_lookCountImage];
+    [self.contentView addSubview:_lookCountImage];
     
     _lookCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_lookCountImage.right + 5, _introLabel.bottom + 10, 100, 18.5)];
     _lookCountLabel.font = SYSTEMFONT(13);
     _lookCountLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_lookCountLabel];
+    [self.contentView addSubview:_lookCountLabel];
     
     _lookCountImage.centerY = _lookCountLabel.centerY;
     
     _fengeLine1 = [[UIView alloc] initWithFrame:CGRectMake(_lookCountLabel.right + 9.5, 0, 0.5, 8)];
     _fengeLine1.backgroundColor = EdlineV5_Color.fengeLineColor;
     _fengeLine1.centerY = _lookCountLabel.centerY;
-    [self addSubview:_fengeLine1];
+    [self.contentView addSubview:_fengeLine1];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_fengeLine1.right + 9.5, _lookCountLabel.top, 100, _lookCountLabel.height)];
     _timeLabel.font = SYSTEMFONT(13);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
     
     _fengeLine2 = [[UIView alloc] initWithFrame: CGRectMake(15, 101, MainScreenWidth - 15, 0.5)];
     _fengeLine2.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_fengeLine2];
+    [self.contentView addSubview:_fengeLine2];
 }
 
 - (void)setZiXunInfo:(NSDictionary *)info {

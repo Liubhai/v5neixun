@@ -136,9 +136,11 @@
 }
 
 - (void)makeOtherType {
-    _thirdLoginView = [[ThirdLoginView alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 32, MainScreenWidth, 90) methodTypeConfigArray:_otherTypeArray];
-    _thirdLoginView.delegate = self;
-    [self.view addSubview:_thirdLoginView];
+    if (SWNOTEmptyArr(_otherTypeArray)) {
+        _thirdLoginView = [[ThirdLoginView alloc] initWithFrame:CGRectMake(0, _loginBtn.bottom + 32, MainScreenWidth, 90) methodTypeConfigArray:_otherTypeArray];
+        _thirdLoginView.delegate = self;
+        [self.view addSubview:_thirdLoginView];
+    }
 }
 
 // MARK: - 返回按钮判断
@@ -193,7 +195,7 @@
 
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
-    NSMutableDictionary *param;
+    NSMutableDictionary *param = [NSMutableDictionary new];
     if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
         [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
     }

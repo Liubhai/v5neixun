@@ -26,7 +26,7 @@
     _teacherScrollView.backgroundColor = [UIColor whiteColor];
     _teacherScrollView.showsVerticalScrollIndicator = NO;
     _teacherScrollView.showsHorizontalScrollIndicator = NO;
-    [self addSubview:_teacherScrollView];
+    [self.contentView addSubview:_teacherScrollView];
 }
 
 - (void)setTeacherArrayInfo:(NSMutableArray *)infoArray {

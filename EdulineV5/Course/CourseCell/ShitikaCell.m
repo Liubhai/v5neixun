@@ -23,19 +23,19 @@
 - (void)makeSubView {
     _backView = [[UIImageView alloc] initWithFrame:CGRectMake(0.5, 0, MainScreenWidth - 1, 99)];
     _backView.image = Image(@"shitika_bg");
-    [self addSubview:_backView];
+    [self.contentView addSubview:_backView];
     
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 27, MainScreenWidth - 80 - 27.5 - 15, 20)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(14);
     _themeLabel.text = @"【机构1】平面设计基课程课程卡";
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _kahaoLabel = [[UILabel alloc] initWithFrame:CGRectMake(_themeLabel.left + 10, _themeLabel.bottom + 5, _themeLabel.width, 16)];
     _kahaoLabel.textColor = EdlineV5_Color.textSecendColor;
     _kahaoLabel.font = SYSTEMFONT(12);
     _kahaoLabel.text = @"卡号：892832193324233";
-    [self addSubview:_kahaoLabel];
+    [self.contentView addSubview:_kahaoLabel];
     
     _userButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 27.5 - 80, 0, 80, 34)];
     _userButton.centerY = 99 / 2.0;
@@ -50,7 +50,7 @@
     _userButton.layer.borderWidth = 1;
     _userButton.layer.borderColor = EdlineV5_Color.buttonNormalColor.CGColor;
     [_userButton addTarget:self action:@selector(userButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_userButton];
+    [self.contentView addSubview:_userButton];
 }
 
 - (void)userButtonClick:(UIButton *)sender {

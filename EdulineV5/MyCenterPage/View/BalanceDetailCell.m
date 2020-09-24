@@ -24,23 +24,23 @@
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, (70 - 54)/2.0, MainScreenWidth - 30, 27)];
     _titleLabel.font = SYSTEMFONT(15);
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_titleLabel];
+    [self.contentView addSubview:_titleLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _titleLabel.bottom + 5, MainScreenWidth - 30, 27)];
     _timeLabel.font = SYSTEMFONT(15);
     _timeLabel.textColor = EdlineV5_Color.textSecendColor;
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, 0, 100, 27)];
     _priceLabel.font = SYSTEMFONT(15);
     _priceLabel.textColor = EdlineV5_Color.textFirstColor;
     _priceLabel.textAlignment = NSTextAlignmentRight;
     _priceLabel.centerY = 77 / 2.0;
-    [self addSubview:_priceLabel];
+    [self.contentView addSubview:_priceLabel];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 76.5, MainScreenWidth - 15, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setInfoData:(NSDictionary *)infoData listType:(nonnull NSString *)listType {

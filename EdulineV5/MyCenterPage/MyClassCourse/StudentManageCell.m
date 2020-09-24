@@ -27,17 +27,17 @@
     _faceImageView.clipsToBounds = YES;
     _faceImageView.contentMode = UIViewContentModeScaleAspectFill;
     _faceImageView.image = DefaultUserImage;
-    [self addSubview:_faceImageView];
+    [self.contentView addSubview:_faceImageView];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _faceImageView.top + 5, MainScreenWidth - 15 - 55 - (_faceImageView.right + 15), 22)];
     _nameLabel.font = SYSTEMFONT(15);
     _nameLabel.textColor = EdlineV5_Color.textFirstColor;
-    [self addSubview:_nameLabel];
+    [self.contentView addSubview:_nameLabel];
     
     _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _faceImageView.bottom - 13, MainScreenWidth - 55 - 15 - (_faceImageView.right + 15), 13)];
     _introLabel.font = SYSTEMFONT(12);
     _introLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self addSubview:_introLabel];
+    [self.contentView addSubview:_introLabel];
     
 //    _dateLineLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _introLabel.top - 5 - 13, MainScreenWidth - 55 - 15 - (_faceImageView.right + 15), 13)];
 //    _dateLineLabel.font = SYSTEMFONT(12);
@@ -55,11 +55,11 @@
     [_followButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     [_followButton setTitle:@"移除" forState:0];
     [_followButton addTarget:self action:@selector(followButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_followButton];
+    [self.contentView addSubview:_followButton];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 97 - 1, MainScreenWidth, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setStudentInfo:(NSDictionary *)dict cellIndexPath:(NSIndexPath *)cellIndexPath {

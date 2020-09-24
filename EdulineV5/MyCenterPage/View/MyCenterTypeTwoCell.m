@@ -24,21 +24,21 @@
     _iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(15, (50 - 22)/2.0, 22, 22)];
     _iconImage.clipsToBounds = YES;
     _iconImage.contentMode = UIViewContentModeScaleAspectFill;
-    [self addSubview:_iconImage];
+    [self.contentView addSubview:_iconImage];
     
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_iconImage.right + 10, 0, 150, 50)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(15);
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _rightIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 8, 0, 8, 14)];
     _rightIcon.centerY = _iconImage.centerY;
     _rightIcon.image = Image(@"list_more");
-    [self addSubview:_rightIcon];
+    [self.contentView addSubview:_rightIcon];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_iconImage.right + 10, 49, MainScreenWidth - (_iconImage.right + 10), 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+    [self.contentView addSubview:_lineView];
 }
 
 - (void)setMyCenterTypeTwoCellInfo:(NSDictionary *)info {

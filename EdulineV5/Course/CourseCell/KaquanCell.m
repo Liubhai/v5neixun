@@ -26,21 +26,21 @@
 
 - (void)makeSubViews {
     _backView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, MainScreenWidth - 30, 92)];
-    [self addSubview:_backView];
+    [self.contentView addSubview:_backView];
     
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backView.left + 10, _backView.top, _backView.width - 10, 44)];
     _themeLabel.text = @"满一百减90";
-    [self addSubview:_themeLabel];
+    [self.contentView addSubview:_themeLabel];
     
     _fanweiLabel = [[UILabel alloc] initWithFrame:CGRectMake(_themeLabel.left, _themeLabel.bottom, _themeLabel.width, 16)];
     _fanweiLabel.font = SYSTEMFONT(12);
     _fanweiLabel.text = @"仅限机构1使用";
-    [self addSubview:_fanweiLabel];
+    [self.contentView addSubview:_fanweiLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_themeLabel.left, _fanweiLabel.bottom + 3, _themeLabel.width, 16)];
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.text = @"有效期2019.12.12至2022.12.12";
-    [self addSubview:_timeLabel];
+    [self.contentView addSubview:_timeLabel];
     
     _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(_backView.right - 10 - 75, 0, 75, 34)];
     _rightButton.titleLabel.font = SYSTEMFONT(15);
@@ -66,7 +66,7 @@
     }
     [_rightButton addTarget:self action:@selector(userButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     _rightButton.centerY = _backView.centerY;
-    [self addSubview:_rightButton];
+    [self.contentView addSubview:_rightButton];
 }
 
 - (void)setCouponInfo:(CouponModel *)model cellIndexPath:(NSIndexPath *)cellIndexPath isMyCouponsList:(BOOL)isMyCouponsList {
