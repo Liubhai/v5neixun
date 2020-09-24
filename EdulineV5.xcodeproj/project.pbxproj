@@ -497,6 +497,7 @@
 		78C936CF248FBA2D00D5F1ED /* UserCommenListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936CE248FBA2D00D5F1ED /* UserCommenListVC.m */; };
 		78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936D1248FBC5400D5F1ED /* UserListCell.m */; };
 		78C936D52490DAFF00D5F1ED /* InstitutionCourseMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */; };
+		78D46675251CA02600E94FF4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78D46677251CA02600E94FF4 /* LaunchScreen.storyboard */; };
 		78D97FF124B83C58000DE0E4 /* ClassCourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */; };
 		78D97FF424B83C9D000DE0E4 /* ClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF324B83C9D000DE0E4 /* ClassCourseCell.m */; };
 		78D97FF724B8458B000DE0E4 /* StudentManageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF624B8458B000DE0E4 /* StudentManageVC.m */; };
@@ -1493,6 +1494,7 @@
 		78C936D1248FBC5400D5F1ED /* UserListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserListCell.m; sourceTree = "<group>"; };
 		78C936D32490DAFE00D5F1ED /* InstitutionCourseMainVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionCourseMainVC.h; sourceTree = "<group>"; };
 		78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionCourseMainVC.m; sourceTree = "<group>"; };
+		78D46676251CA02600E94FF4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78D97FEF24B83C58000DE0E4 /* ClassCourseListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassCourseListVC.h; sourceTree = "<group>"; };
 		78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassCourseListVC.m; sourceTree = "<group>"; };
 		78D97FF224B83C9D000DE0E4 /* ClassCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassCourseCell.h; sourceTree = "<group>"; };
@@ -1873,6 +1875,7 @@
 				78795611240DE7A50013F95F /* AppDelegate.m */,
 				78795616240DE7A50013F95F /* ViewController.h */,
 				78795617240DE7A50013F95F /* ViewController.m */,
+				78D46677251CA02600E94FF4 /* LaunchScreen.storyboard */,
 				78795619240DE7A50013F95F /* Main.storyboard */,
 				7879561C240DE7AE0013F95F /* Assets.xcassets */,
 				78795621240DE7AE0013F95F /* Info.plist */,
@@ -3852,6 +3855,7 @@
 				788E95C1253FE24F0089251E /* ReplayControlView.xib in Resources */,
 				7879561D240DE7AE0013F95F /* Assets.xcassets in Resources */,
 				788E957E253FE24E0089251E /* OTOStudentView.xib in Resources */,
+				78D46675251CA02600E94FF4 /* LaunchScreen.storyboard in Resources */,
 				7879561B240DE7A50013F95F /* Main.storyboard in Resources */,
 				788E95C5253FE24F0089251E /* ReplayViewController.xib in Resources */,
 				788E957C253FE24E0089251E /* OTOTeacherView.xib in Resources */,
@@ -4423,6 +4427,14 @@
 				7879561A240DE7A50013F95F /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		78D46677251CA02600E94FF4 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78D46676251CA02600E94FF4 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
