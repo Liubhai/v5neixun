@@ -90,13 +90,15 @@
     model.checkedHidden = NO;
     model.isOpenSwipeGesture = NO;
 
-    if (@available(iOS 13.0, *)) {
-       model.currentStatusBarStyle = UIStatusBarStyleDarkContent;
-       model.otherStatusBarStyle = UIStatusBarStyleDarkContent;
-    } else {
-       model.currentStatusBarStyle = UIStatusBarStyleDefault;
-       model.otherStatusBarStyle = UIStatusBarStyleLightContent;
-    }
+//    if (@available(iOS 13.0, *)) {
+//       model.currentStatusBarStyle = UIStatusBarStyleDarkContent;
+//       model.otherStatusBarStyle = UIStatusBarStyleDarkContent;
+//    } else {
+//       model.currentStatusBarStyle = UIStatusBarStyleDefault;
+//       model.otherStatusBarStyle = UIStatusBarStyleLightContent;
+//    }
+    model.currentStatusBarStyle = UIStatusBarStyleDefault;
+    model.otherStatusBarStyle = UIStatusBarStyleDefault;
     return model;
 }
 

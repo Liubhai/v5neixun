@@ -159,7 +159,7 @@
             [param setObject:@"phone" forKey:@"type"];
         }
     }
-    [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:@{@"phone":_loginMsg.phoneNumTextField.text,@"type":(_registerOrForget ? @"login" : @"retrieve")} finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];

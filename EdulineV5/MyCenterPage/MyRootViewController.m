@@ -98,7 +98,7 @@
     
     [_tableView.mj_header beginRefreshing];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadUserInfo) name:@"reloadUserInfo" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserInfo) name:@"reloadUserInfo" object:nil];
 }
 
 - (void)reloadUserInfo {
