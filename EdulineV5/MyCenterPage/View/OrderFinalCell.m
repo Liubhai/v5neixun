@@ -130,7 +130,7 @@
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",[OrderFinalInfo objectForKey:@"user_price"]];
     _scribing_price.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"scribing_price"]];
     NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_scribing_price.text];
-    [mut addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:NSMakeRange(0, _scribing_price.text.length)];
+    [mut addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:NSMakeRange(0, _scribing_price.text.length)];
     _scribing_price.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
     if ([courseType isEqualToString:@"1"]) {
         [self setHeight:_faceImageView.bottom + 7.5];

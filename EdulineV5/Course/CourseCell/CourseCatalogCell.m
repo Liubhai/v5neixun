@@ -229,7 +229,7 @@
                 [_delegate playCellVideo:_listFinalModel.child[indexPath.row] currentCellIndex:indexPath panrentCellIndex:_listFinalModel.cellIndex superCellIndex:nil currentCell:cell];
             }
         } else if ([_allLayar isEqualToString:@"3"]) {
-            CourseCatalogCell *cell = (CourseCatalogCell *)self.superview.superview;
+            CourseCatalogCell *cell = (CourseCatalogCell *)(self.superview.superview.superview);
             CourseCatalogCell *currentcell = (CourseCatalogCell *)[self.cellTableView cellForRowAtIndexPath:indexPath];
             if (_delegate && [_delegate respondsToSelector:@selector(playCellVideo:currentCellIndex:panrentCellIndex:superCellIndex:currentCell:)]) {
                 [_delegate playCellVideo:_listFinalModel.child[indexPath.row] currentCellIndex:indexPath panrentCellIndex:_listFinalModel.cellIndex superCellIndex:cell.listFinalModel.cellIndex currentCell:currentcell];
@@ -569,7 +569,7 @@
 - (void)courseRightButtonClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(listChangeUpAndDown:listModel:panrentListModel:)]) {
         if ([_courselayer isEqualToString:@"2"] && [_allLayar isEqualToString:@"3"]) {
-            CourseCatalogCell *cell = (CourseCatalogCell *)_cellTableView.superview;
+            CourseCatalogCell *cell = (CourseCatalogCell *)(_cellTableView.superview.superview);
             [_delegate listChangeUpAndDown:sender listModel:_listFinalModel panrentListModel:cell.listFinalModel];
         } else {
             [_delegate listChangeUpAndDown:sender listModel:_listFinalModel panrentListModel:nil];
@@ -579,7 +579,7 @@
 
 - (void)listChangeUpAndDown:(UIButton *)sender listModel:(CourseListModelFinal *)model panrentListModel:(CourseListModelFinal *)panrentModel {
     if (_delegate && [_delegate respondsToSelector:@selector(listChangeUpAndDown:listModel:panrentListModel:)]) {
-        CourseCatalogCell *cell = (CourseCatalogCell *)sender.superview;
+        CourseCatalogCell *cell = (CourseCatalogCell *)(sender.superview.superview);
         if ([_courselayer isEqualToString:@"1"] && [_allLayar isEqualToString:@"3"]) {
             [_delegate listChangeUpAndDown:sender listModel:cell.listFinalModel panrentListModel:_listFinalModel];
         } else {

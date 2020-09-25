@@ -51,7 +51,7 @@
     NSRange rangOld = NSMakeRange(scribing_price.length, price.length);
     NSRange rangNow = NSMakeRange(1, scribing_price.length - 1);
     NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
-    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(14),NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
+    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(14),NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
     [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(24),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:rangNow];
     [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(16),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 1)];
     _priceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
@@ -75,7 +75,7 @@
     NSRange rangOld = NSMakeRange(scribing_price.length, price.length);
     NSRange rangNow = NSMakeRange(1, scribing_price.length - 1);
     NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
-    [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:14],NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
+    [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:14],NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
     [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:24],NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:rangNow];
     [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:16],NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 1)];
     _priceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
