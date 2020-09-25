@@ -63,6 +63,7 @@
         cell = [[StudentManageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
     [cell setStudentInfo:_dataSource[indexPath.row] cellIndexPath:indexPath];
+    cell.delegate = self;
     return cell;
 }
 
