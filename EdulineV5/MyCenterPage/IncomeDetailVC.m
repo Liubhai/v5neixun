@@ -167,7 +167,7 @@
             timeString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
             timeIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
             _timeButton.selected = NO;
-            [_timeButton setTitle:courseSortString forState:0];
+            [_timeButton setTitle:timeString forState:0];
             [EdulineV5_Tool dealButtonImageAndTitleUI:_timeButton];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];

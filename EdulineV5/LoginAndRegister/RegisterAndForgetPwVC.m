@@ -144,7 +144,11 @@
     [self.view endEditing:YES];
     NSMutableDictionary *param = [NSMutableDictionary new];
     if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
-        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+        if (_changePhone && _hasPhone && _oldPhone) {
+            [param setObject:[UserModel userPhone] forKey:@"phone"];
+        } else {
+            [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+        }
     }
     if (_registerOrForget) {
         [param setObject:@"login" forKey:@"type"];

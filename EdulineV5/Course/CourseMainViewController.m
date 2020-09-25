@@ -599,31 +599,45 @@
     moreView.layer.masksToBounds = YES;
     [allWindowView addSubview:moreView];
     
-    NSArray *titleArray = @[@"下载",@"收藏",@"分享"];
+    NSArray *titleArray = @[@"收藏",@"分享"];
     if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
-        titleArray = @[@"下载",@"已收藏",@"分享"];
+        titleArray = @[@"已收藏",@"分享"];
     }
     
     CGFloat ButtonW = 78;
     CGFloat ButtonH = 36;
-    for (int i = 0 ; i < 3 ; i ++) {
+    for (int i = 0 ; i < 2 ; i ++) {
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, ButtonH * i, ButtonW, ButtonH)];
         button.tag = i;
         [button setTitle:titleArray[i] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor colorWithHexString:@"#333"] forState:UIControlStateNormal];
         button.titleLabel.font = SYSTEMFONT(14);
-//        [button setImage:Image(imageArray[i]) forState:UIControlStateNormal];
-//        button.imageEdgeInsets =  UIEdgeInsetsMake(0,0,0,20 * WidthRatio);
-//        button.titleEdgeInsets = UIEdgeInsetsMake(0, 20 * WidthRatio, 0, 0);
         [button addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [moreView addSubview:button];
     }
+    
+//    NSArray *titleArray = @[@"下载",@"收藏",@"分享"];
+//    if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
+//        titleArray = @[@"下载",@"已收藏",@"分享"];
+//    }
+//
+//    CGFloat ButtonW = 78;
+//    CGFloat ButtonH = 36;
+//    for (int i = 0 ; i < 3 ; i ++) {
+//        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, ButtonH * i, ButtonW, ButtonH)];
+//        button.tag = i;
+//        [button setTitle:titleArray[i] forState:UIControlStateNormal];
+//        [button setTitleColor:[UIColor colorWithHexString:@"#333"] forState:UIControlStateNormal];
+//        button.titleLabel.font = SYSTEMFONT(14);
+//        [button addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [moreView addSubview:button];
+//    }
 }
 
 // MARK: - 更多按钮点击事件
 - (void)moreButtonClick:(UIButton *)sender {
     [_allWindowView removeFromSuperview];
-    if (sender.tag == 2) {
+    if (sender.tag == 1) {
         //显示分享面板
         [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_QQ),@(UMSocialPlatformType_Sina)]];
         [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
@@ -654,7 +668,7 @@
                 }
             }];
         }];
-    } else if (sender.tag == 1) {
+    } else if (sender.tag == 0) {
         // 收藏
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:_ID forKey:@"source_id"];
