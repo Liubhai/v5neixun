@@ -594,11 +594,6 @@
     [app.keyWindow addSubview:allWindowView];
     _allWindowView = allWindowView;
     
-    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 78 - 15,MACRO_UI_UPHEIGHT,78,108)];
-    moreView.backgroundColor = [UIColor whiteColor];
-    moreView.layer.masksToBounds = YES;
-    [allWindowView addSubview:moreView];
-    
     NSArray *titleArray = @[@"收藏",@"分享"];
     if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
         titleArray = @[@"已收藏",@"分享"];
@@ -606,6 +601,12 @@
     
     CGFloat ButtonW = 78;
     CGFloat ButtonH = 36;
+    
+    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 78 - 15,MACRO_UI_UPHEIGHT,78,ButtonH * titleArray.count)];
+    moreView.backgroundColor = [UIColor whiteColor];
+    moreView.layer.masksToBounds = YES;
+    [allWindowView addSubview:moreView];
+    
     for (int i = 0 ; i < 2 ; i ++) {
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, ButtonH * i, ButtonW, ButtonH)];
         button.tag = i;
