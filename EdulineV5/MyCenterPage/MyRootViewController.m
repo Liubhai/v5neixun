@@ -110,7 +110,7 @@
 - (void)makeHeaderView {
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0)];
     _headerView.backgroundColor = [UIColor whiteColor];
-    _myCenterUserInfoView = [[MyCenterUserInfoView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 234)];
+    _myCenterUserInfoView = [[MyCenterUserInfoView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 234 + MACRO_UI_LIUHAI_HEIGHT)];
     _myCenterUserInfoView.delegate = self;
     [_headerView addSubview:_myCenterUserInfoView];
     _mycenterOrderView = [[MyCenterOrderView alloc] initWithFrame:CGRectMake(15, _myCenterUserInfoView.bottom - 80, MainScreenWidth - 30, 140)];

@@ -22,7 +22,7 @@
 
 - (void)makeSubView {
     
-    _backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 234)];
+    _backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 234 + MACRO_UI_LIUHAI_HEIGHT)];
     _backImageView.image = [Image(@"pre_bg") converToOtherColor:EdlineV5_Color.themeColor];
     [self addSubview:_backImageView];
     
