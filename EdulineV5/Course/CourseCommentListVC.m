@@ -32,6 +32,7 @@
     page = 1;
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
+    _my_dataSource = [NSMutableArray new];
     
     _headerView = [[CourseCommentTopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 42) commentOrRecord:_cellType];
     _headerView.backgroundColor = [UIColor whiteColor];
@@ -44,6 +45,7 @@
     _tableView.tableHeaderView = _headerView;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     if (_cellType) {
@@ -56,7 +58,14 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _dataSource.count;
+    if (_cellType) {
+        return _dataSource.count;
+    } else {
+        if (_headerView.showOwnButton.selected) {
+            return _my_dataSource.count;
+        }
+        return _dataSource.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -66,7 +75,15 @@
         cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
     }
     cell.delegate = self;
-    [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:NO];
+    if (_cellType) {
+        [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:NO];
+    } else {
+        if (_headerView.showOwnButton.selected) {
+            [cell setCommentInfo:_my_dataSource[indexPath.row] showAllContent:NO];
+        } else {
+            [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:NO];
+        }
+    }
     return cell;
 }
 
@@ -115,6 +132,9 @@
     }
     
     NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
+    if (_headerView.showOwnButton.selected && !_cellType) {
+        pass = [NSDictionary dictionaryWithDictionary:_my_dataSource[indexPath.row]];
+    }
     BOOL isMine = NO;
     if (SWNOTEmptyDictionary(pass)) {
         if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
@@ -270,43 +290,71 @@
                 }
                 // 改变数据源 先改变所有数据源 用id匹配
                 // 点赞数 点赞状态(脑壳昏 想直接请求接口)
-                NSMutableDictionary *allCommentInfoPass = [NSMutableDictionary dictionaryWithDictionary:_allCommentInfo];
-                NSMutableDictionary *dataPass = [NSMutableDictionary dictionaryWithDictionary:[_allCommentInfo objectForKey:@"data"]];
-                NSMutableDictionary *my_commentInfo = [NSMutableDictionary dictionaryWithDictionary:[dataPass objectForKey:@"my_comment"]];
-                if ([[my_commentInfo allKeys] count]) {
-                    if ([[NSString stringWithFormat:@"%@",[my_commentInfo objectForKey:@"id"]] isEqualToString:commentId]) {
-                        [my_commentInfo setObject:zanCount forKey:@"like_count"];
-                        [my_commentInfo setObject:@(!likeStatus) forKey:@"like"];
-                        [dataPass setObject:my_commentInfo forKey:@"my_comment"];
+                
+                if (SWNOTEmptyArr(_my_dataSource)) {
+                    NSMutableDictionary *my_commentInfo = [NSMutableDictionary dictionaryWithDictionary:_my_dataSource[0]];
+                    if ([[my_commentInfo allKeys] count]) {
+                        if ([[NSString stringWithFormat:@"%@",[my_commentInfo objectForKey:@"id"]] isEqualToString:commentId]) {
+                            [my_commentInfo setObject:zanCount forKey:@"like_count"];
+                            [my_commentInfo setObject:@(!likeStatus) forKey:@"like"];
+                            [_my_dataSource replaceObjectAtIndex:0 withObject:my_commentInfo];
+                        }
                     }
                 }
                 
-                NSMutableDictionary *listPass = [NSMutableDictionary dictionaryWithDictionary:[dataPass objectForKey:@"list"]];
-                NSMutableArray *listDataArray = [NSMutableArray arrayWithArray:[listPass objectForKey:@"data"]];
-                for (int i = 0; i<listDataArray.count; i++) {
-                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:listDataArray[i]];
-                    if ([[NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]] isEqualToString:commentId]) {
-                        [pass setObject:zanCount forKey:@"like_count"];
-                        [pass setObject:@(!likeStatus) forKey:@"like"];
-                        [listDataArray replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:pass]];
-                        [listPass setObject:[NSArray arrayWithArray:listDataArray] forKey:@"data"];
-                        [dataPass setObject:[NSDictionary dictionaryWithDictionary:listPass] forKey:@"list"];
-                        [allCommentInfoPass setObject:dataPass forKey:@"data"];
-                        _allCommentInfo = [NSDictionary dictionaryWithDictionary:allCommentInfoPass];
-                        break;
-                    }
-                }
-                [_dataSource removeAllObjects];
-                if (_headerView.showOwnButton.selected) {
-                    if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
-                        if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
-                            [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
+                
+                
+                if (SWNOTEmptyArr(_dataSource)) {
+                    for (int i = 0; i<_dataSource.count; i++) {
+                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[i]];
+                        if ([[NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]] isEqualToString:commentId]) {
+                            [pass setObject:zanCount forKey:@"like_count"];
+                            [pass setObject:@(!likeStatus) forKey:@"like"];
+                            [_dataSource replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                            break;
                         }
                     }
-                } else {
-                    [_dataSource addObjectsFromArray:[[[_allCommentInfo objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
                 }
+                
                 [_tableView reloadData];
+                
+//                NSMutableDictionary *allCommentInfoPass = [NSMutableDictionary dictionaryWithDictionary:_allCommentInfo];
+//                NSMutableDictionary *dataPass = [NSMutableDictionary dictionaryWithDictionary:[_allCommentInfo objectForKey:@"data"]];
+//                NSMutableDictionary *my_commentInfo = [NSMutableDictionary dictionaryWithDictionary:[dataPass objectForKey:@"my_comment"]];
+//                if ([[my_commentInfo allKeys] count]) {
+//                    if ([[NSString stringWithFormat:@"%@",[my_commentInfo objectForKey:@"id"]] isEqualToString:commentId]) {
+//                        [my_commentInfo setObject:zanCount forKey:@"like_count"];
+//                        [my_commentInfo setObject:@(!likeStatus) forKey:@"like"];
+//                        [dataPass setObject:my_commentInfo forKey:@"my_comment"];
+//                    }
+//                }
+//
+//                NSMutableDictionary *listPass = [NSMutableDictionary dictionaryWithDictionary:[dataPass objectForKey:@"list"]];
+//                NSMutableArray *listDataArray = [NSMutableArray arrayWithArray:[listPass objectForKey:@"data"]];
+//                for (int i = 0; i<listDataArray.count; i++) {
+//                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:listDataArray[i]];
+//                    if ([[NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]] isEqualToString:commentId]) {
+//                        [pass setObject:zanCount forKey:@"like_count"];
+//                        [pass setObject:@(!likeStatus) forKey:@"like"];
+//                        [listDataArray replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:pass]];
+//                        [listPass setObject:[NSArray arrayWithArray:listDataArray] forKey:@"data"];
+//                        [dataPass setObject:[NSDictionary dictionaryWithDictionary:listPass] forKey:@"list"];
+//                        [allCommentInfoPass setObject:dataPass forKey:@"data"];
+//                        _allCommentInfo = [NSDictionary dictionaryWithDictionary:allCommentInfoPass];
+//                        break;
+//                    }
+//                }
+//                [_dataSource removeAllObjects];
+//                if (_headerView.showOwnButton.selected) {
+//                    if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
+//                        if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
+//                            [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
+//                        }
+//                    }
+//                } else {
+//                    [_dataSource addObjectsFromArray:[[[_allCommentInfo objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+//                }
+//                [_tableView reloadData];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -322,24 +370,26 @@
     if (_cellType) {
         [self getNoteList];
     } else {
-        if (SWNOTEmptyDictionary(_allCommentInfo)) {
-            [_dataSource removeAllObjects];
-            if (sender.selected) {
-                if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
-                    if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
-                        [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
-                    }
-                }
-            } else {
-                [_dataSource addObjectsFromArray:[[[_allCommentInfo objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
-            }
-            [_tableView reloadData];
-        }
+        [self getCourseCommentList];
+//        if (SWNOTEmptyDictionary(_allCommentInfo)) {
+//            [_dataSource removeAllObjects];
+//            if (sender.selected) {
+//                if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
+//                    if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
+//                        [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
+//                    }
+//                }
+//            } else {
+//                [_dataSource addObjectsFromArray:[[[_allCommentInfo objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+//            }
+//            [_tableView reloadData];
+//        }
     }
 }
 
 - (void)getCourseCommentList {
     if (SWNOTEmptyStr(_courseId)) {
+        page = 1;
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:@(page) forKey:@"page"];
         [param setObject:@"10" forKey:@"count"];
@@ -349,14 +399,23 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _allCommentInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [_dataSource removeAllObjects];
-                    if (_headerView.showOwnButton.selected) {
-                        if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
-                            if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
-                                [_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
-                            }
+                    [_my_dataSource removeAllObjects];
+                    if (SWNOTEmptyDictionary([[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"])) {
+                        if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
+                            [_my_dataSource addObject:[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"]];
                         }
+                    }
+                    [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+                    if (_dataSource.count<10) {
+                        _tableView.mj_footer.hidden = YES;
                     } else {
-                        [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+                        _tableView.mj_footer.hidden = NO;
+                        [_tableView.mj_footer setState:MJRefreshStateIdle];
+                    }
+                    if (_headerView.showOwnButton.selected) {
+                        _tableView.mj_footer.hidden = YES;
+                    } else {
+                        _tableView.mj_footer.hidden = NO;
                     }
                     [_headerView setCourseCommentInfo:[responseObject objectForKey:@"data"] commentOrRecord:_cellType];
                     [_headerView changeCommentStatus:[[[responseObject objectForKey:@"data"] objectForKey:@"has_comment"] boolValue]];
@@ -369,8 +428,58 @@
     }
 }
 
+- (void)getMoreList {
+    if (_cellType) {
+        [self getMoreNoteList];
+    } else {
+        [self getMoreCommentList];
+    }
+}
+
+- (void)getMoreCommentList {
+    page = page + 1;
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseCommentList:_courseId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                
+                if (SWNOTEmptyDictionary([[responseObject objectForKey:@"data"] objectForKey:@"my_comment"])) {
+                    if ([[[_allCommentInfo objectForKey:@"data"] objectForKey:@"my_comment"] allKeys].count) {
+                        [_my_dataSource addObject:[[responseObject objectForKey:@"data"] objectForKey:@"my_comment"]];
+                    }
+                }
+                [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+                
+                NSArray *pass = [NSArray arrayWithArray:[[[responseObject objectForKey:@"data"] objectForKey:@"list"] objectForKey:@"data"]];
+                if (pass.count<10) {
+                    [_tableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                if (_headerView.showOwnButton.selected) {
+                    _tableView.mj_footer.hidden = YES;
+                } else {
+                    _tableView.mj_footer.hidden = NO;
+                }
+                [_headerView setCourseCommentInfo:[responseObject objectForKey:@"data"] commentOrRecord:_cellType];
+                [_headerView changeCommentStatus:[[[responseObject objectForKey:@"data"] objectForKey:@"has_comment"] boolValue]];
+                [_tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        page--;
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+    }];
+}
+
 - (void)getNoteList {
     if (SWNOTEmptyStr(_courseHourseId)) {
+        page = 1;
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:@(page) forKey:@"page"];
         [param setObject:@"10" forKey:@"count"];
@@ -385,6 +494,12 @@
                     [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
 //                    [_headerView setCourseCommentInfo:[responseObject objectForKey:@"data"] commentOrRecord:_cellType];
 //                    [_headerView changeCommentStatus:[[[responseObject objectForKey:@"data"] objectForKey:@"has_comment"] boolValue]];
+                    if (_dataSource.count<10) {
+                        _tableView.mj_footer.hidden = YES;
+                    } else {
+                        _tableView.mj_footer.hidden = NO;
+                        [_tableView.mj_footer setState:MJRefreshStateIdle];
+                    }
                     [_tableView reloadData];
                 }
             }
@@ -392,6 +507,35 @@
             
         }];
     }
+}
+
+- (void)getMoreNoteList {
+    page = page + 1;
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
+    [param setObject:_courseHourseId forKey:@"section_id"];
+    [param setObject:_headerView.showOwnButton.selected ? @"my" : @"all" forKey:@"type"];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseNoteList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                if (pass.count<10) {
+                    [_tableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [_dataSource addObjectsFromArray:pass];
+                [_tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        page--;
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+    }];
 }
 
 // MARK: - 通知页面刷新数据(发布或者修改笔记、点评 或者点击了新的课时)

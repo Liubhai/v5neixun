@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSDictionary *allCommentInfo;
 /** 当前显示的数据列表 */
 @property (strong, nonatomic) NSMutableArray *dataSource;
+@property (strong, nonatomic) NSMutableArray *my_dataSource;
 
 @property (weak, nonatomic) CourseMainViewController *vc;
 @property (weak, nonatomic) CourseDetailPlayVC *detailVC;

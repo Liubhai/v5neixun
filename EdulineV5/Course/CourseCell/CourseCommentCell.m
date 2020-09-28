@@ -131,7 +131,7 @@
             
             CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
             [_nameLabel setWidth:nameWidth];
-            
+            _tokenLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 64);
             _tokenLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
             if (showAllContent) {
                 _tokenLabel.numberOfLines = 0;
