@@ -125,15 +125,6 @@
                 self.window.rootViewController = self.tabbar;
                 [self.window makeKeyAndVisible];
             };
-            
-//            InstitutionsChooseVC* institutionsVC = [[InstitutionsChooseVC alloc]init];
-//            self.window.rootViewController = institutionsVC;
-//            [self.window makeKeyAndVisible];
-//            institutionsVC.institutionChooseFinished = ^(BOOL succesed) {
-//                self.tabbar = [RootV5VC sharedBaseTabBarViewController];
-//                self.window.rootViewController = self.tabbar;
-//                [self.window makeKeyAndVisible];
-//            };
         } else {
             self.tabbar = [RootV5VC sharedBaseTabBarViewController];
             self.window.rootViewController = self.tabbar;
