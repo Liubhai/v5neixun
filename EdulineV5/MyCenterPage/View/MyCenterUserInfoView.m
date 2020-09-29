@@ -29,6 +29,7 @@
     _leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _leftBtn.frame = CGRectMake(0, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 54, 44);
     [_leftBtn setImage:Image(@"pre_nav_home") forState:0];
+    _leftBtn.hidden = YES;
     [self addSubview:_leftBtn];
     
     _rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
