@@ -147,7 +147,8 @@
     
     CourseListModel *model = [[CourseListModel alloc] init];
     section_data_model *sectionModel = [[section_data_model alloc] init];
-    sectionModel.title = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_title"]];
+    sectionModel.data_type = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_data_type"]];
+    model.title = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_title"]];
     model.section_data = sectionModel;
     model.course_id = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
     model.classHourId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
