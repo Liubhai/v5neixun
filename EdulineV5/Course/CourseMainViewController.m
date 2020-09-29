@@ -829,6 +829,7 @@
     vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
     vc.isLive = _isLive;
     vc.courseType = _courseType;
+    vc.currentPlayModel = cell.listFinalModel.model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -855,6 +856,7 @@
     vc.currentHourseId = [NSString stringWithFormat:@"%@",model.classHourId];
     vc.isLive = _isLive;
     vc.courseType = _courseType;
+    vc.currentPlayModel = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

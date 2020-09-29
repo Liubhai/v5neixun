@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "CourseListModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong ,nonatomic)NSDictionary   *dataSource;
 @property (strong ,nonatomic)NSDictionary   *recent_learn_Source;
 @property (assign, nonatomic) BOOL shouldContinueLearn;
+@property (strong, nonatomic) CourseListModel *currentPlayModel;// 从详情页传递过来的直接播放的当前课时信息
+@property (assign, nonatomic) BOOL isFromLearnRecord; // 是不是从学习记录跳转进播放页
 @property (strong ,nonatomic)NSString         *ID;
 @property (strong ,nonatomic)NSString         *currentHourseId;
 /** 是不是活动(由列表传入) */

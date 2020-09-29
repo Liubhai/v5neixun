@@ -11,6 +11,8 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "CourseMainViewController.h"
+#import "CourseDetailPlayVC.h"
+#import "CourseListModel.h"
 
 @interface LearnRecordVC ()<UITableViewDataSource,UITableViewDelegate> {
     NSInteger page;
@@ -129,10 +131,28 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+//    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+//    vc.ID = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
+//    vc.isLive = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+//    vc.courseType = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]];
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
     vc.ID = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
-    vc.isLive = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courselayer = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_level"]];
+    vc.currentHourseId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"2"];
     vc.courseType = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]];
+    
+    CourseListModel *model = [[CourseListModel alloc] init];
+    section_data_model *sectionModel = [[section_data_model alloc] init];
+    sectionModel.title = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_title"]];
+    model.section_data = sectionModel;
+    model.course_id = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
+    model.classHourId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
+    vc.currentPlayModel = model;
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 

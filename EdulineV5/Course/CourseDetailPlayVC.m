@@ -854,6 +854,10 @@
                             current_model.classHourId = [NSString stringWithFormat:@"%@",_recent_learn_Source[@"section_id"]];
                             [self recordLearnContinuePlay:current_model];
                         }
+                    } else {
+                        if (_currentPlayModel) {
+                            [self recordLearnContinuePlay:_currentPlayModel];
+                        }
                     }
                 }
             }
