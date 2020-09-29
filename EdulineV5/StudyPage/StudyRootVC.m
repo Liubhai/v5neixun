@@ -18,6 +18,7 @@
 #import "Net_Path.h"
 #import "LearnRecordVC.h"
 #import "CourseMainViewController.h"
+#import "CourseDetailPlayVC.h"
 
 @interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource,StudyLatestCellDelegate> {
     NSInteger currentCourseType;
@@ -460,12 +461,30 @@
 
 // MARK: - StudyLatestCellDelegate(最近在学课程点击跳转)
 - (void)jumpToCourseDetailVC:(NSDictionary *)info {
-    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
-    vc.ID = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_id"]];
-    vc.courselayer = [NSString stringWithFormat:@"%@",[info objectForKey:@"section_level"]];
-    vc.isLive = [[NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
-    vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+    
+    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",info[@"course_id"]];
+    vc.courselayer = [NSString stringWithFormat:@"%@",info[@"section_level"]];
+    vc.currentHourseId = [NSString stringWithFormat:@"%@",info[@"section_id"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",info[@"course_type"]] isEqualToString:@"2"];
+    vc.courseType = [NSString stringWithFormat:@"%@",info[@"course_type"]];
+    
+    CourseListModel *model = [[CourseListModel alloc] init];
+    section_data_model *sectionModel = [[section_data_model alloc] init];
+    sectionModel.title = [NSString stringWithFormat:@"%@",info[@"section_title"]];
+    model.section_data = sectionModel;
+    model.course_id = [NSString stringWithFormat:@"%@",info[@"course_id"]];
+    model.classHourId = [NSString stringWithFormat:@"%@",info[@"section_id"]];
+    vc.currentPlayModel = model;
+    
     [self.navigationController pushViewController:vc animated:YES];
+    
+//    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+//    vc.ID = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_id"]];
+//    vc.courselayer = [NSString stringWithFormat:@"%@",[info objectForKey:@"section_level"]];
+//    vc.isLive = [[NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+//    vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)typeBtnClick:(UIButton *)sender {

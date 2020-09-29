@@ -106,6 +106,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    if ([self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 2] isKindOfClass:[CourseDetailPlayVC class]]) {
+        NSMutableArray *vcArray = [NSMutableArray arrayWithArray:self.navigationController.childViewControllers];
+        [vcArray removeObjectAtIndex:self.navigationController.childViewControllers.count - 2];
+        self.navigationController.viewControllers = [NSArray arrayWithArray:vcArray];
+    }
+    
     _isClassNew = YES;
     /// 新增内容
     self.canScroll = YES;

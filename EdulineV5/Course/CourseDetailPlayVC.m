@@ -704,7 +704,15 @@
 
 // MARK: - 从播放页返回或者跳转到课程详情页
 - (void)popToCourseDetailVC {
-    [self.navigationController popViewControllerAnimated:NO];
+    if ([self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 2] isKindOfClass:[CourseMainViewController class]]) {
+        [self.navigationController popViewControllerAnimated:NO];
+    } else {
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = _ID;
+        vc.isLive =  _isLive;
+        vc.courseType = _courseType;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
