@@ -188,6 +188,11 @@
             }
         }
         
+        // 处理学习记录ui
+        _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - 85, 0, 85, 50);
+        _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+        _learnIcon.centerY = 50 / 2.0;
+        
         CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
         CGFloat titleWidth = ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4) > 150 ? 150 : ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4);
         [_titleLabel setLeft:_typeIcon.right + 5];
@@ -221,11 +226,19 @@
                     _learnTimeLabel.hidden = NO;
                     _learnIcon.image = Image(@"comment_his_icon");
                     _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.section_rate.current_time]];
+                    CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
+                    _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
+                    _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+                    _learnIcon.centerY = 50 / 2.0;
                 } else {
                     _learnIcon.hidden = NO;
                     _learnTimeLabel.hidden = NO;
                     _learnIcon.image = Image(@"comment_fin_icon");
                     _learnTimeLabel.text = @"已完成";
+                    CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
+                    _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
+                    _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+                    _learnIcon.centerY = 50 / 2.0;
                 }
 //                if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
 //                    _learnIcon.hidden = YES;

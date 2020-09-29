@@ -314,6 +314,11 @@
     [_priceLabel setWidth:priceWidth];
     [_freeImageView setLeft:_titleLabel.right + 3];
     
+    // 处理学习记录ui
+    _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - 85, 0, 85, 50);
+    _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+    _learnIcon.centerY = 50 / 2.0;
+    
     [_priceLabel setLeft:(_freeImageView.hidden ? _titleLabel.right : _freeImageView.right) + 3];
     if ([_allLayar isEqualToString:@"1"]) {
         _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
@@ -338,11 +343,19 @@
                     _learnTimeLabel.hidden = NO;
                     _learnIcon.image = Image(@"comment_his_icon");
                     _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
+                    CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
+                    _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
+                    _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+                    _learnIcon.centerY = 50 / 2.0;
                 } else {
                     _learnIcon.hidden = NO;
                     _learnTimeLabel.hidden = NO;
                     _learnIcon.image = Image(@"comment_fin_icon");
                     _learnTimeLabel.text = @"已完成";
+                    CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
+                    _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
+                    _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+                    _learnIcon.centerY = 50 / 2.0;
                 }
 //                if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
 //                    _learnIcon.hidden = YES;
@@ -408,11 +421,19 @@
                         _learnTimeLabel.hidden = NO;
                         _learnIcon.image = Image(@"comment_his_icon");
                         _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
+                        CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
+                        _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
+                        _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+                        _learnIcon.centerY = 50 / 2.0;
                     } else {
                         _learnIcon.hidden = NO;
                         _learnTimeLabel.hidden = NO;
                         _learnIcon.image = Image(@"comment_fin_icon");
                         _learnTimeLabel.text = @"已完成";
+                        CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
+                        _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
+                        _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+                        _learnIcon.centerY = 50 / 2.0;
                     }
 //                    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
 //                        _learnIcon.hidden = YES;
@@ -505,11 +526,19 @@
                         _learnTimeLabel.hidden = NO;
                         _learnIcon.image = Image(@"comment_his_icon");
                         _learnTimeLabel.text = [NSString stringWithFormat:@"学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:model.model.section_rate.current_time]];
+                        CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
+                        _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
+                        _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+                        _learnIcon.centerY = 50 / 2.0;
                     } else {
                         _learnIcon.hidden = NO;
                         _learnTimeLabel.hidden = NO;
                         _learnIcon.image = Image(@"comment_fin_icon");
                         _learnTimeLabel.text = @"已完成";
+                        CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
+                        _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
+                        _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
+                        _learnIcon.centerY = 50 / 2.0;
                     }
                     _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
 //                    if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
