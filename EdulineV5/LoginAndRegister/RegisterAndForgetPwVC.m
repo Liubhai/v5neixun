@@ -62,6 +62,7 @@
     _topLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, MainScreenWidth - 30, 18)];
     _topLabel.font = SYSTEMFONT(13);
     _topLabel.textColor = EdlineV5_Color.textThirdColor;
+    _topLabel.numberOfLines = 0;
     [_topView addSubview:_topLabel];
     
     if (SWNOTEmptyStr(_topTitle)) {

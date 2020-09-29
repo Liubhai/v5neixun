@@ -464,7 +464,6 @@
     
     CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
     vc.ID = [NSString stringWithFormat:@"%@",info[@"course_id"]];
-    vc.courselayer = [NSString stringWithFormat:@"%@",info[@"section_level"]];
     vc.currentHourseId = [NSString stringWithFormat:@"%@",info[@"section_id"]];
     vc.isLive = [[NSString stringWithFormat:@"%@",info[@"course_type"]] isEqualToString:@"2"];
     vc.courseType = [NSString stringWithFormat:@"%@",info[@"course_type"]];

@@ -532,9 +532,15 @@
     RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
     vc.changePhone = YES;
     if (SWNOTEmptyStr([UserModel userPhone])) {
-        vc.hasPhone = YES;
-        vc.oldPhone = YES;
-        vc.topTitle = @"*输入下方手机号收到的验证码进行验证";
+        if ([UserModel userPhone].length > 5) {
+            vc.hasPhone = YES;
+            vc.oldPhone = YES;
+            vc.topTitle = @"*输入下方手机号收到的验证码进行验证";
+        } else {
+            vc.hasPhone = NO;
+            vc.oldPhone = NO;
+            vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
+        }
     } else {
         vc.hasPhone = NO;
         vc.oldPhone = NO;

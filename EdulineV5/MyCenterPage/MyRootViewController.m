@@ -29,6 +29,7 @@
 #import "MessageRootVC.h"
 #import "ClassCourseListVC.h"
 #import "MyTeachingRootVC.h"
+#import "RegisterAndForgetPwVC.h"
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -211,9 +212,21 @@
             if (SWNOTEmptyDictionary(_userInfo)) {
                 NSString *userSchoolId = [NSString stringWithFormat:@"%@",[[[_userInfo objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"mhm_id"]];
                 if (SWNOTEmptyStr(userSchoolId)) {
-                    TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
-                    vc.userSchoolId = userSchoolId;
-                    [self.navigationController pushViewController:vc animated:YES];
+                    if (SWNOTEmptyStr([UserModel userPhone])) {
+                        if ([UserModel userPhone].length > 5) {
+                            TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
+                            vc.userSchoolId = userSchoolId;
+                            [self.navigationController pushViewController:vc animated:YES];
+                            return;
+                        }
+                    }
+                    [self needSetUserInfoPhone];
+//                    RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
+//                    vc.changePhone = YES;
+//                    vc.hasPhone = NO;
+//                    vc.oldPhone = NO;
+//                    vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
+//                    [self.navigationController pushViewController:vc animated:YES];
                 } else {
                     [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
                 }
@@ -221,8 +234,20 @@
                 [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
             }
         } else if ([iconKey isEqualToString:@"school"]) {
-            InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
+            if (SWNOTEmptyStr([UserModel userPhone])) {
+                if ([UserModel userPhone].length > 5) {
+                   InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                    return;
+                }
+            }
+            [self needSetUserInfoPhone];
+//            RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
+//            vc.changePhone = YES;
+//            vc.hasPhone = NO;
+//            vc.oldPhone = NO;
+//            vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
+//            [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"address"]) {
             
         } else if ([iconKey isEqualToString:@"my_classes"]) {
@@ -446,6 +471,19 @@
         }
         [self reloadUserInfo];
     }];
+}
+
+- (void)needSetUserInfoPhone {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请前往个人信息绑定您的手机号！" message:@"是否去绑定手机号?" preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *loginAction = [UIAlertAction actionWithTitle:@"去绑定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        PersonalInformationVC *vc = [[PersonalInformationVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertController addAction:loginAction];
+    [alertController addAction:cancelAction];
+    [self.navigationController presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
