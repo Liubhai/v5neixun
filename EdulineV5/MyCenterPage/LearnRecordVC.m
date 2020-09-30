@@ -148,8 +148,11 @@
     CourseListModel *model = [[CourseListModel alloc] init];
     section_data_model *sectionModel = [[section_data_model alloc] init];
     sectionModel.data_type = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_data_type"]];
+    section_rate_model *sectionRateModel = [[section_rate_model alloc] init];
+    sectionRateModel.current_time = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"current_time"]] unsignedIntValue];
     model.title = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_title"]];
     model.section_data = sectionModel;
+    model.section_rate = sectionRateModel;
     model.course_id = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
     model.classHourId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
     vc.currentPlayModel = model;

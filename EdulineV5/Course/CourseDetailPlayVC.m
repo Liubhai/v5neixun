@@ -1664,6 +1664,11 @@
         _titleImage.hidden = YES;
         __weak CourseDetailPlayVC *wekself = self;
         [wekself starRecordTimer];
+        if (currentCourseFinalModel) {
+            if (currentCourseFinalModel.model.section_rate.current_time > 0 && currentCourseFinalModel.model.section_rate.current_time * 1000 < wekself.playerView.aliPlayer.duration) {
+                [wekself.playerView.aliPlayer seekToTime:currentCourseFinalModel.model.section_rate.current_time * 1000 seekMode:AVP_SEEKMODE_ACCURATE];
+            }
+        }
     } else if (event == AVPEventCompletion) {
         __weak CourseDetailPlayVC *wekself = self;
         [wekself stopRecordTimer];
