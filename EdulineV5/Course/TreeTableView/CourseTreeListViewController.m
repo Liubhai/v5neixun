@@ -170,7 +170,7 @@
 
 - (void)getClassCourseList {
     if (SWNOTEmptyStr(_courseId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path classCourseList:_courseId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path classCourseList:_courseId] WithAuthorization:nil paramDic:@{@"page":@"1",@"count":@"500"} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_courseListArray removeAllObjects];
@@ -246,7 +246,7 @@
     }
     
     if (SWNOTEmptyStr(courseId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:courseId pid:(SWNOTEmptyStr(model.classHourId) ? model.classHourId : @"0")] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:courseId pid:(SWNOTEmptyStr(model.classHourId) ? model.classHourId : @"0")] WithAuthorization:nil paramDic:@{@"page":@"1",@"count":@"500"} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
 //                    model.isExpand = !model.isExpand;

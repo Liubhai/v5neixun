@@ -186,7 +186,7 @@
 
 - (void)getCourseListData {
     if (SWNOTEmptyStr(_courseId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:@"0"] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:@"0"] WithAuthorization:nil paramDic:@{@"page":@"1",@"count":@"500"} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_courseListArray removeAllObjects];
@@ -236,7 +236,7 @@
                 return;
             }
             if (SWNOTEmptyStr(_courseId) && SWNOTEmptyStr(model.model.classHourId)) {
-                [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:model.model.classHourId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+                [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:model.model.classHourId] WithAuthorization:nil paramDic:@{@"page":@"1",@"count":@"500"} finish:^(id  _Nonnull responseObject) {
                     if (SWNOTEmptyDictionary(responseObject)) {
                         if ([[responseObject objectForKey:@"code"] integerValue]) {
                             NSMutableArray *passOrigin = [NSMutableArray new];
@@ -280,7 +280,7 @@
                 return;
             }
             if (SWNOTEmptyStr(_courseId) && SWNOTEmptyStr(model.model.classHourId)) {
-                [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:model.model.classHourId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+                [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:model.model.classHourId] WithAuthorization:nil paramDic:@{@"page":@"1",@"count":@"500"} finish:^(id  _Nonnull responseObject) {
                     if (SWNOTEmptyDictionary(responseObject)) {
                         if ([[responseObject objectForKey:@"code"] integerValue]) {
                             NSMutableArray *passOrigin = [NSMutableArray new];
