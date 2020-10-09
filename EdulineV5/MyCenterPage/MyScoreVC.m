@@ -264,7 +264,7 @@
     _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, 150, 56)];
     _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle3.font = SYSTEMFONT(15);
-    _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];
+    _orderTitle3.text = [NSString stringWithFormat:@"余额(育币%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];
     [_orderTypeView3 addSubview:_orderTitle3];
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -308,7 +308,7 @@
     _orderTitle4 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon4.right + 12, 0, 150, 56)];
     _orderTitle4.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle4.font = SYSTEMFONT(15);
-    _orderTitle4.text = [NSString stringWithFormat:@"收入(¥%@)",[_balanceInfo[@"data"] objectForKey:@"income"]];
+    _orderTitle4.text = [NSString stringWithFormat:@"收入(育币%@)",[_balanceInfo[@"data"] objectForKey:@"income"]];
     [_orderTypeView4 addSubview:_orderTitle4];
     
     _orderRightBtn4 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];

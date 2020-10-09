@@ -142,8 +142,8 @@
     _scoreInputText.delegate = self;
     [_moneyView addSubview:_scoreInputText];
     
-    UILabel *leftMode = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 24, 24)];
-    leftMode.text = @"¥";
+    UILabel *leftMode = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 24)];
+    leftMode.text = @"育币";
     leftMode.textColor = EdlineV5_Color.textFirstColor;
     leftMode.font = SYSTEMFONT(14);
     _scoreInputText.leftView = leftMode;
@@ -269,7 +269,7 @@
     _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, 150, 56)];
     _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle3.font = SYSTEMFONT(15);
-    _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];//@"余额(¥0.00)";
+    _orderTitle3.text = [NSString stringWithFormat:@"余额(育币%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];//@"余额(育币0.00)";
     [_orderTypeView3 addSubview:_orderTitle3];
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -313,7 +313,7 @@
     _orderTitle4 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon4.right + 12, 0, 150, 56)];
     _orderTitle4.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle4.font = SYSTEMFONT(15);
-    _orderTitle4.text = @"收入(¥0.00)";
+    _orderTitle4.text = @"收入(育币0.00)";
     [_orderTypeView4 addSubview:_orderTitle4];
     
     _orderRightBtn4 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -409,7 +409,7 @@
     [_bottomView addSubview:label1];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(label1.right + 3, 0, 100, 49)];
-    _priceLabel.text = @"¥0.00";
+    _priceLabel.text = @"育币0.00";
     _priceLabel.font = SYSTEMFONT(16);
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     [_bottomView addSubview:_priceLabel];
@@ -529,11 +529,11 @@
     UITextField *textfield = (UITextField *)notice.object;
     if (textfield == _scoreInputText) {
         if (textfield.text.length>0) {
-            _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
-            _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
+            _needPriceLabel.text = [NSString stringWithFormat:@"需花费育币%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
+            _priceLabel.text = [NSString stringWithFormat:@"育币%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
         } else {
-            _needPriceLabel.text = @"需花费¥0.00";
-            _priceLabel.text = @"¥0.00";
+            _needPriceLabel.text = @"需花费育币0.00";
+            _priceLabel.text = @"育币0.00";
         }
     }
 }

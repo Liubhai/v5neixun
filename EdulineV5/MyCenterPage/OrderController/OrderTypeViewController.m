@@ -126,7 +126,7 @@
     truePriceLabel.centerY = timeLabel.centerY;
     truePriceLabel.textColor = EdlineV5_Color.faildColor;
     truePriceLabel.font = SYSTEMFONT(14);
-    truePriceLabel.text = [NSString stringWithFormat:@"¥%@",_dataSource[section][@"payment"]];
+    truePriceLabel.text = [NSString stringWithFormat:@"育币%@",_dataSource[section][@"payment"]];
     truePriceLabel.textAlignment = NSTextAlignmentRight;
     [view addSubview:truePriceLabel];
     

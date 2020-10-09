@@ -121,7 +121,7 @@
     
     UILabel * priceType = [[UILabel alloc] initWithFrame:CGRectMake(0, _userPriceLabel.bottom, MainScreenWidth, 45)];
     priceType.font = SYSTEMFONT(15);
-    priceType.text = @"余额(元)";
+    priceType.text = @"余额(育币)";
     priceType.textAlignment = NSTextAlignmentCenter;
     priceType.textColor = [UIColor whiteColor];
     [_account addSubview:priceType];
@@ -261,8 +261,8 @@
         [_moneyView addSubview:_otherMoneyText];
         
         UILabel *tip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 40, _otherMoneyText.height)];
-        tip.text = @"¥";
-        tip.font = SYSTEMFONT(18);
+        tip.text = @"育币";
+        tip.font = SYSTEMFONT(15);
         tip.textColor = EdlineV5_Color.textFirstColor;
         tip.textAlignment = NSTextAlignmentCenter;
         _otherMoneyText.leftView = tip;

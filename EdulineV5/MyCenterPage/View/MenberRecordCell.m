@@ -75,7 +75,7 @@
     NSString *typeS = [NSString stringWithFormat:@"%@",info[@"ext_data"][@"vip_title"]];
     _themeLabel.text = typeS;
 
-    _timeLabel.text = [NSString stringWithFormat:@"¥%@",info[@"payment"]];
+    _timeLabel.text = [NSString stringWithFormat:@"育币%@",info[@"payment"]];
 
     _numberLabel.text = [NSString stringWithFormat:@"订单编号：%@",info[@"order_no"]];
     NSMutableAttributedString *mut1 = [[NSMutableAttributedString alloc] initWithString:_numberLabel.text];

@@ -59,7 +59,7 @@
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, _timeLabel.top, 150, 15)];
     _priceLabel.font = SYSTEMFONT(12);
     _priceLabel.textColor = EdlineV5_Color.faildColor;
-    _priceLabel.text = @"VIP:¥200.00";
+    _priceLabel.text = @"VIP:育币200.00";
     [self.contentView addSubview:_priceLabel];
     
     _hasCourseCardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 36, _timeLabel.top, 36, 15)];
@@ -110,9 +110,9 @@
         [_themeLabel addView:_course_card range:NSMakeRange(0, 0) alignment:TYDrawAlignmentCenter];
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
+    _priceLabel.text = [NSString stringWithFormat:@"育币%@",model.price];
     if ([[UserModel vipStatus] isEqualToString:@"1"]) {
-        _priceLabel.text = [NSString stringWithFormat:@"VIP:¥%@",model.user_price];
+        _priceLabel.text = [NSString stringWithFormat:@"VIP:育币%@",model.user_price];
     }
     if ([model.course_type isEqualToString:@"1"]) {
         _courseTypeImageView.image = Image(@"dianbo");

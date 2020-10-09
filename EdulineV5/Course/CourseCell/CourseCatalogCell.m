@@ -288,7 +288,7 @@
     
     _titleLabel.text = model.model.title;
     
-    _priceLabel.text = [NSString stringWithFormat:@"¥%@",model.model.price];
+    _priceLabel.text = [NSString stringWithFormat:@"育币%@",model.model.price];
     
     if (model.model.audition > 0) {
         _freeImageView.hidden = NO;

@@ -45,9 +45,9 @@
     _priceLabel.textAlignment = NSTextAlignmentCenter;
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
-        _payment = [NSString stringWithFormat:@"¥%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+        _payment = [NSString stringWithFormat:@"育币%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
         if ([[UserModel vipStatus] isEqualToString:@"1"]) {
-            _payment = [NSString stringWithFormat:@"VIP:¥%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+            _payment = [NSString stringWithFormat:@"VIP:育币%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
         }
         _order_no = [NSString stringWithFormat:@"%@",[[_orderSureInfo objectForKey:@"data"] objectForKey:@"order_no"]];
     }
@@ -163,7 +163,7 @@
     _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, 150, 56)];
     _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle3.font = SYSTEMFONT(15);
-    _orderTitle3.text = @"余额(¥0.00)";
+    _orderTitle3.text = @"余额(育币0.00)";
     [_orderTypeView3 addSubview:_orderTitle3];
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -293,7 +293,7 @@
                     [self makeOrderType1View3];
                     [_orderTypeView setHeight:_orderTypeView3.bottom];
                     
-                    _orderTitle3.text = [NSString stringWithFormat:@"余额(¥%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];
+                    _orderTitle3.text = [NSString stringWithFormat:@"余额(育币%@)",[_balanceInfo[@"data"] objectForKey:@"balance"]];
                     
                     [self makeAgreeView];
                 }

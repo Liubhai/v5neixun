@@ -197,11 +197,11 @@
 - (void)textfieldDidChangedValue:(NSNotification *)notice {
     UITextField *textF = (UITextField *)notice.object;
     if (textF.text.length>0) {
-        if ([textF.text containsString:@"¥"]) {
-            textF.text = [textF.text stringByReplacingOccurrencesOfString:@"¥" withString:@""];
-            textF.text = [NSString stringWithFormat:@"¥%@",textF.text];
+        if ([textF.text containsString:@"育币"]) {
+            textF.text = [textF.text stringByReplacingOccurrencesOfString:@"育币" withString:@""];
+            textF.text = [NSString stringWithFormat:@"育币%@",textF.text];
         } else {
-            textF.text = [NSString stringWithFormat:@"¥%@",textF.text];
+            textF.text = [NSString stringWithFormat:@"育币%@",textF.text];
         }
     }
 }

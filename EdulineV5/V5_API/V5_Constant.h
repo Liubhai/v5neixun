@@ -35,6 +35,8 @@
 
 #define Institution_Id [[NSUserDefaults standardUserDefaults] objectForKey:@"institutionId"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"institutionId"]
 
+#define ShowAudit [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowAudit"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowAudit"]
+
 #define WebTitleContenDistance 10
 #define WebDistanceLeft 15//内容和左右的边距
 

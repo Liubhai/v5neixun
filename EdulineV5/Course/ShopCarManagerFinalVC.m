@@ -214,7 +214,7 @@
     [self.view addSubview:_bottomView];
     
     _youhuiLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 150, 49)];
-    _youhuiLabel.text = @"优惠：¥10.00";
+    _youhuiLabel.text = @"优惠：育币10.00";
     _youhuiLabel.font = SYSTEMFONT(13);
     _youhuiLabel.textColor = EdlineV5_Color.textThirdColor;
     [_bottomView addSubview:_youhuiLabel];
@@ -232,7 +232,7 @@
     _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
     _finalPriceLabel.textColor = EdlineV5_Color.faildColor;
     _finalPriceLabel.font = SYSTEMFONT(15);
-    _finalPriceLabel.text = @"合计: ¥190.00";
+    _finalPriceLabel.text = @"合计: 育币190.00";
     _finalPriceLabel.textAlignment = NSTextAlignmentRight;
     [_bottomView addSubview:_finalPriceLabel];
     
@@ -383,7 +383,7 @@
     UILabel *sectionFinalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 200 - 15, youhui.bottom, 200, 40)];
     sectionFinalPriceLabel.textColor = EdlineV5_Color.faildColor;
     sectionFinalPriceLabel.font = SYSTEMFONT(15);
-    sectionFinalPriceLabel.text = @"合计: ¥0.00";
+    sectionFinalPriceLabel.text = @"合计: 育币0.00";
     sectionFinalPriceLabel.textAlignment = NSTextAlignmentRight;
     [footer addSubview:sectionFinalPriceLabel];
     
@@ -394,7 +394,7 @@
     CGFloat finalWidth = [sectionFinalPriceLabel.text sizeWithFont:sectionFinalPriceLabel.font].width + 4;
     
     UILabel *sectionYouhuiLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - finalWidth - 16 - 150, 0, 150, 40)];
-    sectionYouhuiLabel.text = @"优惠：¥0.00";
+    sectionYouhuiLabel.text = @"优惠：育币0.00";
     sectionYouhuiLabel.font = SYSTEMFONT(13);
     sectionYouhuiLabel.textAlignment = NSTextAlignmentRight;
     sectionYouhuiLabel.textColor = EdlineV5_Color.textThirdColor;
@@ -409,25 +409,25 @@
             themelabel.text = [NSString stringWithFormat:@"满%@减%@",model.maxprice,model.price];
             float max_price = carModel.total_price;
             if (max_price>=[model.maxprice floatValue]) {
-                sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",carModel.total_price - [model.price floatValue]];
-                sectionYouhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%@",model.price];
+                sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: 育币%.2f",carModel.total_price - [model.price floatValue]];
+                sectionYouhuiLabel.text = [NSString stringWithFormat:@"优惠：育币%@",model.price];
             } else {
                 themelabel.text = [NSString stringWithFormat:@"满%@减%@(不满足要求,无法使用)",model.maxprice,model.price];
-                sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",carModel.total_price];
-                sectionYouhuiLabel.text = @"优惠：¥0.00";
+                sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: 育币%.2f",carModel.total_price];
+                sectionYouhuiLabel.text = @"优惠：育币0.00";
             }
         } else if ([model.coupon_type isEqualToString:@"2"]) {
             themelabel.text = [NSString stringWithFormat:@"%@折",model.discount];
             float discount1 = [model.discount floatValue];
-            sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",carModel.total_price * discount1 / 10];
-            sectionYouhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%.2f",carModel.total_price - carModel.total_price * discount1 / 10];
+            sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: 育币%.2f",carModel.total_price * discount1 / 10];
+            sectionYouhuiLabel.text = [NSString stringWithFormat:@"优惠：育币%.2f",carModel.total_price - carModel.total_price * discount1 / 10];
         } else if ([model.coupon_type isEqualToString:@"3"]) {
             themelabel.text = @"课程卡";
         }
     } else {
         themelabel.text = @"无卡券可使用";
-        sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",carModel.total_price];
-        sectionYouhuiLabel.text = @"优惠：¥0.00";
+        sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: 育币%.2f",carModel.total_price];
+        sectionYouhuiLabel.text = @"优惠：育币0.00";
     }
     
     return footer;
@@ -525,12 +525,12 @@
                 totalPrice = totalPrice + carModel.total_price;
             }
         }
-        _youhuiLabel.text = [NSString stringWithFormat:@"优惠：¥%.2f",youhui];
-        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",totalPrice];
+        _youhuiLabel.text = [NSString stringWithFormat:@"优惠：育币%.2f",youhui];
+        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: 育币%.2f",totalPrice];
     } else {
-        _youhuiLabel.text = @"优惠：¥0.00";
+        _youhuiLabel.text = @"优惠：育币0.00";
         
-        _finalPriceLabel.text = @"合计: ¥0.00";
+        _finalPriceLabel.text = @"合计: 育币0.00";
     }
     NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
     [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];

@@ -48,7 +48,7 @@
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, 0, 150, 21)];
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     _priceLabel.font = SYSTEMFONT(15);
-    _priceLabel.text = @"¥1099.00";
+    _priceLabel.text = @"育币1099.00";
     _priceLabel.textAlignment = NSTextAlignmentRight;
     _priceLabel.centerY = _learnCountLabel.centerY;
     [self.contentView addSubview:_priceLabel];
@@ -97,7 +97,7 @@
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     _learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",[info objectForKey:@"sale_count"]];
-    _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"育币%@",[info objectForKey:@"price"]];
     NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
     
     if (!_cellType) {
@@ -120,7 +120,7 @@
             _priceLabel.text = @"免费";
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+            _priceLabel.text = [NSString stringWithFormat:@"育币%@",[info objectForKey:@"price"]];
             _priceLabel.textColor = EdlineV5_Color.faildColor;
         }
     }

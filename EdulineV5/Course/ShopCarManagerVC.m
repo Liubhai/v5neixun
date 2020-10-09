@@ -100,7 +100,7 @@
     _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
     _finalPriceLabel.textColor = EdlineV5_Color.faildColor;
     _finalPriceLabel.font = SYSTEMFONT(15);
-    _finalPriceLabel.text = @"合计: ¥0.00";
+    _finalPriceLabel.text = @"合计: 育币0.00";
     _finalPriceLabel.textAlignment = NSTextAlignmentRight;
     [_bottomView addSubview:_finalPriceLabel];
     
@@ -434,7 +434,7 @@
     if (_rightButton.selected) {
         [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%@)",@(_selectedArray.count)] forState:0];
     } else {
-        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: ¥%.2f",allMoney];
+        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: 育币%.2f",allMoney];
         NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
         [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
         _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];

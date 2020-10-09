@@ -104,10 +104,10 @@
     [_courseStar setStarValue:[[NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"score_star"]] floatValue]];
     _courseLearn.text = [NSString stringWithFormat:@"%@人在学",[contentInfo objectForKey:@"sale_count"]];
     
-    NSString *price = [NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"price"]];
-    NSString *scribing_price = [NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"scribing_price"]];
-    if ([scribing_price isEqualToString:@"¥0.00"] || [scribing_price isEqualToString:@"¥0.0"] || [scribing_price isEqualToString:@"¥0"]) {
-        if ([price isEqualToString:@"¥0.00"] || [price isEqualToString:@"¥0.0"] ||[price isEqualToString:@"¥0"]) {
+    NSString *price = [NSString stringWithFormat:@"育币%@",[contentInfo objectForKey:@"price"]];
+    NSString *scribing_price = [NSString stringWithFormat:@"育币%@",[contentInfo objectForKey:@"scribing_price"]];
+    if ([scribing_price isEqualToString:@"育币0.00"] || [scribing_price isEqualToString:@"育币0.0"] || [scribing_price isEqualToString:@"育币0"]) {
+        if ([price isEqualToString:@"育币0.00"] || [price isEqualToString:@"育币0.0"] ||[price isEqualToString:@"育币0"]) {
             _coursePrice.text = @"免费";
             _coursePrice.textColor = EdlineV5_Color.priceFreeColor;
             _coursePrice.font = SYSTEMFONT(18);
@@ -117,7 +117,7 @@
             _coursePrice.font = SYSTEMFONT(18);
         }
     } else {
-        if ([price isEqualToString:@"¥0.00"] || [price isEqualToString:@"¥0.0"] || [price isEqualToString:@"¥0"]) {
+        if ([price isEqualToString:@"育币0.00"] || [price isEqualToString:@"育币0.0"] || [price isEqualToString:@"育币0"]) {
             price = @"免费";
             NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
             NSRange rangNow = NSMakeRange(scribing_price.length, price.length);

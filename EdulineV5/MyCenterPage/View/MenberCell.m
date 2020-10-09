@@ -39,21 +39,22 @@
     _priceLabel.textColor = HEXCOLOR(0x582F1D);
     [self.contentView addSubview:_priceLabel];
     
-    _freeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 110, 5, 110, 80)];
+    _freeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_selectImage.right - 110 - 15, 5, 110, 80)];
     _freeLabel.font = SYSTEMFONT(12);
     _freeLabel.textColor = HEXCOLOR(0x582F1D);
     _freeLabel.text = @"赠送 100积分";
+    _freeLabel.textAlignment = NSTextAlignmentRight;
     [self.contentView addSubview:_freeLabel];
     
-    NSString *price = @"¥100.00";//[NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"price"]];
-    NSString *scribing_price = @"¥120.00";//[NSString stringWithFormat:@"¥%@",[contentInfo objectForKey:@"scribing_price"]];
+    NSString *price = @"育币100.00";//[NSString stringWithFormat:@"育币%@",[contentInfo objectForKey:@"price"]];
+    NSString *scribing_price = @"育币120.00";//[NSString stringWithFormat:@"育币%@",[contentInfo objectForKey:@"scribing_price"]];
     NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
     NSRange rangOld = NSMakeRange(scribing_price.length, price.length);
-    NSRange rangNow = NSMakeRange(1, scribing_price.length - 1);
+    NSRange rangNow = NSMakeRange(2, scribing_price.length - 2);
     NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
     [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(14),NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
     [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(24),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:rangNow];
-    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(16),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 1)];
+    [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(16),NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 2)];
     _priceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
     
 }
@@ -69,17 +70,22 @@
     }
     
     _titleLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
-    NSString *price = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"scribing_price"]];
-    NSString *scribing_price = [NSString stringWithFormat:@"¥%@",[info objectForKey:@"price"]];
+    NSString *price = [NSString stringWithFormat:@"育币%@",[info objectForKey:@"scribing_price"]];
+    NSString *scribing_price = [NSString stringWithFormat:@"育币%@",[info objectForKey:@"price"]];
     NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
     NSRange rangOld = NSMakeRange(scribing_price.length, price.length);
-    NSRange rangNow = NSMakeRange(1, scribing_price.length - 1);
+    NSRange rangNow = NSMakeRange(2, scribing_price.length - 2);
     NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
     [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:14],NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:HEXCOLOR(0xA89377)} range:rangOld];
     [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:24],NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:rangNow];
-    [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:16],NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 1)];
+    [priceAtt addAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC-Medium" size:16],NSForegroundColorAttributeName: HEXCOLOR(0x582F1D)} range:NSMakeRange(0, 2)];
     _priceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+    _freeLabel.frame = CGRectMake(_selectImage.right - 110 - 15, 5, 110, 80);
     _freeLabel.text = [NSString stringWithFormat:@"赠送 %@积分",[info objectForKey:@"give_credit"]];
+    CGFloat freeLabelWidth = [_freeLabel.text sizeWithFont:_freeLabel.font].width + 4;
+    _freeLabel.frame = CGRectMake(_selectImage.right - freeLabelWidth - 15, 5, freeLabelWidth, 80);
+    
+    _priceLabel.frame = CGRectMake(95, 5, _freeLabel.left - 95, 80);
     
 }
 
