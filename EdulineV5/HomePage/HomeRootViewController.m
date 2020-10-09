@@ -163,7 +163,7 @@
     if (SWNOTEmptyArr(_bannerImageSourceArray)) {
         // 添加工具类
         // 网络加载 --- 创建自定义图片的pageControlDot的图片轮播器
-        SDCycleScrollView *cycleScrollView3 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 10, MainScreenWidth, MainScreenWidth * 2 / 5) delegate:self placeholderImage:[UIImage imageNamed:@"站位图"]];
+        SDCycleScrollView *cycleScrollView3 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 10, MainScreenWidth, MainScreenWidth * 2 / 5) delegate:self placeholderImage:DefaultImage];
         cycleScrollView3.currentPageDotImage = [UIImage imageNamed:@"pageControlCurrentDot"];
         cycleScrollView3.pageDotImage = [UIImage imageNamed:@"pageControlDot"];
         cycleScrollView3.imageURLStringsGroup = _bannerImageArray;
