@@ -12,9 +12,10 @@
 #import <WechatOpenSDK/WXApi.h>
 #import "WkWebViewController.h"
 #import "UserModel.h"
+#import "MyBalanceVC.h"
 
 @interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate> {
-    NSString *typeString;//支付方式【lcnpay：余额；alipay：支付宝；wxpay：微信；】
+    NSString *typeString;//【lcnpay：余额；alipay：支付宝；wxpay：微信；】
     BOOL shouldPop;// 是否需要返回到课程详情页面
 }
 
@@ -188,9 +189,18 @@
         [_orderTypeView3 setHeight:0];
         _orderTypeView3.hidden = YES;
     } else {
-        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
-            [self seleteButtonClick:_orderRightBtn3];
-        }
+        [_orderTypeView1 setHeight:0];
+        _orderTypeView1.hidden = YES;
+        
+        _orderTypeView2.frame = CGRectMake(0, _orderTypeView1.bottom, MainScreenWidth, 56);
+        [_orderTypeView2 setHeight:0];
+        _orderTypeView2.hidden = YES;
+        
+        _orderTypeView3.frame = CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56);
+        [self seleteButtonClick:_orderRightBtn3];
+//        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
+//            [self seleteButtonClick:_orderRightBtn3];
+//        }
     }
 }
 
@@ -332,8 +342,25 @@
                         shouldPop = YES;
                     }
                 } else {
-                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
                     _submitButton.enabled = YES;
+                    NSString *msg = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]];
+                    if ([msg isEqualToString:@"余额不足"]) {
+                        // 弹框提示跳转到余额充值页面
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"余额不足,立即去充值?" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去充值" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            MyBalanceVC *vc = [[MyBalanceVC alloc] init];
+                            [self.navigationController pushViewController:vc animated:YES];
+                            }];
+                        [alertController addAction:commentAction];
+                        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                            }];
+                        [alertController addAction:cancelAction];
+                        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+                        [self presentViewController:alertController animated:YES completion:nil];
+                    } else {
+                        [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                    }
                 }
             } else {
                 _submitButton.enabled = YES;
@@ -349,7 +376,7 @@
 
 - (void)orderFinish:(NSString *)orderS {
     // NOTE: 调用支付结果开始支付
-    [[AlipaySDK defaultService] payOrder:orderS fromScheme:AlipayBundleId callback:^(NSDictionary *resultDic) {
+    [[AlipaySDK defaultService] payOrder:orderS fromScheme:PayBundleId callback:^(NSDictionary *resultDic) {
         NSLog(@"reslut = %@",resultDic);
     }];
 }

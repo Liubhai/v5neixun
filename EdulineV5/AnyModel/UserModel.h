@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  持久化提现平台
 
- @param platform 提现平台, 1 支付宝, 2 微信
+ @param platform , 1 宝, 2 信
  */
 + (void)saveWithdrawAccoutPlatform:(int)platform;
 /**

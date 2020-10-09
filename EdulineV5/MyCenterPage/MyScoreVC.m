@@ -524,7 +524,7 @@
 
 - (void)orderFinish:(NSString *)orderS {
     // NOTE: 调用支付结果开始支付
-    [[AlipaySDK defaultService] payOrder:orderS fromScheme:AlipayBundleId callback:^(NSDictionary *resultDic) {
+    [[AlipaySDK defaultService] payOrder:orderS fromScheme:PayBundleId callback:^(NSDictionary *resultDic) {
         NSLog(@"reslut = %@",resultDic);
     }];
 }
@@ -635,19 +635,21 @@
                     
                     [self makeUserAccountUI];
                     
-                    [self makeMoneyView];
-                    
-                    [self makeOrderView];
-                    
-                    [self makeOrderType1View1];
-                    [self makeOrderType1View2];
-                    [self makeOrderType1View3];
-                    [self makeOrderType1View4];
-                    [_orderTypeView setHeight:_orderTypeView4.bottom];
-                    
-                    [self makeAgreeView];
-                    
-                    [self makeBottomView];
+                    if (![ShowAudit isEqualToString:@"1"]) {
+                        [self makeMoneyView];
+                        
+                        [self makeOrderView];
+                        
+                        [self makeOrderType1View1];
+                        [self makeOrderType1View2];
+                        [self makeOrderType1View3];
+                        [self makeOrderType1View4];
+                        [_orderTypeView setHeight:_orderTypeView4.bottom];
+                        
+                        [self makeAgreeView];
+                        
+                        [self makeBottomView];
+                    }
                 }
             }
         }

@@ -597,18 +597,20 @@
                     
                     _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"income"]];
                     
-                    [self makeMoneyView];
-                    
-                    [self makeOrderView];
-                    
-                    [self makeOrderType1View1];
-                    [self makeOrderType1View2];
-                    [self makeOrderType1View3];
-                    [_orderTypeView setHeight:_orderTypeView3.bottom];
-                    
-                    [self makeAgreeView];
-                    
-                    [self makeBottomView];
+                    if (![ShowAudit isEqualToString:@"1"]) {
+                        [self makeMoneyView];
+                        
+                        [self makeOrderView];
+                        
+                        [self makeOrderType1View1];
+                        [self makeOrderType1View2];
+                        [self makeOrderType1View3];
+                        [_orderTypeView setHeight:_orderTypeView3.bottom];
+                        
+                        [self makeAgreeView];
+                        
+                        [self makeBottomView];
+                    }
                 }
             }
         }

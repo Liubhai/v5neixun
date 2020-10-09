@@ -112,6 +112,8 @@
 // 判断iPhoneX 并返回安全区高度
 #define MACRO_UI_SAFEAREA [EdulineV5_Tool safeAreaWithIPhoneX]
 
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+
 // 微信分享
 #define WXAppId @"wx05293bb7051162ea"
 #define WXAppSecret @"5b0e9f51e4d35e8d15152fdbedaa9690"
@@ -123,7 +125,7 @@
 #define SinaAppSecret @"da07bcf6c9f30281e684f8abfd0b4fca"
 
 // 支付宝h5支付之后需要回到app
-#define AlipayBundleId @"com.seition.edulineV5"
+#define PayBundleId @"com.seition.edulineV5"
 
 #define WangyiQuickLoginBusenissID @"0956a7a27f934c8dabeb19e598852111"
 #define WangyiId @"abea082ce1e2211c0aa721126d900928"

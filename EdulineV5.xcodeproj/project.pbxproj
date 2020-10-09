@@ -207,6 +207,7 @@
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
+		788E945A25305F9C0089251E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E945925305F9C0089251E /* NSData+Base64.m */; };
 		788EB1C2250218B000E30D79 /* OtherTypeLoginBindVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */; };
 		788EB1C5250220B000E30D79 /* OtherTypeBindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */; };
 		7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */; };
@@ -825,6 +826,8 @@
 		7888A35224A1D3CF00DB078D /* WkWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WkWebViewController.m; sourceTree = "<group>"; };
 		7888A35424A1DB1800DB078D /* WKWebIntroview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebIntroview.h; sourceTree = "<group>"; };
 		7888A35524A1DB1800DB078D /* WKWebIntroview.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebIntroview.m; sourceTree = "<group>"; };
+		788E945825305F9B0089251E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		788E945925305F9C0089251E /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		788EB1C0250218AB00E30D79 /* OtherTypeLoginBindVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeLoginBindVC.h; sourceTree = "<group>"; };
 		788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherTypeLoginBindVC.m; sourceTree = "<group>"; };
 		788EB1C3250220B000E30D79 /* OtherTypeBindCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeBindCell.h; sourceTree = "<group>"; };
@@ -1742,6 +1745,8 @@
 			children = (
 				787956D4240F9FCC0013F95F /* STRIAPManager.h */,
 				787956D5240F9FCC0013F95F /* STRIAPManager.m */,
+				788E945825305F9B0089251E /* NSData+Base64.h */,
+				788E945925305F9C0089251E /* NSData+Base64.m */,
 			);
 			path = IAP_Tool;
 			sourceTree = "<group>";
@@ -3237,6 +3242,7 @@
 				78A16C8A2452F7C100391430 /* TICKeychainWrapper.m in Sources */,
 				7879566D240F39200013F95F /* BaseViewController.m in Sources */,
 				787F1E77247381A400108F7B /* AliyunPlayerViewControlView.m in Sources */,
+				788E945A25305F9C0089251E /* NSData+Base64.m in Sources */,
 				789DB047246ABF2F001302B4 /* LearnRecordVC.m in Sources */,
 				787957622410E1F40013F95F /* LoginViewController.m in Sources */,
 				787F1E9A24791A6300108F7B /* TeacherListCell.m in Sources */,

@@ -160,6 +160,11 @@
             _menberImageView.hidden = YES;
             [_menberBtn setTitle:@" 开通会员》" forState:0];
         }
+        if ([ShowAudit isEqualToString:@"1"]) {
+            _levelImageView.hidden = YES;
+            _menberImageView.hidden = YES;
+            _menberBtn.hidden = YES;
+        }
     } else {
         _userFaceImageView.image = DefaultUserImage;
         _nameLabel.centerY = _userFaceImageView.centerY;
