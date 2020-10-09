@@ -15,11 +15,16 @@
 #import <WechatOpenSDK/WXApi.h>
 #import <AlipaySDK/AlipaySDK.h>
 
+#import "STRIAPManager.h"
+
 @interface MyBalanceVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
     NSString *typeString;//方式
     UIButton *moneySeleButton;//记录充值的button
     NSString *ratio_string;
 }
+
+@property (strong ,nonatomic)STRIAPManager *iapManager;
+@property (strong ,nonatomic)NSString  *productID;
 
 @property (strong, nonatomic) UIView *account;
 
@@ -431,9 +436,20 @@
         [_orderTypeView3 setHeight:0];
         _orderTypeView3.hidden = YES;
     } else {
-        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
-            [self seleteButtonClick:_orderRightBtn3];
-        }
+        [_orderTypeView1 setHeight:0];
+        _orderTypeView1.hidden = YES;
+        
+        _orderTypeView2.frame = CGRectMake(0, _orderTypeView1.bottom, MainScreenWidth, 56);
+        [_orderTypeView2 setHeight:0];
+        _orderTypeView2.hidden = YES;
+        
+        _orderTypeView3.frame = CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56);
+        [_orderTypeView3 setHeight:0];
+        _orderTypeView3.hidden = YES;
+        [self seleteButtonClick:_orderRightBtn3];
+//        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
+//            [self seleteButtonClick:_orderRightBtn3];
+//        }
     }
 }
 
@@ -582,7 +598,9 @@
     }
     
     _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"price"]];
-    
+    if ([typeString isEqualToString:@"applepay"]) {
+        _productID = [NSString stringWithFormat:@"¥%@",[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"product_id"]];
+    }
 }
 
 - (void)cardButtonClick:(UIButton *)sender {
@@ -660,38 +678,24 @@
         return;
     }
     
-    if (![typeString isEqualToString:@"applepay"]) {
-        // 这里先处理普通流程
-        NSMutableDictionary *param = [NSMutableDictionary new];
-        
-        if (moneySeleButton) {
-            if (moneySeleButton.selected) {
-                NSDictionary *pass = _netWorkBalanceArray[moneySeleButton.tag];
-                NSString *pass_balance = [NSString stringWithFormat:@"%@",pass[@"balance"]];
-                NSString *pass_chargeId = [NSString stringWithFormat:@"%@",pass[@"id"]];
-                [param setObject:@([pass_balance floatValue]) forKey:@"balance"];
-                NSString *price = [_priceLabel.text substringFromIndex:1];
-                [param setObject:@([price floatValue]) forKey:@"payment"];
-                [param setObject:pass_chargeId forKey:@"recharge_id"];
-                [param setObject:@"ios" forKey:@"from"];
-            } else {
-                if (SWNOTEmptyStr(_otherMoneyText.text)) {
-                    [param setObject:@([_otherMoneyText.text floatValue]) forKey:@"balance"];
-                    NSString *price = [_priceLabel.text substringFromIndex:1];
-                    [param setObject:@([price floatValue]) forKey:@"payment"];
-                    [param setObject:@"0" forKey:@"recharge_id"];
-                    [param setObject:@"ios" forKey:@"from"];
-                } else {
-                    [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
-                    _submitButton.enabled = YES;
-                    return;
-                }
-            }
+    // 这里先处理普通流程
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    
+    if (moneySeleButton) {
+        if (moneySeleButton.selected) {
+            NSDictionary *pass = _netWorkBalanceArray[moneySeleButton.tag];
+            NSString *pass_balance = [NSString stringWithFormat:@"%@",pass[@"balance"]];
+            NSString *pass_chargeId = [NSString stringWithFormat:@"%@",pass[@"id"]];
+            [param setObject:pass_balance forKey:@"balance"];//@([pass_balance floatValue])
+            NSString *price = [_priceLabel.text substringFromIndex:1];
+            [param setObject:@([price floatValue]) forKey:@"payment"];
+            [param setObject:pass_chargeId forKey:@"recharge_id"];
+            [param setObject:@"ios" forKey:@"from"];
         } else {
             if (SWNOTEmptyStr(_otherMoneyText.text)) {
                 [param setObject:_otherMoneyText.text forKey:@"balance"];//@([_otherMoneyText.text floatValue])
                 NSString *price = [_priceLabel.text substringFromIndex:1];
-                [param setObject:price forKey:@"payment"];//
+                [param setObject:@([price floatValue]) forKey:@"payment"];
                 [param setObject:@"0" forKey:@"recharge_id"];
                 [param setObject:@"ios" forKey:@"from"];
             } else {
@@ -700,9 +704,65 @@
                 return;
             }
         }
-        // 生成余额订单
-        [self createBalanceOrder:param];
+    } else {
+        if (SWNOTEmptyStr(_otherMoneyText.text)) {
+            [param setObject:_otherMoneyText.text forKey:@"balance"];//@([_otherMoneyText.text floatValue])
+            NSString *price = [_priceLabel.text substringFromIndex:1];
+            [param setObject:price forKey:@"payment"];//
+            [param setObject:@"0" forKey:@"recharge_id"];
+            [param setObject:@"ios" forKey:@"from"];
+        } else {
+            [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
+            _submitButton.enabled = YES;
+            return;
+        }
     }
+    // 生成余额订单
+    [self createBalanceOrder:param];
+    
+//    if (![typeString isEqualToString:@"applepay"]) {
+//        // 这里先处理普通流程
+//        NSMutableDictionary *param = [NSMutableDictionary new];
+//
+//        if (moneySeleButton) {
+//            if (moneySeleButton.selected) {
+//                NSDictionary *pass = _netWorkBalanceArray[moneySeleButton.tag];
+//                NSString *pass_balance = [NSString stringWithFormat:@"%@",pass[@"balance"]];
+//                NSString *pass_chargeId = [NSString stringWithFormat:@"%@",pass[@"id"]];
+//                [param setObject:@([pass_balance floatValue]) forKey:@"balance"];
+//                NSString *price = [_priceLabel.text substringFromIndex:1];
+//                [param setObject:@([price floatValue]) forKey:@"payment"];
+//                [param setObject:pass_chargeId forKey:@"recharge_id"];
+//                [param setObject:@"ios" forKey:@"from"];
+//            } else {
+//                if (SWNOTEmptyStr(_otherMoneyText.text)) {
+//                    [param setObject:@([_otherMoneyText.text floatValue]) forKey:@"balance"];
+//                    NSString *price = [_priceLabel.text substringFromIndex:1];
+//                    [param setObject:@([price floatValue]) forKey:@"payment"];
+//                    [param setObject:@"0" forKey:@"recharge_id"];
+//                    [param setObject:@"ios" forKey:@"from"];
+//                } else {
+//                    [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
+//                    _submitButton.enabled = YES;
+//                    return;
+//                }
+//            }
+//        } else {
+//            if (SWNOTEmptyStr(_otherMoneyText.text)) {
+//                [param setObject:_otherMoneyText.text forKey:@"balance"];//@([_otherMoneyText.text floatValue])
+//                NSString *price = [_priceLabel.text substringFromIndex:1];
+//                [param setObject:price forKey:@"payment"];//
+//                [param setObject:@"0" forKey:@"recharge_id"];
+//                [param setObject:@"ios" forKey:@"from"];
+//            } else {
+//                [self showHudInView:self.view showHint:@"请选择或者输入需要充值的金额"];
+//                _submitButton.enabled = YES;
+//                return;
+//            }
+//        }
+//        // 生成余额订单
+//        [self createBalanceOrder:param];
+//    }
     
     
 }
@@ -713,7 +773,40 @@
         [Net_API requestPOSTWithURLStr:[Net_Path balanceOrderCreate] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    [self submiteOrder:[responseObject objectForKey:@"data"]];
+                    if ([typeString isEqualToString:@"applepay"]) {
+                        if (!_iapManager) {
+                            _iapManager = [[STRIAPManager shareSIAPManager] init];
+                        }
+                        
+                        _iapManager.isTest = [[NSUserDefaults standardUserDefaults] boolForKey:@"st-log"];
+
+                        // iTunesConnect 苹果后台配置的产品ID
+                        if (_productID == nil) {
+                            [self showHudInView:self.view showHint:@"请选择充值的金额"];
+                            return;
+                        }
+                        [self showHudInView:self.view hint:@"请稍等..."];
+                        WS(weakSelf)
+                        _iapManager.controlLoadingBlock = ^(BOOL status, NSString *message) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [MBProgressHUD hideHUDForView:weakSelf.view];
+                                if (status) {
+                                    /// 更新用户积分
+                                    [weakSelf getUserBalanceInfo];
+                                    [MBProgressHUD showSuccess:message toView:weakSelf.view];
+                                } else {
+                                    [MBProgressHUD showError:message toView:weakSelf.view];
+                                }
+                            });
+                        };
+
+                        [_iapManager startPurchWithID:_productID orderNum:[[responseObject objectForKey:@"data"] objectForKey:@"order_no"] completeHandle:^(SIAPPurchType type,NSData *data) {
+                            NSString *str =[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                            NSLog(@"JSON: %@", str);
+                        }];
+                    } else {
+                        [self submiteOrder:[responseObject objectForKey:@"data"]];
+                    }
                 } else {
                     [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
                 }
@@ -737,6 +830,8 @@
                         [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     } else if ([typeString isEqualToString:@"alipay"]) {
                         [self orderFinish:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
+                    } else if ([typeString isEqualToString:@"applepay"]) {
+                        
                     }
                 }
             }
@@ -748,7 +843,7 @@
 
 - (void)orderFinish:(NSString *)orderS {
     // NOTE: 调用支付结果开始支付
-    [[AlipaySDK defaultService] payOrder:orderS fromScheme:AlipayBundleId callback:^(NSDictionary *resultDic) {
+    [[AlipaySDK defaultService] payOrder:orderS fromScheme:PayBundleId callback:^(NSDictionary *resultDic) {
         NSLog(@"reslut = %@",resultDic);
     }];
 }
@@ -791,7 +886,7 @@
 //            }
 //
 //            NSMutableDictionary *dicM = [NSMutableDictionary dictionaryWithDictionary:tempDic];
-//            dicM[@"fromAppUrlScheme"] = AlipayBundleId;
+//            dicM[@"fromAppUrlScheme"] = PayBundleId;
 //
 //            NSError *error;
 //            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dicM options:NSJSONWritingPrettyPrinted error:&error];
@@ -869,7 +964,26 @@
                     _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
-                    [_typeArray addObject:@"applepay"];
+                    
+                    BOOL hasW = NO;
+                    
+                    if (SWNOTEmptyArr(_typeArray)) {
+                        if ([_typeArray containsObject:@"applepay"]) {
+                            hasW = YES;
+                        } else {
+                            hasW = NO;
+                        }
+                    } else {
+                        hasW = NO;
+                    }
+                    
+                    if (hasW) {
+                        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    } else {
+                        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowAudit"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
                     
                     [_netWorkBalanceArray removeAllObjects];
                     [_netWorkBalanceArray addObjectsFromArray:[[_balanceInfo[@"data"] objectForKey:@"recharge"] objectForKey:@"public"]];

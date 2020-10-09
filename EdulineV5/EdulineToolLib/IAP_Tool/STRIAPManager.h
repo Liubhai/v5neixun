@@ -20,11 +20,15 @@ typedef enum {
 
 typedef void (^IAPCompletionHandle)(SIAPPurchType type,NSData *data);
 
+
 @interface STRIAPManager : NSObject
 
+@property(nonatomic, copy) void(^controlLoadingBlock)(BOOL, NSString*);
+@property(assign) BOOL isTest;
+@property (strong, nonatomic) NSString *orderNumber;
 
 + (instancetype)shareSIAPManager;
 //开始内购
-- (void)startPurchWithID:(NSString *)purchID completeHandle:(IAPCompletionHandle)handle;
+- (void)startPurchWithID:(NSString *)purchID orderNum:(NSString *)orderNumber completeHandle:(IAPCompletionHandle)handle;
 
 @end

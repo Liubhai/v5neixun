@@ -51,4 +51,21 @@
     hud.dimBackground = YES;
     return hud;
 }
+
++ (void)hideHUD
+{
+    [self hideHUDForView:nil];
+}
+
+/**
+ *  手动关闭TKProgressHUD
+ *
+ *  @param view    显示TKProgressHUD的视图
+ */
++ (void)hideHUDForView:(UIView *)view
+{
+    if (view == nil) view = [[UIApplication sharedApplication].windows lastObject];
+    [self hideHUDForView:view animated:YES];
+}
+
 @end

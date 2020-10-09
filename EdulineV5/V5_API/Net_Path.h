@@ -406,6 +406,9 @@ struct NetWorkUrl {
 
 /** 我的授课 */
 + (NSString *)myTeacherCourseNet:(NSString *)courseType;
+
+/** 凭证校验 */
++ (NSString *)checkVoucher:(NSString *)orderNumber;
 @end
 
 NS_ASSUME_NONNULL_END

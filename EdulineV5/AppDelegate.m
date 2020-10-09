@@ -104,6 +104,7 @@
     
     [self appConfigInfo];
     [self layoutConfig];
+    [self getTypeInfo];
     
     _noticeLogoutAlert = [[UIAlertView alloc]initWithTitle:LoginInvalid_TXT message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     _noticeLogoutAlert.tag = 101;
@@ -663,6 +664,50 @@
         }
     } enError:^(NSError * _Nonnull error) {
         
+    }];
+}
+
+- (void)getTypeInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userPayInfo] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                if (SWNOTEmptyDictionary(responseObject[@"data"])) {
+                    NSArray *typeArray = [NSArray arrayWithArray:[responseObject[@"data"] objectForKey:@"payway"]];
+
+                    BOOL hasW = NO;
+
+                    if (SWNOTEmptyArr(typeArray)) {
+                        if ([typeArray containsObject:@"applepay"]) {
+                            hasW = YES;
+                        } else {
+                            hasW = NO;
+                        }
+                    } else {
+                        hasW = NO;
+                    }
+
+                    if (hasW) {
+                        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    } else {
+                        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowAudit"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                } else {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+            } else {
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }];
 }
 

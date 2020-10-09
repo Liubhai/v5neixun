@@ -514,4 +514,9 @@
     return [Net_Path fullPath:@"user/teacher/course/{type}" repalce:@"{type}" byReplece:courseType];
 }
 
+/** 凭证校验 */
++ (NSString *)checkVoucher:(NSString *)orderNumber {
+    return [Net_Path fullPath:@"user/balance/applepay/{order_no}/order" repalce:@"{order_no}" byReplece:orderNumber];
+}
+
 @end
