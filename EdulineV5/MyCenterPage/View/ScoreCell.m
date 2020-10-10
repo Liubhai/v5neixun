@@ -67,10 +67,10 @@
     if (SWNOTEmptyDictionary(scoreInfo)) {
         _themeLabel.text = [NSString stringWithFormat:@"%@",[scoreInfo objectForKey:@"type_text"]];
         if ([[scoreInfo objectForKey:@"alter_type"] boolValue]) {
-            _scoreCountLabel.text = [NSString stringWithFormat:@"+育币%@",[scoreInfo objectForKey:@"num"]];
+            _scoreCountLabel.text = [NSString stringWithFormat:@"+%@积分",[scoreInfo objectForKey:@"num"]];
             _scoreCountLabel.textColor = EdlineV5_Color.faildColor;
         } else {
-            _scoreCountLabel.text = [NSString stringWithFormat:@"-育币%@",[scoreInfo objectForKey:@"num"]];
+            _scoreCountLabel.text = [NSString stringWithFormat:@"-%@积分",[scoreInfo objectForKey:@"num"]];
             _scoreCountLabel.textColor = EdlineV5_Color.textFirstColor;
         }
         _scoreFromLabel.text = [NSString stringWithFormat:@"备注:%@",[scoreInfo objectForKey:@"note"]];
