@@ -58,7 +58,7 @@
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     [self.contentView addSubview:_timeLabel];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_userFace.left, _timeLabel.bottom + 10, MainScreenWidth - _userFace.left, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_userFace.left, _timeLabel.bottom + 10, MainScreenWidth - _userFace.left, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self.contentView addSubview:_lineView];
 }
@@ -94,8 +94,8 @@
             _contentLabel.numberOfLines = 0;
             _contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
             [_contentLabel sizeToFit];
-            if (_contentLabel.height > 40) {
-                [_contentLabel setHeight:40];
+            if (_contentLabel.height > 45) {
+                [_contentLabel setHeight:45];
             } else {
                 [_contentLabel setHeight:_contentLabel.height];
             }
@@ -112,7 +112,7 @@
     _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",info[@"create_time"]]]];
     _timeLabel.frame = CGRectMake(_userFace.left, _contentLabel.bottom + 15, 100, 20);
     
-    _lineView.frame = CGRectMake(_userFace.left, _timeLabel.bottom + 10, MainScreenWidth - _userFace.left, 0.5);
+    _lineView.frame = CGRectMake(_userFace.left, _timeLabel.bottom + 10, MainScreenWidth - _userFace.left, 1);
     
     [self setHeight:_lineView.bottom];
 }
