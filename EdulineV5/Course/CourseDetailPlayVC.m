@@ -1665,7 +1665,7 @@
         __weak CourseDetailPlayVC *wekself = self;
         [wekself starRecordTimer];
         if (currentCourseFinalModel) {
-            if (currentCourseFinalModel.model.section_rate.current_time > 0 && currentCourseFinalModel.model.section_rate.current_time * 1000 < wekself.playerView.aliPlayer.duration) {
+            if (currentCourseFinalModel.model.section_rate.current_time > 0 && currentCourseFinalModel.model.section_rate.current_time < (wekself.playerView.aliPlayer.duration / 1000 - 5)) {
                 [wekself.playerView.aliPlayer seekToTime:currentCourseFinalModel.model.section_rate.current_time * 1000 seekMode:AVP_SEEKMODE_ACCURATE];
             }
         }
