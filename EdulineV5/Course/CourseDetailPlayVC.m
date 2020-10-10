@@ -332,7 +332,7 @@
 
 // MARK: - tableview
 - (void)makeTableView {
-    _tableView = [[LBHTableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50)) style:UITableViewStylePlain];
+    _tableView = [[LBHTableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - MACRO_UI_LIUHAI_HEIGHT) style:UITableViewStylePlain];
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -934,7 +934,7 @@
         _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
         [_buyCourseButton setTop:_freeLabel.bottom + 12];
         [_buyhourseButton setTop:_freeLabel.bottom + 12];
-        _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - 50);
+        _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_LIUHAI_HEIGHT);
 //        [self tableViewCanScroll];
     }
 
