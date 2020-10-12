@@ -102,17 +102,29 @@
         _courseTypeImage.hidden = YES;
     }
     
+    _priceLabel.text = [NSString stringWithFormat:@"育币%@",[OrderFinalInfo objectForKey:@"user_price"]];
+    CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
+    _priceLabel.frame = CGRectMake(MainScreenWidth - 12 - priceWidth, _faceImageView.top, priceWidth, 24);
+    
+    
+    
+    _scribing_price.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"scribing_price"]];
+    NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_scribing_price.text];
+    [mut addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:NSMakeRange(0, _scribing_price.text.length)];
+    _scribing_price.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+    
+    _theme.frame = CGRectMake(_faceImageView.right + 10, _faceImageView.top, _priceLabel.left - _faceImageView.right - 10 - 10, _theme.height);
+    
     _theme.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"title"]];
     
-    [_theme sizeToFit];
+//    [_theme sizeToFit];
     
-    _theme.frame = CGRectMake(_faceImageView.right + 10, _faceImageView.top, MainScreenWidth - _faceImageView.right - 64 - 10, _theme.height);
     
     
     _dateLine.frame = CGRectMake(_faceImageView.right + 10, _theme.bottom + 5, _theme.width, 15);
     
     
-    _priceLabel.frame = CGRectMake(MainScreenWidth - 12 - 100, _faceImageView.top, 100, 24);
+//    _priceLabel.frame = CGRectMake(MainScreenWidth - 12 - 100, _faceImageView.top, 100, 24);
     
     
     _scribing_price.frame = CGRectMake(MainScreenWidth - 12 - 100, _priceLabel.bottom, 100, 24);
@@ -127,11 +139,6 @@
         _dateLine.text = [NSString stringWithFormat:@"有效期至%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"expire_time"]]]];
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"育币%@",[OrderFinalInfo objectForKey:@"user_price"]];
-    _scribing_price.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"scribing_price"]];
-    NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_scribing_price.text];
-    [mut addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:NSMakeRange(0, _scribing_price.text.length)];
-    _scribing_price.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
     if ([courseType isEqualToString:@"1"]) {
         [self setHeight:_faceImageView.bottom + 7.5];
     } else if ([courseType isEqualToString:@"2"]) {
