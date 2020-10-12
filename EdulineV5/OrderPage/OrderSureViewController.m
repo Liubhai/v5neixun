@@ -15,8 +15,9 @@
 #import "MyBalanceVC.h"
 
 @interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate> {
-    NSString *typeString;//【lcnpay：余额；alipay：支付宝；wxpay：微信；】
+    NSString *typeString;
     BOOL shouldPop;// 是否需要返回到课程详情页面
+    BOOL showReload;// 在余额不足跳转到充值页面后  充值成功后 是否需要刷新余额数据
 }
 
 @property (strong, nonatomic) NSDictionary *balanceInfo;
@@ -31,6 +32,10 @@
     [super viewWillAppear:animated];
     if (shouldPop) {
         [self popVcToWhich];
+    }
+    if (showReload) {
+        showReload = NO;
+        [self getUserPayInfo];
     }
 }
 
@@ -205,9 +210,14 @@
 }
 
 - (void)makeAgreeView {
-    _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _orderTypeView.bottom +10, MainScreenWidth, 60)];
-    _agreeBackView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:_agreeBackView];
+    if (!_agreeBackView) {
+        _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _orderTypeView.bottom +10, MainScreenWidth, 60)];
+        _agreeBackView.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:_agreeBackView];
+    } else {
+        _agreeBackView.frame = CGRectMake(0, _orderTypeView.bottom +10, MainScreenWidth, 60);
+        return;
+    }
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
     NSString *atr = [NSString stringWithFormat:@"《%@用户服务协议》",appName];
@@ -298,6 +308,8 @@
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
                     
+                    [_orderTypeView removeAllSubviews];
+                    
                     [self makeOrderType1View1];
                     [self makeOrderType1View2];
                     [self makeOrderType1View3];
@@ -348,6 +360,7 @@
                         // 弹框提示跳转到余额充值页面
                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"余额不足,立即去充值?" preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去充值" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            showReload = YES;
                             MyBalanceVC *vc = [[MyBalanceVC alloc] init];
                             [self.navigationController pushViewController:vc animated:YES];
                             }];
