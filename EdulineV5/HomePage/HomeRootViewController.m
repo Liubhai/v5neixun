@@ -97,6 +97,11 @@
     _tableView.tableHeaderView = _headerView;
     [_tableView reloadData];
     
+    // 从本地获取启动时候拿到的首页请求数据
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"homepageData"]) {
+        [self dealHomepageLocalData];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHomePageInfo) name:@"changeFavoriteCourse" object:nil];
 }
 
@@ -704,6 +709,12 @@
             [_tableView.mj_header endRefreshing];
         }
         if (SWNOTEmptyDictionary(responseObject)) {
+            
+            NSDictionary *dict = [NSDictionary dictionaryWithDictionary:responseObject];
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+            [[NSUserDefaults standardUserDefaults] setObject:jsonData forKey:@"homepageData"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_sortArray removeAllObjects];
                 
@@ -748,6 +759,53 @@
             [_tableView.mj_header endRefreshing];
         }
     }];
+}
+
+// MARK: - 处理本地数据
+- (void)dealHomepageLocalData {
+    NSData *jsonData = [NSData dataWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"homepageData"]];
+    id jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:nil];
+    NSDictionary *responseObject = [NSDictionary dictionaryWithDictionary:jsonObj];
+    if (SWNOTEmptyDictionary(responseObject)) {
+        if ([[responseObject objectForKey:@"code"] integerValue]) {
+            [_sortArray removeAllObjects];
+            
+            [_bannerImageSourceArray removeAllObjects];
+            [_bannerImageArray removeAllObjects];
+            
+            [_cateSourceArray removeAllObjects];
+            
+            if (SWNOTEmptyArr([responseObject objectForKey:@"data"])) {
+                NSArray *passArray = [NSArray arrayWithArray:[responseObject objectForKey:@"data"]];
+                for (NSDictionary *dict in passArray) {
+                    if ([dict[@"key"] isEqualToString:@"banner"]) {
+                        [_bannerImageSourceArray addObjectsFromArray:dict[@"list"]];
+                        for (NSDictionary *imageSource in _bannerImageSourceArray) {
+                            if (SWNOTEmptyStr(imageSource[@"image_url"])) {
+                                [_bannerImageArray addObject:imageSource[@"image_url"]];
+                            } else {
+                                [_bannerImageArray addObject:@""];
+                            }
+                        }
+                    } else if ([dict[@"key"] isEqualToString:@"advert"]) {
+                        [_cateSourceArray addObjectsFromArray:dict[@"list"]];
+                    }
+                }
+                [_sortArray addObjectsFromArray:passArray];
+                for (int i = _sortArray.count - 1; i>=0; i--) {
+                    if ([_sortArray[i][@"key"] isEqualToString:@"banner"] || [_sortArray[i][@"key"] isEqualToString:@"advert"]) {
+                        [_sortArray removeObjectAtIndex:i];
+                    }
+                }
+            }
+            
+            [self makeHeaderView];
+            [self makeBannerView];
+            [self makeCateView];
+            _tableView.tableHeaderView = _headerView;
+            [_tableView reloadData];
+        }
+    }
 }
 
 @end

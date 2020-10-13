@@ -88,6 +88,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
+    // 预加载首页数据
+    [self getHomePageInfo];
+    
 //    self.tabbar = [RootV5VC sharedBaseTabBarViewController];
 //    self.window.rootViewController = self.tabbar;
 //    [self.window makeKeyAndVisible];
@@ -749,6 +752,22 @@
         }
     } enError:^(NSError * _Nonnull error) {
         
+    }];
+}
+
+// MARK: - 首页请求数据
+- (void)getHomePageInfo {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"homepageData"] != nil) {
+        return;
+    }
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path homePageInfoNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            NSDictionary *dict = [NSDictionary dictionaryWithDictionary:responseObject];
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+            [[NSUserDefaults standardUserDefaults] setObject:jsonData forKey:@"homepageData"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    } enError:^(NSError * _Nonnull error) {
     }];
 }
 
