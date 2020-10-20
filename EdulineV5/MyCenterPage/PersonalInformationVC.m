@@ -9,7 +9,7 @@
 #import "PersonalInformationVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "RegisterAndForgetPwVC.h"
 
 @interface PersonalInformationVC ()<UIScrollViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
@@ -94,7 +94,7 @@
     _userFace.layer.masksToBounds = YES;
     _userFace.layer.cornerRadius = 25;
     _userFace.image = DefaultUserImage;
-    [_userFace sd_setImageWithURL:EdulineUrlString([UserModel avatar]) placeholderImage:DefaultUserImage];
+    [_userFace sd_setImageWithURL:EdulineUrlString([V5_UserModel avatar]) placeholderImage:DefaultUserImage];
     _userFace.userInteractionEnabled = YES;
     _userFace.clipsToBounds = YES;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;
@@ -118,7 +118,7 @@
     _accountTextField.textAlignment = NSTextAlignmentRight;
     _accountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"账号" attributes:@{NSFontAttributeName:SYSTEMFONT(15),NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
     _accountTextField.delegate = self;
-    _accountTextField.text = [NSString stringWithFormat:@"%@",[UserModel userNickName]];
+    _accountTextField.text = [NSString stringWithFormat:@"%@",[V5_UserModel userNickName]];
     _accountTextField.returnKeyType = UIReturnKeyDone;
     [_mainScrollView addSubview:_accountTextField];
     
@@ -138,7 +138,7 @@
     _nameTextField.textAlignment = NSTextAlignmentRight;
     _nameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"用户名" attributes:@{NSFontAttributeName:SYSTEMFONT(15),NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
     _nameTextField.delegate = self;
-    _nameTextField.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
+    _nameTextField.text = [NSString stringWithFormat:@"%@",[V5_UserModel uname]];
     _nameTextField.returnKeyType = UIReturnKeyDone;
     [_mainScrollView addSubview:_nameTextField];
     
@@ -163,8 +163,8 @@
     _phoneTextField.textAlignment = NSTextAlignmentRight;
     _phoneTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"手机号" attributes:@{NSFontAttributeName:SYSTEMFONT(15),NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
     _phoneTextField.delegate = self;
-    if (SWNOTEmptyStr([UserModel userPhone])) {
-        _phoneTextField.text = [NSString stringWithFormat:@"%@",[UserModel userPhone]];
+    if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+        _phoneTextField.text = [NSString stringWithFormat:@"%@",[V5_UserModel userPhone]];
     }
     [_mainScrollView addSubview:_phoneTextField];
     _phoneRightBtn.centerY = _phoneTextField.centerY;
@@ -180,7 +180,7 @@
     [_mainScrollView addSubview:_sexTitle];
     
     
-    gender = [NSString stringWithFormat:@"%@",[UserModel gender]];// 0 保密 1 男 2 女
+    gender = [NSString stringWithFormat:@"%@",[V5_UserModel gender]];// 0 保密 1 男 2 女
     
     _secrecyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _secrecyBtn.frame = CGRectMake(MainScreenWidth - 15 - 60, _sexTitle.top, 60, 50);
@@ -253,9 +253,9 @@
     
     [_mainScrollView setHeight:_introTextView.bottom + 10];
     
-    if (SWNOTEmptyStr([UserModel intro])) {
+    if (SWNOTEmptyStr([V5_UserModel intro])) {
         _introTextViewPlaceholder.hidden = YES;
-        _introTextView.text = [NSString stringWithFormat:@"%@",[UserModel intro]];
+        _introTextView.text = [NSString stringWithFormat:@"%@",[V5_UserModel intro]];
     }
 }
 
@@ -531,8 +531,8 @@
     [self inputTextResign];
     RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
     vc.changePhone = YES;
-    if (SWNOTEmptyStr([UserModel userPhone])) {
-        if ([UserModel userPhone].length > 5) {
+    if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+        if ([V5_UserModel userPhone].length > 5) {
             vc.hasPhone = YES;
             vc.oldPhone = YES;
             vc.topTitle = @"*输入下方手机号收到的验证码进行验证";

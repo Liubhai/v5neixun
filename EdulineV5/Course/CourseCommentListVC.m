@@ -12,7 +12,7 @@
 #import "CourseCommentDetailVC.h"
 #import "CourseCommentViewController.h"
 #import "Net_Path.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "AppDelegate.h"
 
 @interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate,UIScrollViewDelegate> {
@@ -117,7 +117,7 @@
     if (_cellType) {
         return;
     }
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
@@ -137,7 +137,7 @@
     }
     BOOL isMine = NO;
     if (SWNOTEmptyDictionary(pass)) {
-        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[V5_UserModel uid]]) {
             isMine = YES;
         }
     }
@@ -159,7 +159,7 @@
 //    NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
 //    BOOL isMine = NO;
 //    if (SWNOTEmptyDictionary(pass)) {
-//        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+//        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[V5_UserModel uid]]) {
 //            isMine = YES;
 //        }
 //    }
@@ -195,7 +195,7 @@
 }
 
 - (void)replayComment:(CourseCommentCell *)cell {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
@@ -216,7 +216,7 @@
 
 - (void)jumpToCommentVC {
     
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
@@ -241,7 +241,7 @@
 }
 
 - (void)editContent:(CourseCommentCell *)cell {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
@@ -253,7 +253,7 @@
 }
 
 - (void)zanComment:(CourseCommentCell *)cell {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }

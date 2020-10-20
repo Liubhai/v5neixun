@@ -12,7 +12,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "LingquanViewController.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @interface OrderViewController ()<LingquanViewControllerDelegate>
 
@@ -440,7 +440,7 @@
         }
         
         _priceLabel.text = [NSString stringWithFormat:@"育币%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
-        if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+        if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
             _priceLabel.text = [NSString stringWithFormat:@"VIP:育币%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         }
         _finalPriceLabel.text = [NSString stringWithFormat:@"合计: 育币%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];

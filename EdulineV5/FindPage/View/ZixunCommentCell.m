@@ -7,7 +7,7 @@
 //
 
 #import "ZixunCommentCell.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @implementation ZixunCommentCell
 

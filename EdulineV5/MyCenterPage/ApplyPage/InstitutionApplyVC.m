@@ -121,7 +121,7 @@
     _nameRightLabel.textColor = EdlineV5_Color.textSecendColor;
     _nameRightLabel.font = SYSTEMFONT(15);
     _nameRightLabel.textAlignment = NSTextAlignmentRight;
-    _nameRightLabel.text = [UserModel userPhone];
+    _nameRightLabel.text = [V5_UserModel userPhone];
     [_mainScrollView addSubview:_nameRightLabel];
     
     _willBeManagerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _nameLeftLabel.bottom + 30 - 12 - 18.5, MainScreenWidth - 15, 18.5)];

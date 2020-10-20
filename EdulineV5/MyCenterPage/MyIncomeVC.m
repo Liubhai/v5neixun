@@ -12,7 +12,7 @@
 #import "IncomeDetailVC.h"
 #import "WkWebViewController.h"
 #import <UMShare/UMShare.h>
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "MoubaoBindViewController.h"
 
 @interface MyIncomeVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
@@ -682,9 +682,9 @@
     [whiteBack addSubview:tip1];
     
     UILabel *phoneL = [[UILabel alloc] initWithFrame: CGRectMake(0, tip1.bottom + 5, whiteBack.width, 22.5)];
-    if (SWNOTEmptyStr([UserModel userPhone])) {
-        if ([UserModel userPhone].length > 7) {
-            phoneL.text = [[UserModel userPhone] stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
+    if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+        if ([V5_UserModel userPhone].length > 7) {
+            phoneL.text = [[V5_UserModel userPhone] stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
         }
     }
     phoneL.font = SYSTEMFONT(15);
@@ -725,8 +725,8 @@
 
 - (void)moubaoSureBtnClick:(UIButton *)sender {
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if ([UserModel userPhone]) {
-        [param setObject:[UserModel userPhone] forKey:@"alipay_account"];
+    if ([V5_UserModel userPhone]) {
+        [param setObject:[V5_UserModel userPhone] forKey:@"alipay_account"];
     }
     if (SWNOTEmptyStr(_moubaoSureNameTextField.text)) {
         [param setObject:_moubaoSureNameTextField.text forKey:@"alipay_user_name"];

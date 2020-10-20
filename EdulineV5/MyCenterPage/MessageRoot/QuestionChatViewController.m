@@ -9,7 +9,7 @@
 #import "QuestionChatViewController.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "CommentBaseView.h"
 #import "QuestionChatRightCell.h"
 #import "QuestionChatLeftCell.h"
@@ -128,7 +128,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([[NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"user_id"]] isEqualToString:[UserModel uid]]) {
+    if ([[NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"user_id"]] isEqualToString:[V5_UserModel uid]]) {
         static NSString *rightReuse = @"QuestionChatRightCell";
         QuestionChatRightCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
         if (!cell) {

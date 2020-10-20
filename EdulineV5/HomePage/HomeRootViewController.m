@@ -32,7 +32,7 @@
 #import "SDCycleScrollView.h"
 #import "ZPScrollerScaleView.h"
 #import "AppDelegate.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "WkWebViewController.h"
 
 // 测试班级课
@@ -631,7 +631,7 @@
         vc.sortIdStr = @"splendid";
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"favoriteCourse"]) {
-        if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
             [AppDelegate presentLoginNav:self];
             return;
         }
@@ -678,7 +678,7 @@
 }
 
 - (void)rightButtonClick:(id)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }

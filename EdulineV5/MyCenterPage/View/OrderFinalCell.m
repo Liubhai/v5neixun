@@ -8,7 +8,7 @@
 
 #import "OrderFinalCell.h"
 #import "V5_Constant.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @implementation OrderFinalCell
 

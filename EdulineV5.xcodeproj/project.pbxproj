@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		150133BD627AE25CD7C191B3 /* Pods_EdulineV5.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F01E02843C09C8F22217CD9 /* Pods_EdulineV5.framework */; };
 		780487E92510A433001118F3 /* EmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 780487E82510A433001118F3 /* EmptyCell.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
@@ -299,7 +300,7 @@
 		78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548392416213700A33FC4 /* SurePwViewController.m */; };
 		78C5483D24162BA300A33FC4 /* SurePassWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5483C24162BA300A33FC4 /* SurePassWordView.m */; };
 		78C54840241743DE00A33FC4 /* Net_Path.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5483F241743DE00A33FC4 /* Net_Path.m */; };
-		78C54845241873EB00A33FC4 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C54844241873EB00A33FC4 /* UserModel.m */; };
+		78C54845241873EB00A33FC4 /* V5_UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C54844241873EB00A33FC4 /* V5_UserModel.m */; };
 		78C548772418CC7400A33FC4 /* TYLinkTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548642418CC7400A33FC4 /* TYLinkTextStorage.m */; };
 		78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548652418CC7400A33FC4 /* TYDrawStorage.m */; };
 		78C548792418CC7400A33FC4 /* TYViewStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548662418CC7400A33FC4 /* TYViewStorage.m */; };
@@ -394,7 +395,6 @@
 		78F7C5D224EFC2AF0010F1E9 /* XLCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */; };
 		78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */; };
 		78FB7E0A2508AB5000344437 /* UnBindMsgCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */; };
-		FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -433,6 +433,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6F01E02843C09C8F22217CD9 /* Pods_EdulineV5.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EdulineV5.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		780487E72510A433001118F3 /* EmptyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyCell.h; sourceTree = "<group>"; };
 		780487E82510A433001118F3 /* EmptyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmptyCell.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
@@ -1003,8 +1004,8 @@
 		78C5483C24162BA300A33FC4 /* SurePassWordView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SurePassWordView.m; sourceTree = "<group>"; };
 		78C5483E241743DE00A33FC4 /* Net_Path.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Net_Path.h; sourceTree = "<group>"; };
 		78C5483F241743DE00A33FC4 /* Net_Path.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Net_Path.m; sourceTree = "<group>"; };
-		78C54843241873EB00A33FC4 /* UserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
-		78C54844241873EB00A33FC4 /* UserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		78C54843241873EB00A33FC4 /* V5_UserModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = V5_UserModel.h; sourceTree = "<group>"; };
+		78C54844241873EB00A33FC4 /* V5_UserModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = V5_UserModel.m; sourceTree = "<group>"; };
 		78C548632418CC7400A33FC4 /* TYAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYAttributedLabel.h; sourceTree = "<group>"; };
 		78C548642418CC7400A33FC4 /* TYLinkTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYLinkTextStorage.m; sourceTree = "<group>"; };
 		78C548652418CC7400A33FC4 /* TYDrawStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYDrawStorage.m; sourceTree = "<group>"; };
@@ -1176,7 +1177,6 @@
 		78FB7E082508AB5000344437 /* UnBindMsgCodeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnBindMsgCodeVC.h; sourceTree = "<group>"; };
 		78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnBindMsgCodeVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
-		9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EdulineV5.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3694015B3BD9C0F6CC71968 /* Pods-EdulineV5.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1201,9 +1201,9 @@
 				7853BDF82431E48300F096EC /* EAccountApiSDK.framework in Frameworks */,
 				78C54966241B642B00A33FC4 /* AlivcConan.framework in Frameworks */,
 				78C549EA241B773200A33FC4 /* alivcffmpeg.framework in Frameworks */,
-				FA4BFAE3CA483AC02E73456E /* libPods-EdulineV5.a in Frameworks */,
 				7853BDF62431E48300F096EC /* NTESQuickPass.framework in Frameworks */,
 				78C54969241B642B00A33FC4 /* artpSource.framework in Frameworks */,
+				150133BD627AE25CD7C191B3 /* Pods_EdulineV5.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2490,8 +2490,8 @@
 		78C54841241873CF00A33FC4 /* AnyModel */ = {
 			isa = PBXGroup;
 			children = (
-				78C54843241873EB00A33FC4 /* UserModel.h */,
-				78C54844241873EB00A33FC4 /* UserModel.m */,
+				78C54843241873EB00A33FC4 /* V5_UserModel.h */,
+				78C54844241873EB00A33FC4 /* V5_UserModel.m */,
 			);
 			path = AnyModel;
 			sourceTree = "<group>";
@@ -2819,7 +2819,7 @@
 				7853BDF12431E48100F096EC /* TYRZSDK.framework */,
 				7853BDE92431E15000F096EC /* libc++.1.tbd */,
 				7853BDE72431E14300F096EC /* libz.1.2.8.tbd */,
-				9D35E07AA5221B42150A1E0A /* libPods-EdulineV5.a */,
+				6F01E02843C09C8F22217CD9 /* Pods_EdulineV5.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3117,7 +3117,7 @@
 				7853165824513A2E007E239E /* LiveRoomPersonCell.m in Sources */,
 				78AA139224441083007087F7 /* IntendedCourseVC.m in Sources */,
 				78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */,
-				78C54845241873EB00A33FC4 /* UserModel.m in Sources */,
+				78C54845241873EB00A33FC4 /* V5_UserModel.m in Sources */,
 				787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */,
 				789DB04A246AC624001302B4 /* LearnRecordCell.m in Sources */,
 				78C549C6241B674E00A33FC4 /* AlivcKeyboardManager.m in Sources */,

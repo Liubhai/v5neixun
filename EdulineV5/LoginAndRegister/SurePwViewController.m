@@ -12,7 +12,7 @@
 #import "Net_Path.h"
 #import "EdulineV5_Tool.h"
 #import "WkWebViewController.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @interface SurePwViewController ()<TYAttributedLabelDelegate>
 
@@ -155,7 +155,7 @@
                 if (_registerOrForget) {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 } else if (_justSetPW) {
-                    [UserModel saveNeed_set_password:NO];
+                    [V5_UserModel saveNeed_set_password:NO];
                     [self.navigationController popViewControllerAnimated:YES];
                 }
             }

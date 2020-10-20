@@ -10,7 +10,7 @@
 #import "V5_Constant.h"
 #import "RegisterAndForgetPwVC.h"
 #import "PWResetViewController.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "AppDelegate.h"
 #import "TeacherCategoryVC.h"
 #import "FeedBackViewController.h"
@@ -40,7 +40,7 @@
     _titleLabel.text = @"设置";
     _otherTypeArray = [NSMutableArray new];
     _dataSource = [NSMutableArray new];
-//    if (SWNOTEmptyStr([UserModel oauthToken])) {
+//    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
 //        if ([Show_Config isEqualToString:@"1"]) {
 //            [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
 //              @{@"title":@"第三方账号",@"type":@"third",@"rightTitle":@"微信、QQ",@"status":@"off"}],
@@ -153,9 +153,9 @@
         shit.tag = 200;
         [shit showInView:self.view];
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"password"]) {
-        if (SWNOTEmptyStr([UserModel oauthToken])) {
-            if (SWNOTEmptyStr([UserModel userPhone])) {
-                if ([UserModel need_set_password]) {
+        if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
+            if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+                if ([V5_UserModel need_set_password]) {
                     SurePwViewController *vc = [[SurePwViewController alloc] init];
                     vc.justSetPW = YES;
                     [self.navigationController pushViewController:vc animated:YES];
@@ -166,7 +166,7 @@
             }
         }
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"study"]) {
-        if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
             [AppDelegate presentLoginNav:self];
             return;
         }
@@ -175,7 +175,7 @@
         vc.typeString = @"0";
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"feedback"]) {
-        if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
             [AppDelegate presentLoginNav:self];
             return;
         }
@@ -198,7 +198,7 @@
         };
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"third"]) {
-        if (!SWNOTEmptyStr([UserModel oauthToken])) {
+        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
             [AppDelegate presentLoginNav:self];
             return;
         }
@@ -422,7 +422,7 @@
 
 - (void)configOtherShowOrNot:(BOOL)show {
     [_dataSource removeAllObjects];
-    if (SWNOTEmptyStr([UserModel oauthToken])) {
+    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
         if ([Show_Config isEqualToString:@"1"]) {
             if (show) {
                 [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},
@@ -465,7 +465,7 @@
         }
     }
     /**
-     if (SWNOTEmptyStr([UserModel oauthToken])) {
+     if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
          if ([Show_Config isEqualToString:@"1"]) {
              if (show) {
                  [_dataSource addObjectsFromArray:@[@[@{@"title":@"修改密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},

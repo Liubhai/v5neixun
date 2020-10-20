@@ -11,7 +11,7 @@
 #import <AlipaySDK/AlipaySDK.h>
 #import <WechatOpenSDK/WXApi.h>
 #import "WkWebViewController.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "MyBalanceVC.h"
 
 @interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate> {
@@ -52,7 +52,7 @@
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
         _payment = [NSString stringWithFormat:@"育币%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
-        if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+        if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
             _payment = [NSString stringWithFormat:@"VIP:育币%@",[_orderSureInfo[@"data"] objectForKey:@"payment"]];
         }
         _order_no = [NSString stringWithFormat:@"%@",[[_orderSureInfo objectForKey:@"data"] objectForKey:@"order_no"]];

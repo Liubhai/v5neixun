@@ -7,7 +7,7 @@
 //
 
 #import "ShopCarCell.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @implementation ShopCarCell
 
@@ -111,7 +111,7 @@
     }
     
     _priceLabel.text = [NSString stringWithFormat:@"育币%@",model.price];
-    if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+    if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
         _priceLabel.text = [NSString stringWithFormat:@"VIP:育币%@",model.user_price];
     }
     if ([model.course_type isEqualToString:@"1"]) {

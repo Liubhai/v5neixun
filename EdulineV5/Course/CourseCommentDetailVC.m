@@ -10,7 +10,7 @@
 #import "CourseCommentCell.h"
 #import "CommentBaseView.h"
 #import "Net_Path.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @interface CourseCommentDetailVC ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CommentBaseViewDelegate,CourseCommentCellDelegate> {
     CGFloat keyHeight;
@@ -171,7 +171,7 @@
     NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
     BOOL isMine = NO;
     if (SWNOTEmptyDictionary(pass)) {
-        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+        if ([[NSString stringWithFormat:@"%@",[[pass objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[V5_UserModel uid]]) {
             isMine = YES;
         }
     }

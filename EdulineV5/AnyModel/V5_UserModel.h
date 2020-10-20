@@ -1,5 +1,5 @@
 //
-//  UserModel.h
+//  V5_UserModel.h
 //  EdulineV5
 //
 //  Created by 刘邦海 on 2020/3/11.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UserModel : NSObject
+@interface V5_UserModel : NSObject
 
 // 用户通行证
 + (NSDictionary *)userPassport;

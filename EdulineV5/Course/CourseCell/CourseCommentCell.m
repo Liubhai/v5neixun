@@ -7,7 +7,7 @@
 //
 
 #import "CourseCommentCell.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @implementation CourseCommentCell
 
@@ -112,7 +112,7 @@
             return;
         }
         if (SWNOTEmptyDictionary([info objectForKey:@"user"])) {
-            if ([[NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[UserModel uid]]) {
+            if ([[NSString stringWithFormat:@"%@",[[info objectForKey:@"user"] objectForKey:@"id"]] isEqualToString:[V5_UserModel uid]]) {
                 _editButton.hidden = NO;
             }
         }

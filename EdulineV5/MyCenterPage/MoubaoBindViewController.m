@@ -9,7 +9,7 @@
 #import "MoubaoBindViewController.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @interface MoubaoBindViewController ()<UITextFieldDelegate> {
     NSTimer *codeTimer;
@@ -109,9 +109,9 @@
     [whiteBack addSubview:_phoneTip];
     
     _phoneL = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _line2.bottom, 200, 50)];
-    if (SWNOTEmptyStr([UserModel userPhone])) {
-        if ([UserModel userPhone].length > 7) {
-            _phoneL.text = [[UserModel userPhone] stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
+    if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+        if ([V5_UserModel userPhone].length > 7) {
+            _phoneL.text = [[V5_UserModel userPhone] stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
         }
     }
     _phoneL.font = SYSTEMFONT(15);
@@ -235,8 +235,8 @@
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if (SWNOTEmptyStr([UserModel userPhone])) {
-        [param setObject:[UserModel userPhone] forKey:@"phone"];
+    if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+        [param setObject:[V5_UserModel userPhone] forKey:@"phone"];
     }
     [param setObject:@"alipay" forKey:@"type"];
     [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {

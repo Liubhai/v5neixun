@@ -9,7 +9,7 @@
 #import "MyRootViewController.h"
 #import "Api_Config.h"
 #import "V5_Constant.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "AppDelegate.h"
 #import "Net_Path.h"
 //页面跳转
@@ -118,8 +118,8 @@
     _mycenterOrderView = [[MyCenterOrderView alloc] initWithFrame:CGRectMake(15, _myCenterUserInfoView.bottom - 80, MainScreenWidth - 30, 140)];
     _mycenterOrderView.delegate = self;
     [_headerView addSubview:_mycenterOrderView];
-    _myCenterBalanceView = [[MyCenterBalanceView alloc] initWithFrame:CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, SWNOTEmptyStr([UserModel oauthToken]) ? 90 : 0)];
-    _myCenterBalanceView.hidden = SWNOTEmptyStr([UserModel oauthToken]) ? NO : YES;
+    _myCenterBalanceView = [[MyCenterBalanceView alloc] initWithFrame:CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, SWNOTEmptyStr([V5_UserModel oauthToken]) ? 90 : 0)];
+    _myCenterBalanceView.hidden = SWNOTEmptyStr([V5_UserModel oauthToken]) ? NO : YES;
     _myCenterBalanceView.delegate = self;
     [_headerView addSubview:_myCenterBalanceView];
     [_headerView setHeight:_myCenterBalanceView.bottom];
@@ -176,7 +176,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -212,8 +212,8 @@
             if (SWNOTEmptyDictionary(_userInfo)) {
                 NSString *userSchoolId = [NSString stringWithFormat:@"%@",[[[_userInfo objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"mhm_id"]];
                 if (SWNOTEmptyStr(userSchoolId)) {
-                    if (SWNOTEmptyStr([UserModel userPhone])) {
-                        if ([UserModel userPhone].length > 5) {
+                    if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+                        if ([V5_UserModel userPhone].length > 5) {
                             TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
                             vc.userSchoolId = userSchoolId;
                             [self.navigationController pushViewController:vc animated:YES];
@@ -234,8 +234,8 @@
                 [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
             }
         } else if ([iconKey isEqualToString:@"school"]) {
-            if (SWNOTEmptyStr([UserModel userPhone])) {
-                if ([UserModel userPhone].length > 5) {
+            if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+                if ([V5_UserModel userPhone].length > 5) {
                    InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
                     [self.navigationController pushViewController:vc animated:YES];
                     return;
@@ -280,7 +280,7 @@
 }
 
 - (void)rightButtonClick:(id)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -295,7 +295,7 @@
 
 // MARK: -
 - (void)jumpToOtherPage:(UIButton *)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -355,7 +355,7 @@
 
 // MARK: - MyCenterUserInfoViewDelegate(进入个人信息页面)
 - (void)goToUserInfoVC {
-    if (SWNOTEmptyStr([UserModel oauthToken])) {
+    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
         PersonalInformationVC *vc = [[PersonalInformationVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
@@ -369,7 +369,7 @@
 }
 
 - (void)goToMenberCenter {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -378,7 +378,7 @@
 }
 
 - (void)goToMessageVC {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -388,7 +388,7 @@
 
 // MARK: - MyCenterOrderViewDelegate(进入订单页面)
 - (void)goToOrderVC:(UIButton *)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -409,7 +409,7 @@
 
 // MARK: - MyCenterBalanceViewDelegate(进入余额积分等页面)
 - (void)jumpToOtherVC:(UIButton *)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -433,14 +433,14 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _userInfo = [NSDictionary dictionaryWithDictionary:responseObject];
-                [UserModel saveUid:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"id"]]];
-                [UserModel saveUname:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"nick_name"]]];
-                [UserModel saveNickName:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"user_name"]]];
-                [UserModel savePhone:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"phone"]]];
-                [UserModel saveGender:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"gender"]]];
-                [UserModel saveAvatar:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"avatar_url"]]];
-                [UserModel saveVipStatus:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"vip_status"]]];
-                [UserModel saveIntro:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"signature"]]];
+                [V5_UserModel saveUid:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"id"]]];
+                [V5_UserModel saveUname:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"nick_name"]]];
+                [V5_UserModel saveNickName:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"user_name"]]];
+                [V5_UserModel savePhone:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"phone"]]];
+                [V5_UserModel saveGender:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"gender"]]];
+                [V5_UserModel saveAvatar:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"avatar_url"]]];
+                [V5_UserModel saveVipStatus:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"vip_status"]]];
+                [V5_UserModel saveIntro:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"signature"]]];
                 
                 [_iconArray removeAllObjects];
                 NSArray *listArray = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"list"]];
@@ -457,8 +457,8 @@
                     _redLabel.hidden = YES;
                     _myCenterUserInfoView.redLabel.hidden = YES;
                 }
-                _myCenterBalanceView.frame = CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, SWNOTEmptyStr([UserModel oauthToken]) ? 90 : 0);
-                _myCenterBalanceView.hidden = SWNOTEmptyStr([UserModel oauthToken]) ? NO : YES;
+                _myCenterBalanceView.frame = CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, SWNOTEmptyStr([V5_UserModel oauthToken]) ? 90 : 0);
+                _myCenterBalanceView.hidden = SWNOTEmptyStr([V5_UserModel oauthToken]) ? NO : YES;
                 [_headerView setHeight:_myCenterBalanceView.bottom];
                 [self.myCenterBalanceView setBalanceInfo:_userInfo];
                 _tableView.tableHeaderView = _headerView;

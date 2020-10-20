@@ -11,7 +11,7 @@
 #import "Net_Path.h"
 #import "ZixunCommentCell.h"
 #import "CommentBaseView.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "AppDelegate.h"
 #import "ZixunCommmentDetailVC.h"
 #import <UShareUI/UShareUI.h>
@@ -218,7 +218,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -468,7 +468,7 @@
 }
 
 - (void)judgeLogin {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -477,7 +477,7 @@
 }
 
 - (void)zanComment:(ZixunCommentCell *)cell {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -529,7 +529,7 @@
 
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }

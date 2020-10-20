@@ -1,19 +1,19 @@
 //
-//  UserModel.m
+//  V5_UserModel.m
 //  EdulineV5
 //
 //  Created by 刘邦海 on 2020/3/11.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
-#define SWToStr(X) [UserModel replaceNilStr:X nilStr:@""]
+#define SWToStr(X) [V5_UserModel replaceNilStr:X nilStr:@""]
 
-@implementation UserModel
+@implementation V5_UserModel
 
 + (NSDictionary *)userPassport {
-    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"sw_UserModelPassport"];
+    NSDictionary *dic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"sw_V5_UserModelPassport"];
     if (SWNOTEmptyDictionary(dic)) {
         return dic;
     }
@@ -32,12 +32,12 @@
     if (SWNOTEmptyStr(tokenSecret)) {
         [uDic setObject:tokenSecret forKey:@"oauthTokenSecret"];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)deleteUserPassport {
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -45,14 +45,14 @@
 {
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:uname forKey:@"uname"];
-    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 +(void)saveGender:(NSString *)gender {
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:gender forKey:@"gender"];
-    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -63,7 +63,7 @@
     }
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:SWToStr(uid) forKey:@"uid"];
-    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -89,7 +89,7 @@
     if (SWNOTEmptyArr(dic[@"user_group"])) {
         [uDic setObject:dic[@"user_group"] forKey:@"user_group"];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -98,7 +98,7 @@
 {
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:intro forKey:@"intro"];
-    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -106,29 +106,29 @@
 {
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:avatar forKey:@"avatar"];
-    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 +(void)saveIsAdmin:(BOOL)isAdmin
 {
-    [[NSUserDefaults standardUserDefaults] setObject:@(isAdmin) forKey:@"sw_UserModelisAdmin"];
+    [[NSUserDefaults standardUserDefaults] setObject:@(isAdmin) forKey:@"sw_V5_UserModelisAdmin"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 
 +(void)saveRemark:(NSString *)remark{
-    [[NSUserDefaults standardUserDefaults] setObject:remark forKey:@"sw_UserModelRemark"];
+    [[NSUserDefaults standardUserDefaults] setObject:remark forKey:@"sw_V5_UserModelRemark"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)saveWithdrawAccout:(NSString *)accout {
-    [[NSUserDefaults standardUserDefaults] setObject:accout forKey:@"sw_UserModelAccout"];
+    [[NSUserDefaults standardUserDefaults] setObject:accout forKey:@"sw_V5_UserModelAccout"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)saveWithdrawAccoutPlatform:(int)platform {
-    [[NSUserDefaults standardUserDefaults] setInteger:platform forKey:@"sw_UserModelPlatform"];
+    [[NSUserDefaults standardUserDefaults] setInteger:platform forKey:@"sw_V5_UserModelPlatform"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -139,21 +139,21 @@
 
 +(BOOL)isAdmin
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"sw_UserModelisAdmin"]boolValue];
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"sw_V5_UserModelisAdmin"]boolValue];
 }
 
 +(void)saveUsergroupId:(NSString *)usergroupId {
-    [[NSUserDefaults standardUserDefaults] setObject:usergroupId forKey:@"sw_UserModelUsergroupId"];
+    [[NSUserDefaults standardUserDefaults] setObject:usergroupId forKey:@"sw_V5_UserModelUsergroupId"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 +(void)saveVerified:(NSString *)verified {
-    [[NSUserDefaults standardUserDefaults] setObject:verified forKey:@"sw_UserModelVerified"];
+    [[NSUserDefaults standardUserDefaults] setObject:verified forKey:@"sw_V5_UserModelVerified"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)saveUserGroupIcon:(NSArray*)gruopArray{
-    [[NSUserDefaults standardUserDefaults] setObject:gruopArray forKey:@"sw_UserModelUserGroupIcon"];
+    [[NSUserDefaults standardUserDefaults] setObject:gruopArray forKey:@"sw_V5_UserModelUserGroupIcon"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -170,7 +170,7 @@
 + (void)saveVipStatus:(NSString *)status {
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:status forKey:@"vipStatus"];
-    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_UserModelPassport"];
+    [[NSUserDefaults standardUserDefaults] setObject:uDic forKey:@"sw_V5_UserModelPassport"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -181,46 +181,46 @@
 
 + (NSString*)remark{
     
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_UserModelRemark"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_V5_UserModelRemark"];
 }
 
 +(NSString *)uname
 {
-    return [UserModel replaceNilStr:[self userPassport][@"uname"] nilStr:@""];
+    return [V5_UserModel replaceNilStr:[self userPassport][@"uname"] nilStr:@""];
 }
 
 +(NSString *)uid
 {
-    return [UserModel replaceNilStr:SWToStr([self userPassport][@"uid"]) nilStr:@""];
+    return [V5_UserModel replaceNilStr:SWToStr([self userPassport][@"uid"]) nilStr:@""];
 }
 
 +(NSString *)gender {
-    return [UserModel replaceNilStr:SWToStr([self userPassport][@"gender"]) nilStr:@""];
+    return [V5_UserModel replaceNilStr:SWToStr([self userPassport][@"gender"]) nilStr:@""];
 }
 
 +(NSString *)avatar
 {
-    return [UserModel replaceNilStr:[self userPassport][@"avatar"] nilStr:@""];
+    return [V5_UserModel replaceNilStr:[self userPassport][@"avatar"] nilStr:@""];
 }
 
 +(NSString *)intro
 {
-    return [UserModel replaceNilStr:[self userPassport][@"intro"] nilStr:@""];
+    return [V5_UserModel replaceNilStr:[self userPassport][@"intro"] nilStr:@""];
 }
 
 +(NSString *)oauthToken
 {
-    return [UserModel replaceNilStr:[self userPassport][@"oauthToken"] nilStr:@""];
+    return [V5_UserModel replaceNilStr:[self userPassport][@"oauthToken"] nilStr:@""];
 }
 
 +(NSString *)oauthTokenSecret
 {
-    return [UserModel replaceNilStr:[self userPassport][@"oauthTokenSecret"] nilStr:@""];
+    return [V5_UserModel replaceNilStr:[self userPassport][@"oauthTokenSecret"] nilStr:@""];
 }
 
 +(NSString *)vipStatus
 {
-    return [UserModel replaceNilStr:[self userPassport][@"vipStatus"] nilStr:@""];
+    return [V5_UserModel replaceNilStr:[self userPassport][@"vipStatus"] nilStr:@""];
 }
 
 +(NSString *)groupImg
@@ -268,22 +268,22 @@
 }
 
 + (NSString *)withdrawAccout {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_UserModelAccout"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_V5_UserModelAccout"];
 }
 
 + (int)WithdrawAccoutPlatform {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:@"sw_UserModelPlatform"];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:@"sw_V5_UserModelPlatform"];
 }
 
 +(NSString *)usergroupId {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_UserModelUsergroupId"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_V5_UserModelUsergroupId"];
 }
 
 +(NSString *)verified {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_UserModelVerified"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_V5_UserModelVerified"];
 }
 +(NSArray *)userGroupIcon {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_UserModelUserGroupIcon"];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"sw_V5_UserModelUserGroupIcon"];
 }
 
 +(BOOL)need_set_password {

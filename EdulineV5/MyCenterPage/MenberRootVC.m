@@ -11,7 +11,7 @@
 #import "MenberCell.h"
 #import "UINavigationController+EdulineStatusBar.h"
 #import "Net_Path.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "OrderSureViewController.h"
 #import "MenberRecordVC.h"
 #import "WkWebViewController.h"
@@ -112,15 +112,15 @@
     _userFace.clipsToBounds = YES;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;
     _userFace.image = DefaultUserImage;
-    if ([UserModel avatar]) {
-        [_userFace sd_setImageWithURL:EdulineUrlString([UserModel avatar]) placeholderImage:DefaultUserImage];
+    if ([V5_UserModel avatar]) {
+        [_userFace sd_setImageWithURL:EdulineUrlString([V5_UserModel avatar]) placeholderImage:DefaultUserImage];
     }
     [_topBackView addSubview:_userFace];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 15, _userFace.top, 150, _userFace.height / 2.0)];
     _nameLabel.textColor = HEXCOLOR(0x946A38);
     _nameLabel.font = SYSTEMFONT(17);
-    _nameLabel.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
+    _nameLabel.text = [NSString stringWithFormat:@"%@",[V5_UserModel uname]];
     _nameLabel.userInteractionEnabled = YES;
     [_topBackView addSubview:_nameLabel];
     CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
@@ -129,7 +129,7 @@
     _levelImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_nameLabel.right, 0, 15, 13)];
     _levelImageView.image = Image(@"vip_icon");
     _levelImageView.centerY = _nameLabel.centerY;
-    if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+    if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
         _levelImageView.hidden = NO;
     } else {
         _levelImageView.hidden = YES;

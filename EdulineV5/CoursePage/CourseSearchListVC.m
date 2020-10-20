@@ -20,7 +20,7 @@
 #import "CourseScreenVC.h"
 #import "CourseClassifyVC.h"
 #import "AppDelegate.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 #import "TeacherCategoryVC.h"
 
@@ -521,7 +521,7 @@
 }
 
 - (void)rightButtonClick:(id)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }

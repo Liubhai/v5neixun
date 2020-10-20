@@ -17,7 +17,7 @@
 #import "SDCycleScrollView.h"
 #import "ZPScrollerScaleView.h"
 #import "AppDelegate.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "WkWebViewController.h"
 #import "CourseMainViewController.h"
 

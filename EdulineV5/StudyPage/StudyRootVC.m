@@ -13,7 +13,7 @@
 #import "EmptyCell.h"
 #import "V5_Constant.h"
 #import "JoinCourseVC.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "AppDelegate.h"
 #import "Net_Path.h"
 #import "LearnRecordVC.h"
@@ -55,7 +55,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (SWNOTEmptyStr([UserModel oauthToken])) {
+    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
         if (_notLoginView) {
             _notLoginView.hidden = YES;
         }
@@ -82,7 +82,7 @@
     
     [self makeTableView];
     [self makeNotLoginView];
-    if (SWNOTEmptyStr([UserModel oauthToken])) {
+    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
         _notLoginView.hidden = YES;
     } else {
         _notLoginView.hidden = NO;
@@ -570,7 +570,7 @@
 }
 
 - (void)getStudyInfo {
-    if (SWNOTEmptyStr([UserModel oauthToken])) {
+    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageData] WithAuthorization:nil paramDic:@{@"order":dataType} finish:^(id  _Nonnull responseObject) {
             if ([_tableView.mj_header isRefreshing]) {
                 [_tableView.mj_header endRefreshing];

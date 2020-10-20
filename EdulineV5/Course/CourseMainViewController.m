@@ -31,7 +31,7 @@
 #import "OrderViewController.h"
 #import "ShopCarManagerVC.h"
 #import <UShareUI/UShareUI.h>
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "AppDelegate.h"
 
 #define FaceImageHeight 207
@@ -408,7 +408,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -553,7 +553,7 @@
 
 // MARK: - 讲师机构点击事件(讲师)
 - (void)jumpToOrganization:(NSDictionary *)schoolInfo {
-//    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+//    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
 //        return;
 //    }
     InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
@@ -563,7 +563,7 @@
 
 // MARK: - 讲师机构点击事件(机构)
 - (void)jumpToTeacher:(NSDictionary *)teacherInfoDict tapTag:(NSInteger)viewTag {
-//    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+//    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
 //        return;
 //    }
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
@@ -573,7 +573,7 @@
 
 // MARK: - 优惠卷点击事件
 - (void)jumpToCouponsVC {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -588,7 +588,7 @@
 
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -735,7 +735,7 @@
 }
 
 - (void)jumpToShopCarVC:(CourseDownView *)downView {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -744,7 +744,7 @@
 }
 
 - (void)joinShopCarEvent:(CourseDownView *)downView {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -761,7 +761,7 @@
 }
 
 - (void)joinStudyEvent:(CourseDownView *)downView {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -804,7 +804,7 @@
 }
 
 - (void)jumpToCommentVC {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         return;
     }
     CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
@@ -814,7 +814,7 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell{
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
@@ -841,7 +841,7 @@
 }
 
 - (void)newClassCourseCellDidSelected:(CourseListModel *)model indexpath:(nonnull NSIndexPath *)indexpath {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }

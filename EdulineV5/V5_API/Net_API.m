@@ -8,7 +8,7 @@
 
 #import "Net_API.h"
 #import "EdulineV5_Tool.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "AppDelegate.h"
 
 #define HeaderUrl_V5_Api @"https://tv5.51eduline.com"//@"https://v5.51eduline.com"
@@ -37,9 +37,9 @@
     manager.responseSerializer = responseSerializer;
     manager.requestSerializer = requestSerializer;
     
-    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
-        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
-        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+    if (SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
@@ -83,7 +83,7 @@
         if ([[pass allKeys] count]) {
             if (SWNOTEmptyDictionary([pass objectForKey:@"data"])) {
                 NSString *error_code = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"data"] objectForKey:@"error_code"]];
-                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([UserModel oauthToken])) {
+                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
                     // 展示提示框
                     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                     [appDelegate.noticeLogoutAlert show];
@@ -114,9 +114,9 @@
     manager.responseSerializer = responseSerializer;
     manager.requestSerializer = requestSerializer;
     
-    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
-        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
-        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+    if (SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
@@ -155,7 +155,7 @@
        if ([[pass allKeys] count]) {
            if (SWNOTEmptyDictionary([pass objectForKey:@"data"])) {
                NSString *error_code = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"data"] objectForKey:@"error_code"]];
-               if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([UserModel oauthToken])) {
+               if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
                    // 展示提示框
                    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                    [appDelegate.noticeLogoutAlert show];
@@ -185,9 +185,9 @@
     manager.responseSerializer = responseSerializer;
     manager.requestSerializer = requestSerializer;
     
-    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
-        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
-        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+    if (SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
@@ -229,7 +229,7 @@
         if ([[pass allKeys] count]) {
             if (SWNOTEmptyDictionary([pass objectForKey:@"data"])) {
                 NSString *error_code = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"data"] objectForKey:@"error_code"]];
-                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([UserModel oauthToken])) {
+                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
                     // 展示提示框
                     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                     [appDelegate.noticeLogoutAlert show];
@@ -259,9 +259,9 @@
     manager.responseSerializer = responseSerializer;
     manager.requestSerializer = requestSerializer;
     
-    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
-        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
-        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+    if (SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
@@ -305,7 +305,7 @@
         if ([[pass allKeys] count]) {
             if (SWNOTEmptyDictionary([pass objectForKey:@"data"])) {
                 NSString *error_code = [NSString stringWithFormat:@"%@",[[pass objectForKey:@"data"] objectForKey:@"error_code"]];
-                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([UserModel oauthToken])) {
+                if ([error_code isEqualToString:@"402"] && SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
                     // 展示提示框
                     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                     [appDelegate.noticeLogoutAlert show];
@@ -346,9 +346,9 @@
     manager.responseSerializer = responseSerializer;
     manager.requestSerializer = requestSerializer;
     
-    if (SWNOTEmptyStr_Api([UserModel oauthToken])) {
-        [manager.requestSerializer setValue:[UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
-        [manager.requestSerializer setValue:[UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
+    if (SWNOTEmptyStr_Api([V5_UserModel oauthToken])) {
+        [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
+        [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
     [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];

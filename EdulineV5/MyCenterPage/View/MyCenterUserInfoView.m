@@ -8,7 +8,7 @@
 
 #import "MyCenterUserInfoView.h"
 #import "V5_Constant.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 
 @implementation MyCenterUserInfoView
 
@@ -127,29 +127,29 @@
 }
 
 - (void)setUserInfo:(NSDictionary *)info {
-    if (SWNOTEmptyStr([UserModel oauthToken])) {
-        [_userFaceImageView sd_setImageWithURL:EdulineUrlString([UserModel avatar]) placeholderImage:DefaultUserImage];
+    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [_userFaceImageView sd_setImageWithURL:EdulineUrlString([V5_UserModel avatar]) placeholderImage:DefaultUserImage];
         [_nameLabel setTop:_userFaceImageView.top];
         _introLabel.hidden = NO;
-        _introLabel.text = [NSString stringWithFormat:@"%@",[UserModel intro]];
-        _nameLabel.text = [NSString stringWithFormat:@"%@",[UserModel uname]];
+        _introLabel.text = [NSString stringWithFormat:@"%@",[V5_UserModel intro]];
+        _nameLabel.text = [NSString stringWithFormat:@"%@",[V5_UserModel uname]];
         _levelImageView.hidden = NO;
         CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
         [_nameLabel setWidth:nameWidth];
         [_levelImageView setLeft:_nameLabel.right];
-        if ([[UserModel vipStatus] isEqualToString:@"1"]) {
+        if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
             _levelImageView.hidden = NO;
             [_menberBtn setTitle:@" 续费会员》" forState:0];
             _levelImageView.image = Image(@"vip_icon");
             _menberBtn.hidden = NO;
             _menberImageView.hidden = NO;
-        } else if ([[UserModel vipStatus] isEqualToString:@"2"]) {
+        } else if ([[V5_UserModel vipStatus] isEqualToString:@"2"]) {
             _levelImageView.hidden = NO;
             _levelImageView.image = Image(@"vip_grey_icon");
             [_menberBtn setTitle:@" 续费会员》" forState:0];
             _menberBtn.hidden = NO;
             _menberImageView.hidden = NO;
-        } else if ([[UserModel vipStatus] isEqualToString:@"0"]) {
+        } else if ([[V5_UserModel vipStatus] isEqualToString:@"0"]) {
             _levelImageView.hidden = YES;
             [_menberBtn setTitle:@" 开通会员》" forState:0];
             _menberBtn.hidden = NO;

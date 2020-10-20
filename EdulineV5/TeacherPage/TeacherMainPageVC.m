@@ -13,7 +13,7 @@
 #import "Net_Path.h"
 #import "UserCommenListVC.h"
 #import "InstitutionRootVC.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "AppDelegate.h"
 
 @interface TeacherMainPageVC ()<UIScrollViewDelegate,UITextViewDelegate> {
@@ -374,7 +374,7 @@
 }
 
 - (void)likeButtonClick:(UIButton *)sender {
-    if (!SWNOTEmptyStr([UserModel oauthToken])) {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }

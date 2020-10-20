@@ -10,7 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "ScanPhotoViewController.h"
-#import "UserModel.h"
+#import "V5_UserModel.h"
 #import "TeacherCategoryVC.h"
 #import "TeacherCategoryModel.h"
 
