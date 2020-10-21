@@ -17,6 +17,16 @@
 #import "AlivcMacro.h"
 
 
+#import <YYModel.h>
+#import "UIColor+Addition.h"
+#import "AlertViewUtil.h"
+#import "LogManager.h"
+
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define WEAK(object) __weak typeof(object) weak##object = object
+#define IsPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+
 #endif
 
 // Include any system framework and library headers here that should be included in all compilation units.

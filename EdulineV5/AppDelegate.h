@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "RootV5VC.h"
 
+#define NOTICE_KEY_ON_WILL_TERMINATE @"NOTICE_KEY_ON_WILL_TERMINATE"
+
 typedef void (^configTXSDK)(NSString *success);
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate> {
