@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *classId;
 @property (strong, nonatomic) NSString *userId;
+@property (strong, nonatomic) NSString *teacherId;
 @property (strong, nonatomic) NSString *liveTitle;
 
 @property (strong, nonatomic) UIView *liveBackView;

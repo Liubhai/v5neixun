@@ -318,6 +318,7 @@
 		788E95C4253FE24F0089251E /* ReplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E9556253FE24D0089251E /* ReplayViewController.m */; };
 		788E95C5253FE24F0089251E /* ReplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 788E9558253FE24D0089251E /* ReplayViewController.xib */; };
 		788E95C6253FE24F0089251E /* Replay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788E9559253FE24E0089251E /* Replay.storyboard */; };
+		788E95C9254188500089251E /* CommonPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95C82541884E0089251E /* CommonPopView.m */; };
 		788EB1C2250218B000E30D79 /* OtherTypeLoginBindVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */; };
 		788EB1C5250220B000E30D79 /* OtherTypeBindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */; };
 		7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */; };
@@ -1153,6 +1154,8 @@
 		788E9557253FE24D0089251E /* ReplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayViewController.h; sourceTree = "<group>"; };
 		788E9558253FE24D0089251E /* ReplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReplayViewController.xib; sourceTree = "<group>"; };
 		788E9559253FE24E0089251E /* Replay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Replay.storyboard; sourceTree = "<group>"; };
+		788E95C72541884E0089251E /* CommonPopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonPopView.h; sourceTree = "<group>"; };
+		788E95C82541884E0089251E /* CommonPopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonPopView.m; sourceTree = "<group>"; };
 		788EB1C0250218AB00E30D79 /* OtherTypeLoginBindVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeLoginBindVC.h; sourceTree = "<group>"; };
 		788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherTypeLoginBindVC.m; sourceTree = "<group>"; };
 		788EB1C3250220B000E30D79 /* OtherTypeBindCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeBindCell.h; sourceTree = "<group>"; };
@@ -2046,6 +2049,8 @@
 				7853168E24519A35007E239E /* UIViewController+Utils.m */,
 				789DB063246D26EB001302B4 /* NSObject+PYThemeExtension.h */,
 				789DB064246D26EC001302B4 /* NSObject+PYThemeExtension.m */,
+				788E95C72541884E0089251E /* CommonPopView.h */,
+				788E95C82541884E0089251E /* CommonPopView.m */,
 			);
 			path = BaseVC;
 			sourceTree = "<group>";
@@ -4054,6 +4059,7 @@
 				78795612240DE7A50013F95F /* AppDelegate.m in Sources */,
 				78AA137E2440543D007087F7 /* SDCycleScrollView.m in Sources */,
 				788E95B5253FE24E0089251E /* RTCManager.m in Sources */,
+				788E95C9254188500089251E /* CommonPopView.m in Sources */,
 				787657282435C79E008F475D /* StudyRootVC.m in Sources */,
 				785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */,
 				787F1E88247381A400108F7B /* AVC_VP_PlaySettingVC.m in Sources */,

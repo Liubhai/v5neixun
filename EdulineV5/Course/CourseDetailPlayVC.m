@@ -1938,6 +1938,7 @@
     vc.course_live_type = [NSString stringWithFormat:@"%@",_dataSource[@"course_live_type"]];
     vc.classId = classId;
     vc.userId = userId;
+    vc.teacherId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"teacher_id"]];
     vc.liveTitle = model.title;
     vc.userIdentify = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]];
     
