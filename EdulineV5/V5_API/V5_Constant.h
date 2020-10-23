@@ -141,6 +141,7 @@
 #define CommenViewHeight 50
 #define CommentInputHeight 36
 #define CommentViewMaxHeight 180
+#define CommentViewLeftButtonWidth 28
 
 // 课程cell布局所需
 #define singleLeftSpace 15

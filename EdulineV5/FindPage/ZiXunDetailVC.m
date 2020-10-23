@@ -144,7 +144,7 @@
 }
 
 - (void)makeCommentToolView {
-    _commentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA)];
+    _commentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:nil placeHolderTitle:nil sendButtonTitle:nil];
     _commentView.delegate = self;
     _commentView.hidden = NO;
     [self.view addSubview:_commentView];
@@ -417,6 +417,13 @@
     [_commentView setTop:MainScreenHeight - MACRO_UI_SAFEAREA - CommenViewHeight];
     [_commentView setHeight:CommenViewHeight + MACRO_UI_SAFEAREA];
     [_commentView.inputTextView setHeight:CommentInputHeight];
+    CGFloat XX = SWNOTEmptyArr(_commentView.leftButtonImageArray) ? (15 + _commentView.leftButtonImageArray.count * (CommentViewLeftButtonWidth + 8) + 13.5 - 8) : 15;
+    _commentView.inputTextView.frame = CGRectMake(XX, (CommenViewHeight - CommentInputHeight) / 2.0, MainScreenWidth - XX - 57.5, CommentInputHeight);
+    for (int i = 0; i<self.commentView.leftButtonImageArray.count; i++) {
+        UIButton *btn = (UIButton *)[_commentView viewWithTag:20 + i];
+        btn.hidden = NO;
+    }
+    [_commentView.sendButton setTop:0];
     [_commentBackView setHeight:0.001];
     _commentBackView.hidden = YES;
     if (_commentView.inputTextView.text.length<=0) {
@@ -430,8 +437,13 @@
     NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     keyHeight = [endValue CGRectValue].size.height;
     [UIView animateWithDuration:0.1 animations:^{
+        for (int i = 0; i<self.commentView.leftButtonImageArray.count; i++) {
+            UIButton *btn = (UIButton *)[self.commentView viewWithTag:20 + i];
+            btn.hidden = YES;
+        }
         [self.commentView setHeight:CommentViewMaxHeight];
-        [self.commentView.inputTextView setHeight:CommentViewMaxHeight - (CommenViewHeight - CommentInputHeight)];
+        self.commentView.inputTextView.frame = CGRectMake(15, (CommenViewHeight - CommentInputHeight) / 2.0, MainScreenWidth - 15 - 57.5, CommentViewMaxHeight - (CommenViewHeight - CommentInputHeight));
+        [self.commentView.sendButton setTop:self.commentView.inputTextView.bottom - CommenViewHeight + (CommenViewHeight - CommentInputHeight)/2.0];
         [self.commentView setTop:MainScreenHeight - MACRO_UI_SAFEAREA - CommentViewMaxHeight - self->keyHeight];
         [self.commentBackView setHeight:MainScreenHeight - MACRO_UI_SAFEAREA - CommentViewMaxHeight - self->keyHeight];
     } completion:^(BOOL finished) {

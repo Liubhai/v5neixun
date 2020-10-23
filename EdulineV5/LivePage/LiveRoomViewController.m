@@ -11,12 +11,44 @@
 #import "V5_Constant.h"
 #import "AppDelegate.h"
 #import <TEduBoard/TEduBoard.h>
+#import "QuestionChatLeftCell.h"
+#import "QuestionChatTimeCell.h"
+#import "QuestionChatRightCell.h"
+#import "CommentBaseView.h"
+#import "HorizontalScrollText.h"
+#import "V5_UserModel.h"
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate>
+@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource> {
+    NSInteger page;
+    CGFloat keyHeight;
+    BOOL isScrollBottom;
+}
 
+// 腾讯直播相关控件
 @property (assign, nonatomic) BOOL isFullScreen;
 @property (strong, nonatomic) NSMutableArray *livePersonArray;
 @property (strong, nonatomic) UIView *boardView;
+
+// 中间按钮背景视图
+@property (strong, nonatomic) UIView *midButtonBackView;
+@property (strong, nonatomic) UIButton *baibanBtn;
+@property (strong, nonatomic) UIButton *chatBtn;
+@property (strong, nonatomic) UIButton *menberBtn;
+@property (strong, nonatomic) UIView *blueLine;
+@property (strong, nonatomic) UIView *greyLine;
+
+
+// 声网直播相关控件
+@property (strong, nonatomic) UIView *chatBackView;// 聊天列表页面整个背景视图
+@property (strong, nonatomic) UIView *noticeBackView;// 公告背景视图
+@property (strong, nonatomic) HorizontalScrollText *noticeText;
+@property (strong, nonatomic) UITableView *chatListTableView; // 聊天列表
+@property (strong, nonatomic) NSMutableArray *dataSource;
+
+@property (strong, nonatomic) CommentBaseView *chatCommentView;
+@property (strong, nonatomic) UIView *commentBackView;
+
+
 
 @end
 
@@ -32,7 +64,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     AppDelegate *app = [AppDelegate delegate];
-    app._allowRotation = YES;
+//    app._allowRotation = YES;
+    app._allowRotation = NO;
+    isScrollBottom = NO;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -46,13 +80,21 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleImage.hidden = YES;
+    isScrollBottom = YES;
     
     _livePersonArray = [NSMutableArray new];
+    _dataSource = [NSMutableArray new];
     
     [self makeLiveSubView];
+    [self makeMidSubView];
+    [self makeNoticeView];
+    [self makeChatListTableView];
+    [self makeBottomView];
     // 接收屏幕方向改变通知,监听屏幕方向
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationHandler) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)dealloc {
@@ -182,6 +224,320 @@
     [_liveBackView addSubview:_boardView];
 }
 
+// MARK: - 中间按钮
+- (void)makeMidSubView {
+    _midButtonBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _liveBackView.bottom, MainScreenWidth, 40)];
+    _midButtonBackView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_midButtonBackView];
+    
+    BOOL showMenberList = YES;
+    if ([_userIdentify isEqualToString:@"1"] && [_course_live_type isEqualToString:@"2"]) {
+        showMenberList = YES;
+    }
+    _showBoardView = YES;
+    if (_showBoardView) {
+        if (showMenberList) {
+            _baibanBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth / 3.0, 40)];
+            [_baibanBtn addTarget:self action:@selector(midButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_baibanBtn setTitle:@"白板" forState:0];
+            _baibanBtn.titleLabel.font = SYSTEMFONT(15);
+            [_baibanBtn setTitleColor:[UIColor blackColor] forState:0];
+            [_baibanBtn setTitleColor:BasidColor forState:UIControlStateSelected];
+            [_midButtonBackView addSubview:_baibanBtn];
+            
+            _chatBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth/3.0, 0, MainScreenWidth / 3.0, 40)];
+            [_chatBtn addTarget:self action:@selector(midButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_chatBtn setTitle:@"聊天" forState:0];
+            _chatBtn.titleLabel.font = SYSTEMFONT(15);
+            [_chatBtn setTitleColor:[UIColor blackColor] forState:0];
+            [_chatBtn setTitleColor:BasidColor forState:UIControlStateSelected];
+            [_midButtonBackView addSubview:_chatBtn];
+            
+            _menberBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth * 2/3.0, 0, MainScreenWidth / 3.0, 40)];
+            [_menberBtn addTarget:self action:@selector(midButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_menberBtn setTitle:@"学员" forState:0];
+            _menberBtn.titleLabel.font = SYSTEMFONT(15);
+            [_menberBtn setTitleColor:[UIColor blackColor] forState:0];
+            [_menberBtn setTitleColor:BasidColor forState:UIControlStateSelected];
+            [_midButtonBackView addSubview:_menberBtn];
+            
+            _blueLine = [[UIView alloc] initWithFrame:CGRectMake(0, 40 - 4, 20, 2)];
+            _blueLine.backgroundColor = BasidColor;
+            [_midButtonBackView addSubview:_blueLine];
+            _blueLine.centerX = _baibanBtn.centerX;
+            
+        } else {
+            _baibanBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth / 2.0, 40)];
+            [_baibanBtn addTarget:self action:@selector(midButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_baibanBtn setTitle:@"白板" forState:0];
+            _baibanBtn.titleLabel.font = SYSTEMFONT(15);
+            [_baibanBtn setTitleColor:[UIColor blackColor] forState:0];
+            [_baibanBtn setTitleColor:BasidColor forState:UIControlStateSelected];
+            [_midButtonBackView addSubview:_baibanBtn];
+            
+            _chatBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth/2.0, 0, MainScreenWidth / 2.0, 40)];
+            [_chatBtn addTarget:self action:@selector(midButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_chatBtn setTitle:@"聊天" forState:0];
+            _chatBtn.titleLabel.font = SYSTEMFONT(15);
+            [_chatBtn setTitleColor:[UIColor blackColor] forState:0];
+            [_chatBtn setTitleColor:BasidColor forState:UIControlStateSelected];
+            [_midButtonBackView addSubview:_chatBtn];
+            
+            _blueLine = [[UIView alloc] initWithFrame:CGRectMake(0, 40 - 4, 20, 2)];
+            _blueLine.backgroundColor = BasidColor;
+            [_midButtonBackView addSubview:_blueLine];
+            _blueLine.centerX = _baibanBtn.centerX;
+        }
+    } else {
+        if (showMenberList) {
+            _chatBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth / 2.0, 40)];
+            [_chatBtn addTarget:self action:@selector(midButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_chatBtn setTitle:@"聊天" forState:0];
+            _chatBtn.titleLabel.font = SYSTEMFONT(15);
+            [_chatBtn setTitleColor:[UIColor blackColor] forState:0];
+            [_chatBtn setTitleColor:BasidColor forState:UIControlStateSelected];
+            [_midButtonBackView addSubview:_chatBtn];
+            
+            _menberBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth/2.0, 0, MainScreenWidth / 2.0, 40)];
+            [_menberBtn addTarget:self action:@selector(midButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_menberBtn setTitle:@"学员" forState:0];
+            _menberBtn.titleLabel.font = SYSTEMFONT(15);
+            [_menberBtn setTitleColor:[UIColor blackColor] forState:0];
+            [_menberBtn setTitleColor:BasidColor forState:UIControlStateSelected];
+            [_midButtonBackView addSubview:_menberBtn];
+            
+            _blueLine = [[UIView alloc] initWithFrame:CGRectMake(0, 40 - 4, 20, 2)];
+            _blueLine.backgroundColor = BasidColor;
+            [_midButtonBackView addSubview:_blueLine];
+            _blueLine.centerX = _chatBtn.centerX;
+        } else {
+            _chatBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 40)];
+            [_chatBtn addTarget:self action:@selector(midButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_chatBtn setTitle:@"聊天" forState:0];
+            _chatBtn.titleLabel.font = SYSTEMFONT(15);
+            [_chatBtn setTitleColor:[UIColor blackColor] forState:0];
+            [_chatBtn setTitleColor:BasidColor forState:UIControlStateSelected];
+            [_midButtonBackView addSubview:_chatBtn];
+            
+            _blueLine = [[UIView alloc] initWithFrame:CGRectMake(0, 40 - 4, 20, 2)];
+            _blueLine.backgroundColor = BasidColor;
+            [_midButtonBackView addSubview:_blueLine];
+            _blueLine.centerX = _chatBtn.centerX;
+        }
+    }
+    _greyLine = [[UIView alloc] initWithFrame:CGRectMake(0, 40 - 2, MainScreenWidth, 2)];
+    _greyLine.backgroundColor = EdlineV5_Color.fengeLineColor;
+    [_midButtonBackView addSubview:_greyLine];
+}
+
+// MARK: - 中间按钮点击事件
+- (void)midButtonClick:(UIButton *)sender {
+    if (sender == _baibanBtn) {
+        self.blueLine.centerX = self.baibanBtn.centerX;
+        self.baibanBtn.selected = YES;
+        self.chatBtn.selected = NO;
+        self.menberBtn.selected = NO;
+        [_chatCommentView.inputTextView resignFirstResponder];
+        _chatCommentView.hidden = YES;
+        _chatBackView.hidden = YES;
+        // 成员列表背景图隐藏
+        // 白板视图展示
+        
+    } else if (sender == _chatBtn) {
+        self.blueLine.centerX = self.chatBtn.centerX;
+        self.chatBtn.selected = YES;
+        self.baibanBtn.selected = NO;
+        self.menberBtn.selected = NO;
+        _chatCommentView.hidden = NO;
+        _chatBackView.hidden = NO;
+        // 成员列表背景图隐藏
+    } else if (sender == _menberBtn) {
+        self.blueLine.centerX = self.menberBtn.centerX;
+        self.menberBtn.selected = YES;
+        self.baibanBtn.selected = NO;
+        self.chatBtn.selected = NO;
+        _chatCommentView.hidden = YES;
+    }
+}
+
+- (void)makeBottomView {
+    _chatCommentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:@[@"live_store",@"live_dashang"] placeHolderTitle:nil sendButtonTitle:nil];
+    _chatCommentView.delegate = self;
+    _chatCommentView.placeHoderLab.hidden = YES;
+    [self.view addSubview:_chatCommentView];
+    
+    _commentBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.001)];
+    _commentBackView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.7];
+    UITapGestureRecognizer *backViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(commentBackViewTap:)];
+    [_commentBackView addGestureRecognizer:backViewTap];
+    _commentBackView.hidden = YES;
+    [self.view addSubview:_commentBackView];
+}
+
+// MARK: - 公告相关控件
+- (void)makeNoticeView {
+    _chatBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom - CommenViewHeight)];
+    _chatBackView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_chatBackView];
+    
+    _noticeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 32)];
+    _noticeBackView.backgroundColor = [UIColor whiteColor];
+    [_chatBackView addSubview:_noticeBackView];
+    
+    UIImageView *noticeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, (_noticeBackView.height - 17) / 2.0, 17, 17)];
+    noticeIcon.image = Image(@"gonggao");
+    [_noticeBackView addSubview:noticeIcon];
+    
+    UILabel *tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake(noticeIcon.right + 2.5, 0, 40, 32)];
+    tipsLabel.font = SYSTEMFONT(12);
+    tipsLabel.text = @"公告:";
+    tipsLabel.textColor = HEXCOLOR(0xFF8A52);
+    [_noticeBackView addSubview:tipsLabel];
+    
+    _noticeText = [[HorizontalScrollText alloc] initWithFrame:CGRectMake(tipsLabel.right + 5, 0, MainScreenWidth - tipsLabel.right - 5 - 45, 32)];
+    _noticeText.backgroundColor    = [UIColor whiteColor];
+    _noticeText.textColor          = EdlineV5_Color.textSecendColor;
+    _noticeText.textFont           = [UIFont systemFontOfSize:12];
+    _noticeText.speed              = 0.03;
+    _noticeText.moveDirection      = LMJTextScrollMoveLeft;
+    _noticeText.moveMode           = LMJTextScrollContinuous;
+    _noticeText.text = @"请同学们文明发言哈～";
+    [_noticeBackView addSubview:_noticeText];
+    
+    UIButton *noticeCloseBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 45, 0, 45, 32)];
+    [noticeCloseBtn setImage:Image(@"close_icon") forState:0];
+    [noticeCloseBtn addTarget:self action:@selector(noticeCloseBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_noticeBackView addSubview:noticeCloseBtn];
+}
+
+// MARK: - 聊天tableview
+- (void)makeChatListTableView {
+    _chatListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _noticeBackView.bottom, MainScreenWidth, _chatBackView.height - _noticeBackView.height)];
+    _chatListTableView.delegate = self;
+    _chatListTableView.dataSource = self;
+    _chatListTableView.backgroundColor = EdlineV5_Color.backColor;;
+    _chatListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _chatListTableView.showsVerticalScrollIndicator = NO;
+    _chatListTableView.showsHorizontalScrollIndicator = NO;
+//    _chatListTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+    [_chatBackView addSubview:_chatListTableView];
+    [EdulineV5_Tool adapterOfIOS11With:_chatListTableView];
+//    [_chatListTableView.mj_header beginRefreshing];
+}
+
+// MARK: - 聊天tableview的代理
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (isScrollBottom) { //只在初始化的时候执行
+       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.005 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (self.dataSource.count > 0) {
+               NSIndexPath *indexPath = [NSIndexPath indexPathForRow:([self.chatListTableView numberOfRowsInSection:0]-1) inSection:0];
+               [self.chatListTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+            }
+       });
+    }
+    return _dataSource.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([[NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"user_id"]] isEqualToString:[V5_UserModel uid]]) {
+        static NSString *rightReuse = @"QuestionChatRightCell";
+        QuestionChatRightCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
+        if (!cell) {
+            cell = [[QuestionChatRightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
+        }
+        [cell setQuestionChatRightInfo:_dataSource[indexPath.row]];
+        return cell;
+    } else {
+        static NSString *rightReuse = @"QuestionChatLeftCell";
+        QuestionChatLeftCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
+        if (!cell) {
+            cell = [[QuestionChatLeftCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
+        }
+        [cell setQuestionChatLeftInfo:_dataSource[indexPath.row]];
+        return cell;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self tableView:self.chatListTableView cellForRowAtIndexPath:indexPath];
+    return cell.frame.size.height;
+}
+
+//MARK: - 公告关闭按钮点击事件
+- (void)noticeCloseBtnClick:(UIButton *)sender {
+    _noticeBackView.hidden = YES;
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification{
+    [_chatCommentView setTop:MainScreenHeight - MACRO_UI_SAFEAREA - CommenViewHeight];
+    [_chatCommentView setHeight:CommenViewHeight + MACRO_UI_SAFEAREA];
+    [_chatCommentView.inputTextView setHeight:CommentInputHeight];
+    CGFloat XX = SWNOTEmptyArr(_chatCommentView.leftButtonImageArray) ? (15 + _chatCommentView.leftButtonImageArray.count * (CommentViewLeftButtonWidth + 8) + 13.5 - 8) : 15;
+    _chatCommentView.inputTextView.frame = CGRectMake(XX, (CommenViewHeight - CommentInputHeight) / 2.0, MainScreenWidth - XX - 57.5, CommentInputHeight);
+    for (int i = 0; i<self.chatCommentView.leftButtonImageArray.count; i++) {
+        UIButton *btn = (UIButton *)[_chatCommentView viewWithTag:20 + i];
+        btn.hidden = NO;
+    }
+    [_chatCommentView.sendButton setTop:0];
+    [_commentBackView setHeight:0.001];
+    _commentBackView.hidden = YES;
+    if (_chatCommentView.inputTextView.text.length<=0) {
+        _chatCommentView.placeHoderLab.hidden = NO;
+    } else {
+        _chatCommentView.placeHoderLab.hidden = YES;
+    }
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification{
+    NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    keyHeight = [endValue CGRectValue].size.height;
+    [UIView animateWithDuration:0.1 animations:^{
+        for (int i = 0; i<self.chatCommentView.leftButtonImageArray.count; i++) {
+            UIButton *btn = (UIButton *)[self.chatCommentView viewWithTag:20 + i];
+            btn.hidden = YES;
+        }
+        [self.chatCommentView setHeight:CommentViewMaxHeight];
+        self.chatCommentView.inputTextView.frame = CGRectMake(15, (CommenViewHeight - CommentInputHeight) / 2.0, MainScreenWidth - 15 - 57.5, CommentViewMaxHeight - (CommenViewHeight - CommentInputHeight));
+        [self.chatCommentView.sendButton setTop:self.chatCommentView.inputTextView.bottom - CommenViewHeight + (CommenViewHeight - CommentInputHeight)/2.0];
+        [self.chatCommentView setTop:MainScreenHeight - MACRO_UI_SAFEAREA - CommentViewMaxHeight - self->keyHeight];
+        [self.commentBackView setHeight:MainScreenHeight - MACRO_UI_SAFEAREA - CommentViewMaxHeight - self->keyHeight];
+    } completion:^(BOOL finished) {
+        self.commentBackView.hidden = NO;
+    }];
+}
+
+// MARK: - 发送内容
+- (void)sendReplayMsg:(CommentBaseView *)view {
+    [view.inputTextView resignFirstResponder];
+    if (!SWNOTEmptyStr(view.inputTextView.text)) {
+        [self showHudInView:self.view showHint:@"请输入内容"];
+        return;
+    }
+//    if (!SWNOTEmptyStr(reply_user_id)) {
+//        return;
+//    }
+//    NSString *content = [NSString stringWithFormat:@"%@",view.inputTextView.text];
+//    NSMutableDictionary *param = [NSMutableDictionary new];
+//    [param setObject:content forKey:@"content"];
+//    [param setObject:_questionId forKey:@"question_id"];
+//    [param setObject:reply_user_id forKey:@"reply_user_id"];
+//    [Net_API requestPOSTWithURLStr:[Net_Path questionReplayNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+//        if (SWNOTEmptyDictionary(responseObject)) {
+//            if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                [self getFirstPageList];
+//            }
+//        }
+//    } enError:^(NSError * _Nonnull error) {
+//        [self showHudInView:self.view showHint:@"发送失败"];
+//    }];
+//    view.inputTextView.text = @"";
+}
+
+- (void)commentBackViewTap:(UIGestureRecognizer *)tap {
+    [_chatCommentView.inputTextView resignFirstResponder];
+}
+
+// MARK: - 摄像头列表
 - (void)makeCollectionView {
     UICollectionViewFlowLayout *cellLayout = [[UICollectionViewFlowLayout alloc] init];
     cellLayout.itemSize = CGSizeMake(113, 64);

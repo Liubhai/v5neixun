@@ -129,7 +129,7 @@
 //    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
 //    return NO;
-    CourseSearchHistoryVC *vc = [[CourseSearchHistoryVC alloc] init];
+    LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
     return NO;
 }

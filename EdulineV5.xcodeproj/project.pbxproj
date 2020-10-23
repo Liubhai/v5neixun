@@ -319,6 +319,7 @@
 		788E95C5253FE24F0089251E /* ReplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 788E9558253FE24D0089251E /* ReplayViewController.xib */; };
 		788E95C6253FE24F0089251E /* Replay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 788E9559253FE24E0089251E /* Replay.storyboard */; };
 		788E95C9254188500089251E /* CommonPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95C82541884E0089251E /* CommonPopView.m */; };
+		788E95CC2542D7470089251E /* HorizontalScrollText.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95CB2542D7460089251E /* HorizontalScrollText.m */; };
 		788EB1C2250218B000E30D79 /* OtherTypeLoginBindVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */; };
 		788EB1C5250220B000E30D79 /* OtherTypeBindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */; };
 		7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */; };
@@ -1156,6 +1157,8 @@
 		788E9559253FE24E0089251E /* Replay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Replay.storyboard; sourceTree = "<group>"; };
 		788E95C72541884E0089251E /* CommonPopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonPopView.h; sourceTree = "<group>"; };
 		788E95C82541884E0089251E /* CommonPopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonPopView.m; sourceTree = "<group>"; };
+		788E95CA2542D7460089251E /* HorizontalScrollText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HorizontalScrollText.h; sourceTree = "<group>"; };
+		788E95CB2542D7460089251E /* HorizontalScrollText.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HorizontalScrollText.m; sourceTree = "<group>"; };
 		788EB1C0250218AB00E30D79 /* OtherTypeLoginBindVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeLoginBindVC.h; sourceTree = "<group>"; };
 		788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherTypeLoginBindVC.m; sourceTree = "<group>"; };
 		788EB1C3250220B000E30D79 /* OtherTypeBindCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeBindCell.h; sourceTree = "<group>"; };
@@ -2051,6 +2054,8 @@
 				789DB064246D26EC001302B4 /* NSObject+PYThemeExtension.m */,
 				788E95C72541884E0089251E /* CommonPopView.h */,
 				788E95C82541884E0089251E /* CommonPopView.m */,
+				788E95CA2542D7460089251E /* HorizontalScrollText.h */,
+				788E95CB2542D7460089251E /* HorizontalScrollText.m */,
 			);
 			path = BaseVC;
 			sourceTree = "<group>";
@@ -3961,6 +3966,7 @@
 				788E9597253FE24E0089251E /* UIView+EEBadge.m in Sources */,
 				788E9567253FE24E0089251E /* MCStudentVideoListView.m in Sources */,
 				7879564D240E36FA0013F95F /* EdulineV5Client.m in Sources */,
+				788E95CC2542D7470089251E /* HorizontalScrollText.m in Sources */,
 				784FC8F724AF29C000CAE7A6 /* MessageRootVC.m in Sources */,
 				78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */,
 				784FC90024AF5DEF00CAE7A6 /* MessageDetailVC.m in Sources */,

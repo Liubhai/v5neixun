@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)sendReplayMsg:(CommentBaseView *)view;
 - (void)judgeLogin;
+- (void)commentLeftButtonClick:(CommentBaseView *)view sender:(UIButton *)sender;
 
 @end
 
@@ -26,6 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) id<CommentBaseViewDelegate> delegate;
 @property (strong, nonatomic) UILabel *placeHoderLab;
 @property (strong, nonatomic) UITextView *inputTextView;
+@property (strong, nonatomic) UIButton *giftButton;// 打赏按钮
+@property (strong, nonatomic) UIButton *goodsButton;// 直播带货按钮
+@property (strong, nonatomic) UIButton *sendButton;// 发送按钮
+@property (strong, nonatomic) NSArray *leftButtonImageArray;// 左边按钮的图片集
+@property (strong, nonatomic) NSString *sendButtonTitle;// 发送按钮文字
+@property (strong, nonatomic) NSString *placeHolderTitle;//
+
+- (instancetype)initWithFrame:(CGRect)frame leftButtonImageArray:(nullable NSArray *)leftButtonImageArray placeHolderTitle:(nullable NSString *)placeHolderTitle sendButtonTitle:(nullable NSString *)sendButtonTitle;
 
 @end
 

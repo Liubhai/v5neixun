@@ -10,9 +10,12 @@
 
 @implementation CommentBaseView
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame leftButtonImageArray:(nullable NSArray *)leftButtonImageArray placeHolderTitle:(nullable NSString *)placeHolderTitle sendButtonTitle:(nullable NSString *)sendButtonTitle {
     self = [super initWithFrame:frame];
     if (self) {
+        _leftButtonImageArray = [NSArray arrayWithArray:leftButtonImageArray];
+        _sendButtonTitle = sendButtonTitle;
+        _placeHolderTitle = placeHolderTitle;
         [self makeSubView];
     }
     return self;
@@ -26,7 +29,20 @@
     self.layer.shadowOffset = CGSizeMake(0, 1);//shadowOffset阴影偏移，默认(0, -3),这个跟shadowRadius配合使用
     self.layer.shadowRadius = 3;//阴影半径，默认3
     
-    _inputTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, (CommenViewHeight - CommentInputHeight) / 2.0, MainScreenWidth - 30, CommentInputHeight)];
+    CGFloat XX = 15;
+    
+    for (int i = 0; i<_leftButtonImageArray.count; i++) {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(15 + (CommentViewLeftButtonWidth + 8) * i, 10, CommentViewLeftButtonWidth, CommentViewLeftButtonWidth)];
+        [btn setImage:Image(_leftButtonImageArray[i]) forState:0];
+        btn.tag = 20 + i;
+        [btn addTarget:self action:@selector(leftButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        if (i == _leftButtonImageArray.count - 1) {
+            XX = btn.right + 13.5;
+        }
+        [self addSubview:btn];
+    }
+    
+    _inputTextView = [[UITextView alloc] initWithFrame:CGRectMake(XX, (CommenViewHeight - CommentInputHeight) / 2.0, MainScreenWidth - XX - 57.5, CommentInputHeight)];
     _inputTextView.layer.masksToBounds = YES;
     _inputTextView.layer.cornerRadius = CommentInputHeight / 2.0;
     _inputTextView.textColor = EdlineV5_Color.textFirstColor;
@@ -44,6 +60,13 @@
     UITapGestureRecognizer *placeTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(placeLabelTap:)];
     [_placeHoderLab addGestureRecognizer:placeTap];
     [self addSubview:_placeHoderLab];
+    
+    _sendButton = [[UIButton alloc] initWithFrame:CGRectMake(_inputTextView.right + 8, 0, MainScreenWidth - (_inputTextView.right + 8), CommenViewHeight)];
+    [_sendButton setTitle:SWNOTEmptyStr(_sendButtonTitle) ? _sendButtonTitle : @"发送" forState:0];
+    _sendButton.titleLabel.font = SYSTEMFONT(16);
+    [_sendButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    [_sendButton addTarget:self action:@selector(sendButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_sendButton];
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
@@ -68,6 +91,18 @@
         return NO;
     }
     return YES;
+}
+
+- (void)leftButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(commentLeftButtonClick:sender:)]) {
+        [_delegate commentLeftButtonClick:self sender:sender];
+    }
+}
+
+- (void)sendButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(sendReplayMsg:)]) {
+        [_delegate sendReplayMsg:self];
+    }
 }
 
 @end
