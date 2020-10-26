@@ -321,6 +321,8 @@
 		788E95C9254188500089251E /* CommonPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95C82541884E0089251E /* CommonPopView.m */; };
 		788E95CC2542D7470089251E /* HorizontalScrollText.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95CB2542D7460089251E /* HorizontalScrollText.m */; };
 		788E95CF25466F8C0089251E /* LiveMenberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95CE25466F8B0089251E /* LiveMenberCell.m */; };
+		788E95D22546A3100089251E /* LiveCourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95D12546A3100089251E /* LiveCourseListVC.m */; };
+		788E95D52546A4360089251E /* LiveCourseListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95D42546A4360089251E /* LiveCourseListCell.m */; };
 		788EB1C2250218B000E30D79 /* OtherTypeLoginBindVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */; };
 		788EB1C5250220B000E30D79 /* OtherTypeBindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */; };
 		7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */; };
@@ -1162,6 +1164,10 @@
 		788E95CB2542D7460089251E /* HorizontalScrollText.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HorizontalScrollText.m; sourceTree = "<group>"; };
 		788E95CD25466F8B0089251E /* LiveMenberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveMenberCell.h; sourceTree = "<group>"; };
 		788E95CE25466F8B0089251E /* LiveMenberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveMenberCell.m; sourceTree = "<group>"; };
+		788E95D02546A3100089251E /* LiveCourseListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveCourseListVC.h; sourceTree = "<group>"; };
+		788E95D12546A3100089251E /* LiveCourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveCourseListVC.m; sourceTree = "<group>"; };
+		788E95D32546A4360089251E /* LiveCourseListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveCourseListCell.h; sourceTree = "<group>"; };
+		788E95D42546A4360089251E /* LiveCourseListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveCourseListCell.m; sourceTree = "<group>"; };
 		788EB1C0250218AB00E30D79 /* OtherTypeLoginBindVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeLoginBindVC.h; sourceTree = "<group>"; };
 		788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherTypeLoginBindVC.m; sourceTree = "<group>"; };
 		788EB1C3250220B000E30D79 /* OtherTypeBindCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeBindCell.h; sourceTree = "<group>"; };
@@ -1668,6 +1674,8 @@
 			children = (
 				78531651245131AF007E239E /* LiveRoomViewController.h */,
 				78531652245131AF007E239E /* LiveRoomViewController.m */,
+				788E95D02546A3100089251E /* LiveCourseListVC.h */,
+				788E95D12546A3100089251E /* LiveCourseListVC.m */,
 				7853165424513A09007E239E /* view */,
 			);
 			path = LivePage;
@@ -1680,6 +1688,8 @@
 				7853165724513A2E007E239E /* LiveRoomPersonCell.m */,
 				788E95CD25466F8B0089251E /* LiveMenberCell.h */,
 				788E95CE25466F8B0089251E /* LiveMenberCell.m */,
+				788E95D32546A4360089251E /* LiveCourseListCell.h */,
+				788E95D42546A4360089251E /* LiveCourseListCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -3950,6 +3960,7 @@
 				788E9583253FE24E0089251E /* UIView+Toast.m in Sources */,
 				788E95A4253FE24E0089251E /* WhiteReplayManager.m in Sources */,
 				787F1E75247381A400108F7B /* AliyunPlayerViewErrorView.m in Sources */,
+				788E95D22546A3100089251E /* LiveCourseListVC.m in Sources */,
 				78795722240FA3840013F95F /* ZLCameraImageView.m in Sources */,
 				78C5497B241B642B00A33FC4 /* AlivcBeautifyDefaultControl.m in Sources */,
 				7853BDC52429F4FC00F096EC /* CourseListModelFinal.m in Sources */,
@@ -4163,6 +4174,7 @@
 				788E9590253FE24E0089251E /* fileenc.c in Sources */,
 				787F1E90247381A400108F7B /* AVCVideoConfig.m in Sources */,
 				787F1E65247381A400108F7B /* AlivcVideoPlayerListsTableViewCell.m in Sources */,
+				788E95D52546A4360089251E /* LiveCourseListCell.m in Sources */,
 				78795650240E3FB60013F95F /* EdulineV5_Tool.m in Sources */,
 				788E959B253FE24E0089251E /* SignalReplayModel.m in Sources */,
 				78C5496D241B642B00A33FC4 /* AlivcUserInfoManager.m in Sources */,

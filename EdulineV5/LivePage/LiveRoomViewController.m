@@ -18,8 +18,10 @@
 #import "HorizontalScrollText.h"
 #import "V5_UserModel.h"
 #import "LiveMenberCell.h"
+#import "LiveCourseListVC.h"
+#import "CourseMainViewController.h"
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource> {
+@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate> {
     NSInteger page;
     CGFloat keyHeight;
     BOOL isScrollBottom;
@@ -95,6 +97,7 @@
     [self makeNoticeView];
     [self makeChatListTableView];
     [self makeBottomView];
+    [self makeMenberListTableView];
     // 接收屏幕方向改变通知,监听屏幕方向
 //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationHandler) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -346,6 +349,7 @@
         _chatCommentView.hidden = YES;
         _chatBackView.hidden = YES;
         // 成员列表背景图隐藏
+        _liveMenberTableView.hidden = YES;
         // 白板视图展示
         
     } else if (sender == _chatBtn) {
@@ -356,17 +360,21 @@
         _chatCommentView.hidden = NO;
         _chatBackView.hidden = NO;
         // 成员列表背景图隐藏
+        _liveMenberTableView.hidden = YES;
     } else if (sender == _menberBtn) {
         self.blueLine.centerX = self.menberBtn.centerX;
         self.menberBtn.selected = YES;
         self.baibanBtn.selected = NO;
         self.chatBtn.selected = NO;
         _chatCommentView.hidden = YES;
+        _chatBackView.hidden = YES;
+        _liveMenberTableView.hidden = NO;
+        [_liveMenberTableView reloadData];
     }
 }
 
 - (void)makeBottomView {
-    _chatCommentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:@[@"live_store",@"live_dashang"] placeHolderTitle:nil sendButtonTitle:nil];
+    _chatCommentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:@[@"live_dashang",@"live_store"] placeHolderTitle:nil sendButtonTitle:nil];
     _chatCommentView.delegate = self;
     _chatCommentView.placeHoderLab.hidden = YES;
     [self.view addSubview:_chatCommentView];
@@ -440,7 +448,7 @@
     _liveMenberTableView.showsVerticalScrollIndicator = NO;
     _liveMenberTableView.showsHorizontalScrollIndicator = NO;
 //    _liveMenberTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-    [_chatBackView addSubview:_liveMenberTableView];
+    [self.view addSubview:_liveMenberTableView];
     [EdulineV5_Tool adapterOfIOS11With:_liveMenberTableView];
 }
 
@@ -457,6 +465,7 @@
         }
         return _dataSource.count;
     } else {
+        return 5;
         return _menberDataSource.count;
     }
 }
@@ -567,6 +576,27 @@
 //        [self showHudInView:self.view showHint:@"发送失败"];
 //    }];
 //    view.inputTextView.text = @"";
+}
+
+- (void)commentLeftButtonClick:(CommentBaseView *)view sender:(UIButton *)sender {
+    if (view.leftButtonImageArray.count == 2) {
+        if (sender.tag == 20) {
+            // 大赏
+        } else {
+            // 带货
+            LiveCourseListVC *vc = [[LiveCourseListVC alloc] init];
+            vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+            [self.view addSubview:vc.view];
+            [self addChildViewController:vc];
+            vc.delegate = self;
+        }
+    }
+}
+
+// MARK: - 去抢购跳转
+- (void)liveRoomJumpCourseDetailPage:(NSDictionary *)dict {
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)commentBackViewTap:(UIGestureRecognizer *)tap {
