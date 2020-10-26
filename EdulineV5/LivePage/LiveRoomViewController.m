@@ -17,11 +17,13 @@
 #import "CommentBaseView.h"
 #import "HorizontalScrollText.h"
 #import "V5_UserModel.h"
+#import "LiveMenberCell.h"
 
 @interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource> {
     NSInteger page;
     CGFloat keyHeight;
     BOOL isScrollBottom;
+    BOOL reloadChatOrMenberList;// yes chat  no menber
 }
 
 // 腾讯直播相关控件
@@ -44,6 +46,9 @@
 @property (strong, nonatomic) HorizontalScrollText *noticeText;
 @property (strong, nonatomic) UITableView *chatListTableView; // 聊天列表
 @property (strong, nonatomic) NSMutableArray *dataSource;
+
+@property (strong, nonatomic) UITableView *liveMenberTableView; // 聊天列表
+@property (strong, nonatomic) NSMutableArray *menberDataSource;
 
 @property (strong, nonatomic) CommentBaseView *chatCommentView;
 @property (strong, nonatomic) UIView *commentBackView;
@@ -91,8 +96,8 @@
     [self makeChatListTableView];
     [self makeBottomView];
     // 接收屏幕方向改变通知,监听屏幕方向
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationHandler) name:UIDeviceOrientationDidChangeNotification object:nil];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationHandler) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
@@ -400,7 +405,7 @@
     _noticeText.textFont           = [UIFont systemFontOfSize:12];
     _noticeText.speed              = 0.03;
     _noticeText.moveDirection      = LMJTextScrollMoveLeft;
-    _noticeText.moveMode           = LMJTextScrollContinuous;
+    _noticeText.moveMode           = LMJTextScrollFromOutside;
     _noticeText.text = @"请同学们文明发言哈～";
     [_noticeBackView addSubview:_noticeText];
     
@@ -425,42 +430,73 @@
 //    [_chatListTableView.mj_header beginRefreshing];
 }
 
+// MARK: - 学员tableView
+- (void)makeMenberListTableView {
+    _liveMenberTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom)];
+    _liveMenberTableView.delegate = self;
+    _liveMenberTableView.dataSource = self;
+    _liveMenberTableView.backgroundColor = EdlineV5_Color.backColor;;
+    _liveMenberTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _liveMenberTableView.showsVerticalScrollIndicator = NO;
+    _liveMenberTableView.showsHorizontalScrollIndicator = NO;
+//    _liveMenberTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+    [_chatBackView addSubview:_liveMenberTableView];
+    [EdulineV5_Tool adapterOfIOS11With:_liveMenberTableView];
+}
+
 // MARK: - 聊天tableview的代理
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (isScrollBottom) { //只在初始化的时候执行
-       dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.005 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (self.dataSource.count > 0) {
-               NSIndexPath *indexPath = [NSIndexPath indexPathForRow:([self.chatListTableView numberOfRowsInSection:0]-1) inSection:0];
-               [self.chatListTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-            }
-       });
+    if (tableView == _chatListTableView) {
+        if (isScrollBottom) { //只在初始化的时候执行
+           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.005 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (self.dataSource.count > 0) {
+                   NSIndexPath *indexPath = [NSIndexPath indexPathForRow:([self.chatListTableView numberOfRowsInSection:0]-1) inSection:0];
+                   [self.chatListTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+                }
+           });
+        }
+        return _dataSource.count;
+    } else {
+        return _menberDataSource.count;
     }
-    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([[NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"user_id"]] isEqualToString:[V5_UserModel uid]]) {
-        static NSString *rightReuse = @"QuestionChatRightCell";
-        QuestionChatRightCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
-        if (!cell) {
-            cell = [[QuestionChatRightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
+    if (tableView == _chatListTableView) {
+        if ([[NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"user_id"]] isEqualToString:[V5_UserModel uid]]) {
+            static NSString *rightReuse = @"QuestionChatRightCell";
+            QuestionChatRightCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
+            if (!cell) {
+                cell = [[QuestionChatRightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
+            }
+            [cell setQuestionChatRightInfo:_dataSource[indexPath.row]];
+            return cell;
+        } else {
+            static NSString *rightReuse = @"QuestionChatLeftCell";
+            QuestionChatLeftCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
+            if (!cell) {
+                cell = [[QuestionChatLeftCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
+            }
+            [cell setQuestionChatLeftInfo:_dataSource[indexPath.row]];
+            return cell;
         }
-        [cell setQuestionChatRightInfo:_dataSource[indexPath.row]];
-        return cell;
     } else {
-        static NSString *rightReuse = @"QuestionChatLeftCell";
-        QuestionChatLeftCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
+        static NSString *rightReuse = @"LiveMenberCell";
+        LiveMenberCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
         if (!cell) {
-            cell = [[QuestionChatLeftCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
+            cell = [[LiveMenberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
         }
-        [cell setQuestionChatLeftInfo:_dataSource[indexPath.row]];
         return cell;
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self tableView:self.chatListTableView cellForRowAtIndexPath:indexPath];
-    return cell.frame.size.height;
+    if (tableView == _chatListTableView) {
+        UITableViewCell *cell = [self tableView:self.chatListTableView cellForRowAtIndexPath:indexPath];
+        return cell.frame.size.height;
+    } else {
+        return 64.0;
+    }
 }
 
 //MARK: - 公告关闭按钮点击事件
@@ -593,6 +629,7 @@
 
 - (void)changeOrientation:(UIInterfaceOrientation)orientation
 {
+    return;
     int val = orientation;
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
         SEL selector = NSSelectorFromString(@"setOrientation:");
@@ -624,7 +661,7 @@
 
 // 处理横屏竖屏
 - (void)fullScreenWithUIDeviceOrientation:(UIDeviceOrientation)orientation duration:(NSTimeInterval)duration width:(CGFloat)width height:(CGFloat)height {
-    
+    return;
     if (orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown || orientation == UIDeviceOrientationPortraitUpsideDown) return;
     
     if (orientation == UIDeviceOrientationPortrait) {
