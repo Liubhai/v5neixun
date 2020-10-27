@@ -256,6 +256,9 @@
 - (void)keyboardWillShow:(NSNotification *)notification{
     NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     keyHeight = [endValue CGRectValue].size.height;
+    if (IS_IPHONEX) {
+        keyHeight = keyHeight - 34;
+    }
     [_textCountLabel setTop:_mainView.height - keyHeight - 35];
     [_openButton setTop:_textCountLabel.top];
 }

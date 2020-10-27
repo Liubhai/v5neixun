@@ -249,6 +249,9 @@
 - (void)keyboardWillShow:(NSNotification *)notification{
     NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     keyHeight = [endValue CGRectValue].size.height;
+    if (IS_IPHONEX) {
+        keyHeight = keyHeight - 34;
+    }
     [UIView animateWithDuration:0.1 animations:^{
         for (int i = 0; i<self.commentView.leftButtonImageArray.count; i++) {
             UIButton *btn = (UIButton *)[self.commentView viewWithTag:20 + i];
