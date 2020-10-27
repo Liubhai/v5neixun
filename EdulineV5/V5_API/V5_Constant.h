@@ -60,7 +60,7 @@
 
 #define SYSTEMFONT(FONTSIZE)    [UIFont systemFontOfSize:FONTSIZE]
 
-#define SWNOTEmptyArr(X) (NOTNULL(X)&&[X isKindOfClass:[NSArray class]]&&[X count])
+#define SWNOTEmptyArr(X) (NOTNULL(X)&&[X isKindOfClass:[NSArray class]]&&[(NSArray *)X count])
 #define SWNOTEmptyDictionary(X) (NOTNULL(X)&&[X isKindOfClass:[NSDictionary class]]&&[[X allKeys]count])
 #define SWNOTEmptyStr(X) (NOTNULL(X)&&[X isKindOfClass:[NSString class]]&&((NSString *)X).length&&(![X isEqualToString:@"<null>"])&&(![X isEqualToString:@"(null)"]&&(![X isEqualToString:@"null"])))
 #define NOTNULL(x) ((![x isKindOfClass:[NSNull class]])&&x)

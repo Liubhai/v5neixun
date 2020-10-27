@@ -7,7 +7,9 @@
 //
 
 #import "BaseViewController.h"
+
 #import "TICManager.h"
+#import "BigEducationManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *userIdentify;// 当前进入直播间的用户的身份(讲师或者普通观看者)
 
 @property (assign, nonatomic) BOOL showBoardView;// 是否配置了白板
+
+@property (nonatomic, strong) BigEducationManager *educationManager;
 
 @end
 

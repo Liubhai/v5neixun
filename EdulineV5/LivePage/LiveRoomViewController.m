@@ -20,8 +20,9 @@
 #import "LiveMenberCell.h"
 #import "LiveCourseListVC.h"
 #import "CourseMainViewController.h"
+#import "UIView+Toast.h"
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate> {
+@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ WhitePlayDelegate, SignalDelegate, RTCDelegate> {
     NSInteger page;
     CGFloat keyHeight;
     BOOL isScrollBottom;
@@ -32,6 +33,10 @@
 @property (assign, nonatomic) BOOL isFullScreen;
 @property (strong, nonatomic) NSMutableArray *livePersonArray;
 @property (strong, nonatomic) UIView *boardView;
+@property (nonatomic, weak) WhiteBoardView *whiteBoardView;
+
+//CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0);
+@property (strong, nonatomic) UIView *allFaceContentView; //顶部装讲师直播头像和学生头像的容器
 
 // 中间按钮背景视图
 @property (strong, nonatomic) UIView *midButtonBackView;
@@ -94,15 +99,23 @@
     
     [self makeLiveSubView];
     [self makeMidSubView];
+    [self makeBoardView];
     [self makeNoticeView];
     [self makeChatListTableView];
     [self makeBottomView];
     [self makeMenberListTableView];
+    [self initData];
     // 接收屏幕方向改变通知,监听屏幕方向
 //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationHandler) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)initData {
+    self.educationManager.signalDelegate = self;
+    [self setupRTC];
+    [self setupWhiteBoard];
 }
 
 - (void)dealloc {
@@ -129,8 +142,6 @@
     
     _topBlackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _liveBackView.width, 37)];
     _topBlackView.backgroundColor = EdlineV5_Color.textFirstColor;
-    
-    [self makeBoardView];
     
     [self makeCollectionView];
     
@@ -225,11 +236,57 @@
 
 // MARK: - 白板
 - (void)makeBoardView {
-    //白板视图
-    [[[TICManager sharedInstance] getBoardController] addDelegate:self];
-    _boardView = [[[TICManager sharedInstance] getBoardController] getBoardRenderView];
-    _boardView.frame = CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0);
-    [_liveBackView addSubview:_boardView];
+//    //腾讯白板视图
+//    [[[TICManager sharedInstance] getBoardController] addDelegate:self];
+//    _boardView = [[[TICManager sharedInstance] getBoardController] getBoardRenderView];
+//    _boardView.frame = CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom);
+//    [self.view addSubview:_boardView];
+    // 声网白板视图
+    _boardView = [[UIView alloc] init];
+    _boardView.frame = CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom);
+    [self.view addSubview:_boardView];
+    
+    WhiteBoardView *whiteboardView = [[WhiteBoardView alloc] initWithFrame:CGRectMake(0, 0, _boardView.width, _boardView.height)];
+    _whiteBoardView = whiteboardView;
+    [_boardView addSubview:_whiteBoardView];
+}
+
+// 设置RTC
+- (void)setupRTC {
+    
+    EduConfigModel *configModel = EduConfigModel.shareInstance;
+    
+    [self.educationManager initRTCEngineKitWithAppid:configModel.appId clientRole:RTCClientRoleAudience dataSourceDelegate:self];
+    
+    WEAK(self);
+    [self.educationManager joinRTCChannelByToken:configModel.rtcToken channelId:configModel.channelName info:nil uid:configModel.uid joinSuccess:^(NSString * _Nonnull channel, NSUInteger uid, NSInteger elapsed) {
+//        [weakself checkNeedRenderWithRole:UserRoleTypeStudent];
+    }];
+}
+
+// 设置白板代理
+- (void)setupWhiteBoard {
+    
+    [self.educationManager initWhiteSDK:self.whiteBoardView dataSourceDelegate:self];
+
+    RoomModel *roomModel = self.educationManager.roomModel;
+    
+    WEAK(self);
+    [self.educationManager joinWhiteRoomWithBoardId:EduConfigModel.shareInstance.boardId boardToken:EduConfigModel.shareInstance.boardToken whiteWriteModel:NO completeSuccessBlock:^(WhiteRoom * _Nullable room) {
+
+        [weakself disableCameraTransform:roomModel.lockBoard];
+        
+    } completeFailBlock:^(NSError * _Nullable error) {
+        [weakself showToast:NSLocalizedString(@"JoinWhiteErrorText", nil)];
+    }];
+}
+
+- (void)showToast:(NSString *)title {
+    [UIApplication.sharedApplication.keyWindow makeToast:title];
+}
+
+- (void)disableCameraTransform:(BOOL)disableCameraTransform {
+    [self.educationManager disableCameraTransform:disableCameraTransform];
 }
 
 // MARK: - 中间按钮
@@ -377,6 +434,7 @@
     _chatCommentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:@[@"live_dashang",@"live_store"] placeHolderTitle:nil sendButtonTitle:nil];
     _chatCommentView.delegate = self;
     _chatCommentView.placeHoderLab.hidden = YES;
+    _chatCommentView.hidden = YES;
     [self.view addSubview:_chatCommentView];
     
     _commentBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.001)];
@@ -391,6 +449,7 @@
 - (void)makeNoticeView {
     _chatBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom - CommenViewHeight)];
     _chatBackView.backgroundColor = [UIColor whiteColor];
+    _chatBackView.hidden = YES;
     [self.view addSubview:_chatBackView];
     
     _noticeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 32)];
@@ -449,6 +508,7 @@
     _liveMenberTableView.showsHorizontalScrollIndicator = NO;
 //    _liveMenberTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
     [self.view addSubview:_liveMenberTableView];
+    _liveMenberTableView.hidden = YES;
     [EdulineV5_Tool adapterOfIOS11With:_liveMenberTableView];
 }
 
@@ -472,13 +532,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == _chatListTableView) {
-        if ([[NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"user_id"]] isEqualToString:[V5_UserModel uid]]) {
+        // [[NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"user_id"]] isEqualToString:[V5_UserModel uid]]
+        MessageInfoModel *model = _dataSource[indexPath.row];
+        if (model.isSelfSend) {
             static NSString *rightReuse = @"QuestionChatRightCell";
             QuestionChatRightCell *cell = [tableView dequeueReusableCellWithIdentifier:rightReuse];
             if (!cell) {
                 cell = [[QuestionChatRightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
             }
-            [cell setQuestionChatRightInfo:_dataSource[indexPath.row]];
+            [cell setQuestionChatRightModel:model];
             return cell;
         } else {
             static NSString *rightReuse = @"QuestionChatLeftCell";
@@ -486,7 +548,7 @@
             if (!cell) {
                 cell = [[QuestionChatLeftCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
             }
-            [cell setQuestionChatLeftInfo:_dataSource[indexPath.row]];
+            [cell setQuestionChatLeftModel:model];
             return cell;
         }
     } else {
@@ -536,6 +598,9 @@
 - (void)keyboardWillShow:(NSNotification *)notification{
     NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     keyHeight = [endValue CGRectValue].size.height;
+    if (IS_IPHONEX) {
+        keyHeight = keyHeight - 34;
+    }
     [UIView animateWithDuration:0.1 animations:^{
         for (int i = 0; i<self.chatCommentView.leftButtonImageArray.count; i++) {
             UIButton *btn = (UIButton *)[self.chatCommentView viewWithTag:20 + i];
@@ -558,24 +623,23 @@
         [self showHudInView:self.view showHint:@"请输入内容"];
         return;
     }
-//    if (!SWNOTEmptyStr(reply_user_id)) {
-//        return;
-//    }
-//    NSString *content = [NSString stringWithFormat:@"%@",view.inputTextView.text];
-//    NSMutableDictionary *param = [NSMutableDictionary new];
-//    [param setObject:content forKey:@"content"];
-//    [param setObject:_questionId forKey:@"question_id"];
-//    [param setObject:reply_user_id forKey:@"reply_user_id"];
-//    [Net_API requestPOSTWithURLStr:[Net_Path questionReplayNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-//        if (SWNOTEmptyDictionary(responseObject)) {
-//            if ([[responseObject objectForKey:@"code"] integerValue]) {
-//                [self getFirstPageList];
-//            }
-//        }
-//    } enError:^(NSError * _Nonnull error) {
-//        [self showHudInView:self.view showHint:@"发送失败"];
-//    }];
-//    view.inputTextView.text = @"";
+    NSString *content = view.inputTextView.text;
+    WEAK(self);
+    [BaseEducationManager sendMessageWithType:MessageTypeText message:content successBolck:^{
+        MessageInfoModel *model = [MessageInfoModel new];
+        model.userName = EduConfigModel.shareInstance.userName;
+        model.message = content;
+        model.isSelfSend = YES;
+        [weakself.dataSource addObject:model];
+        [weakself.chatListTableView reloadData];
+        if (weakself.dataSource.count > 0) {
+            [weakself.chatListTableView scrollToRowAtIndexPath:
+             [NSIndexPath indexPathForRow:[weakself.dataSource count] - 1 inSection:0] atScrollPosition: UITableViewScrollPositionBottom animated:NO];
+        }
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+        [weakself showToast:errMessage];
+    }];
+    view.inputTextView.text = @"";
 }
 
 - (void)commentLeftButtonClick:(CommentBaseView *)view sender:(UIButton *)sender {
@@ -794,20 +858,6 @@
     }
     AppDelegate *app = [AppDelegate delegate];
     app._allowRotation = NO;
-    [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[TICManager sharedInstance] removeEventListener:self];
-    [[TICManager sharedInstance] removeMessageListener:self];
-    __weak typeof(self) ws = self;
-    [[TICManager sharedInstance] quitClassroom:NO callback:^(TICModule module, int code, NSString *desc) {
-        if(code == 0){
-            //退出课堂成功
-        }
-        else{
-            //退出课堂失败
-        }
-        [ws.navigationController popViewControllerAnimated:YES];
-    }];
 }
 
 // MARK: - 开关摄像头
@@ -859,52 +909,6 @@
     });
 }
 
-- (void)onTICUserSubStreamAvailable:(NSString *)userId available:(BOOL)available
-{
-//    if(available){
-//        [_livePersonArray addObject:userId];
-//    }
-//    else{
-//        [_livePersonArray removeObject:userId];
-//        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
-//    }
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//
-//        [CATransaction setDisableActions:YES];
-//
-//        [_collectionView reloadData];
-//
-//        [CATransaction commit];
-//    });
-}
-
-
--(void)onTICMemberJoin:(NSArray*)members {
-    NSString *msgInfo = [NSString stringWithFormat:@"[%@] %@",members.firstObject, @"加入了房间"];
-    [self showHudInView:self.view showHint:msgInfo];
-//    self.chatView.text = [NSString stringWithFormat:@"%@\n%@",self.chatView.text, msgInfo];;
-}
-
--(void)onTICMemberQuit:(NSArray*)members {
-
-    if ([members.firstObject isEqualToString:[[TIMManager sharedInstance] getLoginUser]]) {
-        [self showAlertWithTitle:@"退出课堂" msg:@"你被老师踢出了房间" handler:^(UIAlertAction *action) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }];
-    }
-    NSString *msgInfo = [NSString stringWithFormat:@"[%@] %@",members.firstObject, @"退出了房间"];
-    [self showHudInView:self.view showHint:msgInfo];
-//    self.chatView.text = [NSString stringWithFormat:@"%@\n%@",self.chatView.text, msgInfo];;
-}
-
-
--(void)onTICClassroomDestroy {
-    [self showAlertWithTitle:@"课程结束" msg:@"老师已经结束了该堂课程" handler:^(UIAlertAction *action) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
-    
-}
-
 // MARK: - 改变房间人数显示UI
 - (void)changeRoomMenberCountUI {
     NSInteger roomcount = 0;
@@ -923,5 +927,166 @@
     _roomPersonCountBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space1/2.0, 0, space1/2.0);
     _roomPersonCountBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space1/2.0, 0, -space1/2.0);
 }
+
+// MARK: - 聊天相关
+- (void)didReceivedMessage:(MessageInfoModel *)model {
+    [_dataSource addObject:model];
+    [_chatListTableView reloadData];
+    if (_dataSource.count > 0) {
+        [_chatListTableView scrollToRowAtIndexPath:
+         [NSIndexPath indexPathForRow:[_dataSource count] - 1 inSection:0] atScrollPosition: UITableViewScrollPositionBottom animated:NO];
+    }
+}
+
+//// MARK: - 白板代理
+//#pragma mark - board delegate
+//- (void)onTEBRedoStatusChanged:(BOOL)canRedo
+//{
+//
+//}
+//
+//- (void)onTEBUndoStatusChanged:(BOOL)canUndo
+//{
+//
+//}
+//
+//// MARK: - 退出互动课堂
+//- (void)onQuitClassRoom
+//{
+//    if (_isFullScreen) {
+//        [self fullButtonClick:_fullScreenBtn];
+//        return;
+//    }
+//    AppDelegate *app = [AppDelegate delegate];
+//    app._allowRotation = NO;
+//    [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [[TICManager sharedInstance] removeEventListener:self];
+//    [[TICManager sharedInstance] removeMessageListener:self];
+//    __weak typeof(self) ws = self;
+//    [[TICManager sharedInstance] quitClassroom:NO callback:^(TICModule module, int code, NSString *desc) {
+//        if(code == 0){
+//            //退出课堂成功
+//        }
+//        else{
+//            //退出课堂失败
+//        }
+//        [ws.navigationController popViewControllerAnimated:YES];
+//    }];
+//}
+//
+//// MARK: - 开关摄像头
+//- (void)swicthCamera:(UIButton *)sender {
+//    sender.selected = !sender.selected;
+//    [_livePersonArray removeObject:_userId];
+//    if (sender.selected) {
+//        [_livePersonArray addObject:_userId];
+//    } else {
+//        [[[TICManager sharedInstance] getTRTCCloud] stopLocalPreview];
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//
+//        [CATransaction setDisableActions:YES];
+//
+//        [_collectionView reloadData];
+//
+//        [CATransaction commit];
+//    });
+//}
+//
+//// MARK: - 开关麦克风
+//- (void)switchVoice:(UIButton *)sender {
+//    sender.selected = !sender.selected;
+//    if (sender.selected) {
+//        [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
+//    } else {
+//        [[[TICManager sharedInstance] getTRTCCloud] stopLocalAudio];
+//    }
+//}
+//
+//// MARK: - event listener
+//- (void)onTICUserVideoAvailable:(NSString *)userId available:(BOOL)available
+//{
+//    if(available){
+//        [_livePersonArray addObject:userId];
+//    }
+//    else{
+//        [_livePersonArray removeObject:userId];
+//        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//
+//        [CATransaction setDisableActions:YES];
+//
+//        [_collectionView reloadData];
+//
+//        [CATransaction commit];
+//    });
+//}
+//
+//- (void)onTICUserSubStreamAvailable:(NSString *)userId available:(BOOL)available
+//{
+////    if(available){
+////        [_livePersonArray addObject:userId];
+////    }
+////    else{
+////        [_livePersonArray removeObject:userId];
+////        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
+////    }
+////    dispatch_async(dispatch_get_main_queue(), ^{
+////
+////        [CATransaction setDisableActions:YES];
+////
+////        [_collectionView reloadData];
+////
+////        [CATransaction commit];
+////    });
+//}
+//
+//
+//-(void)onTICMemberJoin:(NSArray*)members {
+//    NSString *msgInfo = [NSString stringWithFormat:@"[%@] %@",members.firstObject, @"加入了房间"];
+//    [self showHudInView:self.view showHint:msgInfo];
+////    self.chatView.text = [NSString stringWithFormat:@"%@\n%@",self.chatView.text, msgInfo];;
+//}
+//
+//-(void)onTICMemberQuit:(NSArray*)members {
+//
+//    if ([members.firstObject isEqualToString:[[TIMManager sharedInstance] getLoginUser]]) {
+//        [self showAlertWithTitle:@"退出课堂" msg:@"你被老师踢出了房间" handler:^(UIAlertAction *action) {
+//            [self.navigationController popViewControllerAnimated:YES];
+//        }];
+//    }
+//    NSString *msgInfo = [NSString stringWithFormat:@"[%@] %@",members.firstObject, @"退出了房间"];
+//    [self showHudInView:self.view showHint:msgInfo];
+////    self.chatView.text = [NSString stringWithFormat:@"%@\n%@",self.chatView.text, msgInfo];;
+//}
+//
+//
+//-(void)onTICClassroomDestroy {
+//    [self showAlertWithTitle:@"课程结束" msg:@"老师已经结束了该堂课程" handler:^(UIAlertAction *action) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }];
+//
+//}
+//
+//// MARK: - 改变房间人数显示UI
+//- (void)changeRoomMenberCountUI {
+//    NSInteger roomcount = 0;
+//    if ([_livePersonArray containsObject:_userId]) {
+//        roomcount = _livePersonArray.count;
+//    } else {
+//        roomcount = _livePersonArray.count + 1;
+//    }
+//    NSString *roomMember = [NSString stringWithFormat:@"%@",@(roomcount)];
+//    CGFloat roomMemberWidth = [roomMember sizeWithFont:SYSTEMFONT(14)].width + 4 + 11 + 7.5 *2;
+//    CGFloat space1 = 5.0;
+//    _roomPersonCountBtn.frame= CGRectMake(_fullScreenBtn.left - 7.5 - roomMemberWidth, 0, roomMemberWidth, 37);
+//    _roomPersonCountBtn.centerY = 37/2.0;
+//    [_roomPersonCountBtn setImage:Image(@"live_member") forState:0];
+//    [_roomPersonCountBtn setTitle:roomMember forState:0];
+//    _roomPersonCountBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space1/2.0, 0, space1/2.0);
+//    _roomPersonCountBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space1/2.0, 0, -space1/2.0);
+//}
 
 @end

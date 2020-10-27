@@ -28,6 +28,8 @@
 #import "TICManager.h"
 #import "TICConfig.h"
 
+
+
 // 工具类
 #import "SDCycleScrollView.h"
 #import "ZPScrollerScaleView.h"
@@ -42,6 +44,8 @@
 @interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate> {
     BOOL isWeek;// 显示周榜还是月榜
 }
+
+@property (nonatomic, strong) BaseEducationManager *educationManager;
 
 @property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
 @property (strong, nonatomic) UITextField *institutionSearch;
@@ -129,9 +133,102 @@
 //    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
 //    return NO;
-    LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    SceneType sceneType = SceneTypeBig;
+    self.educationManager = [BigEducationManager new];
+    
+    EduConfigModel.shareInstance.className = @"231";
+    EduConfigModel.shareInstance.userName = @"猛戳";
+    EduConfigModel.shareInstance.sceneType = sceneType;
+        
+        WEAK(self);
+        [self getConfigWithSuccessBolck:^{
+            [weakself getEntryInfoWithSuccessBolck:^{
+                [weakself getWhiteInfoWithSuccessBolck:^{
+                    [weakself getRoomInfoWithSuccessBlock:^{
+                        [weakself setupSignalWithSuccessBlock:^{
+                            LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
+                            vc.educationManager = (BigEducationManager *)self.educationManager;
+                            [self.navigationController pushViewController:vc animated:YES];
+                        }];
+                    }];
+                }];
+            }];
+        }];
     return NO;
+}
+
+#pragma mark EnterClassProcess
+- (void)getConfigWithSuccessBolck:(void (^)(void))successBlock {
+    
+    WEAK(self);
+    [BaseEducationManager getConfigWithSuccessBolck:^{
+        if(successBlock != nil){
+            successBlock();
+        }
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+    }];
+}
+
+- (void)getEntryInfoWithSuccessBolck:(void (^)(void))successBlock {
+    WEAK(self);
+    
+    NSString *userName = EduConfigModel.shareInstance.userName;
+    NSString *className = EduConfigModel.shareInstance.className;
+    SceneType sceneType = EduConfigModel.shareInstance.sceneType;
+    
+    [BaseEducationManager enterRoomWithUserName:userName roomName:className sceneType:sceneType successBolck:^{
+        if(successBlock != nil){
+            successBlock();
+        }
+
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+    }];
+}
+
+- (void)getWhiteInfoWithSuccessBolck:(void (^)(void))successBlock {
+    WEAK(self);
+    [self.educationManager getWhiteInfoCompleteSuccessBlock:^{
+        if(successBlock != nil){
+            successBlock();
+        }
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+    }];
+}
+
+- (void)getRoomInfoWithSuccessBlock:(void (^)(void))successBlock {
+    WEAK(self);
+    [self.educationManager getRoomInfoCompleteSuccessBlock:^(RoomInfoModel * _Nonnull roomInfoModel) {
+        if(successBlock != nil){
+            successBlock();
+        }
+        
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+    }];
+}
+
+- (void)setupSignalWithSuccessBlock:(void (^)(void))successBlock {
+
+    NSString *appid = EduConfigModel.shareInstance.appId;
+    NSString *appToken = EduConfigModel.shareInstance.rtmToken;
+    NSString *uid = @(EduConfigModel.shareInstance.uid).stringValue;
+    
+    WEAK(self);
+    [self.educationManager initSignalWithAppid:appid appToken:appToken userId:uid dataSourceDelegate:nil completeSuccessBlock:^{
+        
+        NSString *channelName = EduConfigModel.shareInstance.channelName;
+        [weakself.educationManager joinSignalWithChannelName:channelName completeSuccessBlock:^{
+            if(successBlock != nil){
+                successBlock();
+            }
+            
+        } completeFailBlock:^(NSInteger errorCode) {
+            NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"JoinSignalFailedText", nil), (long)errorCode];
+        }];
+        
+    } completeFailBlock:^(NSInteger errorCode){
+        NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"InitSignalFailedText", nil), (long)errorCode];
+    }];
 }
 
 - (void)makeTableView {
@@ -226,18 +323,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        return [_sortArray[section][@"list"] count];
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        return [pass count];
     } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
         if (isWeek) {
             for (NSDictionary *dict in _sortArray[section][@"list"]) {
                 if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
-                    return [[dict objectForKey:@"list"] count];
+                    NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                    return [pass count];
                 }
             }
         } else {
             for (NSDictionary *dict in _sortArray[section][@"list"]) {
                 if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
-                    return [[dict objectForKey:@"list"] count];
+                    NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                    return [pass count];
                 }
             }
         }
@@ -314,7 +414,8 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"])) {
-        if ([_sortArray[section][@"list"] count]) {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if ([pass count]) {
             UIView *footerBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 30)];
             footerBack.backgroundColor = [UIColor whiteColor];
             UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 20, MainScreenWidth, 10)];
@@ -383,7 +484,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"])) {
-        if ([_sortArray[section][@"list"] count]) {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if ([pass count]) {
             return 30;
         } else {
             return 10;
@@ -501,11 +603,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        return [_sortArray[indexPath.section][@"list"] count] > 0 ? 106 : 0;
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[indexPath.section][@"list"]];
+        return [pass count] > 0 ? 106 : 0;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendCourse"]) {
-        return [_sortArray[indexPath.section][@"list"] count] > 0 ? (172 + 15 + 20) : 0;
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[indexPath.section][@"list"]];
+        return [pass count] > 0 ? (172 + 15 + 20) : 0;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"]) {
-        return [_sortArray[indexPath.section][@"list"] count] > 0 ? 106 : 0;
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[indexPath.section][@"list"]];
+        return [pass count] > 0 ? 106 : 0;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"]) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"categoryCourse"]) {

@@ -62,6 +62,20 @@
     [self setHeight:_contentBackView.bottom + 20];
 }
 
+- (void)setQuestionChatLeftModel:(MessageInfoModel *)info {
+    _faceImage.image = DefaultUserImage;
+    _nameLabel.text = [NSString stringWithFormat:@"%@",info.userName];
+    
+    _contentLabel.frame = CGRectMake(_faceImage.right + 12 + 12, _nameLabel.bottom + 5 + 12, 182 - 24, 19);
+    _contentLabel.text = [NSString stringWithFormat:@"%@",info.message];
+    [_contentLabel sizeToFit];
+    [_contentLabel setHeight:_contentLabel.height];
+    [_contentBackView setHeight:_contentLabel.height + 24];
+    [_contentBackView setWidth:_contentLabel.width + 24];
+    
+    [self setHeight:_contentBackView.bottom + 20];
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
