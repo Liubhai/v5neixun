@@ -75,4 +75,7 @@
 /** 获取某个颜色值的rgb值 */
 + (const CGFloat *)getColorRGB:(UIColor *)currentColor;
 
+// 字典转字符串
++ (NSString *)dictConvertToJsonData:(NSDictionary *)dict;
+
 @end

@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BaseViewController : UIViewController<UIGestureRecognizerDelegate>
+@protocol ShowAlertProtocol <NSObject>
+- (void)showAlert:(NSString * _Nonnull)message handle:(void(^_Nullable)(UIAlertAction * _Nullable))handle;
+- (void)showAlert:(NSString * _Nonnull)message;
+@end
+
+@interface BaseViewController : UIViewController<UIGestureRecognizerDelegate, ShowAlertProtocol>
 {
     UILabel *_titleLabel;
     UIButton *_rightButton;

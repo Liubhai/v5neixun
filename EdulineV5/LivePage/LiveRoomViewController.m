@@ -22,7 +22,12 @@
 #import "CourseMainViewController.h"
 #import "UIView+Toast.h"
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ WhitePlayDelegate, SignalDelegate, RTCDelegate> {
+// 声网RTM所需文件引用
+#import "AgoraRtm.h"
+#import "JsonParseUtil.h"
+#import <MJExtension.h>
+
+@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate> {
     NSInteger page;
     CGFloat keyHeight;
     BOOL isScrollBottom;
@@ -60,7 +65,8 @@
 @property (strong, nonatomic) CommentBaseView *chatCommentView;
 @property (strong, nonatomic) UIView *commentBackView;
 
-
+// 声网直播间频道
+@property (nonatomic, strong) AgoraRtmChannel *rtmChannel;
 
 @end
 
@@ -79,6 +85,7 @@
 //    app._allowRotation = YES;
     app._allowRotation = NO;
     isScrollBottom = NO;
+    // 创建聊天频道
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -115,7 +122,7 @@
 - (void)initData {
     self.educationManager.signalDelegate = self;
     [self setupRTC];
-    [self setupWhiteBoard];
+//    [self setupWhiteBoard];
 }
 
 - (void)dealloc {
@@ -624,20 +631,35 @@
         return;
     }
     NSString *content = view.inputTextView.text;
-    WEAK(self);
-    [BaseEducationManager sendMessageWithType:MessageTypeText message:content successBolck:^{
-        MessageInfoModel *model = [MessageInfoModel new];
-        model.userName = EduConfigModel.shareInstance.userName;
-        model.message = content;
-        model.isSelfSend = YES;
-        [weakself.dataSource addObject:model];
-        [weakself.chatListTableView reloadData];
-        if (weakself.dataSource.count > 0) {
-            [weakself.chatListTableView scrollToRowAtIndexPath:
-             [NSIndexPath indexPathForRow:[weakself.dataSource count] - 1 inSection:0] atScrollPosition: UITableViewScrollPositionBottom animated:NO];
+    
+    MessageModel *model = [[MessageModel alloc] init];
+    model.cmd = 1;
+    MessageInfoModel *messModel = [[MessageInfoModel alloc] init];
+    messModel.message = content;
+    messModel.userId = [NSString stringWithFormat:@"%@",@(EduConfigModel.shareInstance.uid)];
+    messModel.userName = [NSString stringWithFormat:@"%@",EduConfigModel.shareInstance.userName];
+    model.data = messModel;
+
+    __weak LiveRoomViewController *weakSelf = self;
+    void(^sent)(int) = ^(int status) {
+        if (status != 0) {
+            NSString *alert = [NSString stringWithFormat:@"send message error: %d", status];
+            [weakSelf showAlert:alert];
+            return;
         }
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-        [weakself showToast:errMessage];
+        messModel.isSelfSend = YES;
+        [_dataSource addObject:messModel];
+        [_chatListTableView reloadData];
+        if (_dataSource.count > 0) {
+            [_chatListTableView scrollToRowAtIndexPath:
+             [NSIndexPath indexPathForRow:[_dataSource count] - 1 inSection:0] atScrollPosition: UITableViewScrollPositionBottom animated:NO];
+        }
+    };
+    
+    [self.educationManager.signalManager sendMessage:[model mj_JSONString] completeSuccessBlock:^{
+        sent(0);
+    } completeFailBlock:^(NSInteger errorCode) {
+        sent((int)(errorCode));
     }];
     view.inputTextView.text = @"";
 }
@@ -858,6 +880,10 @@
     }
     AppDelegate *app = [AppDelegate delegate];
     app._allowRotation = NO;
+    
+    __weak LiveRoomViewController *weakSelf = self;
+    [weakSelf.educationManager releaseResources];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 // MARK: - 开关摄像头
@@ -935,6 +961,62 @@
     if (_dataSource.count > 0) {
         [_chatListTableView scrollToRowAtIndexPath:
          [NSIndexPath indexPathForRow:[_dataSource count] - 1 inSection:0] atScrollPosition: UITableViewScrollPositionBottom animated:NO];
+    }
+}
+
+
+// MARK: - 声网频道(直播间)聊天频道创建 Channel
+//- (void)createChannel:(NSString *)channel {
+//    __weak LiveRoomViewController *weakSelf = self;
+//    void(^errorHandle)(UIAlertAction *) = ^(UIAlertAction *action) {
+//        [weakSelf.navigationController popViewControllerAnimated:YES];
+//    };
+//    channel = [NSString stringWithString:[EduConfigModel.shareInstance.className stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//    AgoraRtmChannel *rtmChannel = [AgoraRtm.kit createChannelWithId:channel delegate:self];
+//
+//    if (!rtmChannel) {
+//        [self showAlert:@"join channel fail" handle:errorHandle];
+//    }
+//
+//    [rtmChannel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
+//        if (errorCode != AgoraRtmJoinChannelErrorOk) {
+//            NSString *alert = [NSString stringWithFormat:@"join channel error: %ld", errorCode];
+//            [weakSelf showAlert:alert handle:errorHandle];
+//        }
+//    }];
+//
+//    self.rtmChannel = rtmChannel;
+//}
+
+// MARK: - 离开直播间
+- (void)leaveChannel {
+    [self.educationManager.signalManager releaseResources];
+    [self.rtmChannel leaveWithCompletion:^(AgoraRtmLeaveChannelErrorCode errorCode) {
+        NSLog(@"leave channel error: %ld", (long)errorCode);
+    }];
+}
+
+- (void)channelAppendRTM:(AgoraRtmMessage *)message {
+    
+    NSDictionary *dict = [JsonParseUtil dictionaryWithJsonString:message.text];
+    NSInteger cmd = [dict[@"cmd"] integerValue];
+    
+    if(cmd == MessageCmdTypeChat) {
+        
+        MessageInfoModel *model = [MessageModel yy_modelWithDictionary:dict].data;
+        
+        if(![model.userId isEqualToString:self.educationManager.studentModel.userId]) {
+            model.isSelfSend = NO;
+        } else {
+            model.isSelfSend = YES;
+        }
+        
+        [_dataSource addObject:model];
+        [_chatListTableView reloadData];
+        if (_dataSource.count > 0) {
+            [_chatListTableView scrollToRowAtIndexPath:
+             [NSIndexPath indexPathForRow:[_dataSource count] - 1 inSection:0] atScrollPosition: UITableViewScrollPositionBottom animated:NO];
+        }
     }
 }
 

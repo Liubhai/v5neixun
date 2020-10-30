@@ -27,6 +27,7 @@
 #import "LiveRoomViewController.h"
 #import "TICManager.h"
 #import "TICConfig.h"
+#import "AgoraRtm.h"
 
 
 
@@ -134,13 +135,13 @@
 //    [self.navigationController pushViewController:vc animated:YES];
 //    return NO;
     
-    SceneType sceneType = SceneTypeBig;
-    self.educationManager = [BigEducationManager new];
+    SceneType sceneType = SceneTypeSmall;
+    self.educationManager = [MinEducationManager new];
     
     EduConfigModel.shareInstance.className = @"231";
     EduConfigModel.shareInstance.userName = @"猛戳";
     EduConfigModel.shareInstance.sceneType = sceneType;
-        
+    
         WEAK(self);
         [self getConfigWithSuccessBolck:^{
             [weakself getEntryInfoWithSuccessBolck:^{
@@ -148,7 +149,7 @@
                     [weakself getRoomInfoWithSuccessBlock:^{
                         [weakself setupSignalWithSuccessBlock:^{
                             LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
-                            vc.educationManager = (BigEducationManager *)self.educationManager;
+                            vc.educationManager = (MinEducationManager *)self.educationManager;
                             [self.navigationController pushViewController:vc animated:YES];
                         }];
                     }];

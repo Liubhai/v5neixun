@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // for replay
 @property (nonatomic, strong) NSString *recordId;
+@property (strong, nonatomic) NSString *userFace;
 
 @end
 

@@ -9,7 +9,7 @@
 #import "BaseViewController.h"
 
 #import "TICManager.h"
-#import "BigEducationManager.h"
+#import "MinEducationManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL showBoardView;// 是否配置了白板
 
-@property (nonatomic, strong) BigEducationManager *educationManager;
+@property (nonatomic, strong) MinEducationManager *educationManager;
 
 @end
 
