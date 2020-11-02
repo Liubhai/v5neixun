@@ -26,8 +26,15 @@
 //    _faceImageView.image = DefaultImage;
 //    [self.contentView addSubview:_faceImageView];
     
-    _render = [[TICRenderView alloc] initWithFrame:CGRectMake(0, 0, 113, 64)];
-    [self.contentView addSubview:_render];
+    UIView *videoCanvasView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 113, 64)];
+    [self.contentView addSubview:videoCanvasView];
+    _videoCanvasView = videoCanvasView;
+    
+    UIImageView *backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 113, 64)];
+    [self.contentView addSubview:backImageView];
+    backImageView.image = DefaultUserImage;
+    backImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.backImageView = backImageView;
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 64 - 16, 113, 16)];
     _nameLabel.layer.masksToBounds = YES;
@@ -52,6 +59,12 @@
     } else {
         [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:userid view:_render];
     }
+}
+
+- (void)setUserModel:(UserModel *)userModel {
+    _userModel = userModel;
+    self.nameLabel.text = userModel.userName;
+    self.backImageView.hidden = userModel.enableVideo ? YES : NO;
 }
 
 @end

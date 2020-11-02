@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		150133BD627AE25CD7C191B3 /* Pods_EdulineV5.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F01E02843C09C8F22217CD9 /* Pods_EdulineV5.framework */; };
 		780487E92510A433001118F3 /* EmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 780487E82510A433001118F3 /* EmptyCell.m */; };
+		780F9577254FDD810070EB1F /* LiveTeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F9576254FDD810070EB1F /* LiveTeacherView.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -551,6 +552,8 @@
 		6F01E02843C09C8F22217CD9 /* Pods_EdulineV5.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EdulineV5.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		780487E72510A433001118F3 /* EmptyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyCell.h; sourceTree = "<group>"; };
 		780487E82510A433001118F3 /* EmptyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmptyCell.m; sourceTree = "<group>"; };
+		780F9575254FDD810070EB1F /* LiveTeacherView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveTeacherView.h; sourceTree = "<group>"; };
+		780F9576254FDD810070EB1F /* LiveTeacherView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveTeacherView.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1693,6 +1696,8 @@
 				788E95CE25466F8B0089251E /* LiveMenberCell.m */,
 				788E95D32546A4360089251E /* LiveCourseListCell.h */,
 				788E95D42546A4360089251E /* LiveCourseListCell.m */,
+				780F9575254FDD810070EB1F /* LiveTeacherView.h */,
+				780F9576254FDD810070EB1F /* LiveTeacherView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -4262,6 +4267,7 @@
 				785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */,
 				7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */,
 				78A16C8D2452F7C100391430 /* TICDevice.m in Sources */,
+				780F9577254FDD810070EB1F /* LiveTeacherView.m in Sources */,
 				7859FE3D24C97B8A006C7D4E /* MYTreeItem.m in Sources */,
 				788E95A8253FE24E0089251E /* OneToOneEducationManager.m in Sources */,
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,

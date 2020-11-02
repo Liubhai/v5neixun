@@ -10,6 +10,9 @@
 #import "TICRenderView.h"
 #import "TICManager.h"
 
+// 声网
+#import "RoomAllModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LiveRoomPersonCell : UICollectionViewCell
@@ -17,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 //@property (strong, nonatomic) UIImageView *faceImageView;
 @property (strong, nonatomic) TICRenderView *render;
 @property (strong, nonatomic) UILabel *nameLabel;
+@property (nonatomic, weak) UIImageView *backImageView;
+
+@property (nonatomic, weak) UIView *videoCanvasView;
+@property (nonatomic, strong) UserModel *userModel;
 
 - (void)setLiveUserInfo:(NSString *)userid localUserId:(NSString *)localUserId;
 
