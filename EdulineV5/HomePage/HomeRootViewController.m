@@ -131,6 +131,10 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return NO;
+    }
 //    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
 //    return NO;
@@ -138,8 +142,8 @@
     SceneType sceneType = SceneTypeSmall;
     self.educationManager = [MinEducationManager new];
     
-    EduConfigModel.shareInstance.className = @"231";
-    EduConfigModel.shareInstance.userName = @"猛戳";
+    EduConfigModel.shareInstance.className = @"390";
+    EduConfigModel.shareInstance.userName = [V5_UserModel uname];
     EduConfigModel.shareInstance.sceneType = sceneType;
     
         WEAK(self);

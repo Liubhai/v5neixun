@@ -33,7 +33,7 @@
     UIImageView *backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 113, 64)];
     [self.contentView addSubview:backImageView];
     backImageView.image = DefaultUserImage;
-    backImageView.contentMode = UIViewContentModeScaleAspectFill;
+    backImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.backImageView = backImageView;
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 64 - 16, 113, 16)];
@@ -65,6 +65,7 @@
     _userModel = userModel;
     self.nameLabel.text = userModel.userName;
     self.backImageView.hidden = userModel.enableVideo ? YES : NO;
+    self.videoCanvasView.hidden = userModel.enableVideo ? NO : YES;
 }
 
 @end

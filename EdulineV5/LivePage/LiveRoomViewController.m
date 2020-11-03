@@ -27,6 +27,8 @@
 #import "JsonParseUtil.h"
 #import <MJExtension.h>
 
+#define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
+
 @interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate> {
     NSInteger page;
     CGFloat keyHeight;
@@ -126,25 +128,40 @@
 - (void)initData {
     self.educationManager.signalDelegate = self;
     [self setupRTC];
-//    [self setupWhiteBoard];
+    [self setupWhiteBoard];
+    [self updateTimeState];
+    [self updateChatViews];
+    
+    // init role render
+    [self checkNeedRenderWithRole:UserRoleTypeTeacher];
+    [self checkNeedRenderWithRole:UserRoleTypeStudent];
 }
 
-//- (void)dealloc {
-//    AppDelegate *app = [AppDelegate delegate];
-//    app._allowRotation = NO;
-//    [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//    [[TICManager sharedInstance] removeEventListener:self];
-//    [[TICManager sharedInstance] removeMessageListener:self];
-//    [[TICManager sharedInstance] quitClassroom:NO callback:^(TICModule module, int code, NSString *desc) {
-//        if(code == 0){
-//            //退出课堂成功
-//        }
-//        else{
-//            //退出课堂失败
-//        }
-//    }];
-//}
+- (void)setupSignalWithSuccessBlock:(void (^)(void))successBlock {
+
+    NSString *appid = EduConfigModel.shareInstance.appId;
+    NSString *appToken = EduConfigModel.shareInstance.rtmToken;
+    NSString *uid = @(EduConfigModel.shareInstance.uid).stringValue;
+    
+    WEAK(self);
+    [self.educationManager initSignalWithAppid:appid appToken:appToken userId:uid dataSourceDelegate:self completeSuccessBlock:^{
+        
+        NSString *channelName = EduConfigModel.shareInstance.channelName;
+        [weakself.educationManager joinSignalWithChannelName:channelName completeSuccessBlock:^{
+            if(successBlock != nil){
+                successBlock();
+            }
+            
+        } completeFailBlock:^(NSInteger errorCode) {
+            NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"JoinSignalFailedText", nil), (long)errorCode];
+            [weakself showToast:errMsg];
+        }];
+        
+    } completeFailBlock:^(NSInteger errorCode) {
+        NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"InitSignalFailedText", nil), (long)errorCode];
+        [weakself showToast:errMsg];
+    }];
+}
 
 - (void)makeLiveSubView {
     _liveBackView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_STATUSBAR_HEIGHT, MainScreenWidth, (MainScreenWidth - 113)*3/4.0 + 37 * 2)];//画板高度+上下黑色背景高度
@@ -247,7 +264,10 @@
     _roomPersonCountBtn.hidden = YES;
     [_bottomToolBackView addSubview:_roomPersonCountBtn];
     
-    
+    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 150, 37)];
+    _timeLabel.font = SYSTEMFONT(13);
+    _timeLabel.textColor = [UIColor whiteColor];
+    [_bottomToolBackView addSubview:_timeLabel];
 }
 
 // MARK: - 白板
@@ -272,11 +292,14 @@
     
     EduConfigModel *configModel = EduConfigModel.shareInstance;
     
-    [self.educationManager initRTCEngineKitWithAppid:configModel.appId clientRole:RTCClientRoleAudience dataSourceDelegate:self];
+    [self.educationManager initRTCEngineKitWithAppid:configModel.appId clientRole:RTCClientRoleBroadcaster dataSourceDelegate:self];
+    
+    self.cameraBtn.selected = self.educationManager.studentModel.enableVideo;
+    self.voiceBtn.selected = self.educationManager.studentModel.enableAudio;
     
     WEAK(self);
     [self.educationManager joinRTCChannelByToken:configModel.rtcToken channelId:configModel.channelName info:nil uid:configModel.uid joinSuccess:^(NSString * _Nonnull channel, NSUInteger uid, NSInteger elapsed) {
-//        [weakself checkNeedRenderWithRole:UserRoleTypeStudent];
+        [weakself checkNeedRenderWithRole:UserRoleTypeStudent];
     }];
 }
 
@@ -290,6 +313,7 @@
     WEAK(self);
     [self.educationManager joinWhiteRoomWithBoardId:EduConfigModel.shareInstance.boardId boardToken:EduConfigModel.shareInstance.boardToken whiteWriteModel:NO completeSuccessBlock:^(WhiteRoom * _Nullable room) {
 
+        [weakself disableWhiteDeviceInputs:!weakself.educationManager.studentModel.grantBoard];
         [weakself disableCameraTransform:roomModel.lockBoard];
         
     } completeFailBlock:^(NSError * _Nullable error) {
@@ -743,7 +767,7 @@
     if(cell == nil){
         return;
     }
-
+           
     RTCVideoCanvasModel *model = [RTCVideoCanvasModel new];
     model.uid = currentUid;
     model.videoView = cell.videoCanvasView;
@@ -917,30 +941,164 @@
 
 // MARK: - 开关摄像头
 - (void)swicthCamera:(UIButton *)sender {
-    sender.selected = !sender.selected;
-    [_livePersonArray removeObject:_userId];
+    
     if (sender.selected) {
-        [_livePersonArray addObject:_userId];
-    } else {
-        [[[TICManager sharedInstance] getTRTCCloud] stopLocalPreview];
+        // 有授权
+        sender.selected = !sender.selected;
+        
+        AgoraLogInfo(@"small muteVideoStream:%d", sender.selected);
+        
+        WEAK(self);
+        if (sender.selected) {
+            [self.educationManager.rtcManager setClientRole:AgoraClientRoleBroadcaster];
+        } else {
+            [self.educationManager.rtcManager setClientRole:AgoraClientRoleAudience];
+        }
+        
+        [self.educationManager updateEnableVideoWithValue:sender.selected completeSuccessBlock:^{
+
+            [weakself reloadStudentViews];
+
+        } completeFailBlock:^(NSString * _Nonnull errMessage) {
+
+            [weakself showToast:errMessage];
+            [weakself reloadStudentViews];
+        }];
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [CATransaction setDisableActions:YES];
-        
-        [_collectionView reloadData];
-        
-        [CATransaction commit];
-    });
+    
+    AVAuthorizationStatus microPhoneStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    switch (microPhoneStatus) {
+        case AVAuthorizationStatusDenied:
+        case AVAuthorizationStatusRestricted:
+        case AVAuthorizationStatusNotDetermined:
+        {
+            // 被拒绝
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
+            completionHandler:^(BOOL granted) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (granted) {
+                        NSURL *url =  [NSURL URLWithString:@"App-Prefs:root=Photos"];
+                        if ([[UIApplication sharedApplication] canOpenURL: url]) {
+                            if (iOS10) {
+                                [[UIApplication sharedApplication] openURL: url options:@{} completionHandler:nil];
+                            } else {
+                                [[UIApplication sharedApplication] openURL: url];
+                            }
+                        }
+                    } else {
+                        [self showAlertWithTitle:@"温馨提示" msg:@"您没有开启\"摄像头\"权限\n 无法进行通话。请在设置中开启摄像头权限。" handler:^(UIAlertAction *action) {
+                            
+                        }];
+                    }
+                });
+            }];
+        }
+            break;
+        case AVAuthorizationStatusAuthorized:
+        {
+            // 有授权
+            sender.selected = !sender.selected;
+            
+            AgoraLogInfo(@"small muteVideoStream:%d", sender.selected);
+            
+            WEAK(self);
+            if (sender.selected) {
+                [self.educationManager.rtcManager setClientRole:AgoraClientRoleBroadcaster];
+            } else {
+                [self.educationManager.rtcManager setClientRole:AgoraClientRoleAudience];
+            }
+            
+            [self.educationManager updateEnableVideoWithValue:sender.selected completeSuccessBlock:^{
+
+                [weakself reloadStudentViews];
+
+            } completeFailBlock:^(NSString * _Nonnull errMessage) {
+
+                [weakself showToast:errMessage];
+                [weakself reloadStudentViews];
+            }];
+        }
+            break;
+
+        default:
+            break;
+    }
 }
 
 // MARK: - 开关麦克风
 - (void)switchVoice:(UIButton *)sender {
-    sender.selected = !sender.selected;
+    
     if (sender.selected) {
-        [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
-    } else {
-        [[[TICManager sharedInstance] getTRTCCloud] stopLocalAudio];
+        sender.selected = !sender.selected;
+        
+        AgoraLogInfo(@"small muteAudioStream:%d", sender.selected);
+        
+        [self.educationManager.rtcManager enableLocalAudio:sender.selected];
+        
+        WEAK(self);
+        [self.educationManager updateEnableAudioWithValue:sender.selected completeSuccessBlock:^{
+            
+            [weakself reloadStudentViews];
+
+        } completeFailBlock:^(NSString * _Nonnull errMessage) {
+            
+            [weakself showToast:errMessage];
+            [weakself reloadStudentViews];
+        }];
+        return;
+    }
+    
+    AVAuthorizationStatus microPhoneStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    switch (microPhoneStatus) {
+        case AVAuthorizationStatusDenied:
+        case AVAuthorizationStatusRestricted:
+        case AVAuthorizationStatusNotDetermined:
+        {
+            // 被拒绝
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio
+            completionHandler:^(BOOL granted) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (granted) {
+                        NSURL *url =  [NSURL URLWithString:@"App-Prefs:root=Photos"];
+                        if ([[UIApplication sharedApplication] canOpenURL: url]) {
+                            if (iOS10) {
+                                [[UIApplication sharedApplication] openURL: url options:@{} completionHandler:nil];
+                            } else {
+                                [[UIApplication sharedApplication] openURL: url];
+                            }
+                        }
+                    } else {
+                        [self showAlertWithTitle:@"温馨提示" msg:@"您没有开启\"麦克风\"权限\n 无法进行通话。请在设置中开启麦克风权限。" handler:^(UIAlertAction *action) {
+                            
+                        }];
+                    }
+                });
+            }];
+        }
+            break;
+        case AVAuthorizationStatusAuthorized:
+        {
+            sender.selected = !sender.selected;
+            
+            AgoraLogInfo(@"small muteAudioStream:%d", sender.selected);
+            
+            [self.educationManager.rtcManager enableLocalAudio:sender.selected];
+            
+            WEAK(self);
+            [self.educationManager updateEnableAudioWithValue:sender.selected completeSuccessBlock:^{
+                
+                [weakself reloadStudentViews];
+
+            } completeFailBlock:^(NSString * _Nonnull errMessage) {
+                
+                [weakself showToast:errMessage];
+                [weakself reloadStudentViews];
+            }];
+        }
+            break;
+
+        default:
+            break;
     }
 }
 
@@ -1100,13 +1258,36 @@
 
 - (void)reloadStudentViews {
 
-    [_livePersonArray removeAllObjects];
-    [_livePersonArray addObjectsFromArray:self.educationManager.studentTotleListArray];
-    [_collectionView reloadData];
+    [self updateStudentArray:self.educationManager.studentTotleListArray];
 //    [self.studentListView updateStudentArray:self.educationManager.studentTotleListArray];
 //    [self.studentVideoListView updateStudentArray:self.educationManager.studentTotleListArray];
     
     [self updateStudentViews:self.educationManager.studentModel];
+}
+
+- (void)updateStudentArray:(NSArray<UserModel*> *)studentArray {
+    
+    if(studentArray.count == 0 || self.livePersonArray.count != studentArray.count) {
+        self.livePersonArray = [studentArray deepCopy];
+        [self.collectionView reloadData];
+    } else {
+        NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray array];
+
+        NSInteger count = studentArray.count;
+        for(NSInteger i = 0; i < count; i++) {
+            UserModel *sourceModel = [self.livePersonArray objectAtIndex:i];
+            UserModel *currentModel = [studentArray objectAtIndex:i];
+            if(![sourceModel yy_modelIsEqual:currentModel]) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                [indexPaths addObject:indexPath];
+            }
+        }
+
+        self.livePersonArray = [studentArray deepCopy];
+        if(indexPaths.count > 0){
+            [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+        }
+    }
 }
 
 - (void)updateStudentViews:(UserModel*)studentModel {
@@ -1130,7 +1311,7 @@
 - (void)didReceivedSignal:(SignalInfoModel *)signalInfoModel {
     switch (signalInfoModel.signalType) {
         case SignalValueCoVideo: {
-            if(signalInfoModel.uid == self.educationManager.teacherModel.uid) {
+            if(signalInfoModel.uid && signalInfoModel.uid == self.educationManager.teacherModel.uid) {
                 [self checkNeedRenderWithRole:UserRoleTypeTeacher];
             } else {
                 [self checkNeedRenderWithRole:UserRoleTypeStudent];
@@ -1139,7 +1320,7 @@
             break;
         case SignalValueAudio:
         case SignalValueVideo:
-            if(signalInfoModel.uid == self.educationManager.teacherModel.uid) {
+            if (signalInfoModel.uid && signalInfoModel.uid == self.educationManager.teacherModel.uid) {
                 [self updateTeacherViews:self.educationManager.teacherModel];
             } else {
                 [self reloadStudentViews];
