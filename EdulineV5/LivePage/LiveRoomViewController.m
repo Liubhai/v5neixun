@@ -1297,6 +1297,9 @@
         return;
     }
     
+    _voiceBtn.selected = studentModel.enableAudio;
+    _cameraBtn.selected = studentModel.enableVideo;
+    
     [self.educationManager muteRTCLocalVideo:studentModel.enableVideo == 0 ? YES : NO];
     [self.educationManager muteRTCLocalAudio:studentModel.enableAudio == 0 ? YES : NO];
 }

@@ -32,7 +32,7 @@
     
     UIImageView *backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 113, 64)];
     [self.contentView addSubview:backImageView];
-    backImageView.image = DefaultUserImage;
+    backImageView.image = Image(@"cam_off");
     backImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.backImageView = backImageView;
     
