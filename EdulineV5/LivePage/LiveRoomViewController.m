@@ -27,10 +27,12 @@
 #import "JsonParseUtil.h"
 #import <MJExtension.h>
 #import "WhiteBoardTouchView.h"
+#import "EEPageControlView.h"
+#import "EEWhiteboardTool.h"
 
 #define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate> {
+@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ EEPageControlDelegate, EEWhiteboardToolDelegate, WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate> {
     NSInteger page;
     CGFloat keyHeight;
     BOOL isScrollBottom;
@@ -46,6 +48,13 @@
 @property (strong, nonatomic) UIView *boardView;
 @property (nonatomic, weak) WhiteBoardView *whiteBoardView;
 @property (nonatomic, weak) WhiteBoardTouchView *whiteBoardTouchView;
+
+
+///cell = [[[NSBundle mainBundle] loadNibNamed:@"MCStudentViewCell" owner:self options:nil] firstObject];
+@property (nonatomic, weak) EEWhiteboardTool *whiteboardTool;
+@property (weak, nonatomic) EEPageControlView *pageControlView;
+@property (nonatomic, assign) NSInteger sceneIndex;
+@property (nonatomic, assign) NSInteger sceneCount;
 
 //CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0);
 @property (strong, nonatomic) UIView *allFaceContentView; //顶部装讲师直播头像和学生头像的容器
@@ -68,6 +77,8 @@
 
 @property (strong, nonatomic) UITableView *liveMenberTableView; // 聊天列表
 @property (strong, nonatomic) NSMutableArray *menberDataSource;
+
+@property (strong, nonatomic) UIButton *handupButton;
 
 @property (strong, nonatomic) CommentBaseView *chatCommentView;
 @property (strong, nonatomic) UIView *commentBackView;
@@ -119,6 +130,7 @@
     [self makeChatListTableView];
     [self makeBottomView];
     [self makeMenberListTableView];
+    [self makeHandUpButton];
     [self initData];
     // 接收屏幕方向改变通知,监听屏幕方向
 //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -302,6 +314,19 @@
         [weakself showTipWithMessage:toastMessage];
     }];
     self.whiteBoardTouchView = whiteBoardTouchView;
+    
+//    _pageControlView = [[[NSBundle mainBundle] loadNibNamed:@"EEPageControlView" owner:self options:nil] firstObject];//[[EEPageControlView alloc] init];//
+//    _pageControlView.frame = CGRectMake((MainScreenWidth - 244) / 2.0, _boardView.height - MACRO_UI_SAFEAREA - 46, 244, 46);
+////    _pageControlView = pageControlView;
+//    _pageControlView.delegate = self;
+//    [self.boardView addSubview:_pageControlView];
+//
+//    _whiteboardTool = [[[NSBundle mainBundle] loadNibNamed:@"EEWhiteboardTool" owner:self options:nil] firstObject];//[[EEWhiteboardTool alloc] init];//
+//    _whiteboardTool.frame = CGRectMake(15, _boardView.height - MACRO_UI_SAFEAREA - 214, 46, 214);
+////    _whiteboardTool = whiteboardTool;
+//    _whiteboardTool.delegate = self;
+//    [self.boardView addSubview:_whiteboardTool];
+    
 }
 
 // 设置RTC
@@ -329,9 +354,16 @@
     
     WEAK(self);
     [self.educationManager joinWhiteRoomWithBoardId:EduConfigModel.shareInstance.boardId boardToken:EduConfigModel.shareInstance.boardToken whiteWriteModel:NO completeSuccessBlock:^(WhiteRoom * _Nullable room) {
-
+        
         [weakself disableWhiteDeviceInputs:!weakself.educationManager.studentModel.grantBoard];
         [weakself disableCameraTransform:roomModel.lockBoard];
+
+        [weakself.educationManager currentWhiteScene:^(NSInteger sceneCount, NSInteger sceneIndex) {
+            weakself.sceneCount = sceneCount;
+            weakself.sceneIndex = sceneIndex;
+            [weakself.pageControlView.pageCountLabel setText:[NSString stringWithFormat:@"%ld/%ld", (long)(weakself.sceneIndex + 1), (long)weakself.sceneCount]];
+            [weakself.educationManager moveWhiteToContainer:sceneIndex];
+        }];
         
     } completeFailBlock:^(NSError * _Nullable error) {
         [weakself showToast:NSLocalizedString(@"JoinWhiteErrorText", nil)];
@@ -563,6 +595,13 @@
     [self.view addSubview:_liveMenberTableView];
     _liveMenberTableView.hidden = YES;
     [EdulineV5_Tool adapterOfIOS11With:_liveMenberTableView];
+}
+
+// MARK: - 大班课有学生申请连麦(举手)
+- (void)makeHandUpButton {
+    _handupButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 10 - 54, _chatCommentView.top - 54 - 54, 54, 54)];
+    [_handupButton setImage:Image(@"live_handup") forState:0];
+    [self.view addSubview:_handupButton];
 }
 
 // MARK: - 聊天tableview的代理
@@ -940,6 +979,78 @@
 - (void)onTEBUndoStatusChanged:(BOOL)canUndo
 {
     
+}
+
+// MARK: - EEPageControlDelegate
+- (void)previousPage {
+    if (self.sceneIndex > 0) {
+        self.sceneIndex--;
+        WEAK(self);
+        [self setWhiteSceneIndex:self.sceneIndex completionSuccessBlock:^{
+            [weakself.pageControlView.pageCountLabel setText:[NSString stringWithFormat:@"%ld/%ld", (long)(weakself.sceneIndex + 1), (long)weakself.sceneCount]];
+        }];
+    }
+}
+
+- (void)nextPage {
+    if (self.sceneIndex < self.sceneCount - 1  && self.sceneCount > 0) {
+        self.sceneIndex ++;
+        
+        WEAK(self);
+        [self setWhiteSceneIndex:self.sceneIndex completionSuccessBlock:^{
+            [weakself.pageControlView.pageCountLabel setText:[NSString stringWithFormat:@"%ld/%ld", (long)(weakself.sceneIndex + 1), (long)weakself.sceneCount]];
+        }];
+    }
+}
+
+- (void)lastPage {
+    self.sceneIndex = self.sceneCount - 1;
+    
+    WEAK(self);
+    [self setWhiteSceneIndex:self.sceneIndex completionSuccessBlock:^{
+        [weakself.pageControlView.pageCountLabel setText:[NSString stringWithFormat:@"%ld/%ld", (long)(weakself.sceneIndex + 1), (long)weakself.sceneCount]];
+    }];
+}
+
+- (void)firstPage {
+    self.sceneIndex = 0;
+    WEAK(self);
+    [self setWhiteSceneIndex:self.sceneIndex completionSuccessBlock:^{
+        [weakself.pageControlView.pageCountLabel setText:[NSString stringWithFormat:@"%ld/%ld", (long)(weakself.sceneIndex + 1), (long)weakself.sceneCount]];
+    }];
+}
+
+-(void)setWhiteSceneIndex:(NSInteger)sceneIndex completionSuccessBlock:(void (^ _Nullable)(void ))successBlock {
+    
+    [self.educationManager setWhiteSceneIndex:sceneIndex completionHandler:^(BOOL success, NSError * _Nullable error) {
+        if(success) {
+            if(successBlock != nil){
+                successBlock();
+            }
+        } else {
+            AgoraLogError(@"Set scene index err：%@", error);
+        }
+    }];
+}
+
+// MARK: - EEWhiteboardToolDelegate
+- (void)selectWhiteboardToolIndex:(NSInteger)index {
+    
+    NSArray<NSString *> *applianceNameArray = @[ApplianceSelector, AppliancePencil, ApplianceText, ApplianceEraser];
+    if(index < applianceNameArray.count) {
+        NSString *applianceName = [applianceNameArray objectAtIndex:index];
+        if(applianceName != nil) {
+            [self.educationManager setWhiteApplianceName:applianceName];
+        }
+    }
+    
+//    BOOL bHidden = self.colorShowView.hidden;
+//    // select color
+//    if (index == 4) {
+//        self.colorShowView.hidden = !bHidden;
+//    } else if (!bHidden) {
+//        self.colorShowView.hidden = YES;
+//    }
 }
 
 // MARK: - 退出互动课堂
