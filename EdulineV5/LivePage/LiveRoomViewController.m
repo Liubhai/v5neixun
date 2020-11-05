@@ -609,6 +609,7 @@
 //MARK: - 公告关闭按钮点击事件
 - (void)noticeCloseBtnClick:(UIButton *)sender {
     _noticeBackView.hidden = YES;
+    _chatListTableView.frame = CGRectMake(0, 0, MainScreenWidth, _chatBackView.height);
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification{
@@ -964,6 +965,7 @@
             [weakself showToast:errMessage];
             [weakself reloadStudentViews];
         }];
+        return;
     }
     
     AVAuthorizationStatus microPhoneStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];

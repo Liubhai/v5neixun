@@ -30,7 +30,7 @@
     _faceImage.layer.cornerRadius = _faceImage.height / 2.0;
     [self.contentView addSubview:_faceImage];
     
-    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImage.right + 12, _faceImage.top, 200, 15)];
+    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImage.right + 12, _faceImage.top, 200, 30)];
     _nameLabel.textColor = EdlineV5_Color.textSecendColor;
     _nameLabel.font = SYSTEMFONT(13);
     [self.contentView addSubview:_nameLabel];
