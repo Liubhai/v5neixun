@@ -26,6 +26,7 @@
 #import "AgoraRtm.h"
 #import "JsonParseUtil.h"
 #import <MJExtension.h>
+#import "WhiteBoardTouchView.h"
 
 #define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
 
@@ -44,6 +45,7 @@
 @property (strong, nonatomic) NSMutableArray *livePersonArray;
 @property (strong, nonatomic) UIView *boardView;
 @property (nonatomic, weak) WhiteBoardView *whiteBoardView;
+@property (nonatomic, weak) WhiteBoardTouchView *whiteBoardTouchView;
 
 //CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0);
 @property (strong, nonatomic) UIView *allFaceContentView; //顶部装讲师直播头像和学生头像的容器
@@ -264,7 +266,13 @@
     _roomPersonCountBtn.hidden = YES;
     [_bottomToolBackView addSubview:_roomPersonCountBtn];
     
-    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 150, 37)];
+    _blueCircleView = [[UIView alloc] initWithFrame:CGRectMake(15, (37-6)/2.0, 6, 6)];
+    _blueCircleView.backgroundColor = HEXCOLOR(0x67C23A);
+    _blueCircleView.layer.masksToBounds = YES;
+    _blueCircleView.layer.cornerRadius = 3;
+    [_bottomToolBackView addSubview:_blueCircleView];
+    
+    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_blueCircleView.right + 3.5, 0, 150, 37)];
     _timeLabel.font = SYSTEMFONT(13);
     _timeLabel.textColor = [UIColor whiteColor];
     [_bottomToolBackView addSubview:_timeLabel];
@@ -280,11 +288,20 @@
     // 声网白板视图
     _boardView = [[UIView alloc] init];
     _boardView.frame = CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom);
+    _boardView.backgroundColor = [UIColor redColor];
     [self.view addSubview:_boardView];
     
     WhiteBoardView *whiteboardView = [[WhiteBoardView alloc] initWithFrame:CGRectMake(0, 0, _boardView.width, _boardView.height)];
     _whiteBoardView = whiteboardView;
     [_boardView addSubview:_whiteBoardView];
+    
+    WEAK(self);
+    WhiteBoardTouchView *whiteBoardTouchView = [WhiteBoardTouchView new];
+    [whiteBoardTouchView setupInView:self.boardView onTouchBlock:^{
+        NSString *toastMessage = NSLocalizedString(@"LockBoardTouchText", nil);
+        [weakself showTipWithMessage:toastMessage];
+    }];
+    self.whiteBoardTouchView = whiteBoardTouchView;
 }
 
 // 设置RTC
@@ -1457,13 +1474,13 @@
 }
 
 - (void)checkWhiteTouchViewVisible {
-    self.whiteBoardView.hidden = YES;
+    self.whiteBoardTouchView.hidden = YES;
     
     // follow
     if(self.educationManager.roomModel.lockBoard) {
         // permission
         if(self.educationManager.studentModel.grantBoard) {
-            self.whiteBoardView.hidden = NO;
+            self.whiteBoardTouchView.hidden = NO;
         }
     }
 }

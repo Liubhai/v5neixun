@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *lianmaiBtn;
 
 @property (strong, nonatomic) UIView *bottomToolBackView;
+@property (strong, nonatomic) UIView *blueCircleView;
 @property (strong, nonatomic) UILabel *timeLabel;
 @property (strong, nonatomic) UIButton *fullScreenBtn;
 @property (strong, nonatomic) UIButton *roomPersonCountBtn;
