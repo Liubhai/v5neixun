@@ -57,7 +57,7 @@
                         <constraint firstAttribute="width" constant="38" id="iDf-w3-r33"/>
                         <constraint firstAttribute="height" constant="38" id="zYu-Fz-wzo"/>
                     </constraints>
-                    <state key="normal" image="page-next"/>
+                    <state key="normal" image="icon-next"/>
                     <connections>
                         <action selector="buttonClick:" destination="-1" eventType="touchUpInside" id="kHn-Ie-ndd"/>
                     </connections>
@@ -98,9 +98,9 @@
         </view>
     </objects>
     <resources>
+        <image name="icon-next" width="38" height="38"/>
         <image name="page-end" width="38" height="38"/>
         <image name="page-first" width="38" height="38"/>
-        <image name="page-next" width="38" height="38"/>
         <image name="page-prev" width="38" height="38"/>
     </resources>
 </document>
