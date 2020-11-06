@@ -30,9 +30,13 @@
 #import "EEPageControlView.h"
 #import "EEWhiteboardTool.h"
 
+// 自己写的白板翻页控制器
+#import "LivePageControlView.h"
+#import "LiveBoardToolView.h"
+
 #define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ EEPageControlDelegate, EEWhiteboardToolDelegate, WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate> {
+@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ EEPageControlDelegate, EEWhiteboardToolDelegate, WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate, /**自定义白板操作工具代理 */ LivePageControlViewDelegate, LiveBoardToolViewDelegate> {
     NSInteger page;
     CGFloat keyHeight;
     BOOL isScrollBottom;
@@ -51,8 +55,8 @@
 
 
 ///cell = [[[NSBundle mainBundle] loadNibNamed:@"MCStudentViewCell" owner:self options:nil] firstObject];
-@property (nonatomic, weak) EEWhiteboardTool *whiteboardTool;
-@property (weak, nonatomic) EEPageControlView *pageControlView;
+@property (nonatomic, strong) LiveBoardToolView *whiteboardTool;
+@property (strong, nonatomic) LivePageControlView *pageControlView;
 @property (nonatomic, assign) NSInteger sceneIndex;
 @property (nonatomic, assign) NSInteger sceneCount;
 
@@ -314,6 +318,14 @@
         [weakself showTipWithMessage:toastMessage];
     }];
     self.whiteBoardTouchView = whiteBoardTouchView;
+    
+    _pageControlView = [[LivePageControlView alloc] initWithFrame:CGRectMake((MainScreenWidth - (46*4 + 66)) / 2.0, _boardView.height - MACRO_UI_SAFEAREA - 46, 46*4 + 66, 46)];
+    _pageControlView.delegate = self;
+    [self.boardView addSubview:_pageControlView];
+    
+    _whiteboardTool = [[LiveBoardToolView alloc] initWithFrame:CGRectMake(15, _boardView.height - MACRO_UI_SAFEAREA - (38*5 + 4*6), 38 + 4*2, 38*5 + 4*6)];
+    _whiteboardTool.delegate = self;
+    [self.boardView addSubview:_whiteboardTool];
     
 //    _pageControlView = [[[NSBundle mainBundle] loadNibNamed:@"EEPageControlView" owner:self options:nil] firstObject];//[[EEPageControlView alloc] init];//
 //    _pageControlView.frame = CGRectMake((MainScreenWidth - 244) / 2.0, _boardView.height - MACRO_UI_SAFEAREA - 46, 244, 46);
@@ -617,8 +629,7 @@
         }
         return _dataSource.count;
     } else {
-        return 5;
-        return _menberDataSource.count;
+        return self.educationManager.studentTotleListArray.count;//_menberDataSource.count;
     }
 }
 
@@ -649,6 +660,7 @@
         if (!cell) {
             cell = [[LiveMenberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
         }
+        [cell setLiveMenberCellInfo:self.educationManager.studentTotleListArray[indexPath.row]];
         return cell;
     }
 }
@@ -981,8 +993,8 @@
     
 }
 
-// MARK: - EEPageControlDelegate
-- (void)previousPage {
+// MARK: - LivePageControlViewDelegate
+- (void)previousPagePress {
     if (self.sceneIndex > 0) {
         self.sceneIndex--;
         WEAK(self);
@@ -992,7 +1004,7 @@
     }
 }
 
-- (void)nextPage {
+- (void)nextPagePress {
     if (self.sceneIndex < self.sceneCount - 1  && self.sceneCount > 0) {
         self.sceneIndex ++;
         
@@ -1003,7 +1015,7 @@
     }
 }
 
-- (void)lastPage {
+- (void)lastPagePress {
     self.sceneIndex = self.sceneCount - 1;
     
     WEAK(self);
@@ -1012,7 +1024,7 @@
     }];
 }
 
-- (void)firstPage {
+- (void)firstPagePress {
     self.sceneIndex = 0;
     WEAK(self);
     [self setWhiteSceneIndex:self.sceneIndex completionSuccessBlock:^{
@@ -1033,8 +1045,8 @@
     }];
 }
 
-// MARK: - EEWhiteboardToolDelegate
-- (void)selectWhiteboardToolIndex:(NSInteger)index {
+// MARK: - LiveBoardToolViewDelegate
+- (void)pressWhiteboardToolIndex:(NSInteger)index {
     
     NSArray<NSString *> *applianceNameArray = @[ApplianceSelector, AppliancePencil, ApplianceText, ApplianceEraser];
     if(index < applianceNameArray.count) {
@@ -1389,6 +1401,8 @@
 - (void)reloadStudentViews {
 
     [self updateStudentArray:self.educationManager.studentTotleListArray];
+    
+    [_liveMenberTableView reloadData];
 //    [self.studentListView updateStudentArray:self.educationManager.studentTotleListArray];
 //    [self.studentVideoListView updateStudentArray:self.educationManager.studentTotleListArray];
     

@@ -10,6 +10,8 @@
 		150133BD627AE25CD7C191B3 /* Pods_EdulineV5.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F01E02843C09C8F22217CD9 /* Pods_EdulineV5.framework */; };
 		780487E92510A433001118F3 /* EmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 780487E82510A433001118F3 /* EmptyCell.m */; };
 		780F9577254FDD810070EB1F /* LiveTeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F9576254FDD810070EB1F /* LiveTeacherView.m */; };
+		780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BA25551FEC0070EB1F /* LivePageControlView.m */; };
+		780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BD255520190070EB1F /* LiveBoardToolView.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -555,6 +557,10 @@
 		780487E82510A433001118F3 /* EmptyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmptyCell.m; sourceTree = "<group>"; };
 		780F9575254FDD810070EB1F /* LiveTeacherView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveTeacherView.h; sourceTree = "<group>"; };
 		780F9576254FDD810070EB1F /* LiveTeacherView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveTeacherView.m; sourceTree = "<group>"; };
+		780F95B925551FEC0070EB1F /* LivePageControlView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivePageControlView.h; sourceTree = "<group>"; };
+		780F95BA25551FEC0070EB1F /* LivePageControlView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivePageControlView.m; sourceTree = "<group>"; };
+		780F95BC255520190070EB1F /* LiveBoardToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveBoardToolView.h; sourceTree = "<group>"; };
+		780F95BD255520190070EB1F /* LiveBoardToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveBoardToolView.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1700,6 +1706,10 @@
 				788E95D42546A4360089251E /* LiveCourseListCell.m */,
 				780F9575254FDD810070EB1F /* LiveTeacherView.h */,
 				780F9576254FDD810070EB1F /* LiveTeacherView.m */,
+				780F95B925551FEC0070EB1F /* LivePageControlView.h */,
+				780F95BA25551FEC0070EB1F /* LivePageControlView.m */,
+				780F95BC255520190070EB1F /* LiveBoardToolView.h */,
+				780F95BD255520190070EB1F /* LiveBoardToolView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -4099,6 +4109,7 @@
 				788E95C9254188500089251E /* CommonPopView.m in Sources */,
 				787657282435C79E008F475D /* StudyRootVC.m in Sources */,
 				785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */,
+				780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */,
 				787F1E88247381A400108F7B /* AVC_VP_PlaySettingVC.m in Sources */,
 				78C549D2241B674E00A33FC4 /* AlivcUIConfig.m in Sources */,
 				78AA138C2440710B007087F7 /* HomePageCourseTypeOneCell.m in Sources */,
@@ -4322,6 +4333,7 @@
 				788E95A1253FE24E0089251E /* RTCVideoSessionModel.m in Sources */,
 				78C936C3248DE4C700D5F1ED /* HomePageHotRecommendedCell.m in Sources */,
 				7879572E240FA3840013F95F /* UIView+ZLExtension.m in Sources */,
+				780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */,
 				784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */,
 				787F1E86247381A400108F7B /* AVC_VP_BaseViewController.m in Sources */,
 				7839C9972421CB1C002F6595 /* CommentBaseView.m in Sources */,

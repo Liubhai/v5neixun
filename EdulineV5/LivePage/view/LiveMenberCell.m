@@ -38,13 +38,15 @@
     
     _microButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 22 - 15 - 22, 0, 22, 22)];
     _microButton.centerY = 64 / 2.0;
-    [_microButton setImage:Image(@"mic_open_slices") forState:0];
+    [_microButton setImage:Image(@"mic_close_slices") forState:0];
+    [_microButton setImage:Image(@"mic_open_slices") forState:UIControlStateSelected];
     [_microButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_microButton];
     
     _camButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 22, 0, 22, 22)];
     _camButton.centerY = 64 / 2.0;
-    [_camButton setImage:Image(@"cam_open_slices") forState:0];
+    [_camButton setImage:Image(@"cam_close_silence") forState:0];
+    [_camButton setImage:Image(@"cam_open_slices") forState:UIControlStateSelected];
     [_camButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_camButton];
     
@@ -57,6 +59,13 @@
     if (_delegate && [_delegate respondsToSelector:@selector(liveMenberCellButtonClick:buttonSender:)]) {
         [_delegate liveMenberCellButtonClick:self buttonSender:sender];
     }
+}
+
+- (void)setLiveMenberCellInfo:(UserModel *)user_model {
+    _nameLabel.text = [NSString stringWithFormat:@"%@",user_model.userName];
+    _microButton.selected = user_model.enableAudio;
+    _camButton.selected = user_model.enableVideo;
+    
 }
 
 - (void)awakeFromNib {

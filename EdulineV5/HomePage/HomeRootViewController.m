@@ -142,7 +142,7 @@
     SceneType sceneType = SceneTypeSmall;
     self.educationManager = [MinEducationManager new];
     
-    EduConfigModel.shareInstance.className = @"390";
+    EduConfigModel.shareInstance.className = @"950529";
     EduConfigModel.shareInstance.userName = [V5_UserModel uname];
     EduConfigModel.shareInstance.sceneType = sceneType;
     

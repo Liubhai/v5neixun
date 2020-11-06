@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UserModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *microButton;
 @property (strong, nonatomic) UIButton *camButton;
 @property (strong, nonatomic) UIView *fengeLine;
+
+- (void)setLiveMenberCellInfo:(UserModel *)user_model;
 
 @end
 
