@@ -1065,6 +1065,17 @@
 //    }
 }
 
+//MARK: - WhitePlayDelegate
+- (void)whiteRoomStateChanged {
+    WEAK(self);
+    [self.educationManager currentWhiteScene:^(NSInteger sceneCount, NSInteger sceneIndex) {
+        weakself.sceneCount = sceneCount;
+        weakself.sceneIndex = sceneIndex;
+        [weakself.pageControlView.pageCountLabel setText:[NSString stringWithFormat:@"%ld/%ld", (long)(weakself.sceneIndex + 1), (long)weakself.sceneCount]];
+        [weakself.educationManager moveWhiteToContainer:sceneIndex];
+    }];
+}
+
 // MARK: - 退出互动课堂
 - (void)onQuitClassRoom
 {
