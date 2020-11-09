@@ -10,6 +10,7 @@
 
 // 直播间讲师的头像区域
 #import "LiveTeacherView.h"
+#import "LiveStudentView.h"
 
 #import "TICManager.h"
 #import "MinEducationManager.h"
@@ -42,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *roomPersonCountBtn;
 
 @property (strong, nonatomic) LiveTeacherView *teacherFaceBackView;// 讲师摄像头 头像背景图
+@property (strong, nonatomic) LiveStudentView *studentVideoView;// 讲师摄像头 头像背景图
 @property (strong, nonatomic) UICollectionView *collectionView;// 学生摄像头列表
 @property (strong, nonatomic) NSString *course_live_type;// 大小班课
 @property (strong, nonatomic) NSString *userIdentify;// 当前进入直播间的用户的身份(讲师或者普通观看者)

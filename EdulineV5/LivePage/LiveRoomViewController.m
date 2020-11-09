@@ -195,6 +195,9 @@
     _teacherFaceBackView = [[LiveTeacherView alloc] initWithFrame:CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0)];
     [_liveBackView addSubview:_teacherFaceBackView];
     
+    _studentVideoView = [[LiveStudentView alloc] initWithFrame:CGRectMake(MainScreenWidth - 127, _topBlackView.bottom, 127, 72)];
+    [_liveBackView addSubview:_studentVideoView];
+    
     [self makeCollectionView];
     
     [_liveBackView addSubview:_topBlackView];
