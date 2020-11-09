@@ -33,15 +33,17 @@
 // 自己写的白板翻页控制器
 #import "LivePageControlView.h"
 #import "LiveBoardToolView.h"
+#import "LiveColorSelectedView.h"
 
 #define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ EEPageControlDelegate, EEWhiteboardToolDelegate, WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate, /**自定义白板操作工具代理 */ LivePageControlViewDelegate, LiveBoardToolViewDelegate> {
+@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ EEPageControlDelegate, EEWhiteboardToolDelegate, WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate, /**自定义白板操作工具代理 */ LivePageControlViewDelegate, LiveBoardToolViewDelegate, LiveColorSelectedViewDelegate> {
     NSInteger page;
     CGFloat keyHeight;
     BOOL isScrollBottom;
     BOOL reloadChatOrMenberList;// yes chat  no menber
     dispatch_source_t timer;
+    UIButton *currentColorSelectBtn;// 当前选中的颜色按钮
 }
 
 @property (nonatomic,assign) NSInteger timeCount;
@@ -57,6 +59,7 @@
 ///cell = [[[NSBundle mainBundle] loadNibNamed:@"MCStudentViewCell" owner:self options:nil] firstObject];
 @property (nonatomic, strong) LiveBoardToolView *whiteboardTool;
 @property (strong, nonatomic) LivePageControlView *pageControlView;
+@property (nonatomic, strong) LiveColorSelectedView *colorShowView;
 @property (nonatomic, assign) NSInteger sceneIndex;
 @property (nonatomic, assign) NSInteger sceneCount;
 
@@ -326,6 +329,11 @@
     _whiteboardTool = [[LiveBoardToolView alloc] initWithFrame:CGRectMake(15, _boardView.height - MACRO_UI_SAFEAREA - (38*5 + 4*6), 38 + 4*2, 38*5 + 4*6)];
     _whiteboardTool.delegate = self;
     [self.boardView addSubview:_whiteboardTool];
+    
+    _colorShowView = [[LiveColorSelectedView alloc] initWithFrame:CGRectMake(_whiteboardTool.right + 10, _whiteboardTool.bottom - (40 + 1 + 26 * 2 + 30 + 10), 6 * (10 + 26) + 10, 40 + 1 + 26 * 2 + 30 + 10)];
+    _colorShowView.delegate = self;
+    _colorShowView.hidden = YES;
+    [self.boardView addSubview:_colorShowView];
     
 //    _pageControlView = [[[NSBundle mainBundle] loadNibNamed:@"EEPageControlView" owner:self options:nil] firstObject];//[[EEPageControlView alloc] init];//
 //    _pageControlView.frame = CGRectMake((MainScreenWidth - 244) / 2.0, _boardView.height - MACRO_UI_SAFEAREA - 46, 244, 46);
@@ -1056,13 +1064,24 @@
         }
     }
     
-//    BOOL bHidden = self.colorShowView.hidden;
-//    // select color
-//    if (index == 4) {
-//        self.colorShowView.hidden = !bHidden;
-//    } else if (!bHidden) {
-//        self.colorShowView.hidden = YES;
-//    }
+    BOOL bHidden = self.colorShowView.hidden;
+    // select color
+    if (index == 4) {
+        self.colorShowView.hidden = !bHidden;
+    } else if (!bHidden) {
+        self.colorShowView.hidden = YES;
+    }
+}
+
+// MARK: - 颜色选择代理(LiveColorSelectedViewDelegate)
+- (void)colorBtnClick:(UIButton *)sender {
+    if (currentColorSelectBtn) {
+        UIView *outview = (UIView *)[currentColorSelectBtn viewWithTag:10];
+        outview.hidden = YES;
+    }
+    UIView *outview = (UIView *)[sender viewWithTag:10];
+    outview.hidden = NO;
+    currentColorSelectBtn = sender;
 }
 
 //MARK: - WhitePlayDelegate

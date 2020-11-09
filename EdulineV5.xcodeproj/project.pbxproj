@@ -12,6 +12,7 @@
 		780F9577254FDD810070EB1F /* LiveTeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F9576254FDD810070EB1F /* LiveTeacherView.m */; };
 		780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BA25551FEC0070EB1F /* LivePageControlView.m */; };
 		780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BD255520190070EB1F /* LiveBoardToolView.m */; };
+		780F95C12558D9740070EB1F /* LiveColorSelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95C02558D9740070EB1F /* LiveColorSelectedView.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -561,6 +562,8 @@
 		780F95BA25551FEC0070EB1F /* LivePageControlView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivePageControlView.m; sourceTree = "<group>"; };
 		780F95BC255520190070EB1F /* LiveBoardToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveBoardToolView.h; sourceTree = "<group>"; };
 		780F95BD255520190070EB1F /* LiveBoardToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveBoardToolView.m; sourceTree = "<group>"; };
+		780F95BF2558D9740070EB1F /* LiveColorSelectedView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveColorSelectedView.h; sourceTree = "<group>"; };
+		780F95C02558D9740070EB1F /* LiveColorSelectedView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveColorSelectedView.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1710,6 +1713,8 @@
 				780F95BA25551FEC0070EB1F /* LivePageControlView.m */,
 				780F95BC255520190070EB1F /* LiveBoardToolView.h */,
 				780F95BD255520190070EB1F /* LiveBoardToolView.m */,
+				780F95BF2558D9740070EB1F /* LiveColorSelectedView.h */,
+				780F95C02558D9740070EB1F /* LiveColorSelectedView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -4006,6 +4011,7 @@
 				788E9597253FE24E0089251E /* UIView+EEBadge.m in Sources */,
 				788E9567253FE24E0089251E /* MCStudentVideoListView.m in Sources */,
 				7879564D240E36FA0013F95F /* EdulineV5Client.m in Sources */,
+				780F95C12558D9740070EB1F /* LiveColorSelectedView.m in Sources */,
 				788E95CC2542D7470089251E /* HorizontalScrollText.m in Sources */,
 				784FC8F724AF29C000CAE7A6 /* MessageRootVC.m in Sources */,
 				78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */,
