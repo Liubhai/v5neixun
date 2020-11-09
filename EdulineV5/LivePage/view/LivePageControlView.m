@@ -16,6 +16,10 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.layer.masksToBounds = YES;
+        self.layer.cornerRadius = 2;
+        self.layer.borderColor = HEXCOLOR(0xF2F4F5).CGColor;
+        self.layer.borderWidth = 1;
         [self makeSubView];
     }
     return self;

@@ -21,8 +21,8 @@
 
 - (void)makeSubView {
     
-    _videoRenderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
-    [self addSubview:_videoRenderView];
+    _studentRenderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+    [self addSubview:_studentRenderView];
     
     _defaultImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
     _defaultImageView.image = DefaultUserImage;
