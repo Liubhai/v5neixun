@@ -55,6 +55,9 @@
 @property (nonatomic, weak) WhiteBoardView *whiteBoardView;
 @property (nonatomic, weak) WhiteBoardTouchView *whiteBoardTouchView;
 
+// 大班课
+@property (nonatomic, assign) SignalLinkState linkState;
+
 
 ///cell = [[[NSBundle mainBundle] loadNibNamed:@"MCStudentViewCell" owner:self options:nil] firstObject];
 @property (nonatomic, strong) LiveBoardToolView *whiteboardTool;
@@ -147,6 +150,12 @@
 }
 
 - (void)initData {
+    
+    if ([self.educationManager isKindOfClass:[BigEducationManager class]]) {
+        self.linkState = SignalLinkStateIdle;
+        self.linkState = SignalLinkStateIdle;
+    }
+    
     self.educationManager.signalDelegate = self;
     [self setupRTC];
     [self setupWhiteBoard];
@@ -193,12 +202,17 @@
     _topBlackView.backgroundColor = EdlineV5_Color.textFirstColor;
     
     _teacherFaceBackView = [[LiveTeacherView alloc] initWithFrame:CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0)];
+    if ([self.educationManager isKindOfClass:[BigEducationManager class]]) {
+        _teacherFaceBackView = [[LiveTeacherView alloc] initWithFrame:CGRectMake(0, _topBlackView.bottom, MainScreenWidth, (MainScreenWidth - 113)*3/4.0)];
+    }
     [_liveBackView addSubview:_teacherFaceBackView];
     
     _studentVideoView = [[LiveStudentView alloc] initWithFrame:CGRectMake(MainScreenWidth - 127, _topBlackView.bottom, 127, 72)];
     [_liveBackView addSubview:_studentVideoView];
     
-    [self makeCollectionView];
+    if ([self.educationManager isKindOfClass:[MinEducationManager class]]) {
+        [self makeCollectionView];
+    }
     
     [_liveBackView addSubview:_topBlackView];
     
@@ -298,6 +312,10 @@
     _timeLabel.font = SYSTEMFONT(13);
     _timeLabel.textColor = [UIColor whiteColor];
     [_bottomToolBackView addSubview:_timeLabel];
+    if ([self.educationManager isKindOfClass:[BigEducationManager class]]) {
+        _blueCircleView.hidden = YES;
+        _timeLabel.hidden = YES;
+    }
 }
 
 // MARK: - 白板
@@ -624,6 +642,7 @@
 - (void)makeHandUpButton {
     _handupButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 10 - 54, _chatCommentView.top - 54 - 54, 54, 54)];
     [_handupButton setImage:Image(@"live_handup") forState:0];
+    [_handupButton addTarget:self action:@selector(handUpEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_handupButton];
 }
 
@@ -640,7 +659,11 @@
         }
         return _dataSource.count;
     } else {
-        return self.educationManager.studentTotleListArray.count;//_menberDataSource.count;
+        if ([self.educationManager isKindOfClass:[MinEducationManager class]]) {
+            return ((MinEducationManager *)self.educationManager).studentTotleListArray.count;//_menberDataSource.count;
+        } else {
+            return 0;
+        }
     }
 }
 
@@ -671,7 +694,9 @@
         if (!cell) {
             cell = [[LiveMenberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
         }
-        [cell setLiveMenberCellInfo:self.educationManager.studentTotleListArray[indexPath.row]];
+        if ([self.educationManager isKindOfClass:[MinEducationManager class]]) {
+            [cell setLiveMenberCellInfo:((MinEducationManager *)self.educationManager).studentTotleListArray[indexPath.row]];
+        }
         return cell;
     }
 }
@@ -859,7 +884,9 @@
        [weakself.educationManager setupRTCVideoCanvas:model completeBlock:nil];
     } else {
        model.canvasType = RTCVideoCanvasTypeRemote;
-       [weakself.educationManager setRTCRemoteStreamWithUid:model.uid type:RTCVideoStreamTypeLow];
+        if ([weakself.educationManager isKindOfClass:[MinEducationManager class]]) {
+            [(MinEducationManager *)weakself.educationManager setRTCRemoteStreamWithUid:model.uid type:RTCVideoStreamTypeLow];
+        }
        [weakself.educationManager setupRTCVideoCanvas:model completeBlock:nil];
     }
 }
@@ -1335,7 +1362,25 @@
             [self renderTeacherCanvas:teacherModel.uid];
         }
     } else if(roleType == UserRoleTypeStudent) {
-       [self reloadStudentViews];
+        if ([self.educationManager isKindOfClass:[BigEducationManager class]]) {
+            UserModel *renderModel = self.educationManager.renderStudentModel;
+            if(renderModel != nil) {
+                self.studentVideoView.hidden = NO;
+                if (renderModel.uid == self.educationManager.studentModel.uid) {
+                    [self renderStudentCanvas:renderModel.uid remoteVideo:NO];
+//                    [self updateStudentViews:renderModel remoteVideo:NO];
+                    [self updateStudentViews:renderModel];
+                } else {
+                    [self renderStudentCanvas:renderModel.uid remoteVideo:YES];
+//                    [self updateStudentViews:renderModel remoteVideo:YES];
+                    [self updateStudentViews:renderModel];
+                }
+            } else {
+                self.studentVideoView.hidden = YES;
+            }
+        } else {
+            [self reloadStudentViews];
+        }
     }
 }
 
@@ -1433,7 +1478,9 @@
 
 - (void)reloadStudentViews {
 
-    [self updateStudentArray:self.educationManager.studentTotleListArray];
+    if ([self.educationManager isKindOfClass:[MinEducationManager class]]) {
+        [self updateStudentArray:((MinEducationManager *)self.educationManager).studentTotleListArray];
+    }
     
     [_liveMenberTableView reloadData];
 //    [self.studentListView updateStudentArray:self.educationManager.studentTotleListArray];
@@ -1446,7 +1493,9 @@
     
     if(studentArray.count == 0 || self.livePersonArray.count != studentArray.count) {
         self.livePersonArray = [studentArray deepCopy];
-        [self.collectionView reloadData];
+        if (self.collectionView) {
+            [self.collectionView reloadData];
+        }
     } else {
         NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray array];
 
@@ -1462,8 +1511,89 @@
 
         self.livePersonArray = [studentArray deepCopy];
         if(indexPaths.count > 0){
-            [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+            if (self.collectionView) {
+                [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+            }
         }
+    }
+}
+
+// MARK: - 大班课
+- (void)renderStudentCanvas:(NSUInteger)uid remoteVideo:(BOOL)remote {
+    
+    RTCVideoCanvasModel *model = [RTCVideoCanvasModel new];
+    model.uid = uid;
+    model.videoView = self.studentVideoView.studentRenderView;
+    model.renderMode = RTCVideoRenderModeHidden;
+    model.canvasType = remote ? RTCVideoCanvasTypeRemote : RTCVideoCanvasTypeLocal;
+    [self.educationManager setupRTCVideoCanvas:model completeBlock:nil];
+
+    if(!remote){
+        self.linkState = SignalLinkStateTeaAccept;
+        [self.educationManager setRTCClientRole:RTCClientRoleBroadcaster];
+    }
+}
+
+- (void)removeStudentCanvas:(NSUInteger)uid {
+    
+    if(self.educationManager.studentModel.uid == uid){
+        [self.educationManager setRTCClientRole:RTCClientRoleAudience];
+    }
+    [self.educationManager removeRTCVideoCanvas: uid];
+    self.studentVideoView.defaultImageView.hidden = NO;
+    self.studentVideoView.hidden = YES;
+//    [self.handupButton setBackgroundImage:[UIImage imageNamed:@"icon-handup"] forState:(UIControlStateNormal)];
+}
+
+- (void)handUpEvent:(UIButton *)sender {
+    
+    UserModel *renderModel = self.educationManager.renderStudentModel;
+    if(renderModel != nil && renderModel.uid != self.educationManager.studentModel.uid) {
+        return;
+    }
+    
+    switch (self.linkState) {
+        case SignalLinkStateIdle:
+        case SignalLinkStateTeaReject:
+        case SignalLinkStateStuCancel:
+        case SignalLinkStateStuClose:
+        case SignalLinkStateTeaClose:
+            [self coVideoStateChanged: SignalLinkStateApply];
+            break;
+        case SignalLinkStateApply:
+            [self coVideoStateChanged: SignalLinkStateStuCancel];
+            break;
+        case SignalLinkStateTeaAccept:
+            [self coVideoStateChanged: SignalLinkStateStuClose];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)coVideoStateChanged:(SignalLinkState) linkState {
+    switch (linkState) {
+        case SignalLinkStateApply:
+        case SignalLinkStateStuCancel:
+        case SignalLinkStateStuClose:{
+            WEAK(self);
+            [BaseEducationManager sendCoVideoWithType:linkState successBolck:^{
+                weakself.linkState = linkState;
+            } completeFailBlock:^(NSString * _Nonnull errMessage) {
+                [weakself showToast:errMessage];
+            }];
+            if(linkState == SignalLinkStateStuCancel){
+                self.linkState = linkState;
+//                [self.handUpButton setBackgroundImage:[UIImage imageNamed:@"icon-handup"] forState:(UIControlStateNormal)];
+            } else if(linkState == SignalLinkStateStuClose){
+                self.linkState = linkState;
+                [self removeStudentCanvas:self.educationManager.renderStudentModel.uid];
+            }
+        }
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -1477,6 +1607,10 @@
     
     [self.educationManager muteRTCLocalVideo:studentModel.enableVideo == 0 ? YES : NO];
     [self.educationManager muteRTCLocalAudio:studentModel.enableAudio == 0 ? YES : NO];
+    
+    if (self.studentVideoView) {
+        self.studentVideoView.defaultImageView.hidden = studentModel.enableVideo ? YES : NO;
+    }
 }
 
 - (void)showTipWithMessage:(NSString *)toastMessage {
@@ -1494,6 +1628,9 @@
             if(signalInfoModel.uid && signalInfoModel.uid == self.educationManager.teacherModel.uid) {
                 [self checkNeedRenderWithRole:UserRoleTypeTeacher];
             } else {
+                if(self.educationManager.renderStudentModel == nil){
+                    [self removeStudentCanvas:signalInfoModel.uid];
+                }
                 [self checkNeedRenderWithRole:UserRoleTypeStudent];
             }
         }

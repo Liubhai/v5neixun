@@ -25,7 +25,7 @@
     [self addSubview:_studentRenderView];
     
     _defaultImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
-    _defaultImageView.image = DefaultUserImage;
+    _defaultImageView.image = Image(@"cam_off");
     _defaultImageView.clipsToBounds = YES;
     _defaultImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self addSubview:_defaultImageView];

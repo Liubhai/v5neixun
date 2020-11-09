@@ -139,10 +139,10 @@
 //    [self.navigationController pushViewController:vc animated:YES];
 //    return NO;
     
-    SceneType sceneType = SceneTypeSmall;
-    self.educationManager = [MinEducationManager new];
+    SceneType sceneType = SceneTypeBig;
+    self.educationManager = [BigEducationManager new];
     
-    EduConfigModel.shareInstance.className = @"950529";
+    EduConfigModel.shareInstance.className = @"222222";
     EduConfigModel.shareInstance.userName = [V5_UserModel uname];
     EduConfigModel.shareInstance.sceneType = sceneType;
     
@@ -153,7 +153,7 @@
                     [weakself getRoomInfoWithSuccessBlock:^{
                         [weakself setupSignalWithSuccessBlock:^{
                             LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
-                            vc.educationManager = (MinEducationManager *)self.educationManager;
+                            vc.educationManager = (BigEducationManager *)self.educationManager;
                             [self.navigationController pushViewController:vc animated:YES];
                         }];
                     }];
