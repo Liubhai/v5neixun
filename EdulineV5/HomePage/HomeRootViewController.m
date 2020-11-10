@@ -25,6 +25,8 @@
 
 // 直播测试
 #import "LiveRoomViewController.h"
+#import "BCLiveRoomViewController.h"
+#import "OneToOneLiveRoomVC.h"
 #import "TICManager.h"
 #import "TICConfig.h"
 #import "AgoraRtm.h"
@@ -139,10 +141,10 @@
 //    [self.navigationController pushViewController:vc animated:YES];
 //    return NO;
     
-    SceneType sceneType = SceneTypeBig;
-    self.educationManager = [BigEducationManager new];
+    SceneType sceneType = SceneType1V1;
+    self.educationManager = [OneToOneEducationManager new];
     
-    EduConfigModel.shareInstance.className = @"222222";
+    EduConfigModel.shareInstance.className = @"00000";
     EduConfigModel.shareInstance.userName = [V5_UserModel uname];
     EduConfigModel.shareInstance.sceneType = sceneType;
     
@@ -152,9 +154,19 @@
                 [weakself getWhiteInfoWithSuccessBolck:^{
                     [weakself getRoomInfoWithSuccessBlock:^{
                         [weakself setupSignalWithSuccessBlock:^{
-                            LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
-                            vc.educationManager = (BigEducationManager *)self.educationManager;
-                            [self.navigationController pushViewController:vc animated:YES];
+                            if (sceneType == SceneTypeBig) {
+                                BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
+                                vc.educationManager = (BigEducationManager *)self.educationManager;
+                                [self.navigationController pushViewController:vc animated:YES];
+                            } else if (sceneType == SceneTypeSmall) {
+                                LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
+                                vc.educationManager = (MinEducationManager *)self.educationManager;
+                                [self.navigationController pushViewController:vc animated:YES];
+                            } else if (sceneType == SceneType1V1) {
+                                OneToOneLiveRoomVC *vc = [[OneToOneLiveRoomVC alloc] init];
+                                vc.educationManager = (OneToOneEducationManager *)self.educationManager;
+                                [self.navigationController pushViewController:vc animated:YES];
+                            }
                         }];
                     }];
                 }];

@@ -160,6 +160,8 @@
 		787E19AE24566F0300E2E016 /* OrderRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19AD24566F0300E2E016 /* OrderRootVC.m */; };
 		787E19B124566FAE00E2E016 /* OrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19B024566FAE00E2E016 /* OrderCell.m */; };
 		787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19B3245685E100E2E016 /* OrderTypeViewController.m */; };
+		787ED6F5255A341E00906846 /* BCLiveRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787ED6F4255A341E00906846 /* BCLiveRoomViewController.m */; };
+		787ED6F8255A62C000906846 /* OneToOneLiveRoomVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787ED6F7255A62C000906846 /* OneToOneLiveRoomVC.m */; };
 		787F1E65247381A400108F7B /* AlivcVideoPlayerListsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E00247381A300108F7B /* AlivcVideoPlayerListsTableViewCell.m */; };
 		787F1E66247381A400108F7B /* AVCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E01247381A300108F7B /* AVCSlider.m */; };
 		787F1E67247381A400108F7B /* AVCSelectSharpnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E02247381A300108F7B /* AVCSelectSharpnessView.m */; };
@@ -854,6 +856,10 @@
 		787E19B024566FAE00E2E016 /* OrderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderCell.m; sourceTree = "<group>"; };
 		787E19B2245685E100E2E016 /* OrderTypeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderTypeViewController.h; sourceTree = "<group>"; };
 		787E19B3245685E100E2E016 /* OrderTypeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderTypeViewController.m; sourceTree = "<group>"; };
+		787ED6F3255A341E00906846 /* BCLiveRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BCLiveRoomViewController.h; sourceTree = "<group>"; };
+		787ED6F4255A341E00906846 /* BCLiveRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCLiveRoomViewController.m; sourceTree = "<group>"; };
+		787ED6F6255A62C000906846 /* OneToOneLiveRoomVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneToOneLiveRoomVC.h; sourceTree = "<group>"; };
+		787ED6F7255A62C000906846 /* OneToOneLiveRoomVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneToOneLiveRoomVC.m; sourceTree = "<group>"; };
 		787F1DFA247381A300108F7B /* AVCLogView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCLogView.h; sourceTree = "<group>"; };
 		787F1DFB247381A300108F7B /* AlivcVideoPlayThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcVideoPlayThumbnailView.h; sourceTree = "<group>"; };
 		787F1DFE247381A300108F7B /* AlivcPlayListsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcPlayListsView.h; sourceTree = "<group>"; };
@@ -1694,6 +1700,10 @@
 			children = (
 				78531651245131AF007E239E /* LiveRoomViewController.h */,
 				78531652245131AF007E239E /* LiveRoomViewController.m */,
+				787ED6F3255A341E00906846 /* BCLiveRoomViewController.h */,
+				787ED6F4255A341E00906846 /* BCLiveRoomViewController.m */,
+				787ED6F6255A62C000906846 /* OneToOneLiveRoomVC.h */,
+				787ED6F7255A62C000906846 /* OneToOneLiveRoomVC.m */,
 				788E95D02546A3100089251E /* LiveCourseListVC.h */,
 				788E95D12546A3100089251E /* LiveCourseListVC.m */,
 				7853165424513A09007E239E /* view */,
@@ -4152,6 +4162,7 @@
 				784FC8FD24AF2FA900CAE7A6 /* MessageListCell.m in Sources */,
 				78F7C5D124EFC2AF0010F1E9 /* XLCardSwitch.m in Sources */,
 				78A16C872452F7C100391430 /* NetAssociation.m in Sources */,
+				787ED6F8255A62C000906846 /* OneToOneLiveRoomVC.m in Sources */,
 				788E958D253FE24E0089251E /* aeskey.c in Sources */,
 				7853164824502E49007E239E /* MenberCell.m in Sources */,
 				7887451824E3830C00257029 /* InstitutionSearchVC.m in Sources */,
@@ -4365,6 +4376,7 @@
 				784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */,
 				788E95B9253FE24E0089251E /* BaseEducationManager+WhiteBoard.m in Sources */,
 				78795731240FA3840013F95F /* ZLPhotoAssets.m in Sources */,
+				787ED6F5255A341E00906846 /* BCLiveRoomViewController.m in Sources */,
 				785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */,
 				788E95B4253FE24E0089251E /* MinEducationManager.m in Sources */,
 				7839C9912420DEC9002F6595 /* CourseCommentListVC.m in Sources */,

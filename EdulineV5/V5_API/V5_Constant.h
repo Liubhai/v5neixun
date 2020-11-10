@@ -99,6 +99,8 @@
 
 #define iPhoneX [EdulineV5_Tool judgeIphoneX]
 
+#define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
+
 // iPhoneX状态栏增加的高度
 #define MACRO_UI_STATUSBAR_ADD_HEIGHT [EdulineV5_Tool statusBarAddHeightWithIPhoneX]
 // iPhoneX状态栏高度

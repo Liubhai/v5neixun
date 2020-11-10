@@ -1,12 +1,13 @@
 //
-//  LiveRoomViewController.m
+//  OneToOneLiveRoomVC.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2020/4/23.
+//  Created by 刘邦海 on 2020/11/10.
 //  Copyright © 2020 刘邦海. All rights reserved.
 //
 
-#import "LiveRoomViewController.h"
+#import "OneToOneLiveRoomVC.h"
+
 #import "LiveRoomPersonCell.h"
 #import "V5_Constant.h"
 #import "AppDelegate.h"
@@ -35,7 +36,7 @@
 #import "LiveBoardToolView.h"
 #import "LiveColorSelectedView.h"
 
-@interface LiveRoomViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ EEPageControlDelegate, EEWhiteboardToolDelegate, WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate, /**自定义白板操作工具代理 */ LivePageControlViewDelegate, LiveBoardToolViewDelegate, LiveColorSelectedViewDelegate> {
+@interface OneToOneLiveRoomVC ()<UICollectionViewDelegate,UICollectionViewDataSource,TEduBoardDelegate, CommentBaseViewDelegate, UITableViewDelegate, UITableViewDataSource, LiveCourseListVCDelegate,/** 声网代理 */ EEPageControlDelegate, EEWhiteboardToolDelegate, WhitePlayDelegate, SignalDelegate, RTCDelegate, AgoraRtmDelegate, AgoraRtmChannelDelegate, /**自定义白板操作工具代理 */ LivePageControlViewDelegate, LiveBoardToolViewDelegate, LiveColorSelectedViewDelegate> {
     NSInteger page;
     CGFloat keyHeight;
     BOOL isScrollBottom;
@@ -52,6 +53,9 @@
 @property (strong, nonatomic) UIView *boardView;
 @property (nonatomic, weak) WhiteBoardView *whiteBoardView;
 @property (nonatomic, weak) WhiteBoardTouchView *whiteBoardTouchView;
+
+// 大班课
+@property (nonatomic, assign) SignalLinkState linkState;
 
 
 ///cell = [[[NSBundle mainBundle] loadNibNamed:@"MCStudentViewCell" owner:self options:nil] firstObject];
@@ -80,9 +84,6 @@
 @property (strong, nonatomic) UITableView *chatListTableView; // 聊天列表
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
-@property (strong, nonatomic) UITableView *liveMenberTableView; // 聊天列表
-@property (strong, nonatomic) NSMutableArray *menberDataSource;
-
 @property (strong, nonatomic) UIButton *handupButton;
 
 @property (strong, nonatomic) CommentBaseView *chatCommentView;
@@ -94,7 +95,7 @@
 
 @end
 
-@implementation LiveRoomViewController
+@implementation OneToOneLiveRoomVC
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -134,7 +135,6 @@
     [self makeNoticeView];
     [self makeChatListTableView];
     [self makeBottomView];
-    [self makeMenberListTableView];
     [self initData];
     // 接收屏幕方向改变通知,监听屏幕方向
 //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -144,6 +144,12 @@
 }
 
 - (void)initData {
+    
+    if ([self.educationManager isKindOfClass:[BigEducationManager class]]) {
+        self.linkState = SignalLinkStateIdle;
+        self.linkState = SignalLinkStateIdle;
+    }
+    
     self.educationManager.signalDelegate = self;
     [self setupRTC];
     [self setupWhiteBoard];
@@ -155,32 +161,6 @@
     [self checkNeedRenderWithRole:UserRoleTypeStudent];
 }
 
-- (void)setupSignalWithSuccessBlock:(void (^)(void))successBlock {
-
-    NSString *appid = EduConfigModel.shareInstance.appId;
-    NSString *appToken = EduConfigModel.shareInstance.rtmToken;
-    NSString *uid = @(EduConfigModel.shareInstance.uid).stringValue;
-    
-    WEAK(self);
-    [self.educationManager initSignalWithAppid:appid appToken:appToken userId:uid dataSourceDelegate:self completeSuccessBlock:^{
-        
-        NSString *channelName = EduConfigModel.shareInstance.channelName;
-        [weakself.educationManager joinSignalWithChannelName:channelName completeSuccessBlock:^{
-            if(successBlock != nil){
-                successBlock();
-            }
-            
-        } completeFailBlock:^(NSInteger errorCode) {
-            NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"JoinSignalFailedText", nil), (long)errorCode];
-            [weakself showToast:errMsg];
-        }];
-        
-    } completeFailBlock:^(NSInteger errorCode) {
-        NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"InitSignalFailedText", nil), (long)errorCode];
-        [weakself showToast:errMsg];
-    }];
-}
-
 - (void)makeLiveSubView {
     _liveBackView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_STATUSBAR_HEIGHT, MainScreenWidth, (MainScreenWidth - 113)*3/4.0 + 37 * 2)];//画板高度+上下黑色背景高度
     _liveBackView.backgroundColor = [UIColor whiteColor];
@@ -189,13 +169,12 @@
     _topBlackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _liveBackView.width, 37)];
     _topBlackView.backgroundColor = EdlineV5_Color.textFirstColor;
     
-    _teacherFaceBackView = [[LiveTeacherView alloc] initWithFrame:CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0)];
+    _teacherFaceBackView = [[LiveTeacherView alloc] initWithFrame:CGRectMake(0, _topBlackView.bottom, MainScreenWidth/2.0, (MainScreenWidth - 113)*3/4.0)];
     [_liveBackView addSubview:_teacherFaceBackView];
     
-    _studentVideoView = [[LiveStudentView alloc] initWithFrame:CGRectMake(MainScreenWidth - 127, _topBlackView.bottom, 127, 72)];
+    _studentVideoView = [[LiveStudentView alloc] initWithFrame:CGRectMake(_teacherFaceBackView.right, _topBlackView.bottom, MainScreenWidth/2.0, _teacherFaceBackView.height)];
+    _studentVideoView.closeStudentViewButton.hidden = YES;
     [_liveBackView addSubview:_studentVideoView];
-    
-    [self makeCollectionView];
     
     [_liveBackView addSubview:_topBlackView];
     
@@ -294,17 +273,12 @@
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_blueCircleView.right + 3.5, 0, 150, 37)];
     _timeLabel.font = SYSTEMFONT(13);
     _timeLabel.textColor = [UIColor whiteColor];
+    _timeLabel.text = @"00:00:00";
     [_bottomToolBackView addSubview:_timeLabel];
 }
 
 // MARK: - 白板
 - (void)makeBoardView {
-//    //腾讯白板视图
-//    [[[TICManager sharedInstance] getBoardController] addDelegate:self];
-//    _boardView = [[[TICManager sharedInstance] getBoardController] getBoardRenderView];
-//    _boardView.frame = CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom);
-//    [self.view addSubview:_boardView];
-    // 声网白板视图
     _boardView = [[UIView alloc] init];
     _boardView.frame = CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom);
     _boardView.backgroundColor = [UIColor redColor];
@@ -335,18 +309,6 @@
     _colorShowView.delegate = self;
     _colorShowView.hidden = YES;
     [self.boardView addSubview:_colorShowView];
-    
-//    _pageControlView = [[[NSBundle mainBundle] loadNibNamed:@"EEPageControlView" owner:self options:nil] firstObject];//[[EEPageControlView alloc] init];//
-//    _pageControlView.frame = CGRectMake((MainScreenWidth - 244) / 2.0, _boardView.height - MACRO_UI_SAFEAREA - 46, 244, 46);
-////    _pageControlView = pageControlView;
-//    _pageControlView.delegate = self;
-//    [self.boardView addSubview:_pageControlView];
-//
-//    _whiteboardTool = [[[NSBundle mainBundle] loadNibNamed:@"EEWhiteboardTool" owner:self options:nil] firstObject];//[[EEWhiteboardTool alloc] init];//
-//    _whiteboardTool.frame = CGRectMake(15, _boardView.height - MACRO_UI_SAFEAREA - 214, 46, 214);
-////    _whiteboardTool = whiteboardTool;
-//    _whiteboardTool.delegate = self;
-//    [self.boardView addSubview:_whiteboardTool];
     
 }
 
@@ -402,10 +364,8 @@
     _midButtonBackView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_midButtonBackView];
     
-    BOOL showMenberList = YES;
-    if ([_userIdentify isEqualToString:@"1"] && [_course_live_type isEqualToString:@"2"]) {
-        showMenberList = YES;
-    }
+    BOOL showMenberList = NO;
+    
     _showBoardView = YES;
     if (_showBoardView) {
         if (showMenberList) {
@@ -513,7 +473,6 @@
         _chatCommentView.hidden = YES;
         _chatBackView.hidden = YES;
         // 成员列表背景图隐藏
-        _liveMenberTableView.hidden = YES;
         // 白板视图展示
         
     } else if (sender == _chatBtn) {
@@ -524,7 +483,6 @@
         _chatCommentView.hidden = NO;
         _chatBackView.hidden = NO;
         // 成员列表背景图隐藏
-        _liveMenberTableView.hidden = YES;
     } else if (sender == _menberBtn) {
         self.blueLine.centerX = self.menberBtn.centerX;
         self.menberBtn.selected = YES;
@@ -532,8 +490,6 @@
         self.chatBtn.selected = NO;
         _chatCommentView.hidden = YES;
         _chatBackView.hidden = YES;
-        _liveMenberTableView.hidden = NO;
-        [_liveMenberTableView reloadData];
     }
 }
 
@@ -604,25 +560,11 @@
 //    [_chatListTableView.mj_header beginRefreshing];
 }
 
-// MARK: - 学员tableView
-- (void)makeMenberListTableView {
-    _liveMenberTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom)];
-    _liveMenberTableView.delegate = self;
-    _liveMenberTableView.dataSource = self;
-    _liveMenberTableView.backgroundColor = EdlineV5_Color.backColor;;
-    _liveMenberTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _liveMenberTableView.showsVerticalScrollIndicator = NO;
-    _liveMenberTableView.showsHorizontalScrollIndicator = NO;
-//    _liveMenberTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-    [self.view addSubview:_liveMenberTableView];
-    _liveMenberTableView.hidden = YES;
-    [EdulineV5_Tool adapterOfIOS11With:_liveMenberTableView];
-}
-
 // MARK: - 大班课有学生申请连麦(举手)
 - (void)makeHandUpButton {
     _handupButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 10 - 54, _chatCommentView.top - 54 - 54, 54, 54)];
     [_handupButton setImage:Image(@"live_handup") forState:0];
+    [_handupButton addTarget:self action:@selector(handUpEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_handupButton];
 }
 
@@ -639,7 +581,7 @@
         }
         return _dataSource.count;
     } else {
-        return self.educationManager.studentTotleListArray.count;//_menberDataSource.count;
+        return 0;
     }
 }
 
@@ -670,7 +612,6 @@
         if (!cell) {
             cell = [[LiveMenberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rightReuse];
         }
-        [cell setLiveMenberCellInfo:self.educationManager.studentTotleListArray[indexPath.row]];
         return cell;
     }
 }
@@ -748,7 +689,7 @@
     messModel.userName = [NSString stringWithFormat:@"%@",EduConfigModel.shareInstance.userName];
     model.data = messModel;
 
-    __weak LiveRoomViewController *weakSelf = self;
+    __weak OneToOneLiveRoomVC *weakSelf = self;
     void(^sent)(int) = ^(int status) {
         if (status != 0) {
             NSString *alert = [NSString stringWithFormat:@"send message error: %d", status];
@@ -795,72 +736,6 @@
 
 - (void)commentBackViewTap:(UIGestureRecognizer *)tap {
     [_chatCommentView.inputTextView resignFirstResponder];
-}
-
-// MARK: - 摄像头列表
-- (void)makeCollectionView {
-    UICollectionViewFlowLayout *cellLayout = [[UICollectionViewFlowLayout alloc] init];
-    cellLayout.itemSize = CGSizeMake(113, 64);
-    cellLayout.minimumInteritemSpacing = 0;
-    cellLayout.minimumLineSpacing = 2;
-    cellLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(MainScreenWidth - 113, _topBlackView.bottom, 113, (MainScreenWidth - 113)*3/4.0) collectionViewLayout:cellLayout];
-    if (_isFullScreen) {
-        [_collectionView setSize:CGSizeMake(113 * 2 + 2, (MainScreenWidth - 113)*3/4.0)];
-    } else {
-        [_collectionView setSize:CGSizeMake(113, (MainScreenWidth - 113)*3/4.0)];
-    }
-    [_collectionView registerClass:[LiveRoomPersonCell class] forCellWithReuseIdentifier:@"LiveRoomPersonCell"];
-    _collectionView.backgroundColor = EdlineV5_Color.textFirstColor;
-    _collectionView.delegate = self;
-    _collectionView.dataSource = self;
-    _collectionView.showsVerticalScrollIndicator = NO;
-    [_liveBackView addSubview:_collectionView];
-    [_collectionView reloadData];
-}
-
-// MARK: - UICollectionViewDataSource
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    [self changeRoomMenberCountUI];
-    return _livePersonArray.count;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    LiveRoomPersonCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LiveRoomPersonCell" forIndexPath:indexPath];
-    UserModel *currentModel = self.livePersonArray[indexPath.row];
-    cell.userModel = currentModel;
-    [self initStudentRenderBlock:cell currentUid:currentModel.uid];
-    return cell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-}
-
-- (void)initStudentRenderBlock:(LiveRoomPersonCell *)cell currentUid:(NSInteger)currentUid {
-    WEAK(self);
-    if(cell == nil){
-        return;
-    }
-           
-    RTCVideoCanvasModel *model = [RTCVideoCanvasModel new];
-    model.uid = currentUid;
-    model.videoView = cell.videoCanvasView;
-    model.renderMode = RTCVideoRenderModeHidden;
-
-    EduConfigModel *configModel = EduConfigModel.shareInstance;
-    if (model.uid == configModel.uid) {
-       model.canvasType = RTCVideoCanvasTypeLocal;
-       [weakself.educationManager setupRTCVideoCanvas:model completeBlock:nil];
-    } else {
-       model.canvasType = RTCVideoCanvasTypeRemote;
-       [weakself.educationManager setRTCRemoteStreamWithUid:model.uid type:RTCVideoStreamTypeLow];
-       [weakself.educationManager setupRTCVideoCanvas:model completeBlock:nil];
-    }
 }
 
 // MARK: - 全屏切换按钮点击事件
@@ -951,8 +826,6 @@
         _fullScreenBtn.selected = YES;
         
         [_roomPersonCountBtn setRight:_fullScreenBtn.left - 7.5];
-        
-        _collectionView.frame = CGRectMake(_liveBackView.width - (113 * 2 + 2), 24, 113 * 2 + 2, MainScreenWidth - 24 * 2);
     } else {
         
         _liveBackView.frame = CGRectMake(0, MACRO_UI_STATUSBAR_HEIGHT, MainScreenWidth, (MainScreenWidth - 113)*3/4.0 + 37 * 2);//画板高度+上下黑色背景高度
@@ -978,17 +851,7 @@
         _fullScreenBtn.frame = CGRectMake(_liveBackView.width - 7.5 - 37, 0, 37, 37);
         _fullScreenBtn.selected = NO;
         [_roomPersonCountBtn setRight:_fullScreenBtn.left - 7.5];
-        
-        _collectionView.frame = CGRectMake(_liveBackView.width - 113, _topBlackView.bottom, 113, _boardView.height);
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [CATransaction setDisableActions:YES];
-        
-        [_collectionView reloadData];
-        
-        [CATransaction commit];
-    });
 }
 
 // MARK: - 白板代理
@@ -1107,7 +970,7 @@
     AppDelegate *app = [AppDelegate delegate];
     app._allowRotation = NO;
     
-    __weak LiveRoomViewController *weakSelf = self;
+    __weak OneToOneLiveRoomVC *weakSelf = self;
     [weakSelf.educationManager releaseResources];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -1130,12 +993,14 @@
         
         [self.educationManager updateEnableVideoWithValue:sender.selected completeSuccessBlock:^{
 
-            [weakself reloadStudentViews];
+            UserModel *renderModel = weakself.educationManager.studentModel;
+            [weakself updateStudentViews:renderModel remoteVideo:NO];
 
         } completeFailBlock:^(NSString * _Nonnull errMessage) {
 
             [weakself showToast:errMessage];
-            [weakself reloadStudentViews];
+            UserModel *renderModel = weakself.educationManager.studentModel;
+            [weakself updateStudentViews:renderModel remoteVideo:NO];
         }];
         return;
     }
@@ -1184,12 +1049,14 @@
             
             [self.educationManager updateEnableVideoWithValue:sender.selected completeSuccessBlock:^{
 
-                [weakself reloadStudentViews];
+                UserModel *renderModel = weakself.educationManager.studentModel;
+                [weakself updateStudentViews:renderModel remoteVideo:NO];
 
             } completeFailBlock:^(NSString * _Nonnull errMessage) {
 
                 [weakself showToast:errMessage];
-                [weakself reloadStudentViews];
+                UserModel *renderModel = weakself.educationManager.studentModel;
+                [weakself updateStudentViews:renderModel remoteVideo:NO];
             }];
         }
             break;
@@ -1212,12 +1079,14 @@
         WEAK(self);
         [self.educationManager updateEnableAudioWithValue:sender.selected completeSuccessBlock:^{
             
-            [weakself reloadStudentViews];
+            UserModel *renderModel = weakself.educationManager.studentModel;
+            [weakself updateStudentViews:renderModel remoteVideo:NO];
 
         } completeFailBlock:^(NSString * _Nonnull errMessage) {
             
             [weakself showToast:errMessage];
-            [weakself reloadStudentViews];
+            UserModel *renderModel = weakself.educationManager.studentModel;
+            [weakself updateStudentViews:renderModel remoteVideo:NO];
         }];
         return;
     }
@@ -1261,12 +1130,14 @@
             WEAK(self);
             [self.educationManager updateEnableAudioWithValue:sender.selected completeSuccessBlock:^{
                 
-                [weakself reloadStudentViews];
+                UserModel *renderModel = weakself.educationManager.studentModel;
+                [weakself updateStudentViews:renderModel remoteVideo:NO];
 
             } completeFailBlock:^(NSString * _Nonnull errMessage) {
                 
                 [weakself showToast:errMessage];
-                [weakself reloadStudentViews];
+                UserModel *renderModel = weakself.educationManager.studentModel;
+                [weakself updateStudentViews:renderModel remoteVideo:NO];
             }];
         }
             break;
@@ -1286,14 +1157,6 @@
         [_livePersonArray removeObject:userId];
         [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [CATransaction setDisableActions:YES];
-        
-        [_collectionView reloadData];
-        
-        [CATransaction commit];
-    });
 }
 
 // MARK: - 改变房间人数显示UI
@@ -1334,7 +1197,19 @@
             [self renderTeacherCanvas:teacherModel.uid];
         }
     } else if(roleType == UserRoleTypeStudent) {
-       [self reloadStudentViews];
+        UserModel *renderModel = self.educationManager.studentModel;
+        if(renderModel != nil) {
+            self.studentVideoView.hidden = NO;
+            if (renderModel.uid == self.educationManager.studentModel.uid) {
+                [self renderStudentCanvas:renderModel.uid remoteVideo:NO];
+                [self updateStudentViews:renderModel remoteVideo:NO];
+            } else {
+                [self renderStudentCanvas:renderModel.uid remoteVideo:YES];
+                [self updateStudentViews:renderModel remoteVideo:YES];
+            }
+        } else {
+            self.studentVideoView.hidden = YES;
+        }
     }
 }
 
@@ -1362,64 +1237,6 @@
 //    self.shareScreenView.hidden = YES;
 }
 
-- (void)muteVideoStream:(BOOL)mute {
-    
-    AgoraLogInfo(@"small muteVideoStream:%d", mute);
-    
-    WEAK(self);
-    
-    
-    
-    [self.educationManager updateEnableVideoWithValue:!mute completeSuccessBlock:^{
-        
-        [weakself reloadStudentViews];
-        
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-        
-        [weakself showToast:errMessage];
-        [weakself reloadStudentViews];
-    }];
-}
-
-- (void)muteAudioStream:(BOOL)mute {
-    
-    AgoraLogInfo(@"small muteAudioStream:%d", mute);
-    
-    WEAK(self);
-    [self.educationManager updateEnableAudioWithValue:!mute completeSuccessBlock:^{
-        
-        [weakself reloadStudentViews];
-
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-        
-        [weakself showToast:errMessage];
-        [weakself reloadStudentViews];
-    }];
-
-}
-
-#pragma mark  --------  Mandatory landscape -------
-//- (BOOL)shouldAutorotate {
-//    return NO;
-//}
-//
-//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-//    return UIInterfaceOrientationLandscapeRight;
-//}
-//
-//- (BOOL)prefersStatusBarHidden {
-//    return YES;
-//}
-//
-//- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-//    return UIInterfaceOrientationMaskLandscapeRight;
-//}
-//
-//- (UIStatusBarStyle)preferredStatusBarStyle
-//{
-//  return UIStatusBarStyleLightContent;
-//}
-
 - (void)dealloc {
     AppDelegate *app = [AppDelegate delegate];
     app._allowRotation = NO;
@@ -1430,45 +1247,8 @@
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
-- (void)reloadStudentViews {
-
-    [self updateStudentArray:self.educationManager.studentTotleListArray];
+- (void)updateStudentViews:(UserModel *)studentModel remoteVideo:(BOOL)remote {
     
-    [_liveMenberTableView reloadData];
-//    [self.studentListView updateStudentArray:self.educationManager.studentTotleListArray];
-//    [self.studentVideoListView updateStudentArray:self.educationManager.studentTotleListArray];
-    
-    [self updateStudentViews:self.educationManager.studentModel];
-}
-
-- (void)updateStudentArray:(NSArray<UserModel*> *)studentArray {
-    
-    if(studentArray.count == 0 || self.livePersonArray.count != studentArray.count) {
-        self.livePersonArray = [studentArray deepCopy];
-        if (self.collectionView) {
-            [self.collectionView reloadData];
-        }
-    } else {
-        NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray array];
-
-        NSInteger count = studentArray.count;
-        for(NSInteger i = 0; i < count; i++) {
-            UserModel *sourceModel = [self.livePersonArray objectAtIndex:i];
-            UserModel *currentModel = [studentArray objectAtIndex:i];
-            if(![sourceModel yy_modelIsEqual:currentModel]) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-                [indexPaths addObject:indexPath];
-            }
-        }
-
-        self.livePersonArray = [studentArray deepCopy];
-        if(indexPaths.count > 0){
-            [self.collectionView reloadItemsAtIndexPaths:indexPaths];
-        }
-    }
-}
-
-- (void)updateStudentViews:(UserModel*)studentModel {
     if(studentModel == nil){
         return;
     }
@@ -1478,6 +1258,92 @@
     
     [self.educationManager muteRTCLocalVideo:studentModel.enableVideo == 0 ? YES : NO];
     [self.educationManager muteRTCLocalAudio:studentModel.enableAudio == 0 ? YES : NO];
+    
+    if (self.studentVideoView) {
+        self.studentVideoView.defaultImageView.hidden = studentModel.enableVideo ? YES : NO;
+    }
+    
+//    [self.handupButton setBackgroundImage:[UIImage imageNamed:@"icon-handup-x"] forState:(UIControlStateNormal)];
+    
+}
+
+// MARK: - 大班课
+- (void)renderStudentCanvas:(NSUInteger)uid remoteVideo:(BOOL)remote {
+    
+    RTCVideoCanvasModel *model = [RTCVideoCanvasModel new];
+    model.uid = uid;
+    model.videoView = self.studentVideoView.studentRenderView;
+    model.renderMode = RTCVideoRenderModeHidden;
+    model.canvasType = remote ? RTCVideoCanvasTypeRemote : RTCVideoCanvasTypeLocal;
+    [self.educationManager setupRTCVideoCanvas:model completeBlock:nil];
+
+    if(!remote){
+        self.linkState = SignalLinkStateTeaAccept;
+        [self.educationManager setRTCClientRole:RTCClientRoleBroadcaster];
+    }
+}
+
+- (void)removeStudentCanvas:(NSUInteger)uid {
+    
+    if(self.educationManager.studentModel.uid == uid){
+        [self.educationManager setRTCClientRole:RTCClientRoleAudience];
+    }
+//    [self.educationManager removeRTCVideoCanvas: uid];
+    self.studentVideoView.defaultImageView.hidden = NO;
+    self.studentVideoView.hidden = YES;
+//    [self.handupButton setBackgroundImage:[UIImage imageNamed:@"icon-handup"] forState:(UIControlStateNormal)];
+}
+
+- (void)handUpEvent:(UIButton *)sender {
+    
+    UserModel *renderModel = self.educationManager.studentModel;
+    if(renderModel != nil && renderModel.uid != self.educationManager.studentModel.uid) {
+        return;
+    }
+    
+    switch (self.linkState) {
+        case SignalLinkStateIdle:
+        case SignalLinkStateTeaReject:
+        case SignalLinkStateStuCancel:
+        case SignalLinkStateStuClose:
+        case SignalLinkStateTeaClose:
+            [self coVideoStateChanged: SignalLinkStateApply];
+            break;
+        case SignalLinkStateApply:
+            [self coVideoStateChanged: SignalLinkStateStuCancel];
+            break;
+        case SignalLinkStateTeaAccept:
+            [self coVideoStateChanged: SignalLinkStateStuClose];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)coVideoStateChanged:(SignalLinkState) linkState {
+    switch (linkState) {
+        case SignalLinkStateApply:
+        case SignalLinkStateStuCancel:
+        case SignalLinkStateStuClose:{
+            WEAK(self);
+            [BaseEducationManager sendCoVideoWithType:linkState successBolck:^{
+                weakself.linkState = linkState;
+            } completeFailBlock:^(NSString * _Nonnull errMessage) {
+                [weakself showToast:errMessage];
+            }];
+            if(linkState == SignalLinkStateStuCancel){
+                self.linkState = linkState;
+//                [self.handUpButton setBackgroundImage:[UIImage imageNamed:@"icon-handup"] forState:(UIControlStateNormal)];
+            } else if(linkState == SignalLinkStateStuClose){
+                self.linkState = linkState;
+                [self removeStudentCanvas:self.educationManager.studentModel.uid];
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (void)showTipWithMessage:(NSString *)toastMessage {
@@ -1487,6 +1353,24 @@
         [weakself showToast:toastMessage];
     });
 }
+
+// MARK: - SignalDelegate
+- (void)didReceivedPeerSignal:(SignalP2PInfoModel *)model {
+    switch (model.type) {
+        case SignalLinkStateTeaReject:
+            [self showTipWithMessage:NSLocalizedString(@"RejectRequestText", nil)];
+            break;
+        case SignalLinkStateTeaAccept:
+            [self showTipWithMessage:NSLocalizedString(@"AcceptRequestText", nil)];
+            break;
+        case SignalLinkStateTeaClose:
+            [self showTipWithMessage:NSLocalizedString(@"TeaCloseCoVideoText", nil)];
+            break;
+        default:
+            break;
+    }
+    self.linkState = model.type;
+}
     
 #pragma mark SignalDelegate
 - (void)didReceivedSignal:(SignalInfoModel *)signalInfoModel {
@@ -1494,8 +1378,6 @@
         case SignalValueCoVideo: {
             if(signalInfoModel.uid && signalInfoModel.uid == self.educationManager.teacherModel.uid) {
                 [self checkNeedRenderWithRole:UserRoleTypeTeacher];
-            } else {
-                [self checkNeedRenderWithRole:UserRoleTypeStudent];
             }
         }
             break;
@@ -1503,8 +1385,9 @@
         case SignalValueVideo:
             if (signalInfoModel.uid && signalInfoModel.uid == self.educationManager.teacherModel.uid) {
                 [self updateTeacherViews:self.educationManager.teacherModel];
+                [self updateStudentViews:self.educationManager.studentModel remoteVideo:NO];
             } else {
-                [self reloadStudentViews];
+                [self updateStudentViews:self.educationManager.studentModel remoteVideo:YES];
             }
             break;
         case SignalValueChat: {
@@ -1578,7 +1461,6 @@
         
     } else if(state == AgoraRtmConnectionStateAborted) {
         [self showToast:NSLocalizedString(@"LoginOnAnotherDeviceText", nil)];
-//        [self.navigationView stopTimer];
         [self.educationManager releaseResources];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -1590,10 +1472,8 @@
         
         [weakself updateTimeState];
         [weakself updateChatViews];
-
         [weakself disableCameraTransform:roomInfoModel.room.lockBoard];
         [weakself disableWhiteDeviceInputs:!weakself.educationManager.studentModel.grantBoard];
-
         [weakself checkNeedRenderWithRole:UserRoleTypeTeacher];
         [weakself checkNeedRenderWithRole:UserRoleTypeStudent];
         
@@ -1611,7 +1491,7 @@
         muteChat = studentModel.enableChat == 0 ? YES : NO;
     }
     self.chatCommentView.inputTextView.editable = muteChat ? NO : YES;
-    self.chatCommentView.placeHoderLab.text = muteChat ? NSLocalizedString(@"ProhibitedPostText", nil) : NSLocalizedString(@"InputMessageText", nil);
+    self.chatCommentView.placeHoderLab.text = muteChat ? @"已被禁言" : @"输入聊天内容";
 }
 
 - (void)updateTimeState {
@@ -1668,30 +1548,6 @@
         [self removeShareCanvas];
     }
 }
-
-
-// MARK: - 声网频道(直播间)聊天频道创建 Channel
-//- (void)createChannel:(NSString *)channel {
-//    __weak LiveRoomViewController *weakSelf = self;
-//    void(^errorHandle)(UIAlertAction *) = ^(UIAlertAction *action) {
-//        [weakSelf.navigationController popViewControllerAnimated:YES];
-//    };
-//    channel = [NSString stringWithString:[EduConfigModel.shareInstance.className stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-//    AgoraRtmChannel *rtmChannel = [AgoraRtm.kit createChannelWithId:channel delegate:self];
-//
-//    if (!rtmChannel) {
-//        [self showAlert:@"join channel fail" handle:errorHandle];
-//    }
-//
-//    [rtmChannel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
-//        if (errorCode != AgoraRtmJoinChannelErrorOk) {
-//            NSString *alert = [NSString stringWithFormat:@"join channel error: %ld", errorCode];
-//            [weakSelf showAlert:alert handle:errorHandle];
-//        }
-//    }];
-//
-//    self.rtmChannel = rtmChannel;
-//}
 
 // MARK: - 离开直播间
 - (void)leaveChannel {
@@ -1752,156 +1608,5 @@
         dispatch_source_cancel(timer);
     }
 }
-
-//// MARK: - 白板代理
-//#pragma mark - board delegate
-//- (void)onTEBRedoStatusChanged:(BOOL)canRedo
-//{
-//
-//}
-//
-//- (void)onTEBUndoStatusChanged:(BOOL)canUndo
-//{
-//
-//}
-//
-//// MARK: - 退出互动课堂
-//- (void)onQuitClassRoom
-//{
-//    if (_isFullScreen) {
-//        [self fullButtonClick:_fullScreenBtn];
-//        return;
-//    }
-//    AppDelegate *app = [AppDelegate delegate];
-//    app._allowRotation = NO;
-//    [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
-//    [[TICManager sharedInstance] removeEventListener:self];
-//    [[TICManager sharedInstance] removeMessageListener:self];
-//    __weak typeof(self) ws = self;
-//    [[TICManager sharedInstance] quitClassroom:NO callback:^(TICModule module, int code, NSString *desc) {
-//        if(code == 0){
-//            //退出课堂成功
-//        }
-//        else{
-//            //退出课堂失败
-//        }
-//        [ws.navigationController popViewControllerAnimated:YES];
-//    }];
-//}
-//
-//// MARK: - 开关摄像头
-//- (void)swicthCamera:(UIButton *)sender {
-//    sender.selected = !sender.selected;
-//    [_livePersonArray removeObject:_userId];
-//    if (sender.selected) {
-//        [_livePersonArray addObject:_userId];
-//    } else {
-//        [[[TICManager sharedInstance] getTRTCCloud] stopLocalPreview];
-//    }
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//
-//        [CATransaction setDisableActions:YES];
-//
-//        [_collectionView reloadData];
-//
-//        [CATransaction commit];
-//    });
-//}
-//
-//// MARK: - 开关麦克风
-//- (void)switchVoice:(UIButton *)sender {
-//    sender.selected = !sender.selected;
-//    if (sender.selected) {
-//        [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
-//    } else {
-//        [[[TICManager sharedInstance] getTRTCCloud] stopLocalAudio];
-//    }
-//}
-//
-//// MARK: - event listener
-//- (void)onTICUserVideoAvailable:(NSString *)userId available:(BOOL)available
-//{
-//    if(available){
-//        [_livePersonArray addObject:userId];
-//    }
-//    else{
-//        [_livePersonArray removeObject:userId];
-//        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
-//    }
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//
-//        [CATransaction setDisableActions:YES];
-//
-//        [_collectionView reloadData];
-//
-//        [CATransaction commit];
-//    });
-//}
-//
-//- (void)onTICUserSubStreamAvailable:(NSString *)userId available:(BOOL)available
-//{
-////    if(available){
-////        [_livePersonArray addObject:userId];
-////    }
-////    else{
-////        [_livePersonArray removeObject:userId];
-////        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:userId];
-////    }
-////    dispatch_async(dispatch_get_main_queue(), ^{
-////
-////        [CATransaction setDisableActions:YES];
-////
-////        [_collectionView reloadData];
-////
-////        [CATransaction commit];
-////    });
-//}
-//
-//
-//-(void)onTICMemberJoin:(NSArray*)members {
-//    NSString *msgInfo = [NSString stringWithFormat:@"[%@] %@",members.firstObject, @"加入了房间"];
-//    [self showHudInView:self.view showHint:msgInfo];
-////    self.chatView.text = [NSString stringWithFormat:@"%@\n%@",self.chatView.text, msgInfo];;
-//}
-//
-//-(void)onTICMemberQuit:(NSArray*)members {
-//
-//    if ([members.firstObject isEqualToString:[[TIMManager sharedInstance] getLoginUser]]) {
-//        [self showAlertWithTitle:@"退出课堂" msg:@"你被老师踢出了房间" handler:^(UIAlertAction *action) {
-//            [self.navigationController popViewControllerAnimated:YES];
-//        }];
-//    }
-//    NSString *msgInfo = [NSString stringWithFormat:@"[%@] %@",members.firstObject, @"退出了房间"];
-//    [self showHudInView:self.view showHint:msgInfo];
-////    self.chatView.text = [NSString stringWithFormat:@"%@\n%@",self.chatView.text, msgInfo];;
-//}
-//
-//
-//-(void)onTICClassroomDestroy {
-//    [self showAlertWithTitle:@"课程结束" msg:@"老师已经结束了该堂课程" handler:^(UIAlertAction *action) {
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }];
-//
-//}
-//
-//// MARK: - 改变房间人数显示UI
-//- (void)changeRoomMenberCountUI {
-//    NSInteger roomcount = 0;
-//    if ([_livePersonArray containsObject:_userId]) {
-//        roomcount = _livePersonArray.count;
-//    } else {
-//        roomcount = _livePersonArray.count + 1;
-//    }
-//    NSString *roomMember = [NSString stringWithFormat:@"%@",@(roomcount)];
-//    CGFloat roomMemberWidth = [roomMember sizeWithFont:SYSTEMFONT(14)].width + 4 + 11 + 7.5 *2;
-//    CGFloat space1 = 5.0;
-//    _roomPersonCountBtn.frame= CGRectMake(_fullScreenBtn.left - 7.5 - roomMemberWidth, 0, roomMemberWidth, 37);
-//    _roomPersonCountBtn.centerY = 37/2.0;
-//    [_roomPersonCountBtn setImage:Image(@"live_member") forState:0];
-//    [_roomPersonCountBtn setTitle:roomMember forState:0];
-//    _roomPersonCountBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space1/2.0, 0, space1/2.0);
-//    _roomPersonCountBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space1/2.0, 0, -space1/2.0);
-//}
 
 @end
