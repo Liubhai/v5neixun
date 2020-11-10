@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *cameraBtn;
 @property (strong, nonatomic) UIButton *voiceBtn;
 @property (strong, nonatomic) UIButton *lianmaiBtn;
+@property (strong, nonatomic) UIButton *closeLianmaiBtn;
 
 @property (strong, nonatomic) UIView *bottomToolBackView;
 @property (strong, nonatomic) UIView *blueCircleView;
@@ -52,7 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL showBoardView;// 是否配置了白板
 
-//@property (nonatomic, strong) MinEducationManager *educationManager;
 @property (nonatomic, strong) BigEducationManager *educationManager;
 
 @end

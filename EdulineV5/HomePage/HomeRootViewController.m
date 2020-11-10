@@ -141,10 +141,10 @@
 //    [self.navigationController pushViewController:vc animated:YES];
 //    return NO;
     
-    SceneType sceneType = SceneType1V1;
-    self.educationManager = [OneToOneEducationManager new];
-    
-    EduConfigModel.shareInstance.className = @"00000";
+    SceneType sceneType = SceneTypeBig;
+    self.educationManager = [BigEducationManager new];
+
+    EduConfigModel.shareInstance.className = @"777777";
     EduConfigModel.shareInstance.userName = [V5_UserModel uname];
     EduConfigModel.shareInstance.sceneType = sceneType;
     

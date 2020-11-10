@@ -1076,7 +1076,7 @@
 }
 
 // MARK: - 颜色选择代理(LiveColorSelectedViewDelegate)
-- (void)colorBtnClick:(UIButton *)sender {
+- (void)colorBtnClick:(UIButton *)sender selectColor:(nonnull NSString *)colorString {
     if (currentColorSelectBtn) {
         UIView *outview = (UIView *)[currentColorSelectBtn viewWithTag:10];
         outview.hidden = YES;
@@ -1084,6 +1084,10 @@
     UIView *outview = (UIView *)[sender viewWithTag:10];
     outview.hidden = NO;
     currentColorSelectBtn = sender;
+    
+    WEAK(self);
+    NSArray *colorArray = [UIColor convertColorToRGB:[UIColor colorWithHexString:colorString]];
+    [weakself.educationManager setWhiteStrokeColor:colorArray];
 }
 
 //MARK: - WhitePlayDelegate

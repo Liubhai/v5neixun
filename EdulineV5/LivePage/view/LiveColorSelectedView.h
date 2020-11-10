@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol LiveColorSelectedViewDelegate <NSObject>
 
 @optional
-- (void)colorBtnClick:(UIButton *)sender;
+- (void)colorBtnClick:(UIButton *)sender selectColor:(NSString *)colorString;
 
 @end
 

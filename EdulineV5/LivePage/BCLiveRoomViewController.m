@@ -135,7 +135,7 @@
     [self makeNoticeView];
     [self makeChatListTableView];
     [self makeBottomView];
-    [self makeHandUpButton];
+//    [self makeHandUpButton];
     [self initData];
     // 接收屏幕方向改变通知,监听屏幕方向
 //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -203,6 +203,7 @@
     [_liveBackView addSubview:_teacherFaceBackView];
     
     _studentVideoView = [[LiveStudentView alloc] initWithFrame:CGRectMake(MainScreenWidth - 127, _topBlackView.bottom, 127, 72)];
+    _studentVideoView.closeStudentViewButton.hidden = YES;
     [_liveBackView addSubview:_studentVideoView];
     
     [_liveBackView addSubview:_topBlackView];
@@ -245,23 +246,42 @@
     }
     [_topToolBackView addSubview:_voiceBtn];
     
+    _closeLianmaiBtn = [[UIButton alloc] initWithFrame:CGRectMake(_voiceBtn.left - 100, 0, 100, 22)];
+    _closeLianmaiBtn.layer.masksToBounds = YES;
+    _closeLianmaiBtn.layer.cornerRadius = 11;
+    _closeLianmaiBtn.titleLabel.font = SYSTEMFONT(14);
+    
+    NSString *commentCount = @"断开";
+    CGFloat commentWidth = [commentCount sizeWithFont:SYSTEMFONT(14)].width + 4 + 11 + 7.5 *2;
+    CGFloat space = 5.0;
+    _closeLianmaiBtn.frame = CGRectMake(_voiceBtn.left - 7.5 - commentWidth, 0, commentWidth, 22);
+    _closeLianmaiBtn.centerY = 37/2.0;
+    [_closeLianmaiBtn setImage:Image(@"live_phone") forState:0];
+    [_closeLianmaiBtn setTitle:commentCount forState:0];
+    [_closeLianmaiBtn setTitleColor:[UIColor whiteColor] forState:0];
+    _closeLianmaiBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+    _closeLianmaiBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+    _closeLianmaiBtn.hidden = YES;
+    _closeLianmaiBtn.backgroundColor = EdlineV5_Color.faildColor;
+    [_closeLianmaiBtn addTarget:self action:@selector(handUpEvent:) forControlEvents:UIControlEventTouchUpInside];
+    [_topToolBackView addSubview:_closeLianmaiBtn];
+    
     _lianmaiBtn = [[UIButton alloc] initWithFrame:CGRectMake(_voiceBtn.left - 100, 0, 100, 22)];
     _lianmaiBtn.layer.masksToBounds = YES;
     _lianmaiBtn.layer.cornerRadius = 11;
     _lianmaiBtn.backgroundColor = HEXCOLOR(0x67C23A);
     _lianmaiBtn.titleLabel.font = SYSTEMFONT(14);
     
-    NSString *commentCount = @"连麦";
-    CGFloat commentWidth = [commentCount sizeWithFont:SYSTEMFONT(14)].width + 4 + 11 + 7.5 *2;
-    CGFloat space = 5.0;
-    _lianmaiBtn.frame = CGRectMake(_voiceBtn.left - 7.5 - commentWidth, 0, commentWidth, 22);
+    NSString *lianmai = @"连麦";
+    _lianmaiBtn.frame = CGRectMake(_topToolBackView.width - commentWidth - 15, 0, commentWidth, 22);
     _lianmaiBtn.centerY = 37/2.0;
     [_lianmaiBtn setImage:Image(@"live_phone") forState:0];
-    [_lianmaiBtn setTitle:commentCount forState:0];
+    [_lianmaiBtn setTitle:lianmai forState:0];
     [_lianmaiBtn setTitleColor:[UIColor whiteColor] forState:0];
     _lianmaiBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _lianmaiBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
     _lianmaiBtn.hidden = YES;
+    [_lianmaiBtn addTarget:self action:@selector(handUpEvent:) forControlEvents:UIControlEventTouchUpInside];
     [_topToolBackView addSubview:_lianmaiBtn];
     
     _bottomBlackView = [[UIView alloc] initWithFrame:CGRectMake(0, (MainScreenWidth - 113)*3/4.0 + 37, _liveBackView.width, 37)];
@@ -989,7 +1009,7 @@
 }
 
 // MARK: - 颜色选择代理(LiveColorSelectedViewDelegate)
-- (void)colorBtnClick:(UIButton *)sender {
+- (void)colorBtnClick:(UIButton *)sender selectColor:(nonnull NSString *)colorString {
     if (currentColorSelectBtn) {
         UIView *outview = (UIView *)[currentColorSelectBtn viewWithTag:10];
         outview.hidden = YES;
@@ -997,6 +1017,10 @@
     UIView *outview = (UIView *)[sender viewWithTag:10];
     outview.hidden = NO;
     currentColorSelectBtn = sender;
+    
+    WEAK(self);
+    NSArray *colorArray = [UIColor convertColorToRGB:[UIColor colorWithHexString:colorString]];
+    [weakself.educationManager setWhiteStrokeColor:colorArray];
 }
 
 //MARK: - WhitePlayDelegate
@@ -1251,13 +1275,28 @@
         if(renderModel != nil) {
             self.studentVideoView.hidden = NO;
             if (renderModel.uid == self.educationManager.studentModel.uid) {
+                _lianmaiBtn.hidden = YES;
+                [_lianmaiBtn setBackgroundColor:HEXCOLOR(0x606266)];
+                _cameraBtn.hidden = NO;
+                _voiceBtn.hidden = NO;
+                _closeLianmaiBtn.hidden = NO;
                 [self renderStudentCanvas:renderModel.uid remoteVideo:NO];
                 [self updateStudentViews:renderModel remoteVideo:NO];
             } else {
+                _lianmaiBtn.hidden = NO;
+                [_lianmaiBtn setBackgroundColor:HEXCOLOR(0x606266)];
+                _cameraBtn.hidden = YES;
+                _voiceBtn.hidden = YES;
+                _closeLianmaiBtn.hidden = YES;
                 [self renderStudentCanvas:renderModel.uid remoteVideo:YES];
                 [self updateStudentViews:renderModel remoteVideo:YES];
             }
         } else {
+            _lianmaiBtn.hidden = NO;
+            [_lianmaiBtn setBackgroundColor:HEXCOLOR(0x67C23A)];
+            _cameraBtn.hidden = YES;
+            _voiceBtn.hidden = YES;
+            _closeLianmaiBtn.hidden = YES;
             self.studentVideoView.hidden = YES;
         }
     }
@@ -1303,6 +1342,7 @@
         return;
     }
     
+    // 这两个按钮只和自己连麦的情况下才有效
     _voiceBtn.selected = studentModel.enableAudio;
     _cameraBtn.selected = studentModel.enableVideo;
     

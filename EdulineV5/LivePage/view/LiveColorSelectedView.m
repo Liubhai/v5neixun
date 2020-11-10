@@ -72,14 +72,15 @@
         [btn addSubview:colorView];
         
         [btn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        btn.tag = 100 + i;
         [self.colorBackView addSubview:btn];
     }
     [self.colorBackView setHeight:liveColorSelectWidth * 2 + 30];
 }
 
 - (void)buttonClicked:(UIButton *)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(colorBtnClick:)]) {
-        [_delegate colorBtnClick:sender];
+    if (_delegate && [_delegate respondsToSelector:@selector(colorBtnClick:selectColor:)]) {
+        [_delegate colorBtnClick:sender selectColor:self.colorArray[sender.tag - 100]];
     }
 }
 

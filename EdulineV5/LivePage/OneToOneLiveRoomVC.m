@@ -290,6 +290,7 @@
     
     WEAK(self);
     WhiteBoardTouchView *whiteBoardTouchView = [WhiteBoardTouchView new];
+    whiteBoardTouchView.backgroundColor = [UIColor redColor];
     [whiteBoardTouchView setupInView:self.boardView onTouchBlock:^{
         NSString *toastMessage = NSLocalizedString(@"LockBoardTouchText", nil);
         [weakself showTipWithMessage:toastMessage];
@@ -336,11 +337,12 @@
     RoomModel *roomModel = self.educationManager.roomModel;
     
     WEAK(self);
-    [self.educationManager joinWhiteRoomWithBoardId:EduConfigModel.shareInstance.boardId boardToken:EduConfigModel.shareInstance.boardToken whiteWriteModel:NO completeSuccessBlock:^(WhiteRoom * _Nullable room) {
+    [self.educationManager joinWhiteRoomWithBoardId:EduConfigModel.shareInstance.boardId boardToken:EduConfigModel.shareInstance.boardToken whiteWriteModel:YES completeSuccessBlock:^(WhiteRoom * _Nullable room) {
         
-        [weakself disableWhiteDeviceInputs:!weakself.educationManager.studentModel.grantBoard];
-        weakself.whiteboardTool.hidden = !weakself.educationManager.studentModel.grantBoard;
+        weakself.whiteboardTool.hidden = NO;
+        
         [weakself disableCameraTransform:roomModel.lockBoard];
+        [weakself.educationManager disableWhiteDeviceInputs:NO];
 
         [weakself.educationManager currentWhiteScene:^(NSInteger sceneCount, NSInteger sceneIndex) {
             weakself.sceneCount = sceneCount;
@@ -939,7 +941,7 @@
 }
 
 // MARK: - 颜色选择代理(LiveColorSelectedViewDelegate)
-- (void)colorBtnClick:(UIButton *)sender {
+- (void)colorBtnClick:(UIButton *)sender selectColor:(nonnull NSString *)colorString {
     if (currentColorSelectBtn) {
         UIView *outview = (UIView *)[currentColorSelectBtn viewWithTag:10];
         outview.hidden = YES;
@@ -947,6 +949,10 @@
     UIView *outview = (UIView *)[sender viewWithTag:10];
     outview.hidden = NO;
     currentColorSelectBtn = sender;
+    
+    WEAK(self);
+    NSArray *colorArray = [UIColor convertColorToRGB:[UIColor colorWithHexString:colorString]];
+    [weakself.educationManager setWhiteStrokeColor:colorArray];
 }
 
 //MARK: - WhitePlayDelegate
@@ -1396,17 +1402,17 @@
             break;
         case SignalValueGrantBoard: {
             
-            if(signalInfoModel.uid == self.educationManager.studentModel.uid) {
-                NSString *toastMessage;
-                BOOL grantBoard = self.educationManager.studentModel.grantBoard;
-                 if(grantBoard) {
-                     toastMessage = NSLocalizedString(@"UnMuteBoardText", nil);
-                 } else {
-                     toastMessage = NSLocalizedString(@"MuteBoardText", nil);
-                 }
-                 [self showTipWithMessage:toastMessage];
-                 [self disableWhiteDeviceInputs:!grantBoard];
-            }
+//            if(signalInfoModel.uid == self.educationManager.studentModel.uid) {
+//                NSString *toastMessage;
+//                BOOL grantBoard = self.educationManager.studentModel.grantBoard;
+//                 if(grantBoard) {
+//                     toastMessage = NSLocalizedString(@"UnMuteBoardText", nil);
+//                 } else {
+//                     toastMessage = NSLocalizedString(@"MuteBoardText", nil);
+//                 }
+//                 [self showTipWithMessage:toastMessage];
+//                 [self disableWhiteDeviceInputs:!grantBoard];
+//            }
 //            [self.studentListView updateStudentArray:self.educationManager.studentTotleListArray];
         }
             break;
@@ -1473,7 +1479,7 @@
         [weakself updateTimeState];
         [weakself updateChatViews];
         [weakself disableCameraTransform:roomInfoModel.room.lockBoard];
-        [weakself disableWhiteDeviceInputs:!weakself.educationManager.studentModel.grantBoard];
+//        [weakself disableWhiteDeviceInputs:!weakself.educationManager.studentModel.grantBoard];
         [weakself checkNeedRenderWithRole:UserRoleTypeTeacher];
         [weakself checkNeedRenderWithRole:UserRoleTypeStudent];
         
@@ -1517,17 +1523,14 @@
     
     // follow
     if(self.educationManager.roomModel.lockBoard) {
-        // permission
-        if(self.educationManager.studentModel.grantBoard) {
-            self.whiteBoardTouchView.hidden = NO;
-        }
+        self.whiteBoardTouchView.hidden = NO;
     }
 }
 
-- (void)disableWhiteDeviceInputs:(BOOL)disable {
-    [self.educationManager disableWhiteDeviceInputs:disable];
-    [self checkWhiteTouchViewVisible];
-}
+//- (void)disableWhiteDeviceInputs:(BOOL)disable {
+//    [self.educationManager disableWhiteDeviceInputs:disable];
+//    [self checkWhiteTouchViewVisible];
+//}
 
 - (void)updateTeacherViews:(UserModel*)teacherModel {
     if(teacherModel != nil){
