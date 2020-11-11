@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *toolEraserButton;
 @property (strong, nonatomic) UIButton *toolColorButton;
 
+@property (weak, nonatomic) UIButton *selectButton;
+
 @end
 
 NS_ASSUME_NONNULL_END

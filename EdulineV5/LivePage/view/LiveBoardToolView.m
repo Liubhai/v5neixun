@@ -63,6 +63,17 @@
 }
 
 - (void)buttonClick:(UIButton *)sender {
+    
+    if(self.selectButton != nil){
+        self.selectButton.backgroundColor = [UIColor colorWithHex:0x565656];
+    }
+    if(sender.tag == 4 && self.selectButton.tag == 4){
+        self.selectButton = nil;
+    } else {
+        sender.backgroundColor = [UIColor colorWithHex:0x141414];
+        self.selectButton = sender;
+    }
+    
     if (_delegate && [_delegate respondsToSelector:@selector(pressWhiteboardToolIndex:)]) {
         [_delegate pressWhiteboardToolIndex:sender.tag];
     }
