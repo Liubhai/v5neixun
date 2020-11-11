@@ -53,6 +53,7 @@
 @property (strong, nonatomic) UIView *boardView;
 @property (nonatomic, weak) WhiteBoardView *whiteBoardView;
 @property (nonatomic, weak) WhiteBoardTouchView *whiteBoardTouchView;
+@property (strong, nonatomic) UIView *shareScreenView;
 
 // 大班课
 @property (nonatomic, assign) SignalLinkState linkState;
@@ -296,6 +297,11 @@
         [weakself showTipWithMessage:toastMessage];
     }];
     self.whiteBoardTouchView = whiteBoardTouchView;
+    
+    _shareScreenView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _boardView.width, _boardView.height)];
+    _shareScreenView.backgroundColor = [UIColor whiteColor];
+    _shareScreenView.hidden = YES;
+    [_boardView addSubview:_shareScreenView];
     
     _pageControlView = [[LivePageControlView alloc] initWithFrame:CGRectMake((MainScreenWidth - (46*4 + 66)) / 2.0, _boardView.height - MACRO_UI_SAFEAREA - 46, 46*4 + 66, 46)];
     _pageControlView.delegate = self;
@@ -1231,16 +1237,16 @@
 - (void)renderShareCanvas:(NSUInteger)uid {
     RTCVideoCanvasModel *model = [RTCVideoCanvasModel new];
     model.uid = uid;
-//    model.videoView = self.shareScreenView;
+    model.videoView = self.shareScreenView;
     model.renderMode = RTCVideoRenderModeFit;
     model.canvasType = RTCVideoCanvasTypeRemote;
     [self.educationManager setupRTCVideoCanvas:model completeBlock:nil];
     
-//    self.shareScreenView.hidden = NO;
+    self.shareScreenView.hidden = NO;
 }
 
 - (void)removeShareCanvas {
-//    self.shareScreenView.hidden = YES;
+    self.shareScreenView.hidden = YES;
 }
 
 - (void)dealloc {
