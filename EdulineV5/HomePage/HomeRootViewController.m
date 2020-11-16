@@ -144,9 +144,23 @@
     SceneType sceneType = SceneTypeBig;
     self.educationManager = [BigEducationManager new];
 
-    EduConfigModel.shareInstance.className = @"777777";
+    EduConfigModel.shareInstance.className = @"22222";
     EduConfigModel.shareInstance.userName = [V5_UserModel uname];
     EduConfigModel.shareInstance.sceneType = sceneType;
+    
+//    SceneType sceneType = SceneType1V1;
+//    self.educationManager = [OneToOneEducationManager new];
+//
+//    EduConfigModel.shareInstance.className = @"7777";
+//    EduConfigModel.shareInstance.userName = [V5_UserModel uname];
+//    EduConfigModel.shareInstance.sceneType = sceneType;
+    
+//    SceneType sceneType = SceneTypeSmall;
+//    self.educationManager = [MinEducationManager new];
+//
+//    EduConfigModel.shareInstance.className = @"7777";
+//    EduConfigModel.shareInstance.userName = [V5_UserModel uname];
+//    EduConfigModel.shareInstance.sceneType = sceneType;
     
         WEAK(self);
         [self getConfigWithSuccessBolck:^{

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		150133BD627AE25CD7C191B3 /* Pods_EdulineV5.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F01E02843C09C8F22217CD9 /* Pods_EdulineV5.framework */; };
 		780487E92510A433001118F3 /* EmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 780487E82510A433001118F3 /* EmptyCell.m */; };
+		78060FA9255E836900009171 /* ExamMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78060FA8255E836900009171 /* ExamMainViewController.m */; };
+		78060FAC255E8B8100009171 /* ExamMainListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78060FAB255E8B8100009171 /* ExamMainListCell.m */; };
 		780F9577254FDD810070EB1F /* LiveTeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F9576254FDD810070EB1F /* LiveTeacherView.m */; };
 		780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BA25551FEC0070EB1F /* LivePageControlView.m */; };
 		780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BD255520190070EB1F /* LiveBoardToolView.m */; };
@@ -559,6 +561,10 @@
 		6F01E02843C09C8F22217CD9 /* Pods_EdulineV5.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EdulineV5.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		780487E72510A433001118F3 /* EmptyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyCell.h; sourceTree = "<group>"; };
 		780487E82510A433001118F3 /* EmptyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmptyCell.m; sourceTree = "<group>"; };
+		78060FA7255E836900009171 /* ExamMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamMainViewController.h; sourceTree = "<group>"; };
+		78060FA8255E836900009171 /* ExamMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamMainViewController.m; sourceTree = "<group>"; };
+		78060FAA255E8B8100009171 /* ExamMainListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamMainListCell.h; sourceTree = "<group>"; };
+		78060FAB255E8B8100009171 /* ExamMainListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamMainListCell.m; sourceTree = "<group>"; };
 		780F9575254FDD810070EB1F /* LiveTeacherView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveTeacherView.h; sourceTree = "<group>"; };
 		780F9576254FDD810070EB1F /* LiveTeacherView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveTeacherView.m; sourceTree = "<group>"; };
 		780F95B925551FEC0070EB1F /* LivePageControlView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivePageControlView.h; sourceTree = "<group>"; };
@@ -1589,6 +1595,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78060FA5255E831D00009171 /* ExamPage */ = {
+			isa = PBXGroup;
+			children = (
+				78060FA7255E836900009171 /* ExamMainViewController.h */,
+				78060FA8255E836900009171 /* ExamMainViewController.m */,
+			);
+			path = ExamPage;
+			sourceTree = "<group>";
+		};
 		7839C968241F154B002F6595 /* Course */ = {
 			isa = PBXGroup;
 			children = (
@@ -1827,6 +1842,8 @@
 				784E5CD324A8288200646916 /* ZiXunListCell.m */,
 				784FC8E924ADBAB400CAE7A6 /* ZixunCommentCell.h */,
 				784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */,
+				78060FAA255E8B8100009171 /* ExamMainListCell.h */,
+				78060FAB255E8B8100009171 /* ExamMainListCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1998,6 +2015,7 @@
 		7879565A240E5FC80013F95F /* FindPage */ = {
 			isa = PBXGroup;
 			children = (
+				78060FA5255E831D00009171 /* ExamPage */,
 				78795664240E605A0013F95F /* FindRootViewController.h */,
 				78795665240E605A0013F95F /* FindRootViewController.m */,
 				784E5CD524A8340A00646916 /* ZiXunListVC.h */,
@@ -4143,6 +4161,7 @@
 				789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */,
 				78C549D5241B674F00A33FC4 /* AlivcKeyboardManageViewController.m in Sources */,
 				7879572F240FA3840013F95F /* ZLPhotoPickerDatas.m in Sources */,
+				78060FAC255E8B8100009171 /* ExamMainListCell.m in Sources */,
 				788E9587253FE24E0089251E /* unzip.c in Sources */,
 				78C5497E241B642B00A33FC4 /* _AlivcLiveBeautifyNavigationView.m in Sources */,
 				788E95B1253FE24E0089251E /* LogParamsModel.m in Sources */,
@@ -4316,6 +4335,7 @@
 				787F1E74247381A400108F7B /* AliyunPlayerViewPopLayer.m in Sources */,
 				789DB03524692C1D001302B4 /* StudyLatestCell.m in Sources */,
 				78AA13832440543D007087F7 /* TAAnimatedDotView.m in Sources */,
+				78060FA9255E836900009171 /* ExamMainViewController.m in Sources */,
 				788E9561253FE24E0089251E /* BCViewController.m in Sources */,
 				788E957A253FE24E0089251E /* OneToOneViewController.m in Sources */,
 				78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */,

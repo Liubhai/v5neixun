@@ -12,6 +12,7 @@
 #import "Net_Path.h"
 #import "InstitutionListVC.h"
 #import "ZiXunListVC.h"
+#import "ExamMainViewController.h"
 
 @interface FindRootViewController ()
 
@@ -103,6 +104,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([keyType isEqualToString:@"news"]) {
         ZiXunListVC *vc = [[ZiXunListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([keyType isEqualToString:@"exam"]) {
+        ExamMainViewController *vc = [[ExamMainViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

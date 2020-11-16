@@ -9,12 +9,6 @@
 #import "FindListCell.h"
 #import "V5_Constant.h"
 
-#define findSingleLeftSpace 6
-#define findTopSpace 3
-#define findBottomSpace 3
-#define findSingleRightSpace 3
-#define findFaceImageHeight (MainScreenWidth/2.0 - findSingleRightSpace - findSingleLeftSpace)
-
 @implementation FindListCell
 
 - (instancetype)initWithFrame:(CGRect)frame {

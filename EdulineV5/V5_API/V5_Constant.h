@@ -155,6 +155,13 @@
 // 提问对话框消息内容最大宽度
 #define questionChatContentWidth 182
 
+// 发现页面宏
+#define findSingleLeftSpace 6
+#define findTopSpace 3
+#define findBottomSpace 3
+#define findSingleRightSpace 3
+#define findFaceImageHeight (MainScreenWidth/2.0 - findSingleRightSpace - findSingleLeftSpace)
+
 // `APP_ID`:`WASD123456`
 
 // `APP_KEY`:`7WFDuCGYa1XEBj6Y`
