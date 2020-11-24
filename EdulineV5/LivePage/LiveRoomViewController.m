@@ -193,9 +193,6 @@
     _teacherFaceBackView = [[LiveTeacherView alloc] initWithFrame:CGRectMake(0, _topBlackView.bottom, MainScreenWidth - 113, (MainScreenWidth - 113)*3/4.0)];
     [_liveBackView addSubview:_teacherFaceBackView];
     
-    _studentVideoView = [[LiveStudentView alloc] initWithFrame:CGRectMake(MainScreenWidth - 127, _topBlackView.bottom, 127, 72)];
-    [_liveBackView addSubview:_studentVideoView];
-    
     [self makeCollectionView];
     
     [_liveBackView addSubview:_topBlackView];
@@ -308,7 +305,7 @@
     // 声网白板视图
     _boardView = [[UIView alloc] init];
     _boardView.frame = CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom);
-    _boardView.backgroundColor = [UIColor redColor];
+    _boardView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_boardView];
     
     WhiteBoardView *whiteboardView = [[WhiteBoardView alloc] initWithFrame:CGRectMake(0, 0, _boardView.width, _boardView.height)];
@@ -380,7 +377,7 @@
     RoomModel *roomModel = self.educationManager.roomModel;
     
     WEAK(self);
-    [self.educationManager joinWhiteRoomWithBoardId:EduConfigModel.shareInstance.boardId boardToken:EduConfigModel.shareInstance.boardToken whiteWriteModel:NO completeSuccessBlock:^(WhiteRoom * _Nullable room) {
+    [self.educationManager joinWhiteRoomWithBoardId:EduConfigModel.shareInstance.boardId boardToken:EduConfigModel.shareInstance.boardToken whiteWriteModel:YES completeSuccessBlock:^(WhiteRoom * _Nullable room) {
         
         [weakself disableWhiteDeviceInputs:!weakself.educationManager.studentModel.grantBoard];
         weakself.whiteboardTool.hidden = !weakself.educationManager.studentModel.grantBoard;

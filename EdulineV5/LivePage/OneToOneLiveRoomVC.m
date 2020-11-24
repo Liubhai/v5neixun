@@ -282,7 +282,7 @@
 - (void)makeBoardView {
     _boardView = [[UIView alloc] init];
     _boardView.frame = CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom);
-    _boardView.backgroundColor = [UIColor redColor];
+    _boardView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_boardView];
     
     WhiteBoardView *whiteboardView = [[WhiteBoardView alloc] initWithFrame:CGRectMake(0, 0, _boardView.width, _boardView.height)];
@@ -291,7 +291,7 @@
     
     WEAK(self);
     WhiteBoardTouchView *whiteBoardTouchView = [WhiteBoardTouchView new];
-    whiteBoardTouchView.backgroundColor = [UIColor redColor];
+    whiteBoardTouchView.backgroundColor = [UIColor whiteColor];
     [whiteBoardTouchView setupInView:self.boardView onTouchBlock:^{
         NSString *toastMessage = NSLocalizedString(@"LockBoardTouchText", nil);
         [weakself showTipWithMessage:toastMessage];
