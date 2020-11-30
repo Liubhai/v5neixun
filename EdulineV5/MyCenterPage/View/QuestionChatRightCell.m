@@ -65,7 +65,7 @@
 }
 
 - (void)setQuestionChatRightModel:(MessageInfoModel *)info {
-    _faceImage.image = DefaultUserImage;
+    [_faceImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",info.userAvatar]] placeholderImage:DefaultUserImage];
     _nameLabel.text = [NSString stringWithFormat:@"%@",info.userName];
     
     _contentLabel.frame = CGRectMake(_faceImage.left - 12 - 12 - (questionChatContentWidth - 24), _nameLabel.bottom + 5 + 12, questionChatContentWidth - 24, 19);

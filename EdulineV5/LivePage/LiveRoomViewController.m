@@ -749,6 +749,8 @@
     messModel.message = content;
     messModel.userId = [NSString stringWithFormat:@"%@",@(EduConfigModel.shareInstance.uid)];
     messModel.userName = [NSString stringWithFormat:@"%@",EduConfigModel.shareInstance.userName];
+    messModel.userAvatar = [NSString stringWithFormat:@"%@",[V5_UserModel avatar]];
+    
     model.data = messModel;
 
     __weak LiveRoomViewController *weakSelf = self;
@@ -1630,6 +1632,14 @@
         weakself.timeCount = (NSInteger)((currenTimeInterval * 1000 - roomModel.startTime) * 0.001);
         [weakself startTimer];
     } else {
+        NSDate *currentDate = [NSDate dateWithTimeIntervalSinceNow:0];
+        NSTimeInterval currenTimeInterval = [currentDate timeIntervalSince1970];
+        weakself.timeCount = (NSInteger)((currenTimeInterval * 1000 - roomModel.startTime) * 0.001);
+        int hours = weakself.timeCount / 3600;
+        int minutes = (weakself.timeCount - (3600*hours)) / 60;
+        int seconds = weakself.timeCount % 60;
+        NSString *strTime = [NSString stringWithFormat:@"%.2d:%.2d:%.2d",hours,minutes,seconds];
+        weakself.timeLabel.text = strTime;
         [weakself stopTimer];
     }
 }

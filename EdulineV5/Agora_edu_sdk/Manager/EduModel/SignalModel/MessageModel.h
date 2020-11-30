@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *userId; // from
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *message;
+@property (nonatomic, strong) NSString *userAvatar;
 @property (nonatomic, assign) BOOL isSelfSend;
 @property (nonatomic, assign) CGFloat cellHeight;
 

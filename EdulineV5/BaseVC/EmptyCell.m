@@ -23,21 +23,21 @@
 - (void)makeSubView {
     _backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 150)];
     _backView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:_backView];
+    [self.contentView addSubview:_backView];
     
     _emptyIconImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 14, 142, 106)];
     _emptyIconImage.image = Image(@"empty_img");
     _emptyIconImage.clipsToBounds = YES;
     _emptyIconImage.contentMode = UIViewContentModeScaleAspectFill;
     _emptyIconImage.centerX = MainScreenWidth / 2.0;
-    [self addSubview:_emptyIconImage];
+    [self.contentView addSubview:_emptyIconImage];
     
     _emptyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _emptyIconImage.bottom, MainScreenWidth, 150 - 106 - 14)];
     _emptyLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     _emptyLabel.textAlignment = NSTextAlignmentCenter;
     _emptyLabel.text = @"暂无内容～";
     _emptyLabel.textColor = [UIColor lightGrayColor];
-    [self addSubview:_emptyLabel];
+    [self.contentView addSubview:_emptyLabel];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
