@@ -52,6 +52,10 @@
     return [Net_Path fullPath:@"config/typeset" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)shengwangConfig {
+    return [Net_Path fullPath:@"course/live/agora/config" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userCreatePath:(NSString *)userId {
     return [Net_Path fullPath:@"user/account/create" repalce:@"" byReplece:@""];
 }

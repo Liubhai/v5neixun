@@ -43,6 +43,9 @@ struct NetWorkUrl {
 /** 排版布局配置信息 */
 + (NSString *)layoutConfig;
 
+/** 声网配置信息接口  */
++ (NSString *)shengwangConfig;
+
 /** 创建账号 */
 + (NSString *)userCreatePath:(NSString *)userId;
 

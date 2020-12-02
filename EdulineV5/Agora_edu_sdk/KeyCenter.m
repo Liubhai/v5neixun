@@ -8,15 +8,16 @@
 
 #import "KeyCenter.h"
 #import "URL.h"
+#import "V5_Constant.h"
 
 @implementation KeyCenter
 
 + (NSString *)agoraAppid {
-    return @"149f7636178140d5821bf0d2b61a480b";//@"1155dc86fb9841ffa789a2f714dc2401";//
+    return shengwangAppid;
 }
 
 + (NSString *)authorization {
-    NSString *auth = @"9711a4961e4749d781f7ce4cdaf8221f:d21a5b18ffd348729d3005e816ae41a0";
+    NSString *auth = shengwangAuth;//@"9711a4961e4749d781f7ce4cdaf8221f:d21a5b18ffd348729d3005e816ae41a0";
     NSData *data = [auth dataUsingEncoding:NSUTF8StringEncoding];
     NSString *base64AuthCredentials = [data base64EncodedStringWithOptions:(NSDataBase64EncodingOptions)0];
     return base64AuthCredentials;

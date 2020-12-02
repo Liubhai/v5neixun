@@ -105,6 +105,7 @@
     self.quickLoginManager = [NTESQuickLoginManager sharedInstance];
     [self registerQuickLogin];
     
+    [self getShengwangConfigInfo];
     [self appConfigInfo];
     [self layoutConfig];
     [self getTypeInfo];
@@ -657,6 +658,19 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"login_config"] forKey:@"login_config"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+// MARK: - 获取声网配置信息
+- (void)getShengwangConfigInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path shengwangConfig] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if ([[responseObject objectForKey:@"code"] integerValue]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"appid"]] forKey:@"shengwang_appid"];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"auth"]] forKey:@"shengwang_auth"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     } enError:^(NSError * _Nonnull error) {
         

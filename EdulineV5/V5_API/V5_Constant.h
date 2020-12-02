@@ -33,6 +33,9 @@
 #ifndef V5_Constant_h
 #define V5_Constant_h
 
+#define shengwangAppid [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_appid"] == nil ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_appid"]
+#define shengwangAuth [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_auth"] == nil ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_auth"]
+
 #define Institution_Id [[NSUserDefaults standardUserDefaults] objectForKey:@"institutionId"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"institutionId"]
 
 #define ShowAudit [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowAudit"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowAudit"]
