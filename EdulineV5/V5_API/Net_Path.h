@@ -286,6 +286,9 @@ struct NetWorkUrl {
 /** 直播用户登录所需信息 */
 + (NSString *)liveLoginInfo;
 
+/** 声网直播课时信息 */
++ (NSString *)shengwangLiveInfo:(NSString *)liveId;
+
 // MARK: - 直播创建成功通知后台
 + (NSString *)noteLiveSucNet;
 

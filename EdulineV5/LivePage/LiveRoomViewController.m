@@ -210,7 +210,7 @@
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_leftBtn.right, 0, MainScreenWidth, 37)];
     _themeLabel.textColor = [UIColor whiteColor];
     _themeLabel.font = SYSTEMFONT(14);
-    _themeLabel.text =  SWNOTEmptyStr(_liveTitle) ? _liveTitle : @"欢迎来到本直播间";
+    _themeLabel.text =  SWNOTEmptyStr(EduConfigModel.shareInstance.className) ? EduConfigModel.shareInstance.className : @"欢迎来到本直播间";
     [_topToolBackView addSubview:_themeLabel];
     
     _cameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 7.5 - 37, 0, 37, 37)];
@@ -1131,11 +1131,11 @@
         AgoraLogInfo(@"small muteVideoStream:%d", sender.selected);
         
         WEAK(self);
-        if (sender.selected) {
-            [self.educationManager.rtcManager setClientRole:AgoraClientRoleBroadcaster];
-        } else {
-            [self.educationManager.rtcManager setClientRole:AgoraClientRoleAudience];
-        }
+//        if (sender.selected) {
+//            [self.educationManager.rtcManager setClientRole:AgoraClientRoleBroadcaster];
+//        } else {
+//            [self.educationManager.rtcManager setClientRole:AgoraClientRoleAudience];
+//        }
         
         [self.educationManager updateEnableVideoWithValue:sender.selected completeSuccessBlock:^{
 
@@ -1185,11 +1185,11 @@
             AgoraLogInfo(@"small muteVideoStream:%d", sender.selected);
             
             WEAK(self);
-            if (sender.selected) {
-                [self.educationManager.rtcManager setClientRole:AgoraClientRoleBroadcaster];
-            } else {
-                [self.educationManager.rtcManager setClientRole:AgoraClientRoleAudience];
-            }
+//            if (sender.selected) {
+//                [self.educationManager.rtcManager setClientRole:AgoraClientRoleBroadcaster];
+//            } else {
+//                [self.educationManager.rtcManager setClientRole:AgoraClientRoleAudience];
+//            }
             
             [self.educationManager updateEnableVideoWithValue:sender.selected completeSuccessBlock:^{
 
@@ -1216,7 +1216,7 @@
         
         AgoraLogInfo(@"small muteAudioStream:%d", sender.selected);
         
-        [self.educationManager.rtcManager enableLocalAudio:sender.selected];
+//        [self.educationManager.rtcManager enableLocalAudio:sender.selected];
         
         WEAK(self);
         [self.educationManager updateEnableAudioWithValue:sender.selected completeSuccessBlock:^{
@@ -1265,7 +1265,7 @@
             
             AgoraLogInfo(@"small muteAudioStream:%d", sender.selected);
             
-            [self.educationManager.rtcManager enableLocalAudio:sender.selected];
+//            [self.educationManager.rtcManager enableLocalAudio:sender.selected];
             
             WEAK(self);
             [self.educationManager updateEnableAudioWithValue:sender.selected completeSuccessBlock:^{

@@ -32,9 +32,15 @@
 #import "AppDelegate.h"
 
 // 直播测试
-#import "LiveRoomViewController.h"
 #import "TICManager.h"
 #import "TICConfig.h"
+
+// 声网直播测试
+#import "LiveRoomViewController.h"
+#import "BCLiveRoomViewController.h"
+#import "OneToOneLiveRoomVC.h"
+#import "AgoraRtm.h"
+#import "V5_UserModel.h"
 
 #import "AppDelegate.h"
 
@@ -106,6 +112,9 @@
 
 @property (strong, nonatomic) WKWebView *wkWebView;
 @property (strong, nonatomic) NSTimer *recordTimer;
+
+// 声网直播
+@property (nonatomic, strong) BaseEducationManager *educationManager;
 
 @end
 
@@ -972,7 +981,8 @@
             }
             return;
         }
-        [self getLiveCourseHourseInfo:model.model.classHourId courseHourseModel:model.model];
+//        [self getLiveCourseHourseInfo:model.model.classHourId courseHourseModel:model.model];
+        [self getShengwangLiveInfo:model.model.classHourId courselistModel:model.model];
         return;
     }
     
@@ -1272,7 +1282,8 @@
             }
             return;
         }
-        [self getLiveCourseHourseInfo:model.classHourId courseHourseModel:model];
+//        [self getLiveCourseHourseInfo:model.classHourId courseHourseModel:model];
+        [self getShengwangLiveInfo:model.classHourId courselistModel:model];
         return;
     }
     
@@ -1486,7 +1497,8 @@
 - (void)recordLearnContinuePlay:(CourseListModel *)model {
     freeLook = NO;
     if ([_courseType isEqualToString:@"2"]) {
-        [self getLiveCourseHourseInfo:model.classHourId courseHourseModel:model];
+//        [self getLiveCourseHourseInfo:model.classHourId courseHourseModel:model];
+//        [self getShengwangLiveInfo:model.classHourId courselistModel:model];
         return;
     }
     
@@ -2024,6 +2036,154 @@
             
         }];
     }
+}
+
+// MARK: - 声网直播
+
+- (void)getShengwangLiveInfo:(NSString *)sectionId courselistModel:(CourseListModel *)model {
+    if (SWNOTEmptyStr(sectionId)) {
+        __weak typeof(self) ws = self;
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path shengwangLiveInfo:sectionId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [self enterShengwangLive:responseObject[@"data"][@"info"] courselistModel:model];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+- (void)enterShengwangLive:(NSDictionary *)liveInfo courselistModel:(CourseListModel *)model {
+    
+    NSString *liveType = [NSString stringWithFormat:@"%@",liveInfo[@"course_live_type"]];
+    NSString *userUuid = [NSString stringWithFormat:@"%@",liveInfo[@"user_id"]];
+    NSString *roomUuid = [NSString stringWithFormat:@"%@",liveInfo[@"room_no"]];
+    NSString *roomName = [NSString stringWithFormat:@"%@",liveInfo[@"section_name"]];
+//    【1：大班课；2：小班课；3：1对1】
+    SceneType sceneType;
+    if ([liveType isEqualToString:@"3"]) {
+        sceneType = SceneType1V1;
+        self.educationManager = [OneToOneEducationManager new];
+    } else if ([liveType isEqualToString:@"1"]) {
+        sceneType = SceneTypeBig;
+        self.educationManager = [BigEducationManager new];
+    } else if ([liveType isEqualToString:@"2"]) {
+        sceneType = SceneTypeSmall;
+        self.educationManager = [MinEducationManager new];
+    }
+    
+    EduConfigModel.shareInstance.className = roomName;
+    EduConfigModel.shareInstance.userName = [V5_UserModel uname];
+    EduConfigModel.shareInstance.sceneType = sceneType;
+    
+    WEAK(self);
+    [self getConfigWithSuccessBolck:^{
+        [weakself getEntryInfoWithUserUuid:userUuid roomUuid:roomUuid successBolck:^{
+            [weakself getWhiteInfoWithSuccessBolck:^{
+                [weakself getRoomInfoWithSuccessBlock:^{
+                    [weakself setupSignalWithSuccessBlock:^{
+                        if (sceneType == SceneTypeBig) {
+                            BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
+                            vc.educationManager = (BigEducationManager *)self.educationManager;
+                            [self.navigationController pushViewController:vc animated:YES];
+                        } else if (sceneType == SceneTypeSmall) {
+                            LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
+                            vc.educationManager = (MinEducationManager *)self.educationManager;
+                            [self.navigationController pushViewController:vc animated:YES];
+                        } else if (sceneType == SceneType1V1) {
+                            OneToOneLiveRoomVC *vc = [[OneToOneLiveRoomVC alloc] init];
+                            vc.educationManager = (OneToOneEducationManager *)self.educationManager;
+                            [self.navigationController pushViewController:vc animated:YES];
+                        }
+                    }];
+                }];
+            }];
+        }];
+    }];
+    
+}
+
+#pragma mark EnterClassProcess
+- (void)getConfigWithSuccessBolck:(void (^)(void))successBlock {
+    
+    WEAK(self);
+    [BaseEducationManager getConfigWithSuccessBolck:^{
+        if(successBlock != nil){
+            successBlock();
+        }
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+    }];
+}
+
+- (void)getEntryInfoWithUserUuid:(NSString *)userUuid roomUuid:(NSString *)roomUuid successBolck:(void (^)(void))successBlock {
+    WEAK(self);
+    
+    NSString *userName = EduConfigModel.shareInstance.userName;
+    NSString *className = EduConfigModel.shareInstance.className;
+    SceneType sceneType = EduConfigModel.shareInstance.sceneType;
+    
+    [BaseEducationManager enterShengwangRoomWithUserName:userName roomName:className sceneType:sceneType userUuid:userUuid roomUuid:roomUuid successBolck:^{
+        if(successBlock != nil){
+            successBlock();
+        }
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+        
+    }];
+//
+//    [BaseEducationManager enterRoomWithUserName:userName roomName:className sceneType:sceneType successBolck:^{
+//        if(successBlock != nil){
+//            successBlock();
+//        }
+//
+//    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+//    }];
+}
+
+- (void)getWhiteInfoWithSuccessBolck:(void (^)(void))successBlock {
+    WEAK(self);
+    [self.educationManager getWhiteInfoCompleteSuccessBlock:^{
+        if(successBlock != nil){
+            successBlock();
+        }
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+    }];
+}
+
+- (void)getRoomInfoWithSuccessBlock:(void (^)(void))successBlock {
+    WEAK(self);
+    [self.educationManager getRoomInfoCompleteSuccessBlock:^(RoomInfoModel * _Nonnull roomInfoModel) {
+        if(successBlock != nil){
+            successBlock();
+        }
+        
+    } completeFailBlock:^(NSString * _Nonnull errMessage) {
+    }];
+}
+
+- (void)setupSignalWithSuccessBlock:(void (^)(void))successBlock {
+
+    NSString *appid = EduConfigModel.shareInstance.appId;
+    NSString *appToken = EduConfigModel.shareInstance.rtmToken;
+    NSString *uid = @(EduConfigModel.shareInstance.uid).stringValue;
+    
+    WEAK(self);
+    [self.educationManager initSignalWithAppid:appid appToken:appToken userId:uid dataSourceDelegate:nil completeSuccessBlock:^{
+        
+        NSString *channelName = EduConfigModel.shareInstance.channelName;
+        [weakself.educationManager joinSignalWithChannelName:channelName completeSuccessBlock:^{
+            if(successBlock != nil){
+                successBlock();
+            }
+            
+        } completeFailBlock:^(NSInteger errorCode) {
+            NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"JoinSignalFailedText", nil), (long)errorCode];
+        }];
+        
+    } completeFailBlock:^(NSInteger errorCode){
+        NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"InitSignalFailedText", nil), (long)errorCode];
+    }];
 }
 
 @end

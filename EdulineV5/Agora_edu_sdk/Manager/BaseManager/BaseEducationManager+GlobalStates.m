@@ -47,16 +47,16 @@
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"userName"] = userName;
-    params[@"roomName"] = roomName;
+    params[@"roomName"] = roomName;//课时名称
     params[@"type"] = @(sceneType);
     // student
     params[@"role"] = @(2);
     
 #warning userUuid：If you have your own user system, you need to align with the user system of our back-end service. Here you need to use the unique user ID of your own user system, the same userUuid will be considered as the same user.
-    params[@"userUuid"] = [UIDevice currentDevice].identifierForVendor.UUIDString;
+    params[@"userUuid"] = [UIDevice currentDevice].identifierForVendor.UUIDString;// 用户Uid
     
 #warning roomUuid:The unique classroom identifier of the customer scheduling system, users with the same roomUuid will be assigned to the same classroom. We do not have a schedule system, so this is set to empty.
-    params[@"roomUuid"] = @"";
+    params[@"roomUuid"] = @"";// 课时ID
 
     NSMutableDictionary *headers = [NSMutableDictionary dictionary];
     headers[@"Authorization"] = [HttpManager authorization];
@@ -83,6 +83,49 @@
             failBlock(error.description);
         }
     }];
+}
+
++ (void)enterShengwangRoomWithUserName:(NSString *)userName roomName:(NSString *)roomName sceneType:(SceneType)sceneType userUuid:(NSString *)userUuid roomUuid:(NSString *)roomUuid successBolck:(void (^ _Nullable) (void))successBlock completeFailBlock:(void (^ _Nullable) (NSString *errMessage))failBlock {
+    NSString *url = [NSString stringWithFormat:HTTP_ENTER_ROOM, HTTP_BASE_URL, EduConfigModel.shareInstance.appId];
+        
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        params[@"userName"] = userName;
+        params[@"roomName"] = roomName;//课时名称
+        params[@"type"] = @(sceneType);
+        // student
+        params[@"role"] = @(2);
+        
+    #warning userUuid：If you have your own user system, you need to align with the user system of our back-end service. Here you need to use the unique user ID of your own user system, the same userUuid will be considered as the same user.
+    params[@"userUuid"] = userUuid;
+        
+    #warning roomUuid:The unique classroom identifier of the customer scheduling system, users with the same roomUuid will be assigned to the same classroom. We do not have a schedule system, so this is set to empty.
+    params[@"roomUuid"] = roomUuid;
+
+        NSMutableDictionary *headers = [NSMutableDictionary dictionary];
+        headers[@"Authorization"] = [HttpManager authorization];
+        [HttpManager post:url params:params headers:headers success:^(id responseObj) {
+            
+            EnterRoomAllModel *model = [EnterRoomAllModel yy_modelWithDictionary:responseObj];
+            if(model.code == 0){
+                
+                EduConfigModel.shareInstance.userToken = model.data.userToken;
+                EduConfigModel.shareInstance.roomId = model.data.roomId;
+                        
+                if(successBlock != nil){
+                    successBlock();
+                }
+            } else {
+                if(failBlock != nil) {
+                    NSString *errMsg = [EduConfigModel generateHttpErrorMessageWithDescribe:NSLocalizedString(@"EnterRoomFailedText", nil) errorCode:model.code];
+                    failBlock(errMsg);
+                }
+            }
+            
+        } failure:^(NSError *error) {
+            if(failBlock != nil) {
+                failBlock(error.description);
+            }
+        }];
 }
 
 + (void)sendMessageWithType:(MessageType)messageType message:(NSString *)message successBolck:(void (^ _Nullable) (void))successBlock completeFailBlock:(void (^ _Nullable) (NSString *errMessage))failBlock {

@@ -192,7 +192,7 @@
     _themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_leftBtn.right, 0, MainScreenWidth, 37)];
     _themeLabel.textColor = [UIColor whiteColor];
     _themeLabel.font = SYSTEMFONT(14);
-    _themeLabel.text =  SWNOTEmptyStr(_liveTitle) ? _liveTitle : @"欢迎来到本直播间";
+    _themeLabel.text =  SWNOTEmptyStr(EduConfigModel.shareInstance.className) ? EduConfigModel.shareInstance.className : @"欢迎来到本直播间";
     [_topToolBackView addSubview:_themeLabel];
     
     _cameraBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 7.5 - 37, 0, 37, 37)];

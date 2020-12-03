@@ -353,6 +353,10 @@
     return [Net_Path fullPath:@"course/live/tencent/v2/userSig" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)shengwangLiveInfo:(NSString *)liveId {
+    return [Net_Path fullPath:@"course/live/agora/room/{id}" repalce:@"{id}" byReplece:liveId];
+}
+
 + (NSString *)noteLiveSucNet {
     return [Net_Path fullPath:@"course/live/room/start" repalce:@"" byReplece:@""];
 }

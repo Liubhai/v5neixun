@@ -185,12 +185,16 @@
         if (_fromSetingVC) {
             [self.navigationController popViewControllerAnimated:YES];
         } else {
-            self.institutionChooseFinished(YES);
+            if (self.institutionChooseFinished) {
+                self.institutionChooseFinished(YES);
+            }
         }
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"institutionId"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        self.institutionChooseFinished(YES);
+        if (self.institutionChooseFinished) {
+            self.institutionChooseFinished(YES);
+        }
     }
 }
 

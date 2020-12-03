@@ -48,8 +48,6 @@
     BOOL isWeek;// 显示周榜还是月榜
 }
 
-@property (nonatomic, strong) BaseEducationManager *educationManager;
-
 @property (nonatomic,strong, nullable)AliyunVodPlayerView *playerView;
 @property (strong, nonatomic) UITextField *institutionSearch;
 
@@ -137,129 +135,9 @@
         [AppDelegate presentLoginNav:self];
         return NO;
     }
-//    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
-//    return NO;
-    
-    SceneType sceneType = SceneTypeBig;
-    self.educationManager = [BigEducationManager new];
-
-    EduConfigModel.shareInstance.className = @"22222";
-    EduConfigModel.shareInstance.userName = [V5_UserModel uname];
-    EduConfigModel.shareInstance.sceneType = sceneType;
-    
-//    SceneType sceneType = SceneType1V1;
-//    self.educationManager = [OneToOneEducationManager new];
-//
-//    EduConfigModel.shareInstance.className = @"7777";
-//    EduConfigModel.shareInstance.userName = [V5_UserModel uname];
-//    EduConfigModel.shareInstance.sceneType = sceneType;
-    
-//    SceneType sceneType = SceneTypeSmall;
-//    self.educationManager = [MinEducationManager new];
-//
-//    EduConfigModel.shareInstance.className = @"7777";
-//    EduConfigModel.shareInstance.userName = [V5_UserModel uname];
-//    EduConfigModel.shareInstance.sceneType = sceneType;
-    
-        WEAK(self);
-        [self getConfigWithSuccessBolck:^{
-            [weakself getEntryInfoWithSuccessBolck:^{
-                [weakself getWhiteInfoWithSuccessBolck:^{
-                    [weakself getRoomInfoWithSuccessBlock:^{
-                        [weakself setupSignalWithSuccessBlock:^{
-                            if (sceneType == SceneTypeBig) {
-                                BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
-                                vc.educationManager = (BigEducationManager *)self.educationManager;
-                                [self.navigationController pushViewController:vc animated:YES];
-                            } else if (sceneType == SceneTypeSmall) {
-                                LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
-                                vc.educationManager = (MinEducationManager *)self.educationManager;
-                                [self.navigationController pushViewController:vc animated:YES];
-                            } else if (sceneType == SceneType1V1) {
-                                OneToOneLiveRoomVC *vc = [[OneToOneLiveRoomVC alloc] init];
-                                vc.educationManager = (OneToOneEducationManager *)self.educationManager;
-                                [self.navigationController pushViewController:vc animated:YES];
-                            }
-                        }];
-                    }];
-                }];
-            }];
-        }];
+    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
     return NO;
-}
-
-#pragma mark EnterClassProcess
-- (void)getConfigWithSuccessBolck:(void (^)(void))successBlock {
-    
-    WEAK(self);
-    [BaseEducationManager getConfigWithSuccessBolck:^{
-        if(successBlock != nil){
-            successBlock();
-        }
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-    }];
-}
-
-- (void)getEntryInfoWithSuccessBolck:(void (^)(void))successBlock {
-    WEAK(self);
-    
-    NSString *userName = EduConfigModel.shareInstance.userName;
-    NSString *className = EduConfigModel.shareInstance.className;
-    SceneType sceneType = EduConfigModel.shareInstance.sceneType;
-    
-    [BaseEducationManager enterRoomWithUserName:userName roomName:className sceneType:sceneType successBolck:^{
-        if(successBlock != nil){
-            successBlock();
-        }
-
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-    }];
-}
-
-- (void)getWhiteInfoWithSuccessBolck:(void (^)(void))successBlock {
-    WEAK(self);
-    [self.educationManager getWhiteInfoCompleteSuccessBlock:^{
-        if(successBlock != nil){
-            successBlock();
-        }
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-    }];
-}
-
-- (void)getRoomInfoWithSuccessBlock:(void (^)(void))successBlock {
-    WEAK(self);
-    [self.educationManager getRoomInfoCompleteSuccessBlock:^(RoomInfoModel * _Nonnull roomInfoModel) {
-        if(successBlock != nil){
-            successBlock();
-        }
-        
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-    }];
-}
-
-- (void)setupSignalWithSuccessBlock:(void (^)(void))successBlock {
-
-    NSString *appid = EduConfigModel.shareInstance.appId;
-    NSString *appToken = EduConfigModel.shareInstance.rtmToken;
-    NSString *uid = @(EduConfigModel.shareInstance.uid).stringValue;
-    
-    WEAK(self);
-    [self.educationManager initSignalWithAppid:appid appToken:appToken userId:uid dataSourceDelegate:nil completeSuccessBlock:^{
-        
-        NSString *channelName = EduConfigModel.shareInstance.channelName;
-        [weakself.educationManager joinSignalWithChannelName:channelName completeSuccessBlock:^{
-            if(successBlock != nil){
-                successBlock();
-            }
-            
-        } completeFailBlock:^(NSInteger errorCode) {
-            NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"JoinSignalFailedText", nil), (long)errorCode];
-        }];
-        
-    } completeFailBlock:^(NSInteger errorCode){
-        NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"InitSignalFailedText", nil), (long)errorCode];
-    }];
 }
 
 - (void)makeTableView {
