@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface live_rate_model : NSObject
 
-@property (strong, nonatomic) NSString *callback_url;//评论数量
+@property (strong, nonatomic) NSArray *callback_url;//评论数量
 @property (strong, nonatomic) NSString *status_text;//评论数量
 @property (assign, nonatomic) unsigned int status;//评论数量
 

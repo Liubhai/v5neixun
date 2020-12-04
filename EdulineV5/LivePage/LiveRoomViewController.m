@@ -1115,10 +1115,10 @@
     }
     AppDelegate *app = [AppDelegate delegate];
     app._allowRotation = NO;
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     __weak LiveRoomViewController *weakSelf = self;
     [weakSelf.educationManager releaseResources];
-    [self.navigationController popViewControllerAnimated:YES];
+    [weakSelf.navigationController popViewControllerAnimated:YES];
 }
 
 // MARK: - 开关摄像头

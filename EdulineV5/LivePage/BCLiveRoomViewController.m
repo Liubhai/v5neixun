@@ -1048,12 +1048,15 @@
         [self fullButtonClick:_fullScreenBtn];
         return;
     }
+    if (timer) {
+        dispatch_source_cancel(timer);
+    }
     AppDelegate *app = [AppDelegate delegate];
     app._allowRotation = NO;
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     __weak BCLiveRoomViewController *weakSelf = self;
     [weakSelf.educationManager releaseResources];
-    [self.navigationController popViewControllerAnimated:YES];
+    [weakSelf.navigationController popViewControllerAnimated:YES];
 }
 
 // MARK: - 开关摄像头
