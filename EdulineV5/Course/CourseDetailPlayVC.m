@@ -2106,15 +2106,20 @@
 
 - (void)getShengwangLiveInfo:(NSString *)sectionId courselistModel:(CourseListModel *)model {
     if (SWNOTEmptyStr(sectionId)) {
-        __weak typeof(self) ws = self;
+        WEAK(self);
+        [weakself showHudInView:weakself.view hint:@"直播信息获取中..."];
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path shengwangLiveInfo:sectionId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [self enterShengwangLive:responseObject[@"data"][@"info"] courselistModel:model];
+                } else {
+                    [weakself hideHud];
                 }
+            } else {
+                [weakself hideHud];
             }
         } enError:^(NSError * _Nonnull error) {
-            
+            [weakself hideHud];
         }];
     }
 }
@@ -2150,6 +2155,7 @@
             [weakself getWhiteInfoWithSuccessBolck:^{
                 [weakself getRoomInfoWithSuccessBlock:^{
                     [weakself setupSignalWithSuccessBlock:^{
+                        [weakself hideHud];
                         if (sceneType == SceneTypeBig) {
                             BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
                             vc.educationManager = (BigEducationManager *)weakself.educationManager;
@@ -2178,8 +2184,11 @@
     [BaseEducationManager getConfigWithSuccessBolck:^{
         if(successBlock != nil){
             successBlock();
+        } else {
+            [weakself hideHud];
         }
     } completeFailBlock:^(NSString * _Nonnull errMessage) {
+        [weakself hideHud];
     }];
 }
 
@@ -2193,9 +2202,11 @@
     [BaseEducationManager enterShengwangRoomWithUserName:userName roomName:className sceneType:sceneType userUuid:userUuid roomUuid:roomUuid successBolck:^{
         if(successBlock != nil){
             successBlock();
+        } else {
+            [weakself hideHud];
         }
     } completeFailBlock:^(NSString * _Nonnull errMessage) {
-        
+        [weakself hideHud];
     }];
 //
 //    [BaseEducationManager enterRoomWithUserName:userName roomName:className sceneType:sceneType successBolck:^{
@@ -2212,8 +2223,11 @@
     [self.educationManager getWhiteInfoCompleteSuccessBlock:^{
         if(successBlock != nil){
             successBlock();
+        } else {
+            [weakself hideHud];
         }
     } completeFailBlock:^(NSString * _Nonnull errMessage) {
+        [weakself hideHud];
     }];
 }
 
@@ -2222,9 +2236,11 @@
     [self.educationManager getRoomInfoCompleteSuccessBlock:^(RoomInfoModel * _Nonnull roomInfoModel) {
         if(successBlock != nil){
             successBlock();
+        } else {
+            [weakself hideHud];
         }
-        
     } completeFailBlock:^(NSString * _Nonnull errMessage) {
+        [weakself hideHud];
     }];
 }
 
@@ -2241,13 +2257,15 @@
         [weakself.educationManager joinSignalWithChannelName:channelName completeSuccessBlock:^{
             if(successBlock != nil){
                 successBlock();
+            } else {
+                [weakself hideHud];
             }
-            
         } completeFailBlock:^(NSInteger errorCode) {
+            [weakself hideHud];
             NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"JoinSignalFailedText", nil), (long)errorCode];
         }];
-        
     } completeFailBlock:^(NSInteger errorCode){
+        [weakself hideHud];
         NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"InitSignalFailedText", nil), (long)errorCode];
     }];
 }
