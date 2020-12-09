@@ -742,6 +742,7 @@
 // MARK: - 去抢购跳转
 - (void)liveRoomJumpCourseDetailPage:(NSDictionary *)dict {
     CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",dict[@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

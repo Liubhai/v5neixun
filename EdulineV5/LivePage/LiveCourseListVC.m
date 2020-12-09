@@ -96,6 +96,10 @@
     return 106;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 - (void)jumpCourseDetailPage:(NSIndexPath *)cellIndexPath {
     if (_delegate && [_delegate respondsToSelector:@selector(liveRoomJumpCourseDetailPage:)]) {
         [_delegate liveRoomJumpCourseDetailPage:_dataSource[cellIndexPath.row]];
