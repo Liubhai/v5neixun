@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LiveCourseListVC : BaseViewController
 
 @property (assign, nonatomic) id<LiveCourseListVCDelegate> delegate;
+@property (strong, nonatomic) NSString *sectionId;
 
 @end
 

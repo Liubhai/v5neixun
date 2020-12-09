@@ -78,7 +78,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
     return _dataSource.count;
 }
 
@@ -88,6 +87,7 @@
     if (!cell) {
         cell = [[LiveCourseListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
+    [cell setLiveCourseListCellInfo:_dataSource[indexPath.row] cellIndex:indexPath];
     cell.delegate = self;
     return cell;
 }
@@ -108,7 +108,21 @@
 }
 
 - (void)getLiveCourseList {
-        
+    if (SWNOTEmptyStr(_sectionId)) {
+        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path liveCourseListData] WithAuthorization:nil paramDic:@{@"section_id":_sectionId} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [_dataSource removeAllObjects];
+                    [_dataSource addObjectsFromArray:responseObject[@"data"]];
+                    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 /*

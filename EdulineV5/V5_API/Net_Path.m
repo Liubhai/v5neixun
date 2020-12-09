@@ -357,6 +357,10 @@
     return [Net_Path fullPath:@"course/live/agora/room/{id}" repalce:@"{id}" byReplece:liveId];
 }
 
++ (NSString *)liveCourseListData {
+    return [Net_Path fullPath:@"course/live/room/coursedatas" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)noteLiveSucNet {
     return [Net_Path fullPath:@"course/live/room/start" repalce:@"" byReplece:@""];
 }

@@ -359,6 +359,7 @@
                 if (_dataSource.count<15) {
                     _collectionView.mj_footer.hidden = YES;
                 } else {
+                    [_collectionView.mj_footer setState:MJRefreshStateIdle];
                     _collectionView.mj_footer.hidden = NO;
                 }
                 [_collectionView collectionViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_collectionView.height];

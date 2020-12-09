@@ -796,7 +796,9 @@
             // 大赏
         } else {
             // 带货
+            WEAK(self);
             LiveCourseListVC *vc = [[LiveCourseListVC alloc] init];
+            vc.sectionId = weakself.classId;
             vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
             [self.view addSubview:vc.view];
             [self addChildViewController:vc];

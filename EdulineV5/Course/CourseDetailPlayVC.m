@@ -967,6 +967,7 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
+    _currentHourseId = model.model.classHourId;
     __weak CourseDetailPlayVC *wekself = self;
     freeLook = NO;
     if ([_courseType isEqualToString:@"2"]) {
@@ -1008,7 +1009,6 @@
         return;
     }
     
-    _currentHourseId = model.model.classHourId;
     
     for (UIViewController *vc in self.childViewControllers) {
         if ([vc isKindOfClass:[CourseCommentListVC class]]) {
@@ -1290,6 +1290,7 @@
 }
 
 - (void)newClassCourseCellDidSelected:(CourseListModel *)model indexpath:(nonnull NSIndexPath *)indexpath {
+    _currentHourseId = model.classHourId;
     __weak CourseDetailPlayVC *wekself = self;
     freeLook = NO;
     if ([_courseType isEqualToString:@"2"]) {
@@ -1330,8 +1331,6 @@
         }
         return;
     }
-    
-    _currentHourseId = model.classHourId;
     
     for (UIViewController *vc in self.childViewControllers) {
         if ([vc isKindOfClass:[CourseCommentListVC class]]) {
@@ -2158,14 +2157,17 @@
                         [weakself hideHud];
                         if (sceneType == SceneTypeBig) {
                             BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
+                            vc.classId = weakself.currentHourseId;
                             vc.educationManager = (BigEducationManager *)weakself.educationManager;
                             [weakself.navigationController pushViewController:vc animated:YES];
                         } else if (sceneType == SceneTypeSmall) {
                             LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
+                            vc.classId = weakself.currentHourseId;
                             vc.educationManager = (MinEducationManager *)weakself.educationManager;
                             [weakself.navigationController pushViewController:vc animated:YES];
                         } else if (sceneType == SceneType1V1) {
                             OneToOneLiveRoomVC *vc = [[OneToOneLiveRoomVC alloc] init];
+                            vc.classId = weakself.currentHourseId;
                             vc.educationManager = (OneToOneEducationManager *)weakself.educationManager;
                             [weakself.navigationController pushViewController:vc animated:YES];
                         }
