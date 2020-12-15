@@ -2164,6 +2164,8 @@
                     [weakself setupSignalWithSuccessBlock:^{
                         [weakself hideHud];
                         [weakself showHudInView:self.view showHint:@"开始进入直播间"];
+                        // 请求一次学习记录
+                        [weakself requestOnceStudyRecord:model.classHourId];
                         if (sceneType == SceneTypeBig) {
                             BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
                             vc.classId = weakself.currentHourseId;
@@ -2279,6 +2281,18 @@
         [weakself hideHud];
         NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"InitSignalFailedText", nil), (long)errorCode];
     }];
+}
+
+// MARK: - 请求一次学习记录
+- (void)requestOnceStudyRecord:(NSString *)classHourseId {
+    WEAK(self);
+    if (SWNOTEmptyStr(classHourseId)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":classHourseId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 @end
