@@ -316,6 +316,7 @@
     
     // 处理学习记录ui
     _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - 85, 0, 85, 50);
+    _learnTimeLabel.textColor = EdlineV5_Color.textThirdColor;
     _learnIcon.frame = CGRectMake(_learnTimeLabel.left - 8 - 14, 0, 14, 14);
     _learnIcon.centerY = 50 / 2.0;
     
@@ -591,13 +592,26 @@
 //    }
     if ([model.model.course_type isEqualToString:@"2"]) {
         _learnIcon.hidden = YES;
+        _isLearningIcon.hidden = YES;
         _learnTimeLabel.text = model.model.live_rate.status_text;
-        if (SWNOTEmptyArr(model.model.live_rate.callback_url)) {
-            _learnTimeLabel.text = @"观看回放";
+        [_isLearningIcon stopAnimating];
+//        【957：未开始；999：学习中；992：已完成；】
+        if (model.model.live_rate.status == 992) {
+            if (SWNOTEmptyArr(model.model.live_rate.callback_url)) {
+                _learnTimeLabel.text = @"观看回放";
+                _learnTimeLabel.textColor = EdlineV5_Color.themeColor;
+            }
+        } else if (model.model.live_rate.status == 999) {
+            _isLearningIcon.hidden = NO;
+            _learnTimeLabel.textColor = EdlineV5_Color.themeColor;
         }
         CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
         _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
         _learnTimeLabel.hidden = NO;
+        if (model.model.live_rate.status == 999) {
+            [_isLearningIcon setRight:_learnTimeLabel.left - 5];
+            [self setAnimation:_isLearningIcon];
+        }
     }
     [_cellTableView reloadData];
 }
