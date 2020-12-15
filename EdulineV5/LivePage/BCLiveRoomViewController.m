@@ -299,6 +299,7 @@
     [_fullScreenBtn setImage:Image(@"play_suoxiao_icon") forState:UIControlStateSelected];
     [_fullScreenBtn addTarget:self action:@selector(fullButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomToolBackView addSubview:_fullScreenBtn];
+    _fullScreenBtn.hidden = YES;
     
     NSString *roomMember = @"90";
     CGFloat roomMemberWidth = [roomMember sizeWithFont:SYSTEMFONT(14)].width + 4 + 11 + 7.5 *2;
