@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImageView *defaultImageView;
 @property (strong, nonatomic) UIView *studentRenderView;
 @property (strong, nonatomic) UIButton *closeStudentViewButton;
+@property (strong, nonatomic) UILabel *nameLabel;
 - (void)setButtonEnabled:(BOOL)enabled;
 - (void)updateVideoImageWithMuted:(BOOL)muted;
 - (void)updateAudioImageWithMuted:(BOOL)muted;

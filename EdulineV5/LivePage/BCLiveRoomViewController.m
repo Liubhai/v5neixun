@@ -394,7 +394,7 @@
     
     EduConfigModel *configModel = EduConfigModel.shareInstance;
     
-    [self.educationManager initRTCEngineKitWithAppid:configModel.appId clientRole:RTCClientRoleBroadcaster dataSourceDelegate:self];
+    [self.educationManager initRTCEngineKitWithAppid:configModel.appId clientRole:RTCClientRoleAudience dataSourceDelegate:self];
     
     self.cameraBtn.selected = self.educationManager.studentModel.enableVideo;
     self.voiceBtn.selected = self.educationManager.studentModel.enableAudio;
@@ -1355,7 +1355,7 @@
     if(studentModel == nil){
         return;
     }
-    
+
     // 这两个按钮只和自己连麦的情况下才有效
     _voiceBtn.selected = studentModel.enableAudio;
     _cameraBtn.selected = studentModel.enableVideo;
@@ -1366,7 +1366,7 @@
     if (self.studentVideoView) {
         self.studentVideoView.defaultImageView.hidden = studentModel.enableVideo ? YES : NO;
     }
-    
+    self.studentVideoView.nameLabel.text = studentModel.userName;
 //    [self.handupButton setBackgroundImage:[UIImage imageNamed:@"icon-handup-x"] forState:(UIControlStateNormal)];
     
 }
@@ -1650,6 +1650,7 @@
 }
 
 - (void)updateTeacherViews:(UserModel*)teacherModel {
+    self.teacherFaceBackView.nameLabel.text = teacherModel.userName;
     if(teacherModel != nil){
         self.teacherFaceBackView.defaultImageView.hidden = teacherModel.enableVideo ? YES : NO;
     } else {

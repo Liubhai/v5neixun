@@ -35,6 +35,13 @@
     [_closeStudentViewButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_closeStudentViewButton];
     
+    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - 16, self.bounds.size.width, 16)];
+    _nameLabel.layer.masksToBounds = YES;
+    _nameLabel.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.4].CGColor;
+    _nameLabel.font = SYSTEMFONT(11);
+    _nameLabel.textColor = [UIColor whiteColor];
+    [self addSubview:_nameLabel];
+    
 }
 
 - (void)updateVideoImageWithMuted:(BOOL)muted {

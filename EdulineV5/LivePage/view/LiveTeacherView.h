@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UIView *videoRenderView;
 @property (strong, nonatomic) UIImageView *defaultImageView;
+@property (strong, nonatomic) UILabel *nameLabel;
 
 @end
 
