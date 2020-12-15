@@ -133,7 +133,7 @@
     [self makeLiveSubView];
     [self makeMidSubView];
     [self makeBoardView];
-    [self makeNoticeView];
+//    [self makeNoticeView];
     [self makeChatListTableView];
     [self makeBottomView];
 //    [self makeHandUpButton];
@@ -595,6 +595,7 @@
     _noticeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 32)];
     _noticeBackView.backgroundColor = [UIColor whiteColor];
     [_chatBackView addSubview:_noticeBackView];
+    _noticeBackView.hidden = YES;
     
     UIImageView *noticeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, (_noticeBackView.height - 17) / 2.0, 17, 17)];
     noticeIcon.image = Image(@"gonggao");
@@ -624,7 +625,13 @@
 
 // MARK: - 聊天tableview
 - (void)makeChatListTableView {
-    _chatListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _noticeBackView.bottom, MainScreenWidth, _chatBackView.height - _noticeBackView.height)];
+    
+    _chatBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _midButtonBackView.bottom, MainScreenWidth, MainScreenHeight - _midButtonBackView.bottom - CommenViewHeight)];
+    _chatBackView.backgroundColor = [UIColor whiteColor];
+    _chatBackView.hidden = YES;
+    [self.view addSubview:_chatBackView];
+    
+    _chatListTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _chatBackView.height)];
     _chatListTableView.delegate = self;
     _chatListTableView.dataSource = self;
     _chatListTableView.backgroundColor = EdlineV5_Color.backColor;;
