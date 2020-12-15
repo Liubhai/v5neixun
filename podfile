@@ -18,22 +18,22 @@ target 'EdulineV5' do
     pod 'LBXScan/UI','~> 2.3'
     pod 'LXReorderableCollectionViewFlowLayout','~> 0.2.1'
     pod 'Bugly'
-    
-    pod 'UMCCommon'
+
+    pod 'UMCCommon', '2.1.4'
     # U-Share SDK UI模块（分享面板，建议添加）
-    pod 'UMCShare/UI'
+    pod 'UMCShare/UI', '6.9.8'
     # 集成微信(精简版0.2M)
 #    pod 'UMCShare/Social/ReducedWeChat'
     # 集成微信(完整版14.4M)
-    pod 'UMCShare/Social/WeChat'
+    pod 'UMCShare/Social/WeChat', '6.9.8'
     # 集成QQ/QZone/TIM(精简版0.5M)
 #    pod 'UMCShare/Social/ReducedQQ'
     # 集成QQ/QZone/TIM(完整版7.6M)
-    pod 'UMCShare/Social/QQ'
+    pod 'UMCShare/Social/QQ', '6.9.8'
     # 集成新浪微博(精简版1M)
 #    pod 'UMCShare/Social/ReducedSina'
     # 集成新浪微博(完整版25.3M)
-    pod 'UMCShare/Social/Sina'
+    pod 'UMCShare/Social/Sina', '6.9.8'
     #直播
 #    pod 'TEduBoard_iOS','2.4.6.1'
 #    pod 'TXIMSDK_iOS','4.6.101'
@@ -50,7 +50,7 @@ target 'EdulineV5' do
     
     #声网直播相关
     use_frameworks!
-    pod 'Whiteboard', '2.6.4'
+    pod 'Whiteboard', '2.11.0'
     pod 'AgoraRtcEngine_iOS', '2.9.0.102'
     pod 'AgoraRtm_iOS', '~> 1.2.2'
     

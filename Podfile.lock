@@ -16,21 +16,21 @@ PODS:
     - AFNetworking/NSURLSession
   - AgoraRtcEngine_iOS (2.9.0.102)
   - AgoraRtm_iOS (1.2.2.1)
-  - AlipaySDK-iOS (15.7.4)
+  - AlipaySDK-iOS (15.7.9)
   - AliyunOSSiOS (2.10.8)
-  - Bugly (2.5.2)
-  - CocoaLumberjack (3.6.1):
-    - CocoaLumberjack/Core (= 3.6.1)
-  - CocoaLumberjack/Core (3.6.1)
+  - Bugly (2.5.71)
+  - CocoaLumberjack (3.7.0):
+    - CocoaLumberjack/Core (= 3.7.0)
+  - CocoaLumberjack/Core (3.7.0)
   - dsBridge (3.0.6)
   - FMDB (2.7):
     - FMDB/standard (= 2.7)
   - FMDB/standard (2.7)
   - JSONModel (1.7.0)
-  - LBXScan/LBXNative (2.3):
+  - LBXScan/LBXNative (2.5.1):
     - LBXScan/Types (~> 2.2)
-  - LBXScan/Types (2.3)
-  - LBXScan/UI (2.3):
+  - LBXScan/Types (2.5.1)
+  - LBXScan/UI (2.5.1):
     - LBXScan/Types (~> 2.2)
   - LXReorderableCollectionViewFlowLayout (0.2.1)
   - Masonry (1.1.0)
@@ -72,28 +72,28 @@ PODS:
     - UMCCommon
     - UMCShare/Core
   - WechatOpenSDK (1.8.7.1)
-  - Whiteboard (2.6.4):
-    - Whiteboard/Base (= 2.6.4)
-    - Whiteboard/Converter (= 2.6.4)
-    - Whiteboard/NativeReplayer (= 2.6.4)
-    - Whiteboard/Object (= 2.6.4)
-    - Whiteboard/Replayer (= 2.6.4)
-    - Whiteboard/Room (= 2.6.4)
-    - Whiteboard/Utils (= 2.6.4)
-  - Whiteboard/Base (2.6.4):
+  - Whiteboard (2.11.0):
+    - Whiteboard/Base (= 2.11.0)
+    - Whiteboard/Converter (= 2.11.0)
+    - Whiteboard/Model (= 2.11.0)
+    - Whiteboard/NativeReplayer (= 2.11.0)
+    - Whiteboard/Object (= 2.11.0)
+    - Whiteboard/Replayer (= 2.11.0)
+    - Whiteboard/Room (= 2.11.0)
+  - Whiteboard/Base (2.11.0):
     - dsBridge (~> 3.0.2)
     - Whiteboard/Object
-  - Whiteboard/Converter (2.6.4):
+  - Whiteboard/Converter (2.11.0):
     - Whiteboard/Object
-  - Whiteboard/NativeReplayer (2.6.4):
-    - Whiteboard/Replayer
-  - Whiteboard/Object (2.6.4):
+  - Whiteboard/Model (2.11.0):
     - YYModel (~> 1.0.4)
-  - Whiteboard/Replayer (2.6.4):
+  - Whiteboard/NativeReplayer (2.11.0):
+    - Whiteboard/Replayer
+  - Whiteboard/Object (2.11.0):
+    - Whiteboard/Model
+  - Whiteboard/Replayer (2.11.0):
     - Whiteboard/Base
-  - Whiteboard/Room (2.6.4):
-    - Whiteboard/Base
-  - Whiteboard/Utils (2.6.4):
+  - Whiteboard/Room (2.11.0):
     - Whiteboard/Base
   - YYKit (1.0.9):
     - YYKit/no-arc (= 1.0.9)
@@ -122,13 +122,13 @@ DEPENDENCIES:
   - TXIMSDK_iOS (= 4.8.10)
   - TXLiteAVSDK_TRTC (= 7.2.8940)
   - TZImagePickerController (= 3.2.7)
-  - UMCCommon
-  - UMCShare/Social/QQ
-  - UMCShare/Social/Sina
-  - UMCShare/Social/WeChat
-  - UMCShare/UI
+  - UMCCommon (= 2.1.4)
+  - UMCShare/Social/QQ (= 6.9.8)
+  - UMCShare/Social/Sina (= 6.9.8)
+  - UMCShare/Social/WeChat (= 6.9.8)
+  - UMCShare/UI (= 6.9.8)
   - WechatOpenSDK
-  - Whiteboard (= 2.6.4)
+  - Whiteboard (= 2.11.0)
   - YYKit (= 1.0.9)
 
 SPEC REPOS:
@@ -174,14 +174,14 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   AgoraRtcEngine_iOS: 9755a9dcd45ab1d177ece9fe15dea23124d63d50
   AgoraRtm_iOS: 8cccab7a000beefedb737d5e822b9d4a73f925fb
-  AlipaySDK-iOS: 8659cdb4403de7e5f26ad8b699864a9cbe53384c
+  AlipaySDK-iOS: 94ff4c0e17c5e7d126b8207596d5033006534c25
   AliyunOSSiOS: 8db92936545593b9e5c66d680ef2ac0738946651
-  Bugly: dbac48b55ad469a97cc4321045cd50df8f63d44f
-  CocoaLumberjack: b17ae15142558d08bbacf69775fa10c4abbebcc9
+  Bugly: fd066c75c4a0eca1440f9b6a84bd37d51bfc85ac
+  CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   FMDB: 115114e988a7c92a5191f1334c46c99b0a477700
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
-  LBXScan: e51449f0832d1fe17da632af0d22adeb3cfa3543
+  LBXScan: 90ca10d0c38fb4a5a6980d7782354f3f69f50093
   LXReorderableCollectionViewFlowLayout: acd6fe9fd0800efc656266a345130a2f634abf85
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
@@ -195,10 +195,10 @@ SPEC CHECKSUMS:
   UMCCommon: b0703b0053323f598e01670ea702b8eb1e66e611
   UMCShare: a250203b34a56cde25cc4c28335449b542f0255d
   WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
-  Whiteboard: 79ab8b3ba0a3bcd573c9a77a23da5ef07e7a0f5d
+  Whiteboard: 0534bf2c72ee21494f293de16aa02e4fe5b8f617
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: dfb6f927ad0f404961c52588f28f24bae26962eb
+PODFILE CHECKSUM: f48732991ed413935163499fea7760ab77dd940f
 
 COCOAPODS: 1.9.1
