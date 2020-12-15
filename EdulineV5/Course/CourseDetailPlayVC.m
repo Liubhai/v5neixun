@@ -2287,7 +2287,7 @@
 - (void)requestOnceStudyRecord:(NSString *)classHourseId {
     WEAK(self);
     if (SWNOTEmptyStr(classHourseId)) {
-        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":classHourseId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":weakself.ID,@"section_id":classHourseId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
             NSLog(@"%@",responseObject);
         } enError:^(NSError * _Nonnull error) {
             
