@@ -24,12 +24,12 @@
 #import "HomePageHotRecommendedCell.h"
 
 // 直播测试
-#import "LiveRoomViewController.h"
-#import "BCLiveRoomViewController.h"
-#import "OneToOneLiveRoomVC.h"
-#import "TICManager.h"
-#import "TICConfig.h"
-#import "AgoraRtm.h"
+//#import "LiveRoomViewController.h"
+//#import "BCLiveRoomViewController.h"
+//#import "OneToOneLiveRoomVC.h"
+//#import "TICManager.h"
+//#import "TICConfig.h"
+//#import "AgoraRtm.h"
 
 
 

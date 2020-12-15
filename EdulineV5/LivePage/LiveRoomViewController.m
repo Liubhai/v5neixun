@@ -405,7 +405,7 @@
     _midButtonBackView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_midButtonBackView];
     
-    BOOL showMenberList = YES;
+    BOOL showMenberList = NO;
     if ([_userIdentify isEqualToString:@"1"] && [_course_live_type isEqualToString:@"2"]) {
         showMenberList = YES;
     }

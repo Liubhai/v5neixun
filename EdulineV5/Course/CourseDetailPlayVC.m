@@ -39,7 +39,7 @@
 #import "LiveRoomViewController.h"
 #import "BCLiveRoomViewController.h"
 #import "OneToOneLiveRoomVC.h"
-#import "AgoraRtm.h"
+//#import "AgoraRtm.h"
 #import "V5_UserModel.h"
 
 #import "AppDelegate.h"
@@ -2143,11 +2143,19 @@
     } else if ([liveType isEqualToString:@"2"]) {
         sceneType = SceneTypeSmall;
         self.educationManager = [MinEducationManager new];
+    } else {
+        [weakself hideHud];
+        return;
     }
+    
+    [weakself hideHud];
+    
+    [weakself showHudInView:weakself.view hint:@"进入直播间中..."];
     
     EduConfigModel.shareInstance.className = roomName;
     EduConfigModel.shareInstance.userName = [V5_UserModel uname];
     EduConfigModel.shareInstance.sceneType = sceneType;
+    
     
     [weakself getConfigWithSuccessBolck:^{
         [weakself getEntryInfoWithUserUuid:userUuid roomUuid:roomUuid successBolck:^{
@@ -2155,6 +2163,7 @@
                 [weakself getRoomInfoWithSuccessBlock:^{
                     [weakself setupSignalWithSuccessBlock:^{
                         [weakself hideHud];
+                        [weakself showHudInView:self.view showHint:@"开始进入直播间"];
                         if (sceneType == SceneTypeBig) {
                             BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
                             vc.classId = weakself.currentHourseId;

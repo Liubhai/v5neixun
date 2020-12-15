@@ -592,6 +592,9 @@
     if ([model.model.course_type isEqualToString:@"2"]) {
         _learnIcon.hidden = YES;
         _learnTimeLabel.text = model.model.live_rate.status_text;
+        if (SWNOTEmptyArr(model.model.live_rate.callback_url)) {
+            _learnTimeLabel.text = @"观看回放";
+        }
         CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
         _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);
         _learnTimeLabel.hidden = NO;

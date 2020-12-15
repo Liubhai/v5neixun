@@ -325,8 +325,8 @@
     _timeLabel.textColor = [UIColor whiteColor];
     [_bottomToolBackView addSubview:_timeLabel];
     if ([self.educationManager isKindOfClass:[BigEducationManager class]]) {
-        _blueCircleView.hidden = YES;
-        _timeLabel.hidden = YES;
+//        _blueCircleView.hidden = YES;
+//        _timeLabel.hidden = YES;
     }
 }
 
