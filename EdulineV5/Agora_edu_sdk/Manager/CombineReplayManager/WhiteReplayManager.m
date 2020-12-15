@@ -50,7 +50,7 @@
 }
 
 - (void)initWhiteSDKWithBoardView:(WhiteBoardView *)boardView {
-    self.whiteSDK = [[WhiteSDK alloc] initWithWhiteBoardView:boardView config:[WhiteSdkConfiguration defaultConfig] commonCallbackDelegate:self];
+    self.whiteSDK = [[WhiteSDK alloc] initWithWhiteBoardView:boardView config:[[WhiteSdkConfiguration alloc] initWithApp:@"ImOX0A0nEeu977HKRpNiQw/OpJmQR-ctmm5hg"]  commonCallbackDelegate:self];
 }
 
 - (void)updateWhitePlayerPhase:(WhitePlayerPhase)phase {

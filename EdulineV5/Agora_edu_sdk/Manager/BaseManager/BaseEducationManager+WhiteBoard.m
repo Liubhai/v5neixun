@@ -18,7 +18,7 @@
     
     self.whiteManager = [[WhiteManager alloc] init];
     self.whiteManager.whiteManagerDelegate = self;
-    [self.whiteManager initWhiteSDKWithBoardView:boardView config:[WhiteSdkConfiguration defaultConfig]];
+    [self.whiteManager initWhiteSDKWithBoardView:boardView config:[[WhiteSdkConfiguration alloc] initWithApp:@"ImOX0A0nEeu977HKRpNiQw/OpJmQR-ctmm5hg"]];
 }
 
 - (void)joinWhiteRoomWithBoardId:(NSString*)boardId boardToken:(NSString*)boardToken whiteWriteModel:(BOOL)isWritable  completeSuccessBlock:(void (^) (WhiteRoom * _Nullable room))successBlock completeFailBlock:(void (^) (NSError * _Nullable error))failBlock {
