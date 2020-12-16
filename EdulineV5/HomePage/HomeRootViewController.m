@@ -131,11 +131,14 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
-    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
-        [AppDelegate presentLoginNav:self];
-        return NO;
-    }
-    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
+//    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+//        [AppDelegate presentLoginNav:self];
+//        return NO;
+//    }
+//    InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+//    return NO;
+    CourseSearchHistoryVC *vc = [[CourseSearchHistoryVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
     return NO;
 }
