@@ -282,6 +282,7 @@
     }
     
     if ([model.course_type isEqualToString:@"2"]) {
+        _learnIcon.hidden = YES;
         _learnTimeLabel.text = model.live_rate.status_text;
         _isLearningIcon.hidden = YES;
         [_isLearningIcon stopAnimating];
