@@ -334,7 +334,7 @@
     NSString *courseOrderInfoUrl = [Net_Path courseOrderInfo];
     if ([_orderTypeString isEqualToString:@"course"]) {
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
-    } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+    } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
     }
     
@@ -343,7 +343,7 @@
     if (SWNOTEmptyStr(_orderId)) {
         if ([_orderTypeString isEqualToString:@"course"]) {
             [param setObject:_orderId forKey:@"course_id"];
-        } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+        } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
             [param setObject:_orderId forKey:@"section_id"];
         }
     }
@@ -374,14 +374,14 @@
     NSString *courseOrderInfoUrl = [Net_Path courseOrderInfo];
     if ([_orderTypeString isEqualToString:@"course"]) {
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
-    } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+    } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
     }
     
     NSMutableDictionary *pass = [[NSMutableDictionary alloc] init];
     if ([_orderTypeString isEqualToString:@"course"]) {
         [pass setObject:_orderId forKey:@"course_id"];
-    } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
+    } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         [pass setObject:_orderId forKey:@"section_id"];
     }
     

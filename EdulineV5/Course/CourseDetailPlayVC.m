@@ -788,7 +788,7 @@
     
     if ([currentCourseFinalModel.model.price floatValue]>0) {
         OrderViewController *vc = [[OrderViewController alloc] init];
-        vc.orderTypeString = @"courseHourse";
+        vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
         vc.orderId = currentCourseFinalModel.model.classHourId;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
@@ -811,7 +811,7 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         OrderViewController *vc = [[OrderViewController alloc] init];
-        vc.orderTypeString = @"courseHourse";
+        vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
         vc.orderId = currentCourseFinalModel.model.classHourId;
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -978,7 +978,7 @@
         if (cell.listFinalModel.model.audition <= 0 && !cell.listFinalModel.model.is_buy) {
             if ([cell.listFinalModel.model.price floatValue] > 0) {
                 OrderViewController *vc = [[OrderViewController alloc] init];
-                vc.orderTypeString = @"courseHourse";
+                vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
                 vc.orderId = cell.listFinalModel.model.classHourId;
                 [self.navigationController pushViewController:vc animated:YES];
                 [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
@@ -1047,7 +1047,7 @@
     if (cell.listFinalModel.model.audition <= 0 && !cell.listFinalModel.model.is_buy) {
         if ([cell.listFinalModel.model.price floatValue] > 0) {
             OrderViewController *vc = [[OrderViewController alloc] init];
-            vc.orderTypeString = @"courseHourse";
+            vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
             vc.orderId = cell.listFinalModel.model.classHourId;
             [self.navigationController pushViewController:vc animated:YES];
             [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
@@ -1301,7 +1301,7 @@
         if (model.audition <= 0 && !model.is_buy) {
             if ([model.price floatValue] > 0) {
                 OrderViewController *vc = [[OrderViewController alloc] init];
-                vc.orderTypeString = @"courseHourse";
+                vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
                 vc.orderId = model.classHourId;
                 [self.navigationController pushViewController:vc animated:YES];
                 [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
@@ -1360,7 +1360,7 @@
     if (model.audition <= 0 && !model.is_buy) {
         if ([model.price floatValue] > 0) {
             OrderViewController *vc = [[OrderViewController alloc] init];
-            vc.orderTypeString = @"courseHourse";
+            vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
             vc.orderId = model.classHourId;
             [self.navigationController pushViewController:vc animated:YES];
             [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
