@@ -221,11 +221,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *pass = _dataSource[indexPath.section][@"products"][indexPath.row];
+    
+    NSString *typeString = [NSString stringWithFormat:@"%@",[pass objectForKey:@"type_id"]];
+    
     NSString *courseType = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]];
     //课程类型【1：点播；2：直播；3：面试；4：班级；】
     if ([courseType isEqualToString:@"1"]) {
         CourseMainViewController *vc = [[CourseMainViewController alloc] init];
         vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
+        if ([typeString isEqualToString:@"5"] || [typeString isEqualToString:@"6"] || [typeString isEqualToString:@"7"] || [typeString isEqualToString:@"8"]) {
+            vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_id"]];
+        }
         vc.courselayer = [NSString stringWithFormat:@"%@",[pass objectForKey:@"section_level"]];
         vc.isLive = [[NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
         vc.courseType = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]];
@@ -233,6 +239,9 @@
     } else if ([courseType isEqualToString:@"2"]) {
         CourseMainViewController *vc = [[CourseMainViewController alloc] init];
         vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
+        if ([typeString isEqualToString:@"5"] || [typeString isEqualToString:@"6"] || [typeString isEqualToString:@"7"] || [typeString isEqualToString:@"8"]) {
+            vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_id"]];
+        }
         vc.isLive = [[NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
         vc.courseType = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]];
         [self.navigationController pushViewController:vc animated:YES];
@@ -241,6 +250,9 @@
     } else if ([courseType isEqualToString:@"4"]) {
         CourseMainViewController *vc = [[CourseMainViewController alloc] init];
         vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
+        if ([typeString isEqualToString:@"5"] || [typeString isEqualToString:@"6"] || [typeString isEqualToString:@"7"] || [typeString isEqualToString:@"8"]) {
+            vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_id"]];
+        }
         vc.isLive = [[NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
         vc.courseType = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]];
         [self.navigationController pushViewController:vc animated:YES];
