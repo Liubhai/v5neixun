@@ -604,6 +604,8 @@
         } else if (model.model.live_rate.status == 999) {
             _isLearningIcon.hidden = NO;
             _learnTimeLabel.textColor = EdlineV5_Color.themeColor;
+        } else if (model.model.live_rate.status == 957) {
+            _learnTimeLabel.text = [EdulineV5_Tool evaluateStarTime:model.model.start_time endTime:model.model.end_time];
         }
         CGFloat learnTimeLabelWidth = [_learnTimeLabel.text sizeWithFont:_learnTimeLabel.font].width + 4;
         _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - learnTimeLabelWidth, 0, learnTimeLabelWidth, 50);

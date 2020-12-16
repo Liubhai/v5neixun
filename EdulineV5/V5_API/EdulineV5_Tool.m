@@ -678,4 +678,36 @@ static EdulineV5_Tool *_sharedInstance;
     
 }
 
++ (NSString *)evaluateStarTime:(NSString *)starTime endTime:(NSString *)eTime {
+    if (!starTime || !eTime) {
+        return @"";
+    }
+    NSTimeInterval secondsPer = 24*60*60;
+    NSDate *today = [[NSDate alloc]init];
+    NSDate *yesterday = [today dateByAddingTimeInterval:-secondsPer];
+    NSString *yesterdayString = [[yesterday description]substringToIndex:10];
+    NSString *todayString = [[today description]substringToIndex:10];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:starTime.integerValue];
+    NSString *dateString = [[date description]substringToIndex:10];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat:@"yyyy年MM月dd日 HH:mm"];
+    // 开始时间
+    NSDate *nowDate = [NSDate dateWithTimeIntervalSince1970:starTime.integerValue];
+    NSString *theDay = [dateFormatter stringFromDate:nowDate];//日期的年月日
+    
+    //结束时间
+    NSDate *eDate = [NSDate dateWithTimeIntervalSince1970:eTime.integerValue];
+    NSString *eDay = [dateFormatter stringFromDate:eDate];//日期的年月日
+    
+    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];//当前年月日
+    NSString *nowYearStr = [currentDay substringToIndex:4];
+    NSString *yearStr = [theDay substringToIndex:4];
+    if ([yearStr isEqualToString:nowYearStr]) {
+        return [NSString stringWithFormat:@"%@ %@-%@",[theDay substringWithRange:NSMakeRange(5, 6)],[theDay substringWithRange:NSMakeRange(12, 5)],[eDay substringWithRange:NSMakeRange(12, 5)]];
+    } else {
+        return [NSString stringWithFormat:@"%@-%@",theDay,[eDay substringWithRange:NSMakeRange(12, 5)]];
+    }
+}
+
 @end

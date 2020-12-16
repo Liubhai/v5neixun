@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
  "status": 1,
  "level": 2,
  "child": []
+ "start_time": 1598422680,
+ "end_time": 1598425200,
  //
  {
      "course_id" = 1;
@@ -47,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL has_child;
 @property (assign, nonatomic) BOOL is_buy;
 @property (assign, nonatomic) unsigned int audition;
+@property (strong, nonatomic) NSString *start_time;
+@property (strong, nonatomic) NSString *end_time;
 @property (strong, nonatomic) NSString *course_type;
 @property (strong, nonatomic) NSString *course_type_text;
 @property (strong, nonatomic) section_data_model *section_data;

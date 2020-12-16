@@ -78,4 +78,7 @@
 // 字典转字符串
 + (NSString *)dictConvertToJsonData:(NSDictionary *)dict;
 
+// MARK: - 显示两个时间戳之间的时间段
++ (NSString *)evaluateStarTime:(NSString *)starTime endTime:(NSString *)eTime;
+
 @end
