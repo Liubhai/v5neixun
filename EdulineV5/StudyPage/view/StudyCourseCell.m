@@ -37,6 +37,7 @@
     _titleL.text = @"你是个傻屌";
     _titleL.textColor = EdlineV5_Color.textFirstColor;
     _titleL.font = SYSTEMFONT(15);
+    _titleL.numberOfLines = 0;
     [self.contentView addSubview:_titleL];
     
     _learnProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 8, MainScreenWidth - _titleL.left - 15, 4)];
@@ -70,7 +71,17 @@
     } else if ([courseType isEqualToString:@"4"]) {
         _courseTypeImage.image = Image(@"class_icon");
     }
+    
+    _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
     _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_title"]];
+    _titleL.numberOfLines = 0;
+    [_titleL sizeToFit];
+    if (_titleL.height > 50) {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
+    } else {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, _titleL.height);
+    }
+    
     NSString *progressString = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"finished_rate"]];
     _learnProgress.progress = [progressString integerValue] * 0.01;
     if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 0) {
@@ -98,6 +109,17 @@
         _courseTypeImage.image = Image(@"class_icon");
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"product_title"]];
+    
+    _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
+    _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_title"]];
+    _titleL.numberOfLines = 0;
+    [_titleL sizeToFit];
+    if (_titleL.height > 50) {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
+    } else {
+        _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, _titleL.height);
+    }
+    
     _learnProgress.progress = [[courseInfo objectForKey:@"finished_rate"] integerValue] / 100;
     if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 0) {
         _learnCountLabel.text = @"开始学习";
