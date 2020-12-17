@@ -8,6 +8,7 @@
 
 #import "CourseDownView.h"
 #import "V5_Constant.h"
+#import "V5_UserModel.h"
 
 @implementation CourseDownView
 
@@ -182,7 +183,8 @@
             _joinStudyButton.hidden = NO;
         }
         NSString *priceValue = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"price"]];
-        if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"]) {
+        NSString *user_price = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"user_price"]];
+        if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
             _joinShopCarButton.hidden = YES;
             [_joinStudyButton setLeft:_joinShopCarButton.left];
             [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];

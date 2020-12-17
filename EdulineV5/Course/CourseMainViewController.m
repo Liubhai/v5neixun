@@ -781,7 +781,8 @@
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             NSString *priceCount = [NSString stringWithFormat:@"%@",_dataSource[@"price"]];
-            if ([priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
+            NSString *user_price = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"user_price"]];
+            if ([priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
                 // 免费课程
                 [Net_API requestPOSTWithURLStr:[Net_Path joinFreeCourseNet] WithAuthorization:nil paramDic:@{@"course_id":_ID} finish:^(id  _Nonnull responseObject) {
                     if (SWNOTEmptyDictionary(responseObject)) {
