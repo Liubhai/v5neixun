@@ -415,7 +415,8 @@
     [_bottomView addSubview:_priceLabel];
     
     _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 130, (49 - 36)/2.0, 130, 36)];
-    _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+    _submitButton.enabled = NO;
+    _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     [_submitButton setTitle:@"提现" forState:0];
     [_submitButton setTitleColor:[UIColor whiteColor] forState:0];
     _submitButton.titleLabel.font = SYSTEMFONT(16);
@@ -428,6 +429,18 @@
 
 - (void)seleteAgreementButtonClick:(UIButton *)sender {
     sender.selected = !sender.selected;
+    if (sender.selected) {
+        if (_scoreInputText.text.length>0) {
+            _submitButton.enabled = YES;
+            _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+        } else {
+            _submitButton.enabled = NO;
+            _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
+    } else {
+        _submitButton.enabled = NO;
+        _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+    }
 }
 
 - (void)seleteButtonClick:(UIButton *)sender {
@@ -531,9 +544,18 @@
         if (textfield.text.length>0) {
             _needPriceLabel.text = [NSString stringWithFormat:@"需花费育币%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
             _priceLabel.text = [NSString stringWithFormat:@"育币%.2f",[textfield.text floatValue] * [sple_score_str_first integerValue] / [sple_score_str_second integerValue]];
+            if (_seleteBtn.selected) {
+                _submitButton.enabled = YES;
+                _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+            } else {
+                _submitButton.enabled = NO;
+                _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+            }
         } else {
             _needPriceLabel.text = @"需花费育币0.00";
             _priceLabel.text = @"育币0.00";
+            _submitButton.enabled = NO;
+            _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
         }
     }
 }

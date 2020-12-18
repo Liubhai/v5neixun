@@ -524,7 +524,6 @@
     [bottomView addSubview:_priceLabel];
     
     _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 130, (49 - 36)/2.0, 130, 36)];
-//    _submitButton.backgroundColor = EdlineV5_Color.themeColor;
     _submitButton.enabled = NO;
     _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     [_submitButton setTitle:@"去支付" forState:0];
