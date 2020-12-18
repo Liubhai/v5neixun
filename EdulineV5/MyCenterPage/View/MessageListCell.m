@@ -109,7 +109,7 @@
     }
     
     
-    _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",info[@"create_time"]]]];
+    _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeFormatterYYYYMMDD:[NSString stringWithFormat:@"%@",info[@"create_time"]]]];
     _timeLabel.frame = CGRectMake(_userFace.left, _contentLabel.bottom + 15, 100, 20);
     
     _lineView.frame = CGRectMake(_userFace.left, _timeLabel.bottom + 10, MainScreenWidth - _userFace.left, 1);
