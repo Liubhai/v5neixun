@@ -524,7 +524,9 @@
     [bottomView addSubview:_priceLabel];
     
     _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 130, (49 - 36)/2.0, 130, 36)];
-    _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+//    _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+    _submitButton.enabled = NO;
+    _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     [_submitButton setTitle:@"去支付" forState:0];
     [_submitButton setTitleColor:[UIColor whiteColor] forState:0];
     _submitButton.titleLabel.font = SYSTEMFONT(16);
@@ -536,6 +538,18 @@
 
 - (void)seleteAgreementButtonClick:(UIButton *)sender {
     sender.selected = !sender.selected;
+    if (sender.selected) {
+        if (moneySeleButton.selected || _otherMoneyText.text.length>0) {
+            _submitButton.enabled = YES;
+            _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+        } else {
+            _submitButton.enabled = NO;
+            _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
+    } else {
+        _submitButton.enabled = NO;
+        _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+    }
 }
 
 - (void)seleteButtonClick:(UIButton *)sender {
@@ -601,6 +615,13 @@
     if ([typeString isEqualToString:@"applepay"]) {
         _productID = [NSString stringWithFormat:@"¥%@",[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"product_id"]];
     }
+    if (_seleteBtn.selected) {
+        _submitButton.enabled = YES;
+        _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+    } else {
+        _submitButton.enabled = NO;
+        _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+    }
 }
 
 - (void)cardButtonClick:(UIButton *)sender {
@@ -649,8 +670,22 @@
             textfield.text = [textfield.text substringToIndex:5];
         }
         _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [ratio_string floatValue] / 100.00];
+        if (_seleteBtn.selected) {
+            _submitButton.enabled = YES;
+            _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+        } else {
+            _submitButton.enabled = NO;
+            _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
     } else {
         _priceLabel.text = @"¥0.00";
+        if (_seleteBtn.selected && moneySeleButton.selected) {
+            _submitButton.enabled = YES;
+            _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+        } else {
+            _submitButton.enabled = NO;
+            _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
     }
 }
 
