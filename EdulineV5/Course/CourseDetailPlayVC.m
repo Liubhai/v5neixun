@@ -869,6 +869,7 @@
                         if (SWNOTEmptyDictionary(_recent_learn_Source)) {
                             CourseListModel *current_model = [CourseListModel mj_objectWithKeyValues:_recent_learn_Source];
                             current_model.classHourId = [NSString stringWithFormat:@"%@",_recent_learn_Source[@"section_id"]];
+                            current_model.section_rate.current_time = [[NSString stringWithFormat:@"%@",_recent_learn_Source[@"current_time"]] integerValue];
                             [self recordLearnContinuePlay:current_model];
                         }
                     } else {
