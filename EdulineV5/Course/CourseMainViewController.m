@@ -877,6 +877,11 @@
                     _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
                     _courselayer = [NSString stringWithFormat:@"%@",_dataSource[@"section_level"]];
                     [self setCourseInfoData];
+                } else {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
                 }
             }
         } enError:^(NSError * _Nonnull error) {
