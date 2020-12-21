@@ -217,6 +217,11 @@
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
+		788D4E9A259046C300D024AC /* SHPasswordTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E99259046C300D024AC /* SHPasswordTextView.m */; };
+		788D4E9D259046D500D024AC /* SHLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E9C259046D500D024AC /* SHLineView.m */; };
+		788D4EA02590483700D024AC /* MoneyPassWordPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E9F2590483700D024AC /* MoneyPassWordPopView.m */; };
+		788D4EA525907DE300D024AC /* SetMoneyPwFirstVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4EA425907DE300D024AC /* SetMoneyPwFirstVC.m */; };
+		788D4EAE2590907C00D024AC /* ModifyMoneyPwVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4EAD2590907C00D024AC /* ModifyMoneyPwVC.m */; };
 		788E945A25305F9C0089251E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E945925305F9C0089251E /* NSData+Base64.m */; };
 		788E955A253FE24E0089251E /* BCStudentVideoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 788E945F253FE24C0089251E /* BCStudentVideoView.xib */; };
 		788E955B253FE24E0089251E /* BCNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E9460253FE24C0089251E /* BCNavigationView.m */; };
@@ -970,6 +975,16 @@
 		7888A35224A1D3CF00DB078D /* WkWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WkWebViewController.m; sourceTree = "<group>"; };
 		7888A35424A1DB1800DB078D /* WKWebIntroview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebIntroview.h; sourceTree = "<group>"; };
 		7888A35524A1DB1800DB078D /* WKWebIntroview.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebIntroview.m; sourceTree = "<group>"; };
+		788D4E98259046C300D024AC /* SHPasswordTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHPasswordTextView.h; sourceTree = "<group>"; };
+		788D4E99259046C300D024AC /* SHPasswordTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHPasswordTextView.m; sourceTree = "<group>"; };
+		788D4E9B259046D500D024AC /* SHLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHLineView.h; sourceTree = "<group>"; };
+		788D4E9C259046D500D024AC /* SHLineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHLineView.m; sourceTree = "<group>"; };
+		788D4E9E2590483700D024AC /* MoneyPassWordPopView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoneyPassWordPopView.h; sourceTree = "<group>"; };
+		788D4E9F2590483700D024AC /* MoneyPassWordPopView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoneyPassWordPopView.m; sourceTree = "<group>"; };
+		788D4EA325907DE300D024AC /* SetMoneyPwFirstVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetMoneyPwFirstVC.h; sourceTree = "<group>"; };
+		788D4EA425907DE300D024AC /* SetMoneyPwFirstVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetMoneyPwFirstVC.m; sourceTree = "<group>"; };
+		788D4EAC2590907C00D024AC /* ModifyMoneyPwVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyMoneyPwVC.h; sourceTree = "<group>"; };
+		788D4EAD2590907C00D024AC /* ModifyMoneyPwVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyMoneyPwVC.m; sourceTree = "<group>"; };
 		788E945825305F9B0089251E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		788E945925305F9C0089251E /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		788E945F253FE24C0089251E /* BCStudentVideoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BCStudentVideoView.xib; sourceTree = "<group>"; };
@@ -2090,6 +2105,7 @@
 				78D980AE24BD4886000DE0E4 /* MyTearchRoot */,
 				787E19AA24566EBA00E2E016 /* OrderController */,
 				78AA13932445967E007087F7 /* View */,
+				788D4EA125907D6600D024AC /* MoneyPW */,
 				785A3E1F2499C18D00298054 /* CategoryCommonModel */,
 			);
 			path = MyCenterPage;
@@ -2130,6 +2146,12 @@
 				788E95C82541884E0089251E /* CommonPopView.m */,
 				788E95CA2542D7460089251E /* HorizontalScrollText.h */,
 				788E95CB2542D7460089251E /* HorizontalScrollText.m */,
+				788D4E9E2590483700D024AC /* MoneyPassWordPopView.h */,
+				788D4E9F2590483700D024AC /* MoneyPassWordPopView.m */,
+				788D4E98259046C300D024AC /* SHPasswordTextView.h */,
+				788D4E99259046C300D024AC /* SHPasswordTextView.m */,
+				788D4E9B259046D500D024AC /* SHLineView.h */,
+				788D4E9C259046D500D024AC /* SHLineView.m */,
 			);
 			path = BaseVC;
 			sourceTree = "<group>";
@@ -2703,6 +2725,17 @@
 				78C936D1248FBC5400D5F1ED /* UserListCell.m */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		788D4EA125907D6600D024AC /* MoneyPW */ = {
+			isa = PBXGroup;
+			children = (
+				788D4EA325907DE300D024AC /* SetMoneyPwFirstVC.h */,
+				788D4EA425907DE300D024AC /* SetMoneyPwFirstVC.m */,
+				788D4EAC2590907C00D024AC /* ModifyMoneyPwVC.h */,
+				788D4EAD2590907C00D024AC /* ModifyMoneyPwVC.m */,
+			);
+			path = MoneyPW;
 			sourceTree = "<group>";
 		};
 		788E945B253FE24C0089251E /* Agora_edu_sdk */ = {
@@ -4284,12 +4317,14 @@
 				78C549D6241B674F00A33FC4 /* AlivcBaseNavigationController.m in Sources */,
 				788E958B253FE24E0089251E /* ioapi_mem.c in Sources */,
 				78AA13A32446AB00007087F7 /* MyCenterTypeTwoCell.m in Sources */,
+				788D4E9A259046C300D024AC /* SHPasswordTextView.m in Sources */,
 				788E956C253FE24E0089251E /* EEWhiteboardTool.m in Sources */,
 				7839C9A32423655B002F6595 /* CourseListVC.m in Sources */,
 				78C936C9248F816D00D5F1ED /* TeacherIntroVC.m in Sources */,
 				78BCF95624D7C2B7002F691C /* QuestionChatTimeCell.m in Sources */,
 				7853BDD0242D8F4300F096EC /* ShitikaViewController.m in Sources */,
 				7839C9892420CA15002F6595 /* CourseCommentTopView.m in Sources */,
+				788D4EAE2590907C00D024AC /* ModifyMoneyPwVC.m in Sources */,
 				78795655240E5B1C0013F95F /* RootV5VC.m in Sources */,
 				787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */,
 				787F1E7B247381A400108F7B /* AliyunPlayerViewProgressView.m in Sources */,
@@ -4303,6 +4338,7 @@
 				78795720240FA3840013F95F /* DACircularProgressView.m in Sources */,
 				788E958F253FE24E0089251E /* aescrypt.c in Sources */,
 				788E95B7253FE24E0089251E /* BaseEducationManager+RTC.m in Sources */,
+				788D4EA525907DE300D024AC /* SetMoneyPwFirstVC.m in Sources */,
 				788E9593253FE24E0089251E /* prng.c in Sources */,
 				788E9589253FE24E0089251E /* ioapi.c in Sources */,
 				787F1E8D247381A400108F7B /* AlivcVideoDataBase.m in Sources */,
@@ -4368,6 +4404,7 @@
 				78D980B224BD48A6000DE0E4 /* MyTeachingRootVC.m in Sources */,
 				78AA139A2445A702007087F7 /* MyCenterBalanceView.m in Sources */,
 				788E957D253FE24E0089251E /* OTOTeacherView.m in Sources */,
+				788D4E9D259046D500D024AC /* SHLineView.m in Sources */,
 				78795739240FA3840013F95F /* ZLPhotoPickerImageView.m in Sources */,
 				787657302435DC81008F475D /* SearchHistoryListCell.m in Sources */,
 				787F1E7D247381A400108F7B /* AliyunPlayerViewQualityListView.m in Sources */,
@@ -4441,6 +4478,7 @@
 				787F1E76247381A400108F7B /* AliyunPlayerViewTopView.m in Sources */,
 				7876572324347DB2008F475D /* FindListCell.m in Sources */,
 				7879564A240E35CE0013F95F /* Net_API.m in Sources */,
+				788D4EA02590483700D024AC /* MoneyPassWordPopView.m in Sources */,
 				789DB05F246CE3B1001302B4 /* MyCollectionCourseManagerVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1542,6 +1542,7 @@
                  }
                  [self showTipWithMessage:toastMessage];
                  [self disableWhiteDeviceInputs:!grantBoard];
+                self.whiteboardTool.hidden = !self.educationManager.studentModel.grantBoard;
             }
 //            [self.studentListView updateStudentArray:self.educationManager.studentTotleListArray];
         }
