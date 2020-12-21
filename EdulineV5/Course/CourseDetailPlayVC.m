@@ -91,6 +91,7 @@
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *recordButton;
 @property (nonatomic, strong) UIButton *questionButton;
+@property (nonatomic, strong) UIImageView *seeFreeIcon;
 @property (nonatomic, strong) UIView *blueLineView;
 
 /// 底部全部设置为全局变量为了好处理交互
@@ -454,6 +455,21 @@
                     [_bg addSubview:btn];
                 }
             }
+            
+            // 添加试看标志
+            self.seeFreeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 28, 14)];
+            self.seeFreeIcon.image = Image(@"see_icon");
+            if (self.introButton) {
+                [self.seeFreeIcon setOrigin:CGPointMake(self.introButton.width / 2.0 + 17, self.introButton.height / 2.0 - 14)];
+                self.seeFreeIcon.hidden = YES;
+                [self.introButton addSubview:self.seeFreeIcon];
+            }
+            
+            if (SWNOTEmptyDictionary(self.dataSource)) {
+                NSString *audition_stat = [NSString stringWithFormat:@"%@",self.dataSource[@"audition_stat"]];
+                self.seeFreeIcon.hidden = [audition_stat boolValue] ? NO : YES;
+            }
+            
             self.introButton.selected = YES;
             
             UIView *grayLine = [[UIView alloc] initWithFrame:CGRectMake(0, 45.5, MainScreenWidth, 1)];
@@ -556,6 +572,10 @@
             _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
             _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
         }
+    }
+    if (SWNOTEmptyDictionary(self.dataSource)) {
+        NSString *audition_stat = [NSString stringWithFormat:@"%@",self.dataSource[@"audition_stat"]];
+        self.seeFreeIcon.hidden = [audition_stat boolValue] ? NO : YES;
     }
     return _bg;
 }
