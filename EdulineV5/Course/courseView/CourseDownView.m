@@ -85,7 +85,9 @@
     _shopCountLabel.hidden = YES;
     [self addSubview:_shopCountLabel];
     
-    _joinShopCarButton = [[UIButton alloc] initWithFrame:CGRectMake(_shopCarButton.right + 10, 5, 120, 40)];
+    CGFloat WW = (self.bounds.size.width - _shopCarButton.right - 30) / 2.0;
+    
+    _joinShopCarButton = [[UIButton alloc] initWithFrame:CGRectMake(_shopCarButton.right + 10, 5, WW, 40)];
     _joinShopCarButton.layer.masksToBounds = YES;
     _joinShopCarButton.layer.cornerRadius = 20.0;
     _joinShopCarButton.layer.borderColor = EdlineV5_Color.themeColor.CGColor;
@@ -97,7 +99,7 @@
     _joinShopCarButton.hidden = YES;
     [self addSubview:_joinShopCarButton];
     
-    _joinStudyButton = [[UIButton alloc] initWithFrame:CGRectMake(_joinShopCarButton.right + 10, 5, 120, 40)];
+    _joinStudyButton = [[UIButton alloc] initWithFrame:CGRectMake(_joinShopCarButton.right + 10, 5, WW, 40)];
     _joinStudyButton.layer.masksToBounds = YES;
     _joinStudyButton.layer.cornerRadius = 20.0;
     [_joinStudyButton setTitle:@"加入学习" forState:0];
