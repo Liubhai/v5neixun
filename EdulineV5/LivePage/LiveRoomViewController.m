@@ -1631,7 +1631,11 @@
         muteChat = studentModel.enableChat == 0 ? YES : NO;
     }
     self.chatCommentView.inputTextView.editable = muteChat ? NO : YES;
-    self.chatCommentView.placeHoderLab.text = muteChat ? NSLocalizedString(@"ProhibitedPostText", nil) : NSLocalizedString(@"InputMessageText", nil);
+//    self.chatCommentView.placeHoderLab.text = muteChat ? NSLocalizedString(@"ProhibitedPostText", nil) : NSLocalizedString(@"InputMessageText", nil);
+    self.chatCommentView.canChat = muteChat ? NO : YES;
+    self.chatCommentView.inputTextView.editable = muteChat ? NO : YES;
+    self.chatCommentView.placeHoderLab.text = muteChat ? @"已被禁言" : @"输入聊天内容";
+    self.chatCommentView.placeHoderLab.hidden = NO;
 }
 
 - (void)updateTimeState {

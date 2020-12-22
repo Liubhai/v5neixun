@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *sendButtonTitle;// 发送按钮文字
 @property (strong, nonatomic) NSString *placeHolderTitle;//
 
+@property (assign, nonatomic) BOOL canChat;// 是否被禁言
+
 - (instancetype)initWithFrame:(CGRect)frame leftButtonImageArray:(nullable NSArray *)leftButtonImageArray placeHolderTitle:(nullable NSString *)placeHolderTitle sendButtonTitle:(nullable NSString *)sendButtonTitle;
 
 @end

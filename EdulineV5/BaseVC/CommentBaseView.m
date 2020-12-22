@@ -78,8 +78,10 @@
     if (_delegate && [_delegate respondsToSelector:@selector(judgeLogin)]) {
         [_delegate judgeLogin];
     } else {
-        _placeHoderLab.hidden = YES;
-        [_inputTextView becomeFirstResponder];
+        if (_canChat) {
+            _placeHoderLab.hidden = YES;
+            [_inputTextView becomeFirstResponder];
+        }
     }
 }
 
