@@ -46,18 +46,16 @@
         theme.textAlignment = NSTextAlignmentCenter;
         [_studyIcon addSubview:theme];
         
-        timeCount.text = @"99";
-        
         if (i == 0) {
-            theme.text = @"今日学习(分钟)";
+            theme.text = @"今日学习";
             _todayLearnTime = timeCount;
             _todayLearn = theme;
         } else if (i == 1) {
-            theme.text = @"连续学习(天)";
+            theme.text = @"连续学习";
             _continuousLearnTime = timeCount;
             _continuousLearn = theme;
         } else {
-            theme.text = @"累计学习(小时)";
+            theme.text = @"累计学习";
             _allLearnTime = timeCount;
             _allLearn = theme;
         }
@@ -68,9 +66,13 @@
     if (SWNOTEmptyDictionary(timeInfo)) {
         if ([[[timeInfo objectForKey:@"data"] allKeys] count]) {
             NSDictionary *timeInfoData = [NSDictionary dictionaryWithDictionary:[[timeInfo objectForKey:@"data"] objectForKey:@"basic"]];
-            _todayLearnTime.text = [NSString stringWithFormat:@"%@",[timeInfoData objectForKey:@"today_learn_time"] ? [timeInfoData objectForKey:@"today_learn_time"] :@"0"];
-            _continuousLearnTime.text = [NSString stringWithFormat:@"%@",[timeInfoData objectForKey:@"days"] ? [timeInfoData objectForKey:@"days"] : @"0"];
-            _allLearnTime.text = [NSString stringWithFormat:@"%@",[timeInfoData objectForKey:@"total_learn_time"] ? [timeInfoData objectForKey:@"total_learn_time"] : @"0"];
+            _todayLearnTime.attributedText = [EdulineV5_Tool attributionTimeChangeWithSeconds:[[timeInfoData objectForKey:@"today_learn_time"] integerValue] isMinite:YES];
+            NSString *daysTime = [NSString stringWithFormat:@"%@天",[timeInfoData objectForKey:@"days"] ? [timeInfoData objectForKey:@"days"] : @"0"];
+            NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:daysTime];
+            [pass addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:SYSTEMFONT(10)} range:NSMakeRange(0, daysTime.length)];
+            [pass addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:NSMakeRange(0, daysTime.length-1)];
+            _continuousLearnTime.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+            _allLearnTime.attributedText = [EdulineV5_Tool attributionTimeChangeWithSeconds:[[timeInfoData objectForKey:@"total_learn_time"] integerValue] isMinite:NO];
         }
     }
 }
