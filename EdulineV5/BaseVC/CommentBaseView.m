@@ -87,8 +87,10 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if ([text isEqualToString:@"\n"]) {
-        if (_delegate && [_delegate respondsToSelector:@selector(sendReplayMsg:)]) {
-            [_delegate sendReplayMsg:self];
+        if (_canChat) {
+            if (_delegate && [_delegate respondsToSelector:@selector(sendReplayMsg:)]) {
+                [_delegate sendReplayMsg:self];
+            }
         }
         return NO;
     }
@@ -102,8 +104,10 @@
 }
 
 - (void)sendButtonClick:(UIButton *)sender {
-    if (_delegate && [_delegate respondsToSelector:@selector(sendReplayMsg:)]) {
-        [_delegate sendReplayMsg:self];
+    if (_canChat) {
+        if (_delegate && [_delegate respondsToSelector:@selector(sendReplayMsg:)]) {
+            [_delegate sendReplayMsg:self];
+        }
     }
 }
 
