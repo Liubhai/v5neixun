@@ -213,8 +213,8 @@ static EdulineV5_Tool *_sharedInstance;
     if ([day integerValue]>0) {
         NSString *all = [NSString stringWithFormat:@"%@天%@小时",day,hour];
         NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:all];
-        NSRange dayRang = [all rangeOfString:day];
-        NSRange hourRang = [all rangeOfString:hour];
+        NSRange dayRang = NSMakeRange(0, day.length);
+        NSRange hourRang = NSMakeRange(day.length + 1, hour.length);
         [atr addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:SYSTEMFONT(10)} range:NSMakeRange(0, all.length)];
         [atr addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:dayRang];
         [atr addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:hourRang];
@@ -223,8 +223,8 @@ static EdulineV5_Tool *_sharedInstance;
     if ([hour integerValue]>0) {
         NSString *all = [NSString stringWithFormat:@"%@小时%@分钟",hour,minite];
         NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:all];
-        NSRange dayRang = [all rangeOfString:hour];
-        NSRange hourRang = [all rangeOfString:minite];
+        NSRange dayRang = NSMakeRange(0, hour.length);
+        NSRange hourRang = NSMakeRange(hour.length + 2, minite.length);
         [atr addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:SYSTEMFONT(10)} range:NSMakeRange(0, all.length)];
         [atr addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:dayRang];
         [atr addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:hourRang];
