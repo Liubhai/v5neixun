@@ -1020,6 +1020,9 @@
 
 // MARK: - LivePageControlViewDelegate
 - (void)previousPagePress {
+    if (!self.educationManager.studentModel.grantBoard) {
+        return;
+    }
     if (self.sceneIndex > 0) {
         self.sceneIndex--;
         WEAK(self);
@@ -1030,6 +1033,9 @@
 }
 
 - (void)nextPagePress {
+    if (!self.educationManager.studentModel.grantBoard) {
+        return;
+    }
     if (self.sceneIndex < self.sceneCount - 1  && self.sceneCount > 0) {
         self.sceneIndex ++;
         
@@ -1041,6 +1047,9 @@
 }
 
 - (void)lastPagePress {
+    if (!self.educationManager.studentModel.grantBoard) {
+        return;
+    }
     self.sceneIndex = self.sceneCount - 1;
     
     WEAK(self);
@@ -1050,6 +1059,9 @@
 }
 
 - (void)firstPagePress {
+    if (!self.educationManager.studentModel.grantBoard) {
+        return;
+    }
     self.sceneIndex = 0;
     WEAK(self);
     [self setWhiteSceneIndex:self.sceneIndex completionSuccessBlock:^{
