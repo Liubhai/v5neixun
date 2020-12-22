@@ -7,6 +7,7 @@
 //
 
 #import "CourseContentView.h"
+#import "V5_UserModel.h"
 
 @implementation CourseContentView
 
@@ -117,7 +118,8 @@
             _coursePrice.font = SYSTEMFONT(18);
         }
     } else {
-        if ([price isEqualToString:@"育币0.00"] || [price isEqualToString:@"育币0.0"] || [price isEqualToString:@"育币0"]) {
+        NSString *user_price = [NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"user_price"]];
+        if ([price isEqualToString:@"育币0.00"] || [price isEqualToString:@"育币0.0"] || [price isEqualToString:@"育币0"] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
             price = @"免费";
             NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
             NSRange rangNow = NSMakeRange(scribing_price.length, price.length);
