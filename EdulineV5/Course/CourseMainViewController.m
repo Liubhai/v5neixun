@@ -31,12 +31,14 @@
 #import "OrderViewController.h"
 #import "ShopCarManagerVC.h"
 #import <UShareUI/UShareUI.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <WechatOpenSDK/WXApi.h>
 #import "V5_UserModel.h"
 #import "AppDelegate.h"
 
 #define FaceImageHeight 207
 
-@interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate> {
+@interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,UMSocialShareMenuViewDelegate> {
     // 新增内容
     CGFloat sectionHeight;
     BOOL shouldLoad;
@@ -87,6 +89,12 @@
 
 @property (strong, nonatomic) CourseDownView *courseDownView;
 
+@property (strong, nonatomic) UIButton *zanButton;
+
+@property (strong, nonatomic) UIButton *navBackButton;
+@property (strong, nonatomic) UIButton *navZanButton;
+@property (strong, nonatomic) UIButton *navShareButton;
+
 @end
 
 @implementation CourseMainViewController
@@ -128,6 +136,11 @@
     _titleLabel.text = @"课程详情";
     _titleImage.backgroundColor = BasidColor;
     
+    _zanButton = [[UIButton alloc] initWithFrame:CGRectMake(_rightButton.left - 44, _rightButton.top, 44, 44)];
+    [_zanButton setImage:Image(@"nav_collect_nor") forState:0];
+    [_zanButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_titleImage addSubview:_zanButton];
+    
     _titleLabel.textColor = [UIColor whiteColor];
     
     [self makeHeaderView];
@@ -135,12 +148,13 @@
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_UPHEIGHT;
     [self makeTableView];
     [self.view bringSubviewToFront:_titleImage];
-    _titleImage.backgroundColor = [UIColor clearColor];
-    _titleLabel.hidden = YES;
+//    _titleImage.backgroundColor = [UIColor clearColor];
+//    _titleLabel.hidden = YES;
     _lineTL.hidden = YES;
     _rightButton.hidden = NO;
-    [_rightButton setImage:Image(@"nav_more_white") forState:0];
+    [_rightButton setImage:Image(@"share_white_icon") forState:0];
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
+    _titleImage.alpha = 0;
     [self makeDownView];
     [self getCourseInfo];
     [self getShopCarCount];
@@ -172,7 +186,26 @@
 - (void)makeSubViews {
     _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, FaceImageHeight)];
     _faceImageView.image = DefaultImage;
+    _faceImageView.userInteractionEnabled = YES;
     [_headerView addSubview:_faceImageView];
+    
+    _navBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _navBackButton.frame = CGRectMake(0, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 54, 44);
+    [_navBackButton setImage:Image(@"course_back_icon") forState:0];
+    [_navBackButton addTarget:self action:@selector(navLeftButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_faceImageView addSubview:_navBackButton];
+    
+    _navShareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _navShareButton.frame = CGRectMake(MainScreenWidth-52, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 53, 44);
+    [_navShareButton setImage:Image(@"course_share_icon") forState:0];
+    [_navShareButton addTarget:self action:@selector(rightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_faceImageView addSubview:_navShareButton];
+    
+    _navZanButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _navZanButton.frame = CGRectMake(_navShareButton.left - 44, _navShareButton.top, 44, 44);
+    [_navZanButton setImage:Image(@"course_collect_nor") forState:0];
+    [_navZanButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_faceImageView addSubview:_navZanButton];
     
     _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4)];
     [_headerView addSubview:_courseContentView];
@@ -499,8 +532,9 @@
     } if (scrollView == self.tableView) {
         CGFloat bottomCellOffset = self.headerView.height - MACRO_UI_UPHEIGHT;
         if (scrollView.contentOffset.y > bottomCellOffset - 0.5) {
-            _titleImage.backgroundColor = EdlineV5_Color.themeColor;
-            _titleLabel.hidden = NO;
+//            _titleImage.backgroundColor = EdlineV5_Color.themeColor;
+//            _titleLabel.hidden = NO;
+            _titleImage.alpha = 1;
             scrollView.contentOffset = CGPointMake(0, bottomCellOffset);
             if (self.canScroll) {
                 self.canScroll = NO;
@@ -545,8 +579,9 @@
                 }
             }
         }else{
-            _titleImage.backgroundColor = [UIColor clearColor];
-            _titleLabel.hidden = YES;
+//            _titleImage.backgroundColor = [UIColor clearColor];
+//            _titleLabel.hidden = YES;
+            _titleImage.alpha = 0;
             if (!self.canScroll) {//子视图没到顶部
                 if (self.canScrollAfterVideoPlay) {
                     scrollView.contentOffset = CGPointMake(0, bottomCellOffset);
@@ -606,52 +641,134 @@
     [self addChildViewController:vc];
 }
 
+// MARK: - 返回按钮点击事件
+- (void)navLeftButtonClick:(UIButton *)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+// MARK: - 点赞按钮点击事件
+- (void)zanButtonClick:(UIButton *)sender {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    // 收藏
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:_ID forKey:@"source_id"];
+    if ([_courseType isEqualToString:@"1"]) {
+        [param setObject:@"video" forKey:@"source_type"];
+    } else if ([_courseType isEqualToString:@"2"]) {
+        [param setObject:@"live" forKey:@"source_type"];
+    } else if ([_courseType isEqualToString:@"3"]) {
+        [param setObject:@"offline" forKey:@"source_type"];
+    } else if ([_courseType isEqualToString:@"4"]) {
+        [param setObject:@"classes" forKey:@"source_type"];
+    }
+    if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
+        // 取消收藏 并改变数据源
+        [Net_API requestDeleteWithURLStr:[Net_Path courseCollectionNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
+                    [pass setObject:@"0" forKey:@"collected"];
+                    _dataSource = [NSDictionary dictionaryWithDictionary:pass];
+                    [_navZanButton setImage:Image(@"course_collect_nor") forState:0];
+                    [_zanButton setImage:Image(@"nav_collect_nor") forState:0];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络请求失败"];
+        }];
+    } else {
+        // 收藏 并改变数据源
+        [Net_API requestPOSTWithURLStr:[Net_Path courseCollectionNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
+                    [pass setObject:@"1" forKey:@"collected"];
+                    _dataSource = [NSDictionary dictionaryWithDictionary:pass];
+                    [_navZanButton setImage:Image(@"nav_collect_pre") forState:0];
+                    [_zanButton setImage:Image(@"nav_collect_pre") forState:0];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络请求失败"];
+        }];
+    }
+}
+
+//不需要改变父窗口则不需要重写此协议
+- (UIView*)UMSocialParentView:(UIView*)defaultSuperView
+{
+    return self.view;
+}
+
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
     if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
     }
-    UIView *allWindowView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MainScreenWidth, MainScreenHeight)];
-    allWindowView.backgroundColor = [UIColor clearColor];//[UIColor colorWithWhite:0.2 alpha:0.5];
-    allWindowView.layer.masksToBounds =YES;
-    [allWindowView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(allWindowViewClick:)]];
-    //获取当前UIWindow 并添加一个视图
-    UIApplication *app = [UIApplication sharedApplication];
-    [app.keyWindow addSubview:allWindowView];
-    _allWindowView = allWindowView;
+    [UMSocialUIManager setShareMenuViewDelegate:self];
+    [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_QQ)]];
+    //显示分享面板
+    [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+        // 根据获取的platformType确定所选平台进行下一步操作
+        //创建分享消息对象
+        UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+        //创建网页内容对象
+        NSString* thumbURL =  @"https://mobile.umeng.com/images/pic/home/social/img-1.png";
+        UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"欢迎使用【友盟+】社会化组件U-Share" descr:@"欢迎使用【友盟+】社会化组件U-Share，SDK包最小，集成成本最低，助力您的产品开发、运营与推广！" thumImage:thumbURL];
+        //设置网页地址
+        shareObject.webpageUrl = @"http://mobile.umeng.com/social";
+        //分享消息对象设置分享内容对象
+        messageObject.shareObject = shareObject;
+        //调用分享接口
+        [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+            if (error) {
+                UMSocialLogInfo(@"************Share fail with error %@*********",error);
+            }else{
+                if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                    UMSocialShareResponse *resp = data;
+                    //分享结果消息
+                    UMSocialLogInfo(@"response message is %@",resp.message);
+                    //第三方原始返回的数据
+                    UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                }else{
+                    UMSocialLogInfo(@"response data is %@",data);
+                }
+            }
+        }];
+    }];
+//    dispatch_sync(dispatch_get_main_queue(), ^{
+//
+//    });
     
-    NSArray *titleArray = @[@"收藏",@"分享"];
-    if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
-        titleArray = @[@"已收藏",@"分享"];
-    }
-    
-    CGFloat ButtonW = 78;
-    CGFloat ButtonH = 36;
-    
-    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 78 - 15,MACRO_UI_UPHEIGHT,78,ButtonH * titleArray.count)];
-    moreView.backgroundColor = [UIColor whiteColor];
-    moreView.layer.masksToBounds = YES;
-    [allWindowView addSubview:moreView];
-    
-    for (int i = 0 ; i < 2 ; i ++) {
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, ButtonH * i, ButtonW, ButtonH)];
-        button.tag = i;
-        [button setTitle:titleArray[i] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor colorWithHexString:@"#333"] forState:UIControlStateNormal];
-        button.titleLabel.font = SYSTEMFONT(14);
-        [button addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [moreView addSubview:button];
-    }
-    
-//    NSArray *titleArray = @[@"下载",@"收藏",@"分享"];
+//    UIView *allWindowView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MainScreenWidth, MainScreenHeight)];
+//    allWindowView.backgroundColor = [UIColor clearColor];//[UIColor colorWithWhite:0.2 alpha:0.5];
+//    allWindowView.layer.masksToBounds =YES;
+//    [allWindowView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(allWindowViewClick:)]];
+//    //获取当前UIWindow 并添加一个视图
+//    UIApplication *app = [UIApplication sharedApplication];
+//    [app.keyWindow addSubview:allWindowView];
+//    _allWindowView = allWindowView;
+//
+//    NSArray *titleArray = @[@"收藏",@"分享"];
 //    if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
-//        titleArray = @[@"下载",@"已收藏",@"分享"];
+//        titleArray = @[@"已收藏",@"分享"];
 //    }
 //
 //    CGFloat ButtonW = 78;
 //    CGFloat ButtonH = 36;
-//    for (int i = 0 ; i < 3 ; i ++) {
+//
+//    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 78 - 15,MACRO_UI_UPHEIGHT,78,ButtonH * titleArray.count)];
+//    moreView.backgroundColor = [UIColor whiteColor];
+//    moreView.layer.masksToBounds = YES;
+//    [allWindowView addSubview:moreView];
+//
+//    for (int i = 0 ; i < 2 ; i ++) {
 //        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, ButtonH * i, ButtonW, ButtonH)];
 //        button.tag = i;
 //        [button setTitle:titleArray[i] forState:UIControlStateNormal];
@@ -918,6 +1035,15 @@
         } else {
             _faceImageView.image = DefaultImage;
         }
+        
+        if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
+            [_navZanButton setImage:Image(@"nav_collect_pre") forState:0];
+            [_zanButton setImage:Image(@"nav_collect_pre") forState:0];
+        } else {
+            [_navZanButton setImage:Image(@"course_collect_nor") forState:0];
+            [_zanButton setImage:Image(@"nav_collect_nor") forState:0];
+        }
+        
         [_courseDownView setCOurseInfoData:_dataSource];
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:NO];
         NSArray *coupon_Array = [NSArray arrayWithArray:_dataSource[@"recommend_coupon"]];

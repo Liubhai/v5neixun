@@ -16,7 +16,7 @@
 #import "ZixunCommmentDetailVC.h"
 #import <UShareUI/UShareUI.h>
 
-@interface ZiXunDetailVC ()<UITableViewDelegate, UITableViewDataSource, ZixunCommentCellDelegate, WKUIDelegate, WKNavigationDelegate, CommentBaseViewDelegate> {
+@interface ZiXunDetailVC ()<UITableViewDelegate, UITableViewDataSource, ZixunCommentCellDelegate, WKUIDelegate, WKNavigationDelegate, CommentBaseViewDelegate,UMSocialShareMenuViewDelegate> {
     NSInteger page;
     CGFloat keyHeight;
 }
@@ -542,6 +542,12 @@
     }];
 }
 
+//不需要改变父窗口则不需要重写此协议
+- (UIView*)UMSocialParentView:(UIView*)defaultSuperView
+{
+    return self.view;
+}
+
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
     if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
@@ -556,6 +562,7 @@
     }
     
     //显示分享面板
+    [UMSocialUIManager setShareMenuViewDelegate:self];
     [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_QQ),@(UMSocialPlatformType_Sina)]];
     [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
         // 根据获取的platformType确定所选平台进行下一步操作

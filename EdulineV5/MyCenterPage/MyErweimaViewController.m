@@ -11,7 +11,7 @@
 #import <UShareUI/UShareUI.h>
 #import "AppDelegate.h"
 
-@interface MyErweimaViewController ()
+@interface MyErweimaViewController ()<UMSocialShareMenuViewDelegate>
 
 @property (strong, nonatomic) UIImageView *backView;
 @property (strong, nonatomic) UIImageView *codeImageView;
@@ -112,8 +112,15 @@
     
 }
 
+//不需要改变父窗口则不需要重写此协议
+- (UIView*)UMSocialParentView:(UIView*)defaultSuperView
+{
+    return self.view;
+}
+
 - (void)rightButtonClick:(id)sender {
     //显示分享面板
+    [UMSocialUIManager setShareMenuViewDelegate:self];
     [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_QQ),@(UMSocialPlatformType_Sina)]];
     [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
         // 根据获取的platformType确定所选平台进行下一步操作
