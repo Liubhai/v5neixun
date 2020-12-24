@@ -212,12 +212,20 @@
             [AppDelegate presentLoginNav:self];
             return;
         }
-        if ([V5_UserModel need_set_paypwd]) {
-            SetMoneyPwFirstVC *vc = [[SetMoneyPwFirstVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
+        if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+            if ([V5_UserModel userPhone].length>=11) {
+                if ([V5_UserModel need_set_paypwd]) {
+                    SetMoneyPwFirstVC *vc = [[SetMoneyPwFirstVC alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    ModifyMoneyPwVC *vc = [[ModifyMoneyPwVC alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            } else {
+                [self showHudInView:self.view showHint:@"请先在个人信息里面绑定手机号"];
+            }
         } else {
-            ModifyMoneyPwVC *vc = [[ModifyMoneyPwVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
+            [self showHudInView:self.view showHint:@"请先在个人信息里面绑定手机号"];
         }
     }
 }

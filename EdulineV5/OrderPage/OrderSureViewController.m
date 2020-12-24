@@ -336,11 +336,15 @@
         _submitButton.enabled = YES;
         return;
     }
-    if ([typeString isEqualToString:@"lcnpay"]) {
-        MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
-        vc.delegate = self;
-        [self.view addSubview:vc];
-        _submitButton.enabled = YES;
+    if ([typeString isEqualToString:@"lcnpay"] && SWNOTEmptyStr([V5_UserModel userPhone])) {
+        if ([V5_UserModel userPhone].length >= 11) {
+            MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
+            vc.delegate = self;
+            [self.view addSubview:vc];
+            _submitButton.enabled = YES;
+        } else {
+            [self getMoneyPasWordString:@""];
+        }
     } else {
         [self getMoneyPasWordString:@""];
     }
