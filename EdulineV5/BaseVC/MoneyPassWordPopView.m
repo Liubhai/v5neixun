@@ -43,8 +43,10 @@
     
     _passwordTextView = [[SHPasswordTextView alloc]initWithFrame:CGRectMake(15, _tipLabel.bottom + 25, _whiteBackView.width - 30, 35) count:6 margin:0.1 passwordFont:15 forType:SHPasswordTextTypeRectangle block:^(NSString * _Nonnull passwordStr) {
         NSLog(@"shihu___passwordStr == %@",passwordStr);
-        if (self->_delegate && [self->_delegate respondsToSelector:@selector(getMoneyPasWordString:)]) {
-            [self->_delegate getMoneyPasWordString:passwordStr];
+        if (passwordStr.length>=6) {
+            if (self->_delegate && [self->_delegate respondsToSelector:@selector(getMoneyPasWordString:)]) {
+                [self->_delegate getMoneyPasWordString:passwordStr];
+            }
         }
     }];
     _passwordTextView.passwordSecureEntry = YES;//安全密码
@@ -54,7 +56,7 @@
     [_forgetBtn setTitle:@"忘记密码" forState:0];
     [_forgetBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
     _forgetBtn.titleLabel.font = SYSTEMFONT(16);
-    [_forgetBtn addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [_forgetBtn addTarget:self action:@selector(forgetButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_whiteBackView addSubview:_forgetBtn];
     _forgetBtn.centerX = _whiteBackView.width / 2.0;
 }

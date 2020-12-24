@@ -11,6 +11,7 @@
 #import "SHPasswordTextView.h"
 #import "LoginMsgView.h"
 #import "Net_Path.h"
+#import "V5_UserModel.h"
 
 @interface SetMoneyPwFirstVC ()<LoginMsgViewDelegate> {
     NSTimer *codeTimer;
@@ -48,7 +49,7 @@
     _tip1.textColor = EdlineV5_Color.textThirdColor;
     _tip1.font = SYSTEMFONT(15);
     _tip1.textAlignment = NSTextAlignmentCenter;
-    _tip1.text = @"为帐号132****0000";
+    _tip1.text = [NSString stringWithFormat:@"为帐号%@****%@",[[V5_UserModel userPhone] substringToIndex:3],[[V5_UserModel userPhone] substringFromIndex:7]];//@"为帐号132****0000";
     _tip1.hidden = YES;
     [self.view addSubview:_tip1];
     
@@ -117,6 +118,10 @@
     
     _loginMsg = [[LoginMsgView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 102.5)];
     _loginMsg.delegate = self;
+    _loginMsg.phoneNumTextField.text = [NSString stringWithFormat:@"%@****%@",[[V5_UserModel userPhone] substringToIndex:3],[[V5_UserModel userPhone] substringFromIndex:7]];
+    _loginMsg.phoneNumTextField.textColor = EdlineV5_Color.textThirdColor;
+    [_loginMsg.phoneNumTextField setEnabled:NO];
+    _loginMsg.areaBtn.enabled = NO;
     [self.view addSubview:_loginMsg];
     
     _nextButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _loginMsg.bottom + 40, 280, 40)];
@@ -136,7 +141,7 @@
     
     NSMutableDictionary *param = [NSMutableDictionary new];
     if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
-        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+        [param setObject:[V5_UserModel userPhone] forKey:@"phone"];
     }
     [param setObject:_loginMsg.codeTextField.text forKey:@"code"];
     [Net_API requestPOSTWithURLStr:[Net_Path userVerifyMoneyPwNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
@@ -153,6 +158,8 @@
                 self.finishButton.hidden = YES;
                 self.tip3.hidden = YES;
                 [self.firstPw.textField becomeFirstResponder];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             }
         }
     } enError:^(NSError * _Nonnull error) {
@@ -169,7 +176,7 @@
     
     NSMutableDictionary *param = [NSMutableDictionary new];
     if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
-        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+        [param setObject:[V5_UserModel userPhone] forKey:@"phone"];
     }
     [param setObject:_loginMsg.codeTextField.text forKey:@"code"];
     [param setObject:[[EdulineV5_Tool getmd5WithString:_secondPw.textField.text] lowercaseString] forKey:@"password"];
@@ -190,7 +197,7 @@
 
 - (void)textFieldDidChanged:(NSNotification *)notice {
     UITextField *pass = (UITextField *)notice.object;
-    if (_loginMsg.phoneNumTextField.text.length>0 && _loginMsg.codeTextField.text.length>0) {
+    if ([V5_UserModel userPhone].length>0 && _loginMsg.codeTextField.text.length>0) {
         _nextButton.enabled = YES;
         [_nextButton setBackgroundColor:EdlineV5_Color.buttonNormalColor];
     } else {
@@ -203,7 +210,7 @@
     [self.view endEditing:YES];
     NSMutableDictionary *param = [NSMutableDictionary new];
     if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
-        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+        [param setObject:[V5_UserModel userPhone] forKey:@"phone"];
     }
     [param setObject:@"bpwd" forKey:@"type"];
     [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {

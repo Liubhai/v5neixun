@@ -14,6 +14,8 @@
 #import "V5_UserModel.h"
 #import "MyBalanceVC.h"
 #import "MoneyPassWordPopView.h"
+#import "SetMoneyPwFirstVC.h"
+#import "ModifyMoneyPwVC.h"
 
 @interface OrderSureViewController ()<WKUIDelegate,WKNavigationDelegate,MoneyPassWordPopViewDelegate> {
     NSString *typeString;
@@ -334,65 +336,83 @@
         _submitButton.enabled = YES;
         return;
     }
-    MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
-    [self.view addSubview:vc];
+    if ([typeString isEqualToString:@"lcnpay"]) {
+        MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
+        vc.delegate = self;
+        [self.view addSubview:vc];
+        _submitButton.enabled = YES;
+    } else {
+        [self getMoneyPasWordString:@""];
+    }
 }
 
 // MARK: - 密码输入完成代理
 - (void)getMoneyPasWordString:(NSString *)pw {
-    if (SWNOTEmptyStr(pw)) {
-        if (SWNOTEmptyStr(typeString) && SWNOTEmptyStr(_order_no)) {
-            NSMutableDictionary *param = [NSMutableDictionary new];
-            [param setObject:typeString forKey:@"pay_type"];
-            [param setObject:_order_no forKey:@"order_no"];
-            [Net_API requestPOSTWithURLStr:[Net_Path subMitOrder] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-                if (SWNOTEmptyDictionary(responseObject)) {
-                    if ([[responseObject objectForKey:@"code"] integerValue]) {
-                        if ([typeString isEqualToString:@"lcnpay"]) {
-                            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
-                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                [self popVcToWhich];
-                            });
-                            return;
-                        } else if ([typeString isEqualToString:@"alipay"]) {
-                            shouldPop = YES;
-                            [self orderFinish:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
-                        } else if ([typeString isEqualToString:@"wxpay"]) {
-                            [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
-                            shouldPop = YES;
-                        }
-                    } else {
-                        _submitButton.enabled = YES;
-                        NSString *msg = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]];
-                        if ([msg isEqualToString:@"余额不足"]) {
-                            // 弹框提示跳转到余额充值页面
-                            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"余额不足,立即去充值?" preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去充值" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                showReload = YES;
-                                MyBalanceVC *vc = [[MyBalanceVC alloc] init];
-                                [self.navigationController pushViewController:vc animated:YES];
-                                }];
-                            [alertController addAction:commentAction];
-                            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                                [self.navigationController popViewControllerAnimated:YES];
-                                }];
-                            [alertController addAction:cancelAction];
-                            alertController.modalPresentationStyle = UIModalPresentationFullScreen;
-                            [self presentViewController:alertController animated:YES completion:nil];
-                        } else {
-                            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
-                        }
+    if (SWNOTEmptyStr(typeString) && SWNOTEmptyStr(_order_no)) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:typeString forKey:@"pay_type"];
+        [param setObject:_order_no forKey:@"order_no"];
+        if (SWNOTEmptyStr(pw)) {
+            [param setObject:[[EdulineV5_Tool getmd5WithString:pw] lowercaseString] forKey:@"password"];
+        }
+        [Net_API requestPOSTWithURLStr:[Net_Path subMitOrder] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    if ([typeString isEqualToString:@"lcnpay"]) {
+                        [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [self popVcToWhich];
+                        });
+                        return;
+                    } else if ([typeString isEqualToString:@"alipay"]) {
+                        shouldPop = YES;
+                        [self orderFinish:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
+                    } else if ([typeString isEqualToString:@"wxpay"]) {
+                        [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
+                        shouldPop = YES;
                     }
                 } else {
                     _submitButton.enabled = YES;
+                    NSString *msg = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]];
+                    if ([msg isEqualToString:@"余额不足"]) {
+                        // 弹框提示跳转到余额充值页面
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"余额不足,立即去充值?" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去充值" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            showReload = YES;
+                            MyBalanceVC *vc = [[MyBalanceVC alloc] init];
+                            [self.navigationController pushViewController:vc animated:YES];
+                            }];
+                        [alertController addAction:commentAction];
+                        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                            }];
+                        [alertController addAction:cancelAction];
+                        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+                        [self presentViewController:alertController animated:YES completion:nil];
+                    } else {
+                        [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                    }
                 }
-            } enError:^(NSError * _Nonnull error) {
-                [self showHudInView:self.view showHint:@"网络飞走了"];
+            } else {
                 _submitButton.enabled = YES;
-            }];
-        } else {
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络飞走了"];
             _submitButton.enabled = YES;
-        }
+        }];
+    } else {
+        _submitButton.enabled = YES;
+    }
+}
+
+// MARK: - 设置密码
+- (void)jumpSetPwPage {
+    if ([V5_UserModel need_set_paypwd]) {
+        SetMoneyPwFirstVC *vc = [[SetMoneyPwFirstVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        ModifyMoneyPwVC *vc = [[ModifyMoneyPwVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

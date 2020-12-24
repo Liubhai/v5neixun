@@ -772,7 +772,7 @@
             }
         }
     } enError:^(NSError * _Nonnull error) {
-        
+        NSLog(@"%@",error);
     }];
 }
 
