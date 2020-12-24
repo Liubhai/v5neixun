@@ -441,6 +441,8 @@
                 [V5_UserModel saveAvatar:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"avatar_url"]]];
                 [V5_UserModel saveVipStatus:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"vip_status"]]];
                 [V5_UserModel saveIntro:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"signature"]]];
+                [V5_UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"need_set_password"]] boolValue]];
+                [V5_UserModel saveNeed_set_paypwd:[[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"need_set_paypwd"]] boolValue]];
                 
                 [_iconArray removeAllObjects];
                 NSArray *listArray = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"list"]];

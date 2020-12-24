@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(void)saveUsergroupId:(NSString *)usergroupId;
 +(void)saveVerified:(NSString *)verified;
 +(void)saveNeed_set_password:(BOOL)need_set_password;
++(void)saveNeed_set_paypwd:(BOOL)need_set_paypwd;
 +(void)saveAuth_scope:(NSString *)auth_scope;
 // 备注
 +(void)saveRemark:(NSString*)remark;
@@ -76,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSArray *)userGroupIcon;
 + (NSDictionary *)groupPermission;
 +(BOOL)need_set_password;
++(BOOL)need_set_paypwd;
 + (NSString *)userPhone;
 + (NSString *)userNickName;
 +(NSString *)userAuth_scope;

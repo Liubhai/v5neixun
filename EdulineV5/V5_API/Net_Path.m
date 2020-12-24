@@ -531,4 +531,17 @@
     return [Net_Path fullPath:@"user/balance/applepay/{order_no}/order" repalce:@"{order_no}" byReplece:orderNumber];
 }
 
++ (NSString *)userVerifyMoneyPwNet {
+    return [Net_Path fullPath:@"user/balance/pwd/verify" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)verifyOldMoneyPwNet {
+    return [Net_Path fullPath:@"user/balance/pwd/before" repalce:@"" byReplece:@""];
+}
+
+/** money密码设置 */
++ (NSString *)moneyPwSetNet {
+    return [Net_Path fullPath:@"user/balance/pwd" repalce:@"" byReplece:@""];
+}
+
 @end

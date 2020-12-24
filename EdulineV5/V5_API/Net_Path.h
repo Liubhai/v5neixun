@@ -418,6 +418,15 @@ struct NetWorkUrl {
 
 /** 凭证校验 */
 + (NSString *)checkVoucher:(NSString *)orderNumber;
+
+/** moneyPw 验证手机号 */
++ (NSString *)userVerifyMoneyPwNet;
+
+/** 验证原密码 */
++ (NSString *)verifyOldMoneyPwNet;
+
+/** 密码设置 */
++ (NSString *)moneyPwSetNet;
 @end
 
 NS_ASSUME_NONNULL_END

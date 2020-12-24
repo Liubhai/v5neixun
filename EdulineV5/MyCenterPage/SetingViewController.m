@@ -212,10 +212,13 @@
             [AppDelegate presentLoginNav:self];
             return;
         }
-        ModifyMoneyPwVC *vc = [[ModifyMoneyPwVC alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-//        SetMoneyPwFirstVC *vc = [[SetMoneyPwFirstVC alloc] init];
-//        [self.navigationController pushViewController:vc animated:YES];
+        if ([V5_UserModel need_set_paypwd]) {
+            SetMoneyPwFirstVC *vc = [[SetMoneyPwFirstVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            ModifyMoneyPwVC *vc = [[ModifyMoneyPwVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 

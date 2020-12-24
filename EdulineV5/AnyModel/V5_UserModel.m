@@ -167,6 +167,11 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (void)saveNeed_set_paypwd:(BOOL)need_set_paypwd {
+    [[NSUserDefaults standardUserDefaults] setObject: @(need_set_paypwd) forKey:@"need_set_paypwd"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 + (void)saveVipStatus:(NSString *)status {
     NSMutableDictionary *uDic = [NSMutableDictionary dictionaryWithDictionary:[self userPassport]];
     [uDic setObject:status forKey:@"vipStatus"];
@@ -288,6 +293,10 @@
 
 +(BOOL)need_set_password {
     return [[[NSUserDefaults standardUserDefaults] objectForKey:@"need_set_password"] boolValue];
+}
+
++(BOOL)need_set_paypwd {
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"need_set_paypwd"] boolValue];
 }
 
 + (NSString *)userPhone {

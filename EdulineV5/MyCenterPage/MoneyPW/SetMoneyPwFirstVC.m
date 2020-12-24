@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "SHPasswordTextView.h"
 #import "LoginMsgView.h"
+#import "Net_Path.h"
 
 @interface SetMoneyPwFirstVC ()<LoginMsgViewDelegate> {
     NSTimer *codeTimer;
@@ -111,7 +112,7 @@
     _finishButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     _finishButton.enabled = NO;
     _finishButton.hidden = YES;
-    [_finishButton addTarget:self action:@selector(nextButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_finishButton addTarget:self action:@selector(finishButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_finishButton];
     
     _loginMsg = [[LoginMsgView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 102.5)];
@@ -132,17 +133,59 @@
 }
 
 - (void)nextButtonClick:(UIButton *)sender {
-    _loginMsg.hidden = YES;
-    _nextButton.hidden = YES;
     
-    _firstPw.hidden = NO;
-    _tip1.hidden = NO;
-    _tip2.hidden = NO;
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    }
+    [param setObject:_loginMsg.codeTextField.text forKey:@"code"];
+    [Net_API requestPOSTWithURLStr:[Net_Path userVerifyMoneyPwNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                self.loginMsg.hidden = YES;
+                self.nextButton.hidden = YES;
+                
+                self.firstPw.hidden = NO;
+                self.tip1.hidden = NO;
+                self.tip2.hidden = NO;
+                
+                self.secondPw.hidden = YES;
+                self.finishButton.hidden = YES;
+                self.tip3.hidden = YES;
+                [self.firstPw.textField becomeFirstResponder];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+
+    }];
+}
+
+- (void)finishButtonClick:(UIButton *)sender {
+    // 先判断两次密码是否一致
+    if (![_firstPw.textField.text isEqualToString:_secondPw.textField.text]) {
+        [self showHudInView:self.view showHint:@"两次输入密码不一致"];
+        return;
+    }
     
-    _secondPw.hidden = YES;
-    _finishButton.hidden = YES;
-    _tip3.hidden = YES;
-    [self.firstPw.textField becomeFirstResponder];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    }
+    [param setObject:_loginMsg.codeTextField.text forKey:@"code"];
+    [param setObject:[[EdulineV5_Tool getmd5WithString:_secondPw.textField.text] lowercaseString] forKey:@"password"];
+    [Net_API requestPOSTWithURLStr:[Net_Path moneyPwSetNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+
+    }];
+    
 }
 
 - (void)textFieldDidChanged:(NSNotification *)notice {
@@ -159,36 +202,24 @@
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
     NSMutableDictionary *param = [NSMutableDictionary new];
-//    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
-//        if (_changePhone && _hasPhone && _oldPhone) {
-//            [param setObject:[V5_UserModel userPhone] forKey:@"phone"];
-//        } else {
-//            [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
-//        }
-//    }
-//    if (_registerOrForget) {
-//        [param setObject:@"login" forKey:@"type"];
-//    } else {
-//        if (_editPw) {
-//            [param setObject:@"retrieve" forKey:@"type"];
-//        } else {
-//            [param setObject:@"phone" forKey:@"type"];
-//        }
-//    }
-//    [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-//        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
-//            if ([[responseObject objectForKey:@"code"] integerValue]) {
-//                [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
-//                remainTime = 59;
-//                sender.enabled = NO;
-//                codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
-//            } else {
-//                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
-//            }
-//        }
-//    } enError:^(NSError * _Nonnull error) {
-//
-//    }];
+    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    }
+    [param setObject:@"bpwd" forKey:@"type"];
+    [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
+                remainTime = 59;
+                sender.enabled = NO;
+                codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+
+    }];
 }
 
 - (void)timerBegin:(NSTimer *)timer

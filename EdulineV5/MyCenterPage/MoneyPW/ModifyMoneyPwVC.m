@@ -10,10 +10,12 @@
 #import "V5_Constant.h"
 #import "SHPasswordTextView.h"
 #import "LoginMsgView.h"
+#import "Net_Path.h"
 
 @interface ModifyMoneyPwVC ()<LoginMsgViewDelegate> {
     NSTimer *codeTimer;
     int remainTime;
+    NSString *verify_type;
 }
 
 
@@ -41,6 +43,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"修改支付密码";
+    verify_type = @"1";
     [self makeSubView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
@@ -82,24 +85,8 @@
     _verifyPw = [[SHPasswordTextView alloc] initWithFrame:CGRectMake(25, _tip2.bottom + 27, MainScreenWidth - 50, 44) count:6 margin:0.1 passwordFont:15 forType:SHPasswordTextTypeRectangle block:^(NSString * _Nonnull passwordStr) {
         NSLog(@"%@",passwordStr);
         if (passwordStr.length >= 6) {
-            // 验证原密码 后
-            self.loginMsg.hidden = YES;
-            self.nextButton.hidden = YES;
-            self.changeOldPwVerifyButton.hidden = YES;
-            
-            self.verifyPw.hidden = YES;
-            self.tip0.hidden = YES;
-            self.changePhoneVerifyButton.hidden = YES;
-            
-            self.firstPw.hidden = NO;
-            self.tip1.hidden = NO;
-            self.tip2.hidden = NO;
-            
-            self.secondPw.hidden = YES;
-            self.tip3.hidden = YES;
-            self.finishButton.hidden = YES;
-            
-            [self.firstPw.textField becomeFirstResponder];
+            // 验证原密码
+            [self verifyOldPw];
         }
     }];
     _verifyPw.hidden = NO;
@@ -195,8 +182,46 @@
     
 }
 
+//MARK: - 验证原密码
+- (void)verifyOldPw {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_verifyPw.textField.text)) {
+        [param setObject:[[EdulineV5_Tool getmd5WithString:self.verifyPw.textField.text] lowercaseString] forKey:@"password"];
+    }
+    [Net_API requestPOSTWithURLStr:[Net_Path verifyOldMoneyPwNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                self.loginMsg.hidden = YES;
+                self.nextButton.hidden = YES;
+                self.changeOldPwVerifyButton.hidden = YES;
+                
+                self.verifyPw.hidden = YES;
+                self.changePhoneVerifyButton.hidden = YES;
+                self.tip0.hidden = YES;
+                
+                self.firstPw.hidden = NO;
+                self.tip1.hidden = NO;
+                self.tip2.hidden = NO;
+                
+                self.secondPw.hidden = YES;
+                self.finishButton.hidden = YES;
+                self.tip3.hidden = YES;
+                [self.firstPw.textField becomeFirstResponder];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+
+    }];
+    
+}
+
 - (void)changePhoneVerifyButtonClick:(UIButton *)sender {
     [self.view endEditing:YES];
+    
+    verify_type = @"2";
+    
     _loginMsg.hidden = NO;
     _nextButton.hidden = NO;
     _changeOldPwVerifyButton.hidden = NO;
@@ -217,6 +242,8 @@
 - (void)changeOldPwVerifyButtonClick:(UIButton *)sender {
     [self.view endEditing:YES];
     
+    verify_type = @"1";
+    
     _loginMsg.hidden = YES;
     _nextButton.hidden = YES;
     _changeOldPwVerifyButton.hidden = YES;
@@ -235,26 +262,67 @@
 }
 
 - (void)nextButtonClick:(UIButton *)sender {
-    _loginMsg.hidden = YES;
-    _nextButton.hidden = YES;
-    _changeOldPwVerifyButton.hidden = YES;
-    
-    _verifyPw.hidden = YES;
-    _changePhoneVerifyButton.hidden = YES;
-    _tip0.hidden = YES;
-    
-    _firstPw.hidden = NO;
-    _tip1.hidden = NO;
-    _tip2.hidden = NO;
-    
-    _secondPw.hidden = YES;
-    _finishButton.hidden = YES;
-    _tip3.hidden = YES;
-    [self.firstPw.textField becomeFirstResponder];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    }
+    [param setObject:_loginMsg.codeTextField.text forKey:@"code"];
+    [Net_API requestPOSTWithURLStr:[Net_Path userVerifyMoneyPwNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                self.loginMsg.hidden = YES;
+                self.nextButton.hidden = YES;
+                self.changeOldPwVerifyButton.hidden = YES;
+                
+                self.verifyPw.hidden = YES;
+                self.changePhoneVerifyButton.hidden = YES;
+                self.tip0.hidden = YES;
+                
+                self.firstPw.hidden = NO;
+                self.tip1.hidden = NO;
+                self.tip2.hidden = NO;
+                
+                self.secondPw.hidden = YES;
+                self.finishButton.hidden = YES;
+                self.tip3.hidden = YES;
+                [self.firstPw.textField becomeFirstResponder];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+
+    }];
 }
 
 - (void)finishButtonClick:(UIButton *)sender {
     
+    // 先判断两次密码是否一致
+    if (![_firstPw.textField.text isEqualToString:_secondPw.textField.text]) {
+        [self showHudInView:self.view showHint:@"两次输入密码不一致"];
+        return;
+    }
+    
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    }
+    [param setObject:_loginMsg.codeTextField.text forKey:@"code"];
+    
+    [param setObject:verify_type forKey:@"verify_type"];
+    [param setObject:[[EdulineV5_Tool getmd5WithString:self.verifyPw.textField.text] lowercaseString] forKey:@"original_pwd"];
+    
+    [param setObject:[[EdulineV5_Tool getmd5WithString:_secondPw.textField.text] lowercaseString] forKey:@"password"];
+    [Net_API requestPUTWithURLStr:[Net_Path moneyPwSetNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 - (void)textFieldDidChanged:(NSNotification *)notice {
@@ -271,36 +339,24 @@
 - (void)getMsgCode:(UIButton *)sender {
     [self.view endEditing:YES];
     NSMutableDictionary *param = [NSMutableDictionary new];
-//    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
-//        if (_changePhone && _hasPhone && _oldPhone) {
-//            [param setObject:[V5_UserModel userPhone] forKey:@"phone"];
-//        } else {
-//            [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
-//        }
-//    }
-//    if (_registerOrForget) {
-//        [param setObject:@"login" forKey:@"type"];
-//    } else {
-//        if (_editPw) {
-//            [param setObject:@"retrieve" forKey:@"type"];
-//        } else {
-//            [param setObject:@"phone" forKey:@"type"];
-//        }
-//    }
-//    [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-//        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
-//            if ([[responseObject objectForKey:@"code"] integerValue]) {
-//                [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
-//                remainTime = 59;
-//                sender.enabled = NO;
-//                codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
-//            } else {
-//                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
-//            }
-//        }
-//    } enError:^(NSError * _Nonnull error) {
-//
-//    }];
+    if (SWNOTEmptyStr(_loginMsg.phoneNumTextField.text)) {
+        [param setObject:_loginMsg.phoneNumTextField.text forKey:@"phone"];
+    }
+    [param setObject:@"bpwd" forKey:@"type"];
+    [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [self showHudInView:self.view showHint:@"发送成功，请等待短信验证码"];
+                remainTime = 59;
+                sender.enabled = NO;
+                codeTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerBegin:) userInfo:nil repeats:YES];
+            } else {
+                [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+
+    }];
 }
 
 - (void)timerBegin:(NSTimer *)timer
