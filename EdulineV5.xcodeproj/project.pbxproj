@@ -16,6 +16,8 @@
 		780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BD255520190070EB1F /* LiveBoardToolView.m */; };
 		780F95C12558D9740070EB1F /* LiveColorSelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95C02558D9740070EB1F /* LiveColorSelectedView.m */; };
 		780F95C4255912050070EB1F /* LiveStudentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95C3255912050070EB1F /* LiveStudentView.m */; };
+		782333B82595B5570076DD85 /* SpecialProjectExamList.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333B72595B5570076DD85 /* SpecialProjectExamList.m */; };
+		782333BB2595B99E0076DD85 /* SpecialExamListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BA2595B99E0076DD85 /* SpecialExamListCell.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -580,6 +582,10 @@
 		780F95C02558D9740070EB1F /* LiveColorSelectedView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveColorSelectedView.m; sourceTree = "<group>"; };
 		780F95C2255912050070EB1F /* LiveStudentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveStudentView.h; sourceTree = "<group>"; };
 		780F95C3255912050070EB1F /* LiveStudentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveStudentView.m; sourceTree = "<group>"; };
+		782333B62595B5570076DD85 /* SpecialProjectExamList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialProjectExamList.h; sourceTree = "<group>"; };
+		782333B72595B5570076DD85 /* SpecialProjectExamList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialProjectExamList.m; sourceTree = "<group>"; };
+		782333B92595B99E0076DD85 /* SpecialExamListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialExamListCell.h; sourceTree = "<group>"; };
+		782333BA2595B99E0076DD85 /* SpecialExamListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialExamListCell.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1615,6 +1621,8 @@
 			children = (
 				78060FA7255E836900009171 /* ExamMainViewController.h */,
 				78060FA8255E836900009171 /* ExamMainViewController.m */,
+				782333B62595B5570076DD85 /* SpecialProjectExamList.h */,
+				782333B72595B5570076DD85 /* SpecialProjectExamList.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -1859,6 +1867,8 @@
 				784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */,
 				78060FAA255E8B8100009171 /* ExamMainListCell.h */,
 				78060FAB255E8B8100009171 /* ExamMainListCell.m */,
+				782333B92595B99E0076DD85 /* SpecialExamListCell.h */,
+				782333BA2595B99E0076DD85 /* SpecialExamListCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4192,6 +4202,7 @@
 				78C5497F241B642B00A33FC4 /* AlivcBeautySettingUIDefine.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
 				789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */,
+				782333BB2595B99E0076DD85 /* SpecialExamListCell.m in Sources */,
 				78C549D5241B674F00A33FC4 /* AlivcKeyboardManageViewController.m in Sources */,
 				7879572F240FA3840013F95F /* ZLPhotoPickerDatas.m in Sources */,
 				78060FAC255E8B8100009171 /* ExamMainListCell.m in Sources */,
@@ -4411,6 +4422,7 @@
 				78AA13812440543D007087F7 /* TADotView.m in Sources */,
 				7839C97D24206AD1002F6595 /* CourseContentView.m in Sources */,
 				788E95A1253FE24E0089251E /* RTCVideoSessionModel.m in Sources */,
+				782333B82595B5570076DD85 /* SpecialProjectExamList.m in Sources */,
 				78C936C3248DE4C700D5F1ED /* HomePageHotRecommendedCell.m in Sources */,
 				7879572E240FA3840013F95F /* UIView+ZLExtension.m in Sources */,
 				780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */,

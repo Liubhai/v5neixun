@@ -11,6 +11,8 @@
 
 #import "ExamMainListCell.h"
 
+#import "SpecialProjectExamList.h"
+
 @interface ExamMainViewController () {
     NSInteger page;
 }
@@ -25,7 +27,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     page = 1;
     _dataSource = [NSMutableArray new];
-    [_dataSource addObjectsFromArray:@[@{@"image":@"find_album_icon",@"title":@"专辑课"},@{@"image":@"find_test_icon",@"title":@"考试"},@{@"image":@"find_library_icon",@"title":@"文库"},@{@"image":@"find_q&a_icon",@"title":@"问答"}]];
+    [_dataSource addObjectsFromArray:@[@{@"image":@"find_album_icon",@"title":@"公开考试"},@{@"image":@"find_test_icon",@"title":@"专项练习"},@{@"image":@"find_library_icon",@"title":@"知识点练习"},@{@"image":@"find_q&a_icon",@"title":@"套卷练习"}]];
     _titleLabel.text = @"考试";
     [self makeCollectionView];
     _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainList)];
@@ -68,6 +70,15 @@
     ExamMainListCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ExamMainListCell" forIndexPath:indexPath];
     [cell setExamMainListInfo:_dataSource[indexPath.row] cellIndex:indexPath];
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    NSString *examTheme = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
+    if ([examTheme isEqualToString:@"公开考试"]) {
+        SpecialProjectExamList *vc = [[SpecialProjectExamList alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)getCourseMainList {
