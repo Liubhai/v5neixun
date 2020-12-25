@@ -865,10 +865,12 @@
 
 // MARK: - 底部按钮点击事件
 - (void)jumpServiceVC:(CourseDownView *)downView {
-//    WkWebViewController *vc = [[WkWebViewController alloc] init];
-//    vc.titleString = @"客服";
-//    vc.agreementKey = @"kehu";
-//    [self.navigationController pushViewController:vc animated:YES];
+    if (SWNOTEmptyDictionary(_dataSource)) {
+        WkWebViewController *vc = [[WkWebViewController alloc] init];
+        vc.titleString = @"在线咨询";
+        vc.urlString = [NSString stringWithFormat:@"%@",_dataSource[@"online_consult"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)jumpToShopCarVC:(CourseDownView *)downView {
