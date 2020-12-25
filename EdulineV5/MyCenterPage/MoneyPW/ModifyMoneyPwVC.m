@@ -90,6 +90,7 @@
             [self verifyOldPw];
         }
     }];
+    _verifyPw.passwordSecureEntry = YES;
     _verifyPw.hidden = NO;
     [self.view addSubview:_verifyPw];
     
@@ -116,6 +117,7 @@
             [self.secondPw.textField becomeFirstResponder];
         }
     }];
+    _firstPw.passwordSecureEntry = YES;
     _firstPw.hidden = YES;
     [self.view addSubview:_firstPw];
     
@@ -130,6 +132,7 @@
         }
         // 请求接口
     }];
+    _secondPw.passwordSecureEntry = YES;
     _secondPw.hidden = YES;
     [self.view addSubview:_secondPw];
     
