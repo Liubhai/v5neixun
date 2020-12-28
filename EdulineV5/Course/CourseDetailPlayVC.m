@@ -879,6 +879,7 @@
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                    _courselayer = [NSString stringWithFormat:@"%@",_dataSource[@"section_level"]];
                     if ([_dataSource objectForKey:@"recent_learn"]) {
                         if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
                             _recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
@@ -1585,6 +1586,17 @@
                             curent.model = newClassCurrentModel;
                             currentCourseFinalModel = curent;
                             
+                            if (_courseListVC) {
+                                for (int i = 0; i<_courseListVC.courseListArray.count; i++) {
+                                    CourseListModelFinal *model = (CourseListModelFinal *)_courseListVC.courseListArray[i];
+                                    if ([model.model.classHourId isEqualToString:currentCourseFinalModel.model.classHourId]) {
+                                        model.isPlaying = YES;
+                                        [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model];
+                                        [_courseListVC.tableView reloadData];
+                                        break;
+                                    }
+                                }
+                            }
                             // 目前生成了继续学习数据的 是可以直接看的音视频 不存在处理试看情况
 //                            if (model.audition > 0 && !model.is_buy) {
 //                                freeLook = YES;
