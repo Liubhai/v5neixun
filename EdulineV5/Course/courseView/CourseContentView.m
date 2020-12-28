@@ -139,7 +139,7 @@
         }
     }
     if (showTitleOnly) {
-        _courseTitleLabel.frame = CGRectMake(15, 0, MainScreenWidth - 30, 86 - 35);
+        _courseTitleLabel.frame = CGRectMake(15, 0, MainScreenWidth - 15 - (_detailButton.width + 15), 86 - 35);
         _lianzaiIcon.hidden = YES;
         _courseStar.hidden = YES;
         _coursePrice.hidden = YES;
