@@ -43,7 +43,9 @@
 
 - (void)getAgreementContent {
     if (SWNOTEmptyStr(_urlString)) {
-        [_wkwebView loadRequest:[NSURLRequest requestWithURL:EdulineUrlString(_urlString)]];
+        if ([_urlString containsString:@"http"]) {
+            [_wkwebView loadRequest:[NSURLRequest requestWithURL:EdulineUrlString(_urlString)]];
+        }
     } else {
         if (SWNOTEmptyStr(_agreementKey)) {
             [Net_API requestGETSuperAPIWithURLStr:[Net_Path agreementContentNet:_agreementKey] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {

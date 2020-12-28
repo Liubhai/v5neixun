@@ -866,10 +866,15 @@
 // MARK: - 底部按钮点击事件
 - (void)jumpServiceVC:(CourseDownView *)downView {
     if (SWNOTEmptyDictionary(_dataSource)) {
-        WkWebViewController *vc = [[WkWebViewController alloc] init];
-        vc.titleString = @"在线咨询";
-        vc.urlString = [NSString stringWithFormat:@"%@",_dataSource[@"online_consult"]];
-        [self.navigationController pushViewController:vc animated:YES];
+        if (![[NSString stringWithFormat:@"%@",_dataSource[@"online_consult"]] containsString:@"http"]) {
+            NSURL *chatUrl = [NSURL URLWithString:[NSString stringWithFormat:@"mqqwpa://im/chat?chat_type=wpa&uin=%@&version=1&src_type=web",[NSString stringWithFormat:@"%@",_dataSource[@"online_consult"]]]];
+            [[UIApplication sharedApplication] openURL:chatUrl];
+        } else {
+            WkWebViewController *vc = [[WkWebViewController alloc] init];
+            vc.titleString = @"在线咨询";
+            vc.urlString = [NSString stringWithFormat:@"%@",_dataSource[@"online_consult"]];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 
