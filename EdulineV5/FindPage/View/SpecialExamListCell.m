@@ -39,10 +39,25 @@
     [_whiteBack addSubview:_examTitle];
     _gotImage.centerY = _examTitle.centerY;
     
+    _examPoint = [[UILabel alloc] initWithFrame:CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 14)];
+    _examPoint.font = SYSTEMFONT(11);
+    _examPoint.textColor = EdlineV5_Color.textThirdColor;
+    [_whiteBack addSubview:_examPoint];
+    
     _examCount = [[UILabel alloc] initWithFrame:CGRectMake(12, _whiteBack.height - 36, 80, 16)];
     _examCount.font = SYSTEMFONT(12);
     _examCount.textColor = EdlineV5_Color.textThirdColor;
     [_whiteBack addSubview:_examCount];
+    
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_examCount.right + 8, 0, 0.5, 8)];
+    _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
+    _lineView.centerY = _examCount.centerY;
+    [_whiteBack addSubview:_lineView];
+    
+    _learnCount = [[UILabel alloc] initWithFrame:CGRectMake(_lineView.right + 8, _examCount.top, 100, 16)];
+    _learnCount.font = SYSTEMFONT(12);
+    _learnCount.textColor = EdlineV5_Color.textThirdColor;
+    [_whiteBack addSubview:_learnCount];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_whiteBack.width - (100 + 14 + 82 + 12), 0, 100, 21)];
     _priceLabel.font = SYSTEMFONT(15);
@@ -66,6 +81,16 @@
     if (_delegate && [_delegate respondsToSelector:@selector(getOrExamButtonWith:)]) {
         [_delegate getOrExamButtonWith:self];
     }
+}
+
+- (void)setPublicExamCell:(NSDictionary *)dict {
+    _examPoint.hidden = YES;
+    _lineView.hidden = YES;
+    _learnCount.hidden = YES;
+}
+
+- (void)setExamPointCell:(NSDictionary *)dict {
+    
 }
 
 - (void)awakeFromNib {

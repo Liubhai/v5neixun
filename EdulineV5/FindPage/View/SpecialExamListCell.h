@@ -26,10 +26,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *whiteBack;
 @property (strong, nonatomic) UIImageView *gotImage;
 @property (strong, nonatomic) UILabel *examTitle;
+@property (strong, nonatomic) UILabel *examPoint;
 @property (strong, nonatomic) UILabel *examCount;
+@property (strong, nonatomic) UIView *lineView;
+@property (strong, nonatomic) UILabel *learnCount;
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UIButton *getOrExamBtn;
 
+- (void)setPublicExamCell:(NSDictionary *)dict;
+- (void)setExamPointCell:(NSDictionary *)dict;
 
 @end
 
