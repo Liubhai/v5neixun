@@ -64,6 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL isLive;//是不是直播  区分直播详情页和其他类型详情页
 @property (strong, nonatomic) CourseListModel *listModel;
 @property (strong, nonatomic) CourseListModelFinal *listFinalModel;//CourseListModelFinal
+@property (assign, nonatomic) BOOL courseIsBuy;
 
 -(id)initWithReuseIdentifier:(NSString*)reuseIdentifier isClassNew:(BOOL)isClassNew cellSection:(NSInteger)cellSection cellRow:(NSInteger)cellRow courselayer:(NSString *)courselayer isMainPage:(BOOL)isMainPage allLayar:(NSString *)allLayar isLive:(BOOL)isLive;
 

@@ -148,6 +148,11 @@
     } else {
         model.courselayer = @"1";
     }
+    if (SWNOTEmptyDictionary(_videoInfoDict)) {
+        cell.courseIsBuy = [[_videoInfoDict objectForKey:@"is_buy"] boolValue];
+    } else {
+        cell.courseIsBuy = NO;
+    }
     model.allLayar = _courselayer;
     [cell setListInfo:model];
     return cell;

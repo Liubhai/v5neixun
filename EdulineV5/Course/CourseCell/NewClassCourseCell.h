@@ -41,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) playAnimationView *isLearningIcon;
 @property (strong, nonatomic) CourseListModel *treeItem;
 @property (strong, nonatomic) UIView *cellTableViewSpace;
+@property (assign, nonatomic) BOOL courseIsBuy;
 
 - (void)updateItem;
 

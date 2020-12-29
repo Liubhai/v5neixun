@@ -251,6 +251,7 @@
         model.allLayar = _allLayar;
         model.courselayer = @"2";
         model.cellIndex = indexPath;
+        cell.courseIsBuy = _courseIsBuy;
         [cell setListInfo:model];
         return cell;
     } else if ([_courselayer isEqualToString:@"2"]) {
@@ -264,6 +265,7 @@
         model.allLayar = _allLayar;
         model.courselayer = @"3";
         model.cellIndex = indexPath;
+        cell.courseIsBuy = _courseIsBuy;
         [cell setListInfo:model];
         return cell;
     }
@@ -277,6 +279,7 @@
     model.allLayar = _allLayar;
     model.courselayer = @"3";
     model.cellIndex = indexPath;
+    cell.courseIsBuy = _courseIsBuy;
     [cell setListInfo:model];
     return cell;
 }
@@ -299,6 +302,9 @@
     if ([model.model.price floatValue]>0) {
         _priceLabel.hidden = NO;
         if (model.model.is_buy) {
+            if (_courseIsBuy) {
+                _priceLabel.hidden = YES;
+            }
             _priceLabel.text = @"已购买";
             _freeImageView.hidden = YES;
         }

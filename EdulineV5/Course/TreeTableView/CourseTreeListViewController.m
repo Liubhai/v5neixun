@@ -65,6 +65,11 @@
         cell = [[NewClassCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
     CourseListModel *item = self.manager.showItems[indexPath.row];
+    if (SWNOTEmptyDictionary(_videoInfoDict)) {
+        cell.courseIsBuy = [[_videoInfoDict objectForKey:@"is_buy"] boolValue];
+    } else {
+        cell.courseIsBuy = NO;
+    }
     [cell setCourseInfo:item isMainPage:_isMainPage];
     return cell;
 }

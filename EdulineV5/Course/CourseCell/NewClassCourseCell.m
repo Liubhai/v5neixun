@@ -178,6 +178,9 @@
         if ([model.price floatValue]>0) {
             _priceLabel.hidden = NO;
             if (model.is_buy) {
+                if (_courseIsBuy) {
+                    _priceLabel.hidden = YES;
+                }
                 _priceLabel.text = @"已购买";
                 _freeImageView.hidden = YES;
             }
