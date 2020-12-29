@@ -77,7 +77,11 @@
     aWidth = width + Space;
     
     
+    
     UIImage *image = [UIImage imageNamed:@"icon_star_pre.png"];
+    if (width>15) {
+        image = [UIImage imageNamed:@"comment_star.png"];
+    }
     for (int i = 0; i < 5; i ++) {
         CGRect rect = CGRectMake(i*(width+Space), 0, width, width);
         [image drawInRect:rect];

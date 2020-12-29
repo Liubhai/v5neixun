@@ -12,6 +12,7 @@
 #import "ExamMainListCell.h"
 
 #import "SpecialProjectExamList.h"
+#import "ExamPointSelectVC.h"
 
 @interface ExamMainViewController () {
     NSInteger page;
@@ -77,6 +78,9 @@
     NSString *examTheme = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
     if ([examTheme isEqualToString:@"公开考试"]) {
         SpecialProjectExamList *vc = [[SpecialProjectExamList alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([examTheme isEqualToString:@"知识点练习"]) {
+        ExamPointSelectVC *vc = [[ExamPointSelectVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

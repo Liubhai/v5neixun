@@ -18,6 +18,7 @@
 		780F95C4255912050070EB1F /* LiveStudentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95C3255912050070EB1F /* LiveStudentView.m */; };
 		782333B82595B5570076DD85 /* SpecialProjectExamList.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333B72595B5570076DD85 /* SpecialProjectExamList.m */; };
 		782333BB2595B99E0076DD85 /* SpecialExamListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BA2595B99E0076DD85 /* SpecialExamListCell.m */; };
+		782333BE2599CA2C0076DD85 /* ExamPointSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -586,6 +587,8 @@
 		782333B72595B5570076DD85 /* SpecialProjectExamList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialProjectExamList.m; sourceTree = "<group>"; };
 		782333B92595B99E0076DD85 /* SpecialExamListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialExamListCell.h; sourceTree = "<group>"; };
 		782333BA2595B99E0076DD85 /* SpecialExamListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialExamListCell.m; sourceTree = "<group>"; };
+		782333BC2599CA2C0076DD85 /* ExamPointSelectVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamPointSelectVC.h; sourceTree = "<group>"; };
+		782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPointSelectVC.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1623,6 +1626,8 @@
 				78060FA8255E836900009171 /* ExamMainViewController.m */,
 				782333B62595B5570076DD85 /* SpecialProjectExamList.h */,
 				782333B72595B5570076DD85 /* SpecialProjectExamList.m */,
+				782333BC2599CA2C0076DD85 /* ExamPointSelectVC.h */,
+				782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -4193,6 +4198,7 @@
 				785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */,
 				780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */,
 				787F1E88247381A400108F7B /* AVC_VP_PlaySettingVC.m in Sources */,
+				782333BE2599CA2C0076DD85 /* ExamPointSelectVC.m in Sources */,
 				78C549D2241B674E00A33FC4 /* AlivcUIConfig.m in Sources */,
 				78AA138C2440710B007087F7 /* HomePageCourseTypeOneCell.m in Sources */,
 				78AA1353243C211B007087F7 /* CourseTypeVC.m in Sources */,

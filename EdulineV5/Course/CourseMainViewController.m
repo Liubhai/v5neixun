@@ -689,7 +689,7 @@
                     NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
                     [pass setObject:@"1" forKey:@"collected"];
                     _dataSource = [NSDictionary dictionaryWithDictionary:pass];
-                    [_navZanButton setImage:Image(@"nav_collect_pre") forState:0];
+                    [_navZanButton setImage:Image(@"course_collect_pre") forState:0];
                     [_zanButton setImage:Image(@"nav_collect_pre") forState:0];
                 }
             }
@@ -1044,7 +1044,7 @@
         }
         
         if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
-            [_navZanButton setImage:Image(@"nav_collect_pre") forState:0];
+            [_navZanButton setImage:Image(@"course_collect_pre") forState:0];
             [_zanButton setImage:Image(@"nav_collect_pre") forState:0];
         } else {
             [_navZanButton setImage:Image(@"course_collect_nor") forState:0];
