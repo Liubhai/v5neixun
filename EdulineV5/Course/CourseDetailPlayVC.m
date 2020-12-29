@@ -468,6 +468,9 @@
             if (SWNOTEmptyDictionary(self.dataSource)) {
                 NSString *audition_stat = [NSString stringWithFormat:@"%@",self.dataSource[@"audition_stat"]];
                 self.seeFreeIcon.hidden = [audition_stat boolValue] ? NO : YES;
+                if ([[self.dataSource objectForKey:@"is_buy"] boolValue]) {
+                    self.seeFreeIcon.hidden = YES;
+                }
             }
             
             self.introButton.selected = YES;
@@ -576,6 +579,9 @@
     if (SWNOTEmptyDictionary(self.dataSource)) {
         NSString *audition_stat = [NSString stringWithFormat:@"%@",self.dataSource[@"audition_stat"]];
         self.seeFreeIcon.hidden = [audition_stat boolValue] ? NO : YES;
+        if ([[self.dataSource objectForKey:@"is_buy"] boolValue]) {
+            self.seeFreeIcon.hidden = YES;
+        }
     }
     return _bg;
 }
@@ -890,7 +896,9 @@
                         if (SWNOTEmptyDictionary(_recent_learn_Source)) {
                             CourseListModel *current_model = [CourseListModel mj_objectWithKeyValues:_recent_learn_Source];
                             current_model.classHourId = [NSString stringWithFormat:@"%@",_recent_learn_Source[@"section_id"]];
-                            current_model.section_rate.current_time = [[NSString stringWithFormat:@"%@",_recent_learn_Source[@"current_time"]] integerValue];
+                            section_rate_model *rateModel = [[section_rate_model alloc] init];
+                            rateModel.current_time = [[NSString stringWithFormat:@"%@",_recent_learn_Source[@"current_time"]] integerValue];
+                            current_model.section_rate = rateModel;
                             [self recordLearnContinuePlay:current_model];
                         }
                     } else {

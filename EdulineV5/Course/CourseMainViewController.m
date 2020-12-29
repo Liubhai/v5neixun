@@ -303,6 +303,9 @@
             if (SWNOTEmptyDictionary(self.dataSource)) {
                 NSString *audition_stat = [NSString stringWithFormat:@"%@",self.dataSource[@"audition_stat"]];
                 self.seeFreeIcon.hidden = [audition_stat boolValue] ? NO : YES;
+                if ([[self.dataSource objectForKey:@"is_buy"] boolValue]) {
+                    self.seeFreeIcon.hidden = YES;
+                }
             }
             
             self.introButton.selected = YES;
@@ -455,6 +458,9 @@
     if (SWNOTEmptyDictionary(self.dataSource)) {
         NSString *audition_stat = [NSString stringWithFormat:@"%@",self.dataSource[@"audition_stat"]];
         self.seeFreeIcon.hidden = [audition_stat boolValue] ? NO : YES;
+        if ([[self.dataSource objectForKey:@"is_buy"] boolValue]) {
+            self.seeFreeIcon.hidden = YES;
+        }
     }
     return _bg;
 }
