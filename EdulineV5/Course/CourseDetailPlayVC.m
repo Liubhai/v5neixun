@@ -1005,6 +1005,8 @@
     CourseListModelFinal *currentt = model;
     currentCourseFinalModel = currentt;
     
+    wekself.freeLookView.hidden = YES;
+    
     freeLook = NO;
     if ([_courseType isEqualToString:@"2"]) {
         [wekself stopRecordTimer];
@@ -1256,6 +1258,8 @@
     _currentHourseId = model.classHourId;
     __weak CourseDetailPlayVC *wekself = self;
     freeLook = NO;
+    
+    wekself.freeLookView.hidden = NO;
     
     CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
     curent.model = model;
