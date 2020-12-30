@@ -1148,7 +1148,7 @@
                             }
                         }
                         
-                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":cell.listFinalModel.model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
+                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
                             NSLog(@"%@",responseObject);
                         } enError:^(NSError * _Nonnull error) {
                             
@@ -1199,7 +1199,7 @@
                                 }
                             }
                             
-                            if (cell.listFinalModel.model.audition > 0 && !cell.listFinalModel.model.is_buy) {
+                            if (currentCourseFinalModel.model.audition > 0 && !currentCourseFinalModel.model.is_buy) {
                                 freeLook = YES;
                             }
                             
@@ -1216,7 +1216,7 @@
                             } else {
                                 wekself.playerView.unHiddenCoverImage = NO;
                             }
-                            [wekself.playerView setTitle:cell.listFinalModel.model.title];
+                            [wekself.playerView setTitle:currentCourseFinalModel.model.title];
                             wekself.playerView.trackInfoArray = [NSArray arrayWithArray:_playFileUrlArray];
                             [wekself.playerView playViewPrepareWithURL:EdulineUrlString(firstFileUrlInfo[@"play_url"])];
                             wekself.playerView.userInteractionEnabled = YES;
