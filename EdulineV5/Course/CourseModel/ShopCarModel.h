@@ -54,7 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ShopCarCourseModel : NSObject
 
-@property (strong, nonatomic) NSString *courseId;
+@property (strong, nonatomic) NSString *courseId;//在收藏页面这个不是课程id 是收藏ID 在购物车管理页面是课程ID
+@property (strong, nonatomic) NSString *source_id;// 收藏页面课程跳转时候需要的课程id
 @property (strong, nonatomic) NSString *course_type;
 @property (strong, nonatomic) NSString *category;
 @property (strong, nonatomic) NSString *fullcategorypath;

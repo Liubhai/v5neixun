@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setCourseCollectionManagerModel:(ShopCarCourseModel *)model indexpath:(NSIndexPath *)indexpath;
 
+- (void)setCourseCollectionRootManagerModel:(ShopCarCourseModel *)model indexpath:(NSIndexPath *)indexpath showSelect:(BOOL)showSelect;
+
 @end
 
 NS_ASSUME_NONNULL_END

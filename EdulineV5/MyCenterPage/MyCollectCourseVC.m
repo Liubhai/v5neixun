@@ -35,7 +35,9 @@
     _titleLabel.text = @"我的收藏";
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"管理" forState:0];
+    [_rightButton setTitle:@"取消" forState:UIControlStateSelected];
     [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateSelected];
     _rightButton.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
@@ -152,17 +154,19 @@
 }
 
 - (void)rightButtonClick:(id)sender {
-    MyCollectionCourseManagerVC *vc = [[MyCollectionCourseManagerVC alloc] init];
-    NSInteger i = 0;
-    for (UIButton *btn in _topView.subviews) {
-        if ([btn isKindOfClass:[UIButton class]]) {
-            if (btn.selected) {
-                i = btn.tag;
-            }
-        }
-    }
-    vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
-    [self.navigationController pushViewController:vc animated:YES];
+    _rightButton.selected = !_rightButton.selected;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"showManagerBottomView" object:nil userInfo:@{@"show":(_rightButton.selected ? @"1" : @"0")}];
+//    MyCollectionCourseManagerVC *vc = [[MyCollectionCourseManagerVC alloc] init];
+//    NSInteger i = 0;
+//    for (UIButton *btn in _topView.subviews) {
+//        if ([btn isKindOfClass:[UIButton class]]) {
+//            if (btn.selected) {
+//                i = btn.tag;
+//            }
+//        }
+//    }
+//    vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

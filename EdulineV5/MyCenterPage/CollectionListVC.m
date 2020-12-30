@@ -12,13 +12,22 @@
 #import "Net_Path.h"
 #import "LBHTableView.h"
 #import "CourseMainViewController.h"
+#import "CourseCollectionManagerCell.h"
 
-@interface CollectionListVC ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate> {
+@interface CollectionListVC ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, CourseCollectionManagerCellDelegate> {
     NSInteger page;
+    BOOL allSeleted;
+    NSString *course_ids;
 }
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSource;
+
+//装课程id
+@property (strong, nonatomic) NSMutableArray *selectedArray;
+@property (strong, nonatomic) UIView *bottomView;
+@property (strong, nonatomic) UIButton *selectAllButton;
+@property (strong, nonatomic) UIButton *cancelCollectButton;
 
 @end
 
@@ -29,10 +38,39 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
+    _selectedArray = [NSMutableArray new];
     page = 1;
     [self makeTableView];
+    [self makeBottomView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFirstList) name:@"reloadMyCollectionList" object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(canScroll:) name:@"canScrollTable" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showManagerBottomView:) name:@"showManagerBottomView" object:nil];
+}
+
+- (void)makeBottomView {
+    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, (MainScreenHeight - MACRO_UI_UPHEIGHT - 45) - MACRO_UI_TABBAR_HEIGHT, MainScreenWidth, MACRO_UI_TABBAR_HEIGHT)];
+    _bottomView.backgroundColor = [UIColor whiteColor];
+    _bottomView.hidden = YES;
+    [self.view addSubview:_bottomView];
+    
+    _selectAllButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, (MainScreenWidth - 1)/2.0, 49)];
+    [_selectAllButton setTitle:@"全选" forState:0];
+    [_selectAllButton setTitle:@"取消全选" forState:UIControlStateSelected];
+    [_selectAllButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    _selectAllButton.titleLabel.font = SYSTEMFONT(16);
+    [_selectAllButton addTarget:self action:@selector(selectAllButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:_selectAllButton];
+    
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(_selectAllButton.right, 0, 1, 12)];
+    line.backgroundColor = EdlineV5_Color.fengeLineColor;
+    line.centerY = _selectAllButton.centerY;
+    [_bottomView addSubview:line];
+    
+    _cancelCollectButton = [[UIButton alloc] initWithFrame:CGRectMake(line.right, 0, (MainScreenWidth - 1)/2.0, 49)];
+    [_cancelCollectButton setTitle:@"取消收藏(0)" forState:0];
+    [_cancelCollectButton setTitleColor:EdlineV5_Color.textzanColor forState:0];
+    _cancelCollectButton.titleLabel.font = SYSTEMFONT(16);
+    [_cancelCollectButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_bottomView addSubview:_cancelCollectButton];
 }
 
 - (void)dealloc {
@@ -60,12 +98,19 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuse = @"collectiongcell";
-    HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//    static NSString *reuse = @"collectiongcell";
+//    HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//    if (!cell) {
+//        cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+//    }
+//    [cell setHomePageCourseTypeOneCellInfo:_dataSource[indexPath.row]];
+    static NSString *reuse = @"CourseCollectionManagerCell";
+    CourseCollectionManagerCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        cell = [[CourseCollectionManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setHomePageCourseTypeOneCellInfo:_dataSource[indexPath.row]];
+    cell.delegate = self;
+    [cell setCourseCollectionRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath showSelect:_bottomView.hidden];
     return cell;
 }
 
@@ -75,11 +120,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ShopCarCourseModel *model = _dataSource[indexPath.row];
     CourseMainViewController *vc = [[CourseMainViewController alloc] init];
-    vc.ID = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"source_id"]];
-    vc.courselayer = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"section_level"]];
-    vc.isLive = [[NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
-    vc.courseType = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"course_type"]];
+    vc.ID = [NSString stringWithFormat:@"%@",model.source_id];
+    vc.courselayer = [NSString stringWithFormat:@"%@",model.section_level];
+    vc.isLive = [[NSString stringWithFormat:@"%@",model.course_type] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",model.course_type];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -129,7 +175,8 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+//                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:[ShopCarCourseModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                 if (_dataSource.count<10) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
@@ -137,6 +184,7 @@
                     [_tableView.mj_footer setState:MJRefreshStateIdle];
                 }
                 [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
+                [self dealDataSource];
                 [_tableView reloadData];
             }
         }
@@ -162,11 +210,15 @@
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+//                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                NSArray *pass = [NSArray arrayWithArray:[ShopCarCourseModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                 if (pass.count<10) {
                     [_tableView.mj_footer endRefreshingWithNoMoreData];
                 }
                 [_dataSource addObjectsFromArray:pass];
+                
+                [self dealDataSource];
+                
                 [_tableView reloadData];
             }
         }
@@ -176,6 +228,107 @@
             [_tableView.mj_footer endRefreshing];
         }
     }];
+}
+
+// MARK: - 管理课程页面选择按钮代理
+- (void)courseManagerSelectButtonClick:(CourseCollectionManagerCell *)cell {
+    // 第一要改变数据源
+    cell.courseModel.selected = cell.selectedIconBtn.selected;
+    
+    ShopCarCourseModel *cellCourseModel = cell.courseModel;
+    NSIndexPath *path = cell.cellIndex;
+    
+    [_dataSource replaceObjectAtIndex:path.row withObject:cellCourseModel];
+    
+    // 判断每一个机构是不是全选与否
+    for (int i = 0; i < _dataSource.count; i ++) {
+        ShopCarCourseModel *model = _dataSource[i];
+        if (model.selected) {
+            allSeleted = YES;
+        } else {
+            allSeleted = NO;
+            break;
+        }
+    }
+    
+    _selectAllButton.selected = allSeleted;
+    
+    [self dealDataSource];
+    
+    // 第二 刷新页面
+    [_tableView reloadData];
+}
+
+// MARK: - 全选按钮方法
+- (void)selectAllButtonClick:(UIButton *)sender {
+    _selectAllButton.selected = !sender.selected;
+    allSeleted = _selectAllButton.selected;
+    
+    for (int i = 0; i < _dataSource.count; i ++) {
+        ShopCarCourseModel *courseModel = _dataSource[i];
+        courseModel.selected = allSeleted;
+        [_dataSource replaceObjectAtIndex:i withObject:courseModel];
+    }
+    
+    [self dealDataSource];
+    [_tableView reloadData];
+}
+
+// MARK: - 取消收藏按钮点击事件
+- (void)cancelButtonClick:(UIButton *)sender {
+    course_ids = @"";
+    for (int i = 0; i<_selectedArray.count; i ++) {
+        ShopCarCourseModel *model = _selectedArray[i];
+        if (SWNOTEmptyStr(course_ids)) {
+            course_ids = [NSString stringWithFormat:@"%@,%@",course_ids,model.courseId];
+        } else {
+            course_ids = model.courseId;
+        }
+    }
+    if (!SWNOTEmptyStr(course_ids)) {
+        [self showHudInView:self.view showHint:@"请选择一个课程"];
+        return;
+    }
+    
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:_courseType forKey:@"source_type"];
+    [param setObject:course_ids forKey:@"ids"];
+    
+    [Net_API requestDeleteWithURLStr:[Net_Path unCollectNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _selectAllButton.selected = NO;
+                [self getFirstList];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:@"网络请求失败"];
+    }];
+    
+}
+
+// MARK: - 处理已选择的课程进 selectedArray
+- (void)dealDataSource {
+    [_selectedArray removeAllObjects];
+    for (int i = 0; i<_dataSource.count; i++) {
+        ShopCarCourseModel *courseModel = _dataSource[i];
+        if (courseModel.selected) {
+            [_selectedArray addObject:courseModel];
+        }
+    }
+    [_cancelCollectButton setTitle:[NSString stringWithFormat:@"取消收藏(%@)",@(_selectedArray.count)] forState:0];
+}
+
+- (void)showManagerBottomView:(NSNotification *)notice {
+    if ([[notice.userInfo objectForKey:@"show"] boolValue]) {
+        _bottomView.hidden = NO;
+        _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - MACRO_UI_TABBAR_HEIGHT);
+    } else {
+        _bottomView.hidden = YES;
+        _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45);
+    }
+    [_tableView reloadData];
 }
 
 @end
