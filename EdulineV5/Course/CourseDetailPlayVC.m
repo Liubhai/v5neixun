@@ -1607,10 +1607,10 @@
                                     }
                                 }
                             }
-                            // 目前生成了继续学习数据的 是可以直接看的音视频 不存在处理试看情况
-//                            if (model.audition > 0 && !model.is_buy) {
-//                                freeLook = YES;
-//                            }
+                             // 目前生成了继续学习数据的 是可以直接看的音视频 不存在处理试看情况(错的)
+                            if (model.audition > 0 && !model.is_buy) {
+                                freeLook = YES;
+                            }
                             
                             [wekself.headerView addSubview:wekself.playerView];
                             _wkWebView.hidden = YES;
@@ -1803,6 +1803,7 @@
             [wekself stopRecordTimer];
             [wekself.playerView stop];
             if ([wekself.freeLookView superview]) {
+                [wekself.headerView bringSubviewToFront:wekself.freeLookView];
                 wekself.freeLookView.frame = wekself.playerView.frame;
                 wekself.freeLookView.hidden = NO;
                 if ([currentCourseFinalModel.model.price floatValue]>0) {
