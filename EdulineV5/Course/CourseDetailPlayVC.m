@@ -515,6 +515,7 @@
                 [weakself.mainScroll addSubview:weakself.courseTreeListVC.view];
                 [weakself addChildViewController:weakself.courseTreeListVC];
             } else {
+                _courseTreeListVC.videoInfoDict = _dataSource;
                 _courseTreeListVC.cellTabelCanScroll = YES;//weakself.canScrollAfterVideoPlay;
                 _courseTreeListVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
                 _courseTreeListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
@@ -536,6 +537,7 @@
                 [weakself.mainScroll addSubview:weakself.courseListVC.view];
                 [weakself addChildViewController:weakself.courseListVC];
             } else {
+                _courseListVC.videoInfoDict = _dataSource;
                 _courseListVC.cellTabelCanScroll = YES;//weakself.canScrollAfterVideoPlay;
                 _courseListVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
                 _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
