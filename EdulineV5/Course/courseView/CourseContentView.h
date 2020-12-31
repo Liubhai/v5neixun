@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "V5_Constant.h"
 #import "StarEvaluator.h"
+#import "JustCircleProgress.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,8 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *coursePrice;
 @property (strong, nonatomic) UIView *lineView1;
 @property (strong, nonatomic) UIButton *detailButton;
-@property (strong, nonatomic) UILabel *sectionCountLabel;
 @property (strong, nonatomic) NSDictionary *courseInfo;
+
+@property (strong, nonatomic) UILabel *sectionCountLabel;
+@property (strong, nonatomic) JustCircleProgress *circleView;
+@property (strong, nonatomic) UILabel *percentlabel;
 
 - (void)setCourseContentInfo:(NSDictionary *)contentInfo showTitleOnly:(BOOL)showTitleOnly;
 

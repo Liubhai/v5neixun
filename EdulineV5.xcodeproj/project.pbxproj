@@ -342,6 +342,7 @@
 		788E95D52546A4360089251E /* LiveCourseListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E95D42546A4360089251E /* LiveCourseListCell.m */; };
 		788EB1C2250218B000E30D79 /* OtherTypeLoginBindVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */; };
 		788EB1C5250220B000E30D79 /* OtherTypeBindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */; };
+		7891C271259D69400022EC64 /* JustCircleProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 7891C270259D69400022EC64 /* JustCircleProgress.m */; };
 		7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */; };
 		7898F93D24B4124C00C9A1F7 /* MenberRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7898F93C24B4124C00C9A1F7 /* MenberRecordCell.m */; };
 		789DB01524593041001302B4 /* CouponModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 789DB01424593041001302B4 /* CouponModel.m */; };
@@ -1225,6 +1226,8 @@
 		788EB1C1250218AB00E30D79 /* OtherTypeLoginBindVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherTypeLoginBindVC.m; sourceTree = "<group>"; };
 		788EB1C3250220B000E30D79 /* OtherTypeBindCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherTypeBindCell.h; sourceTree = "<group>"; };
 		788EB1C4250220B000E30D79 /* OtherTypeBindCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherTypeBindCell.m; sourceTree = "<group>"; };
+		7891C26F259D69400022EC64 /* JustCircleProgress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JustCircleProgress.h; sourceTree = "<group>"; };
+		7891C270259D69400022EC64 /* JustCircleProgress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JustCircleProgress.m; sourceTree = "<group>"; };
 		7898F93824B40D3400C9A1F7 /* MenberRecordVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRecordVC.h; sourceTree = "<group>"; };
 		7898F93924B40D3400C9A1F7 /* MenberRecordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenberRecordVC.m; sourceTree = "<group>"; };
 		7898F93B24B4124C00C9A1F7 /* MenberRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenberRecordCell.h; sourceTree = "<group>"; };
@@ -2167,6 +2170,8 @@
 				788D4E99259046C300D024AC /* SHPasswordTextView.m */,
 				788D4E9B259046D500D024AC /* SHLineView.h */,
 				788D4E9C259046D500D024AC /* SHLineView.m */,
+				7891C26F259D69400022EC64 /* JustCircleProgress.h */,
+				7891C270259D69400022EC64 /* JustCircleProgress.m */,
 			);
 			path = BaseVC;
 			sourceTree = "<group>";
@@ -4478,6 +4483,7 @@
 				787F1E67247381A400108F7B /* AVCSelectSharpnessView.m in Sources */,
 				788E95BE253FE24F0089251E /* LoadingView.m in Sources */,
 				78795755240FAA7A0013F95F /* NSString+Hashing.m in Sources */,
+				7891C271259D69400022EC64 /* JustCircleProgress.m in Sources */,
 				784E5CFE24AC693100646916 /* MoubaoBindViewController.m in Sources */,
 				789DB05C246C2680001302B4 /* LBHScrollView.m in Sources */,
 				788E9573253FE24E0089251E /* EEPageControlView.m in Sources */,

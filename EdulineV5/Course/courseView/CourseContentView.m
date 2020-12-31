@@ -76,6 +76,19 @@
     _sectionCountLabel.textColor = EdlineV5_Color.textThirdColor;
     _sectionCountLabel.hidden = YES;
     [self addSubview:_sectionCountLabel];
+    
+    _circleView = [[JustCircleProgress alloc] initWithFrame:CGRectMake(MainScreenWidth - 14 - 25, 0, 25, 25)];
+    _circleView.centerY = _sectionCountLabel.centerY;
+    _circleView.hidden = YES;
+    [self addSubview:_circleView];
+    
+    _percentlabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 25, 12)];
+    _percentlabel.font = SYSTEMFONT(9);
+    _percentlabel.textColor = EdlineV5_Color.textSecendColor;
+    _percentlabel.textAlignment = NSTextAlignmentCenter;
+    _percentlabel.center = _circleView.center;
+    _percentlabel.hidden = YES;
+    [self addSubview:_percentlabel];
 }
 
 - (void)setCourseContentInfo:(NSDictionary *)contentInfo showTitleOnly:(BOOL)showTitleOnly {
@@ -149,6 +162,8 @@
         _detailButton.hidden = NO;
         _detailButton.centerY = _courseTitleLabel.centerY;
         _sectionCountLabel.text = [NSString stringWithFormat:@"共%@课时",_courseInfo[@"section_count"]];
+        _circleView.hidden = NO;
+        _percentlabel.hidden = NO;
     }
 }
 
