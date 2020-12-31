@@ -54,7 +54,13 @@
     
     _selectAllButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, (MainScreenWidth - 1)/2.0, 49)];
     [_selectAllButton setTitle:@"全选" forState:0];
-    [_selectAllButton setTitle:@"取消全选" forState:UIControlStateSelected];
+    [_selectAllButton setTitle:@"全选" forState:UIControlStateSelected];
+    [_selectAllButton setImage:Image(@"checkbox_orange") forState:UIControlStateSelected];
+    [_selectAllButton setImage:Image(@"checkbox_def") forState:0];
+    
+    _selectAllButton.imageEdgeInsets = UIEdgeInsetsMake(0, -3.5, 0, 3.5);
+    _selectAllButton.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, -3.5);
+    
     [_selectAllButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
     _selectAllButton.titleLabel.font = SYSTEMFONT(16);
     [_selectAllButton addTarget:self action:@selector(selectAllButtonClick:) forControlEvents:UIControlEventTouchUpInside];
