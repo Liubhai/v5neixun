@@ -77,7 +77,7 @@
     _sectionCountLabel.hidden = YES;
     [self addSubview:_sectionCountLabel];
     
-    _circleView = [[JustCircleProgress alloc] initWithFrame:CGRectMake(MainScreenWidth - 14 - 25, 0, 25, 25)];
+    _circleView = [[JustCircleProgress alloc] initWithFrame:CGRectMake(MainScreenWidth - 14 - 32, 0, 32, 32)];
     _circleView.centerY = _sectionCountLabel.centerY;
     _circleView.hidden = YES;
     [self addSubview:_circleView];
@@ -161,9 +161,13 @@
         _sectionCountLabel.hidden = NO;
         _detailButton.hidden = NO;
         _detailButton.centerY = _courseTitleLabel.centerY;
-        _sectionCountLabel.text = [NSString stringWithFormat:@"共%@课时",_courseInfo[@"section_count"]];
+        _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
+        NSString *sectionCount = [NSString stringWithFormat:@"%@",_courseInfo[@"section_count"]];
+        NSString *finishCount = [NSString stringWithFormat:@"%@",_courseInfo[@"finished_num"]];
+        _circleView.progress = 100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
         _circleView.hidden = NO;
         _percentlabel.hidden = NO;
+        _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
     }
 }
 
