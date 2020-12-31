@@ -21,6 +21,7 @@
     NSString *typeString;//方式
     UIButton *moneySeleButton;//记录充值的button
     NSString *ratio_string;
+    UIButton *firstButton;// 简易处理 默认选中第一个按钮
 }
 
 @property (strong ,nonatomic)STRIAPManager *iapManager;
@@ -239,6 +240,9 @@
         title.font = SYSTEMFONT(12);
         title.textAlignment = NSTextAlignmentCenter;
         [button addSubview:title];
+        if (i == 0) {
+            firstButton = button;
+        }
     }
     
     if ((isAddAilpayView || isAddWxpayView || isAddRechargeCardView) && !_orderRightBtn3.selected) {
@@ -559,6 +563,7 @@
         if ([typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
             _priceLabel.text = @"¥0.00";
+            [self selectFirstButton];
         }
         typeString = @"alipay";
     } else if (sender == _orderRightBtn2) {
@@ -568,6 +573,7 @@
         if ([typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
             _priceLabel.text = @"¥0.00";
+            [self selectFirstButton];
         }
         typeString = @"wxpay";
     } else if (sender == _orderRightBtn3) {
@@ -577,6 +583,7 @@
         if (![typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
             _priceLabel.text = @"¥0.00";
+            [self selectFirstButton];
         }
         typeString = @"applepay";
     }
@@ -1042,12 +1049,19 @@
                     [self makeAgreeView];
                     
                     _priceLabel.text = @"¥0.00";
+                    [self selectFirstButton];
                 }
             }
         }
     } enError:^(NSError * _Nonnull error) {
         
     }];
+}
+
+- (void)selectFirstButton {
+    if (firstButton) {
+        [self buttonCilck:firstButton];
+    }
 }
 
 @end
