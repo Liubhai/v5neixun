@@ -77,11 +77,11 @@
         thmeLabel.font = SYSTEMFONT(13);
         thmeLabel.textColor = EdlineV5_Color.textFirstColor;
         thmeLabel.text = [NSString stringWithFormat:@"%@",[learnArray[i] objectForKey:@"section_title"]];
-        thmeLabel.numberOfLines = 0;
-        [thmeLabel sizeToFit];
-        if (thmeLabel.height > 20) {
-            [thmeLabel setHeight:38];
-        }
+//        thmeLabel.numberOfLines = 0;
+//        [thmeLabel sizeToFit];
+//        if (thmeLabel.height > 20) {
+//            [thmeLabel setHeight:38];
+//        }
         maxHeight = MAX(thmeLabel.bottom + 20, maxHeight);
         maxWidth = MAX(face.right, maxWidth);
         [_mainScrollView addSubview:thmeLabel];
