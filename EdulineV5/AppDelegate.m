@@ -201,6 +201,8 @@
         return;
     }
     
+    [[AppDelegate delegate] registerQuickLogin];
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"登录方式" message:@"账号登录,可跨平台享受课程解锁权益,游客(设备)登录,在解锁课程时会为当前设备解锁课程" preferredStyle:(UIAlertControllerStyleAlert)];
     UIAlertAction *loginAction = [UIAlertAction actionWithTitle:@"登录账号(推荐)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]) {
@@ -507,6 +509,7 @@
                             }];
                         } else if ([[NTESQuickLoginManager sharedInstance].model.currentVC isKindOfClass:[UIViewController class]]) {
                             [[NTESQuickLoginManager sharedInstance].model.currentVC.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCourseDetailPage" object:nil];
                             }];
                         }
                     }
@@ -524,6 +527,7 @@
     if (_currentViewController) {
         NTESQuickLoginCustomModel *model = [NTESQLHomePageCustomUIModel configCustomUIModel];
         model.currentVC = _currentViewController;
+        model.currentVC.modalPresentationStyle = UIModalPresentationFullScreen;
         
         model.customViewBlock = ^(UIView * _Nullable customView) {
             UIButton *otherBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 300, 100, 30)];

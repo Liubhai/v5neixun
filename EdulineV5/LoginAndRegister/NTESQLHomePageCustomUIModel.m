@@ -18,6 +18,7 @@
     model.backgroundColor = [UIColor whiteColor];
     model.authWindowPop = NTESAuthWindowPopFullScreen;
 //    model.faceOrientation = UIInterfaceOrientationPortrait;
+    model.loginDidDisapperfaceOrientation = UIInterfaceOrientationMaskAllButUpsideDown;
     model.navBarHidden = NO;
 //    model.navTextFont = [UIFont systemFontOfSize:18];
 //    model.navTextColor = [UIColor redColor];

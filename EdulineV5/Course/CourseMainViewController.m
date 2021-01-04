@@ -159,6 +159,13 @@
     [self getCourseInfo];
     [self getShopCarCount];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCourseDetailPageData) name:@"reloadCourseDetailPage" object:nil];
+}
+
+// MARK: - 登录后页面刷新
+- (void)reloadCourseDetailPageData {
+    [self getCourseInfo];
+    [self getShopCarCount];
 }
 
 // MARK: - tableview 的 headerview

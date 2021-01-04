@@ -32,6 +32,8 @@ typedef void (^configTXSDK)(NSString *success);
 
 - (void)changeThemeColor;
 
+- (void)registerQuickLogin;//每次一键登录都要重新获取token
+
 +(void)presentLoginNav:(UIViewController *)currentViewController;
 
 /** 初始化TXSDK */
