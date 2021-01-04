@@ -58,20 +58,24 @@
     [_selectAllButton setImage:Image(@"checkbox_orange") forState:UIControlStateSelected];
     [_selectAllButton setImage:Image(@"checkbox_def") forState:0];
     
-    _selectAllButton.imageEdgeInsets = UIEdgeInsetsMake(0, -3.5, 0, 3.5);
-    _selectAllButton.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, -3.5);
-    
     [_selectAllButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
     _selectAllButton.titleLabel.font = SYSTEMFONT(16);
     [_selectAllButton addTarget:self action:@selector(selectAllButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    CGFloat selectAllBtnWidth = [_selectAllButton.titleLabel.text sizeWithFont:_selectAllButton.titleLabel.font].width + 15 + 20 + 7 + 15;
+    [_selectAllButton setWidth:selectAllBtnWidth];
+    
+    _selectAllButton.imageEdgeInsets = UIEdgeInsetsMake(0, -3.5, 0, 3.5);
+    _selectAllButton.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, -3.5);
+    
     [_bottomView addSubview:_selectAllButton];
     
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(_selectAllButton.right, 0, 1, 12)];
-    line.backgroundColor = EdlineV5_Color.fengeLineColor;
-    line.centerY = _selectAllButton.centerY;
-    [_bottomView addSubview:line];
+//    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(_selectAllButton.right, 0, 1, 12)];
+//    line.backgroundColor = EdlineV5_Color.fengeLineColor;
+//    line.centerY = _selectAllButton.centerY;
+//    [_bottomView addSubview:line];
     
-    _cancelCollectButton = [[UIButton alloc] initWithFrame:CGRectMake(line.right, 0, (MainScreenWidth - 1)/2.0, 49)];
+    _cancelCollectButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 88 - 30, 0, 88 + 30, 49)];
     [_cancelCollectButton setTitle:@"取消收藏(0)" forState:0];
     [_cancelCollectButton setTitleColor:EdlineV5_Color.textzanColor forState:0];
     _cancelCollectButton.titleLabel.font = SYSTEMFONT(16);

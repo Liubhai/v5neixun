@@ -41,6 +41,10 @@
 #import "OneToOneLiveRoomVC.h"
 //#import "AgoraRtm.h"
 #import "V5_UserModel.h"
+// 分享
+#import <UShareUI/UShareUI.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <WechatOpenSDK/WXApi.h>
 
 #import "AppDelegate.h"
 
@@ -57,6 +61,8 @@
     BOOL freeLook;
     BOOL isFullS;//当前是否全屏
 }
+
+@property (strong, nonatomic) UIButton *zanButton;
 
 /**三大子页面*/
 @property (strong, nonatomic) CourseTreeListViewController *courseTreeListVC;
@@ -191,6 +197,11 @@
     
     _titleLabel.textColor = [UIColor whiteColor];
     
+    _zanButton = [[UIButton alloc] initWithFrame:CGRectMake(_rightButton.left - 44, _rightButton.top, 44, 44)];
+    [_zanButton setImage:Image(@"nav_collect_nor") forState:0];
+    [_zanButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_titleImage addSubview:_zanButton];
+    
     [self makeHeaderView];
     [self makeSubViews];
 //    self.playerView.hidden = YES;
@@ -238,6 +249,8 @@
     _titleImage.backgroundColor = [UIColor clearColor];
     _titleLabel.hidden = YES;
     _lineTL.hidden = YES;
+    _rightButton.hidden = NO;
+    [_rightButton setImage:Image(@"share_white_icon") forState:0];
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
     if (!_isLive) {
         [self makeDownView];
@@ -752,45 +765,45 @@
     }
 }
 
-// MARK: - 右边按钮点击事件(收藏、下载、分享)
-- (void)rightButtonClick:(id)sender {
-    
-    UIView *allWindowView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MainScreenWidth, MainScreenHeight)];
-    allWindowView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.5];
-    allWindowView.layer.masksToBounds =YES;
-    [allWindowView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(allWindowViewClick:)]];
-    //获取当前UIWindow 并添加一个视图
-    UIApplication *app = [UIApplication sharedApplication];
-    [app.keyWindow addSubview:allWindowView];
-    _allWindowView = allWindowView;
-    
-    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 120 * WidthRatio,55 * HeightRatio,100 * WidthRatio,100 * HeightRatio)];
-    moreView.frame = CGRectMake(MainScreenWidth - 120 * WidthRatio,55 * HeightRatio,100 * WidthRatio,100 * HeightRatio);
-    moreView.backgroundColor = [UIColor whiteColor];
-    moreView.layer.masksToBounds = YES;
-    [allWindowView addSubview:moreView];
-    
-    NSArray *imageArray = @[@"ico_collect@3x",@"class_share",@"class_down"];
-    NSArray *titleArray = @[@"+收藏",@"分享",@"下载"];
-//    if ([_collectStr integerValue] == 1) {
-//        imageArray = @[@"ic_collect_press@3x",@"class_share",@"class_down"];
-//        titleArray = @[@"-收藏",@"分享",@"下载"];
+//// MARK: - 右边按钮点击事件(收藏、下载、分享)
+//- (void)rightButtonClick:(id)sender {
+//    
+//    UIView *allWindowView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MainScreenWidth, MainScreenHeight)];
+//    allWindowView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.5];
+//    allWindowView.layer.masksToBounds =YES;
+//    [allWindowView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(allWindowViewClick:)]];
+//    //获取当前UIWindow 并添加一个视图
+//    UIApplication *app = [UIApplication sharedApplication];
+//    [app.keyWindow addSubview:allWindowView];
+//    _allWindowView = allWindowView;
+//    
+//    UIView *moreView = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth - 120 * WidthRatio,55 * HeightRatio,100 * WidthRatio,100 * HeightRatio)];
+//    moreView.frame = CGRectMake(MainScreenWidth - 120 * WidthRatio,55 * HeightRatio,100 * WidthRatio,100 * HeightRatio);
+//    moreView.backgroundColor = [UIColor whiteColor];
+//    moreView.layer.masksToBounds = YES;
+//    [allWindowView addSubview:moreView];
+//    
+//    NSArray *imageArray = @[@"ico_collect@3x",@"class_share",@"class_down"];
+//    NSArray *titleArray = @[@"+收藏",@"分享",@"下载"];
+////    if ([_collectStr integerValue] == 1) {
+////        imageArray = @[@"ic_collect_press@3x",@"class_share",@"class_down"];
+////        titleArray = @[@"-收藏",@"分享",@"下载"];
+////    }
+//    CGFloat ButtonW = 100 * WidthRatio;
+//    CGFloat ButtonH = 33 * HeightRatio;
+//    for (int i = 0 ; i < 3 ; i ++) {
+//        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0 * WidthRatio, ButtonH * i, ButtonW, ButtonH)];
+//        button.tag = i;
+//        [button setTitle:titleArray[i] forState:UIControlStateNormal];
+//        [button setTitleColor:[UIColor colorWithHexString:@"#333"] forState:UIControlStateNormal];
+//        button.titleLabel.font = SYSTEMFONT(14);
+//        [button setImage:Image(imageArray[i]) forState:UIControlStateNormal];
+//        button.imageEdgeInsets =  UIEdgeInsetsMake(0,0,0,20 * WidthRatio);
+//        button.titleEdgeInsets = UIEdgeInsetsMake(0, 20 * WidthRatio, 0, 0);
+//        [button addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [moreView addSubview:button];
 //    }
-    CGFloat ButtonW = 100 * WidthRatio;
-    CGFloat ButtonH = 33 * HeightRatio;
-    for (int i = 0 ; i < 3 ; i ++) {
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0 * WidthRatio, ButtonH * i, ButtonW, ButtonH)];
-        button.tag = i;
-        [button setTitle:titleArray[i] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor colorWithHexString:@"#333"] forState:UIControlStateNormal];
-        button.titleLabel.font = SYSTEMFONT(14);
-        [button setImage:Image(imageArray[i]) forState:UIControlStateNormal];
-        button.imageEdgeInsets =  UIEdgeInsetsMake(0,0,0,20 * WidthRatio);
-        button.titleEdgeInsets = UIEdgeInsetsMake(0, 20 * WidthRatio, 0, 0);
-        [button addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [moreView addSubview:button];
-    }
-}
+//}
 
 - (void)leftButtonClick:(id)sender {
     if (isFullS) {
@@ -2296,6 +2309,102 @@
             
         }];
     }
+}
+
+// MARK: - 点赞按钮点击事件
+- (void)zanButtonClick:(UIButton *)sender {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    // 收藏
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:_ID forKey:@"source_id"];
+    if ([_courseType isEqualToString:@"1"]) {
+        [param setObject:@"video" forKey:@"source_type"];
+    } else if ([_courseType isEqualToString:@"2"]) {
+        [param setObject:@"live" forKey:@"source_type"];
+    } else if ([_courseType isEqualToString:@"3"]) {
+        [param setObject:@"offline" forKey:@"source_type"];
+    } else if ([_courseType isEqualToString:@"4"]) {
+        [param setObject:@"classes" forKey:@"source_type"];
+    }
+    if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
+        // 取消收藏 并改变数据源
+        [Net_API requestDeleteWithURLStr:[Net_Path courseCollectionNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
+                    [pass setObject:@"0" forKey:@"collected"];
+                    _dataSource = [NSDictionary dictionaryWithDictionary:pass];
+                    [_zanButton setImage:Image(@"nav_collect_nor") forState:0];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络请求失败"];
+        }];
+    } else {
+        // 收藏 并改变数据源
+        [Net_API requestPOSTWithURLStr:[Net_Path courseCollectionNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
+                    [pass setObject:@"1" forKey:@"collected"];
+                    _dataSource = [NSDictionary dictionaryWithDictionary:pass];
+                    [_zanButton setImage:Image(@"nav_collect_pre") forState:0];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [self showHudInView:self.view showHint:@"网络请求失败"];
+        }];
+    }
+}
+
+//不需要改变父窗口则不需要重写此协议
+- (UIView*)UMSocialParentView:(UIView*)defaultSuperView
+{
+    return self.view;
+}
+
+// MARK: - 右边按钮点击事件(收藏、下载、分享)
+- (void)rightButtonClick:(id)sender {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    [UMSocialUIManager setShareMenuViewDelegate:self];
+    [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_QQ)]];
+    //显示分享面板
+    [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+        // 根据获取的platformType确定所选平台进行下一步操作
+        //创建分享消息对象
+        UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+        //创建网页内容对象
+        NSString* thumbURL =  @"https://mobile.umeng.com/images/pic/home/social/img-1.png";
+        UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"欢迎使用【友盟+】社会化组件U-Share" descr:@"欢迎使用【友盟+】社会化组件U-Share，SDK包最小，集成成本最低，助力您的产品开发、运营与推广！" thumImage:thumbURL];
+        //设置网页地址
+        shareObject.webpageUrl = @"http://mobile.umeng.com/social";
+        //分享消息对象设置分享内容对象
+        messageObject.shareObject = shareObject;
+        //调用分享接口
+        [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+            if (error) {
+                UMSocialLogInfo(@"************Share fail with error %@*********",error);
+            }else{
+                if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                    UMSocialShareResponse *resp = data;
+                    //分享结果消息
+                    UMSocialLogInfo(@"response message is %@",resp.message);
+                    //第三方原始返回的数据
+                    UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                }else{
+                    UMSocialLogInfo(@"response data is %@",data);
+                }
+            }
+        }];
+    }];
 }
 
 @end
