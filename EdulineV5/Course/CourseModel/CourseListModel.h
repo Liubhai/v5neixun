@@ -48,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL status;
 @property (assign, nonatomic) BOOL has_child;
 @property (assign, nonatomic) BOOL is_buy;
+@property (assign, nonatomic) BOOL is_course_buy;// 该课时所属课程是否已经购买了
 @property (assign, nonatomic) unsigned int audition;
 @property (strong, nonatomic) NSString *start_time;
 @property (strong, nonatomic) NSString *end_time;

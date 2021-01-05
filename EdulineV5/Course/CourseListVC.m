@@ -194,6 +194,7 @@
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:@"0"] WithAuthorization:nil paramDic:@{@"page":@"1",@"count":@"500"} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    NSString *course_buy_status = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"course_buy_status"]];
                     [_courseListArray removeAllObjects];
                     NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
                     _courselayer = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"section_level"]];
@@ -205,6 +206,7 @@
                         cellCouserlayar = @"1";
                     }
                     for (CourseListModel *object in pass) {
+                        object.is_course_buy = [course_buy_status boolValue];
                         CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                         [_courseListArray addObject:model];
                     }
@@ -244,9 +246,11 @@
                 [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:model.model.classHourId] WithAuthorization:nil paramDic:@{@"page":@"1",@"count":@"500"} finish:^(id  _Nonnull responseObject) {
                     if (SWNOTEmptyDictionary(responseObject)) {
                         if ([[responseObject objectForKey:@"code"] integerValue]) {
+                            NSString *course_buy_status = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"course_buy_status"]];
                             NSMutableArray *passOrigin = [NSMutableArray new];
                             NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
                             for (CourseListModel *object in pass) {
+                                object.is_course_buy = [course_buy_status boolValue];
                                 CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                                 [passOrigin addObject:model];
                             }
@@ -288,9 +292,11 @@
                 [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseList:_courseId pid:model.model.classHourId] WithAuthorization:nil paramDic:@{@"page":@"1",@"count":@"500"} finish:^(id  _Nonnull responseObject) {
                     if (SWNOTEmptyDictionary(responseObject)) {
                         if ([[responseObject objectForKey:@"code"] integerValue]) {
+                            NSString *course_buy_status = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"course_buy_status"]];
                             NSMutableArray *passOrigin = [NSMutableArray new];
                             NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
                             for (CourseListModel *object in pass) {
+                                object.is_course_buy = [course_buy_status boolValue];
                                 CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                                 [passOrigin addObject:model];
                             }

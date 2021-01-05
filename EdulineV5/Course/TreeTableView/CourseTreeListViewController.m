@@ -256,6 +256,7 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
 //                    model.isExpand = !model.isExpand;
 //                    [self.manager.showItems replaceObjectAtIndex:path.row withObject:model];
+                    NSString *course_buy_status = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"course_buy_status"]];
                     NSMutableArray *newArray = [NSMutableArray new];
                     NSArray *pass = [NSArray arrayWithArray:[CourseListModel mj_objectArrayWithKeyValuesArray:[[[responseObject objectForKey:@"data"] objectForKey:@"section_info"] objectForKey:@"data"]]];
                     NSString *section_level = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"section_level"]];
@@ -289,6 +290,7 @@
                                     obj.type = @"课时";
                                 }
                             }
+                            obj.is_course_buy = [course_buy_status boolValue];
                             [newArray addObject:obj];
                         }];
                         

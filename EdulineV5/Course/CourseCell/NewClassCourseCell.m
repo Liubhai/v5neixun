@@ -178,7 +178,7 @@
         if ([model.price floatValue]>0) {
             _priceLabel.hidden = NO;
             if (model.is_buy) {
-                if (_courseIsBuy) {
+                if (model.is_course_buy) {
                     _priceLabel.hidden = YES;
                 }
                 _priceLabel.text = @"已购买";
