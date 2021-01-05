@@ -198,7 +198,7 @@
     _titleLabel.textColor = [UIColor whiteColor];
     
     _zanButton = [[UIButton alloc] initWithFrame:CGRectMake(_rightButton.left - 44, _rightButton.top, 44, 44)];
-    [_zanButton setImage:Image(@"nav_collect_nor") forState:0];
+    [_zanButton setImage:Image(@"course_collect_nor") forState:0];
     [_zanButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_zanButton];
     
@@ -250,8 +250,8 @@
     _titleLabel.hidden = YES;
     _lineTL.hidden = YES;
     _rightButton.hidden = NO;
-    [_rightButton setImage:Image(@"share_white_icon") forState:0];
-    [_leftButton setImage:Image(@"nav_back_white") forState:0];
+    [_rightButton setImage:Image(@"course_share_icon") forState:0];
+    [_leftButton setImage:Image(@"course_back_icon") forState:0];
     if (!_isLive) {
         [self makeDownView];
     }
@@ -937,6 +937,11 @@
         } else {
             _faceImageView.image = DefaultImage;
         }
+        if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
+            [_zanButton setImage:Image(@"course_collect_pre") forState:0];
+        } else {
+            [_zanButton setImage:Image(@"course_collect_nor") forState:0];
+        }
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:YES];
 //        _tableView.tableHeaderView = _headerView;
 //        [self.tableView reloadData];
@@ -969,9 +974,9 @@
         [_buyhourseButton setTop:_freeLabel.bottom + 12];
         _tableView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
         _tableView.contentOffset = CGPointMake(0, 0);
+        self.playerView.controlView.topView.backButton.hidden = NO;
 //        [self tableViewCanNotScroll];
     } else {
-        _titleImage.hidden = YES;
         _playerView.controlView.topView.hidden = NO;
         _playerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight);
         _headerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight + 90);
@@ -989,6 +994,9 @@
         [_buyCourseButton setTop:_freeLabel.bottom + 12];
         [_buyhourseButton setTop:_freeLabel.bottom + 12];
         _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - ([currentCourseFinalModel.model.course_type isEqualToString:@"2"] ? 0 : 50) - MACRO_UI_LIUHAI_HEIGHT);
+        _titleImage.hidden = NO;
+        [self.headerView bringSubviewToFront:self.titleImage];
+        self.playerView.controlView.topView.backButton.hidden = YES;
 //        [self tableViewCanScroll];
     }
 
@@ -1049,7 +1057,8 @@
                 [wekself.headerView addSubview:wekself.playerView];
                 _wkWebView.hidden = YES;
                 _playerView.hidden = NO;
-                _titleImage.hidden = YES;
+                _titleImage.hidden = NO;
+                [wekself.headerView bringSubviewToFront:wekself.titleImage];
                 [wekself.playerView setTitle:cell.listFinalModel.model.title];
                 wekself.playerView.trackInfoArray = [NSArray arrayWithArray:cell.listFinalModel.model.live_rate.callback_url];
                 [wekself.playerView playViewPrepareWithURL:EdulineUrlString(cell.listFinalModel.model.live_rate.callback_url[0][@"play_url"])];
@@ -1221,7 +1230,8 @@
                             [wekself.headerView addSubview:wekself.playerView];
                             _wkWebView.hidden = YES;
                             _playerView.hidden = NO;
-                            _titleImage.hidden = YES;
+                            _titleImage.hidden = NO;
+                            [wekself.headerView bringSubviewToFront:wekself.titleImage];
                             NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover_url"]];
                             if ([faceUrlString containsString:@"http"]) {
                                 wekself.playerView.coverUrl = EdulineUrlString([_dataSource objectForKey:@"cover_url"]);
@@ -1307,7 +1317,9 @@
                 [wekself.headerView addSubview:wekself.playerView];
                 _wkWebView.hidden = YES;
                 _playerView.hidden = NO;
-                _titleImage.hidden = YES;
+                _titleImage.hidden = NO;
+                [wekself.headerView bringSubviewToFront:wekself.titleImage];
+                wekself.playerView.controlView.topView.backButton.hidden = YES;
                 [wekself.playerView setTitle:model.title];
                 wekself.playerView.trackInfoArray = [NSArray arrayWithArray:model.live_rate.callback_url];
                 [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.live_rate.callback_url[0][@"play_url"])];
@@ -1427,7 +1439,9 @@
                             [wekself.headerView addSubview:wekself.playerView];
                             _wkWebView.hidden = YES;
                             _playerView.hidden = NO;
-                            _titleImage.hidden = YES;
+                            _titleImage.hidden = NO;
+                            [wekself.headerView bringSubviewToFront:wekself.titleImage];
+                            wekself.playerView.controlView.topView.backButton.hidden = YES;
                             NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover_url"]];
                             if ([faceUrlString containsString:@"http"]) {
                                 wekself.playerView.coverUrl = EdulineUrlString([_dataSource objectForKey:@"cover_url"]);
@@ -1632,7 +1646,9 @@
                             [wekself.headerView addSubview:wekself.playerView];
                             _wkWebView.hidden = YES;
                             _playerView.hidden = NO;
-                            _titleImage.hidden = YES;
+                            _titleImage.hidden = NO;
+                            [wekself.headerView bringSubviewToFront:wekself.titleImage];
+                            wekself.playerView.controlView.topView.backButton.hidden = YES;
                             NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover_url"]];
                             if ([faceUrlString containsString:@"http"]) {
                                 wekself.playerView.coverUrl = EdulineUrlString([_dataSource objectForKey:@"cover_url"]);
@@ -1734,7 +1750,7 @@
         
     } else {
         if (event == AVPEventFirstRenderedStart) {
-            _titleImage.hidden = YES;
+//            _titleImage.hidden = YES;
             __weak CourseDetailPlayVC *wekself = self;
             [wekself starRecordTimer];
             if (currentCourseFinalModel) {
@@ -2338,7 +2354,7 @@
                     NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
                     [pass setObject:@"0" forKey:@"collected"];
                     _dataSource = [NSDictionary dictionaryWithDictionary:pass];
-                    [_zanButton setImage:Image(@"nav_collect_nor") forState:0];
+                    [_zanButton setImage:Image(@"course_collect_nor") forState:0];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
@@ -2353,7 +2369,7 @@
                     NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource];
                     [pass setObject:@"1" forKey:@"collected"];
                     _dataSource = [NSDictionary dictionaryWithDictionary:pass];
-                    [_zanButton setImage:Image(@"nav_collect_pre") forState:0];
+                    [_zanButton setImage:Image(@"course_collect_pre") forState:0];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
