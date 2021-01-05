@@ -388,6 +388,9 @@
 		78A16C8C2452F7C100391430 /* TICRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C7B2452F7C100391430 /* TICRenderView.m */; };
 		78A16C8D2452F7C100391430 /* TICDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C7C2452F7C100391430 /* TICDevice.m */; };
 		78A16C8E2452F7C100391430 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 78A16C7E2452F7C100391430 /* GCDAsyncUdpSocket.m */; };
+		78A3A4A225A414CF00F40705 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78A3A49A25A414CF00F40705 /* Localizable.strings */; };
+		78A3A4A325A414CF00F40705 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78A3A49C25A414CF00F40705 /* InfoPlist.strings */; };
+		78A3A4A425A414CF00F40705 /* readMe_Resources.txt in Resources */ = {isa = PBXBuildFile; fileRef = 78A3A4A125A414CF00F40705 /* readMe_Resources.txt */; };
 		78AA1353243C211B007087F7 /* CourseTypeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA1352243C211B007087F7 /* CourseTypeVC.m */; };
 		78AA1356243C214D007087F7 /* CourseClassifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA1355243C214D007087F7 /* CourseClassifyVC.m */; };
 		78AA1359243C2278007087F7 /* CourseSortVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA1358243C2278007087F7 /* CourseSortVC.m */; };
@@ -1319,6 +1322,12 @@
 		78A16C7E2452F7C100391430 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
 		78A16C7F2452F7C100391430 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
 		78A16C802452F7C100391430 /* TICReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TICReport.h; sourceTree = "<group>"; };
+		78A3A49B25A414CF00F40705 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		78A3A49D25A414CF00F40705 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		78A3A49E25A414CF00F40705 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		78A3A49F25A414CF00F40705 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		78A3A4A025A414CF00F40705 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		78A3A4A125A414CF00F40705 /* readMe_Resources.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readMe_Resources.txt; sourceTree = "<group>"; };
 		78AA1351243C211B007087F7 /* CourseTypeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseTypeVC.h; sourceTree = "<group>"; };
 		78AA1352243C211B007087F7 /* CourseTypeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTypeVC.m; sourceTree = "<group>"; };
 		78AA1354243C214D007087F7 /* CourseClassifyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseClassifyVC.h; sourceTree = "<group>"; };
@@ -3384,6 +3393,16 @@
 			path = CocoaAsyncSocket;
 			sourceTree = "<group>";
 		};
+		78A3A49925A414CF00F40705 /* LocalResources */ = {
+			isa = PBXGroup;
+			children = (
+				78A3A49A25A414CF00F40705 /* Localizable.strings */,
+				78A3A49C25A414CF00F40705 /* InfoPlist.strings */,
+				78A3A4A125A414CF00F40705 /* readMe_Resources.txt */,
+			);
+			path = LocalResources;
+			sourceTree = "<group>";
+		};
 		78AA136E2440543C007087F7 /* SDCycleScrollView */ = {
 			isa = PBXGroup;
 			children = (
@@ -3532,6 +3551,7 @@
 		78C54882241B642A00A33FC4 /* AlivcSDK */ = {
 			isa = PBXGroup;
 			children = (
+				78A3A49925A414CF00F40705 /* LocalResources */,
 				78C549AD241B674E00A33FC4 /* Categories */,
 				78C5499C241B674E00A33FC4 /* Config */,
 				78C54982241B674D00A33FC4 /* Helpers */,
@@ -3911,6 +3931,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 78795604240DE7A50013F95F;
 			productRefGroup = 7879560E240DE7A50013F95F /* Products */;
@@ -3931,6 +3952,7 @@
 			files = (
 				788E9572253FE24E0089251E /* EEMessageViewCell.xib in Resources */,
 				787F1E8B247381A400108F7B /* AliyunImageSource.bundle in Resources */,
+				78A3A4A425A414CF00F40705 /* readMe_Resources.txt in Resources */,
 				788E955A253FE24E0089251E /* BCStudentVideoView.xib in Resources */,
 				787F1E8A247381A400108F7B /* AVC_VP_Main.storyboard in Resources */,
 				788E955E253FE24E0089251E /* EETeacherVideoView.xib in Resources */,
@@ -3945,6 +3967,7 @@
 				788E95C6253FE24F0089251E /* Replay.storyboard in Resources */,
 				78C549D9241B674F00A33FC4 /* readMe_Categories.txt in Resources */,
 				788E956E253FE24E0089251E /* EENavigationView.xib in Resources */,
+				78A3A4A325A414CF00F40705 /* InfoPlist.strings in Resources */,
 				788E9560253FE24E0089251E /* BCNavigationView.xib in Resources */,
 				78C54970241B642B00A33FC4 /* AlivcAbstraction.txt in Resources */,
 				78C549CF241B674E00A33FC4 /* readMe_Utilites.txt in Resources */,
@@ -3964,6 +3987,7 @@
 				78C549D4241B674F00A33FC4 /* readMe_Config.txt in Resources */,
 				7853BDF52431E48300F096EC /* TYRZResource.bundle in Resources */,
 				788E9569253FE24E0089251E /* MCTeacherVideoView.xib in Resources */,
+				78A3A4A225A414CF00F40705 /* Localizable.strings in Resources */,
 				7853BDFA2431E48300F096EC /* sdk_oauth.bundle in Resources */,
 				78C54831241246E400A33FC4 /* AreaNumCode.plist in Resources */,
 			);
@@ -4545,6 +4569,25 @@
 				7879561A240DE7A50013F95F /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		78A3A49A25A414CF00F40705 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78A3A49B25A414CF00F40705 /* zh-Hans */,
+				78A3A49E25A414CF00F40705 /* en */,
+				78A3A4A025A414CF00F40705 /* Base */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		78A3A49C25A414CF00F40705 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				78A3A49D25A414CF00F40705 /* zh-Hans */,
+				78A3A49F25A414CF00F40705 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		78D46677251CA02600E94FF4 /* LaunchScreen.storyboard */ = {
