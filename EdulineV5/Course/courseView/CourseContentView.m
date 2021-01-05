@@ -158,16 +158,25 @@
         _coursePrice.hidden = YES;
         _courseScore.hidden = YES;
         _courseLearn.hidden = YES;
+        
         _sectionCountLabel.hidden = NO;
         _detailButton.hidden = NO;
         _detailButton.centerY = _courseTitleLabel.centerY;
-        _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
-        NSString *sectionCount = [NSString stringWithFormat:@"%@",_courseInfo[@"section_count"]];
-        NSString *finishCount = [NSString stringWithFormat:@"%@",_courseInfo[@"finished_num"]];
-        _circleView.progress = 100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
-        _circleView.hidden = NO;
-        _percentlabel.hidden = NO;
-        _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
+        
+        if ([[NSString stringWithFormat:@"%@",_courseInfo[@"course_type"]] isEqualToString:@"4"]) {
+            _sectionCountLabel.hidden = YES;
+            _courseTitleLabel.centerY = self.bounds.size.height / 2.0;
+            _detailButton.centerY = _courseTitleLabel.centerY;
+//            _sectionCountLabel.text = [NSString stringWithFormat:@"共%@课时",_courseInfo[@"section_count"]];
+        } else {
+            _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
+            NSString *sectionCount = [NSString stringWithFormat:@"%@",_courseInfo[@"section_count"]];
+            NSString *finishCount = [NSString stringWithFormat:@"%@",_courseInfo[@"finished_num"]];
+            _circleView.progress = 100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
+            _circleView.hidden = NO;
+            _percentlabel.hidden = NO;
+            _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
+        }
     }
 }
 
