@@ -14,10 +14,18 @@
 #import <AlipaySDK/AlipaySDK.h>
 #import <WechatOpenSDK/WXApi.h>
 
-@interface MyScoreVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
+#import "MoneyPassWordPopView.h"
+#import "SetMoneyPwFirstVC.h"
+#import "ModifyMoneyPwVC.h"
+#import "V5_UserModel.h"
+
+@interface MyScoreVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate,MoneyPassWordPopViewDelegate> {
     NSString *typeString;//方式
     NSString *ratio_string;
+    NSString *userMoneyPw;
 }
+
+@property (strong, nonatomic) MoneyPassWordPopView *moneyPWPopView;
 
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UILabel *userPriceLabel;
@@ -73,7 +81,7 @@
     
     
     ratio_string = @"10";
-    
+    userMoneyPw = @"";
     _typeArray = [NSMutableArray new];
     _titleImage.backgroundColor = EdlineV5_Color.themeColor;
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
@@ -462,6 +470,35 @@
     }
 }
 
+// MARK: - MoneyPassWordPopViewDelegate(输入密码代理)
+- (void)getMoneyPasWordString:(NSString *)pw {
+    userMoneyPw = [NSString stringWithFormat:@"%@",pw];
+    if (_moneyPWPopView) {
+        [_moneyPWPopView removeFromSuperview];
+        [_moneyPWPopView removeAllSubviews];
+        _moneyPWPopView = nil;
+    }
+    // 这里先处理普通流程
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:_scoreInputText.text forKey:@"credit"];
+    NSString *price = [_priceLabel.text substringFromIndex:1];
+    [param setObject:price forKey:@"payment"];
+    [param setObject:@"ios" forKey:@"from"];
+    // 生成余额订单
+    [self createBalanceOrder:param];
+}
+
+// MARK: - 设置密码
+- (void)jumpSetPwPage {
+    if ([V5_UserModel need_set_paypwd]) {
+        SetMoneyPwFirstVC *vc = [[SetMoneyPwFirstVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        ModifyMoneyPwVC *vc = [[ModifyMoneyPwVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 - (void)submitButtonClick:(UIButton *)sender {
     if (!_seleteBtn.selected) {
         [self showHudInView:self.view showHint:@"请勾选并确认阅读用户服务协议"];
@@ -471,14 +508,32 @@
     
     if (SWNOTEmptyStr(typeString)) {
         if (SWNOTEmptyStr(_scoreInputText.text)) {
-            // 这里先处理普通流程
-            NSMutableDictionary *param = [NSMutableDictionary new];
-            [param setObject:_scoreInputText.text forKey:@"credit"];
-            NSString *price = [_priceLabel.text substringFromIndex:1];
-            [param setObject:price forKey:@"payment"];
-            [param setObject:@"ios" forKey:@"from"];
-            // 生成余额订单
-            [self createBalanceOrder:param];
+            if ([typeString isEqualToString:@"lcnpay"] && SWNOTEmptyStr([V5_UserModel userPhone])) {
+                if ([V5_UserModel userPhone].length >= 11) {
+                    _moneyPWPopView = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
+                    _moneyPWPopView.delegate = self;
+                    [self.view addSubview:_moneyPWPopView];
+                    _submitButton.enabled = YES;
+                } else {
+                    // 这里先处理普通流程
+                    NSMutableDictionary *param = [NSMutableDictionary new];
+                    [param setObject:_scoreInputText.text forKey:@"credit"];
+                    NSString *price = [_priceLabel.text substringFromIndex:1];
+                    [param setObject:price forKey:@"payment"];
+                    [param setObject:@"ios" forKey:@"from"];
+                    // 生成余额订单
+                    [self createBalanceOrder:param];
+                }
+            } else {
+                // 这里先处理普通流程
+                NSMutableDictionary *param = [NSMutableDictionary new];
+                [param setObject:_scoreInputText.text forKey:@"credit"];
+                NSString *price = [_priceLabel.text substringFromIndex:1];
+                [param setObject:price forKey:@"payment"];
+                [param setObject:@"ios" forKey:@"from"];
+                // 生成余额订单
+                [self createBalanceOrder:param];
+            }
         } else {
             [self showHudInView:self.view showHint:@"请输入需要充值的金额"];
             _submitButton.enabled = YES;
@@ -514,6 +569,9 @@
         NSMutableDictionary *pass = [NSMutableDictionary new];
         [pass setObject:[dict objectForKey:@"order_no"] forKey:@"order_no"];
         [pass setObject:typeString forKey:@"pay_type"];
+        if (SWNOTEmptyStr(userMoneyPw) && [typeString isEqualToString:@"lcnpay"]) {
+            [pass setObject:[[EdulineV5_Tool getmd5WithString:userMoneyPw] lowercaseString] forKey:@"password"];
+        }
         [Net_API requestPOSTWithURLStr:[Net_Path subMitOrder] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -589,30 +647,34 @@
 
 - (void)textfieldDidChanged:(NSNotification *)notice {
     UITextField *textfield = (UITextField *)notice.object;
-    if (textfield.text.length>0) {
-        _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] * [ratio_string integerValue] / 100.00];
-        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [ratio_string integerValue] / 100.00];
-        if (_seleteBtn.selected) {
-            _submitButton.enabled = YES;
-            _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+    if (textfield == _scoreInputText) {
+        if (textfield.text.length>0) {
+            _needPriceLabel.text = [NSString stringWithFormat:@"需花费¥%.2f",[textfield.text floatValue] * [ratio_string integerValue] / 100.00];
+            _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [ratio_string integerValue] / 100.00];
+            if (_seleteBtn.selected) {
+                _submitButton.enabled = YES;
+                _submitButton.backgroundColor = EdlineV5_Color.themeColor;
+            } else {
+                _submitButton.enabled = NO;
+                _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+            }
         } else {
+            _needPriceLabel.text = @"需花费¥0.00";
+            _priceLabel.text = @"¥0.00";
             _submitButton.enabled = NO;
             _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
         }
-    } else {
-        _needPriceLabel.text = @"需花费¥0.00";
-        _priceLabel.text = @"¥0.00";
-        _submitButton.enabled = NO;
-        _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if ([string isEqualToString:@"\n"]) {
-        [_scoreInputText resignFirstResponder];
-        return NO;
-    } else {
-        return [self validateNumber:string];
+    if (textField == _scoreInputText) {
+        if ([string isEqualToString:@"\n"]) {
+            [_scoreInputText resignFirstResponder];
+            return NO;
+        } else {
+            return [self validateNumber:string];
+        }
     }
     return YES;
 }
