@@ -33,6 +33,8 @@
 #ifndef V5_Constant_h
 #define V5_Constant_h
 
+#define QuickLoginUrl [[NSUserDefaults standardUserDefaults] objectForKey:@"register_agre"] == nil ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"register_agre"]
+
 #define shengwangAppid [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_appid"] == nil ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_appid"]
 #define shengwangAuth [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_auth"] == nil ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_auth"]
 

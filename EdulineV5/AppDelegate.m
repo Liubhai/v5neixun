@@ -661,6 +661,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"sdk_appid"] forKey:@"sdk_appid"];
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"theme_color"] forKey:@"color"];
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"login_config"] forKey:@"login_config"];
+                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"register_agre"] forKey:@"register_agre"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         }

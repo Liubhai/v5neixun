@@ -77,9 +77,9 @@
     
     model.appPrivacyText = fullString;//@"登录即同意《默认》和《用户隐私协议》";
     model.appFPrivacyText = atr;//@"《用户隐私协议》";
-    model.appFPrivacyURL = @"http://www.baidu.com";
+    model.appFPrivacyURL = QuickLoginUrl;//@"http://www.baidu.com";
     model.appSPrivacyText = @"《用户服务条款》";
-    model.appSPrivacyURL = @"http://www.baidu.com";
+    model.appSPrivacyURL = QuickLoginUrl;//@"http://www.baidu.com";
     model.appFPrivacyTitleText = @"hhahha";
     model.appPrivacyTitleText = @"认证服务协议";
     model.appSPrivacyTitleText = atr;
