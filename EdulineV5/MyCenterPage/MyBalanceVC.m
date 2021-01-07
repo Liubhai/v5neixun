@@ -318,6 +318,8 @@
 - (void)makeOrderType1View1 {
     _orderTypeView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
     _orderTypeView1.backgroundColor = [UIColor whiteColor];
+    UITapGestureRecognizer *selectTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seleteViewTapClick:)];
+    [_orderTypeView1 addGestureRecognizer:selectTap];
     
     [_orderTypeView addSubview:_orderTypeView1];
     
@@ -363,6 +365,9 @@
     _orderTypeView2.backgroundColor = [UIColor whiteColor];
     [_orderTypeView addSubview:_orderTypeView2];
     
+    UITapGestureRecognizer *selectTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seleteViewTapClick:)];
+    [_orderTypeView2 addGestureRecognizer:selectTap];
+    
     _orderLeftIcon2 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
     _orderLeftIcon2.image = Image(@"order_wechat_icon");
     _orderLeftIcon2.centerY = 56 / 2.0;
@@ -406,6 +411,9 @@
     _orderTypeView3 = [[UIView alloc] initWithFrame:CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56)];
     _orderTypeView3.backgroundColor = [UIColor whiteColor];
     [_orderTypeView addSubview:_orderTypeView3];
+    
+    UITapGestureRecognizer *selectTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seleteViewTapClick:)];
+    [_orderTypeView3 addGestureRecognizer:selectTap];
     
     _orderLeftIcon3 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
     _orderLeftIcon3.image = Image(@"order_yue_icon");
@@ -577,6 +585,40 @@
         }
         typeString = @"wxpay";
     } else if (sender == _orderRightBtn3) {
+        _orderRightBtn3.selected = YES;
+        _orderRightBtn1.selected = NO;
+        _orderRightBtn2.selected = NO;
+        if (![typeString isEqualToString:@"applepay"]) {
+            [self makeMoneyView];
+            _priceLabel.text = @"¥0.00";
+            [self selectFirstButton];
+        }
+        typeString = @"applepay";
+    }
+}
+
+- (void)seleteViewTapClick:(UITapGestureRecognizer *)tap {
+    if (tap.view == _orderTypeView1) {
+        _orderRightBtn1.selected = YES;
+        _orderRightBtn2.selected = NO;
+        _orderRightBtn3.selected = NO;
+        if ([typeString isEqualToString:@"applepay"]) {
+            [self makeMoneyView];
+            _priceLabel.text = @"¥0.00";
+            [self selectFirstButton];
+        }
+        typeString = @"alipay";
+    } else if (tap.view == _orderTypeView2) {
+        _orderRightBtn2.selected = YES;
+        _orderRightBtn1.selected = NO;
+        _orderRightBtn3.selected = NO;
+        if ([typeString isEqualToString:@"applepay"]) {
+            [self makeMoneyView];
+            _priceLabel.text = @"¥0.00";
+            [self selectFirstButton];
+        }
+        typeString = @"wxpay";
+    } else if (tap.view == _orderTypeView3) {
         _orderRightBtn3.selected = YES;
         _orderRightBtn1.selected = NO;
         _orderRightBtn2.selected = NO;
