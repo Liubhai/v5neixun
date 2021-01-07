@@ -75,7 +75,7 @@
         _lineView.frame = CGRectMake(_typeIcon.right + 10, 49, MainScreenWidth - (_typeIcon.right + 10), 1);
     }
 //    _typeIcon.image = Image([info objectForKey:@"image"]);
-    [_typeIcon sd_setImageWithURL:EdulineUrlString([info objectForKey:@"icon_url"]) placeholderImage:nil];
+    [_typeIcon sd_setImageWithURL:EdulineUrlString([info objectForKey:@"icon_url"]) placeholderImage:DefaultImage];
     _typeTitle.text = [info objectForKey:@"title"];
 }
 

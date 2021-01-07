@@ -183,11 +183,11 @@
     if ([PROFILELAYOUT isEqualToString:@"1"]) {
         NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[indexPath.row] objectForKey:@"key"]];
         if ([iconKey isEqualToString:@"wenda"]) {
-            
+            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"comment"]) {
-            
+            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"note"]) {
-            
+            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"collection"]) {
             MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -195,16 +195,16 @@
             LearnRecordVC *vc = [[LearnRecordVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"doc"]) {
-            
+            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"storage"]) {
-            
+            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"vip"]) {
-            
+            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"coupon"]) {
             MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"exchange"]) {
-            
+            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"subordinate"]) {
             MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -249,7 +249,7 @@
 //            vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
 //            [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"address"]) {
-            
+            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"my_classes"]) {
             ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -301,11 +301,11 @@
     }
     NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[sender.tag - 66] objectForKey:@"key"]];
     if ([iconKey isEqualToString:@"wenda"]) {
-        
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
     } else if ([iconKey isEqualToString:@"comment"]) {
-        
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
     } else if ([iconKey isEqualToString:@"note"]) {
-        
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
     } else if ([iconKey isEqualToString:@"collection"]) {
         MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
@@ -313,16 +313,16 @@
         LearnRecordVC *vc = [[LearnRecordVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"doc"]) {
-        
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
     } else if ([iconKey isEqualToString:@"storage"]) {
-        
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
     } else if ([iconKey isEqualToString:@"vip"]) {
-        
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
     } else if ([iconKey isEqualToString:@"coupon"]) {
         MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"exchange"]) {
-        
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
     } else if ([iconKey isEqualToString:@"subordinate"]) {
         MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
@@ -343,7 +343,7 @@
         InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"address"]) {
-        
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
     } else if ([iconKey isEqualToString:@"my_classes"]) {
         ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
