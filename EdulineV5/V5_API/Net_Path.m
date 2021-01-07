@@ -89,11 +89,11 @@
 }
 
 + (NSString *)testApiPath {
-    return [Net_Path fullPath:@"/user/admin/account" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"user/admin/account" repalce:@"" byReplece:@""];
 }
 
 + (NSString *)courseInfo:(NSString *)courseId {
-    return [Net_Path fullPath:@"/course/base/{id}" repalce:@"{id}" byReplece:courseId];
+    return [Net_Path fullPath:@"course/base/{id}" repalce:@"{id}" byReplece:courseId];
 }
 
 + (NSString *)courseCollectionNet {
@@ -109,7 +109,7 @@
 }
 
 + (NSString *)courseList:(NSString *)courseId pid:(nonnull NSString *)pid {
-    return [Net_Path fullPath:@"/course/base/{id}/section/{pid}" repalceArray:@[@"{id}",@"{pid}"] byRepleceArray:@[courseId,pid]];
+    return [Net_Path fullPath:@"course/base/{id}/section/{pid}" repalceArray:@[@"{id}",@"{pid}"] byRepleceArray:@[courseId,pid]];
 }
 
 + (NSString *)courseHourseUrlNet:(NSString *)courseId pid:(NSString *)pid {
@@ -121,7 +121,7 @@
 }
 
 + (NSString *)courseMainList {
-    return [Net_Path fullPath:@"/course/base/list" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"course/base/list" repalce:@"" byReplece:@""];
 }
 
 + (NSString *)smsCodeSend {
