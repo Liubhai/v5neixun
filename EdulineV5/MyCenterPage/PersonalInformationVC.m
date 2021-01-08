@@ -15,6 +15,7 @@
 @interface PersonalInformationVC ()<UIScrollViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
     NSString *gender;
     NSString *attachId;
+    BOOL isTextView;
 }
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
@@ -74,8 +75,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeUserInfoPhone:) name:@"changeUserInfoPagePhone" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)makeSubView {
@@ -240,6 +241,7 @@
     _introTextView.textColor = EdlineV5_Color.textSecendColor;
     _introTextView.font = SYSTEMFONT(15);
     _introTextView.delegate = self;
+    _introTextView.returnKeyType = UIReturnKeyDone;
     [_mainScrollView addSubview:_introTextView];
     
     _introTextViewPlaceholder = [[UILabel alloc] initWithFrame:CGRectMake(_introTextView.left, _introTextView.top + 1, _introTextView.width, 30)];
@@ -385,6 +387,15 @@
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
     _introTextViewPlaceholder.hidden = YES;
+    isTextView = YES;
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [self inputTextResign];
+        return NO;
+    }
     return YES;
 }
 
@@ -560,6 +571,20 @@
     NSDictionary *pass = [NSDictionary dictionaryWithDictionary:notice.userInfo];
     if (SWNOTEmptyDictionary(pass)) {
         _phoneTextField.text = [NSString stringWithFormat:@"%@",[pass objectForKey:@"phone"]];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification{
+    [_mainScrollView setContentOffset:CGPointMake(0, 0)];
+    isTextView = NO;
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification{
+    if (isTextView) {
+        NSValue *endValue = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+        CGFloat otherViewOriginY = _introTextView.bottom + 10;
+        CGFloat offSet = MainScreenHeight - MACRO_UI_UPHEIGHT - otherViewOriginY;
+        [_mainScrollView setContentOffset:CGPointMake(0, [endValue CGRectValue].size.height - offSet)];
     }
 }
 
