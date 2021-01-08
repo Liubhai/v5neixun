@@ -67,6 +67,7 @@
     _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainListMoreData)];
     _collectionView.mj_footer.hidden = YES;
     [_collectionView.mj_header beginRefreshing];
+    [EdulineV5_Tool adapterOfIOS11With:_collectionView];
 }
 
 - (void)addHeaderView {

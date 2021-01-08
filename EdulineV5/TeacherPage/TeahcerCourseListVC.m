@@ -43,6 +43,7 @@
     _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainListMoreData)];
     _collectionView.mj_footer.hidden = YES;
     [_collectionView.mj_header beginRefreshing];
+    [EdulineV5_Tool adapterOfIOS11With:_collectionView];
 }
 
 - (void)addHeaderView {
@@ -73,7 +74,8 @@
 
 - (void)makeCollectionView {
     UICollectionViewFlowLayout *cellLayout = [[UICollectionViewFlowLayout alloc] init];
-    cellLayout.itemSize = CGSizeMake((MainScreenWidth - 12) / 2.0, (MainScreenWidth/2.0 - 6 - 15) * 90 / 165.0 + 6 + 20 + 13 + 16 + 10);
+    cellLayout.itemSize = CGSizeMake((MainScreenWidth - 12) / 2.0, 20 + (MainScreenWidth/2.0 - 6 - 15) * 90 / 165.0 + 6 + 20 + 13 + 16 + 3);
+    cellLayout.minimumLineSpacing = 0;
     cellLayout.minimumInteritemSpacing = 6;
     cellLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, topViewHeight, MainScreenWidth, _tabelHeight - topViewHeight) collectionViewLayout:cellLayout];

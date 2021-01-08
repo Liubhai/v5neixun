@@ -118,6 +118,7 @@
     _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainListMoreData)];
     _collectionView.mj_footer.hidden = YES;
     [_collectionView.mj_header beginRefreshing];
+    [EdulineV5_Tool adapterOfIOS11With:_collectionView];
 }
 
 - (void)makeTopSearch {
@@ -190,8 +191,9 @@
 - (void)makeCollectionView {
     UICollectionViewFlowLayout *cellLayout = [[UICollectionViewFlowLayout alloc] init];
     if (_cellType) {
-        cellLayout.itemSize = CGSizeMake((MainScreenWidth - 12) / 2.0, (MainScreenWidth/2.0 - 6 - 15) * 90 / 165.0 + 6 + 20 + 13 + 16 + 10);
+        cellLayout.itemSize = CGSizeMake((MainScreenWidth - 12) / 2.0, 20 + (MainScreenWidth/2.0 - 6 - 15) * 90 / 165.0 + 6 + 20 + 13 + 16 + 3);
         cellLayout.minimumInteritemSpacing = 6;
+        cellLayout.minimumLineSpacing = 0;
     } else {
         cellLayout.itemSize = CGSizeMake(MainScreenWidth, 106);
         cellLayout.minimumInteritemSpacing = 0;

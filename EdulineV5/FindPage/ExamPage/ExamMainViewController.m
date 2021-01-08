@@ -36,6 +36,7 @@
     _collectionView.mj_footer.hidden = YES;
 //    [_collectionView.mj_header beginRefreshing];
     [_collectionView reloadData];
+    [EdulineV5_Tool adapterOfIOS11With:_collectionView];
 }
 
 - (void)makeCollectionView {
