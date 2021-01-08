@@ -316,6 +316,9 @@
         if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
             [moreButton setTitle:@"" forState:0];
             [moreButton setImage:Image(@"home_change_icon") forState:0];
+            if (!SWNOTEmptyStr(themeLabel.text)) {
+                themeLabel.text = @"意向课程";
+            }
         }
         [moreButton addTarget:self action:@selector(sectionMoreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         moreButton.tag = section;
