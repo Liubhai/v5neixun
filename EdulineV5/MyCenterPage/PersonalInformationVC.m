@@ -16,6 +16,7 @@
     NSString *gender;
     NSString *attachId;
     BOOL isTextView;
+    CGFloat keyHeight;
 }
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
@@ -388,6 +389,11 @@
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
     _introTextViewPlaceholder.hidden = YES;
     isTextView = YES;
+    if (keyHeight > 0) {
+        CGFloat otherViewOriginY = _introTextView.bottom + 10;
+        CGFloat offSet = MainScreenHeight - MACRO_UI_UPHEIGHT - otherViewOriginY;
+        [_mainScrollView setContentOffset:CGPointMake(0, keyHeight - offSet)];
+    }
     return YES;
 }
 
@@ -577,11 +583,13 @@
 - (void)keyboardWillHide:(NSNotification *)notification{
     [_mainScrollView setContentOffset:CGPointMake(0, 0)];
     isTextView = NO;
+    keyHeight = 0;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification{
+    NSValue *endValue = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    keyHeight = [endValue CGRectValue].size.height;
     if (isTextView) {
-        NSValue *endValue = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
         CGFloat otherViewOriginY = _introTextView.bottom + 10;
         CGFloat offSet = MainScreenHeight - MACRO_UI_UPHEIGHT - otherViewOriginY;
         [_mainScrollView setContentOffset:CGPointMake(0, [endValue CGRectValue].size.height - offSet)];
