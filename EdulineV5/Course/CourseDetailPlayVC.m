@@ -374,7 +374,7 @@
     _faceImageView.image = DefaultImage;
     [_headerView addSubview:_faceImageView];
     
-    _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4)];
+    _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, [_courseType isEqualToString:@"4"] ? (86- 35 + 4) : (86 + 4))];
     _courseContentView.delegate = self;
     [_headerView addSubview:_courseContentView];
     
@@ -943,8 +943,13 @@
             [_zanButton setImage:Image(@"course_collect_nor") forState:0];
         }
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:YES];
-//        _tableView.tableHeaderView = _headerView;
-//        [self.tableView reloadData];
+        [_couponContentView setHeight:[[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"] ? (86-35+4) : (86 + 4)];
+        if ([[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"]) {
+            [_headerView setHeight:_courseContentView.bottom];
+            sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - _headerView.height;
+        }
+        _tableView.tableHeaderView = _headerView;
+        [self.tableView reloadData];
     }
 }
 
