@@ -176,7 +176,7 @@
                 [param setObject:@(_carModel.total_price) forKey:@"price"];
             }
         }
-        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
+        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.frame.size.height];
         [Net_API requestGETSuperAPIWithURLStr:_getOrUse ? [Net_Path schoolCouponList] : [Net_Path couponsUserList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -184,7 +184,11 @@
                     [_dataSource addObjectsFromArray:[CouponArrayModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
                     [self removeUsedCoupon];
                     [self changeDataSourceIsUseStatus];
-                    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
+                    NSInteger modelCount = 0;
+                    for (CouponArrayModel *object in _dataSource) {
+                        modelCount = modelCount + object.list.count;
+                    }
+                    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:modelCount isLoading:NO tableViewShowHeight:_tableView.frame.size.height];
                     [_tableView reloadData];
                 }
             }
@@ -193,7 +197,7 @@
         }];
     } else {
         if (SWNOTEmptyStr(_courseId)) {
-            [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
+            [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.frame.size.height];
             [Net_API requestGETSuperAPIWithURLStr:_getOrUse ? [Net_Path courseCouponList] : [Net_Path courseCouponUserList] WithAuthorization:nil paramDic:@{@"course_id":_courseId,@"group":@"1"} finish:^(id  _Nonnull responseObject) {
                 if (SWNOTEmptyDictionary(responseObject)) {
                     if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -201,7 +205,11 @@
                         [_dataSource addObjectsFromArray:[CouponArrayModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
                         [self removeUsedCoupon];
                         [self changeDataSourceIsUseStatus];
-                        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
+                        NSInteger modelCount = 0;
+                        for (CouponArrayModel *object in _dataSource) {
+                            modelCount = modelCount + object.list.count;
+                        }
+                        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:modelCount isLoading:NO tableViewShowHeight:_tableView.frame.size.height];
                         [_tableView reloadData];
                     }
                 }
