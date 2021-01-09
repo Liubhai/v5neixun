@@ -205,18 +205,18 @@
         [_orderTypeView3 setHeight:0];
         _orderTypeView3.hidden = YES;
     } else {
-        [_orderTypeView1 setHeight:0];
-        _orderTypeView1.hidden = YES;
-        
-        _orderTypeView2.frame = CGRectMake(0, _orderTypeView1.bottom, MainScreenWidth, 56);
-        [_orderTypeView2 setHeight:0];
-        _orderTypeView2.hidden = YES;
-        
-        _orderTypeView3.frame = CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56);
-        [self seleteButtonClick:_orderRightBtn3];
-//        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
-//            [self seleteButtonClick:_orderRightBtn3];
-//        }
+//        [_orderTypeView1 setHeight:0];
+//        _orderTypeView1.hidden = YES;
+//
+//        _orderTypeView2.frame = CGRectMake(0, _orderTypeView1.bottom, MainScreenWidth, 56);
+//        [_orderTypeView2 setHeight:0];
+//        _orderTypeView2.hidden = YES;
+//
+//        _orderTypeView3.frame = CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56);
+//        [self seleteButtonClick:_orderRightBtn3];
+        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
+            [self seleteButtonClick:_orderRightBtn3];
+        }
     }
 }
 
