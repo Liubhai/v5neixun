@@ -88,6 +88,20 @@
         _notLoginView.hidden = NO;
     }
     [_tableView.mj_header beginRefreshing];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadStudyPageData) name:@"studyPageReloadData" object:nil];
+}
+
+- (void)reloadStudyPageData {
+    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        if (_notLoginView) {
+            _notLoginView.hidden = YES;
+        }
+    } else {
+        if (_notLoginView) {
+            _notLoginView.hidden = NO;
+        }
+    }
+    [self getStudyInfo];
 }
 
 - (void)makeNotLoginView {

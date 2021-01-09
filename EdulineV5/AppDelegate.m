@@ -774,6 +774,7 @@
                 [V5_UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
                 [V5_UserModel saveNeed_set_paypwd:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_paypwd"]] boolValue]];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"LOGINFINISH" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"studyPageReloadData" object:nil];
             }
         }
     } enError:^(NSError * _Nonnull error) {
