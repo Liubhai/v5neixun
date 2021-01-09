@@ -839,6 +839,7 @@
                 [V5_UserModel saveNeed_set_paypwd:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_paypwd"]] boolValue]];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"LOGINFINISH" object:nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"studyPageReloadData" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCourseDetailPage" object:nil];
             }
         }
     } enError:^(NSError * _Nonnull error) {
