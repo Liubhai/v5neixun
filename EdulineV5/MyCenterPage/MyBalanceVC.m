@@ -270,7 +270,7 @@
         [_moneyView addSubview:_otherMoneyText];
         
         UILabel *tip = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 40, _otherMoneyText.height)];
-        tip.text = @"育币";
+        tip.text = IOSMoneyTitle;
         tip.font = SYSTEMFONT(15);
         tip.textColor = EdlineV5_Color.textFirstColor;
         tip.textAlignment = NSTextAlignmentCenter;
