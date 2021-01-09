@@ -87,7 +87,7 @@
             _priceLabel.text = @"免费";
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"育币%@",[info objectForKey:@"price"]];
+            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[info objectForKey:@"price"]];
             _priceLabel.textColor = EdlineV5_Color.faildColor;
         }
     }
@@ -148,7 +148,7 @@
             _priceLabel.text = @"免费";
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"育币%@",[info objectForKey:@"price"]];
+            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[info objectForKey:@"price"]];
             _priceLabel.textColor = EdlineV5_Color.faildColor;
         }
     }

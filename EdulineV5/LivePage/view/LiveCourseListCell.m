@@ -35,7 +35,6 @@
     [self.contentView addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
-    _titleL.text = @"你是个傻屌";
     _titleL.textColor = EdlineV5_Color.textFirstColor;
     _titleL.font = SYSTEMFONT(15);
     [self.contentView addSubview:_titleL];
@@ -43,7 +42,6 @@
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 21, 150, 21)];
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     _priceLabel.font = SYSTEMFONT(15);
-    _priceLabel.text = @"育币1099.00";
     [self.contentView addSubview:_priceLabel];
     
     _buyButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 68, _courseFace.bottom - 26, 68, 26)];
@@ -72,7 +70,7 @@
         _courseTypeImage.image = Image(@"class_icon");
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
-    _priceLabel.text = [NSString stringWithFormat:@"育币%@",[info objectForKey:@"price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[info objectForKey:@"price"]];
     NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
     
     _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
@@ -94,7 +92,7 @@
             _priceLabel.text = @"免费";
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"育币%@",[info objectForKey:@"price"]];
+            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[info objectForKey:@"price"]];
             _priceLabel.textColor = EdlineV5_Color.faildColor;
         }
     }

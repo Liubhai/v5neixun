@@ -72,7 +72,6 @@
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backView.width - 12 - 100, _faceImageView.top, 100, 24)];
     _priceLabel.font = SYSTEMFONT(14);
     _priceLabel.textColor = EdlineV5_Color.textFirstColor;
-    _priceLabel.text = @"育币199";
     _priceLabel.textAlignment = NSTextAlignmentRight;
     [_backView addSubview:_priceLabel];
     
@@ -83,14 +82,12 @@
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.left, _line2.bottom + 12, 150, 16)];
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textColor = EdlineV5_Color.textSecendColor;
-    _timeLabel.text = @"2019-11-12 12:32";
     [_backView addSubview:_timeLabel];
     
     _truePriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_backView.width - 80, 0, 80, 21)];
     _truePriceLabel.centerY = _timeLabel.centerY;
     _truePriceLabel.textColor = EdlineV5_Color.faildColor;
     _truePriceLabel.font = SYSTEMFONT(14);
-    _truePriceLabel.text = @"育币109";
     [_backView addSubview:_truePriceLabel];
     
     _trueLabel = [[UILabel alloc] initWithFrame:CGRectMake(_truePriceLabel.left - 40, 0, 40, 21)];

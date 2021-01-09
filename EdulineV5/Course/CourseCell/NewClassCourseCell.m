@@ -167,7 +167,7 @@
         _titleLabel.font = SYSTEMFONT(14);
         
         
-        _priceLabel.text = [NSString stringWithFormat:@"育币%@",model.price];
+        _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,model.price];
         
         if (model.audition > 0) {
             _freeImageView.hidden = NO;

@@ -439,8 +439,8 @@
     if (SWNOTEmptyDictionary(info)) {
         screenId = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenId"]];
         screenPriceUpAndDown = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenUpAndDown"]];
-        maxPrice = [[NSString stringWithFormat:@"%@",[info objectForKey:@"priceMax"]] stringByReplacingOccurrencesOfString:@"育币" withString:@""];
-        minPrice = [[NSString stringWithFormat:@"%@",[info objectForKey:@"priceMin"]] stringByReplacingOccurrencesOfString:@"育币" withString:@""];
+        maxPrice = [[NSString stringWithFormat:@"%@",[info objectForKey:@"priceMax"]] stringByReplacingOccurrencesOfString:IOSMoneyTitle withString:@""];
+        minPrice = [[NSString stringWithFormat:@"%@",[info objectForKey:@"priceMin"]] stringByReplacingOccurrencesOfString:IOSMoneyTitle withString:@""];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
         [self getCourseMainList];
     }

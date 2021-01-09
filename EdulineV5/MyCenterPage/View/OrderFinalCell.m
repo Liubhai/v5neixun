@@ -102,9 +102,9 @@
         _courseTypeImage.hidden = YES;
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"育币%@",[OrderFinalInfo objectForKey:@"user_price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[OrderFinalInfo objectForKey:@"user_price"]];
     if ([courseType isEqualToString:@"5"] || [courseType isEqualToString:@"6"] || [courseType isEqualToString:@"7"] || [courseType isEqualToString:@"8"]) {
-        _priceLabel.text = [NSString stringWithFormat:@"育币%@",[OrderFinalInfo objectForKey:@"price"]];
+        _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[OrderFinalInfo objectForKey:@"price"]];
     }
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     _priceLabel.frame = CGRectMake(MainScreenWidth - 12 - priceWidth, _faceImageView.top, priceWidth, 24);

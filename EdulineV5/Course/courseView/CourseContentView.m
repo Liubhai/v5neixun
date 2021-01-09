@@ -118,10 +118,10 @@
     [_courseStar setStarValue:[[NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"score_star"]] floatValue]];
     _courseLearn.text = [NSString stringWithFormat:@"%@人在学",[contentInfo objectForKey:@"sale_count"]];
     
-    NSString *price = [NSString stringWithFormat:@"育币%@",[contentInfo objectForKey:@"price"]];
-    NSString *scribing_price = [NSString stringWithFormat:@"育币%@",[contentInfo objectForKey:@"scribing_price"]];
-    if ([scribing_price isEqualToString:@"育币0.00"] || [scribing_price isEqualToString:@"育币0.0"] || [scribing_price isEqualToString:@"育币0"]) {
-        if ([price isEqualToString:@"育币0.00"] || [price isEqualToString:@"育币0.0"] ||[price isEqualToString:@"育币0"]) {
+    NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[contentInfo objectForKey:@"price"]];
+    NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[contentInfo objectForKey:@"scribing_price"]];
+    if ([scribing_price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [scribing_price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [scribing_price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]]) {
+        if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] ||[price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]]) {
             _coursePrice.text = @"免费";
             _coursePrice.textColor = EdlineV5_Color.priceFreeColor;
             _coursePrice.font = SYSTEMFONT(18);
@@ -132,7 +132,7 @@
         }
     } else {
         NSString *user_price = [NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"user_price"]];
-        if ([price isEqualToString:@"育币0.00"] || [price isEqualToString:@"育币0.0"] || [price isEqualToString:@"育币0"] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
+        if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
             price = @"免费";
             NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
             NSRange rangNow = NSMakeRange(scribing_price.length, price.length);

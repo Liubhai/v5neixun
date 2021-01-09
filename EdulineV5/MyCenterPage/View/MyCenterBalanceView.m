@@ -70,8 +70,8 @@
         NSString *balance = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"balance"]];
         NSString *income = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"income"]];
         NSString *credit = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"credit"]];
-        _balanceLabel.text = [NSString stringWithFormat:@"育币%.2f",[balance floatValue]];
-        _incomeLabel.text = [NSString stringWithFormat:@"育币%.2f",[income floatValue]];
+        _balanceLabel.text = [NSString stringWithFormat:@"%@%.2f",IOSMoneyTitle,[balance floatValue]];
+        _incomeLabel.text = [NSString stringWithFormat:@"%@%.2f",IOSMoneyTitle,[income floatValue]];
         _scoreLabel.text = [NSString stringWithFormat:@"%.f",[credit floatValue]];
     }
 }

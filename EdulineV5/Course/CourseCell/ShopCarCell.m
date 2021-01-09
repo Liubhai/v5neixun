@@ -42,7 +42,6 @@
     _themeLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 10, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     _themeLabel.font = SYSTEMFONT(14);
-    _themeLabel.text = @"课程显示课程标题，课时显示课时名称";
     [self.contentView addSubview:_themeLabel];
     
     _course_card = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 36, 15)];
@@ -53,13 +52,11 @@
     _timeLabel.font = SYSTEMFONT(11);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     _timeLabel.textAlignment = NSTextAlignmentRight;
-    _timeLabel.text = @"有效期至2022.12.12";
     [self.contentView addSubview:_timeLabel];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, _timeLabel.top, 150, 15)];
     _priceLabel.font = SYSTEMFONT(12);
     _priceLabel.textColor = EdlineV5_Color.faildColor;
-    _priceLabel.text = @"VIP:育币200.00";
     [self.contentView addSubview:_priceLabel];
     
     _hasCourseCardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 36, _timeLabel.top, 36, 15)];
@@ -70,7 +67,6 @@
     _courseHourLabel.font = SYSTEMFONT(11);
     _courseHourLabel.textAlignment = NSTextAlignmentRight;
     _courseHourLabel.textColor = EdlineV5_Color.textThirdColor;
-    _courseHourLabel.text = @"12课时";
     [self.contentView addSubview:_courseHourLabel];
     
     if (_cellType) {
@@ -110,9 +106,9 @@
         [_themeLabel addView:_course_card range:NSMakeRange(0, 0) alignment:TYDrawAlignmentCenter];
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"育币%@",model.price];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,model.price];
     if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
-        _priceLabel.text = [NSString stringWithFormat:@"VIP:育币%@",model.user_price];
+        _priceLabel.text = [NSString stringWithFormat:@"VIP:%@%@",IOSMoneyTitle,model.user_price];
     }
     if ([model.course_type isEqualToString:@"1"]) {
         _courseTypeImageView.image = Image(@"dianbo");

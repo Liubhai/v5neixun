@@ -152,9 +152,9 @@
     _nextButton.centerX = MainScreenWidth / 2.0;
     _nextButton.layer.masksToBounds = YES;
     _nextButton.layer.cornerRadius = 5;
-    NSMutableAttributedString *passAtr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"育币%@ 提现",_priceString]];
+    NSMutableAttributedString *passAtr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@ 提现",IOSMoneyTitle,_priceString]];
     [passAtr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]} range:NSMakeRange(0, 1)];
-    [passAtr addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]} range:NSMakeRange(0, [NSString stringWithFormat:@"育币%@ 提现",_priceString].length)];
+    [passAtr addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]} range:NSMakeRange(0, [NSString stringWithFormat:@"%@ 提现",IOSMoneyTitle,_priceString].length)];
     [_nextButton setAttributedTitle:[[NSAttributedString alloc] initWithAttributedString:passAtr] forState:0];
     _nextButton.titleLabel.font = SYSTEMFONT(18);
     _nextButton.backgroundColor = EdlineV5_Color.buttonDisableColor;

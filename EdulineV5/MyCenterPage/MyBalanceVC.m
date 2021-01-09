@@ -127,7 +127,7 @@
     
     UILabel * priceType = [[UILabel alloc] initWithFrame:CGRectMake(0, _userPriceLabel.bottom, MainScreenWidth, 45)];
     priceType.font = SYSTEMFONT(15);
-    priceType.text = @"余额(育币)";
+    priceType.text = [NSString stringWithFormat:@"余额(%@)",IOSMoneyTitle];
     priceType.textAlignment = NSTextAlignmentCenter;
     priceType.textColor = [UIColor whiteColor];
     [_account addSubview:priceType];
@@ -193,7 +193,7 @@
     NSArray *additionArray = nil;
     NSInteger allNumber = 0;
     if (_netWorkBalanceArray.count == 0) {
-        titleArray = @[@"育币20",@"",@"",@"育币   "];
+        titleArray = @[[NSString stringWithFormat:@"%@20",IOSMoneyTitle],@"",@"",[NSString stringWithFormat:@"%@   ",IOSMoneyTitle]];
         additionArray = @[@"",@"充50送10",@"充100送30",@""];
         allNumber = 4;
     } else {
@@ -214,7 +214,7 @@
         
         //钱的数字
         UILabel *number1 = [[UILabel  alloc] initWithFrame:CGRectMake(0, 10 , buttonW, 20)];
-        number1.text = [NSString stringWithFormat:@"%@育币",[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"balance"]];
+        number1.text = [NSString stringWithFormat:@"%@%@",[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"balance"],IOSMoneyTitle];
         number1.textColor = EdlineV5_Color.textSecendColor;
         number1.font = SYSTEMFONT(15);
         number1.textAlignment = NSTextAlignmentCenter;

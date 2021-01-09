@@ -111,9 +111,9 @@
     _rightButton.layer.borderColor = cellColor.CGColor;
     
     if ([_cellType isEqualToString:@"1"]) {
-        NSString *origin = [NSString stringWithFormat:@"育币%@ 满%@使用",model.price,model.maxprice];
-        NSRange range1 = NSMakeRange(0, 2);
-        NSRange range2 = NSMakeRange(2, [origin rangeOfString:@"满"].location - 2);
+        NSString *origin = [NSString stringWithFormat:@"%@%@ 满%@使用",IOSMoneyTitle,model.price,model.maxprice];
+        NSRange range1 = NSMakeRange(0, [NSString stringWithFormat:@"%@",IOSMoneyTitle].length);
+        NSRange range2 = NSMakeRange([NSString stringWithFormat:@"%@",IOSMoneyTitle].length, [origin rangeOfString:@"满"].location - [NSString stringWithFormat:@"%@",IOSMoneyTitle].length);
         NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:origin];
         [atr addAttributes:@{NSFontAttributeName: SYSTEMFONT(12)} range:range1];
         [atr addAttributes:@{NSFontAttributeName: SYSTEMFONT(20)} range:range2];

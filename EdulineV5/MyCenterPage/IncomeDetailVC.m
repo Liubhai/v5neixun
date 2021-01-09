@@ -86,7 +86,6 @@
     [topView addSubview:_timeButton];
     
     _allIncomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, 0, 100, 54)];
-    _allIncomeLabel.text = @"统计 育币232.32";
     _allIncomeLabel.font = SYSTEMFONT(15);
     _allIncomeLabel.textColor = EdlineV5_Color.textThirdColor;
     _allIncomeLabel.textAlignment = NSTextAlignmentRight;
@@ -199,7 +198,7 @@
                 [_dataSource removeAllObjects];
                 [_dataSource addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"flow"] objectForKey:@"data"]];
                 _sourceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
-                _allIncomeLabel.text = [NSString stringWithFormat:@"统计 育币%@",[[responseObject objectForKey:@"data"] objectForKey:@"total_income"]];
+                _allIncomeLabel.text = [NSString stringWithFormat:@"统计 %@%@",IOSMoneyTitle,[[responseObject objectForKey:@"data"] objectForKey:@"total_income"]];
             }
         }
         if (_dataSource.count<10) {
@@ -236,7 +235,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 NSArray *pass = [NSArray arrayWithArray:[[[responseObject objectForKey:@"data"] objectForKey:@"flow"] objectForKey:@"data"]];
                 _sourceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
-                _allIncomeLabel.text = [NSString stringWithFormat:@"统计 育币%@",[[responseObject objectForKey:@"data"] objectForKey:@"total_income"]];
+                _allIncomeLabel.text = [NSString stringWithFormat:@"统计 %@%@",IOSMoneyTitle,[[responseObject objectForKey:@"data"] objectForKey:@"total_income"]];
                 [_dataSource addObjectsFromArray:pass];
                 if (pass.count<10) {
                     _tableView.mj_footer.hidden = YES;
