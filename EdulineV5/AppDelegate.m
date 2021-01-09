@@ -203,76 +203,138 @@
     
     [[AppDelegate delegate] registerQuickLogin];
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"登录方式" message:@"账号登录,可跨平台享受课程解锁权益,游客(设备)登录,在解锁课程时会为当前设备解锁课程" preferredStyle:(UIAlertControllerStyleAlert)];
-    UIAlertAction *loginAction = [UIAlertAction actionWithTitle:@"登录账号(推荐)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]) {
-                [AppDelegate delegate].loginTypeDict = [NSDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]];
-            }
-            [AppDelegate delegate].hasPhoneLoginType = NO;
-            if (SWNOTEmptyDictionary([AppDelegate delegate].loginTypeDict)) {
-                if ([[[AppDelegate delegate].loginTypeDict objectForKey:@"phone"] integerValue]) {
-                    [AppDelegate delegate].hasPhoneLoginType = YES;
-                }
-            }
-            
-            [AppDelegate delegate].currentViewController = currentViewController;
-            if ([currentViewController isKindOfClass:[UINavigationController class]]) {
-                if ([AppDelegate delegate].hasPhone && [AppDelegate delegate].hasPhoneLoginType) {
-                    [[AppDelegate delegate] setCustomUI];
-                    if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 1) {
-                        [[AppDelegate delegate] authorizeCTLoginWithText:nil];
-                    } else if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 2) {
-                        [[AppDelegate delegate] authorizeCMLoginWithText:nil];
-                    } else {
-                        [[AppDelegate delegate] authorizeCULoginWithText:nil];
-                    }
-        //            QuickLoginVC *vc = [[QuickLoginVC alloc] init];
-        //            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        //            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
-        //            [currentViewController presentViewController:Nav animated:YES completion:nil];
-                } else {
-                    LoginViewController *vc = [[LoginViewController alloc] init];
-                    vc.dissOrPop = YES;
-                    UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
-                    Nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                    [currentViewController presentViewController:Nav animated:YES completion:nil];
-                }
-            } else if ([currentViewController isKindOfClass:[UIViewController class]]) {
-                if ([AppDelegate delegate].hasPhone && [AppDelegate delegate].hasPhoneLoginType) {
-                    [[AppDelegate delegate] setCustomUI];
-                    if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 1) {
-                        [[AppDelegate delegate] authorizeCTLoginWithText:nil];
-                    } else if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 2) {
-                        [[AppDelegate delegate] authorizeCMLoginWithText:nil];
-                    } else {
-                        [[AppDelegate delegate] authorizeCULoginWithText:nil];
-                    }
-        //            QuickLoginVC *vc = [[QuickLoginVC alloc] init];
-        //            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        //            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
-        //            [currentViewController presentViewController:Nav animated:YES completion:nil];
-                } else {
-                    LoginViewController *vc = [[LoginViewController alloc] init];
-                    vc.dissOrPop = YES;
-                    UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
-                    Nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                    [currentViewController.navigationController presentViewController:Nav animated:YES completion:nil];
-                }
-            }
-    }];
-    UIAlertAction *TouristsAction = [UIAlertAction actionWithTitle:@"游客(设备)登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[AppDelegate delegate] touristLogin];
-    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    }];
-    [alertController addAction:loginAction];
-    [alertController addAction:TouristsAction];
-    [alertController addAction:cancelAction];
-    if ([currentViewController isKindOfClass:[UINavigationController class]]) {
-        [currentViewController presentViewController:alertController animated:YES completion:nil];
-    } else if ([currentViewController isKindOfClass:[UIViewController class]]) {
-        [currentViewController.navigationController presentViewController:alertController animated:YES completion:nil];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]) {
+        [AppDelegate delegate].loginTypeDict = [NSDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]];
     }
+    if (SWNOTEmptyDictionary([AppDelegate delegate].loginTypeDict)) {
+        if ([[[AppDelegate delegate].loginTypeDict objectForKey:@"device"] integerValue]) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"登录方式" message:@"账号登录,可跨平台享受课程解锁权益,游客(设备)登录,在解锁课程时会为当前设备解锁课程" preferredStyle:(UIAlertControllerStyleAlert)];
+            UIAlertAction *loginAction = [UIAlertAction actionWithTitle:@"登录账号(推荐)" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]) {
+                        [AppDelegate delegate].loginTypeDict = [NSDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]];
+                    }
+                    [AppDelegate delegate].hasPhoneLoginType = NO;
+                    if (SWNOTEmptyDictionary([AppDelegate delegate].loginTypeDict)) {
+                        if ([[[AppDelegate delegate].loginTypeDict objectForKey:@"phone"] integerValue]) {
+                            [AppDelegate delegate].hasPhoneLoginType = YES;
+                        }
+                    }
+                    
+                    [AppDelegate delegate].currentViewController = currentViewController;
+                    if ([currentViewController isKindOfClass:[UINavigationController class]]) {
+                        if ([AppDelegate delegate].hasPhone && [AppDelegate delegate].hasPhoneLoginType) {
+                            [[AppDelegate delegate] setCustomUI];
+                            if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 1) {
+                                [[AppDelegate delegate] authorizeCTLoginWithText:nil];
+                            } else if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 2) {
+                                [[AppDelegate delegate] authorizeCMLoginWithText:nil];
+                            } else {
+                                [[AppDelegate delegate] authorizeCULoginWithText:nil];
+                            }
+                //            QuickLoginVC *vc = [[QuickLoginVC alloc] init];
+                //            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                //            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                //            [currentViewController presentViewController:Nav animated:YES completion:nil];
+                        } else {
+                            LoginViewController *vc = [[LoginViewController alloc] init];
+                            vc.dissOrPop = YES;
+                            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                            [currentViewController presentViewController:Nav animated:YES completion:nil];
+                        }
+                    } else if ([currentViewController isKindOfClass:[UIViewController class]]) {
+                        if ([AppDelegate delegate].hasPhone && [AppDelegate delegate].hasPhoneLoginType) {
+                            [[AppDelegate delegate] setCustomUI];
+                            if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 1) {
+                                [[AppDelegate delegate] authorizeCTLoginWithText:nil];
+                            } else if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 2) {
+                                [[AppDelegate delegate] authorizeCMLoginWithText:nil];
+                            } else {
+                                [[AppDelegate delegate] authorizeCULoginWithText:nil];
+                            }
+                //            QuickLoginVC *vc = [[QuickLoginVC alloc] init];
+                //            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                //            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                //            [currentViewController presentViewController:Nav animated:YES completion:nil];
+                        } else {
+                            LoginViewController *vc = [[LoginViewController alloc] init];
+                            vc.dissOrPop = YES;
+                            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                            [currentViewController.navigationController presentViewController:Nav animated:YES completion:nil];
+                        }
+                    }
+            }];
+            UIAlertAction *TouristsAction = [UIAlertAction actionWithTitle:@"游客(设备)登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[AppDelegate delegate] touristLogin];
+            }];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            }];
+            [alertController addAction:loginAction];
+            [alertController addAction:TouristsAction];
+            [alertController addAction:cancelAction];
+            if ([currentViewController isKindOfClass:[UINavigationController class]]) {
+                [currentViewController presentViewController:alertController animated:YES completion:nil];
+            } else if ([currentViewController isKindOfClass:[UIViewController class]]) {
+                [currentViewController.navigationController presentViewController:alertController animated:YES completion:nil];
+            }
+            return;
+        }
+    }
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]) {
+            [AppDelegate delegate].loginTypeDict = [NSDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"login_config"]];
+        }
+        [AppDelegate delegate].hasPhoneLoginType = NO;
+        if (SWNOTEmptyDictionary([AppDelegate delegate].loginTypeDict)) {
+            if ([[[AppDelegate delegate].loginTypeDict objectForKey:@"phone"] integerValue]) {
+                [AppDelegate delegate].hasPhoneLoginType = YES;
+            }
+        }
+        
+        [AppDelegate delegate].currentViewController = currentViewController;
+        if ([currentViewController isKindOfClass:[UINavigationController class]]) {
+            if ([AppDelegate delegate].hasPhone && [AppDelegate delegate].hasPhoneLoginType) {
+                [[AppDelegate delegate] setCustomUI];
+                if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 1) {
+                    [[AppDelegate delegate] authorizeCTLoginWithText:nil];
+                } else if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 2) {
+                    [[AppDelegate delegate] authorizeCMLoginWithText:nil];
+                } else {
+                    [[AppDelegate delegate] authorizeCULoginWithText:nil];
+                }
+    //            QuickLoginVC *vc = [[QuickLoginVC alloc] init];
+    //            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    //            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+    //            [currentViewController presentViewController:Nav animated:YES completion:nil];
+            } else {
+                LoginViewController *vc = [[LoginViewController alloc] init];
+                vc.dissOrPop = YES;
+                UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                [currentViewController presentViewController:Nav animated:YES completion:nil];
+            }
+        } else if ([currentViewController isKindOfClass:[UIViewController class]]) {
+            if ([AppDelegate delegate].hasPhone && [AppDelegate delegate].hasPhoneLoginType) {
+                [[AppDelegate delegate] setCustomUI];
+                if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 1) {
+                    [[AppDelegate delegate] authorizeCTLoginWithText:nil];
+                } else if ([[NTESQuickLoginManager sharedInstance] getCarrier] == 2) {
+                    [[AppDelegate delegate] authorizeCMLoginWithText:nil];
+                } else {
+                    [[AppDelegate delegate] authorizeCULoginWithText:nil];
+                }
+    //            QuickLoginVC *vc = [[QuickLoginVC alloc] init];
+    //            UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    //            Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+    //            [currentViewController presentViewController:Nav animated:YES completion:nil];
+            } else {
+                LoginViewController *vc = [[LoginViewController alloc] init];
+                vc.dissOrPop = YES;
+                UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                [currentViewController.navigationController presentViewController:Nav animated:YES completion:nil];
+            }
+        }
 }
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
@@ -481,6 +543,7 @@
                 [V5_UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]];
                 [V5_UserModel saveNeed_set_paypwd:[[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_paypwd"]] boolValue]];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"LOGINFINISH" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"studyPageReloadData" object:nil];
                 if ([[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_set_password"]] boolValue]) {
                     
                     if ([NTESQuickLoginManager sharedInstance].model.currentVC) {

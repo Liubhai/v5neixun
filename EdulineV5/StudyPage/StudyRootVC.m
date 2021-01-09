@@ -24,6 +24,7 @@
     NSInteger currentCourseType;
     NSString *dataType;// add加入的优先 learn学习优先
     BOOL emptyData;
+    BOOL shouldLoad;
 }
 
 @property (strong, nonatomic) UITableView *tableView;
@@ -64,6 +65,10 @@
             _notLoginView.hidden = NO;
         }
     }
+    if (shouldLoad) {
+        [self getStudyInfo];
+    }
+    shouldLoad = YES;
 }
 
 - (void)viewDidLoad {
