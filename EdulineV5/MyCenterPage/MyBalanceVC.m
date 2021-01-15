@@ -214,7 +214,7 @@
         
         //钱的数字
         UILabel *number1 = [[UILabel  alloc] initWithFrame:CGRectMake(0, 10 , buttonW, 20)];
-        number1.text = [NSString stringWithFormat:@"%@%@",[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"balance"],IOSMoneyTitle];
+        number1.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[[_netWorkBalanceArray objectAtIndex:i] objectForKey:@"balance"]];
         number1.textColor = EdlineV5_Color.textSecendColor;
         number1.font = SYSTEMFONT(15);
         number1.textAlignment = NSTextAlignmentCenter;

@@ -220,6 +220,7 @@
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
+		788D35C025B1758500C70D58 /* SharePosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D35BF25B1758500C70D58 /* SharePosterViewController.m */; };
 		788D4E9A259046C300D024AC /* SHPasswordTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E99259046C300D024AC /* SHPasswordTextView.m */; };
 		788D4E9D259046D500D024AC /* SHLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E9C259046D500D024AC /* SHLineView.m */; };
 		788D4EA02590483700D024AC /* MoneyPassWordPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E9F2590483700D024AC /* MoneyPassWordPopView.m */; };
@@ -988,6 +989,8 @@
 		7888A35224A1D3CF00DB078D /* WkWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WkWebViewController.m; sourceTree = "<group>"; };
 		7888A35424A1DB1800DB078D /* WKWebIntroview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebIntroview.h; sourceTree = "<group>"; };
 		7888A35524A1DB1800DB078D /* WKWebIntroview.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebIntroview.m; sourceTree = "<group>"; };
+		788D35BE25B1758500C70D58 /* SharePosterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharePosterViewController.h; sourceTree = "<group>"; };
+		788D35BF25B1758500C70D58 /* SharePosterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharePosterViewController.m; sourceTree = "<group>"; };
 		788D4E98259046C300D024AC /* SHPasswordTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHPasswordTextView.h; sourceTree = "<group>"; };
 		788D4E99259046C300D024AC /* SHPasswordTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHPasswordTextView.m; sourceTree = "<group>"; };
 		788D4E9B259046D500D024AC /* SHLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHLineView.h; sourceTree = "<group>"; };
@@ -1669,6 +1672,8 @@
 				7853BDDB2431A1AE00F096EC /* ShopCarManagerVC.m */,
 				7853BE0124342A0900F096EC /* ShopCarManagerFinalVC.h */,
 				7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */,
+				788D35BE25B1758500C70D58 /* SharePosterViewController.h */,
+				788D35BF25B1758500C70D58 /* SharePosterViewController.m */,
 				7859FE3324C978C5006C7D4E /* TreeTableView */,
 				7853BDB52428956B00F096EC /* CourseModel */,
 				7839C98A2420D036002F6595 /* CourseCell */,
@@ -4382,6 +4387,7 @@
 				78C5487B2418CC7400A33FC4 /* NSMutableAttributedString+TY.m in Sources */,
 				788E958E253FE24E0089251E /* hmac.c in Sources */,
 				78795720240FA3840013F95F /* DACircularProgressView.m in Sources */,
+				788D35C025B1758500C70D58 /* SharePosterViewController.m in Sources */,
 				788E958F253FE24E0089251E /* aescrypt.c in Sources */,
 				788E95B7253FE24E0089251E /* BaseEducationManager+RTC.m in Sources */,
 				788D4EA525907DE300D024AC /* SetMoneyPwFirstVC.m in Sources */,
@@ -4773,7 +4779,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
+				DEVELOPMENT_TEAM = 6RK8A77Q2W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4807,7 +4813,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
 				PRODUCT_NAME = "eduline网校";
-				PROVISIONING_PROFILE_SPECIFIER = appTongYongDis;
+				PROVISIONING_PROFILE_SPECIFIER = tempInHome;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};

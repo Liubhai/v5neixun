@@ -36,6 +36,8 @@
 #import "V5_UserModel.h"
 #import "AppDelegate.h"
 
+#import "SharePosterViewController.h"
+
 #define FaceImageHeight 207
 
 @interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,UMSocialShareMenuViewDelegate> {
@@ -724,6 +726,9 @@
         [AppDelegate presentLoginNav:self];
         return;
     }
+    SharePosterViewController *vc = [[SharePosterViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    return;
     [UMSocialUIManager setShareMenuViewDelegate:self];
     [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_QQ)]];
     //显示分享面板

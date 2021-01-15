@@ -124,23 +124,23 @@
     NSLog(@"完成加载");
     
 #pragma mark --- 解析图片标签
-    NSString *botySise=[[NSString alloc] initWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%d%%'",100];
-    [webView evaluateJavaScript:[NSString stringWithFormat:@"var script = document.createElement('script');"
-                                 "script.type = 'text/javascript';"
-                                 "script.text = \"function ResizeImages() { "
-                                 "var myimg,oldwidth,newheight;"
-                                 "var maxwidth=%f;" //缩放系数
-                                 "for(i=0;i <document.images.length;i++){"
-                                 "myimg = document.images[i];"
-                                 "myimg.setAttribute('style','max-width:%fpx;height:auto')"
-                                 "}"
-                                 "}\";"
-                                 "document.getElementsByTagName('head')[0].appendChild(script);",MainScreenWidth,MainScreenWidth] completionHandler:nil];
+//    NSString *botySise=[[NSString alloc] initWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%d%%'",100];
+//    [webView evaluateJavaScript:[NSString stringWithFormat:@"var script = document.createElement('script');"
+//                                 "script.type = 'text/javascript';"
+//                                 "script.text = \"function ResizeImages() { "
+//                                 "var myimg,oldwidth,newheight;"
+//                                 "var maxwidth=%f;" //缩放系数
+//                                 "for(i=0;i <document.images.length;i++){"
+//                                 "myimg = document.images[i];"
+//                                 "myimg.setAttribute('style','max-width:%fpx;height:auto')"
+//                                 "}"
+//                                 "}\";"
+//                                 "document.getElementsByTagName('head')[0].appendChild(script);",MainScreenWidth,MainScreenWidth] completionHandler:nil];
     [webView evaluateJavaScript:@"document.body.style.backgroundColor='#f9f9f9';" completionHandler:nil];//设置背景颜色
     [webView evaluateJavaScript:@"document.body.style.zoom=1.0" completionHandler:nil];
     [webView evaluateJavaScript:@"document.body.style.backgroundColor='#f9f9f9';" completionHandler:nil];
     [webView evaluateJavaScript:@"ResizeImages();" completionHandler:nil];
-    [webView evaluateJavaScript:botySise completionHandler:nil];
+//    [webView evaluateJavaScript:botySise completionHandler:nil];
     [webView evaluateJavaScript:@"document.body.offsetHeight;" completionHandler:^(id _Nullable heigh, NSError * _Nullable error) {
         NSString *height = [NSString stringWithFormat:@"%@", heigh];
         [self.ClassIntroWeb setHeight:[height floatValue] + 20];
