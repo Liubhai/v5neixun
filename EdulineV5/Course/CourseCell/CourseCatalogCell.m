@@ -605,11 +605,11 @@
         if (model.model.live_rate.status == 992) {
             if (SWNOTEmptyArr(model.model.live_rate.callback_url)) {
                 _learnTimeLabel.text = @"观看回放";
-                _learnTimeLabel.textColor = EdlineV5_Color.themeColor;
+                _learnTimeLabel.textColor = EdlineV5_Color.textThirdColor;
             }
         } else if (model.model.live_rate.status == 999) {
             _isLearningIcon.hidden = NO;
-            _learnTimeLabel.textColor = EdlineV5_Color.themeColor;
+            _learnTimeLabel.textColor = HEXCOLOR(0x5191FF);
         } else if (model.model.live_rate.status == 957) {
             _learnTimeLabel.text = [EdulineV5_Tool evaluateStarTime:model.model.start_time endTime:model.model.end_time];
         }

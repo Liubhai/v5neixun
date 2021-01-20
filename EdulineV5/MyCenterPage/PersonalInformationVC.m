@@ -189,7 +189,7 @@
     _secrecyBtn.titleLabel.font = SYSTEMFONT(15);
     [_secrecyBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
     [_secrecyBtn setImage:Image(@"sexcheckbox_nor") forState:0];
-    [_secrecyBtn setImage:Image(@"sexcheckbox_pre") forState:UIControlStateSelected];
+    [_secrecyBtn setImage:[Image(@"sexcheckbox_pre") converToMainColor] forState:UIControlStateSelected];
     [_secrecyBtn setTitle:@"保密" forState:0];
     _secrecyBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -12/2.0, 0, 12/2.0);
     _secrecyBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 12/2.0, 0, -12/2.0);
@@ -201,7 +201,7 @@
     _feMaleBtn.titleLabel.font = SYSTEMFONT(15);
     [_feMaleBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
     [_feMaleBtn setImage:Image(@"sexcheckbox_nor") forState:0];
-    [_feMaleBtn setImage:Image(@"sexcheckbox_pre") forState:UIControlStateSelected];
+    [_feMaleBtn setImage:[Image(@"sexcheckbox_pre") converToMainColor] forState:UIControlStateSelected];
     [_feMaleBtn setTitle:@"女" forState:0];
     _feMaleBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -12/2.0, 0, 12/2.0);
     _feMaleBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 12/2.0, 0, -12/2.0);
@@ -213,7 +213,7 @@
     _maleBtn.titleLabel.font = SYSTEMFONT(15);
     [_maleBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
     [_maleBtn setImage:Image(@"sexcheckbox_nor") forState:0];
-    [_maleBtn setImage:Image(@"sexcheckbox_pre") forState:UIControlStateSelected];
+    [_maleBtn setImage:[Image(@"sexcheckbox_pre") converToMainColor] forState:UIControlStateSelected];
     [_maleBtn setTitle:@"男" forState:0];
     _maleBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -12/2.0, 0, 12/2.0);
     _maleBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 12/2.0, 0, -12/2.0);

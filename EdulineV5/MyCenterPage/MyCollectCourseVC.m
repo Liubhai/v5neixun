@@ -36,7 +36,7 @@
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"管理" forState:0];
     [_rightButton setTitle:@"取消" forState:UIControlStateSelected];
-    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateSelected];
     _rightButton.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;

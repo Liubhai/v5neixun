@@ -157,6 +157,64 @@
     return YES;
 }
 
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    
+    //创建系统剪切板
+    if ([self checkPastBoard]) {
+        UIPasteboard *systemBoard = [UIPasteboard generalPasteboard];
+        
+        if(!systemBoard.numberOfItems) {
+            return;
+        }
+        
+        NSData *jsonData = [systemBoard.string dataUsingEncoding:NSUTF8StringEncoding];
+
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+        
+        NSString *courseId;
+        NSString *courseType;
+        
+        NSArray<NSDictionary<NSString *, id> *> *items = systemBoard.items;
+        long count = systemBoard.numberOfItems;
+        for(int i=0; i < count; i++){
+            NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
+            if([[item allKeys] containsObject:@"courseId"]){
+                courseId = item[@"courseId"];
+                NSLog(@"要打开的课程ID是 = %@",courseId);
+                break;
+            }
+        }
+        for(int i=0; i < count; i++){
+            NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
+            if([[item allKeys] containsObject:@"courseType"]){
+                courseType = item[@"courseType"];
+                NSLog(@"要打开的课程类型是 = %@",courseType);
+                break;
+            }
+        }
+        NSLog(@"要打开的课程ID是 = %@ ; 要打开的课程类型是 = %@",courseId,courseType);
+    }
+}
+
+- (BOOL)checkPastBoard {
+    //创建系统剪切板
+    UIPasteboard *systemBoard = [UIPasteboard generalPasteboard];
+    if(!systemBoard.numberOfItems) {
+        return NO;
+    }
+    
+    NSArray<NSDictionary<NSString *, id> *> *items = systemBoard.items;
+    long count = systemBoard.numberOfItems;
+    for(int i=0; i < count; i++){
+        NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
+        if([[item allKeys] containsObject:@"eduline"]){
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)logout {
     [V5_UserModel deleteUserPassport];
     [RootV5VC destoryShared];

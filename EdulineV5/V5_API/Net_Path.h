@@ -427,6 +427,9 @@ struct NetWorkUrl {
 
 /** 密码设置 */
 + (NSString *)moneyPwSetNet;
+
+/** 分享内容接口 */
++ (NSString *)shareContentInfoNet;
 @end
 
 NS_ASSUME_NONNULL_END

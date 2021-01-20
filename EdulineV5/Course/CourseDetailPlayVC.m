@@ -48,6 +48,8 @@
 
 #import "AppDelegate.h"
 
+#import "SharePosterViewController.h"
+
 #define FacePlayImageHeight 207
 
 //清晰度【FD(流畅)，LD(标清)，SD(高清)，HD(超清)，OD(原画)，2K(2K)，4K(4K)。】
@@ -2391,10 +2393,18 @@
 
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
-    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
-        [AppDelegate presentLoginNav:self];
-        return;
+    if ([[_dataSource objectForKey:@"share_force_login"] integerValue]) {
+        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+            [AppDelegate presentLoginNav:self];
+            return;
+        }
     }
+    SharePosterViewController *vc = [[SharePosterViewController alloc] init];
+    vc.type = @"1";
+    vc.sourceId = _ID;
+    vc.courseType = _courseType;
+    [self.navigationController pushViewController:vc animated:YES];
+    return;
     [UMSocialUIManager setShareMenuViewDelegate:self];
     [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_QQ)]];
     //显示分享面板

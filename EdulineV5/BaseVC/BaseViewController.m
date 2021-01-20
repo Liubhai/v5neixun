@@ -55,6 +55,9 @@
 {
     [super viewDidLoad];
     
+    [[UITextField appearance] setTintColor:EdlineV5_Color.themeColor];
+    [[UITextView appearance] setTintColor:EdlineV5_Color.themeColor];
+    
     self.navigationController.navigationBar.hidden =YES;
     
     _titleImage = [[UIImageView alloc]init];

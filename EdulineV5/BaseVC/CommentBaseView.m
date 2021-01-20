@@ -16,6 +16,7 @@
         _leftButtonImageArray = [NSArray arrayWithArray:leftButtonImageArray];
         _sendButtonTitle = sendButtonTitle;
         _placeHolderTitle = placeHolderTitle;
+        _canChat = YES;
         [self makeSubView];
     }
     return self;

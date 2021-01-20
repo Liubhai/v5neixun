@@ -11,7 +11,7 @@
 #import "V5_UserModel.h"
 #import "AppDelegate.h"
 
-#define HeaderUrl_V5_Api @"https://tv5.51eduline.com"//@"https://v5.51eduline.com"
+#define HeaderUrl_V5_Api @"https://tv5.51eduline.com"//@"https://v5.51eduline.com"//
 
 #define SWNOTEmptyArr_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSArray class]]&&[X count])
 #define SWNOTEmptyDictionary_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSDictionary class]]&&[[X allKeys]count])

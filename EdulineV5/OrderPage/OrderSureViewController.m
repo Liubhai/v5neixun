@@ -267,6 +267,7 @@
     _seleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
     [_seleteBtn setImage:Image(@"checkbox_nor") forState:0];
     [_seleteBtn setImage:[Image(@"checkbox_sel1") converToMainColor] forState:UIControlStateSelected];
+    _seleteBtn.selected = YES;
     [_seleteBtn addTarget:self action:@selector(seleteAgreementButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_agreementTyLabel addView:_seleteBtn range:NSMakeRange(0, 2) alignment:TYDrawAlignmentCenter];
 }
@@ -520,10 +521,12 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"是否放弃本次付款" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续付款" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"放弃" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         [self.navigationController popViewControllerAnimated:YES];
         }];
+    [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
     [alertController addAction:cancelAction];
     alertController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:alertController animated:YES completion:nil];

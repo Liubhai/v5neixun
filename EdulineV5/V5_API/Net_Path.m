@@ -544,4 +544,9 @@
     return [Net_Path fullPath:@"user/balance/pwd" repalce:@"" byReplece:@""];
 }
 
+/** 分享内容接口 */
++ (NSString *)shareContentInfoNet {
+    return [Net_Path fullPath:@"share/info" repalce:@"" byReplece:@""];
+}
+
 @end

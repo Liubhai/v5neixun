@@ -41,7 +41,7 @@
     _titleLabel.text = @"我的消息";
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"一键已读" forState:0];
-    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     
     CGFloat rightWidth = [_rightButton.titleLabel.text sizeWithFont:_rightButton.titleLabel.font].width + 4;
     _rightButton.frame = CGRectMake(MainScreenWidth- rightWidth - 15, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, rightWidth, 44);

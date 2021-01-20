@@ -34,7 +34,7 @@
     [_sureButton setTitle:@"确认修改" forState:0];
     _sureButton.titleLabel.font = SYSTEMFONT(18);
     [_sureButton addTarget:self action:@selector(sureButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
+    [_sureButton setBackgroundColor:EdlineV5_Color.buttonDisableColor];
     [self.view addSubview:_sureButton];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];

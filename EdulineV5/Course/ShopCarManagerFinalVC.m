@@ -233,10 +233,6 @@
     _finalPriceLabel.font = SYSTEMFONT(15);
     _finalPriceLabel.textAlignment = NSTextAlignmentRight;
     [_bottomView addSubview:_finalPriceLabel];
-    
-    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
-    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
-    _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
 }
 
 - (void)clearBtnClick:(UIButton *)sender {

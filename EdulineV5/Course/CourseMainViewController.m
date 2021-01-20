@@ -722,11 +722,16 @@
 
 // MARK: - 右边按钮点击事件(收藏、下载、分享)
 - (void)rightButtonClick:(id)sender {
-    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
-        [AppDelegate presentLoginNav:self];
-        return;
+    if ([[_dataSource objectForKey:@"share_force_login"] integerValue]) {
+        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+            [AppDelegate presentLoginNav:self];
+            return;
+        }
     }
     SharePosterViewController *vc = [[SharePosterViewController alloc] init];
+    vc.type = @"1";
+    vc.sourceId = _ID;
+    vc.courseType = _courseType;
     [self.navigationController pushViewController:vc animated:YES];
     return;
     [UMSocialUIManager setShareMenuViewDelegate:self];

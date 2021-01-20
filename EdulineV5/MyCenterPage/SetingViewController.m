@@ -148,13 +148,38 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"memory"]) {
-        UIActionSheet *shit = [[UIActionSheet alloc]initWithTitle:@"清理缓存?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"确定", nil];
-        shit.tag = 100;
-        [shit showInView:self.view];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"清理缓存?" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self removeBenDi];
+        }];
+        [deleteAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [alertController addAction:deleteAction];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [cancelAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [alertController addAction:cancelAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
+        
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"logout"]) {
-        UIActionSheet *shit = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"退出", nil];
-        shit.tag = 200;
-        [shit showInView:self.view];
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self quit];
+        }];
+        [deleteAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [alertController addAction:deleteAction];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [cancelAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [alertController addAction:cancelAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
+        
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"password"]) {
         if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
             if (SWNOTEmptyStr([V5_UserModel userPhone])) {

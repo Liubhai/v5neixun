@@ -9,8 +9,9 @@
 #import "SharePosterViewController.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import <UShareUI/UShareUI.h>
 
-@interface SharePosterViewController ()
+@interface SharePosterViewController ()<UMSocialShareMenuViewDelegate>
 
 @property (strong, nonatomic) UIImageView *posterImageView;
 @property (strong, nonatomic) UIView *bottomView;
@@ -24,6 +25,7 @@
 @property (strong, nonatomic) UILabel *teacherName;
 @property (strong, nonatomic) UILabel *fromLabel;
 @property (strong, nonatomic) UIImageView *codeImageView;
+@property (strong, nonatomic) NSDictionary *shareContentDict;
 
 @end
 
@@ -40,73 +42,76 @@
     _posterImageView.image = Image(@"share_bg");
     [self.view addSubview:_posterImageView];
     
-    [self makeShareContentUI];
-    
-    [self GetCodeImage];
-    
-    [self makeBottomView];
+    [self getShareContentInfo];
 }
 
 // MARK: - 布局分享内容
 - (void)makeShareContentUI {
     
-    _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(_posterImageView.left + 27.5, _posterImageView.top + 78, 230, 124)];
+    _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(27.5, 78, 230, 124)];
     _courseFace.layer.masksToBounds = YES;
     _courseFace.layer.cornerRadius = 5;
-    _courseFace.backgroundColor = EdlineV5_Color.faildColor;
-    [self.view addSubview:_courseFace];
+    [_posterImageView addSubview:_courseFace];
     
     _courseTitle = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _courseFace.bottom + 10, _courseFace.width, 38)];
     _courseTitle.font = SYSTEMFONT(15);
     _courseTitle.textColor = EdlineV5_Color.textFirstColor;
     _courseTitle.numberOfLines = 2;
-    _courseTitle.text = @"初中英语阅读理解+完形填空初中英语阅读理解";
-    [self.view addSubview:_courseTitle];
+    [_posterImageView addSubview:_courseTitle];
     
     _coursePricelabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _courseTitle.bottom + 10, _courseFace.width, 19)];
     _coursePricelabel.font = SYSTEMFONT(15);
     _coursePricelabel.textColor = EdlineV5_Color.faildColor;
-    _coursePricelabel.text = [NSString stringWithFormat:@"%@1200.00",IOSMoneyTitle];
-    [self.view addSubview:_coursePricelabel];
+    [_posterImageView addSubview:_coursePricelabel];
     
     _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _coursePricelabel.bottom + 9, _courseFace.width, 19)];
     _tipLabel.font = SYSTEMFONT(9);
     _tipLabel.textColor = EdlineV5_Color.textThirdColor;
-    NSString *tipPrice = [NSString stringWithFormat:@"%@12",IOSMoneyTitle];
-    NSString *tipText = [NSString stringWithFormat:@"每成功邀请一名用户预计最多收入 %@",tipPrice];
-    NSMutableAttributedString *atr1 = [[NSMutableAttributedString alloc] initWithString:tipText];
-    [atr1 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor,NSFontAttributeName:SYSTEMFONT(11)} range:[tipText rangeOfString:tipPrice]];
-    _tipLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr1];
-    [self.view addSubview:_tipLabel];
+    [_posterImageView addSubview:_tipLabel];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_courseFace.left, _tipLabel.bottom + 5, _courseFace.width, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self.view addSubview:_lineView];
+    [_posterImageView addSubview:_lineView];
     
     _teacherFace = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.left, _lineView.bottom + 10, 38, 38)];
     _teacherFace.layer.masksToBounds = YES;
     _teacherFace.layer.cornerRadius = 19;
-    _teacherFace.backgroundColor = EdlineV5_Color.faildColor;
-    [self.view addSubview:_teacherFace];
+    [_posterImageView addSubview:_teacherFace];
     
     _teacherName = [[UILabel alloc] initWithFrame:CGRectMake(_teacherFace.right + 8, _teacherFace.top, _courseFace.width - _teacherFace.right - 8, 38)];
     _teacherName.font = SYSTEMFONT(13);
     _teacherName.textColor = EdlineV5_Color.textFirstColor;
-    _teacherName.text = @"张晓晓";
-    [self.view addSubview:_teacherName];
+    [_posterImageView addSubview:_teacherName];
     
-    NSString *institutionName = @"海天机构";
-    NSString *fromText = [NSString stringWithFormat:@"本课程由 %@ 提供",institutionName];
-    NSMutableAttributedString *atr2 = [[NSMutableAttributedString alloc] initWithString:fromText];
-    [atr2 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:[fromText rangeOfString:institutionName]];
     _fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _teacherFace.bottom + 8, _courseFace.width, 15)];
     _fromLabel.font = SYSTEMFONT(10);
     _fromLabel.textColor = EdlineV5_Color.textThirdColor;
-    _fromLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr2];
-    [self.view addSubview:_fromLabel];
+    [_posterImageView addSubview:_fromLabel];
     
     _codeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 63, _lineView.bottom + 9.5, 63, 63)];
-    [self.view addSubview:_codeImageView];
+    [_posterImageView addSubview:_codeImageView];
+    
+    if (SWNOTEmptyDictionary(_shareContentDict)) {
+        [_courseFace sd_setImageWithURL:EdulineUrlString(_shareContentDict[@"cover_url"]) placeholderImage:DefaultImage];
+        _courseTitle.text = [NSString stringWithFormat:@"%@",_shareContentDict[@"course_title"]];
+        _coursePricelabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_shareContentDict[@"course_price"]];
+        
+        NSString *tipPrice = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_shareContentDict[@"max_profit"]];
+        NSString *tipText = [NSString stringWithFormat:@"每成功邀请一名用户预计最多收入 %@",tipPrice];
+        NSMutableAttributedString *atr1 = [[NSMutableAttributedString alloc] initWithString:tipText];
+        [atr1 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor,NSFontAttributeName:SYSTEMFONT(11)} range:[tipText rangeOfString:tipPrice]];
+        _tipLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr1];
+        
+        [_teacherFace sd_setImageWithURL:EdulineUrlString(_shareContentDict[@"teacher_avatar"]) placeholderImage:DefaultUserImage];
+        
+        _teacherName.text = [NSString stringWithFormat:@"%@",_shareContentDict[@"teacher_name"]];
+        
+        NSString *institutionName = [NSString stringWithFormat:@"%@",_shareContentDict[@"mhm_title"]];
+        NSString *fromText = [NSString stringWithFormat:@"本课程由 %@ 提供",institutionName];
+        NSMutableAttributedString *atr2 = [[NSMutableAttributedString alloc] initWithString:fromText];
+        [atr2 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:[fromText rangeOfString:institutionName]];
+        _fromLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr2];
+    }
 }
 
 // MARK: - 布局底部按钮UI
@@ -120,11 +125,23 @@
     _bottomView.layer.mask = maskLayer1;
     [self.view addSubview:_bottomView];
     
-    NSArray *buttonImageArray = @[@"share_download_icon",@"share_link_icon",@"share_password_icon"];
-    NSArray *buttonTitleArray = @[@"保存海报",@"复制链接",@"复制口令"];
+    NSArray *buttonImageArray = @[@"share_password_icon"];
+    NSArray *buttonTitleArray = @[@"复制口令"];
+    
+    if (SWNOTEmptyDictionary(_shareContentDict)) {
+        if ([[_shareContentDict allKeys] containsObject:@"open_device"]) {
+            if ([[_shareContentDict objectForKey:@"open_device"] containsObject:@"h5"]) {
+                buttonImageArray = @[@"share_download_icon",@"share_link_icon",@"share_password_icon"];
+                buttonTitleArray = @[@"分享海报",@"复制链接",@"复制口令"];
+            }
+        }
+    }
     
     for (int i = 0; i<buttonImageArray.count; i++) {
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake((MainScreenWidth - 60 * 3) * (i * 2 + 1) / 6.0 + 60 * i, 19, 60, 60)];
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake((MainScreenWidth - 60 * buttonImageArray.count) * (i * 2 + 1) / 6.0 + 60 * i, 19, 60, 60)];
+        if (buttonImageArray.count == 1) {
+            btn.centerX = MainScreenWidth / 2.0;
+        }
         btn.tag = 66 + i;
         [btn setImage:Image(buttonImageArray[i]) forState:0];
         [btn setTitle:buttonTitleArray[i] forState:0];
@@ -152,6 +169,63 @@
 }
 
 - (void)bottomButtonClick:(UIButton *)sender {
+    if (SWNOTEmptyDictionary(_shareContentDict)) {
+        if ([sender.titleLabel.text isEqualToString:@"复制链接"]) {
+            
+            if (SWNOTEmptyStr(_shareContentDict[@"cover_url"])) {
+                UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                pasteboard.string = [NSString stringWithFormat:@"%@",_shareContentDict[@"share_url_h5"]];
+                [self showHudInView:self.view showHint:@"复制链接成功"];
+            }
+        
+//            [UMSocialUIManager setShareMenuViewDelegate:self];
+//            [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_WechatTimeLine),@(UMSocialPlatformType_QQ)]];
+//            //显示分享面板
+//            [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+//                // 根据获取的platformType确定所选平台进行下一步操作
+//                //创建分享消息对象
+//                UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+//
+//
+//                // 普通文本分享
+//                UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:_shareContentDict[@"course_title"] descr:nil thumImage:SWNOTEmptyStr(_shareContentDict[@"cover_url"]) ? _courseFace.image : DefaultImage];
+//                shareObject.webpageUrl = @"https://tv5-pc.51eduline.com";//[NSString stringWithFormat:@"%@",_shareContentDict[@"share_url"]];
+//
+//                //分享消息对象设置分享内容对象
+//                messageObject.shareObject = shareObject;
+//                //调用分享接口
+//                [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+//                    if (error) {
+//                        UMSocialLogInfo(@"************Share fail with error %@*********",error);
+//                    }else{
+//                        if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+//                            UMSocialShareResponse *resp = data;
+//                            //分享结果消息
+//                            UMSocialLogInfo(@"response message is %@",resp.message);
+//                            //第三方原始返回的数据
+//                            UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+//                        }else{
+//                            UMSocialLogInfo(@"response data is %@",data);
+//                        }
+//                    }
+//                }];
+//            }];
+            
+        } else if ([sender.titleLabel.text isEqualToString:@"分享海报"]) {
+            [self jiepingBtn];
+        } else if ([sender.titleLabel.text isEqualToString:@"复制口令"]) {
+            NSString *courseTitle = [NSString stringWithFormat:@"[%@]",_shareContentDict[@"course_title"]];
+            NSString *shareCode = [NSString stringWithFormat:@"%@",_shareContentDict[@"share_code"]];
+            NSString *courseId = [NSString stringWithFormat:@"「courseId=%@」",_sourceId];
+            NSString *courseType = [NSString stringWithFormat:@"{courseType=%@}",_courseType];
+            
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = [NSString stringWithFormat:@"%@%@%@%@",shareCode,courseId,courseType,courseTitle];
+//            NSData *shareData = [NSJSONSerialization dataWithJSONObject:@{@"eduline":@"1",@"courseId":_sourceId,@"courseType":_courseType} options:NSJSONWritingPrettyPrinted error:nil];
+//            NSString * str = [[NSString alloc] initWithData:shareData encoding:NSUTF8StringEncoding];
+            [self showHudInView:self.view showHint:@"复制口令成功"];
+        }
+    }
 }
 
 //生成二维码
@@ -161,8 +235,12 @@
     // 2.恢复默认
     [filter setDefaults];
     // 3.给过滤器添加数据
-    
-    NSString *dataStr = HeaderUrl_V5;
+    NSString *dataStr = @"暂不支持";
+    if (SWNOTEmptyDictionary(_shareContentDict)) {
+        if ([[_shareContentDict allKeys] containsObject:@"share_url_h5"]) {
+            dataStr = [NSString stringWithFormat:@"%@",_shareContentDict[@"share_url_h5"]];
+        }
+    }
     NSData *data = [dataStr dataUsingEncoding:NSUTF8StringEncoding];
     // 4.通过KVO设置滤镜inputMessage数据
     [filter setValue:data forKeyPath:@"inputMessage"];
@@ -213,5 +291,97 @@
     
 }
 
+- (void)getShareContentInfo {
+    if (SWNOTEmptyStr(_type) && SWNOTEmptyStr(_sourceId)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path shareContentInfoNet] WithAuthorization:nil paramDic:@{@"type":_type,@"id":_sourceId} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    
+                    _shareContentDict = [NSDictionary dictionaryWithDictionary:responseObject[@"data"]];
+                    
+                    [self makeShareContentUI];
+                    
+                    [self GetCodeImage];
+                    
+                    [self makeBottomView];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+
+//截图功能
+
+-(void)jiepingBtn{
+
+UIImage * image = [self captureImageFromView:self.posterImageView];
+
+ALAssetsLibrary * library = [ALAssetsLibrary new];
+
+NSData * data = UIImageJPEGRepresentation(image, 1.0);
+
+    [library writeImageDataToSavedPhotosAlbum:data metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+        [UMSocialUIManager setShareMenuViewDelegate:self];
+        [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_WechatSession),@(UMSocialPlatformType_WechatTimeLine),@(UMSocialPlatformType_QQ)]];
+        //显示分享面板
+        [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+            // 根据获取的platformType确定所选平台进行下一步操作
+            //创建分享消息对象
+            UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+            
+            UMShareImageObject *shareObject = [UMShareImageObject shareObjectWithTitle:nil descr:nil thumImage:image];
+            //设置网页地址
+            shareObject.shareImage = image;
+            //分享消息对象设置分享内容对象
+            messageObject.shareObject = shareObject;
+            //调用分享接口
+            [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+                if (error) {
+                    UMSocialLogInfo(@"************Share fail with error %@*********",error);
+                }else{
+                    if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                        UMSocialShareResponse *resp = data;
+                        //分享结果消息
+                        UMSocialLogInfo(@"response message is %@",resp.message);
+                        //第三方原始返回的数据
+                        UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                    }else{
+                        UMSocialLogInfo(@"response data is %@",data);
+                    }
+                }
+            }];
+        }];
+    }];
+
+}
+
+-(UIImage *)captureImageFromView:(UIView *)view{
+
+UIGraphicsBeginImageContextWithOptions(view.frame.size,NO, 0);
+
+[[UIColor clearColor] setFill];
+
+[[UIBezierPath bezierPathWithRect:view.bounds] fill];
+
+CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+[view.layer renderInContext:ctx];
+
+UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+
+UIGraphicsEndImageContext();
+
+return image;
+    
+}
+
+//不需要改变父窗口则不需要重写此协议
+- (UIView*)UMSocialParentView:(UIView*)defaultSuperView
+{
+    return self.view;
+}
 
 @end

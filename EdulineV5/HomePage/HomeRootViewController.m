@@ -200,14 +200,14 @@
         _cateScrollView.showsVerticalScrollIndicator = NO;
     }
     [_headerView addSubview:_cateScrollView];
-    _cateScrollView.frame = CGRectMake(0, _imageBannerBackView.bottom, MainScreenWidth, SWNOTEmptyArr(_cateSourceArray) ? (88 + 8) : 0);
+    _cateScrollView.frame = CGRectMake(0, _imageBannerBackView.bottom, MainScreenWidth, SWNOTEmptyArr(_cateSourceArray) ? (96 + 8) : 0);
     [_cateScrollView removeAllSubviews];
     
     CGFloat YY = 4;
     CGFloat XX = 15;
     CGFloat space = 10;
     for (int i = 0; i<_cateSourceArray.count; i++) {
-        UIImageView *cateImage = [[UIImageView alloc] initWithFrame:CGRectMake(XX + (150 + space) * i, YY, 150, 88)];
+        UIImageView *cateImage = [[UIImageView alloc] initWithFrame:CGRectMake(XX + (157 + space) * i, YY, 157, 96)];
         cateImage.userInteractionEnabled = YES;
         cateImage.tag = i;
         cateImage.layer.masksToBounds = YES;
