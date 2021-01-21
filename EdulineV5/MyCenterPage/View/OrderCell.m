@@ -48,13 +48,15 @@
     _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, _line1.bottom + 15, 120, 66)];
     _faceImageView.image = DefaultImage;
     _faceImageView.layer.masksToBounds = YES;
-    _faceImageView.layer.cornerRadius = 4;
+    _faceImageView.layer.cornerRadius = 2;
     _faceImageView.clipsToBounds = YES;
     _faceImageView.contentMode = UIViewContentModeScaleAspectFill;
     [_backView addSubview:_faceImageView];
     
-    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_faceImageView.right - 32, _faceImageView.top + 8, 32, 18)];
+    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_faceImageView.left, _faceImageView.top, 33, 20)];
     _courseTypeImage.image = Image(@"class_icon");
+    _courseTypeImage.layer.masksToBounds = YES;
+    _courseTypeImage.layer.cornerRadius = 2;
     [_backView addSubview:_courseTypeImage];
     
     _theme = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top, _backView.width - _faceImageView.right - 64 - 10, 24)];

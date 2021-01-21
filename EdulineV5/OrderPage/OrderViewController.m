@@ -46,13 +46,17 @@
     [_mainScrollView addSubview:_topContentView];
     
     _courseFaceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 130, 72)];
+    _courseFaceImageView.layer.masksToBounds = YES;
+    _courseFaceImageView.layer.cornerRadius = 2;
     if (![_orderTypeString isEqualToString:@"course"]) {
         _courseFaceImageView.frame = CGRectMake(15, 15, 32, 16);
     }
     [_topContentView addSubview:_courseFaceImageView];
     
-    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.right - 32, _courseFaceImageView.top + 8, 32, 18)];
+    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.left, _courseFaceImageView.top, 33, 20)];
     _courseTypeImage.image = Image(@"class_icon");
+    _courseTypeImage.layer.masksToBounds = YES;
+    _courseTypeImage.layer.cornerRadius = 2;
     [_topContentView addSubview:_courseTypeImage];
     _courseTypeImage.hidden = YES;
     

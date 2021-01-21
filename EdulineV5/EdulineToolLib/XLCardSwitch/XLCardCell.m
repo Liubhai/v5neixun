@@ -39,10 +39,12 @@
     self.imageView.clipsToBounds = YES;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.imageView.layer.masksToBounds = true;
-    self.imageView.layer.cornerRadius = 8;
+    self.imageView.layer.cornerRadius = 2;
     [self addSubview:self.imageView];
     
-    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.right - 32, _imageView.top + 8, 32, 18)];
+    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.left, _imageView.top, 33, 20)];
+    _courseTypeImage.layer.masksToBounds = YES;
+    _courseTypeImage.layer.cornerRadius = 2;
     [self addSubview:_courseTypeImage];
     
     self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, imageViewHeight, self.bounds.size.width, labelHeight)];

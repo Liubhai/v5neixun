@@ -31,12 +31,16 @@
     
     _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(_selectedIconBtn.right + 10, 10, 153, 86)];
     _courseFace.image = DefaultImage;
+    _courseFace.layer.masksToBounds = YES;
+    _courseFace.layer.cornerRadius = 2;
     _courseFace.clipsToBounds = YES;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self.contentView addSubview:_courseFace];
     
-    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18)];
+    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.left, _courseFace.top, 33, 20)];
     _courseTypeImage.image = Image(@"class_icon");
+    _courseTypeImage.layer.masksToBounds = YES;
+    _courseTypeImage.layer.cornerRadius = 2;
     [self.contentView addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
@@ -150,7 +154,7 @@
         _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, _titleL.width, _titleL.height);
     }
     
-    _courseTypeImage.frame = CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18);
+    _courseTypeImage.frame = CGRectMake(_courseFace.left, _courseFace.top, 33, 20);
     
     _learnCountLabel.frame = CGRectMake(_titleL.left, _courseFace.bottom - 18, 100, 16);
 }

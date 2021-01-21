@@ -33,10 +33,14 @@
     
     _courseFaceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_cellType ? (_selectedIconBtn.right + 10) : 15, 10, 130, 72)];
     _courseFaceImageView.image = DefaultImage;
+    _courseFaceImageView.layer.masksToBounds = YES;
+    _courseFaceImageView.layer.cornerRadius = 2;
     [self.contentView addSubview:_courseFaceImageView];
     
-    _courseTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.right - 32, _courseFaceImageView.top + 8, 32, 18)];
+    _courseTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.left, _courseFaceImageView.top, 33, 20)];
     _courseTypeImageView.image = Image(@"class_icon");
+    _courseFaceImageView.layer.masksToBounds = YES;
+    _courseFaceImageView.layer.cornerRadius = 2;
     [self.contentView addSubview:_courseTypeImageView];
     
     _themeLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 10, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];

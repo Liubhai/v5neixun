@@ -42,10 +42,10 @@
         UIImageView *face = [[UIImageView alloc] initWithFrame:CGRectMake(15 + (125 + 8) * i, 10, 125, 70)];
         [face sd_setImageWithURL:EdulineUrlString([learnArray[i] objectForKey:@"course_cover"]) placeholderImage:DefaultImage];
         face.layer.masksToBounds = YES;
-        face.layer.cornerRadius = 4;
+        face.layer.cornerRadius = 2;
         [_mainScrollView addSubview:face];
         
-        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(face.right - 32, face.top + 8, 32, 18)];
+        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(face.left, face.top, 33, 20)];
         NSString *courseType = [NSString stringWithFormat:@"%@",[learnArray[i] objectForKey:@"course_type"]];
         if ([courseType isEqualToString:@"1"]) {
             icon.image = Image(@"dianbo");

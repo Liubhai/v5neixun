@@ -24,13 +24,15 @@
     
     _courseFace.image = DefaultImage;
     _courseFace.layer.masksToBounds = YES;
-    _courseFace.layer.cornerRadius = 4;
+    _courseFace.layer.cornerRadius = 2;
     _courseFace.clipsToBounds = YES;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self.contentView addSubview:_courseFace];
     
-    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18)];
+    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.left, _courseFace.top, 33, 20)];
     _courseTypeImage.image = Image(@"class_icon");
+    _courseTypeImage.layer.masksToBounds = YES;
+    _courseTypeImage.layer.cornerRadius = 2;
     [self.contentView addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
@@ -78,7 +80,7 @@
         CGFloat priceWidth = 150;
         if (cellIndex.row % 2 == 0) {
             _courseFace.frame = CGRectMake(singleLeftSpace, topSpace, MainScreenWidth/2.0 - singleRightSpace - singleLeftSpace, faceImageHeight);
-            _courseTypeImage.frame = CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18);
+            _courseTypeImage.frame = CGRectMake(_courseFace.left, _courseFace.top, 33, 20);
             
             _titleL.frame = CGRectMake(_courseFace.left, _courseFace.bottom + 6, _courseFace.width, 20);
             _learnCountLabel.frame = CGRectMake(_courseFace.left, _titleL.bottom + 13, _courseFace.width, 16);
@@ -86,7 +88,7 @@
             _priceLabel.centerY = _learnCountLabel.centerY;
         } else {
             _courseFace.frame = CGRectMake(0, topSpace, MainScreenWidth/2.0 - singleRightSpace - singleLeftSpace, faceImageHeight);
-            _courseTypeImage.frame = CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18);
+            _courseTypeImage.frame = CGRectMake(_courseFace.left, _courseFace.top, 33, 20);
             
             _titleL.frame = CGRectMake(_courseFace.left, _courseFace.bottom + 6, _courseFace.width, 20);
             _learnCountLabel.frame = CGRectMake(_courseFace.left, _titleL.bottom + 13, _courseFace.width, 16);

@@ -25,21 +25,22 @@
     
     _courseFace.image = DefaultImage;
     _courseFace.layer.masksToBounds = YES;
-    _courseFace.layer.cornerRadius = 4;
+    _courseFace.layer.cornerRadius = 2;
     _courseFace.clipsToBounds = YES;
     _courseFace.contentMode = UIViewContentModeScaleAspectFill;
     [self.contentView addSubview:_courseFace];
+    
+    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.left, _courseFace.top, 33, 20)];
+    _courseTypeImage.image = Image(@"class_icon");
+    _courseTypeImage.layer.masksToBounds = YES;
+    _courseTypeImage.layer.cornerRadius = 2;
+    [self.contentView addSubview:_courseTypeImage];
     
     _weekSortIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 37, 33)];
     _weekSortIcon.center = CGPointMake(_courseFace.origin.x, _courseFace.origin.y + 5);
     _weekSortIcon.clipsToBounds = YES;
     _weekSortIcon.contentMode = UIViewContentModeScaleAspectFill;
     [self.contentView addSubview:_weekSortIcon];
-    
-    
-    _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18)];
-    _courseTypeImage.image = Image(@"class_icon");
-    [self.contentView addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
     _titleL.textColor = EdlineV5_Color.textFirstColor;
@@ -109,7 +110,7 @@
     _courseFace.frame = CGRectMake(23, 20, 153, 86);
     _courseFace.layer.cornerRadius = 5;
     
-    _courseTypeImage.frame = CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18);
+    _courseTypeImage.frame = CGRectMake(_courseFace.left, _courseFace.top, 33, 20);
     
     _courseInfoDict = info;
     _weekSortIcon.image = [UIImage imageNamed:[NSString stringWithFormat:@"home_top%@_icon",@(indexpath.row + 1)]];
