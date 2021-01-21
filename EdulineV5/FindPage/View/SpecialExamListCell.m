@@ -33,8 +33,9 @@
     _gotImage.image = Image(@"exam_yigouamai_icon");
     [_whiteBack addSubview:_gotImage];
     
-    _examTitle = [[UILabel alloc] initWithFrame:CGRectMake(_gotImage.right + 6, 14, MainScreenWidth - (_gotImage.right + 6 + 12), 20)];
+    _examTitle = [[UILabel alloc] initWithFrame:CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20)];
     _examTitle.font = SYSTEMFONT(15);
+    _examTitle.text = @"考试标题只能显示1排文字题只能显示1排文字";
     _examTitle.textColor = EdlineV5_Color.textFirstColor;
     [_whiteBack addSubview:_examTitle];
     _gotImage.centerY = _examTitle.centerY;
@@ -47,6 +48,7 @@
     _examCount = [[UILabel alloc] initWithFrame:CGRectMake(12, _whiteBack.height - 36, 80, 16)];
     _examCount.font = SYSTEMFONT(12);
     _examCount.textColor = EdlineV5_Color.textThirdColor;
+    _examCount.text = @"共40题";
     [_whiteBack addSubview:_examCount];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_examCount.right + 8, 0, 0.5, 8)];
@@ -62,6 +64,8 @@
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_whiteBack.width - (100 + 14 + 82 + 12), 0, 100, 21)];
     _priceLabel.font = SYSTEMFONT(15);
     _priceLabel.textAlignment = NSTextAlignmentRight;
+    _priceLabel.text = [NSString stringWithFormat:@"%@12,099.00",IOSMoneyTitle];
+    _priceLabel.textColor = EdlineV5_Color.faildColor;
     [_whiteBack addSubview:_priceLabel];
     
     _getOrExamBtn = [[UIButton alloc] initWithFrame:CGRectMake(_priceLabel.right + 14, 0, 82, 28)];
@@ -70,6 +74,7 @@
     _getOrExamBtn.layer.cornerRadius = _getOrExamBtn.height / 2.0;
     [_getOrExamBtn setTitleColor:[UIColor whiteColor] forState:0];
     _getOrExamBtn.titleLabel.font = SYSTEMFONT(14);
+    [_getOrExamBtn setTitle:@"购买" forState:0];
     [_getOrExamBtn addTarget:self action:@selector(buttonClickBy:) forControlEvents:UIControlEventTouchUpInside];
     [_whiteBack addSubview:_getOrExamBtn];
     
