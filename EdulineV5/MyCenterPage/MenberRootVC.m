@@ -124,6 +124,9 @@
     _nameLabel.userInteractionEnabled = YES;
     [_topBackView addSubview:_nameLabel];
     CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+    if (nameWidth>(MainScreenWidth - _nameLabel.left - 30 - 15)) {
+        nameWidth = MainScreenWidth - _nameLabel.left - 30 - 15;
+    }
     [_nameLabel setWidth:nameWidth];
     
     _levelImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_nameLabel.right, 0, 15, 13)];
@@ -136,7 +139,7 @@
     }
     [_topBackView addSubview:_levelImageView];
     
-    _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, MainScreenWidth - _nameLabel.width - 30, _nameLabel.height)];
+    _introLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _nameLabel.bottom, MainScreenWidth - _nameLabel.left - 30, _nameLabel.height)];
     _introLabel.textColor = HEXCOLOR(0x946A38);
     _introLabel.font = SYSTEMFONT(13);
     _introLabel.text = @"开通会员获得更多权益";

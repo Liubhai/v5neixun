@@ -135,6 +135,9 @@
         _nameLabel.text = [NSString stringWithFormat:@"%@",[V5_UserModel uname]];
         _levelImageView.hidden = NO;
         CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+        if (nameWidth>(MainScreenWidth - _nameLabel.left - 86 - 15 - 5)) {
+            nameWidth = MainScreenWidth - _nameLabel.left - 86 - 15 - 5;
+        }
         [_nameLabel setWidth:nameWidth];
         [_levelImageView setLeft:_nameLabel.right];
         if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {

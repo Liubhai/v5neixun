@@ -30,6 +30,8 @@
     _dataSource = [NSMutableArray new];
     [_dataSource addObjectsFromArray:@[@{@"image":@"find_album_icon",@"title":@"公开考试"},@{@"image":@"find_test_icon",@"title":@"专项练习"},@{@"image":@"find_library_icon",@"title":@"知识点练习"},@{@"image":@"find_q&a_icon",@"title":@"套卷练习"}]];
     _titleLabel.text = @"考试";
+    _lineTL.hidden = NO;
+    _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self makeCollectionView];
     _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainList)];
     _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainListMoreData)];

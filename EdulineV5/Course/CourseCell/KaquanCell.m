@@ -32,7 +32,7 @@
     _themeLabel.text = @"满一百减90";
     [self.contentView addSubview:_themeLabel];
     
-    _fanweiLabel = [[UILabel alloc] initWithFrame:CGRectMake(_themeLabel.left, _themeLabel.bottom, _themeLabel.width, 16)];
+    _fanweiLabel = [[UILabel alloc] initWithFrame:CGRectMake(_themeLabel.left, _themeLabel.bottom, _themeLabel.width - 10 - 75 - 10 - 20, 16)];
     _fanweiLabel.font = SYSTEMFONT(12);
     _fanweiLabel.text = @"仅限机构1使用";
     [self.contentView addSubview:_fanweiLabel];

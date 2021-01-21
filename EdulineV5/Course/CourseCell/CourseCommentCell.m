@@ -40,7 +40,7 @@
     _scoreStar.userInteractionEnabled = NO;
     _scoreStar.centerY = _userFace.centerY;
     [self.contentView addSubview:_scoreStar];
-    
+
     _editButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _editButton.frame = CGRectMake(MainScreenWidth - 15 - 20, 0, 20, 20);
     _editButton.centerY = _nameLabel.centerY;
@@ -130,6 +130,9 @@
             }
             
             CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+            if (nameWidth > (MainScreenWidth - _nameLabel.left - 15)) {
+                nameWidth = MainScreenWidth - _nameLabel.left - 15;
+            }
             [_nameLabel setWidth:nameWidth];
             _tokenLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 64);
             _tokenLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
@@ -158,6 +161,9 @@
                 _userFace.image = DefaultUserImage;
             }
             CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
+            if (nameWidth > (MainScreenWidth - _nameLabel.left - (10 + 76 + 20 + 15))) {
+                nameWidth = MainScreenWidth - _nameLabel.left - (10 + 76 + 20 + 15);
+            }
             [_nameLabel setWidth:nameWidth];
             [_scoreStar setLeft:_nameLabel.right + 10];
             [_scoreStar setStarValue:[[NSString stringWithFormat:@"%@",[info objectForKey:@"star"]] floatValue]];

@@ -78,12 +78,12 @@
     _teacherFace.layer.cornerRadius = 19;
     [_posterImageView addSubview:_teacherFace];
     
-    _teacherName = [[UILabel alloc] initWithFrame:CGRectMake(_teacherFace.right + 8, _teacherFace.top, _courseFace.width - _teacherFace.right - 8, 38)];
+    _teacherName = [[UILabel alloc] initWithFrame:CGRectMake(_teacherFace.right + 8, _teacherFace.top, _courseFace.width - _teacherFace.width - 8 - 63, 38)];
     _teacherName.font = SYSTEMFONT(13);
     _teacherName.textColor = EdlineV5_Color.textFirstColor;
     [_posterImageView addSubview:_teacherName];
     
-    _fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _teacherFace.bottom + 8, _courseFace.width, 15)];
+    _fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _teacherFace.bottom + 8, _courseFace.width - 63, 15)];
     _fromLabel.font = SYSTEMFONT(10);
     _fromLabel.textColor = EdlineV5_Color.textThirdColor;
     [_posterImageView addSubview:_fromLabel];
@@ -107,9 +107,14 @@
         _teacherName.text = [NSString stringWithFormat:@"%@",_shareContentDict[@"teacher_name"]];
         
         NSString *institutionName = [NSString stringWithFormat:@"%@",_shareContentDict[@"mhm_title"]];
+        NSString *finalName = [NSString stringWithFormat:@"%@",_shareContentDict[@"mhm_title"]];
         NSString *fromText = [NSString stringWithFormat:@"本课程由 %@ 提供",institutionName];
+        if (institutionName.length>8) {
+            finalName = [institutionName  substringWithRange:NSMakeRange(0, 8)];
+            fromText = [NSString stringWithFormat:@"本课程由 %@... 提供",finalName];
+        }
         NSMutableAttributedString *atr2 = [[NSMutableAttributedString alloc] initWithString:fromText];
-        [atr2 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:[fromText rangeOfString:institutionName]];
+        [atr2 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:[fromText rangeOfString:finalName]];
         _fromLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr2];
     }
 }
