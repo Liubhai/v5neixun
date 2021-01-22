@@ -14,6 +14,8 @@
 #import "SpecialProjectExamList.h"
 #import "ExamPointSelectVC.h"
 
+#import "TaojuanListViewController.h"
+
 @interface ExamMainViewController () {
     NSInteger page;
 }
@@ -84,6 +86,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"知识点练习"]) {
         ExamPointSelectVC *vc = [[ExamPointSelectVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (([examTheme isEqualToString:@"套卷练习"])) {
+        TaojuanListViewController *vc = [[TaojuanListViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

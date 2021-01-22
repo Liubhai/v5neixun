@@ -35,7 +35,6 @@
     
     _examTitle = [[UILabel alloc] initWithFrame:CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20)];
     _examTitle.font = SYSTEMFONT(15);
-    _examTitle.text = @"考试标题只能显示1排文字题只能显示1排文字";
     _examTitle.textColor = EdlineV5_Color.textFirstColor;
     [_whiteBack addSubview:_examTitle];
     _gotImage.centerY = _examTitle.centerY;
@@ -48,11 +47,10 @@
     _examCount = [[UILabel alloc] initWithFrame:CGRectMake(12, _whiteBack.height - 36, 80, 16)];
     _examCount.font = SYSTEMFONT(12);
     _examCount.textColor = EdlineV5_Color.textThirdColor;
-    _examCount.text = @"共40题";
     [_whiteBack addSubview:_examCount];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_examCount.right + 8, 0, 0.5, 8)];
-    _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
+    _lineView.backgroundColor = EdlineV5_Color.layarLineColor;
     _lineView.centerY = _examCount.centerY;
     [_whiteBack addSubview:_lineView];
     
@@ -92,10 +90,40 @@
     _examPoint.hidden = YES;
     _lineView.hidden = YES;
     _learnCount.hidden = YES;
+    _examTitle.text = @"考试标题只能显示1排文字题只能显示1排文字";
+    _examCount.text = @"共40题";
 }
 
 - (void)setExamPointCell:(NSDictionary *)dict {
+    _examTitle.text = @"考试标题只能显示1排文字题只能显示1排文字";
+    _examPoint.numberOfLines = 0;
+    _examPoint.frame = CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 14);
+    _examPoint.text = @"知识点：知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介绍最多显示3排,知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介,知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介";
+    _learnCount.text = @"120人已练习";
     
+    [_examPoint sizeToFit];
+    
+    _examPoint.frame = CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, _examPoint.height);
+    
+    if (_examPoint.height > (11*3 + 7.5*2)) {
+        _examPoint.frame = CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 11*3 + 7.5*2);
+    }
+    
+    _examCount.text = @"13套";
+    CGFloat examCountWidth = [_examCount.text sizeWithFont:_examCount.font].width + 4;
+    _examCount.frame = CGRectMake(12, _examPoint.bottom + 12, examCountWidth, 16);
+    
+    [_lineView setLeft:_examCount.right + 8];
+    [_learnCount setLeft:_lineView.right + 8];
+    _lineView.centerY = _examCount.centerY;
+    _learnCount.centerY = _examCount.centerY;
+    
+    _priceLabel.centerY = _examCount.centerY;
+    _getOrExamBtn.centerY = _examCount.centerY;
+    
+    [_whiteBack setHeight:_examCount.top + 36];
+    
+    [self setHeight:_whiteBack.height + 10];
 }
 
 - (void)awakeFromNib {

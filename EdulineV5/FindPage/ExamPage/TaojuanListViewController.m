@@ -1,20 +1,18 @@
 //
-//  SpecialProjectExamList.m
+//  TaojuanListViewController.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2020/12/25.
-//  Copyright © 2020 刘邦海. All rights reserved.
+//  Created by 刘邦海 on 2021/1/22.
+//  Copyright © 2021 刘邦海. All rights reserved.
 //
 
-#import "SpecialProjectExamList.h"
+#import "TaojuanListViewController.h"
 #import "SpecialExamListCell.h"
-#import "TeacherCategoryVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
 
-@interface SpecialProjectExamList ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TeacherCategoryVCDelegate> {
+@interface TaojuanListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate> {
     NSInteger page;
-    NSString *categoryString;// 类型
 }
 
 @property (strong, nonatomic) UITextField *institutionSearch;
@@ -25,18 +23,15 @@
 
 @end
 
-@implementation SpecialProjectExamList
+
+@implementation TaojuanListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _rightButton.hidden = NO;
-    [_rightButton setImage:Image(@"lesson_screen_nor") forState:0];
-    [_rightButton setImage:[Image(@"lesson_screen_nor") converToMainColor] forState:UIControlStateSelected];
     [self makeTopSearch];
     
-    categoryString = @"";
     _dataSource = [NSMutableArray new];
     page = 1;
     [self makeTableView];
@@ -44,9 +39,9 @@
 
 - (void)makeTopSearch {
     // 顶部搜索框和 取消按钮
-    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_titleLabel.left, _titleLabel.top - 2, _titleLabel.width, 36)];
+    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_titleLabel.left, _titleLabel.top - 2, MainScreenWidth - _leftButton.width - 15, 36)];
     _institutionSearch.font = SYSTEMFONT(14);
-    _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索考试名称" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+    _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索套卷名称" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     _institutionSearch.delegate = self;
     _institutionSearch.returnKeyType = UIReturnKeySearch;
     _institutionSearch.layer.cornerRadius = 18;
@@ -88,13 +83,13 @@
     if (!cell) {
         cell = [[SpecialExamListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setPublicExamCell:@{}];
+    [cell setExamPointCell:@{}];
     cell.delegate = self;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 103;
+    return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -111,9 +106,9 @@
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
-    if (SWNOTEmptyStr(categoryString)) {
-        [param setObject:categoryString forKey:@"category"];
-    }
+//    if (SWNOTEmptyStr(categoryString)) {
+//        [param setObject:categoryString forKey:@"category"];
+//    }
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
@@ -146,9 +141,9 @@
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
-    if (SWNOTEmptyStr(categoryString)) {
-        [param setObject:categoryString forKey:@"category"];
-    }
+//    if (SWNOTEmptyStr(categoryString)) {
+//        [param setObject:categoryString forKey:@"category"];
+//    }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
@@ -171,32 +166,5 @@
     }];
 }
 
-- (void)rightButtonClick:(id)sender {
-    TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
-    vc.notHiddenNav = NO;
-    vc.hiddenNavDisappear = YES;
-    vc.typeString = @"0";
-    vc.delegate = self;
-    vc.isChange = YES;
-    vc.isDownExpend = YES;
-    vc.tableviewHeight = MainScreenHeight - MACRO_UI_UPHEIGHT - 120;
-    vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
-    vc.view.layer.backgroundColor = [UIColor colorWithRed:172/255.0 green:172/255.0 blue:172/255.0 alpha:1.0].CGColor;
-    [self.view addSubview:vc.view];
-    [self addChildViewController:vc];
-}
-
-- (void)chooseCategoryModel:(TeacherCategoryModel *)model {
-//    courseClassifyString = [NSString stringWithFormat:@"%@",model.title];
-//    courseClassifyIdString = [NSString stringWithFormat:@"%@",model.cateGoryId];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
-//    [self getCourseMainList];
-}
-
-// MARK: - 选择更换资讯类型代理
-- (void)chooseCategoryId:(NSString *)categoryId {
-    categoryString = categoryId;
-    [self.tableView.mj_header beginRefreshing];
-}
 
 @end
