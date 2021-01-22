@@ -738,7 +738,7 @@
 {
     /* 设置微信的appKey和appSecret */
     [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:WXAppId appSecret:WXAppSecret redirectURL:@"https://api.weixin.qq.com/cgi-bin/menu/create?access_token="];
-    [WXApi registerApp:WXAppId universalLink:@"https://api.weixin.qq.com/cgi-bin/menu/create?access_token="];
+    [WXApi registerApp:WXAppId universalLink:@"https://applinks:wxihe.share2dlink.com/"];
 //    /*设置小程序回调app的回调*/
 //        [[UMSocialManager defaultManager] setLauchFromPlatform:(UMSocialPlatformType_WechatSession) completion:^(id userInfoResponse, NSError *error) {
 //        NSLog(@"setLauchFromPlatform:userInfoResponse:%@",userInfoResponse);
