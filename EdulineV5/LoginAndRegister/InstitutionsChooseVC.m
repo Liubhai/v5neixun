@@ -28,7 +28,7 @@
 
 - (void)makeSubView {
     _backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 268)];
-    _backImageView.image = Image(@"searchorgan_bg");//[Image(@"searchorgan_bg") converToOtherColor:EdlineV5_Color.themeColor];
+    _backImageView.image = [Image(@"searchorgan_bg") converToOtherColor:EdlineV5_Color.themeColor];//Image(@"searchorgan_bg");//
     [self.view addSubview:_backImageView];
     
     _leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -61,7 +61,7 @@
     _searchTextF.rightViewMode = UITextFieldViewModeAlways;
 
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(22, 1, 20, 20)];
-    [button setImage:[Image(@"searchorgan_button_blue") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateNormal];
+    [button setImage:[Image(@"searchorgan_button_blue") converToOtherColor:EdlineV5_Color.layarLineColor] forState:UIControlStateNormal];
     [_searchTextF.rightView addSubview:button];
     
     [self.view addSubview:_searchTextF];

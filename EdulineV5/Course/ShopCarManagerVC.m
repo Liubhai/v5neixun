@@ -76,7 +76,7 @@
     CGFloat space = 2.0;
     
     _allSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, openWidth, 30)];
-    [_allSelectBtn setImage:Image(@"checkbox_orange") forState:UIControlStateSelected];
+    [_allSelectBtn setImage:[Image(@"checkbox_orange") converToMainColor] forState:UIControlStateSelected];
     [_allSelectBtn setImage:Image(@"checkbox_def") forState:0];
     [_allSelectBtn setTitle:@"全选" forState:0];
     [_allSelectBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
@@ -113,7 +113,7 @@
     [_bottomView addSubview:line];
     
     _deleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth/2.0, 0, MainScreenWidth/2.0, 49)];
-    [_deleteBtn setTitleColor:EdlineV5_Color.youhuijuanColor forState:0];
+    [_deleteBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
     _deleteBtn.titleLabel.font = SYSTEMFONT(16);
     [_deleteBtn setTitle:@"删除" forState:0];
     [_deleteBtn addTarget:self action:@selector(deleteCourses:) forControlEvents:UIControlEventTouchUpInside];
@@ -144,7 +144,7 @@
     jiange.backgroundColor = EdlineV5_Color.fengeLineColor;
     [head addSubview:jiange];
     UIButton *selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 24.5, 30, 30)];
-    [selectBtn setImage:Image(@"checkbox_orange") forState:UIControlStateSelected];
+    [selectBtn setImage:[Image(@"checkbox_orange") converToMainColor] forState:UIControlStateSelected];
     [selectBtn setImage:Image(@"checkbox_def") forState:0];
     [selectBtn addTarget:self action:@selector(headSelectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     selectBtn.tag = section;

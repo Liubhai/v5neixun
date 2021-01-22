@@ -115,6 +115,7 @@
             [_otherView addSubview:themelabel];
             if (i==0) {
                 _kaquanLabel = themelabel;
+                _kaquanLabel.text = @"未使用卡券";
                 _kaquanLabel.textColor = EdlineV5_Color.youhuijuanColor;
             } else if (i == 1) {
                 _shitikaLabel = themelabel;
@@ -495,7 +496,7 @@
             _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         }
     } else {
-        _kaquanLabel.text = @"";
+        _kaquanLabel.text = @"未使用卡券";
         _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];
         _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
     }

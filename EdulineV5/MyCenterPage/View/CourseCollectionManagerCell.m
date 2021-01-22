@@ -23,7 +23,7 @@
 - (void)makeSubViews {
     
     _selectedIconBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, 30, 30)];
-    [_selectedIconBtn setImage:Image(@"checkbox_orange") forState:UIControlStateSelected];
+    [_selectedIconBtn setImage:[Image(@"checkbox_orange") converToMainColor] forState:UIControlStateSelected];
     [_selectedIconBtn setImage:Image(@"checkbox_def") forState:0];
     [_selectedIconBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     _selectedIconBtn.centerY = 92 / 2.0;

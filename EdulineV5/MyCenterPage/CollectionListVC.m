@@ -55,7 +55,7 @@
     _selectAllButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, (MainScreenWidth - 1)/2.0, 49)];
     [_selectAllButton setTitle:@"全选" forState:0];
     [_selectAllButton setTitle:@"全选" forState:UIControlStateSelected];
-    [_selectAllButton setImage:Image(@"checkbox_orange") forState:UIControlStateSelected];
+    [_selectAllButton setImage:[Image(@"checkbox_orange") converToMainColor] forState:UIControlStateSelected];
     [_selectAllButton setImage:Image(@"checkbox_def") forState:0];
     
     [_selectAllButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
@@ -77,7 +77,7 @@
     
     _cancelCollectButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 88 - 30, 0, 88 + 30, 49)];
     [_cancelCollectButton setTitle:@"取消收藏(0)" forState:0];
-    [_cancelCollectButton setTitleColor:EdlineV5_Color.textzanColor forState:0];
+    [_cancelCollectButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _cancelCollectButton.titleLabel.font = SYSTEMFONT(16);
     [_cancelCollectButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_cancelCollectButton];

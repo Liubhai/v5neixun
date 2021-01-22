@@ -144,9 +144,10 @@
 }
 
 - (void)makeCommentToolView {
-    _commentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:nil placeHolderTitle:nil sendButtonTitle:nil];
+    _commentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:nil placeHolderTitle:nil sendButtonTitle:@"发布"];
     _commentView.delegate = self;
     _commentView.hidden = NO;
+    [_commentView.sendButton setTitleColor:HEXCOLOR(0x5191FF) forState:0];
     [self.view addSubview:_commentView];
     
     _commentBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.001)];

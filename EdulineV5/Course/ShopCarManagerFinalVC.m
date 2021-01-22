@@ -361,6 +361,7 @@
     
     UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
     themelabel.font = SYSTEMFONT(14);
+    themelabel.textColor = EdlineV5_Color.dazhekaColor;
     themelabel.textAlignment = NSTextAlignmentRight;
     [footer addSubview:themelabel];
     UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
@@ -419,7 +420,7 @@
             themelabel.text = @"课程卡";
         }
     } else {
-        themelabel.text = @"无卡券可使用";
+        themelabel.text = @"未使用卡券";
         sectionFinalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,carModel.total_price];
         sectionYouhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
     }

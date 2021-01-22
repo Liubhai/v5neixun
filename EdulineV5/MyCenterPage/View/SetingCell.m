@@ -38,7 +38,7 @@
     [self.contentView addSubview:_rightLabel];
     
     _switchOther = [[UISwitch alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 36, 0, 51, 20)];
-    _switchOther.onTintColor = HEXCOLOR(0x67C23A);
+    _switchOther.onTintColor = EdlineV5_Color.themeColor;
     _switchOther.tintColor = HEXCOLOR(0xC9C9C9);
     _switchOther.backgroundColor = HEXCOLOR(0xC9C9C9);
     _switchOther.thumbTintColor = [UIColor whiteColor];

@@ -97,7 +97,7 @@
     [_suerButton setTitle:@"确定" forState:0];
     [_suerButton setTitleColor:[UIColor whiteColor] forState:0];
     _suerButton.titleLabel.font = SYSTEMFONT(16);
-    _suerButton.backgroundColor = EdlineV5_Color.dazhekaColor;
+    _suerButton.backgroundColor = EdlineV5_Color.themeColor;
     [_suerButton addTarget:self action:@selector(sureButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomBackView addSubview:_suerButton];
 }

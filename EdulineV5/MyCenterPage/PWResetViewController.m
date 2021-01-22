@@ -60,7 +60,7 @@
         [_sureButton setBackgroundColor:EdlineV5_Color.themeColor];
     } else {
         _sureButton.enabled = NO;
-        [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
+        [_sureButton setBackgroundColor:EdlineV5_Color.buttonDisableColor];
     }
 }
 
