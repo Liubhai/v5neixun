@@ -20,6 +20,8 @@
 		782333BB2595B99E0076DD85 /* SpecialExamListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BA2595B99E0076DD85 /* SpecialExamListCell.m */; };
 		782333BE2599CA2C0076DD85 /* ExamPointSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */; };
 		782AC42A25BA7D2F009130F9 /* TaojuanListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC42925BA7D2F009130F9 /* TaojuanListViewController.m */; };
+		782AC42D25BAA3E1009130F9 /* TaojuanDetailListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC42C25BAA3E1009130F9 /* TaojuanDetailListViewController.m */; };
+		782AC43025BAA6D4009130F9 /* TaoJuanDetailListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC42F25BAA6D4009130F9 /* TaoJuanDetailListCell.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -597,6 +599,10 @@
 		782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPointSelectVC.m; sourceTree = "<group>"; };
 		782AC42825BA7D2F009130F9 /* TaojuanListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaojuanListViewController.h; sourceTree = "<group>"; };
 		782AC42925BA7D2F009130F9 /* TaojuanListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaojuanListViewController.m; sourceTree = "<group>"; };
+		782AC42B25BAA3E1009130F9 /* TaojuanDetailListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaojuanDetailListViewController.h; sourceTree = "<group>"; };
+		782AC42C25BAA3E1009130F9 /* TaojuanDetailListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaojuanDetailListViewController.m; sourceTree = "<group>"; };
+		782AC42E25BAA6D4009130F9 /* TaoJuanDetailListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaoJuanDetailListCell.h; sourceTree = "<group>"; };
+		782AC42F25BAA6D4009130F9 /* TaoJuanDetailListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaoJuanDetailListCell.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1646,6 +1652,8 @@
 				782333B72595B5570076DD85 /* SpecialProjectExamList.m */,
 				782AC42825BA7D2F009130F9 /* TaojuanListViewController.h */,
 				782AC42925BA7D2F009130F9 /* TaojuanListViewController.m */,
+				782AC42B25BAA3E1009130F9 /* TaojuanDetailListViewController.h */,
+				782AC42C25BAA3E1009130F9 /* TaojuanDetailListViewController.m */,
 				782333BC2599CA2C0076DD85 /* ExamPointSelectVC.h */,
 				782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */,
 			);
@@ -1896,6 +1904,8 @@
 				78060FAB255E8B8100009171 /* ExamMainListCell.m */,
 				782333B92595B99E0076DD85 /* SpecialExamListCell.h */,
 				782333BA2595B99E0076DD85 /* SpecialExamListCell.m */,
+				782AC42E25BAA6D4009130F9 /* TaoJuanDetailListCell.h */,
+				782AC42F25BAA6D4009130F9 /* TaoJuanDetailListCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4427,6 +4437,7 @@
 				789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */,
 				788E957F253FE24E0089251E /* KeyCenter.m in Sources */,
 				787F1E74247381A400108F7B /* AliyunPlayerViewPopLayer.m in Sources */,
+				782AC43025BAA6D4009130F9 /* TaoJuanDetailListCell.m in Sources */,
 				789DB03524692C1D001302B4 /* StudyLatestCell.m in Sources */,
 				78AA13832440543D007087F7 /* TAAnimatedDotView.m in Sources */,
 				78060FA9255E836900009171 /* ExamMainViewController.m in Sources */,
@@ -4487,6 +4498,7 @@
 				78C549DC241B674F00A33FC4 /* NSArray+AliyunDeepCopy.m in Sources */,
 				78C936CF248FBA2D00D5F1ED /* UserCommenListVC.m in Sources */,
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
+				782AC42D25BAA3E1009130F9 /* TaojuanDetailListViewController.m in Sources */,
 				78C549D1241B674E00A33FC4 /* AlivcBaseViewController.m in Sources */,
 				784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */,
 				784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */,

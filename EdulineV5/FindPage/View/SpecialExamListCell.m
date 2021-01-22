@@ -126,6 +126,58 @@
     [self setHeight:_whiteBack.height + 10];
 }
 
+- (void)setExamPointDetailCell:(NSDictionary *)dict {
+    
+    _whiteBack.frame = CGRectMake(0, 0, MainScreenWidth, 93);
+    _whiteBack.backgroundColor = [UIColor whiteColor];
+    _whiteBack.layer.masksToBounds = YES;
+    _whiteBack.layer.cornerRadius = 0;
+    
+    
+    _gotImage.frame = CGRectMake(15, 0, 36, 16);
+    
+    _examTitle.frame = CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 15), 20);
+    _examTitle.font = SYSTEMFONT(16);
+    _examTitle.textColor = EdlineV5_Color.textFirstColor;
+    _gotImage.centerY = _examTitle.centerY;
+    
+    _examPoint.frame = CGRectMake(15, _examTitle.bottom + 6, _whiteBack.width - 30, 14);
+    
+    _priceLabel.frame = CGRectMake(_whiteBack.width - (100 + 14 + 82 + 15), 0, 100, 21);
+    
+    _getOrExamBtn.frame = CGRectMake(_priceLabel.right + 14, 0, 82, 28);
+    
+    _examTitle.text = @"考试标题只能显示1排文字题只能显示1排文字";
+    _examPoint.numberOfLines = 0;
+    _examPoint.frame = CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 14);
+    _examPoint.text = @"知识点：知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介绍最多显示3排,知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介,知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介";
+    _learnCount.text = @"120人已练习";
+    
+    [_examPoint sizeToFit];
+    
+    _examPoint.frame = CGRectMake(15, _examTitle.bottom + 6, _whiteBack.width - 30, _examPoint.height);
+    
+    if (_examPoint.height > (11*3 + 7.5*2)) {
+        _examPoint.frame = CGRectMake(15, _examTitle.bottom + 6, _whiteBack.width - 30, 11*3 + 7.5*2);
+    }
+    
+    _examCount.text = @"13套";
+    CGFloat examCountWidth = [_examCount.text sizeWithFont:_examCount.font].width + 4;
+    _examCount.frame = CGRectMake(15, _examPoint.bottom + 12, examCountWidth, 16);
+    
+    [_lineView setLeft:_examCount.right + 8];
+    [_learnCount setLeft:_lineView.right + 8];
+    _lineView.centerY = _examCount.centerY;
+    _learnCount.centerY = _examCount.centerY;
+    
+    _priceLabel.centerY = _examCount.centerY;
+    _getOrExamBtn.centerY = _examCount.centerY;
+    
+    [_whiteBack setHeight:_examCount.top + 36];
+    
+    [self setHeight:_whiteBack.height];
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

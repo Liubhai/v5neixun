@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setPublicExamCell:(NSDictionary *)dict;
 - (void)setExamPointCell:(NSDictionary *)dict;
+- (void)setExamPointDetailCell:(NSDictionary *)dict;
 
 @end
 

@@ -1,22 +1,20 @@
 //
-//  TaojuanListViewController.m
+//  TaojuanDetailListViewController.m
 //  EdulineV5
 //
 //  Created by 刘邦海 on 2021/1/22.
 //  Copyright © 2021 刘邦海. All rights reserved.
 //
 
-#import "TaojuanListViewController.h"
+#import "TaojuanDetailListViewController.h"
 #import "SpecialExamListCell.h"
+#import "TaoJuanDetailListCell.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
-#import "TaojuanDetailListViewController.h"
 
-@interface TaojuanListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate> {
+@interface TaojuanDetailListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate> {
     NSInteger page;
 }
-
-@property (strong, nonatomic) UITextField *institutionSearch;
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -24,45 +22,24 @@
 
 @end
 
-
-@implementation TaojuanListViewController
+@implementation TaojuanDetailListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self makeTopSearch];
+    _lineTL.hidden = NO;
+    _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     
     _dataSource = [NSMutableArray new];
     page = 1;
     [self makeTableView];
 }
 
-- (void)makeTopSearch {
-    // 顶部搜索框和 取消按钮
-    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_titleLabel.left, _titleLabel.top - 2, MainScreenWidth - _leftButton.width - 15, 36)];
-    _institutionSearch.font = SYSTEMFONT(14);
-    _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索套卷名称" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
-    _institutionSearch.delegate = self;
-    _institutionSearch.returnKeyType = UIReturnKeySearch;
-    _institutionSearch.layer.cornerRadius = 18;
-    _institutionSearch.backgroundColor = EdlineV5_Color.backColor;
-    _institutionSearch.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _institutionSearch.leftView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 17 + 15 + 10, 30)];
-    _institutionSearch.leftViewMode = UITextFieldViewModeAlways;
-    _institutionSearch.clearButtonMode = UITextFieldViewModeAlways;
-
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(17, 7.5, 15, 15)];
-    [button setImage:Image(@"home_serch_icon") forState:UIControlStateNormal];
-    [_institutionSearch.leftView addSubview:button];
-    [_titleImage addSubview:_institutionSearch];
-}
-
 - (void)makeTableView {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.backgroundColor = EdlineV5_Color.backColor;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
@@ -74,29 +51,67 @@
 //    [_tableView.mj_header beginRefreshing];
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return 1;
+    }
     return 3;//_dataSource.count;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return nil;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+    footer.backgroundColor = EdlineV5_Color.backColor;
+    return footer;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuse = @"SpecialExamListCell";
-    SpecialExamListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-    if (!cell) {
-        cell = [[SpecialExamListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+    if (indexPath.section == 0) {
+        static NSString *reuse = @"SpecialExamListCell";
+        SpecialExamListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[SpecialExamListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setExamPointDetailCell:@{}];
+        cell.delegate = self;
+        return cell;
     }
-    [cell setExamPointCell:@{}];
-    cell.delegate = self;
+    static NSString *reuse = @"TaoJuanDetailListCell";
+    TaoJuanDetailListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+    if (!cell) {
+        cell = [[TaoJuanDetailListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+    }
+    [cell setTaojuanDetailListCellInfo:@{}];
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.001;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == 0) {
+        return 10;
+    }
+    return 0.001;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
+    if (indexPath.section == 0) {
+        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
+    }
+    return 80;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    TaojuanDetailListViewController *vc = [[TaojuanDetailListViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
@@ -168,6 +183,5 @@
         }
     }];
 }
-
 
 @end
