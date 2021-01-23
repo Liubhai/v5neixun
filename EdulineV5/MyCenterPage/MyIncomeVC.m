@@ -550,6 +550,7 @@
         }];
     } else if ([typeString isEqualToString:@"alipay"]) {
         [self showMoubaoSureView];
+        _submitButton.enabled = YES;
     }
 }
 
