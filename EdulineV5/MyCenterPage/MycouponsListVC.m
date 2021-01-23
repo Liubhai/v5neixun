@@ -13,6 +13,7 @@
 #import "CouponModel.h"
 #import "CourseMainViewController.h"
 #import "InstitutionRootVC.h"
+#import "InstitutionCourseMainVC.h"
 
 @interface MycouponsListVC ()<UITableViewDelegate, UITableViewDataSource,KaquanCellDelegate> {
     NSInteger page;
@@ -147,10 +148,13 @@
 //        [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 跳转对应机构
-        InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
-        vc.institutionId = [NSString stringWithFormat:@"%@",cell.couponModel.mhm_id];
+//        InstitutionRootVC *vc = [[InstitutionRootVC alloc] init];
+//        vc.institutionId = [NSString stringWithFormat:@"%@",cell.couponModel.mhm_id];
+//        [self.navigationController pushViewController:vc animated:YES];
+        // 跳转到对应机构的课程y列表页面
+        InstitutionCourseMainVC *vc = [[InstitutionCourseMainVC alloc] init];
+        vc.institutionID = [NSString stringWithFormat:@"%@",cell.couponModel.mhm_id];
         [self.navigationController pushViewController:vc animated:YES];
-        
     }
 }
 
