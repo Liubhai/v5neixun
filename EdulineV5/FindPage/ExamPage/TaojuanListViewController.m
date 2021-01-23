@@ -169,5 +169,12 @@
     }];
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string isEqualToString:@"\n"]) {
+        [_institutionSearch resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
 
 @end

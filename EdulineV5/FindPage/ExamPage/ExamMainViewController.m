@@ -16,6 +16,8 @@
 
 #import "TaojuanListViewController.h"
 
+#import "ZhuangXiangListTreeTableVC.h"
+
 @interface ExamMainViewController () {
     NSInteger page;
 }
@@ -89,6 +91,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if (([examTheme isEqualToString:@"套卷练习"])) {
         TaojuanListViewController *vc = [[TaojuanListViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([examTheme isEqualToString:@"专项练习"]) {
+        ZhuangXiangListTreeTableVC *vc = [[ZhuangXiangListTreeTableVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

@@ -22,6 +22,8 @@
 		782AC42A25BA7D2F009130F9 /* TaojuanListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC42925BA7D2F009130F9 /* TaojuanListViewController.m */; };
 		782AC42D25BAA3E1009130F9 /* TaojuanDetailListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC42C25BAA3E1009130F9 /* TaojuanDetailListViewController.m */; };
 		782AC43025BAA6D4009130F9 /* TaoJuanDetailListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC42F25BAA6D4009130F9 /* TaoJuanDetailListCell.m */; };
+		782AC43425BC07FC009130F9 /* ZhuangXiangListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43325BC07FC009130F9 /* ZhuangXiangListCell.m */; };
+		782AC43725BC125B009130F9 /* ZhuangXiangListTreeTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -604,6 +606,10 @@
 		782AC42E25BAA6D4009130F9 /* TaoJuanDetailListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TaoJuanDetailListCell.h; sourceTree = "<group>"; };
 		782AC42F25BAA6D4009130F9 /* TaoJuanDetailListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaoJuanDetailListCell.m; sourceTree = "<group>"; };
 		782AC43125BAC77C009130F9 /* eduline网校Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "eduline网校Release.entitlements"; sourceTree = "<group>"; };
+		782AC43225BC07FC009130F9 /* ZhuangXiangListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhuangXiangListCell.h; sourceTree = "<group>"; };
+		782AC43325BC07FC009130F9 /* ZhuangXiangListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuangXiangListCell.m; sourceTree = "<group>"; };
+		782AC43525BC125B009130F9 /* ZhuangXiangListTreeTableVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhuangXiangListTreeTableVC.h; sourceTree = "<group>"; };
+		782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuangXiangListTreeTableVC.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1657,6 +1663,8 @@
 				782AC42C25BAA3E1009130F9 /* TaojuanDetailListViewController.m */,
 				782333BC2599CA2C0076DD85 /* ExamPointSelectVC.h */,
 				782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */,
+				782AC43525BC125B009130F9 /* ZhuangXiangListTreeTableVC.h */,
+				782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -1907,6 +1915,8 @@
 				782333BA2595B99E0076DD85 /* SpecialExamListCell.m */,
 				782AC42E25BAA6D4009130F9 /* TaoJuanDetailListCell.h */,
 				782AC42F25BAA6D4009130F9 /* TaoJuanDetailListCell.m */,
+				782AC43225BC07FC009130F9 /* ZhuangXiangListCell.h */,
+				782AC43325BC07FC009130F9 /* ZhuangXiangListCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4171,6 +4181,7 @@
 				78C5496F241B642B00A33FC4 /* AlivcProfile.m in Sources */,
 				787F1E84247381A400108F7B /* AliyunPlayerViewFirstStartGuideView.m in Sources */,
 				78C549DB241B674F00A33FC4 /* UIApplication+AlivcHelper.m in Sources */,
+				782AC43425BC07FC009130F9 /* ZhuangXiangListCell.m in Sources */,
 				788E9566253FE24E0089251E /* MCStudentViewCell.m in Sources */,
 				78AA1397244596B0007087F7 /* MyCenterOrderView.m in Sources */,
 				7839C98324206B72002F6595 /* CourseCouponView.m in Sources */,
@@ -4490,6 +4501,7 @@
 				787F1E86247381A400108F7B /* AVC_VP_BaseViewController.m in Sources */,
 				7839C9972421CB1C002F6595 /* CommentBaseView.m in Sources */,
 				78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */,
+				782AC43725BC125B009130F9 /* ZhuangXiangListTreeTableVC.m in Sources */,
 				78795734240FA3840013F95F /* ZLNavigationController.m in Sources */,
 				78D97FF124B83C58000DE0E4 /* ClassCourseListVC.m in Sources */,
 				7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */,
