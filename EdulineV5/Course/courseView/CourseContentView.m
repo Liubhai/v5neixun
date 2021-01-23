@@ -134,20 +134,20 @@
         NSString *user_price = [NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"user_price"]];
         if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
             price = @"免费";
-            NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
-            NSRange rangNow = NSMakeRange(scribing_price.length, price.length);
-            NSRange rangOld = NSMakeRange(0, scribing_price.length);
+            NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];
+            NSRange rangNow = NSMakeRange(price.length, scribing_price.length);
+            NSRange rangOld = NSMakeRange(0, price.length);
             NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
-            [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangOld];
-            [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.priceFreeColor} range:rangNow];
+            [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.priceFreeColor} range:rangOld];
+            [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangNow];
             _coursePrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
         } else {
-            NSString *finalPrice = [NSString stringWithFormat:@"%@%@",scribing_price,price];
-            NSRange rangNow = NSMakeRange(scribing_price.length, price.length);
-            NSRange rangOld = NSMakeRange(0, scribing_price.length);
+            NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];
+            NSRange rangNow = NSMakeRange(price.length, scribing_price.length);
+            NSRange rangOld = NSMakeRange(0, price.length);
             NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
-            [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangOld];
-            [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.textPriceColor} range:rangNow];
+            [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.textPriceColor} range:rangOld];
+            [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangNow];
             _coursePrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
         }
     }
