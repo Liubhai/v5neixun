@@ -22,7 +22,7 @@
 
 - (void)makeSubView {
     _jiantouImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 13, 13)];
-    _jiantouImageView.image = [Image(@"exam_up_icon") converToMainColor];
+    _jiantouImageView.image = [Image(@"exam_down_icon") converToMainColor];
     [self.contentView addSubview:_jiantouImageView];
     
     _getOrFreeIamgeView = [[UIImageView alloc] initWithFrame:CGRectMake(_jiantouImageView.right + 2, 0, 36, 16)];
@@ -93,10 +93,100 @@
     [self.contentView addSubview:_lineView];
 }
 
-
+- (void)setZhuangXiangCellInfo:(ZhuanXiangModel *)model {
+    _treeItem = model;
+    
+    _jiantouImageView.hidden = NO;
+    _getOrFreeIamgeView.hidden = NO;
+    _blueView.hidden = NO;
+    _priceLabel.hidden = NO;
+    _getOrExamBtn.hidden = NO;
+    _doExamButton.hidden = NO;
+    
+    _titleLabel.text = model.title;
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,model.price];
+    
+    if (model.level == 0) {
+        [_jiantouImageView setLeft:15];
+        _jiantouImageView.hidden = NO;
+        _getOrFreeIamgeView.hidden = NO;
+        _blueView.hidden = YES;
+        _priceLabel.hidden = NO;
+        _getOrExamBtn.hidden = NO;
+        _doExamButton.hidden = YES;
+        
+        if ([model.price floatValue]>0) {
+            _priceLabel.hidden = NO;
+            if (model.is_buy) {
+                _getOrFreeIamgeView.hidden = NO;
+                _getOrFreeIamgeView.image = Image(@"exam_yigouamai_icon");
+            } else {
+                _getOrFreeIamgeView.hidden = YES;
+            }
+        } else {
+            _priceLabel.hidden = YES;
+            if (model.is_buy) {
+                _getOrFreeIamgeView.hidden = YES;
+                _getOrFreeIamgeView.image = Image(@"exam_yigouamai_icon");
+            } else {
+                _getOrFreeIamgeView.hidden = NO;
+                _getOrFreeIamgeView.image = Image(@"exam_free_icon");
+            }
+        }
+        
+        _titleLabel.frame = CGRectMake(_getOrFreeIamgeView.hidden ? _jiantouImageView.right + 4 : _getOrFreeIamgeView.right + 4, 15, MainScreenWidth - 15 - (_getOrFreeIamgeView.hidden ? _jiantouImageView.right + 4 : _getOrFreeIamgeView.right + 4), 20);
+        
+    } else if (model.level == 1) {
+        [_jiantouImageView setLeft:33];
+        _jiantouImageView.hidden = NO;
+        _getOrFreeIamgeView.hidden = YES;
+        _blueView.hidden = YES;
+        _priceLabel.hidden = YES;
+        _getOrExamBtn.hidden = YES;
+        _doExamButton.hidden = NO;
+        
+        _titleLabel.frame = CGRectMake(_jiantouImageView.right + 4, 15, MainScreenWidth - 15 - (_jiantouImageView.right + 4), 20);
+        
+    } else if (model.level == 2) {
+        [_blueView setLeft:50];
+        _jiantouImageView.hidden = YES;
+        _getOrFreeIamgeView.hidden = YES;
+        _blueView.hidden = NO;
+        _priceLabel.hidden = YES;
+        _getOrExamBtn.hidden = YES;
+        _doExamButton.hidden = NO;
+        
+        _titleLabel.frame = CGRectMake(_blueView.right + 4, 15, MainScreenWidth - 15 - (_blueView.right + 4), 20);
+        
+    }
+    
+    _learnProgress.frame = CGRectMake(_titleLabel.left, 87 - 22 - 6, 60, 6);
+    
+    _progressLabel.frame = CGRectMake(_learnProgress.right + 5, 0, 100, 14);
+    _progressLabel.centerY = _learnProgress.centerY;
+    [self refreshArrow];
+}
 
 - (void)buttonClickBy:(UIButton *)sender {
     
+}
+
+- (void)updateItem {
+    // 刷新 title 前面的箭头方向
+    [UIView animateWithDuration:0.25 animations:^{
+        [self refreshArrow];
+    }];
+}
+
+#pragma mark - Private Method
+
+- (void)refreshArrow {
+    
+    if (self.treeItem.isExpand) {
+        self.jiantouImageView.transform = CGAffineTransformMakeRotation(M_PI);
+    } else {
+        self.jiantouImageView.transform = CGAffineTransformMakeRotation(0);
+    }
 }
 
 - (void)awakeFromNib {

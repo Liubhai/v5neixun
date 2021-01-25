@@ -24,6 +24,8 @@
 		782AC43025BAA6D4009130F9 /* TaoJuanDetailListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC42F25BAA6D4009130F9 /* TaoJuanDetailListCell.m */; };
 		782AC43425BC07FC009130F9 /* ZhuangXiangListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43325BC07FC009130F9 /* ZhuangXiangListCell.m */; };
 		782AC43725BC125B009130F9 /* ZhuangXiangListTreeTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */; };
+		782AC43A25BC1C92009130F9 /* ZhuanXiangModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43925BC1C92009130F9 /* ZhuanXiangModel.m */; };
+		782AC43D25BC1DFD009130F9 /* ZhuangXiangModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -610,6 +612,10 @@
 		782AC43325BC07FC009130F9 /* ZhuangXiangListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuangXiangListCell.m; sourceTree = "<group>"; };
 		782AC43525BC125B009130F9 /* ZhuangXiangListTreeTableVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhuangXiangListTreeTableVC.h; sourceTree = "<group>"; };
 		782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuangXiangListTreeTableVC.m; sourceTree = "<group>"; };
+		782AC43825BC1C92009130F9 /* ZhuanXiangModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhuanXiangModel.h; sourceTree = "<group>"; };
+		782AC43925BC1C92009130F9 /* ZhuanXiangModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuanXiangModel.m; sourceTree = "<group>"; };
+		782AC43B25BC1DFD009130F9 /* ZhuangXiangModelManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhuangXiangModelManager.h; sourceTree = "<group>"; };
+		782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuangXiangModelManager.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1917,6 +1923,10 @@
 				782AC42F25BAA6D4009130F9 /* TaoJuanDetailListCell.m */,
 				782AC43225BC07FC009130F9 /* ZhuangXiangListCell.h */,
 				782AC43325BC07FC009130F9 /* ZhuangXiangListCell.m */,
+				782AC43825BC1C92009130F9 /* ZhuanXiangModel.h */,
+				782AC43925BC1C92009130F9 /* ZhuanXiangModel.m */,
+				782AC43B25BC1DFD009130F9 /* ZhuangXiangModelManager.h */,
+				782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4118,6 +4128,7 @@
 				789DB038246943E1001302B4 /* StudyCourseCell.m in Sources */,
 				78C549DF241B674F00A33FC4 /* MBProgressHUD+AlivcHelper.m in Sources */,
 				78C549CA241B674E00A33FC4 /* AlivcAppServer.m in Sources */,
+				782AC43D25BC1DFD009130F9 /* ZhuangXiangModelManager.m in Sources */,
 				78C5497A241B642B00A33FC4 /* AlivcPushBeautyDataManager.m in Sources */,
 				78A16C892452F7C100391430 /* TICRecorder.mm in Sources */,
 				787F1E68247381A400108F7B /* AlivcVideoPlayThumbnailView.m in Sources */,
@@ -4135,6 +4146,7 @@
 				78795722240FA3840013F95F /* ZLCameraImageView.m in Sources */,
 				78C5497B241B642B00A33FC4 /* AlivcBeautifyDefaultControl.m in Sources */,
 				7853BDC52429F4FC00F096EC /* CourseListModelFinal.m in Sources */,
+				782AC43A25BC1C92009130F9 /* ZhuanXiangModel.m in Sources */,
 				78795727240FA3840013F95F /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.m in Sources */,
 				78C549C9241B674E00A33FC4 /* AlivcLiveEnvManager.m in Sources */,
 				788E955B253FE24E0089251E /* BCNavigationView.m in Sources */,

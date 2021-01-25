@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZhuanXiangModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,6 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *getOrExamBtn;
 @property (strong, nonatomic) UIButton *doExamButton;
 @property (strong, nonatomic) UIView *lineView;
+
+@property (strong, nonatomic) ZhuanXiangModel *treeItem;
+
+- (void)updateItem;
+- (void)setZhuangXiangCellInfo:(ZhuanXiangModel *)model;
 
 @end
 

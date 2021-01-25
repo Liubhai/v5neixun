@@ -7,10 +7,13 @@
 //
 
 #import "BaseViewController.h"
+#import "ZhuangXiangModelManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ZhuangXiangListTreeTableVC : BaseViewController
+
+@property (nonatomic, strong) ZhuangXiangModelManager *manager;
 
 @end
 
