@@ -51,7 +51,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [_rightButton setImage:Image(@"share_icon") forState:0];
+    [_rightButton setImage:Image(@"share_grey_icon") forState:0];
     _rightButton.hidden = NO;
     // Do any additional setup after loading the view.
     
