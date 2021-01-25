@@ -26,6 +26,7 @@
 		782AC43725BC125B009130F9 /* ZhuangXiangListTreeTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */; };
 		782AC43A25BC1C92009130F9 /* ZhuanXiangModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43925BC1C92009130F9 /* ZhuanXiangModel.m */; };
 		782AC43D25BC1DFD009130F9 /* ZhuangXiangModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */; };
+		782AC44025BE96CB009130F9 /* ExamPointModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43F25BE96CB009130F9 /* ExamPointModel.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -616,6 +617,8 @@
 		782AC43925BC1C92009130F9 /* ZhuanXiangModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuanXiangModel.m; sourceTree = "<group>"; };
 		782AC43B25BC1DFD009130F9 /* ZhuangXiangModelManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZhuangXiangModelManager.h; sourceTree = "<group>"; };
 		782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuangXiangModelManager.m; sourceTree = "<group>"; };
+		782AC43E25BE96CB009130F9 /* ExamPointModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamPointModel.h; sourceTree = "<group>"; };
+		782AC43F25BE96CB009130F9 /* ExamPointModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPointModel.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1927,6 +1930,8 @@
 				782AC43925BC1C92009130F9 /* ZhuanXiangModel.m */,
 				782AC43B25BC1DFD009130F9 /* ZhuangXiangModelManager.h */,
 				782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */,
+				782AC43E25BE96CB009130F9 /* ExamPointModel.h */,
+				782AC43F25BE96CB009130F9 /* ExamPointModel.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4268,6 +4273,7 @@
 				78AA137E2440543D007087F7 /* SDCycleScrollView.m in Sources */,
 				788E95B5253FE24E0089251E /* RTCManager.m in Sources */,
 				788E95C9254188500089251E /* CommonPopView.m in Sources */,
+				782AC44025BE96CB009130F9 /* ExamPointModel.m in Sources */,
 				787657282435C79E008F475D /* StudyRootVC.m in Sources */,
 				785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */,
 				780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */,
