@@ -51,7 +51,7 @@
     self.textLabel.font = SYSTEMFONT(15);
     self.textLabel.textColor = EdlineV5_Color.textFirstColor;
     self.textLabel.textAlignment = NSTextAlignmentCenter;
-    self.textLabel.adjustsFontSizeToFitWidth = true;
+//    self.textLabel.adjustsFontSizeToFitWidth = true;
     [self addSubview:self.textLabel];
 }
 
