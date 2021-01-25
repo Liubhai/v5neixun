@@ -433,12 +433,20 @@
         CGFloat levelWidth = [_levelLabel.text sizeWithFont:_levelLabel.font].width + 4;
         [_levelLabel setWidth:levelWidth];
         NSString *schoolName = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"school_name"]];
+        NSString *mhm_id = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"mhm_id"]];
         CGFloat secondBtnWidth = [schoolName sizeWithFont:_introLabelBtn.titleLabel.font].width + 4 + 12;
         [_introLabelBtn setWidth:secondBtnWidth];
         [_introLabelBtn setImage:Image(@"jigou_") forState:0];
         [_introLabelBtn setTitle:schoolName forState:0];
         [_introLabelBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -_introLabelBtn.currentImage.size.width, 0, _introLabelBtn.currentImage.size.width)];
         [_introLabelBtn setImageEdgeInsets:UIEdgeInsetsMake(0, secondBtnWidth-12, 0, -(secondBtnWidth - 12))];
+        if (SWNOTEmptyStr(mhm_id)) {
+            if ([mhm_id isEqualToString:@"1"]) {
+                schoolName = @"";
+            }
+        } else {
+            schoolName = @"";
+        }
         if ([schoolName isEqualToString:@"<null>"] || [schoolName isEqualToString:@"null"] || !SWNOTEmptyStr(schoolName)) {
             _introLabelBtn.hidden = YES;
         }
