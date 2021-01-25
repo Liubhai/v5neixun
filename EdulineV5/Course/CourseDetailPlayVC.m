@@ -119,7 +119,7 @@
 @property (strong, nonatomic) UIButton *buyCourseButton;
 @property (strong, nonatomic) UIButton *buyhourseButton;
 
-@property (strong, nonatomic) WKWebView *wkWebView;
+@property (strong, nonatomic) WKWebIntroview *wkWebView;
 @property (strong, nonatomic) NSTimer *recordTimer;
 
 // 声网直播
@@ -313,11 +313,7 @@
 
 - (void)makeWkWebView {
     if (!_wkWebView) {
-        WKUserContentController *wkUController = [[WKUserContentController alloc] init];
-        WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
-        wkWebConfig.userContentController = wkUController;
-
-        _wkWebView = [[WKWebView alloc] initWithFrame:self.playerView.frame configuration:wkWebConfig];
+        _wkWebView = [[WKWebIntroview alloc] initWithFrame:self.playerView.frame];
         _wkWebView.backgroundColor = [UIColor clearColor];
         _wkWebView.userInteractionEnabled = YES;
         _wkWebView.UIDelegate = self;
