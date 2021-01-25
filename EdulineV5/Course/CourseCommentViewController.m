@@ -190,6 +190,10 @@
         [self showHudInView:self.view showHint:@"内容不能为空"];
         return;
     }
+    if (_commentTextView.text.length>wordMax) {
+        [self showHudInView:self.view showHint:[NSString stringWithFormat:@"内容不能超过%@字",@(wordMax)]];
+        return;
+    }
     NSMutableDictionary *param = [NSMutableDictionary new];
     if (_isComment) {
         [param setObject:_commentTextView.text forKey:@"content"];
