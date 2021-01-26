@@ -83,9 +83,11 @@
     model.appFPrivacyTitleText = @"hhahha";
     model.appPrivacyTitleText = @"认证服务协议";
     model.appSPrivacyTitleText = atr;
+//    model.privacyColor = EdlineV5_Color.themeColor;
+    model.protocolColor = EdlineV5_Color.themeColor;
  
     model.uncheckedImg = [UIImage imageNamed:@"checkbox_nor"];
-    model.checkedImg = [UIImage imageNamed:@"checkbox_sel1"];
+    model.checkedImg = [[UIImage imageNamed:@"checkbox_sel1"] converToMainColor];
 //    model.checkboxWH = 20;
     model.privacyState = YES;
     model.checkedHidden = NO;
