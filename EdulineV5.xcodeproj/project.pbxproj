@@ -27,6 +27,7 @@
 		782AC43A25BC1C92009130F9 /* ZhuanXiangModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43925BC1C92009130F9 /* ZhuanXiangModel.m */; };
 		782AC43D25BC1DFD009130F9 /* ZhuangXiangModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */; };
 		782AC44025BE96CB009130F9 /* ExamPointModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43F25BE96CB009130F9 /* ExamPointModel.m */; };
+		782AC44325BFEDB8009130F9 /* AnswerSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -619,6 +620,8 @@
 		782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZhuangXiangModelManager.m; sourceTree = "<group>"; };
 		782AC43E25BE96CB009130F9 /* ExamPointModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamPointModel.h; sourceTree = "<group>"; };
 		782AC43F25BE96CB009130F9 /* ExamPointModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPointModel.m; sourceTree = "<group>"; };
+		782AC44125BFEDB8009130F9 /* AnswerSheetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnswerSheetViewController.h; sourceTree = "<group>"; };
+		782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnswerSheetViewController.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -773,7 +776,7 @@
 		7876572F2435DC81008F475D /* SearchHistoryListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchHistoryListCell.m; sourceTree = "<group>"; };
 		7876573124370560008F475D /* playAnimationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = playAnimationView.h; sourceTree = "<group>"; };
 		7876573224370560008F475D /* playAnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = playAnimationView.m; sourceTree = "<group>"; };
-		7879560D240DE7A50013F95F /* eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7879560D240DE7A50013F95F /* Eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		78795616240DE7A50013F95F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -1674,6 +1677,8 @@
 				782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */,
 				782AC43525BC125B009130F9 /* ZhuangXiangListTreeTableVC.h */,
 				782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */,
+				782AC44125BFEDB8009130F9 /* AnswerSheetViewController.h */,
+				782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -1976,7 +1981,7 @@
 		7879560E240DE7A50013F95F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7879560D240DE7A50013F95F /* eduline网校.app */,
+				7879560D240DE7A50013F95F /* Eduline网校.app */,
 				78795628240DE7AE0013F95F /* EdulineV5Tests.xctest */,
 				78795633240DE7AE0013F95F /* EdulineV5UITests.xctest */,
 			);
@@ -3910,7 +3915,7 @@
 			);
 			name = EdulineV5;
 			productName = EdulineV5;
-			productReference = 7879560D240DE7A50013F95F /* eduline网校.app */;
+			productReference = 7879560D240DE7A50013F95F /* Eduline网校.app */;
 			productType = "com.apple.product-type.application";
 		};
 		78795627240DE7AE0013F95F /* EdulineV5Tests */ = {
@@ -4382,6 +4387,7 @@
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
+				782AC44325BFEDB8009130F9 /* AnswerSheetViewController.m in Sources */,
 				784FC8EB24ADBAB400CAE7A6 /* ZixunCommentCell.m in Sources */,
 				7887451524E29C5F00257029 /* InstitutionsChooseVC.m in Sources */,
 				788E957B253FE24E0089251E /* OTOStudentView.m in Sources */,
@@ -4811,7 +4817,7 @@
 				);
 				MARKETING_VERSION = 5.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
-				PRODUCT_NAME = "eduline网校";
+				PRODUCT_NAME = "Eduline网校";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
@@ -4863,7 +4869,7 @@
 				MARKETING_VERSION = 5.13;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
-				PRODUCT_NAME = "eduline网校";
+				PRODUCT_NAME = "Eduline网校";
 				PROVISIONING_PROFILE_SPECIFIER = edulineV5Adhoc;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
