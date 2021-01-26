@@ -114,23 +114,23 @@
 }
 
 - (void)makeUserAccountUI {
-    _account = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 175 - 44)];
+    _account = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 45 + 40 * 2)];
     _account.backgroundColor = EdlineV5_Color.themeColor;
     [_mainScrollView addSubview:_account];
     
-    _userPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (_account.height - 45 * 2)/2.0, MainScreenWidth, 45)];
+    _userPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, MainScreenWidth, 45)];
     _userPriceLabel.font = SYSTEMFONT(32);
     _userPriceLabel.text = @"0.00";
     _userPriceLabel.textColor = [UIColor whiteColor];
     _userPriceLabel.textAlignment = NSTextAlignmentCenter;
     [_account addSubview:_userPriceLabel];
     
-    UILabel * priceType = [[UILabel alloc] initWithFrame:CGRectMake(0, _userPriceLabel.bottom, MainScreenWidth, 45)];
-    priceType.font = SYSTEMFONT(15);
-    priceType.text = [NSString stringWithFormat:@"余额(%@)",IOSMoneyTitle];
-    priceType.textAlignment = NSTextAlignmentCenter;
-    priceType.textColor = [UIColor whiteColor];
-    [_account addSubview:priceType];
+//    UILabel * priceType = [[UILabel alloc] initWithFrame:CGRectMake(0, _userPriceLabel.bottom, MainScreenWidth, 45)];
+//    priceType.font = SYSTEMFONT(15);
+//    priceType.text = [NSString stringWithFormat:@"余额(%@)",IOSMoneyTitle];
+//    priceType.textAlignment = NSTextAlignmentCenter;
+//    priceType.textColor = [UIColor whiteColor];
+//    [_account addSubview:priceType];
 }
 
 - (void)makeMoneyView {
