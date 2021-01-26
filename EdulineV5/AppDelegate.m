@@ -423,8 +423,10 @@
         if ([url.host isEqualToString:@"safepay"]) {
             [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
                 NSLog(@"result = %@",resultDic);
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
             }];
         }else if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
             return YES;
         }
     }
@@ -439,8 +441,10 @@
         if ([url.host isEqualToString:@"safepay"]) {
             [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
                 NSLog(@"result = %@",resultDic);
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
             }];
         }else if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
             return YES;
         }
     }
@@ -450,22 +454,31 @@
 // NOTE: 9.0以后使用新API接口
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
 {
-    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
-    if (!result) {
-        if ([url.host isEqualToString:@"safepay"]) {
-            //跳转支付宝钱包进行支付，处理支付结果
-            [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-                NSLog(@"result = %@",resultDic);
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
-            }];
-        }
-    } else if ([url.host isEqualToString:WXAppId]) {
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            if (resultDic) {
+                NSString *code = [NSString stringWithFormat:@"%@",resultDic[@"resultStatus"]];
+                if ([code isEqualToString:@"9000"]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
+                }
+            }
+        }];
+    } else if ([url.scheme isEqualToString:WXAppId]) {
         return [WXApi handleOpenURL:url delegate:self];
     } else if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回 authCode
         return YES;
     }
     return YES;
 }
+
+- (void)onResp:(BaseResp*)resp {
+    NSLog(@"%@",resp);
+    if (resp.errCode == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"orderFinished" object:nil];
+    }
+}
+
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
