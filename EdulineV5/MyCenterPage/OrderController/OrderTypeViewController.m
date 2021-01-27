@@ -324,14 +324,15 @@
         // 去删除订单
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确定要删除该订单吗？" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"再想想" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [self doDeleteOrder:_dataSource[sender.tag][@"order_no"]];
+            
         }];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self doDeleteOrder:_dataSource[sender.tag][@"order_no"]];
         }];
-        [commentAction setValue:EdlineV5_Color.themeColor forKey:@"titleTextColor"];
-        [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"titleTextColor"];
-        [alertController addAction:cancelAction];
+        [commentAction setValue:EdlineV5_Color.textFirstColor forKey:@"titleTextColor"];
+        [cancelAction setValue:EdlineV5_Color.themeColor forKey:@"titleTextColor"];
         [alertController addAction:commentAction];
+        [alertController addAction:cancelAction];
         alertController.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:alertController animated:YES completion:nil];
     } else if ([orderStatus isEqualToString:@"10"]) {

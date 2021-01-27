@@ -398,10 +398,12 @@
                         return;
                     } else if ([typeString isEqualToString:@"alipay"]) {
                         shouldPop = YES;
+                        _submitButton.enabled = YES;
                         [self orderFinish:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     } else if ([typeString isEqualToString:@"wxpay"]) {
-                        [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                         shouldPop = YES;
+                        _submitButton.enabled = YES;
+                        [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     }
                 } else {
                     _submitButton.enabled = YES;

@@ -772,14 +772,14 @@
             NSString *pass_chargeId = [NSString stringWithFormat:@"%@",pass[@"id"]];
             [param setObject:pass_balance forKey:@"balance"];//@([pass_balance floatValue])
             NSString *price = [_priceLabel.text substringFromIndex:1];
-            [param setObject:@([price floatValue]) forKey:@"payment"];
+            [param setObject:price forKey:@"payment"];//@([price floatValue])
             [param setObject:pass_chargeId forKey:@"recharge_id"];
             [param setObject:@"ios" forKey:@"from"];
         } else {
             if (SWNOTEmptyStr(_otherMoneyText.text)) {
                 [param setObject:_otherMoneyText.text forKey:@"balance"];//@([_otherMoneyText.text floatValue])
                 NSString *price = [_priceLabel.text substringFromIndex:1];
-                [param setObject:@([price floatValue]) forKey:@"payment"];
+                [param setObject:price forKey:@"payment"];//@([price floatValue])
                 [param setObject:@"0" forKey:@"recharge_id"];
                 [param setObject:@"ios" forKey:@"from"];
             } else {
@@ -855,6 +855,7 @@
 - (void)createBalanceOrder:(NSDictionary *)dict {
     if (SWNOTEmptyDictionary(dict)) {
         [Net_API requestPOSTWithURLStr:[Net_Path balanceOrderCreate] WithAuthorization:nil paramDic:dict finish:^(id  _Nonnull responseObject) {
+            _submitButton.enabled = YES;
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     if ([typeString isEqualToString:@"applepay"]) {
@@ -896,8 +897,10 @@
                 }
             }
         } enError:^(NSError * _Nonnull error) {
-            
+            _submitButton.enabled = YES;
         }];
+    } else {
+        _submitButton.enabled = YES;
     }
 }
 
@@ -911,8 +914,10 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     if ([typeString isEqualToString:@"wxpay"]) {
+                        _submitButton.enabled = YES;
                         [self otherOrderTypeWx:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     } else if ([typeString isEqualToString:@"alipay"]) {
+                        _submitButton.enabled = YES;
                         [self orderFinish:[[responseObject objectForKey:@"data"] objectForKey:@"paybody"]];
                     } else if ([typeString isEqualToString:@"applepay"]) {
                         

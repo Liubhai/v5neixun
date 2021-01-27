@@ -160,6 +160,24 @@
             [param setObject:@"phone" forKey:@"type"];
         }
     }
+    
+    if (_registerOrForget) {
+        [param setObject:@"login" forKey:@"type"];
+    } else {
+        if (_editPw) {
+            [param setObject:@"edit" forKey:@"type"];
+        } else {
+            if (_changePhone) {
+                if (_hasPhone) {
+                    [param setObject:@"phone" forKey:@"type"];
+                } else {
+                    [param setObject:@"ios_bind" forKey:@"type"];
+                }
+            } else {
+                [param setObject:@"retrieve" forKey:@"type"];
+            }
+        }
+    }
     [Net_API requestPOSTWithURLStr:[Net_Path smsCodeSend] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {

@@ -67,7 +67,7 @@
     _sureButton.layer.cornerRadius = 4;
     [_sureButton setTitle:@"兑换" forState:0];
     [_sureButton setTitleColor:[UIColor whiteColor] forState:0];
-    [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
+    [_sureButton setBackgroundColor:EdlineV5_Color.buttonDisableColor];
     [_topBackView addSubview:_sureButton];
     
     _enterTextView = [[UITextField alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - 80 - 15 * 3, 36)];

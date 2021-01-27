@@ -57,7 +57,7 @@
     }
     _sureButton.titleLabel.font = SYSTEMFONT(18);
     [_sureButton addTarget:self action:@selector(sureButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
+    [_sureButton setBackgroundColor:EdlineV5_Color.buttonDisableColor];
     
     [self.view addSubview:_sureButton];
     
@@ -144,7 +144,7 @@
         [_sureButton setBackgroundColor:EdlineV5_Color.themeColor];
     } else {
         _sureButton.enabled = NO;
-        [_sureButton setBackgroundColor:EdlineV5_Color.disableColor];
+        [_sureButton setBackgroundColor:EdlineV5_Color.buttonDisableColor];
     }
 }
 

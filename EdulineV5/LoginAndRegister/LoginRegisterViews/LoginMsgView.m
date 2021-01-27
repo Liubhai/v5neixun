@@ -34,6 +34,7 @@
     _areaBtn = [[UIButton alloc] initWithFrame:CGRectMake(_areaNumLabel.left, 0, _jiantouImage.right - _areaNumLabel.left, 50)];
     _areaBtn.backgroundColor = [UIColor clearColor];
     [_areaBtn addTarget:self action:@selector(areaBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    _areaBtn.enabled = NO;
     [self addSubview:_areaBtn];
     
     _phoneNumTextField = [[UITextField alloc] initWithFrame:CGRectMake(_jiantouImage.right + 15 * WidthRatio, 0, MainScreenWidth - 48 * WidthRatio - (_jiantouImage.right + 15 * WidthRatio), 50)];
