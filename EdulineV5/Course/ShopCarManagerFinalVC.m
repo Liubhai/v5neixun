@@ -277,6 +277,7 @@
 
 - (void)submitButtonClick:(UIButton *)sender {
     NSMutableArray *paramArray = [NSMutableArray new];
+    NSString *passString = @"";
     if (SWNOTEmptyArr(_dataSourse)) {
         for (int i = 0; i<_dataSourse.count; i++) {
             ShopCarModel *carmodel = _dataSourse[i];
@@ -294,8 +295,10 @@
                 }
             }
             if (SWNOTEmptyStr(courseIdString)) {
-                [param setObject:courseIdString forKey:@"course_ids"];
+                [param setObject:[NSString stringWithFormat:@"%@,",courseIdString] forKey:@"course_ids"];
+//                [param setObject:courseIdString forKey:@"course_ids"];
             }
+            passString = [NSString stringWithFormat:@"[{course_ids:%@}]",[NSString stringWithFormat:@"%@,",courseIdString]];
             [paramArray addObject:[NSDictionary dictionaryWithDictionary:param]];
         }
     }
@@ -304,8 +307,12 @@
 //                                                     error:nil];
 //    NSString *string = [[NSString alloc] initWithData:data
 //                                             encoding:NSUTF8StringEncoding];
+//    NSString *jsonTemp = [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+//    NSString *jsonResult = [jsonTemp stringByReplacingOccurrencesOfString:@" " withString:@""];
+//    NSLog(@"json array is: %@", jsonResult);
+//,@"from":@"ios"
     if (SWNOTEmptyArr(paramArray)) {
-        [Net_API requestPOSTWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course":paramArray,@"from":@"ios"} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestPOSTWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course":paramArray} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     OrderSureViewController *vc = [[OrderSureViewController alloc] init];
