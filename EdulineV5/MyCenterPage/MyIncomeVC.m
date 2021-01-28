@@ -526,6 +526,13 @@
         _submitButton.enabled = YES;
         return;
     }
+    
+    if ([_scoreInputText.text floatValue] > [_userPriceLabel.text floatValue]) {
+        [self showHudInView:self.view showHint:@"余额不足"];
+        _submitButton.enabled = YES;
+        return;
+    }
+    
     if ([typeString isEqualToString:@"lcnpay"]) {
         [self toBalance];
     } else if ([typeString isEqualToString:@"wxpay"]) {
@@ -549,8 +556,8 @@
             }
         }];
     } else if ([typeString isEqualToString:@"alipay"]) {
-        [self showMoubaoSureView];
         _submitButton.enabled = YES;
+        [self showMoubaoSureView];
     }
 }
 
@@ -717,6 +724,7 @@
         _moubaoSureView.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3].CGColor;
         [_moubaoSureView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(moubaoSureViewTap)]];
     }
+    _moubaoSureView.hidden = NO;
     [self.view addSubview:_moubaoSureView];
     [_moubaoSureView removeAllSubviews];
     
@@ -795,7 +803,12 @@
         [param setObject:[_priceLabel.text substringFromIndex:1] forKey:@"money"];
     }
     [param setObject:@"ios" forKey:@"from"];
+    NSString *name = _moubaoSureNameTextField.text;
     [self moubaoSureViewTap];
+    if (!SWNOTEmptyStr(name)) {
+        [self showHudInView:self.view showHint:@"请输入中文姓名"];
+        return;
+    }
     [Net_API requestPOSTWithURLStr:[Net_Path incomeForMoubao] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         _submitButton.enabled = YES;
         if (SWNOTEmptyDictionary(responseObject)) {

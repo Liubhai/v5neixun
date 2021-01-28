@@ -151,16 +151,17 @@
 }
 
 - (void)searchInstitution {
+    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionSearchNet] WithAuthorization:nil paramDic:@{@"title":_institutionSearch.text} finish:^(id  _Nonnull responseObject) {
         
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([responseObject objectForKey:@"code"]) {
                 [_searchDataSource removeAllObjects];
                 [_searchDataSource addObjectsFromArray:responseObject[@"data"]];
+                [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_searchDataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
                 [_tableView reloadData];
             }
         }
-        
     } enError:^(NSError * _Nonnull error) {
         
     }];
