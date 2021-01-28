@@ -572,6 +572,10 @@
         if (!SWNOTEmptyDictionary(_teacherInfoDict)) {
             return;
         }
+        if (_popTextView.text.length>wordMax) {
+            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"内容不能超过%@字",@(wordMax)]];
+            return;
+        }
         [Net_API requestPOSTWithURLStr:[Net_Path askQuestionNet] WithAuthorization:nil paramDic:@{@"recive_user_id":[NSString stringWithFormat:@"%@",_teacherInfoDict[@"user_id"]],@"content":_popTextView.text} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
