@@ -45,7 +45,32 @@
     examTitle.text = @"这里显示考试的标题";
     [_mainScrollView addSubview:examTitle];
     
-//    UIView *finishView = [[UIView alloc] initWithFrame:CGRectMake(<#CGFloat x#>, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)]
+    UIView *finishView = [[UIView alloc] initWithFrame:CGRectMake(15, examTitle.bottom + 14, 14, 14)];
+    finishView.backgroundColor = EdlineV5_Color.themeColor;
+    finishView.layer.masksToBounds = YES;
+    finishView.layer.cornerRadius = 2;
+    [_mainScrollView addSubview:finishView];
+    
+    UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(finishView.right + 2.5, 0, 32 + 26, 18.5)];
+    finishLabel.text = @"已答";
+    finishLabel.font = SYSTEMFONT(13);
+    finishLabel.textColor = EdlineV5_Color.textFirstColor;
+    finishLabel.centerY = finishView.centerY;
+    [_mainScrollView addSubview:finishLabel];
+    
+    UIView *unfinishView = [[UIView alloc] initWithFrame:CGRectMake(finishLabel.right, examTitle.bottom + 14, 14, 14)];
+    unfinishView.layer.masksToBounds = YES;
+    unfinishView.layer.cornerRadius = 2;
+    unfinishView.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+    unfinishView.layer.borderWidth = 1;
+    [_mainScrollView addSubview:unfinishView];
+    
+    UILabel *unfinishLabel = [[UILabel alloc] initWithFrame:CGRectMake(unfinishView.right + 2.5, 0, 32 + 26, 18.5)];
+    unfinishLabel.text = @"未答";
+    unfinishLabel.font = SYSTEMFONT(13);
+    unfinishLabel.textColor = EdlineV5_Color.textFirstColor;
+    unfinishLabel.centerY = finishView.centerY;
+    [_mainScrollView addSubview:unfinishLabel];
 }
 
 - (void)makeBottomView {
@@ -77,6 +102,10 @@
 }
 
 - (void)resetButtonClick {
+}
+
+- (void)makeExamSheetUI {
+    
 }
 
 @end
