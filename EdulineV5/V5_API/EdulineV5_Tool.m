@@ -655,6 +655,14 @@ static EdulineV5_Tool *_sharedInstance;
             valueString = @"/a";
         } else {
             valueString  = [NSString stringWithFormat:@"%@",[dict objectForKey:sortsing]];
+//            if ([pass isKindOfClass:[NSString class]]) {
+//                NSString *pass = [NSString stringWithFormat:@"%@",[dict objectForKey:sortsing]];
+//                if (pass.length) {
+//                    if ([[pass substringWithRange:NSMakeRange(0, 1)] isEqualToString:@"["] && [[pass substringWithRange:NSMakeRange(pass.length - 1, 1)] isEqualToString:@"]"]) {
+//                        valueString = @"/a";
+//                    }
+//                }
+//            }
         }
         if(valueString.length>0){
             [valueArray addObject:valueString];
@@ -670,6 +678,7 @@ static EdulineV5_Tool *_sharedInstance;
     //最终参数
     NSLog(@"tempStr:%@",tempStr);
     tempStr = [tempStr stringByURLEncode];
+    tempStr = [tempStr stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
 //    tempStr = [tempStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
     //md5加密
     // NSLog(@"tempStr:%@",[self getmd5WithString:tempStr]);
