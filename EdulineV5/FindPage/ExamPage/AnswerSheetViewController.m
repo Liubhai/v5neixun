@@ -8,6 +8,7 @@
 
 #import "AnswerSheetViewController.h"
 #import "V5_Constant.h"
+#import "ExamSheetModel.h"
 
 @interface AnswerSheetViewController ()
 
@@ -16,6 +17,8 @@
 @property (strong, nonatomic) UIView *bottomView;
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
+
+@property (strong, nonatomic) NSMutableArray *examArray;
 
 @end
 
@@ -30,17 +33,25 @@
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     
     [_leftButton setImage:Image(@"nav_sheetclose_icon") forState:0];
+    
+    _examArray = [NSMutableArray new];
  
     _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - (MACRO_UI_UPHEIGHT + 44 + MACRO_UI_SAFEAREA))];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_mainScrollView];
+    
+    [self makeTopUI];
+    
+    [self makeTestData];
+    
+    [self makeExamSheetUI];
     
     [self makeBottomView];
 }
 
 - (void)makeTopUI {
     UILabel *examTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, MainScreenWidth - 30, 22)];
-    examTitle.font = SYSTEMFONT(16);
+    examTitle.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];
     examTitle.textColor = EdlineV5_Color.textFirstColor;
     examTitle.text = @"这里显示考试的标题";
     [_mainScrollView addSubview:examTitle];
@@ -104,8 +115,100 @@
 - (void)resetButtonClick {
 }
 
+- (void)makeTestData {
+    int x = arc4random() % 10;
+    for (int i = 0; i < x ; i++) {
+        ExamSheetModel *sheetModel = [[ExamSheetModel alloc] init];
+        sheetModel.title = [NSString stringWithFormat:@"题型名字%@",@(arc4random() % 100)];
+        int Y = arc4random() % 10;
+        NSMutableArray *pass = [NSMutableArray new];
+        for (int j = 0; j < Y; j++) {
+            ExamModel *model = [[ExamModel alloc] init];
+            model.exam_id = [NSString stringWithFormat:@"%@",@(arc4random() % Y)];
+            model.selected = (j % 2 == 0) ? YES : NO;
+            [pass addObject:model];
+        }
+        sheetModel.child = [NSMutableArray arrayWithArray:pass];
+        [_examArray addObject:sheetModel];
+    }
+}
+
 - (void)makeExamSheetUI {
     
+    CGFloat hotYY = 15 + 22 + 14 + 14 + 20;
+    if (SWNOTEmptyArr(_examArray)) {
+        for (int j = 0; j < _examArray.count; j++) {
+            UIView *hotView = [[UIView alloc] initWithFrame:CGRectMake(0, hotYY, MainScreenWidth, 0)];
+            hotView.backgroundColor = [UIColor whiteColor];
+            hotView.tag = 10 + j;
+            [_mainScrollView addSubview:hotView];
+            
+            UILabel *typeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
+            typeTitleLabel.font = SYSTEMFONT(14);
+            typeTitleLabel.textColor = EdlineV5_Color.textFirstColor;
+            typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamSheetModel *)_examArray[j]).title];
+            [hotView addSubview:typeTitleLabel];
+            NSMutableArray *childArray = [NSMutableArray new];
+            if (SWNOTEmptyArr(((ExamSheetModel *)_examArray[j]).child)) {
+                [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamSheetModel *)_examArray[j]).child]];
+            }
+            if (childArray.count) {
+                CGFloat topSpacee = 15.0;
+                CGFloat rightSpace = 15.0;
+                CGFloat XX = 15.0;
+                CGFloat YY = 12.0 + typeTitleLabel.bottom;
+                CGFloat btnHeight = 36.0;
+                for (int i = 0; i<childArray.count; i++) {
+                    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, btnHeight, btnHeight)];
+                    btn.tag = 400 + i;
+                    [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+                    [btn setTitle:[NSString stringWithFormat:@"%@",((ExamModel *)childArray[i]).exam_id] forState:0];
+                    btn.titleLabel.font = SYSTEMFONT(14);
+                    [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+                    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+                    btn.backgroundColor = EdlineV5_Color.backColor;
+                    btn.selected = ((ExamModel *)childArray[i]).selected;
+                    btn.layer.masksToBounds = YES;
+                    btn.layer.cornerRadius = 4.0;
+                    if (btn.selected) {
+                        btn.backgroundColor = EdlineV5_Color.themeColor;
+                    } else {
+                        btn.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+                        btn.layer.borderWidth = 1.0;
+                        btn.backgroundColor = [UIColor whiteColor];
+                    }
+                    if (btn.right > (MainScreenWidth - 15)) {
+                        XX = 15.0;
+                        YY = YY + topSpacee + btnHeight;
+                    }
+                    btn.frame = CGRectMake(XX, YY, btnHeight, btnHeight);
+                    XX = btn.right + rightSpace;
+                    if (i == childArray.count - 1) {
+                        [hotView setHeight:btn.bottom];
+                    }
+                    [hotView addSubview:btn];
+                }
+            } else {
+                [hotView setHeight:typeTitleLabel.bottom];
+            }
+            hotYY = hotView.bottom + 20;
+            if (j == _examArray.count - 1) {
+                _mainScrollView.contentSize = CGSizeMake(0, hotYY);
+            }
+        }
+    } else {
+        _mainScrollView.contentSize = CGSizeMake(0, hotYY);
+    }
+}
+
+- (void)thirdBtnClick:(UIButton *)sender {
+    UIView *view = (UIView *)sender.superview;
+    
+    ExamSheetModel *secondModel = (ExamSheetModel *)_examArray[view.tag - 10];
+    
+    NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
+    
+    ExamModel *thirdModel = (ExamModel *)passThird[sender.tag - 400];
 }
 
 @end

@@ -28,6 +28,7 @@
 		782AC43D25BC1DFD009130F9 /* ZhuangXiangModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */; };
 		782AC44025BE96CB009130F9 /* ExamPointModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43F25BE96CB009130F9 /* ExamPointModel.m */; };
 		782AC44325BFEDB8009130F9 /* AnswerSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */; };
+		782AC44925C3E7BD009130F9 /* ExamSheetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44825C3E7BC009130F9 /* ExamSheetModel.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -622,6 +623,8 @@
 		782AC43F25BE96CB009130F9 /* ExamPointModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPointModel.m; sourceTree = "<group>"; };
 		782AC44125BFEDB8009130F9 /* AnswerSheetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnswerSheetViewController.h; sourceTree = "<group>"; };
 		782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnswerSheetViewController.m; sourceTree = "<group>"; };
+		782AC44725C3E7BC009130F9 /* ExamSheetModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamSheetModel.h; sourceTree = "<group>"; };
+		782AC44825C3E7BC009130F9 /* ExamSheetModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamSheetModel.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1937,6 +1940,8 @@
 				782AC43C25BC1DFD009130F9 /* ZhuangXiangModelManager.m */,
 				782AC43E25BE96CB009130F9 /* ExamPointModel.h */,
 				782AC43F25BE96CB009130F9 /* ExamPointModel.m */,
+				782AC44725C3E7BC009130F9 /* ExamSheetModel.h */,
+				782AC44825C3E7BC009130F9 /* ExamSheetModel.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4505,6 +4510,7 @@
 				78A16C882452F7C100391430 /* NetworkClock.m in Sources */,
 				78C54975241B642B00A33FC4 /* AlivcPushBeautyParams.m in Sources */,
 				787F1E66247381A400108F7B /* AVCSlider.m in Sources */,
+				782AC44925C3E7BD009130F9 /* ExamSheetModel.m in Sources */,
 				78795721240FA3840013F95F /* ZLCameraViewController.m in Sources */,
 				78C5487E2418CC7400A33FC4 /* TYAttributedLabel.m in Sources */,
 				78D980B224BD48A6000DE0E4 /* MyTeachingRootVC.m in Sources */,
