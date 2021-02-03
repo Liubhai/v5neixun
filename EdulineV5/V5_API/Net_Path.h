@@ -430,6 +430,9 @@ struct NetWorkUrl {
 
 /** 分享内容接口 */
 + (NSString *)shareContentInfoNet;
+
+/** 考试主页面板块儿接口  */
++ (NSString *)examMainPageNet;
 @end
 
 NS_ASSUME_NONNULL_END

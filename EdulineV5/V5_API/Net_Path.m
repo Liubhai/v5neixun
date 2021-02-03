@@ -549,4 +549,9 @@
     return [Net_Path fullPath:@"share/info" repalce:@"" byReplece:@""];
 }
 
+/** 考试主页面板块儿接口 */
++ (NSString *)examMainPageNet {
+    return [Net_Path fullPath:@"exam/module/list" repalce:@"" byReplece:@""];
+}
+
 @end

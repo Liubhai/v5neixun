@@ -60,8 +60,7 @@
     _typeTitle.centerX = _backImageView.centerX;
     _typeTitle.centerY = _backImageView.centerY + 141 / 2.0;
     
-    _typeIcon.image = Image([info objectForKey:@"image"]);
-//    [_typeIcon sd_setImageWithURL:EdulineUrlString([info objectForKey:@"icon_url"]) placeholderImage:nil];
+    [_typeIcon sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
     _typeTitle.text = [info objectForKey:@"title"];
 }
 

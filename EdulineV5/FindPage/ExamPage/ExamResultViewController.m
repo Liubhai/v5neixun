@@ -188,7 +188,7 @@
     UIView *errorView = [[UIView alloc] initWithFrame:CGRectMake(finishLabel.right, finishView.top, 14, 14)];
     errorView.layer.masksToBounds = YES;
     errorView.layer.cornerRadius = 2;
-    errorView.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+    errorView.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
     errorView.layer.borderWidth = 1;
     [_mainScrollView addSubview:errorView];
     
