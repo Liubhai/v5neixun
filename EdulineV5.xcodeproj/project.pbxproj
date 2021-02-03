@@ -29,6 +29,7 @@
 		782AC44025BE96CB009130F9 /* ExamPointModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC43F25BE96CB009130F9 /* ExamPointModel.m */; };
 		782AC44325BFEDB8009130F9 /* AnswerSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */; };
 		782AC44925C3E7BD009130F9 /* ExamSheetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44825C3E7BC009130F9 /* ExamSheetModel.m */; };
+		782AC44C25CA7063009130F9 /* ExamResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44B25CA7062009130F9 /* ExamResultViewController.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -625,6 +626,8 @@
 		782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnswerSheetViewController.m; sourceTree = "<group>"; };
 		782AC44725C3E7BC009130F9 /* ExamSheetModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamSheetModel.h; sourceTree = "<group>"; };
 		782AC44825C3E7BC009130F9 /* ExamSheetModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamSheetModel.m; sourceTree = "<group>"; };
+		782AC44A25CA7062009130F9 /* ExamResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamResultViewController.h; sourceTree = "<group>"; };
+		782AC44B25CA7062009130F9 /* ExamResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamResultViewController.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -1682,6 +1685,8 @@
 				782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */,
 				782AC44125BFEDB8009130F9 /* AnswerSheetViewController.h */,
 				782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */,
+				782AC44A25CA7062009130F9 /* ExamResultViewController.h */,
+				782AC44B25CA7062009130F9 /* ExamResultViewController.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -4471,6 +4476,7 @@
 				78A16C8D2452F7C100391430 /* TICDevice.m in Sources */,
 				780F9577254FDD810070EB1F /* LiveTeacherView.m in Sources */,
 				7859FE3D24C97B8A006C7D4E /* MYTreeItem.m in Sources */,
+				782AC44C25CA7063009130F9 /* ExamResultViewController.m in Sources */,
 				788E95A8253FE24E0089251E /* OneToOneEducationManager.m in Sources */,
 				780F95C4255912050070EB1F /* LiveStudentView.m in Sources */,
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,
