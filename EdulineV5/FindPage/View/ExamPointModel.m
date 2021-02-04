@@ -23,7 +23,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"cateGoryId"]) {
+    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"cateGoryId"] || [property.name isEqualToString:@"pid"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){

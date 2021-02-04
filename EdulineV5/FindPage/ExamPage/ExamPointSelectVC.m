@@ -11,7 +11,9 @@
 #import "Net_Path.h"
 #import "ExamPointModel.h"
 
-@interface ExamPointSelectVC ()<UIScrollViewDelegate>
+@interface ExamPointSelectVC ()<UIScrollViewDelegate> {
+    NSInteger maxSelectCount;
+}
 
 @property (strong, nonatomic) UIButton *resetButton;//清空筛选
 @property (strong, nonatomic) UIButton *sureButton;//开始学习
@@ -32,6 +34,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    maxSelectCount = 0;
+    
     _firstArray = [NSMutableArray new];
     _secondArray = [NSMutableArray new];
     _thirdArray = [NSMutableArray new];
@@ -39,15 +43,15 @@
     
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
-    _titleLabel.text = @"知识点练习";
+    _titleLabel.text = SWNOTEmptyStr(_examTypeString) ? _examTypeString : @"知识点练习";
     
     _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - (MACRO_UI_UPHEIGHT + 44 + MACRO_UI_SAFEAREA))];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_mainScrollView];
     
-    [self getClassTypeData];
-    
     [self makeBottomView];
+    
+    [self getExamPointListData];
 }
 
 - (void)makeBottomView {
@@ -115,6 +119,10 @@
             [_mainScrollView addSubview:hotView];
             
             NSString *secondTitle = [NSString stringWithFormat:@"%@",((ExamPointModel *)_secondArray[j]).title];//@"热门搜索";
+            if (secondTitle.length>15) {
+                secondTitle = [secondTitle substringWithRange:NSMakeRange(0, 15)];
+                secondTitle = [NSString stringWithFormat:@"%@...",secondTitle];
+            }
             CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(15)].width + 4 + 14;
             UIButton *secondBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 0, secondBtnWidth, 32)];
             secondBtn.tag = 100 + j;
@@ -152,7 +160,12 @@
                     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, 0, btnHeight)];
                     btn.tag = 400 + i;
                     [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-                    [btn setTitle:[NSString stringWithFormat:@"%@",((ExamPointModel *)_thirdArray[i]).title] forState:0];
+                    NSString *btnTitle = [NSString stringWithFormat:@"%@",((ExamPointModel *)_thirdArray[i]).title];
+                    if (btnTitle.length>15) {
+                        btnTitle = [btnTitle substringWithRange:NSMakeRange(0, 15)];
+                        btnTitle = [NSString stringWithFormat:@"%@...",btnTitle];
+                    }
+                    [btn setTitle:btnTitle forState:0];
                     btn.titleLabel.font = SYSTEMFONT(14);
                     [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
                     [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
@@ -199,6 +212,14 @@
 }
 
 - (void)thirdBtnClick:(UIButton *)sender {
+    
+    if (!sender.selected) {
+        if ([self checkSelectCount] >= maxSelectCount) {
+            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"最多选择%@个知识点",@(maxSelectCount)]];
+            return;
+        }
+    }
+    
     UIView *view = (UIView *)sender.superview;
     sender.selected = !sender.selected;
     if (sender.selected) {
@@ -224,6 +245,26 @@
     
     _firstArray = [NSMutableArray arrayWithArray:passSecond];
     [self makeScrollViewSubView:_firstArray];
+    
+    [self changeRightButtonState:[self checkSelectCount] maxCount:maxSelectCount];
+}
+
+- (NSInteger)checkSelectCount {
+    NSMutableArray *teacherCateGory = [NSMutableArray new];
+    for (int i = 0; i<_firstArray.count; i++) {
+        ExamPointModel *model = (ExamPointModel *)_firstArray[i];
+        for (int j = 0; j<model.child.count; j++) {
+            ExamPointModel *secondModel = (ExamPointModel *)model.child[j];
+            if (secondModel.selected) {
+                NSMutableArray *pass = [NSMutableArray new];
+                [pass addObject:model];
+                [pass addObject:secondModel];
+                [teacherCateGory addObject:pass];
+            }
+        }
+    }
+    NSLog(@"已选择知识点分类个数为 = %@ 个",@(teacherCateGory.count));
+    return teacherCateGory.count;
 }
 
 - (void)sureButtonClick {
@@ -260,6 +301,39 @@
         [_firstArray replaceObjectAtIndex:i withObject:model];
     }
     [self makeScrollViewSubView:_firstArray];
+    [self changeRightButtonState:[self checkSelectCount] maxCount:maxSelectCount];
+}
+
+- (void)getExamPointListData {
+    if (SWNOTEmptyStr(_examTypeId)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointListNet] WithAuthorization:nil paramDic:@{@"module_id":_examTypeId} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    // 改变右上角按钮状态
+                    maxSelectCount = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"point_limit"]] integerValue];
+                    [self changeRightButtonState:0 maxCount:maxSelectCount];
+                    
+                    [_firstArray removeAllObjects];
+                    [_firstArray addObjectsFromArray:[NSArray arrayWithArray:[ExamPointModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"point_tree"]]]];
+                    if (SWNOTEmptyArr(_firstArray)) {
+                        [self makeScrollViewSubView:_firstArray];
+                    }
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+        }];
+    }
+}
+
+- (void)changeRightButtonState:(NSInteger)selectCount maxCount:(NSInteger)maxCount {
+    _rightButton.hidden = NO;
+    [_rightButton setImage:nil forState:0];
+    NSString *maxcount = [NSString stringWithFormat:@"%@",@(maxSelectCount)];
+    NSString *rightTitle = [NSString stringWithFormat:@"%@/%@",@(selectCount),maxcount];
+    NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:rightTitle];
+    [att addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.themeColor} range:NSMakeRange(0, rightTitle.length - maxcount.length)];
+    [att addAttributes:@{NSForegroundColorAttributeName:HEXCOLOR(0xB7BAC1)} range:NSMakeRange(rightTitle.length - maxcount.length, maxcount.length)];
+    [_rightButton setAttributedTitle:[[NSAttributedString alloc] initWithAttributedString:att] forState:0];
 }
 
 /*

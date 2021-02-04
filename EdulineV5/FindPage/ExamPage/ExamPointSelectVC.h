@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ExamPointSelectVC : BaseViewController
 
+@property (strong, nonatomic) NSString *examTypeString;
+@property (strong, nonatomic) NSString *examTypeId;
+
 @end
 
 NS_ASSUME_NONNULL_END

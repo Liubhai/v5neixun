@@ -554,4 +554,9 @@
     return [Net_Path fullPath:@"exam/module/list" repalce:@"" byReplece:@""];
 }
 
+/** 知识点列表 */
++ (NSString *)examPointListNet {
+    return [Net_Path fullPath:@"exam/point/category" repalce:@"" byReplece:@""];
+}
+
 @end

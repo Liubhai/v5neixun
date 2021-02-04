@@ -433,6 +433,10 @@ struct NetWorkUrl {
 
 /** 考试主页面板块儿接口  */
 + (NSString *)examMainPageNet;
+
+/** 知识点列表 */
++ (NSString *)examPointListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

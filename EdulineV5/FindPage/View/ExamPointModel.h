@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ExamPointModel : NSObject
 
 @property (strong, nonatomic) NSString *cateGoryId;
+@property (strong, nonatomic) NSString *pid;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSArray *child;
 @property (assign, nonatomic) BOOL selected;
