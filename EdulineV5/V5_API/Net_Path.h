@@ -437,6 +437,9 @@ struct NetWorkUrl {
 /** 知识点列表 */
 + (NSString *)examPointListNet;
 
+/** 专项列表 */
++ (NSString *)specialExamList;
+
 @end
 
 NS_ASSUME_NONNULL_END

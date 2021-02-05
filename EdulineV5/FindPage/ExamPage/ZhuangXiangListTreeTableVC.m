@@ -23,6 +23,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
+@property (strong, nonatomic) NSMutableArray *originArray;;
 
 @end
 
@@ -37,9 +38,9 @@
     [self makeTopSearch];
     
     _dataSource = [NSMutableArray new];
+    _originArray = [NSMutableArray new];
     page = 1;
     [self makeTableView];
-    [self makeData];
 }
 
 - (void)makeTopSearch {
@@ -70,12 +71,12 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getZhuanXiangListData)];
 //    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
 //    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -180,78 +181,114 @@
     return YES;
 }
 
-- (void)makeData {
+- (void)getZhuangXiangListArray:(ZhuanXiangModel *)model indepath:(NSIndexPath *)path {
     
-    ZhuanXiangModel *model11 = [[ZhuanXiangModel alloc] init];
-    model11.course_id = @"11";
-    model11.price = @"11.00";
-    model11.is_buy = YES;
-    model11.level = 0;
-    model11.title = @"普通课程试卷汇总";
-    model11.orderNo = @"0";
+    // 思路 相当于获取总数据里面对应 model 的下级 只是下级
+    NSMutableArray *childArray = [NSMutableArray new];
+    for (int i = 0; i<_originArray.count; i++) {
+        ZhuanXiangModel *model1 = _originArray[i];
+        if ([model1.course_id isEqualToString:model.course_id]) {
+            [childArray addObjectsFromArray:model1.child];
+            break;
+        } else {
+            for (int j = 0; j<model1.child.count; j++) {
+                ZhuanXiangModel *model2 = model1.child[j];
+                if ([model2.course_id isEqualToString:model.course_id]) {
+                    [childArray addObjectsFromArray:model2.child];
+                    break;
+                } else {
+                    for (int k = 0; k<model2.child.count; k++) {
+                        ZhuanXiangModel *model3 = model2.child[k];
+                        if ([model3.course_id isEqualToString:model3.course_id]) {
+                            [childArray addObjectsFromArray:model3.child];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
     
-    ZhuanXiangModel *model12 = [[ZhuanXiangModel alloc] init];
-    model12.course_id = @"12";
-    model12.price = @"12.00";
-    model12.is_buy = YES;
-    model12.level = 0;
-    model12.title = @"专项课程试卷汇总之专项课程列表";
-    model12.orderNo = @"1";
-    
-    NSMutableSet *items = [NSMutableSet set];
-    [items addObject:model11];
-    [items addObject:model12];
-//    [items addObject:model21];
-//    [items addObject:model31];
-//    [items addObject:model32];
-    
-    ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
-    _manager = manager;
+    NSMutableArray *items = [NSMutableArray new];
+    [childArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
+        obj.parentID = model.course_id;
+        obj.parentItem = model;
+        obj.level = model.level + 1;
+        [items addObject:obj];
+    }];
+    model.child = items;
+    [_manager.showItems insertObjects:items atIndex:path.row + 1];
     [_tableView reloadData];
+    canSelect = YES;
 }
 
-- (void)getZhuangXiangListArray:(ZhuanXiangModel *)model indepath:(NSIndexPath *)path {
-    if (model.level == 0) {
-        ZhuanXiangModel *model21 = [[ZhuanXiangModel alloc] init];
-        model21.course_id = @"21";
-        model21.price = @"31.00";
-        model21.is_buy = YES;
-        model21.level = 1;
-        model21.title = @"普通课程试卷";
-        model21.orderNo = @"0";
-        model21.parentItem = model;
-        model21.parentID = model.course_id;
-        
-        model.childItems = [NSMutableArray arrayWithArray:@[model21]];
-        [_manager.showItems insertObjects:@[model21] atIndex:path.row + 1];
-        [_tableView reloadData];
-        canSelect = YES;
-        
-    } else {
-        ZhuanXiangModel *model31 = [[ZhuanXiangModel alloc] init];
-        model31.course_id = @"31";
-        model31.price = @"31.00";
-        model31.is_buy = YES;
-        model31.level = 2;
-        model31.title = @"数学";
-        model31.orderNo = @"0";
-        model31.parentItem = model;
-        model31.parentID = model.course_id;
-
-        ZhuanXiangModel *model32 = [[ZhuanXiangModel alloc] init];
-        model32.course_id = @"32";
-        model32.price = @"32.00";
-        model32.is_buy = NO;
-        model32.level = 2;
-        model32.title = @"语文";
-        model32.orderNo = @"1";
-        model32.parentItem = model;
-        model32.parentID = model.course_id;
-        model.childItems = [NSMutableArray arrayWithArray:@[model31,model32]];
-        
-        [_manager.showItems insertObjects:@[model31,model32] atIndex:path.row + 1];
-        [_tableView reloadData];
-        canSelect = YES;
+- (void)getZhuanXiangListData {
+    if (SWNOTEmptyStr(_examTypeId)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path specialExamList] WithAuthorization:nil paramDic:@{@"module_id":_examTypeId} finish:^(id  _Nonnull responseObject) {
+            [_tableView.mj_header endRefreshing];
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [_dataSource removeAllObjects];
+                    [_originArray removeAllObjects];
+                    NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                    
+                    for (ZhuanXiangModel *object in pass) {
+                        object.isLeaf = YES;
+                        object.level = 0;
+                        [_dataSource addObject:object];
+                        [_originArray addObject:object];
+                    }
+                    NSMutableSet *items = [NSMutableSet set];
+                    [_dataSource enumerateObjectsUsingBlock:^(ZhuanXiangModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        
+                        obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
+                        obj.parentID = @"";
+                        obj.parentItem = nil;
+                        [items addObject:obj];
+//                        NSArray *zhangArray = obj.child;
+//
+//                        [zhangArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *zhang, NSUInteger idx, BOOL * _Nonnull stop) {
+//
+//                            zhang.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
+//                            zhang.parentID = obj.course_id;
+//                            zhang.parentItem = obj;
+//                            zhang.level = 1;
+//                            [items addObject:zhang];
+//                            NSArray *jieArray = obj.child;
+//
+//                            [jieArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *jie, NSUInteger idx, BOOL * _Nonnull stop) {
+//
+//                                jie.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
+//                                jie.parentID = zhang.course_id;
+//                                jie.parentItem = zhang;
+//                                jie.level = 2;
+//                                [items addObject:jie];
+//                                NSArray *keshiArray = jie.child;
+//
+//                                [keshiArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *keshi, NSUInteger idx, BOOL * _Nonnull stop) {
+//
+//                                    keshi.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
+//                                    keshi.parentID = jie.course_id;
+//                                    keshi.parentItem = jie;
+//                                    keshi.level = 3;
+//                                    [items addObject:keshi];
+//
+//                                }];
+//                            }];
+//                        }];
+                        
+                    }];
+                    
+                    ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
+                    _manager = manager;
+                    
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [_tableView.mj_header endRefreshing];
+        }];
     }
 }
 

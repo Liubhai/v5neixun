@@ -97,12 +97,13 @@
         TaojuanListViewController *vc = [[TaojuanListViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"2"]) {
-//        ZhuangXiangListTreeTableVC *vc = [[ZhuangXiangListTreeTableVC alloc] init];
-//        [self.navigationController pushViewController:vc animated:YES];
+        ZhuangXiangListTreeTableVC *vc = [[ZhuangXiangListTreeTableVC alloc] init];
+        vc.examTypeId = examTheme;
+        [self.navigationController pushViewController:vc animated:YES];
         
 //        AnswerSheetViewController  ExamResultViewController
-        AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+//        AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
+//        [self.navigationController pushViewController:vc animated:YES];
         
     }
 }

@@ -11,14 +11,19 @@
 
 @implementation ZhuanXiangModel
 
-//+(NSDictionary *)mj_replacedKeyFromPropertyName
-//{
-//    return @{@"classHourId":@"id"};
-//}
++(NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"course_id":@"id"};
+}
+
++(NSDictionary *)mj_objectClassInArray
+{
+    return @{@"child":@"ZhuanXiangModel"};
+}
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"course_id"]) {
+    if ([property.name isEqualToString:@"course_id"] || [property.name isEqualToString:@"id"] || [property.name isEqualToString:@"topic_count"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){

@@ -117,7 +117,7 @@
         
         if ([model.price floatValue]>0) {
             _priceLabel.hidden = NO;
-            if (model.is_buy) {
+            if (model.has_bought) {
                 _getOrFreeIamgeView.hidden = NO;
                 _getOrFreeIamgeView.image = Image(@"exam_yigouamai_icon");
             } else {
@@ -125,7 +125,7 @@
             }
         } else {
             _priceLabel.hidden = YES;
-            if (model.is_buy) {
+            if (model.has_bought) {
                 _getOrFreeIamgeView.hidden = YES;
                 _getOrFreeIamgeView.image = Image(@"exam_yigouamai_icon");
             } else {

@@ -65,8 +65,8 @@
         ZhuanXiangModel *parent = self.itemsMap[item.parentID];
         if (parent) {
             item.parentItem = parent;
-            if (![parent.childItems containsObject:item]) {
-                [parent.childItems addObject:item];
+            if (![parent.child containsObject:item]) {
+                [parent.child addObject:item];
             }
         } else {
             [topItems addObject:item];
@@ -80,7 +80,7 @@
     
     // 所有 item 排序
     for (ZhuanXiangModel *item in self.tmpItems) {
-        item.childItems = [item.childItems sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
+        item.child = [item.child sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
             return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
     }
@@ -123,11 +123,11 @@
         [showItems addObject:item];
         
         item.isExpand = !(item.level == level);
-        item.childItems = [item.childItems sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
+        item.child = [item.child sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
             return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
-        for (ZhuanXiangModel *childItem in item.childItems) {
+        for (ZhuanXiangModel *childItem in item.child) {
             [self addItem:childItem toShowItems:showItems andAllowShowLevel:level];
         }
     }
@@ -149,7 +149,7 @@
     NSMutableArray *tmpArray = [NSMutableArray array];
     // 如果展开
     if (isExpand) {
-        for (ZhuanXiangModel *tmpItem in item.childItems) {
+        for (ZhuanXiangModel *tmpItem in item.child) {
             [self addItem:tmpItem toTmpItems:tmpArray];
         }
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange([self.showItems indexOfObject:item] + 1, tmpArray.count)];
@@ -184,11 +184,11 @@
     
     if (item.isExpand) {
         
-        item.childItems = [item.childItems sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
+        item.child = [item.child sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
             return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
-        for (ZhuanXiangModel *tmpItem in item.childItems) {
+        for (ZhuanXiangModel *tmpItem in item.child) {
             [self addItem:tmpItem toTmpItems:tmpItems];
         }
     }
@@ -245,13 +245,13 @@
     
     [showItems addObject:item];
     
-    if (item.childItems.count) {
+    if (item.child.count) {
         
-        item.childItems = [item.childItems sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
+        item.child = [item.child sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
             return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
-        for (ZhuanXiangModel *childItem in item.childItems) {
+        for (ZhuanXiangModel *childItem in item.child) {
             if (item.isExpand) {
                 [self addItem:childItem toShowItems:showItems];
             }

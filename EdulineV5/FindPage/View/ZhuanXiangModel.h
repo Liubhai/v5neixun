@@ -14,9 +14,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ZhuanXiangModel : NSObject
 
+
+//"id": 2,
+//"title": "二级1",
+//"level": 2,
+//"topic_count": 3,
+//"price": "0.00",
+//"child":
+
 @property (strong, nonatomic) NSString *course_id;
 @property (nonatomic, weak)   ZhuanXiangModel *parentItem;
-@property (nonatomic, strong) NSMutableArray<ZhuanXiangModel *> *childItems;
+@property (nonatomic, strong) NSMutableArray<ZhuanXiangModel *> *child;
 @property (nonatomic, assign) BOOL isLeaf;       // 是否叶子节点
 @property (nonatomic, assign) NSUInteger level;
 @property (nonatomic, assign) BOOL isExpand;
@@ -26,7 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *price;
-@property (assign, nonatomic) BOOL is_buy;
+@property (assign, nonatomic) BOOL has_bought;
+@property (strong, nonatomic) NSString *topic_count;
 
 @end
 

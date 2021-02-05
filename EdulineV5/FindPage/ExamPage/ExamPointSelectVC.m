@@ -282,10 +282,10 @@
         }
     }
     NSLog(@"已选择知识点分类个数为 = %@ 个",@(teacherCateGory.count));
-//    if (_delegate && [_delegate respondsToSelector:@selector(chooseCategoryArray:)]) {
-//        [_delegate chooseCategoryArray:teacherCateGory];
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }
+    if (teacherCateGory.count<=0) {
+        [self showHudInView:self.view showHint:@"请选择知识点"];
+        return;
+    }
 }
 
 - (void)resetButtonClick {

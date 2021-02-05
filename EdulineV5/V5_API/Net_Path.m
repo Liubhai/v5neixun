@@ -559,4 +559,9 @@
     return [Net_Path fullPath:@"exam/point/category" repalce:@"" byReplece:@""];
 }
 
+/** 专项练习列表 */
++ (NSString *)specialExamList {
+    return [Net_Path fullPath:@"exam/special/list" repalce:@"" byReplece:@""];
+}
+
 @end
