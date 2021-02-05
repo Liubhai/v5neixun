@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7879560C240DE7A50013F95F"
-               BuildableName = "eduline&#x7f51;&#x6821;.app"
+               BuildableName = "Eduline&#x7f51;&#x6821;.app"
                BlueprintName = "EdulineV5"
                ReferencedContainer = "container:EdulineV5.xcodeproj">
             </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7879560C240DE7A50013F95F"
-            BuildableName = "eduline&#x7f51;&#x6821;.app"
+            BuildableName = "Eduline&#x7f51;&#x6821;.app"
             BlueprintName = "EdulineV5"
             ReferencedContainer = "container:EdulineV5.xcodeproj">
          </BuildableReference>
@@ -81,7 +81,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7879560C240DE7A50013F95F"
-            BuildableName = "eduline&#x7f51;&#x6821;.app"
+            BuildableName = "Eduline&#x7f51;&#x6821;.app"
             BlueprintName = "EdulineV5"
             ReferencedContainer = "container:EdulineV5.xcodeproj">
          </BuildableReference>

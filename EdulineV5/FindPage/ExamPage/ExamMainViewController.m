@@ -42,7 +42,7 @@
     [self makeCollectionView];
     _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getCourseMainList)];
     _collectionView.mj_footer.hidden = YES;
-//    [_collectionView.mj_header beginRefreshing];
+    [_collectionView.mj_header beginRefreshing];
     [_collectionView reloadData];
     [EdulineV5_Tool adapterOfIOS11With:_collectionView];
 }
@@ -90,6 +90,8 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"1"]) {
         ExamPointSelectVC *vc = [[ExamPointSelectVC alloc] init];
+        vc.examTypeString = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
+        vc.examTypeId = examTheme;
         [self.navigationController pushViewController:vc animated:YES];
     } else if (([examTheme isEqualToString:@"4"])) {
         TaojuanListViewController *vc = [[TaojuanListViewController alloc] init];
