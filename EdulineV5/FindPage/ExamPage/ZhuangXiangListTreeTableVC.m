@@ -23,7 +23,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
-@property (strong, nonatomic) NSMutableArray *originArray;;
+@property (strong, nonatomic) NSDictionary *originDict;
 
 @end
 
@@ -38,7 +38,7 @@
     [self makeTopSearch];
     
     _dataSource = [NSMutableArray new];
-    _originArray = [NSMutableArray new];
+    _originDict = [NSDictionary new];
     page = 1;
     [self makeTableView];
 }
@@ -185,9 +185,14 @@
     
     // 思路 相当于获取总数据里面对应 model 的下级 只是下级
     NSMutableArray *childArray = [NSMutableArray new];
-    for (int i = 0; i<_originArray.count; i++) {
-        ZhuanXiangModel *model1 = _originArray[i];
+    NSMutableArray *originPassArray = [NSMutableArray new];
+    [originPassArray addObjectsFromArray:[NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[_originDict objectForKey:@"data"]]]];
+    for (int i = 0; i<originPassArray.count; i++) {
+        ZhuanXiangModel *model1 = originPassArray[i];
         if ([model1.course_id isEqualToString:model.course_id]) {
+            if (model1.child) {
+                NSLog(@"当前点击的标题 %@ , 下级的等级是%@",model1.title,@(((ZhuanXiangModel *)model1.child[0]).level));
+            }
             [childArray addObjectsFromArray:model1.child];
             break;
         } else {
@@ -214,7 +219,7 @@
         obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
         obj.parentID = model.course_id;
         obj.parentItem = model;
-        obj.level = model.level + 1;
+        obj.level = obj.level - 1;
         [items addObject:obj];
     }];
     model.child = items;
@@ -230,14 +235,12 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_dataSource removeAllObjects];
-                    [_originArray removeAllObjects];
                     NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
-                    
+                    _originDict = [NSDictionary dictionaryWithDictionary:responseObject];
                     for (ZhuanXiangModel *object in pass) {
                         object.isLeaf = YES;
                         object.level = 0;
                         [_dataSource addObject:object];
-                        [_originArray addObject:object];
                     }
                     NSMutableSet *items = [NSMutableSet set];
                     [_dataSource enumerateObjectsUsingBlock:^(ZhuanXiangModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {

@@ -106,6 +106,8 @@
     _titleLabel.text = model.title;
     _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,model.price];
     
+    [_jiantouImageView setWidth:13];
+    
     if (model.level == 0) {
         [_jiantouImageView setLeft:15];
         _jiantouImageView.hidden = NO;
@@ -133,8 +135,13 @@
                 _getOrFreeIamgeView.image = Image(@"exam_free_icon");
             }
         }
-        
-        _titleLabel.frame = CGRectMake(_getOrFreeIamgeView.hidden ? _jiantouImageView.right + 4 : _getOrFreeIamgeView.right + 4, 15, MainScreenWidth - 15 - (_getOrFreeIamgeView.hidden ? _jiantouImageView.right + 4 : _getOrFreeIamgeView.right + 4), 20);
+        if (!SWNOTEmptyArr(model.child)) {
+            [_jiantouImageView setWidth:0];
+            _jiantouImageView.hidden = YES;
+        }
+        _getOrFreeIamgeView.frame = CGRectMake(SWNOTEmptyArr(model.child) ? _jiantouImageView.right + 2 : _jiantouImageView.right, 0, 36, 16);
+        _getOrFreeIamgeView.centerY = _titleLabel.centerY;
+        _titleLabel.frame = CGRectMake(_getOrFreeIamgeView.hidden ? _jiantouImageView.right + (SWNOTEmptyArr(model.child)?4:0) : _getOrFreeIamgeView.right + 4, 15, MainScreenWidth - 15 - (_getOrFreeIamgeView.hidden ? _jiantouImageView.right + (SWNOTEmptyArr(model.child)?4:0) : _getOrFreeIamgeView.right + 4), 20);
         
     } else if (model.level == 1) {
         [_jiantouImageView setLeft:33];
@@ -145,7 +152,12 @@
         _getOrExamBtn.hidden = YES;
         _doExamButton.hidden = NO;
         
-        _titleLabel.frame = CGRectMake(_jiantouImageView.right + 4, 15, MainScreenWidth - 15 - (_jiantouImageView.right + 4), 20);
+        if (!SWNOTEmptyArr(model.child)) {
+            [_jiantouImageView setWidth:0];
+            _jiantouImageView.hidden = YES;
+        }
+        
+        _titleLabel.frame = CGRectMake(_jiantouImageView.right + (SWNOTEmptyArr(model.child)?4:0), 15, MainScreenWidth - 15 - (_jiantouImageView.right + (SWNOTEmptyArr(model.child)?4:0)), 20);
         
     } else if (model.level == 2) {
         [_blueView setLeft:50];
@@ -160,10 +172,15 @@
         
     }
     
-    _learnProgress.frame = CGRectMake(_titleLabel.left, 87 - 22 - 6, 60, 6);
+    if (_getOrFreeIamgeView.hidden) {
+        _learnProgress.frame = CGRectMake(_titleLabel.left, 87 - 22 - 6, 60, 6);
+    } else {
+        _learnProgress.frame = CGRectMake(_getOrFreeIamgeView.left, 87 - 22 - 6, 60, 6);
+    }
     
     _progressLabel.frame = CGRectMake(_learnProgress.right + 5, 0, 100, 14);
     _progressLabel.centerY = _learnProgress.centerY;
+    
     [self refreshArrow];
 }
 
