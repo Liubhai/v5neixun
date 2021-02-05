@@ -564,4 +564,14 @@
     return [Net_Path fullPath:@"exam/special/list" repalce:@"" byReplece:@""];
 }
 
+/** 知识点选择类型后请求练习题号ID列表接口 */
++ (NSString *)examPointIdListNet {
+    return [Net_Path fullPath:@"exam/point/prictice/basic" repalce:@"" byReplece:@""];
+}
+
+/** 通过题号请求知识点题型详情接口 */
++ (NSString *)examPointDetailDataNet {
+    return [Net_Path fullPath:@"exam/point/prictice/topic" repalce:@"" byReplece:@""];
+}
+
 @end

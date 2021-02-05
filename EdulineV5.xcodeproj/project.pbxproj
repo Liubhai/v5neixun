@@ -539,6 +539,7 @@
 		78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */; };
 		78D980BB24BDB737000DE0E4 /* NewClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */; };
 		78EA7F33254A9525004DF369 /* AgoraRtm.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EA7F32254A9524004DF369 /* AgoraRtm.m */; };
+		78ED079425CD3C8A00C30B26 /* ExamDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */; };
 		78F7C5D024EFC2AF0010F1E9 /* XLCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5C824EFC2AD0010F1E9 /* XLCardCell.m */; };
 		78F7C5D124EFC2AF0010F1E9 /* XLCardSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CA24EFC2AD0010F1E9 /* XLCardSwitch.m */; };
 		78F7C5D224EFC2AF0010F1E9 /* XLCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */; };
@@ -1610,6 +1611,8 @@
 		78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseCell.m; sourceTree = "<group>"; };
 		78EA7F31254A9524004DF369 /* AgoraRtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		78EA7F32254A9524004DF369 /* AgoraRtm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
+		78ED079225CD3C8A00C30B26 /* ExamDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamDetailViewController.h; sourceTree = "<group>"; };
+		78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamDetailViewController.m; sourceTree = "<group>"; };
 		78F7C5C824EFC2AD0010F1E9 /* XLCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardCell.m; sourceTree = "<group>"; };
 		78F7C5C924EFC2AD0010F1E9 /* XLCardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardModel.h; sourceTree = "<group>"; };
 		78F7C5CA24EFC2AD0010F1E9 /* XLCardSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardSwitch.m; sourceTree = "<group>"; };
@@ -1687,6 +1690,8 @@
 				782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */,
 				782AC44A25CA7062009130F9 /* ExamResultViewController.h */,
 				782AC44B25CA7062009130F9 /* ExamResultViewController.m */,
+				78ED079225CD3C8A00C30B26 /* ExamDetailViewController.h */,
+				78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -4221,6 +4226,7 @@
 				7879571F240FA3840013F95F /* DALabeledCircularProgressView.m in Sources */,
 				7853BDD3242D964300F096EC /* ShitikaCell.m in Sources */,
 				78795733240FA3840013F95F /* ZLPhotoPickerAssetsViewController.m in Sources */,
+				78ED079425CD3C8A00C30B26 /* ExamDetailViewController.m in Sources */,
 				789DB041246A4436001302B4 /* MycouponsRootVC.m in Sources */,
 				788E9563253FE24E0089251E /* MCStudentListView.m in Sources */,
 				78C549CC241B674E00A33FC4 /* AlivcLocalDatabaseManager.m in Sources */,

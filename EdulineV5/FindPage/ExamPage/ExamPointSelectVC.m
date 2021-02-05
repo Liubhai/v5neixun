@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "ExamPointModel.h"
+#import "ExamDetailViewController.h"
 
 @interface ExamPointSelectVC ()<UIScrollViewDelegate> {
     NSInteger maxSelectCount;
@@ -269,15 +270,20 @@
 
 - (void)sureButtonClick {
     NSMutableArray *teacherCateGory = [NSMutableArray new];
+    NSString *examIds = @"";
     for (int i = 0; i<_firstArray.count; i++) {
         ExamPointModel *model = (ExamPointModel *)_firstArray[i];
         for (int j = 0; j<model.child.count; j++) {
             ExamPointModel *secondModel = (ExamPointModel *)model.child[j];
             if (secondModel.selected) {
                 NSMutableArray *pass = [NSMutableArray new];
-                [pass addObject:model];
                 [pass addObject:secondModel];
                 [teacherCateGory addObject:pass];
+                if (SWNOTEmptyStr(examIds)) {
+                    examIds = [NSString stringWithFormat:@"%@,%@",examIds,secondModel.cateGoryId];
+                } else {
+                    examIds = [NSString stringWithFormat:@"%@",secondModel.cateGoryId];
+                }
             }
         }
     }
@@ -286,6 +292,10 @@
         [self showHudInView:self.view showHint:@"请选择知识点"];
         return;
     }
+    ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+    vc.examIds = examIds;
+    vc.examType = _examTypeId;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)resetButtonClick {

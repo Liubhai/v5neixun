@@ -440,6 +440,10 @@ struct NetWorkUrl {
 /** 专项列表 */
 + (NSString *)specialExamList;
 
++ (NSString *)examPointIdListNet;
+
++ (NSString *)examPointDetailDataNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
