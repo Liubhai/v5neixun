@@ -172,24 +172,31 @@
 }
 
 - (void)rightButtonClick:(id)sender {
-    TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
-    vc.notHiddenNav = NO;
-    vc.hiddenNavDisappear = YES;
-    vc.typeString = @"0";
-    vc.delegate = self;
-    vc.isChange = YES;
-    vc.isDownExpend = YES;
-    vc.tableviewHeight = MainScreenHeight - MACRO_UI_UPHEIGHT - 120;
-    vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
-    vc.view.layer.backgroundColor = [UIColor colorWithRed:172/255.0 green:172/255.0 blue:172/255.0 alpha:1.0].CGColor;
-    [self.view addSubview:vc.view];
-    [self addChildViewController:vc];
+    
+    _rightButton.selected = !_rightButton.selected;
+    if (_rightButton.selected) {
+        TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+        vc.notHiddenNav = NO;
+        vc.hiddenNavDisappear = YES;
+        vc.typeString = @"0";
+        vc.delegate = self;
+        vc.isChange = YES;
+        vc.isDownExpend = YES;
+        vc.tableviewHeight = MainScreenHeight - MACRO_UI_UPHEIGHT - 120;
+        vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
+        vc.view.layer.backgroundColor = [UIColor colorWithRed:172/255.0 green:172/255.0 blue:172/255.0 alpha:1.0].CGColor;
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    }
 }
 
 - (void)chooseCategoryModel:(TeacherCategoryModel *)model {
 //    courseClassifyString = [NSString stringWithFormat:@"%@",model.title];
 //    courseClassifyIdString = [NSString stringWithFormat:@"%@",model.cateGoryId];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    _rightButton.selected = !_rightButton.selected;
 //    [self getCourseMainList];
 }
 
