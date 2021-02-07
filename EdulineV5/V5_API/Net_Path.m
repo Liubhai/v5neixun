@@ -559,11 +559,6 @@
     return [Net_Path fullPath:@"exam/point/category" repalce:@"" byReplece:@""];
 }
 
-/** 专项练习列表 */
-+ (NSString *)specialExamList {
-    return [Net_Path fullPath:@"exam/special/list" repalce:@"" byReplece:@""];
-}
-
 /** 知识点选择类型后请求练习题号ID列表接口 */
 + (NSString *)examPointIdListNet {
     return [Net_Path fullPath:@"exam/point/prictice/basic" repalce:@"" byReplece:@""];
@@ -572,6 +567,31 @@
 /** 通过题号请求知识点题型详情接口 */
 + (NSString *)examPointDetailDataNet {
     return [Net_Path fullPath:@"exam/point/prictice/topic" repalce:@"" byReplece:@""];
+}
+
+/** 知识点提交答案接口 post */
++ (NSString *)examPointPostAnswerNet {
+    return [Net_Path fullPath:@"exam/point/prictice/topic" repalce:@"" byReplece:@""];
+}
+
+/** 专项练习列表 */
++ (NSString *)specialExamList {
+    return [Net_Path fullPath:@"exam/special/list" repalce:@"" byReplece:@""];
+}
+
+/** 专项练习试题题号ID列表接口 */
++ (NSString *)specialExamIdListNet {
+    return [Net_Path fullPath:@"exam/special/base" repalce:@"" byReplece:@""];
+}
+
+/** 专项练习试题详情 通过题号ID请求接口获取 */
++ (NSString *)specialExamDetailDataNet {
+    return [Net_Path fullPath:@"exam/special/topic" repalce:@"" byReplece:@""];
+}
+
+/** 专项练习提交答案接口 post */
++ (NSString *)specialExamPostAnswerNet {
+    return [Net_Path fullPath:@"exam/special/topic" repalce:@"" byReplece:@""];
 }
 
 @end

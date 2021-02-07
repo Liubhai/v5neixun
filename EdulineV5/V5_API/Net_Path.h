@@ -437,12 +437,24 @@ struct NetWorkUrl {
 /** 知识点列表 */
 + (NSString *)examPointListNet;
 
-/** 专项列表 */
-+ (NSString *)specialExamList;
-
 + (NSString *)examPointIdListNet;
 
 + (NSString *)examPointDetailDataNet;
+
+/** 知识点提交答案接口 post */
++ (NSString *)examPointPostAnswerNet;
+
+/** 专项列表 */
++ (NSString *)specialExamList;
+
+/** 专项练习试题题号ID列表接口 */
++ (NSString *)specialExamIdListNet;
+
+/** 专项练习试题详情 通过s题号ID请求接口获取 */
++ (NSString *)specialExamDetailDataNet;
+
+/** 专项练习提交答案接口 post */
++ (NSString *)specialExamPostAnswerNet;
 
 @end
 
