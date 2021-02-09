@@ -14,6 +14,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self makeSubView];
     }
     return self;
@@ -24,6 +25,7 @@
     _selectButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 12 + 7, 20, 20)];
     [_selectButton setImage:Image(@"exam_radio_icon_nor") forState:0];
     [_selectButton setImage:Image(@"exam_radio_icon_sel") forState:UIControlStateSelected];
+    _selectButton.userInteractionEnabled = NO;
     [self.contentView addSubview:_selectButton];
     
     _keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(_selectButton.right, 12 + 7, 42, 20)];
@@ -41,7 +43,10 @@
     
 }
 
-- (void)setAnswerInfo:(ExamDetailOptionsModel *)model {
+- (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(nonnull ExamDetailModel *)detailModel {
+    
+    _selectButton.selected = model.is_selected;
+    
     _keyTitle.text = [NSString stringWithFormat:@"%@.",model.key];
     
     _valueTextView.frame = CGRectMake(_keyTitle.right, 12, MainScreenWidth - _keyTitle.right - 15, 20);

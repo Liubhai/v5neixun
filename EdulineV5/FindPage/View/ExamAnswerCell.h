@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *keyTitle;
 @property (strong, nonatomic) UITextView *valueTextView;
 
-- (void)setAnswerInfo:(ExamDetailOptionsModel *)model;
+- (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(ExamDetailModel *)detailModel;
 
 @end
 

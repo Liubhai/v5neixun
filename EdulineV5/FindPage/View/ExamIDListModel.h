@@ -96,6 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *value;
 @property (strong, nonatomic) NSMutableAttributedString *mutvalue;
 @property (assign, nonatomic) BOOL is_right;
+@property (assign, nonatomic) BOOL is_selected;
 
 @end
 

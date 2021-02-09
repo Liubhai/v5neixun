@@ -17,6 +17,7 @@
 @interface ExamDetailViewController ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger examCount;//整套试卷的总题数
     NSInteger currentExamRow;// 当前答题是第几道题
+    NSIndexPath *currentExamIndexPath;// 当前答题在整个列表中的下标
     NSString *currentExamId;//当前答题的试题ID
 }
 
@@ -186,9 +187,9 @@
         ExamDetailModel *model = _examDetailArray[0];
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[indexPath.section];
-            [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row])];
+            [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass];
         } else {
-            [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row])];
+            [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) examDetail:model];
         }
     }
     return cell;
@@ -257,6 +258,22 @@
     return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (SWNOTEmptyArr(_examDetailArray)) {
+        ExamDetailModel *model = _examDetailArray[0];
+        if (SWNOTEmptyArr(model.topics)) {
+            // 小题有多个
+            ExamDetailModel *modelpass = model.topics[indexPath.section];
+        } else {
+            // 只有一个小题
+//            题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题
+            if ([model.question_type isEqualToString:@"1"]) {
+                
+            }
+        }
+    }
+}
+
 - (void)getData {
     if (SWNOTEmptyStr(_examIds)) {
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointIdListNet] WithAuthorization:nil paramDic:@{@"point_ids":_examIds,@"module_id":_examType} finish:^(id  _Nonnull responseObject) {
@@ -272,6 +289,7 @@
                         NSArray *passArray = [NSArray arrayWithArray:passDict.child];
                         if (SWNOTEmptyArr(passArray)) {
                             ExamIDModel *passfinalDict = (ExamIDModel *)passArray[0];
+                            currentExamIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                             [self getExamDetailForExamIds:passfinalDict.topic_id];
                         }
                     }
@@ -371,6 +389,20 @@
 }
 
 - (void)bottomButtonClick:(UIButton *)sender {
+    if (sender == _nextExamBtn) {
+        if (SWNOTEmptyArr(_examIdListArray)) {
+            ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
+            if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
+                currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row inSection:currentExamIndexPath.section];
+            } else {
+                if (_examIdListArray.count > (currentExamIndexPath.section + 1)) {
+                    currentExamIndexPath = [NSIndexPath indexPathForRow:0 inSection:currentExamIndexPath.section + 1];
+                } else {
+                    // 最后一题了
+                }
+            }
+        }
+    }
 }
 
 - (NSMutableAttributedString *)changeStringToMutA:(NSString *)commonString {
