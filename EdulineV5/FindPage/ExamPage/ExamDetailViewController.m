@@ -204,9 +204,11 @@
         ExamDetailModel *model = _examDetailArray[0];
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[section];
-            attrString = [[NSMutableAttributedString alloc] initWithData:[modelpass.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
+//            attrString = [[NSMutableAttributedString alloc] initWithData:[modelpass.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
         } else {
-            attrString = [[NSMutableAttributedString alloc] initWithData:[model.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+//            attrString = [[NSMutableAttributedString alloc] initWithData:[model.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
         }
         lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
         [lable1111 sizeToFit];
@@ -233,9 +235,11 @@
         ExamDetailModel *model = _examDetailArray[0];
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[section];
-            attrString = [[NSMutableAttributedString alloc] initWithData:[modelpass.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
+//            attrString = [[NSMutableAttributedString alloc] initWithData:[modelpass.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
         } else {
-            attrString = [[NSMutableAttributedString alloc] initWithData:[model.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+//            attrString = [[NSMutableAttributedString alloc] initWithData:[model.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
         }
         lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
         [lable1111 sizeToFit];
@@ -288,8 +292,16 @@
                     [_examDetailArray addObjectsFromArray:[ExamDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
                     for (int i = 0; i<_examDetailArray.count; i++) {
                         ExamDetailModel *pass = _examDetailArray[i];
+                        pass.titleMutable = [self changeStringToMutA:pass.title];
                         if (SWNOTEmptyArr(pass.topics)) {
-                            
+                            for (int j = 0; j<pass.topics.count; j++) {
+                                ExamDetailModel *detail = pass.topics[j];
+                                detail.titleMutable = [self changeStringToMutA:detail.title];
+                                for (int j = 0; j<detail.options.count; j++) {
+                                    ExamDetailOptionsModel *modelOp = detail.options[j];
+                                    modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                }
+                            }
                         } else {
                             for (int j = 0; j<pass.options.count; j++) {
                                 ExamDetailOptionsModel *modelOp = pass.options[j];
@@ -363,6 +375,10 @@
 
 - (NSMutableAttributedString *)changeStringToMutA:(NSString *)commonString {
     NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithData:[commonString dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+    NSString *pass = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(attrString.length - 1, 1)]];
+    if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+        [attrString replaceCharactersInRange:NSMakeRange(attrString.length - 1, 1) withString:@""];
+    }
     return attrString;
 }
 

@@ -71,6 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (strong, nonatomic) NSString *examDetailId;
 @property (strong, nonatomic) NSString *title;
+@property (strong, nonatomic) NSMutableAttributedString *titleMutable;
 @property (strong, nonatomic) NSString *question_type;
 @property (strong, nonatomic) NSString *analyze;
 /** 【1：题干下即选项；2：题干下有小题，试题类型为材料题或完型填空】 */

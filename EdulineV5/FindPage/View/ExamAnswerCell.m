@@ -21,12 +21,12 @@
 
 - (void)makeSubView {
     
-    _selectButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 12, 20, 20)];
+    _selectButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 12 + 7, 20, 20)];
     [_selectButton setImage:Image(@"exam_radio_icon_nor") forState:0];
     [_selectButton setImage:Image(@"exam_radio_icon_sel") forState:UIControlStateSelected];
     [self.contentView addSubview:_selectButton];
     
-    _keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(_selectButton.right, 12, 42, 20)];
+    _keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(_selectButton.right, 12 + 7, 42, 20)];
     _keyTitle.font = SYSTEMFONT(15);
     _keyTitle.textColor = EdlineV5_Color.textFirstColor;
     _keyTitle.textAlignment = NSTextAlignmentRight;
@@ -45,13 +45,50 @@
     _keyTitle.text = [NSString stringWithFormat:@"%@.",model.key];
     
     _valueTextView.frame = CGRectMake(_keyTitle.right, 12, MainScreenWidth - _keyTitle.right - 15, 20);
+//    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithData:[valueS dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+
+//    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+//    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+//    [paragraphStyle setLineSpacing:4];
+//    [paragraphStyle setHeadIndent:0.1];
+//    [paragraphStyle setTailIndent:-0.1];
+//    paragraphStyle.paragraphSpacingBefore = 0.1;
+    NSMutableAttributedString *mutable = [[NSMutableAttributedString alloc] initWithAttributedString:model.mutvalue];
     
-    NSString *valueS = [NSString stringWithFormat:@"%@%@",_keyTitle.text,model.value];
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithData:[valueS dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
-    _valueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
+    NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
+    if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+        [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
+    }
+    
+    [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.mutvalue.length)];//NSParagraphStyleAttributeName:paragraphStyle.copy,
+    
+    _valueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:mutable];
     [_valueTextView sizeToFit];
-    [_valueTextView setHeight:_valueTextView.height];
+    _valueTextView.showsVerticalScrollIndicator = NO;
+    _valueTextView.showsHorizontalScrollIndicator = NO;
+    _valueTextView.editable = NO;
+    _valueTextView.scrollEnabled = NO;
+    [_valueTextView setHeight:_valueTextView.height];//
+
+//    _valueTextView.contentInset = UIEdgeInsetsMake(-8.f, 0.f, 0.f, 0.f);
     [self setHeight:MAX(_selectButton.bottom, _valueTextView.bottom) + 12];
+}
+
+- (float)heightForString:(NSMutableAttributedString *)value fontSize:(UIFont*)font andWidth:(float)width {
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    [paragraphStyle setLineSpacing:4.0];
+    [paragraphStyle setHeadIndent:0.0001];
+    [paragraphStyle setTailIndent:-0.0001];
+    paragraphStyle.paragraphSpacingBefore = 0.1;
+    NSDictionary *attributes = @{NSFontAttributeName:font,NSParagraphStyleAttributeName:paragraphStyle.copy};
+    [value addAttributes:attributes range:NSMakeRange(0, value.length)];
+    CGRect rectToFit = [value boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    if (value.length==0||[value isEqual:[NSNull null]]||value==nil) {
+        return 0.0;
+    }else{
+        return rectToFit.size.height;
+    }
 }
 
 - (void)awakeFromNib {
