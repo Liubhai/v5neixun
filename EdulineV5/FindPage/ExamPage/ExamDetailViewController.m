@@ -393,12 +393,73 @@
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
-                currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row inSection:currentExamIndexPath.section];
+                currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row + 1 inSection:currentExamIndexPath.section];
             } else {
                 if (_examIdListArray.count > (currentExamIndexPath.section + 1)) {
                     currentExamIndexPath = [NSIndexPath indexPathForRow:0 inSection:currentExamIndexPath.section + 1];
                 } else {
-                    // 最后一题了
+                    // 最后一道题点击 其实是只有"上一题"按钮了 这时候就是显示上一题干的最后一个 也不对 这时候这个按钮都被隐藏了
+                    // 最后一题了(改变当前底部按钮的样式  只显示"上一题"按钮)
+                    // 好像不对  这是倒数第二道题点击时候的逻辑
+                }
+            }
+            // 这时候判断 并且更改底部按钮状态
+            if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
+                _nextExamBtn.hidden = YES;
+                _previousExamBtn.hidden = NO;
+                [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
+                [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
+            } else {
+                _nextExamBtn.hidden = NO;
+                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                _previousExamBtn.hidden = NO;
+                [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
+                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+            }
+            // 要请求数据了
+            if (SWNOTEmptyArr(_examIdListArray)) {
+                ExamIDListModel *passDict = (ExamIDListModel *)_examIdListArray[currentExamIndexPath.section];
+                NSArray *passArray = [NSArray arrayWithArray:passDict.child];
+                if (SWNOTEmptyArr(passArray)) {
+                    ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
+                    [self getExamDetailForExamIds:passfinalDict.topic_id];
+                }
+            }
+        }
+    } else if (sender == _previousExamBtn) {
+        if (SWNOTEmptyArr(_examIdListArray)) {
+            ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
+            if (currentExamIndexPath.row>0) {
+                currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row - 1 inSection:currentExamIndexPath.section];
+            } else {
+                if (currentExamIndexPath.section>0) {
+                    ExamIDListModel *preModel = _examIdListArray[currentExamIndexPath.section-1];
+                    currentExamIndexPath = [NSIndexPath indexPathForRow:preModel.child.count - 1 inSection:currentExamIndexPath.section-1];
+                }
+            }
+            // 这时候判断 并且更改底部按钮状态
+            if (currentExamIndexPath.section == 0 && currentExamIndexPath.row == 0) {
+                _nextExamBtn.hidden = NO;
+                _previousExamBtn.hidden = YES;
+                [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+            } else {
+                _nextExamBtn.hidden = NO;
+                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                _previousExamBtn.hidden = NO;
+                [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
+                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+                
+            }
+            // 要请求数据了
+            if (SWNOTEmptyArr(_examIdListArray)) {
+                ExamIDListModel *passDict = (ExamIDListModel *)_examIdListArray[currentExamIndexPath.section];
+                NSArray *passArray = [NSArray arrayWithArray:passDict.child];
+                if (SWNOTEmptyArr(passArray)) {
+                    ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
+                    [self getExamDetailForExamIds:passfinalDict.topic_id];
                 }
             }
         }
@@ -406,10 +467,13 @@
 }
 
 - (NSMutableAttributedString *)changeStringToMutA:(NSString *)commonString {
+    
     NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithData:[commonString dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
-    NSString *pass = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(attrString.length - 1, 1)]];
-    if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
-        [attrString replaceCharactersInRange:NSMakeRange(attrString.length - 1, 1) withString:@""];
+    if (SWNOTEmptyStr(commonString)) {
+        NSString *pass = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(attrString.length - 1, 1)]];
+        if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+            [attrString replaceCharactersInRange:NSMakeRange(attrString.length - 1, 1) withString:@""];
+        }
     }
     return attrString;
 }

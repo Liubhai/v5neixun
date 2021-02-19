@@ -60,11 +60,12 @@
 //    paragraphStyle.paragraphSpacingBefore = 0.1;
     NSMutableAttributedString *mutable = [[NSMutableAttributedString alloc] initWithAttributedString:model.mutvalue];
     
-    NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
-    if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
-        [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
+    if (model.mutvalue) {
+        NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
+        if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+            [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
+        }
     }
-    
     [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.mutvalue.length)];//NSParagraphStyleAttributeName:paragraphStyle.copy,
     
     _valueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:mutable];
