@@ -133,6 +133,13 @@
     _nextExamBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+space/2.0, 0, -labelWidth-space/2.0);
     _nextExamBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith-space/2.0, 0, imageWith+space/2.0);
     [_bottomView addSubview:_nextExamBtn];
+    
+    _nextExamBtn.hidden = NO;
+    _previousExamBtn.hidden = YES;
+    [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+    
+    _previousExamBtn.enabled = NO;
+    _nextExamBtn.enabled = NO;
 }
 
 - (void)makeHeaderView {
@@ -290,6 +297,8 @@
                         if (SWNOTEmptyArr(passArray)) {
                             ExamIDModel *passfinalDict = (ExamIDModel *)passArray[0];
                             currentExamIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                            currentExamId = [NSString stringWithFormat:@"%@",passfinalDict.topic_id];
+                            currentExamRow = 1;
                             [self getExamDetailForExamIds:passfinalDict.topic_id];
                         }
                     }
@@ -379,16 +388,20 @@
                         }
                         [_tableView reloadData];
                     }
-                    
                 }
             }
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
-            
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
         }];
     }
 }
 
 - (void)bottomButtonClick:(UIButton *)sender {
+    _previousExamBtn.enabled = NO;
+    _nextExamBtn.enabled = NO;
     if (sender == _nextExamBtn) {
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
@@ -424,9 +437,20 @@
                 NSArray *passArray = [NSArray arrayWithArray:passDict.child];
                 if (SWNOTEmptyArr(passArray)) {
                     ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
+                    currentExamId = [NSString stringWithFormat:@"%@",passfinalDict.topic_id];
+                    currentExamRow = currentExamRow + 1;
                     [self getExamDetailForExamIds:passfinalDict.topic_id];
+                } else {
+                    _previousExamBtn.enabled = YES;
+                    _nextExamBtn.enabled = YES;
                 }
+            } else {
+                _previousExamBtn.enabled = YES;
+                _nextExamBtn.enabled = YES;
             }
+        } else {
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
         }
     } else if (sender == _previousExamBtn) {
         if (SWNOTEmptyArr(_examIdListArray)) {
@@ -459,9 +483,20 @@
                 NSArray *passArray = [NSArray arrayWithArray:passDict.child];
                 if (SWNOTEmptyArr(passArray)) {
                     ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
+                    currentExamId = [NSString stringWithFormat:@"%@",passfinalDict.topic_id];
+                    currentExamRow = currentExamRow - 1;
                     [self getExamDetailForExamIds:passfinalDict.topic_id];
+                } else {
+                    _previousExamBtn.enabled = YES;
+                    _nextExamBtn.enabled = YES;
                 }
+            } else {
+                _previousExamBtn.enabled = YES;
+                _nextExamBtn.enabled = YES;
             }
+        } else {
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
         }
     }
 }
