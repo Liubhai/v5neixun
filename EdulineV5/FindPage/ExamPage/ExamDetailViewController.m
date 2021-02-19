@@ -14,6 +14,8 @@
 
 #import "ExamAnswerCell.h"
 
+#import "AnswerSheetViewController.h"
+
 @interface ExamDetailViewController ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger examCount;//整套试卷的总题数
     NSInteger currentExamRow;// 当前答题是第几道题
@@ -411,9 +413,9 @@
 }
 
 - (void)bottomButtonClick:(UIButton *)sender {
-    _previousExamBtn.enabled = NO;
-    _nextExamBtn.enabled = NO;
     if (sender == _nextExamBtn) {
+        _previousExamBtn.enabled = NO;
+        _nextExamBtn.enabled = NO;
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
@@ -464,6 +466,8 @@
             _nextExamBtn.enabled = YES;
         }
     } else if (sender == _previousExamBtn) {
+        _previousExamBtn.enabled = NO;
+        _nextExamBtn.enabled = NO;
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (currentExamIndexPath.row>0) {
@@ -509,6 +513,11 @@
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         }
+    } else if (sender == _examSheetBtn) {
+        // 跳转到答题卡页面
+        AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
+        vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

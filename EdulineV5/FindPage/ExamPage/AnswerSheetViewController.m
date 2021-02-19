@@ -8,7 +8,8 @@
 
 #import "AnswerSheetViewController.h"
 #import "V5_Constant.h"
-#import "ExamSheetModel.h"
+//#import "ExamSheetModel.h"
+#import "ExamIDListModel.h"
 
 @interface AnswerSheetViewController ()
 
@@ -17,8 +18,6 @@
 @property (strong, nonatomic) UIView *bottomView;
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
-
-@property (strong, nonatomic) NSMutableArray *examArray;
 
 @end
 
@@ -33,11 +32,11 @@
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     
     [_leftButton setImage:Image(@"nav_sheetclose_icon") forState:0];
-    
-    _examArray = [NSMutableArray new];
  
     _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - (MACRO_UI_UPHEIGHT + 44 + MACRO_UI_SAFEAREA))];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
+    _mainScrollView.showsVerticalScrollIndicator = NO;
+    _mainScrollView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:_mainScrollView];
     
     [self makeTopUI];
@@ -116,21 +115,21 @@
 }
 
 - (void)makeTestData {
-    int x = arc4random() % 10;
-    for (int i = 0; i < x ; i++) {
-        ExamSheetModel *sheetModel = [[ExamSheetModel alloc] init];
-        sheetModel.title = [NSString stringWithFormat:@"题型名字%@",@(arc4random() % 100)];
-        int Y = arc4random() % 10;
-        NSMutableArray *pass = [NSMutableArray new];
-        for (int j = 0; j < Y; j++) {
-            ExamModel *model = [[ExamModel alloc] init];
-            model.exam_id = [NSString stringWithFormat:@"%@",@(arc4random() % Y)];
-            model.selected = (j % 2 == 0) ? YES : NO;
-            [pass addObject:model];
-        }
-        sheetModel.child = [NSMutableArray arrayWithArray:pass];
-        [_examArray addObject:sheetModel];
-    }
+//    int x = arc4random() % 10;
+//    for (int i = 0; i < x ; i++) {
+//        ExamSheetModel *sheetModel = [[ExamSheetModel alloc] init];
+//        sheetModel.title = [NSString stringWithFormat:@"题型名字%@",@(arc4random() % 100)];
+//        int Y = arc4random() % 10;
+//        NSMutableArray *pass = [NSMutableArray new];
+//        for (int j = 0; j < Y; j++) {
+//            ExamModel *model = [[ExamModel alloc] init];
+//            model.exam_id = [NSString stringWithFormat:@"%@",@(arc4random() % Y)];
+//            model.selected = (j % 2 == 0) ? YES : NO;
+//            [pass addObject:model];
+//        }
+//        sheetModel.child = [NSMutableArray arrayWithArray:pass];
+//        [_examArray addObject:sheetModel];
+//    }
 }
 
 - (void)makeExamSheetUI {
@@ -146,11 +145,11 @@
             UILabel *typeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
             typeTitleLabel.font = SYSTEMFONT(14);
             typeTitleLabel.textColor = EdlineV5_Color.textFirstColor;
-            typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamSheetModel *)_examArray[j]).title];
+            typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamIDListModel *)_examArray[j]).title];
             [hotView addSubview:typeTitleLabel];
             NSMutableArray *childArray = [NSMutableArray new];
-            if (SWNOTEmptyArr(((ExamSheetModel *)_examArray[j]).child)) {
-                [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamSheetModel *)_examArray[j]).child]];
+            if (SWNOTEmptyArr(((ExamIDListModel *)_examArray[j]).child)) {
+                [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamIDListModel *)_examArray[j]).child]];
             }
             if (childArray.count) {
                 CGFloat topSpacee = 15.0;
@@ -162,12 +161,12 @@
                     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, btnHeight, btnHeight)];
                     btn.tag = 400 + i;
                     [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-                    [btn setTitle:[NSString stringWithFormat:@"%@",((ExamModel *)childArray[i]).exam_id] forState:0];
+                    [btn setTitle:[NSString stringWithFormat:@"%@",@(i+1)] forState:0];
                     btn.titleLabel.font = SYSTEMFONT(14);
                     [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
                     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
                     btn.backgroundColor = EdlineV5_Color.backColor;
-                    btn.selected = ((ExamModel *)childArray[i]).selected;
+                    btn.selected = ((ExamIDModel *)childArray[i]).has_answered;
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
                     if (btn.selected) {
@@ -204,11 +203,12 @@
 - (void)thirdBtnClick:(UIButton *)sender {
     UIView *view = (UIView *)sender.superview;
     
-    ExamSheetModel *secondModel = (ExamSheetModel *)_examArray[view.tag - 10];
+    ExamIDListModel *secondModel = (ExamIDListModel *)_examArray[view.tag - 10];
     
     NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
     
-    ExamModel *thirdModel = (ExamModel *)passThird[sender.tag - 400];
+    ExamIDModel *thirdModel = (ExamIDModel *)passThird[sender.tag - 400];
+    // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
 }
 
 @end
