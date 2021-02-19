@@ -14,10 +14,16 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ExamAnswerCell : UITableViewCell
 
 @property (strong, nonatomic) UIButton *selectButton;
+@property (strong, nonatomic) UIButton *mutSelectButton;
 @property (strong, nonatomic) UILabel *keyTitle;
 @property (strong, nonatomic) UITextView *valueTextView;
 
-- (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(ExamDetailModel *)detailModel;
+@property (strong, nonatomic) UITextView *userInputTextView;//用户输入内容(解答题)
+
+@property (strong, nonatomic) UILabel *gapfillingIndexTitle;
+@property (strong, nonatomic) UITextField *userInputTextField;//用户输入内容(填空题)
+
+- (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath;
 
 @end
 

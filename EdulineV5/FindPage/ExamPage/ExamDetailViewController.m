@@ -194,9 +194,9 @@
         ExamDetailModel *model = _examDetailArray[0];
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[indexPath.section];
-            [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass];
+            [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass cellIndex:indexPath];
         } else {
-            [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) examDetail:model];
+            [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) examDetail:model cellIndex:indexPath];
         }
     }
     return cell;
@@ -213,11 +213,12 @@
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[section];
             attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
-//            attrString = [[NSMutableAttributedString alloc] initWithData:[modelpass.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
         } else {
             attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
-//            attrString = [[NSMutableAttributedString alloc] initWithData:[model.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
         }
+        
+        [attrString addAttributes:@{NSFontAttributeName:SYSTEMFONT(14)} range:NSMakeRange(0, attrString.length)];
+        
         lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
         [lable1111 sizeToFit];
         lable1111.showsVerticalScrollIndicator = NO;
@@ -366,11 +367,21 @@
                         ExamDetailModel *model = (ExamDetailModel *)_examDetailArray[0];
                         if (SWNOTEmptyArr(model.topics)) {
                             // 有多道小试题 这里就需要设置 整个 tableview 的 头部
-                            NSString *origin = [NSString stringWithFormat:@"%@",model.title];
+                            
+                            NSMutableAttributedString *mutable = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+                            
+                            if (model.titleMutable) {
+                                NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
+                                if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+                                    [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
+                                }
+                            }
+                            [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.titleMutable.length)];
+                            
                             UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(0, examThemeLabel.bottom, MainScreenWidth, 100)];
-                            NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithData:[origin dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+                            lable1111.backgroundColor = EdlineV5_Color.backColor;
 
-                            lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
+                            lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:mutable];
                             [lable1111 sizeToFit];
                             lable1111.showsVerticalScrollIndicator = NO;
                             lable1111.showsHorizontalScrollIndicator = NO;
