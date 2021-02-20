@@ -74,6 +74,9 @@
     [self.contentView addSubview:_userInputTextField];
     _gapfillingIndexTitle.centerY = _userInputTextField.centerY;
     
+    _clozeBackView = [[UIView alloc] initWithFrame:CGRectMake(_gapfillingIndexTitle.right + 8, _gapfillingIndexTitle.top, MainScreenWidth - 15 - _gapfillingIndexTitle.right - 8, 0)];
+    _clozeBackView.backgroundColor = EdlineV5_Color.backColor;
+    [self.contentView addSubview:_clozeBackView];
 }
 
 - (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(nonnull ExamDetailModel *)detailModel cellIndex:(nonnull NSIndexPath *)cellIndexPath {
@@ -158,6 +161,53 @@
         [self setHeight:_userInputTextField.bottom + 12];
     } else if ([detailModel.question_type isEqualToString:@"8"]) {
         [self setHeight:_userInputTextView.bottom + 12];
+    }
+}
+
+- (void)setExamDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath {
+    // 每一个 detailModel 里面的 topics 元素数组 作为一个 cell 的填充内容
+    _mutSelectButton.hidden = YES;
+    _selectButton.hidden = YES;
+    
+    _userInputTextView.hidden = YES;
+    _userInputTextField.hidden = YES;
+    
+    _userInputTextField.hidden = YES;
+    _keyTitle.hidden = YES;
+    _gapfillingIndexTitle.hidden = NO;
+    _gapfillingIndexTitle.text = [NSString stringWithFormat:@"%@.",@(cellIndexPath.row + 1)];
+    _gapfillingIndexTitle.frame = CGRectMake(15, 12, 45 - 15, 20);
+    _clozeBackView.frame = CGRectMake(_gapfillingIndexTitle.right + 8, _gapfillingIndexTitle.top, MainScreenWidth - 15 - _gapfillingIndexTitle.right - 8, 0);
+    [_clozeBackView removeAllSubviews];
+    CGFloat XX = 0.0;
+    CGFloat YY = 0.0;
+    for (int i = 0; i<detailModel.options.count; i++) {
+        ExamDetailOptionsModel *optionModel = detailModel.options[i];
+        NSString *secondTitle = [NSString stringWithFormat:@"%@.%@",optionModel.key,optionModel.value];//@"热门搜索";
+        CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(15)].width + 4 + 6 + 20;
+        UIButton *secondBtn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, secondBtnWidth, 20)];
+        secondBtn.tag = 100 + i;
+        [secondBtn setImage:Image(@"exam_radio_icon_nor") forState:0];
+        [secondBtn setImage:[Image(@"exam_radio_icon_sel") converToMainColor] forState:UIControlStateSelected];
+        [secondBtn setTitle:secondTitle forState:0];
+        [secondBtn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+        secondBtn.titleLabel.font = SYSTEMFONT(15);
+
+        [secondBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 6/2.0, 0, -6/2.0)];
+        [secondBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -6/2.0, 0, 6/2.0)];
+//        [secondBtn addTarget:self action:@selector(secondBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        secondBtn.selected = optionModel.is_selected;
+        
+        if ((secondBtnWidth + XX) > _clozeBackView.width) {
+            XX = 0;
+            YY = YY + 10 + 20;
+        }
+        secondBtn.frame = CGRectMake(XX, YY, secondBtnWidth, 20);
+        XX = secondBtn.right + 10;
+        if (i == detailModel.options.count - 1) {
+            [self setHeight:secondBtn.bottom + 12];
+        }
+        [_clozeBackView addSubview:secondBtn];
     }
 }
 

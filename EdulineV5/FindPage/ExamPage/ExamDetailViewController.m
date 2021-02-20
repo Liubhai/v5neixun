@@ -26,7 +26,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *examIdListArray;// 获取得到题干ID数组
 @property (strong, nonatomic) NSMutableArray *examDetailArray;// 通过题干ID获取到具体试题内容数组
-@property (strong, nonatomic) UIView *headerView;;
+@property (strong, nonatomic) UIView *headerView;
 
 @property (strong, nonatomic) UIView *bottomView;
 @property (strong, nonatomic) UIButton *previousExamBtn;
@@ -164,6 +164,9 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = _examDetailArray[0];
+        if ([model.question_type isEqualToString:@"7"]) {
+            return 1;
+        }
         if (SWNOTEmptyArr(model.topics)) {
             return model.topics.count;
         } else {
@@ -176,6 +179,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = _examDetailArray[0];
+        if ([model.question_type isEqualToString:@"7"]) {
+            return model.topics.count;
+        }
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[section];
             return modelpass.options.count;
@@ -194,11 +200,15 @@
     }
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = _examDetailArray[0];
-        if (SWNOTEmptyArr(model.topics)) {
-            ExamDetailModel *modelpass = model.topics[indexPath.section];
-            [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass cellIndex:indexPath];
+        if ([model.question_type isEqualToString:@"7"]) {
+            [cell setExamDetail:model.topics[indexPath.row] cellIndex:indexPath];
         } else {
-            [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) examDetail:model cellIndex:indexPath];
+            if (SWNOTEmptyArr(model.topics)) {
+                ExamDetailModel *modelpass = model.topics[indexPath.section];
+                [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass cellIndex:indexPath];
+            } else {
+                [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) examDetail:model cellIndex:indexPath];
+            }
         }
     }
     return cell;
@@ -212,11 +222,15 @@
     NSMutableAttributedString * attrString;
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = _examDetailArray[0];
-        if (SWNOTEmptyArr(model.topics)) {
-            ExamDetailModel *modelpass = model.topics[section];
-            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
-        } else {
+        if ([model.question_type isEqualToString:@"7"]) {
             attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+        } else {
+            if (SWNOTEmptyArr(model.topics)) {
+                ExamDetailModel *modelpass = model.topics[section];
+                attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
+            } else {
+                attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+            }
         }
         
         [attrString addAttributes:@{NSFontAttributeName:SYSTEMFONT(14)} range:NSMakeRange(0, attrString.length)];
@@ -240,13 +254,16 @@
     NSMutableAttributedString * attrString;
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = _examDetailArray[0];
-        if (SWNOTEmptyArr(model.topics)) {
-            ExamDetailModel *modelpass = model.topics[section];
-            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
-//            attrString = [[NSMutableAttributedString alloc] initWithData:[modelpass.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
-        } else {
+        
+        if ([model.question_type isEqualToString:@"7"]) {
             attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
-//            attrString = [[NSMutableAttributedString alloc] initWithData:[model.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+        } else {
+            if (SWNOTEmptyArr(model.topics)) {
+                ExamDetailModel *modelpass = model.topics[section];
+                attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
+            } else {
+                attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+            }
         }
         [attrString addAttributes:@{NSFontAttributeName:SYSTEMFONT(14)} range:NSMakeRange(0, attrString.length)];
         lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
@@ -285,13 +302,18 @@
         
         if (SWNOTEmptyArr(_examDetailArray)) {
             ExamDetailModel *model = _examDetailArray[0];
-            if (SWNOTEmptyArr(model.topics)) {
-                ExamDetailModel *modelpass = model.topics[section];
-                expandButton.selected = modelpass.is_expand;
-                modelxxx = modelpass;
-            } else {
+            if ([model.question_type isEqualToString:@"7"]) {
                 expandButton.selected = model.is_expand;
                 modelxxx = model;
+            } else {
+                if (SWNOTEmptyArr(model.topics)) {
+                    ExamDetailModel *modelpass = model.topics[section];
+                    expandButton.selected = modelpass.is_expand;
+                    modelxxx = modelpass;
+                } else {
+                    expandButton.selected = model.is_expand;
+                    modelxxx = model;
+                }
             }
         }
         [EdulineV5_Tool dealButtonImageAndTitleUI:expandButton];
@@ -350,11 +372,15 @@
         
         if (SWNOTEmptyArr(_examDetailArray)) {
             ExamDetailModel *model = _examDetailArray[0];
-            if (SWNOTEmptyArr(model.topics)) {
-                ExamDetailModel *modelpass = model.topics[section];
-                modelxxx = modelpass;
-            } else {
+            if ([model.question_type isEqualToString:@"7"]) {
                 modelxxx = model;
+            } else {
+                if (SWNOTEmptyArr(model.topics)) {
+                    ExamDetailModel *modelpass = model.topics[section];
+                    modelxxx = modelpass;
+                } else {
+                    modelxxx = model;
+                }
             }
         }
         
@@ -686,11 +712,15 @@
     sender.selected = !sender.selected;
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = _examDetailArray[0];
-        if (SWNOTEmptyArr(model.topics)) {
-            ExamDetailModel *modelpass = model.topics[sender.tag];
-            modelpass.is_expand = sender.selected;
-        } else {
+        if ([model.question_type isEqualToString:@"7"]) {
             model.is_expand = sender.selected;
+        } else {
+            if (SWNOTEmptyArr(model.topics)) {
+                ExamDetailModel *modelpass = model.topics[sender.tag];
+                modelpass.is_expand = sender.selected;
+            } else {
+                model.is_expand = sender.selected;
+            }
         }
     }
     [_tableView reloadData];

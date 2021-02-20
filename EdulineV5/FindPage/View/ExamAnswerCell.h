@@ -23,7 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *gapfillingIndexTitle;
 @property (strong, nonatomic) UITextField *userInputTextField;//用户输入内容(填空题)
 
+@property (strong, nonatomic) UIView *clozeBackView;// 完形填空容器
+
 - (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath;
+
+/** 针对完形填空 */
+- (void)setExamDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath;
 
 @end
 
