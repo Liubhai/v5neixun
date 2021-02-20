@@ -9,6 +9,8 @@
 #import "ExamMainViewController.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "AppDelegate.h"
+#import "V5_UserModel.h"
 
 #import "ExamMainListCell.h"
 
@@ -89,6 +91,10 @@
         SpecialProjectExamList *vc = [[SpecialProjectExamList alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"1"]) {
+        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+            [AppDelegate presentLoginNav:self];
+            return;
+        }
         ExamPointSelectVC *vc = [[ExamPointSelectVC alloc] init];
         vc.examTypeString = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
         vc.examTypeId = examTheme;

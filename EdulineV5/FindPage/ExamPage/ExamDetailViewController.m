@@ -235,12 +235,8 @@
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return nil;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+    UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 20)];
     NSMutableAttributedString * attrString;
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = _examDetailArray[0];
@@ -252,6 +248,7 @@
             attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
 //            attrString = [[NSMutableAttributedString alloc] initWithData:[model.title dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
         }
+        [attrString addAttributes:@{NSFontAttributeName:SYSTEMFONT(14)} range:NSMakeRange(0, attrString.length)];
         lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
         [lable1111 sizeToFit];
         [lable1111 setHeight:lable1111.height];
@@ -260,7 +257,124 @@
     return 0.001;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if ([_examType isEqualToString:@"3"]) {
+        return nil;
+    } else {
+        UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
+        back.backgroundColor = EdlineV5_Color.backColor;
+        
+        UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - (58 + 33) - 15, 20)];
+        examPointTitle.textColor = EdlineV5_Color.textFirstColor;
+        examPointTitle.font = SYSTEMFONT(14);
+        examPointTitle.text = @"考点：后台并未返回";
+        [back addSubview:examPointTitle];
+        
+        UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), 12, (58 + 33) - 15, 20)];
+        [expandButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+        expandButton.titleLabel.font = SYSTEMFONT(14);
+        [expandButton setTitle:@"查看解析" forState:0];
+        [expandButton setImage:Image(@"exam_parsingdown_icon") forState:0];
+        
+        [expandButton setTitle:@"收起解析" forState:UIControlStateSelected];
+        [expandButton setImage:Image(@"exam_parsingup_icon") forState:UIControlStateSelected];
+        expandButton.tag = section;
+        [expandButton addTarget:self action:@selector(expandButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        ExamDetailModel *modelxxx;
+        
+        if (SWNOTEmptyArr(_examDetailArray)) {
+            ExamDetailModel *model = _examDetailArray[0];
+            if (SWNOTEmptyArr(model.topics)) {
+                ExamDetailModel *modelpass = model.topics[section];
+                expandButton.selected = modelpass.is_expand;
+                modelxxx = modelpass;
+            } else {
+                expandButton.selected = model.is_expand;
+                modelxxx = model;
+            }
+        }
+        [EdulineV5_Tool dealButtonImageAndTitleUI:expandButton];
+        [back addSubview:expandButton];
+        [back setHeight:expandButton.bottom + 12];
+        
+        if (modelxxx.is_expand) {
+            
+            UILabel *rightAnswerTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, expandButton.bottom + 16, 80, 20)];
+            rightAnswerTitle.font = SYSTEMFONT(15);
+            rightAnswerTitle.textColor = HEXCOLOR(0x67C23A);
+            rightAnswerTitle.text = @"正确答案：";
+            [back addSubview:rightAnswerTitle];
+            
+            UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(rightAnswerTitle.right, rightAnswerTitle.top - 7, MainScreenWidth - rightAnswerTitle.right - 15, 20)];
+            rightValueTextView.showsVerticalScrollIndicator = NO;
+            rightValueTextView.showsHorizontalScrollIndicator = NO;
+            rightValueTextView.editable = NO;
+            rightValueTextView.scrollEnabled = NO;
+            rightValueTextView.backgroundColor = EdlineV5_Color.backColor;
+            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.titleMutable];
+            rightValueTextView.font = SYSTEMFONT(15);
+            [rightValueTextView sizeToFit];
+            [rightValueTextView setHeight:rightValueTextView.height];
+            [back addSubview:rightValueTextView];
+            
+            UILabel *keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, MAX(rightAnswerTitle.bottom, rightValueTextView.bottom) + 7, 54, 20)];
+            keyTitle.font = SYSTEMFONT(14);
+            keyTitle.textColor = EdlineV5_Color.textFirstColor;
+            keyTitle.text = @"解析：";
+            [back addSubview:keyTitle];
+            
+            UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(keyTitle.right, keyTitle.top - 7, MainScreenWidth - keyTitle.right - 15, 20)];
+            analyzeTextView.showsVerticalScrollIndicator = NO;
+            analyzeTextView.showsHorizontalScrollIndicator = NO;
+            analyzeTextView.editable = NO;
+            analyzeTextView.scrollEnabled = NO;
+            analyzeTextView.backgroundColor = EdlineV5_Color.backColor;
+            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
+            analyzeTextView.font = SYSTEMFONT(15);
+            [analyzeTextView sizeToFit];
+            [analyzeTextView setHeight:analyzeTextView.height];
+            [back addSubview:analyzeTextView];
+            [back setHeight:MAX(keyTitle.bottom, analyzeTextView.bottom) + 12];
+        }
+        return back;
+    }
+    return nil;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if ([_examType isEqualToString:@"3"]) {
+        return 0.001;
+    } else {
+        ExamDetailModel *modelxxx;
+        
+        if (SWNOTEmptyArr(_examDetailArray)) {
+            ExamDetailModel *model = _examDetailArray[0];
+            if (SWNOTEmptyArr(model.topics)) {
+                ExamDetailModel *modelpass = model.topics[section];
+                modelxxx = modelpass;
+            } else {
+                modelxxx = model;
+            }
+        }
+        
+        if (modelxxx.is_expand) {
+            UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 80, 12 + 20 + 16 - 7, MainScreenWidth - 95 - 15, 20)];
+            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.titleMutable];
+            rightValueTextView.font = SYSTEMFONT(15);
+            [rightValueTextView sizeToFit];
+            [rightValueTextView setHeight:rightValueTextView.height];
+            
+            UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 54, MAX((12 + 20 + 16 + 20), rightValueTextView.bottom), MainScreenWidth - 69 - 15, 20)];
+            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
+            analyzeTextView.font = SYSTEMFONT(15);
+            [analyzeTextView sizeToFit];
+            [analyzeTextView setHeight:analyzeTextView.height];
+            return MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12;
+        } else {
+            return 12 + 20 + 12;
+        }
+    }
     return 0.001;
 }
 
@@ -323,10 +437,12 @@
                     for (int i = 0; i<_examDetailArray.count; i++) {
                         ExamDetailModel *pass = _examDetailArray[i];
                         pass.titleMutable = [self changeStringToMutA:pass.title];
+                        pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
                         if (SWNOTEmptyArr(pass.topics)) {
                             for (int j = 0; j<pass.topics.count; j++) {
                                 ExamDetailModel *detail = pass.topics[j];
                                 detail.titleMutable = [self changeStringToMutA:detail.title];
+                                detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
                                 for (int j = 0; j<detail.options.count; j++) {
                                     ExamDetailOptionsModel *modelOp = detail.options[j];
                                     modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
@@ -517,8 +633,67 @@
         // 跳转到答题卡页面
         AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
+        vc.chooseOtherExam = ^(NSString * _Nonnull examId) {
+            _previousExamBtn.enabled = NO;
+            _nextExamBtn.enabled = NO;
+            currentExamId = [NSString stringWithFormat:@"%@",examId];
+            NSInteger indexCount = 0;
+          // 获取当前点击的试题的ID 请求接口 刷新页面  处理下标 当前试题的排序号 并且改变底部按钮的状态
+            BOOL is_find = NO;
+            for (int i = 0; i < _examIdListArray.count; i ++) {
+                if (is_find) {
+                    break;
+                }
+                ExamIDListModel *idListModel = _examIdListArray[i];
+                for (int j = 0; j<idListModel.child.count; j++) {
+                    indexCount = indexCount + 1;
+                    if ([((ExamIDModel *)(idListModel.child[j])).topic_id isEqualToString:examId]) {
+                        is_find = YES;
+                        currentExamIndexPath = [NSIndexPath indexPathForRow:j inSection:i];
+                        // 这时候判断 并且更改底部按钮状态
+                        if (currentExamIndexPath.section == 0 && currentExamIndexPath.row == 0) {
+                            _nextExamBtn.hidden = NO;
+                            _previousExamBtn.hidden = YES;
+                            [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+                        } else if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
+                            _nextExamBtn.hidden = YES;
+                            _previousExamBtn.hidden = NO;
+                            [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
+                            [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                            [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
+                        } else {
+                            _nextExamBtn.hidden = NO;
+                            [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                            _previousExamBtn.hidden = NO;
+                            [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
+                            [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                            [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+                            
+                        }
+                        break;
+                    }
+                }
+            }
+            currentExamRow = indexCount;
+            
+            [self getExamDetailForExamIds:examId];
+        };
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)expandButtonClick:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    if (SWNOTEmptyArr(_examDetailArray)) {
+        ExamDetailModel *model = _examDetailArray[0];
+        if (SWNOTEmptyArr(model.topics)) {
+            ExamDetailModel *modelpass = model.topics[sender.tag];
+            modelpass.is_expand = sender.selected;
+        } else {
+            model.is_expand = sender.selected;
+        }
+    }
+    [_tableView reloadData];
 }
 
 - (NSMutableAttributedString *)changeStringToMutA:(NSString *)commonString {

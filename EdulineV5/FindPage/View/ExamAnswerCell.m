@@ -88,7 +88,7 @@
     _userInputTextView.hidden = YES;
     _userInputTextField.hidden = YES;
     _gapfillingIndexTitle.hidden = YES;
-    _gapfillingIndexTitle.text = [NSString stringWithFormat:@"(%@)",@(cellIndexPath.row)];
+    _gapfillingIndexTitle.text = [NSString stringWithFormat:@"(%@)",@(cellIndexPath.row + 1)];
     
     _keyTitle.hidden = NO;
     _valueTextView.frame = CGRectMake(_keyTitle.right, 12, MainScreenWidth - _keyTitle.right - 15, 20);

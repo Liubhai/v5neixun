@@ -112,6 +112,7 @@
 }
 
 - (void)resetButtonClick {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)makeTestData {
@@ -209,6 +210,10 @@
     
     ExamIDModel *thirdModel = (ExamIDModel *)passThird[sender.tag - 400];
     // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
+    if (thirdModel.topic_id) {
+        self.chooseOtherExam(thirdModel.topic_id);
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

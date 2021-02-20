@@ -10,8 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^chooseOtherExam)(NSString *examId);
+
 @interface AnswerSheetViewController : BaseViewController
 
+@property (nonatomic, strong) chooseOtherExam chooseOtherExam;
 @property (strong, nonatomic) NSMutableArray *examArray;// 整个试卷的题目id列表(列表里面的 has_answered 字段来判断是否作答)
 
 @end

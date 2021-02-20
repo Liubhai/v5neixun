@@ -74,10 +74,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSMutableAttributedString *titleMutable;
 @property (strong, nonatomic) NSString *question_type;
 @property (strong, nonatomic) NSString *analyze;
+@property (strong, nonatomic) NSMutableAttributedString *analyzeMutable;
 /** 【1：题干下即选项；2：题干下有小题，试题类型为材料题或完型填空】 */
 @property (strong, nonatomic) NSString *topic_level;
 @property (strong, nonatomic) NSArray *topics;
 @property (strong, nonatomic) NSArray *options;
+@property (assign, nonatomic) BOOL is_expand;
 
 @end
 
