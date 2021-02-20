@@ -1594,6 +1594,7 @@
 		78C936D1248FBC5400D5F1ED /* UserListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserListCell.m; sourceTree = "<group>"; };
 		78C936D32490DAFE00D5F1ED /* InstitutionCourseMainVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionCourseMainVC.h; sourceTree = "<group>"; };
 		78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionCourseMainVC.m; sourceTree = "<group>"; };
+		78CE20EE25DFBF7800DFDF85 /* Eduline网校.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Eduline网校.entitlements"; sourceTree = "<group>"; };
 		78D46676251CA02600E94FF4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78D97FEF24B83C58000DE0E4 /* ClassCourseListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassCourseListVC.h; sourceTree = "<group>"; };
 		78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassCourseListVC.m; sourceTree = "<group>"; };
@@ -2016,6 +2017,7 @@
 		7879560F240DE7A50013F95F /* EdulineV5 */ = {
 			isa = PBXGroup;
 			children = (
+				78CE20EE25DFBF7800DFDF85 /* Eduline网校.entitlements */,
 				782AC43125BAC77C009130F9 /* eduline网校Release.entitlements */,
 				788E945B253FE24C0089251E /* Agora_edu_sdk */,
 				7853165924518B4C007E239E /* TXLiveSDk */,
@@ -4812,6 +4814,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_ENTITLEMENTS = "EdulineV5/Eduline网校.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
