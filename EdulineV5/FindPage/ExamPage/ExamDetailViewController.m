@@ -566,6 +566,7 @@
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
         if (SWNOTEmptyArr(_examIdListArray)) {
+            // 1 2 1 1 2 1
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
                 currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row + 1 inSection:currentExamIndexPath.section];
@@ -578,8 +579,9 @@
                     // 好像不对  这是倒数第二道题点击时候的逻辑
                 }
             }
+            ExamIDListModel *idListModelPass = _examIdListArray[currentExamIndexPath.section];
             // 这时候判断 并且更改底部按钮状态
-            if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
+            if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModelPass.child.count - 1)) {
                 _nextExamBtn.hidden = YES;
                 _previousExamBtn.hidden = NO;
                 [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
