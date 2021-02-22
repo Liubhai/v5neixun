@@ -16,7 +16,7 @@
 
 #import "AnswerSheetViewController.h"
 
-@interface ExamDetailViewController ()<UITableViewDelegate, UITableViewDataSource> {
+@interface ExamDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
     NSInteger examCount;//整套试卷的总题数
     NSInteger currentExamRow;// 当前答题是第几道题
     NSIndexPath *currentExamIndexPath;// 当前答题在整个列表中的下标
@@ -211,6 +211,7 @@
             }
         }
     }
+    cell.delegate = self;
     return cell;
 }
 
@@ -408,17 +409,42 @@
     return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
 }
 
+// MARK: - cell代理方法合集(ExamAnswerCellDelegate)
+- (void)gapfillingChooseStatusChanged:(ExamAnswerCell *)answerCell {
+    [_tableView reloadRowAtIndexPath:answerCell.cellIndexPath withRowAnimation:UITableViewRowAnimationNone];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = _examDetailArray[0];
-        if (SWNOTEmptyArr(model.topics)) {
-            // 小题有多个
-            ExamDetailModel *modelpass = model.topics[indexPath.section];
+        if ([model.question_type isEqualToString:@"7"]) {
+            // 完形填空
         } else {
-            // 只有一个小题
-//            题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题
-            if ([model.question_type isEqualToString:@"1"]) {
-                
+            if (SWNOTEmptyArr(model.topics)) {
+                // 小题有多个 材料题
+                ExamDetailModel *modelpass = model.topics[indexPath.section];
+            } else {
+                // 只有一个小题
+                // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题
+                if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"]) {
+                    for (int i = 0; i<model.options.count; i ++) {
+                        ExamDetailOptionsModel *op = (ExamDetailOptionsModel *)(model.options[i]);
+                        if (i == indexPath.row) {
+                            op.is_selected = YES;
+                        } else {
+                            op.is_selected = NO;
+                        }
+                    }
+                    [_tableView reloadData];
+                } else if ([model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"]) {
+                    for (int i = 0; i<model.options.count; i ++) {
+                        ExamDetailOptionsModel *op = (ExamDetailOptionsModel *)(model.options[i]);
+                        if (i == indexPath.row) {
+                            op.is_selected = !op.is_selected;
+                        }
+                    }
+                    [_tableView reloadData];
+                }
             }
         }
     }

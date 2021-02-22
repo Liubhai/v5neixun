@@ -43,6 +43,7 @@
     [self.contentView addSubview:_keyTitle];
     
     _valueTextView = [[UITextView alloc] initWithFrame:CGRectMake(_keyTitle.right, 12, MainScreenWidth - _keyTitle.right - 15, 20)];
+    _valueTextView.userInteractionEnabled = NO;
     _valueTextView.showsVerticalScrollIndicator = NO;
     _valueTextView.showsHorizontalScrollIndicator = NO;
     _valueTextView.editable = NO;
@@ -51,12 +52,14 @@
     [self.contentView addSubview:_valueTextView];
     
     _userInputTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - 30, 120)];
+    _userInputTextView.delegate = self;
     _userInputTextView.showsVerticalScrollIndicator = NO;
     _userInputTextView.showsHorizontalScrollIndicator = NO;
     _userInputTextView.layer.masksToBounds = YES;
     _userInputTextView.layer.cornerRadius = 3;
     _userInputTextView.layer.borderWidth = 1;
     _userInputTextView.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+    _userInputTextView.returnKeyType = UIReturnKeyDone;
     [self.contentView addSubview:_userInputTextView];
     
     _gapfillingIndexTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 45 - 15, 20)];
@@ -65,12 +68,14 @@
     [self.contentView addSubview:_gapfillingIndexTitle];
     
     _userInputTextField = [[UITextField alloc] initWithFrame:CGRectMake(_gapfillingIndexTitle.right, 12, MainScreenWidth - 15 - _gapfillingIndexTitle.right, 36)];
+    _userInputTextField.delegate = self;
     _userInputTextField.textColor = EdlineV5_Color.textFirstColor;
     _userInputTextField.font = SYSTEMFONT(13);
     _userInputTextField.layer.masksToBounds = YES;
     _userInputTextField.layer.cornerRadius = 3;
     _userInputTextField.layer.borderWidth = 1;
     _userInputTextField.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+    _userInputTextField.returnKeyType = UIReturnKeyDone;
     [self.contentView addSubview:_userInputTextField];
     _gapfillingIndexTitle.centerY = _userInputTextField.centerY;
     
@@ -81,6 +86,9 @@
 
 - (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(nonnull ExamDetailModel *)detailModel cellIndex:(nonnull NSIndexPath *)cellIndexPath {
     
+    _cellDetailModel = detailModel;
+    _cellOptionModel = model;
+    _cellIndexPath = cellIndexPath;
     /* 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题 **/
     _selectButton.selected = model.is_selected;
     _mutSelectButton.selected = model.is_selected;
@@ -168,6 +176,8 @@
 }
 
 - (void)setExamDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath {
+    _cellDetailModel = detailModel;
+    _cellIndexPath = cellIndexPath;
     // 每一个 detailModel 里面的 topics 元素数组 作为一个 cell 的填充内容
     _mutSelectButton.hidden = YES;
     _selectButton.hidden = YES;
@@ -199,7 +209,7 @@
 
         [secondBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 6/2.0, 0, -6/2.0)];
         [secondBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -6/2.0, 0, 6/2.0)];
-//        [secondBtn addTarget:self action:@selector(secondBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [secondBtn addTarget:self action:@selector(secondBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         secondBtn.selected = optionModel.is_selected;
         
         if ((secondBtnWidth + XX) > _clozeBackView.width) {
@@ -209,9 +219,24 @@
         secondBtn.frame = CGRectMake(XX, YY, secondBtnWidth, 20);
         XX = secondBtn.right + 10;
         if (i == detailModel.options.count - 1) {
+            [_clozeBackView setHeight:secondBtn.bottom];
             [self setHeight:secondBtn.bottom + 12];
         }
         [_clozeBackView addSubview:secondBtn];
+    }
+}
+
+- (void)secondBtnClick:(UIButton *)sender {
+    for (int i = 0; i<_cellDetailModel.options.count; i++) {
+        ExamDetailOptionsModel *optionModel = _cellDetailModel.options[i];
+        if (i == (sender.tag - 100)) {
+            optionModel.is_selected = YES;
+        } else {
+            optionModel.is_selected = NO;
+        }
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(gapfillingChooseStatusChanged:)]) {
+        [_delegate gapfillingChooseStatusChanged:self];
     }
 }
 
@@ -230,6 +255,22 @@
     }else{
         return rectToFit.size.height;
     }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string isEqualToString:@"\n"]) {
+        [_userInputTextField resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [_userInputTextView resignFirstResponder];
+        return NO;
+    }
+    return YES;
 }
 
 - (void)awakeFromNib {
