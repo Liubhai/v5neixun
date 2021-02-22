@@ -509,37 +509,44 @@
                         [_headerView addSubview:examCountIcon];
                         
                         ExamDetailModel *model = (ExamDetailModel *)_examDetailArray[0];
-                        if (SWNOTEmptyArr(model.topics)) {
-                            // 有多道小试题 这里就需要设置 整个 tableview 的 头部
-                            
-                            NSMutableAttributedString *mutable = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
-                            
-                            if (model.titleMutable) {
-                                NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
-                                if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
-                                    [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
-                                }
-                            }
-                            [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.titleMutable.length)];
-                            
-                            UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(0, examThemeLabel.bottom, MainScreenWidth, 100)];
-                            lable1111.backgroundColor = EdlineV5_Color.backColor;
-
-                            lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:mutable];
-                            [lable1111 sizeToFit];
-                            lable1111.showsVerticalScrollIndicator = NO;
-                            lable1111.showsHorizontalScrollIndicator = NO;
-                            lable1111.editable = NO;
-                            lable1111.scrollEnabled = NO;
-                            [lable1111 setHeight:lable1111.height];
-                            [_headerView addSubview:lable1111];
-                            [_headerView setHeight:lable1111.bottom];
-                            _tableView.tableHeaderView = _headerView;
-                            
-                        } else {
+                        if ([model.question_type isEqualToString:@"7"]) {
                             // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
                             [_headerView setHeight:examThemeLabel.bottom];
                             _tableView.tableHeaderView = _headerView;
+                        } else {
+                            if (SWNOTEmptyArr(model.topics)) {
+                                
+                                // 有多道小试题 这里就需要设置 整个 tableview 的 头部
+                                
+                                NSMutableAttributedString *mutable = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+                                
+                                if (model.titleMutable) {
+                                    NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
+                                    if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+                                        [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
+                                    }
+                                }
+                                [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.titleMutable.length)];
+                                
+                                UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(0, examThemeLabel.bottom, MainScreenWidth, 100)];
+                                lable1111.backgroundColor = EdlineV5_Color.backColor;
+
+                                lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:mutable];
+                                [lable1111 sizeToFit];
+                                lable1111.showsVerticalScrollIndicator = NO;
+                                lable1111.showsHorizontalScrollIndicator = NO;
+                                lable1111.editable = NO;
+                                lable1111.scrollEnabled = NO;
+                                [lable1111 setHeight:lable1111.height];
+                                [_headerView addSubview:lable1111];
+                                [_headerView setHeight:lable1111.bottom];
+                                _tableView.tableHeaderView = _headerView;
+                                
+                            } else {
+                                // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
+                                [_headerView setHeight:examThemeLabel.bottom];
+                                _tableView.tableHeaderView = _headerView;
+                            }
                         }
                         [_tableView reloadData];
                     }

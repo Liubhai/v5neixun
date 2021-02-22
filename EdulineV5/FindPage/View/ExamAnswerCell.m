@@ -93,8 +93,11 @@
     _gapfillingIndexTitle.hidden = YES;
     _gapfillingIndexTitle.text = [NSString stringWithFormat:@"(%@)",@(cellIndexPath.row + 1)];
     
+    _clozeBackView.hidden = YES;
+    
     _keyTitle.hidden = NO;
     _valueTextView.frame = CGRectMake(_keyTitle.right, 12, MainScreenWidth - _keyTitle.right - 15, 20);
+    _valueTextView.hidden = NO;
     if ([detailModel.question_type isEqualToString:@"1"]) {
         _selectButton.hidden = NO;
         _mutSelectButton.hidden = YES;
@@ -168,15 +171,16 @@
     // 每一个 detailModel 里面的 topics 元素数组 作为一个 cell 的填充内容
     _mutSelectButton.hidden = YES;
     _selectButton.hidden = YES;
+    _valueTextView.hidden = YES;
     
     _userInputTextView.hidden = YES;
     _userInputTextField.hidden = YES;
     
-    _userInputTextField.hidden = YES;
     _keyTitle.hidden = YES;
     _gapfillingIndexTitle.hidden = NO;
     _gapfillingIndexTitle.text = [NSString stringWithFormat:@"%@.",@(cellIndexPath.row + 1)];
     _gapfillingIndexTitle.frame = CGRectMake(15, 12, 45 - 15, 20);
+    _clozeBackView.hidden = NO;
     _clozeBackView.frame = CGRectMake(_gapfillingIndexTitle.right + 8, _gapfillingIndexTitle.top, MainScreenWidth - 15 - _gapfillingIndexTitle.right - 8, 0);
     [_clozeBackView removeAllSubviews];
     CGFloat XX = 0.0;
