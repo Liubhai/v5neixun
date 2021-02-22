@@ -447,6 +447,9 @@ struct NetWorkUrl {
 /** 专项列表 */
 + (NSString *)specialExamList;
 
+/** 专项练习搜索接口 */
++ (NSString *)specialExamSearchListNet;
+
 /** 专项练习试题题号ID列表接口 */
 + (NSString *)specialExamIdListNet;
 

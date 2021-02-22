@@ -579,6 +579,11 @@
     return [Net_Path fullPath:@"exam/special/list" repalce:@"" byReplece:@""];
 }
 
+/** 专项练习搜索接口 */
++ (NSString *)specialExamSearchListNet {
+    return [Net_Path fullPath:@"exam/special/search" repalce:@"" byReplece:@""];
+}
+
 /** 专项练习试题题号ID列表接口 */
 + (NSString *)specialExamIdListNet {
     return [Net_Path fullPath:@"exam/special/base" repalce:@"" byReplece:@""];
