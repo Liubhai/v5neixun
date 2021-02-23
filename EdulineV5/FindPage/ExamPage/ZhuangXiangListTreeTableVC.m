@@ -177,7 +177,7 @@
     if ([string isEqualToString:@"\n"]) {
         [_institutionSearch resignFirstResponder];
         if (SWNOTEmptyStr(textField.text)) {
-            [_tableView.mj_header beginRefreshing];
+            [self searchZhuangXiangListNet];
         }
         return NO;
     }
@@ -288,6 +288,47 @@
 //                                }];
 //                            }];
 //                        }];
+                        
+                    }];
+                    
+                    ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
+                    _manager = manager;
+                    
+                    [_tableView reloadData];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            [_tableView.mj_header endRefreshing];
+        }];
+    }
+}
+
+- (void)searchZhuangXiangListNet {
+    if (SWNOTEmptyStr(_examTypeId)) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:_examTypeId forKey:@"module_id"];
+        if (SWNOTEmptyStr(_institutionSearch.text)) {
+            [param setObject:_institutionSearch.text forKey:@"title"];
+        }
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path specialExamSearchListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            [_tableView.mj_header endRefreshing];
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [_dataSource removeAllObjects];
+                    NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                    _originDict = [NSDictionary dictionaryWithDictionary:responseObject];
+                    for (ZhuanXiangModel *object in pass) {
+                        object.isLeaf = YES;
+                        object.level = 0;
+                        [_dataSource addObject:object];
+                    }
+                    NSMutableSet *items = [NSMutableSet set];
+                    [_dataSource enumerateObjectsUsingBlock:^(ZhuanXiangModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        
+                        obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
+                        obj.parentID = @"";
+                        obj.parentItem = nil;
+                        [items addObject:obj];
                         
                     }];
                     
