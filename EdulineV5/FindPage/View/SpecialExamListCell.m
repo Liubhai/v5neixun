@@ -93,8 +93,6 @@
     _learnCount.hidden = YES;
     _priceLabel.hidden = NO;
     _gotImage.hidden = YES;
-    _examTitle.text = @"考试标题只能显示1排文字题只能显示1排文字";
-    _examCount.text = @"共40题";
     
     _examTitle.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
     _examCount.text = [NSString stringWithFormat:@"共%@题",dict[@"total_count"]];

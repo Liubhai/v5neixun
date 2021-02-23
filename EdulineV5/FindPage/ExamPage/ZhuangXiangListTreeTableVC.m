@@ -12,8 +12,9 @@
 #import "ZhuangXiangListCell.h"
 #import "ZhuanXiangModel.h"
 #import "ZhuangXiangListCell.h"
+#import "ExamDetailViewController.h"
 
-@interface ZhuangXiangListTreeTableVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
+@interface ZhuangXiangListTreeTableVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,ZhuangXiangListCellDelegate> {
     NSInteger page;
     BOOL canSelect;//开关阀门 连续点击一个cell会出问题(由于网络延迟问题)
 }
@@ -91,6 +92,7 @@
     }
     ZhuanXiangModel *item = self.manager.showItems[indexPath.row];
     [cell setZhuangXiangCellInfo:item];
+    cell.delegate = self;
     return cell;
 }
 
@@ -239,7 +241,7 @@
         if (SWNOTEmptyStr(_institutionSearch.text)) {
             [param setObject:_institutionSearch.text forKey:@"title"];
         }
-        [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path specialExamList] : [Net_Path specialExamSearchListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path specialExamSearchListNet] : [Net_Path specialExamList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             [_tableView.mj_header endRefreshing];
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -345,6 +347,18 @@
     }
 }
 
+// MARK: - 专项列表cell上按钮的一些操作代理
+- (void)userBuyOrExam:(ZhuangXiangListCell *)cell {
+    if ([cell.treeItem.price floatValue]>0 && !cell.treeItem.has_bought) {
+        // 购买
+    } else {
+        // 开始答题
+        ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+        vc.examIds = cell.treeItem.course_id;
+        vc.examType = _examTypeId;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
 /*
 #pragma mark - Navigation
 

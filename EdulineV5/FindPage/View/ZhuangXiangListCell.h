@@ -11,7 +11,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ZhuangXiangListCell;
+
+@protocol ZhuangXiangListCellDelegate <NSObject>
+
+@optional
+- (void)userBuyOrExam:(ZhuangXiangListCell *)cell;
+- (void)userExamBy:(ZhuangXiangListCell *)cell;
+
+@end
+
 @interface ZhuangXiangListCell : UITableViewCell
+
+@property (assign, nonatomic) id<ZhuangXiangListCellDelegate> delegate;
 
 @property (strong, nonatomic) UIImageView *jiantouImageView;
 @property (strong, nonatomic) UIImageView *getOrFreeIamgeView;

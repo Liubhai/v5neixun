@@ -452,7 +452,17 @@
 
 - (void)getData {
     if (SWNOTEmptyStr(_examIds)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointIdListNet] WithAuthorization:nil paramDic:@{@"point_ids":_examIds,@"module_id":_examType} finish:^(id  _Nonnull responseObject) {
+        NSString *getUrl = [Net_Path examPointIdListNet];
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        if ([_examType isEqualToString:@"1"]) {
+            getUrl = [Net_Path examPointIdListNet];
+            [param setObject:_examIds forKey:@"point_ids"];
+            [param setObject:_examType forKey:@"module_id"];
+        } else if ([_examType isEqualToString:@"2"]) {
+            getUrl = [Net_Path specialExamIdListNet];
+            [param setObject:_examIds forKey:@"special_id"];
+        }
+        [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     examCount = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"topic_num"]] integerValue];
@@ -481,7 +491,16 @@
 
 - (void)getExamDetailForExamIds:(NSString *)examIds {
     if (SWNOTEmptyStr(examIds)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointDetailDataNet] WithAuthorization:nil paramDic:@{@"topic_id":examIds} finish:^(id  _Nonnull responseObject) {
+        NSString *getUrl = [Net_Path examPointDetailDataNet];
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        if ([_examType isEqualToString:@"1"]) {
+            getUrl = [Net_Path examPointDetailDataNet];
+            [param setObject:examIds forKey:@"topic_id"];
+        } else if ([_examType isEqualToString:@"2"]) {
+            getUrl = [Net_Path specialExamDetailDataNet];
+            [param setObject:examIds forKey:@"topic_id"];
+        }
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointDetailDataNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_examDetailArray removeAllObjects];

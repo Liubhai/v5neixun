@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SpecialProjectExamList : BaseViewController
 
+@property (strong, nonatomic) NSString *examTypeString;
+@property (strong, nonatomic) NSString *examTypeId;
+
 @end
 
 NS_ASSUME_NONNULL_END

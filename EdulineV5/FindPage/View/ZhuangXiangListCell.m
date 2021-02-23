@@ -122,8 +122,10 @@
             if (model.has_bought) {
                 _getOrFreeIamgeView.hidden = NO;
                 _getOrFreeIamgeView.image = Image(@"exam_yigouamai_icon");
+                [_getOrExamBtn setTitle:@"开始答题" forState:0];
             } else {
                 _getOrFreeIamgeView.hidden = YES;
+                [_getOrExamBtn setTitle:@"购买" forState:0];
             }
         } else {
             _priceLabel.hidden = YES;
@@ -134,6 +136,7 @@
                 _getOrFreeIamgeView.hidden = NO;
                 _getOrFreeIamgeView.image = Image(@"exam_free_icon");
             }
+            [_getOrExamBtn setTitle:@"开始答题" forState:0];
         }
         if (!SWNOTEmptyArr(model.child)) {
             [_jiantouImageView setWidth:0];
@@ -185,7 +188,11 @@
 }
 
 - (void)buttonClickBy:(UIButton *)sender {
-    
+    if (sender == _getOrExamBtn) {
+        if (_delegate && [_delegate respondsToSelector:@selector(userBuyOrExam:)]) {
+            [_delegate userBuyOrExam:self];
+        }
+    }
 }
 
 - (void)updateItem {

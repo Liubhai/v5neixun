@@ -75,7 +75,7 @@
 //    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -109,6 +109,9 @@
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
     // 大类型
+    if (SWNOTEmptyStr(_examTypeId)) {
+        [param setObject:_examTypeId forKey:@"module_id"];
+    }
     if (SWNOTEmptyStr(categoryString)) {
         [param setObject:categoryString forKey:@"category"];
     }
