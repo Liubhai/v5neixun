@@ -359,6 +359,26 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
+
+- (void)userExamBy:(ZhuangXiangListCell *)cell {
+    // 获取最顶级的 价格和是否购买 去判断
+    NSString *courseId = cell.treeItem.price;
+    
+    ZhuanXiangModel *pmodel = cell.treeItem.parentItem;
+    while (pmodel) {
+        courseId = pmodel.price;
+        pmodel = pmodel.parentItem;
+    }
+    if ([courseId floatValue]>0 && !pmodel.has_bought) {
+        // 购买
+    } else {
+        // 开始答题
+        ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+        vc.examIds = cell.treeItem.course_id;
+        vc.examType = _examTypeId;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
 /*
 #pragma mark - Navigation
 

@@ -192,6 +192,11 @@
         if (_delegate && [_delegate respondsToSelector:@selector(userBuyOrExam:)]) {
             [_delegate userBuyOrExam:self];
         }
+    } else if (sender == _doExamButton) {
+        // 由于傻逼接口在子集中没返回是否购买了 就需要通过 parentItem 去判断咯
+        if (_delegate && [_delegate respondsToSelector:@selector(userExamBy:)]) {
+            [_delegate userExamBy:self];
+        }
     }
 }
 
