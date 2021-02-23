@@ -177,7 +177,8 @@
     if ([string isEqualToString:@"\n"]) {
         [_institutionSearch resignFirstResponder];
         if (SWNOTEmptyStr(textField.text)) {
-            [self searchZhuangXiangListNet];
+//            [self searchZhuangXiangListNet];
+            [_tableView.mj_header beginRefreshing];
         }
         return NO;
     }
@@ -238,7 +239,7 @@
         if (SWNOTEmptyStr(_institutionSearch.text)) {
             [param setObject:_institutionSearch.text forKey:@"title"];
         }
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path specialExamList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path specialExamList] : [Net_Path specialExamSearchListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             [_tableView.mj_header endRefreshing];
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {

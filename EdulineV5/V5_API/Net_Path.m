@@ -599,4 +599,19 @@
     return [Net_Path fullPath:@"exam/special/topic" repalce:@"" byReplece:@""];
 }
 
+/** 公开考试列表 */
++ (NSString *)openingExamListNet {
+    return [Net_Path fullPath:@"exam/paper/list" repalce:@"" byReplece:@""];
+}
+
+/** 公开考试列表搜索接口 */
++ (NSString *)openingExamListSearchNet {
+    return [Net_Path fullPath:@"exam/paper/search" repalce:@"" byReplece:@""];
+}
+
+/** 公开考试分类接口 */
++ (NSString *)openingExamCategoryNet {
+    return [Net_Path fullPath:@"exam/paper/catetree" repalce:@"" byReplece:@""];
+}
+
 @end

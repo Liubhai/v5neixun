@@ -31,6 +31,7 @@
     
     _gotImage = [[UIImageView alloc] initWithFrame:CGRectMake(12, 0, 36, 16)];
     _gotImage.image = Image(@"exam_yigouamai_icon");
+    _gotImage.hidden = YES;
     [_whiteBack addSubview:_gotImage];
     
     _examTitle = [[UILabel alloc] initWithFrame:CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20)];
@@ -90,8 +91,37 @@
     _examPoint.hidden = YES;
     _lineView.hidden = YES;
     _learnCount.hidden = YES;
+    _priceLabel.hidden = NO;
+    _gotImage.hidden = YES;
     _examTitle.text = @"考试标题只能显示1排文字题只能显示1排文字";
     _examCount.text = @"共40题";
+    
+    _examTitle.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
+    _examCount.text = [NSString stringWithFormat:@"共%@题",dict[@"total_count"]];
+    NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"price"]];
+    
+    if ([priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
+        _priceLabel.hidden = YES;
+        _gotImage.hidden = NO;
+        _gotImage.image = Image(@"exam_free_icon");
+        _examTitle.frame = CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20);
+        [_getOrExamBtn setTitle:@"开始答题" forState:0];
+    } else {
+        // 不是免费的
+        _priceLabel.hidden = NO;
+        if ([[NSString stringWithFormat:@"%@",dict[@"has_bought"]] boolValue]) {
+            // 已购买
+            _gotImage.hidden = NO;
+            _gotImage.image = Image(@"exam_yigouamai_icon");
+            _examTitle.frame = CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20);
+            [_getOrExamBtn setTitle:@"开始答题" forState:0];
+        } else {
+            _gotImage.hidden = YES;
+            _examTitle.frame = CGRectMake(12, 14, _whiteBack.width - 12, 20);
+            [_getOrExamBtn setTitle:@"购买" forState:0];
+        }
+    }
 }
 
 - (void)setExamPointCell:(NSDictionary *)dict {

@@ -459,6 +459,15 @@ struct NetWorkUrl {
 /** 专项练习提交答案接口 post */
 + (NSString *)specialExamPostAnswerNet;
 
+/** 公开考试列表 */
++ (NSString *)openingExamListNet;
+
+/** 公开考试列表搜索接口 */
++ (NSString *)openingExamListSearchNet;
+
+/** 公开考试分类接口 */
++ (NSString *)openingExamCategoryNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
