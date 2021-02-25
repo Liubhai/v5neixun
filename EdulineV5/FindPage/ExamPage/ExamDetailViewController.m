@@ -21,7 +21,10 @@
     NSInteger currentExamRow;// 当前答题是第几道题
     NSIndexPath *currentExamIndexPath;// 当前答题在整个列表中的下标
     NSString *currentExamId;//当前答题的试题ID
+    BOOL canEnterNextExam;// 点击下一题的时候是 答对 答错 能否直接进入下一题 还是需要显示解析
 }
+
+//  用一个专门数组去存储请求到的题的详情 上一题的时候就直接取出来去加载数据; 填充数据的时候 直接用 ExamDetailModel 去填充答案或者填空框内的内容
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *examIdListArray;// 获取得到题干ID数组
@@ -35,6 +38,8 @@
 @property (strong, nonatomic) UIButton *submitBtn;
 @property (strong, nonatomic) UIButton *examSheetBtn;
 @property (strong, nonatomic) UIButton *examCollectBtn;
+
+@property (strong, nonatomic) NSMutableArray *answerManagerArray;// 选择的答案对应的数组 一维数组 遍历一次(添加 修改)
 
 
 
@@ -52,6 +57,10 @@
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
     _titleLabel.textAlignment = NSTextAlignmentLeft;
     _titleLabel.font = SYSTEMFONT(16);
+    
+    canEnterNextExam = NO;
+    
+    _answerManagerArray = [NSMutableArray new];
     
     _examIdListArray = [NSMutableArray new];
     _examDetailArray = [NSMutableArray new];
@@ -163,7 +172,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (SWNOTEmptyArr(_examDetailArray)) {
-        ExamDetailModel *model = _examDetailArray[0];
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
             return 1;
         }
@@ -178,7 +187,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (SWNOTEmptyArr(_examDetailArray)) {
-        ExamDetailModel *model = _examDetailArray[0];
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
             return model.topics.count;
         }
@@ -199,7 +208,7 @@
         cell = [[ExamAnswerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
     if (SWNOTEmptyArr(_examDetailArray)) {
-        ExamDetailModel *model = _examDetailArray[0];
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
             [cell setExamDetail:model.topics[indexPath.row] cellIndex:indexPath];
         } else {
@@ -218,21 +227,92 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
     back.backgroundColor = EdlineV5_Color.backColor;
-    UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 20)];
-    lable1111.backgroundColor = EdlineV5_Color.backColor;
-    NSMutableAttributedString * attrString;
+    
     if (SWNOTEmptyArr(_examDetailArray)) {
-        ExamDetailModel *model = _examDetailArray[0];
-        if ([model.question_type isEqualToString:@"7"]) {
-            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
-        } else {
-            if (SWNOTEmptyArr(model.topics)) {
-                ExamDetailModel *modelpass = model.topics[section];
-                attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
-            } else {
-                attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
-            }
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+        
+        UIImageView *examCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 2, 14, 16)];
+        examCountIcon.image = Image(@"marker_icon");
+        [back addSubview:examCountIcon];
+        
+        UILabel *examCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(examCountIcon.right + 10, 0, 15+28, 20)];
+        examCountLabel.font = SYSTEMFONT(13);
+        examCountLabel.textColor = EdlineV5_Color.textThirdColor;
+        NSString *cur = [NSString stringWithFormat:@"%@",@(currentExamRow)];
+        NSMutableAttributedString *fullExamCount = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@/%@",@(currentExamRow),@(examCount)]];
+        [fullExamCount addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.themeColor} range:NSMakeRange(0, cur.length)];
+        examCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:fullExamCount];
+        CGFloat countLabelWidth = [[NSString stringWithFormat:@"%@/%@",@(currentExamRow),@(examCount)] sizeWithFont:examCountLabel.font].width + 15;
+        [examCountLabel setWidth:countLabelWidth];
+        [back addSubview:examCountLabel];
+        
+        UIImageView *examTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(examCountLabel.right, 2, 32, 16)];
+        // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
+        if ([model.question_type isEqualToString:@"1"]) {
+            examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
+            [examTypeImageView setWidth:32];
+        } else if ([model.question_type isEqualToString:@"2"]) {
+            examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
+            [examTypeImageView setWidth:32];
+        } else if ([model.question_type isEqualToString:@"3"]) {
+            examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
+            [examTypeImageView setWidth:32];
+        } else if ([model.question_type isEqualToString:@"4"]) {
+            examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
+            [examTypeImageView setWidth:44];
+        } else if ([model.question_type isEqualToString:@"5"]) {
+            examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
+            [examTypeImageView setWidth:32];
+        } else if ([model.question_type isEqualToString:@"6"]) {
+            examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
+            [examTypeImageView setWidth:32];
+        } else if ([model.question_type isEqualToString:@"7"]) {
+            examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
+            [examTypeImageView setWidth:55];
+        } else if ([model.question_type isEqualToString:@"8"]) {
+            examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
+            [examTypeImageView setWidth:32];
         }
+        [back addSubview:examTypeImageView];
+        
+        UILabel *examScore = [[UILabel alloc] initWithFrame:CGRectMake(examTypeImageView.right, 0, 100, 20)];
+        examScore.font = SYSTEMFONT(15);
+        examScore.textColor = EdlineV5_Color.textFirstColor;
+        examScore.text = [NSString stringWithFormat:@"（%@分）",model.score];
+        examScore.hidden = YES;
+        [back addSubview:examScore];
+        
+        if ([_examType isEqualToString:@"3"] || [_examType isEqualToString:@"4"]) {
+            examScore.hidden = NO;
+        }
+        
+        UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(11, 20, MainScreenWidth - 22, 20)];
+        lable1111.backgroundColor = EdlineV5_Color.backColor;
+        NSMutableAttributedString * attrString;
+        
+        if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
+            ExamDetailModel *modelpass = model.topics[section];
+            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
+            examTypeImageView.frame = CGRectMake(15, 2, 32, 16);
+            examScore.frame = CGRectMake(examTypeImageView.right, 0, 100, 20);
+            examCountIcon.hidden = YES;
+            examCountLabel.hidden = YES;
+        } else {
+            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+            examCountIcon.hidden = NO;
+            examCountLabel.hidden = NO;
+        }
+        
+//        if ([model.question_type isEqualToString:@"7"]) {
+//            attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+//        } else {
+//            if (SWNOTEmptyArr(model.topics)) {
+//                ExamDetailModel *modelpass = model.topics[section];
+//                attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
+//            } else {
+//                attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+//            }
+//        }
         
         [attrString addAttributes:@{NSFontAttributeName:SYSTEMFONT(14)} range:NSMakeRange(0, attrString.length)];
         
@@ -251,10 +331,10 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 20)];
+    UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(11, 0, MainScreenWidth - 22, 20)];
     NSMutableAttributedString * attrString;
     if (SWNOTEmptyArr(_examDetailArray)) {
-        ExamDetailModel *model = _examDetailArray[0];
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         
         if ([model.question_type isEqualToString:@"7"]) {
             attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
@@ -270,7 +350,7 @@
         lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
         [lable1111 sizeToFit];
         [lable1111 setHeight:lable1111.height];
-        return lable1111.height;
+        return lable1111.height + 20;
     }
     return 0.001;
 }
@@ -279,6 +359,26 @@
     if ([_examType isEqualToString:@"3"]) {
         return nil;
     } else {
+        
+        ExamDetailModel *modelxxx;
+        
+        if (SWNOTEmptyArr(_examDetailArray)) {
+            ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+            if ([model.question_type isEqualToString:@"7"]) {
+                modelxxx = model;
+            } else {
+                if (SWNOTEmptyArr(model.topics)) {
+                    ExamDetailModel *modelpass = model.topics[section];
+                    modelxxx = modelpass;
+                } else {
+                    modelxxx = model;
+                }
+            }
+        }
+        if (!modelxxx.is_answer) {
+            return nil;
+        }
+        
         UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
         back.backgroundColor = EdlineV5_Color.backColor;
         
@@ -299,24 +399,8 @@
         expandButton.tag = section;
         [expandButton addTarget:self action:@selector(expandButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         
-        ExamDetailModel *modelxxx;
+        expandButton.selected = modelxxx.is_expand;
         
-        if (SWNOTEmptyArr(_examDetailArray)) {
-            ExamDetailModel *model = _examDetailArray[0];
-            if ([model.question_type isEqualToString:@"7"]) {
-                expandButton.selected = model.is_expand;
-                modelxxx = model;
-            } else {
-                if (SWNOTEmptyArr(model.topics)) {
-                    ExamDetailModel *modelpass = model.topics[section];
-                    expandButton.selected = modelpass.is_expand;
-                    modelxxx = modelpass;
-                } else {
-                    expandButton.selected = model.is_expand;
-                    modelxxx = model;
-                }
-            }
-        }
         [EdulineV5_Tool dealButtonImageAndTitleUI:expandButton];
         [back addSubview:expandButton];
         [back setHeight:expandButton.bottom + 12];
@@ -372,7 +456,7 @@
         ExamDetailModel *modelxxx;
         
         if (SWNOTEmptyArr(_examDetailArray)) {
-            ExamDetailModel *model = _examDetailArray[0];
+            ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
             if ([model.question_type isEqualToString:@"7"]) {
                 modelxxx = model;
             } else {
@@ -383,6 +467,10 @@
                     modelxxx = model;
                 }
             }
+        }
+        
+        if (!modelxxx.is_answer) {
+            return 0.001;
         }
         
         if (modelxxx.is_expand) {
@@ -416,7 +504,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (SWNOTEmptyArr(_examDetailArray)) {
-        ExamDetailModel *model = _examDetailArray[0];
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
             // 完形填空
         } else {
@@ -491,6 +579,17 @@
 
 - (void)getExamDetailForExamIds:(NSString *)examIds {
     if (SWNOTEmptyStr(examIds)) {
+        currentExamId = examIds;
+        // 首选通过 ID 去获取 获取不到再去请求数据
+        ExamDetailModel *c_model = [self checkExamDetailArray:examIds];
+        if (c_model) {
+            [self makeUIByExamDetailModel:c_model];
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
+            return;
+        }
+        
+        // 匹配不到对应试题ID的试题详情model 就需要请求接口
         NSString *getUrl = [Net_Path examPointDetailDataNet];
         NSMutableDictionary *param = [NSMutableDictionary new];
         if ([_examType isEqualToString:@"1"]) {
@@ -503,10 +602,9 @@
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointDetailDataNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    [_examDetailArray removeAllObjects];
-                    [_examDetailArray addObjectsFromArray:[ExamDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
-                    for (int i = 0; i<_examDetailArray.count; i++) {
-                        ExamDetailModel *pass = _examDetailArray[i];
+                    NSMutableArray *passArray = [NSMutableArray arrayWithArray:[ExamDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
+                    for (int i = 0; i<passArray.count; i++) {
+                        ExamDetailModel *pass = passArray[i];
                         pass.titleMutable = [self changeStringToMutA:pass.title];
                         pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
                         if (SWNOTEmptyArr(pass.topics)) {
@@ -526,74 +624,10 @@
                             }
                         }
                     }
-                    if (SWNOTEmptyArr(_examDetailArray)) {
-                        if (!_headerView) {
-                            _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
-                            _headerView.backgroundColor = EdlineV5_Color.backColor;
-                        }
-                        [_headerView removeAllSubviews];
-                        
-                        UILabel *examThemeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth-15 - 14 - 53, 53)];
-                        examThemeLabel.font = SYSTEMFONT(16);
-                        examThemeLabel.textColor = EdlineV5_Color.textFirstColor;
-                        examThemeLabel.text = @"知识点练习";
-                        [_headerView addSubview:examThemeLabel];
-                        
-                        UILabel *examCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 28, 0, 15+28, 53)];
-                        examCountLabel.font = SYSTEMFONT(13);
-                        examCountLabel.textColor = EdlineV5_Color.textThirdColor;
-                        NSString *cur = [NSString stringWithFormat:@"%@",@(currentExamRow)];
-                        NSMutableAttributedString *fullExamCount = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@/%@",@(currentExamRow),@(examCount)]];
-                        [fullExamCount addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.themeColor} range:NSMakeRange(0, cur.length)];
-                        examCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:fullExamCount];
-                        [_headerView addSubview:examCountLabel];
-                        
-                        UIImageView *examCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(examCountLabel.left - 10 - 14, 0, 14, 16)];
-                        examCountIcon.image = Image(@"marker_icon");
-                        examCountIcon.centerY = examCountLabel.centerY;
-                        [_headerView addSubview:examCountIcon];
-                        
-                        ExamDetailModel *model = (ExamDetailModel *)_examDetailArray[0];
-                        if ([model.question_type isEqualToString:@"7"]) {
-                            // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
-                            [_headerView setHeight:examThemeLabel.bottom];
-                            _tableView.tableHeaderView = _headerView;
-                        } else {
-                            if (SWNOTEmptyArr(model.topics)) {
-                                
-                                // 有多道小试题 这里就需要设置 整个 tableview 的 头部
-                                
-                                NSMutableAttributedString *mutable = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
-                                
-                                if (model.titleMutable) {
-                                    NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
-                                    if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
-                                        [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
-                                    }
-                                }
-                                [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.titleMutable.length)];
-                                
-                                UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(0, examThemeLabel.bottom, MainScreenWidth, 100)];
-                                lable1111.backgroundColor = EdlineV5_Color.backColor;
-
-                                lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:mutable];
-                                [lable1111 sizeToFit];
-                                lable1111.showsVerticalScrollIndicator = NO;
-                                lable1111.showsHorizontalScrollIndicator = NO;
-                                lable1111.editable = NO;
-                                lable1111.scrollEnabled = NO;
-                                [lable1111 setHeight:lable1111.height];
-                                [_headerView addSubview:lable1111];
-                                [_headerView setHeight:lable1111.bottom];
-                                _tableView.tableHeaderView = _headerView;
-                                
-                            } else {
-                                // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
-                                [_headerView setHeight:examThemeLabel.bottom];
-                                _tableView.tableHeaderView = _headerView;
-                            }
-                        }
-                        [_tableView reloadData];
+                    
+                    if (SWNOTEmptyArr(passArray)) {
+                        [_examDetailArray addObject:passArray[0]];
+                        [self makeUIByExamDetailModel:passArray[0]];
                     }
                 }
             }
@@ -606,12 +640,113 @@
     }
 }
 
+// MARK: - 通过获取到的试题详情 加载页面数据
+- (void)makeUIByExamDetailModel:(id)examModel {
+    if (examModel) {
+        if (!_headerView) {
+            _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+            _headerView.backgroundColor = EdlineV5_Color.backColor;
+        }
+        [_headerView removeAllSubviews];
+        
+        UILabel *examThemeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth-15 - 14 - 53, 53)];
+        examThemeLabel.font = SYSTEMFONT(16);
+        examThemeLabel.textColor = EdlineV5_Color.textFirstColor;
+        examThemeLabel.text = @"知识点练习";
+        [_headerView addSubview:examThemeLabel];
+        
+        ExamDetailModel *model = (ExamDetailModel *)examModel;
+        if ([model.question_type isEqualToString:@"7"]) {
+            // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
+            [_headerView setHeight:examThemeLabel.bottom];
+            _tableView.tableHeaderView = _headerView;
+        } else {
+            if (SWNOTEmptyArr(model.topics)) {
+
+                UIImageView *examCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, examThemeLabel.bottom + 2, 14, 16)];
+                examCountIcon.image = Image(@"marker_icon");
+                [_headerView addSubview:examCountIcon];
+                
+                UILabel *examCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(examCountIcon.right + 10, examThemeLabel.bottom, 15+28, 20)];
+                examCountLabel.font = SYSTEMFONT(13);
+                examCountLabel.textColor = EdlineV5_Color.textThirdColor;
+                NSString *cur = [NSString stringWithFormat:@"%@",@(currentExamRow)];
+                NSMutableAttributedString *fullExamCount = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@/%@",@(currentExamRow),@(examCount)]];
+                [fullExamCount addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.themeColor} range:NSMakeRange(0, cur.length)];
+                examCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:fullExamCount];
+                CGFloat countLabelWidth = [[NSString stringWithFormat:@"%@/%@",@(currentExamRow),@(examCount)] sizeWithFont:examCountLabel.font].width + 15;
+                [examCountLabel setWidth:countLabelWidth];
+                [_headerView addSubview:examCountLabel];
+                
+                UIImageView *examTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(examCountLabel.right, examThemeLabel.bottom + 2, 32, 16)];
+                examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
+                [_headerView addSubview:examTypeImageView];
+                
+                if ([_examType isEqualToString:@"3"] || [_examType isEqualToString:@"4"]) {
+                    UILabel *examScore = [[UILabel alloc] initWithFrame:CGRectMake(examTypeImageView.right, examThemeLabel.bottom, 100, 20)];
+                    examScore.font = SYSTEMFONT(15);
+                    examScore.textColor = EdlineV5_Color.textFirstColor;
+                    examScore.text = [NSString stringWithFormat:@"（%@分）",model.score];
+                    [_headerView addSubview:examScore];
+                }
+                
+                // 有多道小试题 这里就需要设置 整个 tableview 的 头部
+                
+                NSMutableAttributedString *mutable = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
+                
+                if (model.titleMutable) {
+                    NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
+                    if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+                        [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
+                    }
+                }
+                [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.titleMutable.length)];
+                
+                UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(11, examThemeLabel.bottom + 20, MainScreenWidth - 22, 100)];
+                lable1111.backgroundColor = EdlineV5_Color.backColor;
+
+                lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:mutable];
+                [lable1111 sizeToFit];
+                lable1111.showsVerticalScrollIndicator = NO;
+                lable1111.showsHorizontalScrollIndicator = NO;
+                lable1111.editable = NO;
+                lable1111.scrollEnabled = NO;
+                [lable1111 setHeight:lable1111.height];
+                [_headerView addSubview:lable1111];
+                [_headerView setHeight:lable1111.bottom];
+                _tableView.tableHeaderView = _headerView;
+                
+            } else {
+                // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
+                [_headerView setHeight:examThemeLabel.bottom];
+                _tableView.tableHeaderView = _headerView;
+            }
+        }
+        [_tableView reloadData];
+    }
+}
+
 - (void)bottomButtonClick:(UIButton *)sender {
     if (sender == _nextExamBtn) {
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
+        // 这里需要判断是否能够直接进入下一题还是需要展开解析
+        // 如果当前题答错了 并且是第一次答这道题 那么就显示 底部区域 并且 将这个道题上传 model.is_expend 设置成 yes
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+//        canEnterNextExam = [self judgeCurrentExamIsRight];
+        
+        if (![self judgeCurrentExamIsRight] && !model.is_answer) {
+            // 提交答案 并且 展开解析
+            // 这时候要把已作答的题目和对应的作答内容组装起来 便于后面赋值
+            
+            model.is_answer = YES;
+            model.is_expand = YES;
+            [_tableView reloadData];
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
+            return;
+        }
         if (SWNOTEmptyArr(_examIdListArray)) {
-            // 1 2 1 1 2 1
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
                 currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row + 1 inSection:currentExamIndexPath.section];
@@ -765,7 +900,7 @@
 - (void)expandButtonClick:(UIButton *)sender {
     sender.selected = !sender.selected;
     if (SWNOTEmptyArr(_examDetailArray)) {
-        ExamDetailModel *model = _examDetailArray[0];
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
             model.is_expand = sender.selected;
         } else {
@@ -780,6 +915,7 @@
     [_tableView reloadData];
 }
 
+// MARK: - 将标签转为富文本并且过滤换行符
 - (NSMutableAttributedString *)changeStringToMutA:(NSString *)commonString {
     
     NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithData:[commonString dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
@@ -790,6 +926,111 @@
         }
     }
     return attrString;
+}
+
+// MARK: - 判断当前题是否作答正确
+- (BOOL)judgeCurrentExamIsRight {
+    if ([_examType isEqualToString:@"1"] || [_examType isEqualToString:@"2"]) {
+        // 知识点练习和专项练习 没有材料题
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+        if ([model.question_type isEqualToString:@"7"]) {
+            BOOL is_right = NO;
+            for (int i = 0; i<model.topics.count; i++) {
+                ExamDetailModel *pass = model.topics[i];
+                for (int j = 0; j < pass.options.count; j++) {
+                    ExamDetailOptionsModel *op = pass.options[j];
+                    if (op.is_selected) {
+                        if (op.is_right) {
+                            is_right = YES;
+                        } else {
+                            is_right = NO;
+                            return is_right;
+                        }
+                    }
+                }
+            }
+            return is_right;
+        }
+        if (SWNOTEmptyArr(model.topics)) {
+            return YES;
+        } else {
+            // 遍历一遍选项 获取当前选中的 再判断当前选中的是不是 is_right
+            /* 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题 **/
+            BOOL is_right = NO;
+            if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"]) {
+                for (int i = 0; i<model.options.count; i++) {
+                    ExamDetailOptionsModel *op = model.options[i];
+                    if (op.is_selected && op.is_right) {
+                        is_right = YES;
+                        break;
+                    }
+                }
+                return is_right;
+            } else if ([model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"]) {
+                for (int i = 0; i<model.options.count; i++) {
+                    ExamDetailOptionsModel *op = model.options[i];
+                    if (op.is_selected) {
+                        if (op.is_right) {
+                            is_right = YES;
+                        } else {
+                            is_right = NO;
+                            break;
+                        }
+                    }
+                }
+                return is_right;
+            } else if ([model.question_type isEqualToString:@"5"]) {
+                // 匹配对应题id的对应填空的内容
+                return YES;
+//                NSMutableDictionary *pass = [NSMutableDictionary new];
+//                for (int i = 0; i<_answerManagerArray.count; i++) {
+//                    pass = _answerManagerArray[i];
+//                    if ([pass.allKeys containsObject:model.examDetailId]) {
+//                        NSMutableArray *opLocalAnswer = [NSMutableArray arrayWithArray:[pass objectForKey:model.examDetailId]];
+//
+//                        if (opLocalAnswer.count != model.options.count) {
+//                            return is_right;
+//                        } else {
+//                            for (int j = 0; j<model.options.count; j++) {
+//
+//                            }
+//                        }
+//                    } else {
+//                        return is_right;
+//                    }
+//                }
+            }
+            return is_right;
+        }
+    } else {
+        return YES;
+    }
+}
+
+// MARK: - 检测是否已经作答
+- (BOOL)judgeIsAnswer {
+    if ([_examType isEqualToString:@"1"] || [_examType isEqualToString:@"2"]) {
+        // 先判断是否作答 然后再处理保存
+        
+    }
+    return NO;
+}
+
+// MARK: - 检测获取当前试题详情数组里面有没有当前试题
+- (ExamDetailModel *)checkExamDetailArray:(NSString *)examId {
+    if (SWNOTEmptyStr(examId)) {
+        BOOL has = NO;
+        for (int i = 0; i<_examDetailArray.count; i++) {
+            if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:examId]) {
+                has = YES;
+                return ((ExamDetailModel *)(_examDetailArray[i]));
+                break;
+            }
+        }
+        return nil;
+    } else {
+        return nil;
+    }
 }
 
 /*

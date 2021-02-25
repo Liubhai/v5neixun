@@ -41,8 +41,6 @@
     
     [self makeTopUI];
     
-    [self makeTestData];
-    
     [self makeExamSheetUI];
     
     [self makeBottomView];
@@ -115,28 +113,11 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)makeTestData {
-//    int x = arc4random() % 10;
-//    for (int i = 0; i < x ; i++) {
-//        ExamSheetModel *sheetModel = [[ExamSheetModel alloc] init];
-//        sheetModel.title = [NSString stringWithFormat:@"题型名字%@",@(arc4random() % 100)];
-//        int Y = arc4random() % 10;
-//        NSMutableArray *pass = [NSMutableArray new];
-//        for (int j = 0; j < Y; j++) {
-//            ExamModel *model = [[ExamModel alloc] init];
-//            model.exam_id = [NSString stringWithFormat:@"%@",@(arc4random() % Y)];
-//            model.selected = (j % 2 == 0) ? YES : NO;
-//            [pass addObject:model];
-//        }
-//        sheetModel.child = [NSMutableArray arrayWithArray:pass];
-//        [_examArray addObject:sheetModel];
-//    }
-}
-
 - (void)makeExamSheetUI {
     
     CGFloat hotYY = 15 + 22 + 14 + 14 + 20;
     if (SWNOTEmptyArr(_examArray)) {
+        NSInteger order = 1;
         for (int j = 0; j < _examArray.count; j++) {
             UIView *hotView = [[UIView alloc] initWithFrame:CGRectMake(0, hotYY, MainScreenWidth, 0)];
             hotView.backgroundColor = [UIColor whiteColor];
@@ -162,7 +143,7 @@
                     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, btnHeight, btnHeight)];
                     btn.tag = 400 + i;
                     [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-                    [btn setTitle:[NSString stringWithFormat:@"%@",@(i+1)] forState:0];
+                    [btn setTitle:[NSString stringWithFormat:@"%@",@(order)] forState:0];
                     btn.titleLabel.font = SYSTEMFONT(14);
                     [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
                     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
@@ -187,6 +168,7 @@
                         [hotView setHeight:btn.bottom];
                     }
                     [hotView addSubview:btn];
+                    order = order + 1;
                 }
             } else {
                 [hotView setHeight:typeTitleLabel.bottom];
