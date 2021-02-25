@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 填空输入 */
 - (void)inputTextFieldSure:(ExamDetailModel *)cellDetailModel cellOptionModel:(ExamDetailOptionsModel *)cellOptionModel answerCell:(ExamAnswerCell *)answerCell;
 /** 完形填空选择 */
-- (void)gapfillingChooseStatusChanged:(ExamAnswerCell *)answerCell;
+- (void)gapfillingChooseStatusChanged:(ExamAnswerCell *)answerCell button:(UIButton *)sender;
 
 @end
 
@@ -40,12 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *clozeBackView;// 完形填空容器
 @property (strong, nonatomic) NSIndexPath *cellIndexPath;
 @property (strong, nonatomic) ExamDetailModel *cellDetailModel;//当前cell对应的试题详情
+@property (strong, nonatomic) ExamDetailModel *examDetailModel;//当前完形填空或者材料题cell对应的试题详情
 @property (strong, nonatomic) ExamDetailOptionsModel *cellOptionModel;//当前cell对应的选项详情
 
 - (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath;
 
 /** 针对完形填空 */
-- (void)setExamDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath;
+- (void)setExamDetail:(ExamDetailModel *)detailModel cellModel:(ExamDetailModel *)cellModel cellIndex:(NSIndexPath *)cellIndexPath;
 
 @end
 

@@ -210,7 +210,7 @@
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
-            [cell setExamDetail:model.topics[indexPath.row] cellIndex:indexPath];
+            [cell setExamDetail:model cellModel:model.topics[indexPath.row] cellIndex:indexPath];
         } else {
             if (SWNOTEmptyArr(model.topics)) {
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
@@ -498,7 +498,17 @@
 }
 
 // MARK: - cell代理方法合集(ExamAnswerCellDelegate)
-- (void)gapfillingChooseStatusChanged:(ExamAnswerCell *)answerCell {
+- (void)gapfillingChooseStatusChanged:(ExamAnswerCell *)answerCell button:(nonnull UIButton *)sender {
+    ExamDetailModel *current_model = [self checkExamDetailArray:currentExamId];
+    ExamDetailModel *current_cell_model = current_model.topics[answerCell.cellIndexPath.row];
+    for (int i = 0; i<current_cell_model.options.count; i++) {
+        ExamDetailOptionsModel *optionModel = current_cell_model.options[i];
+        if (i == (sender.tag - 100)) {
+            optionModel.is_selected = YES;
+        } else {
+            optionModel.is_selected = NO;
+        }
+    }
     [_tableView reloadRowAtIndexPath:answerCell.cellIndexPath withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -512,6 +522,9 @@
                 // 小题有多个 材料题
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
             } else {
+                if (model.is_answer) {
+                    return;
+                }
                 // 只有一个小题
                 // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题
                 if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"]) {
@@ -733,18 +746,24 @@
         // 这里需要判断是否能够直接进入下一题还是需要展开解析
         // 如果当前题答错了 并且是第一次答这道题 那么就显示 底部区域 并且 将这个道题上传 model.is_expend 设置成 yes
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
-//        canEnterNextExam = [self judgeCurrentExamIsRight];
-        
-        if (![self judgeCurrentExamIsRight] && !model.is_answer) {
-            // 提交答案 并且 展开解析
-            // 这时候要把已作答的题目和对应的作答内容组装起来 便于后面赋值
-            
-            model.is_answer = YES;
-            model.is_expand = YES;
-            [_tableView reloadData];
-            _previousExamBtn.enabled = YES;
-            _nextExamBtn.enabled = YES;
-            return;
+        if (!model.is_answer) {
+            if (![self judgeCurrentExamIsRight]) {
+                if (!model.is_answer) {
+                    // 提交答案 并且 展开解析
+                    // 这时候要把已作答的题目和对应的作答内容组装起来 便于后面赋值
+                    
+                    model.is_answer = YES;
+                    model.is_expand = YES;
+                    [_tableView reloadData];
+                    _previousExamBtn.enabled = YES;
+                    _nextExamBtn.enabled = YES;
+                    return;
+                }
+            } else {
+                // 回答正确了 也需要在这里设置已作答
+                model.is_answer = YES;
+                model.is_expand = YES;
+            }
         }
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
@@ -967,14 +986,17 @@
                 }
                 return is_right;
             } else if ([model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"]) {
+                is_right = YES;
                 for (int i = 0; i<model.options.count; i++) {
                     ExamDetailOptionsModel *op = model.options[i];
-                    if (op.is_selected) {
-                        if (op.is_right) {
-                            is_right = YES;
-                        } else {
-                            is_right = NO;
-                            break;
+                    // 多选  不定项 反其道而行之 遍历所有  1、 正确答案 但是没有选择 判定错误; 2、 错误答案 选择了 判定错误. 有错误 即可返回错误
+                    if (op.is_right) {
+                        if (!op.is_selected) {
+                            return NO;
+                        }
+                    } else {
+                        if (op.is_selected) {
+                            return NO;
                         }
                     }
                 }

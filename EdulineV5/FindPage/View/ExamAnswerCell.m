@@ -175,8 +175,9 @@
     }
 }
 
-- (void)setExamDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath {
-    _cellDetailModel = detailModel;
+- (void)setExamDetail:(ExamDetailModel *)detailModel cellModel:(ExamDetailModel *)cellModel cellIndex:(NSIndexPath *)cellIndexPath {
+    _examDetailModel = detailModel;
+    _cellDetailModel = cellModel;
     _cellIndexPath = cellIndexPath;
     // 每一个 detailModel 里面的 topics 元素数组 作为一个 cell 的填充内容
     _mutSelectButton.hidden = YES;
@@ -195,8 +196,8 @@
     [_clozeBackView removeAllSubviews];
     CGFloat XX = 0.0;
     CGFloat YY = 0.0;
-    for (int i = 0; i<detailModel.options.count; i++) {
-        ExamDetailOptionsModel *optionModel = detailModel.options[i];
+    for (int i = 0; i<cellModel.options.count; i++) {
+        ExamDetailOptionsModel *optionModel = cellModel.options[i];
         NSString *secondTitle = [NSString stringWithFormat:@"%@.%@",optionModel.key,optionModel.value];//@"热门搜索";
         CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(15)].width + 4 + 6 + 20;
         UIButton *secondBtn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, secondBtnWidth, 20)];
@@ -218,7 +219,7 @@
         }
         secondBtn.frame = CGRectMake(XX, YY, secondBtnWidth, 20);
         XX = secondBtn.right + 10;
-        if (i == detailModel.options.count - 1) {
+        if (i == cellModel.options.count - 1) {
             [_clozeBackView setHeight:secondBtn.bottom];
             [self setHeight:secondBtn.bottom + 12];
         }
@@ -227,16 +228,11 @@
 }
 
 - (void)secondBtnClick:(UIButton *)sender {
-    for (int i = 0; i<_cellDetailModel.options.count; i++) {
-        ExamDetailOptionsModel *optionModel = _cellDetailModel.options[i];
-        if (i == (sender.tag - 100)) {
-            optionModel.is_selected = YES;
-        } else {
-            optionModel.is_selected = NO;
-        }
+    if (_examDetailModel.is_answer) {
+        return;
     }
-    if (_delegate && [_delegate respondsToSelector:@selector(gapfillingChooseStatusChanged:)]) {
-        [_delegate gapfillingChooseStatusChanged:self];
+    if (_delegate && [_delegate respondsToSelector:@selector(gapfillingChooseStatusChanged:button:)]) {
+        [_delegate gapfillingChooseStatusChanged:self button:sender];
     }
 }
 
