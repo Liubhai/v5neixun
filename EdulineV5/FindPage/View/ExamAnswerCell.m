@@ -17,6 +17,8 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.backgroundColor = EdlineV5_Color.backColor;
         [self makeSubView];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextViewChange:) name:UITextViewTextDidChangeNotification object:nil];
     }
     return self;
 }
@@ -126,12 +128,14 @@
         
         _userInputTextField.hidden = NO;
         _gapfillingIndexTitle.hidden = NO;
+        _userInputTextField.text = model.userAnswerValue;
     } else if ([detailModel.question_type isEqualToString:@"8"]) {
         _selectButton.hidden = YES;
         _mutSelectButton.hidden = YES;
         _keyTitle.hidden = YES;
         _valueTextView.hidden = YES;
         _userInputTextView.hidden = NO;
+        _userInputTextView.text = model.userAnswerValue;
         
         _userInputTextField.hidden = YES;
         _gapfillingIndexTitle.hidden = YES;
@@ -267,6 +271,16 @@
         return NO;
     }
     return YES;
+}
+
+- (void)userTextFieldChange:(NSNotification *)notice {
+    UITextField *textF = (UITextField *)notice.object;
+    _cellOptionModel.userAnswerValue = textF.text;
+}
+
+- (void)userTextViewChange:(NSNotification *)notice {
+    UITextView *textF = (UITextView *)notice.object;
+    _cellOptionModel.userAnswerValue = textF.text;
 }
 
 - (void)awakeFromNib {

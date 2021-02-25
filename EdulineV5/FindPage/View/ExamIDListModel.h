@@ -101,6 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSMutableAttributedString *mutvalue;
 @property (assign, nonatomic) BOOL is_right;
 @property (assign, nonatomic) BOOL is_selected;
+@property (strong, nonatomic) NSString *userAnswerValue;// 用户自己的答案 填空 解答类型
+
 
 @end
 
