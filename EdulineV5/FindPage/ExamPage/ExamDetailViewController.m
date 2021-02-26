@@ -747,22 +747,27 @@
         // 如果当前题答错了 并且是第一次答这道题 那么就显示 底部区域 并且 将这个道题上传 model.is_expend 设置成 yes
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if (!model.is_answer) {
+            // 这个地方需要判断是不是填空题 填空题需要请求接口 让接口去判断 其他类型自己判断
+            if ([model.question_type isEqualToString:@"5"]) {
+                // 请求接口 并根据接口返回的判断结果 修改 model 的 is_answer 并且在请求接口完成后 释放 上一题 下一题的 enable 属性
+                [self requestExamJudgeIsRight:model];
+                return;
+            }
             if (![self judgeCurrentExamIsRight]) {
-                if (!model.is_answer) {
-                    // 提交答案 并且 展开解析
-                    // 这时候要把已作答的题目和对应的作答内容组装起来 便于后面赋值
-                    
-                    model.is_answer = YES;
-                    model.is_expand = YES;
-                    [_tableView reloadData];
-                    _previousExamBtn.enabled = YES;
-                    _nextExamBtn.enabled = YES;
-                    return;
-                }
+                // 提交答案 并且 展开解析
+                // 这时候要把已作答的题目和对应的作答内容组装起来 便于后面赋值
+                model.is_right = NO;
+                model.is_answer = YES;
+                model.is_expand = YES;
+                [_tableView reloadData];
+                _previousExamBtn.enabled = YES;
+                _nextExamBtn.enabled = YES;
+                return;
             } else {
                 // 回答正确了 也需要在这里设置已作答
                 model.is_answer = YES;
                 model.is_expand = YES;
+                model.is_right = YES;
             }
         }
         if (SWNOTEmptyArr(_examIdListArray)) {
@@ -1026,6 +1031,31 @@
         }
     } else {
         return YES;
+    }
+}
+
+//MARK: - 填空题请求接口判断正确与错误 并且修改 model 的 is_answer 属性为 yes(只针对练习试题的时候)
+- (void)requestExamJudgeIsRight:(ExamDetailModel *)model {
+    if (model) {
+        NSString *getUrl = [Net_Path examPointDetailDataNet];
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        if ([_examType isEqualToString:@"1"]) {
+            getUrl = [Net_Path examPointDetailDataNet];
+            [param setObject:model.examDetailId forKey:@"topic_id"];
+            [param setObject:model.topic_level forKey:@"topic_level"];
+        } else if ([_examType isEqualToString:@"2"]) {
+            getUrl = [Net_Path specialExamDetailDataNet];
+            [param setObject:model.examDetailId forKey:@"topic_id"];
+            [param setObject:model.topic_level forKey:@"topic_level"];
+        }
+        [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            model.is_answer = YES;
+            model.is_right = YES;
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
     }
 }
 
