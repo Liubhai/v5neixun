@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) id<CourseTypeVCDelegate> delegate;
 @property (assign, nonatomic) BOOL isMainPage;// 是不是课程主页
 @property (strong, nonatomic) NSString *typeId;// 当前选中的类型
+@property (strong, nonatomic) NSString *typeString;// 区分课程还是公开考试
+
 
 @end
 

@@ -73,11 +73,17 @@
 }
 
 - (void)getCourseTypeList {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path coursetypeList] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    NSString *getUrl = [Net_Path coursetypeList];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if ([_typeString isEqualToString:@"exam"]) {
+        getUrl = [Net_Path openingExamCategoryNet];
+        [param setObject:@"3" forKey:@"module_id"];
+    }
+    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:param paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
-                _tableView.frame = CGRectMake(0, 0, MainScreenWidth, _dataSource.count * 60);
+                _tableView.frame = CGRectMake(0, 0, MainScreenWidth, _dataSource.count * 60 > (MainScreenHeight - MACRO_UI_UPHEIGHT) ? (MainScreenHeight - MACRO_UI_UPHEIGHT) : _dataSource.count * 60);
                 [_tableView reloadData];
                 self.view.hidden = NO;
             }

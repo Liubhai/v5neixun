@@ -12,9 +12,14 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 
-@interface SpecialProjectExamList ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TeacherCategoryVCDelegate> {
+#import "CourseTypeVC.h"
+
+@interface SpecialProjectExamList ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TeacherCategoryVCDelegate, CourseTypeVCDelegate> {
     NSInteger page;
-    NSString *categoryString;// 类型
+    
+    // 课程类型
+    NSString *coursetypeString;
+    NSString *coursetypeIdString;
 }
 
 @property (strong, nonatomic) UITextField *institutionSearch;
@@ -36,7 +41,7 @@
     [_rightButton setImage:[Image(@"lesson_screen_nor") converToMainColor] forState:UIControlStateSelected];
     [self makeTopSearch];
     
-    categoryString = @"";
+    coursetypeIdString = @"";
     _dataSource = [NSMutableArray new];
     page = 1;
     [self makeTableView];
@@ -112,8 +117,8 @@
     if (SWNOTEmptyStr(_examTypeId)) {
         [param setObject:_examTypeId forKey:@"module_id"];
     }
-    if (SWNOTEmptyStr(categoryString)) {
-        [param setObject:categoryString forKey:@"category"];
+    if (SWNOTEmptyStr(coursetypeIdString)) {
+        [param setObject:coursetypeIdString forKey:@"category"];
     }
     if (SWNOTEmptyStr(_institutionSearch.text)) {
         [param setObject:_institutionSearch.text forKey:@"title"];
@@ -150,8 +155,8 @@
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
-    if (SWNOTEmptyStr(categoryString)) {
-        [param setObject:categoryString forKey:@"category"];
+    if (SWNOTEmptyStr(coursetypeIdString)) {
+        [param setObject:coursetypeIdString forKey:@"category"];
     }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
@@ -179,20 +184,42 @@
     
     _rightButton.selected = !_rightButton.selected;
     if (_rightButton.selected) {
-        TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+//        TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
+//        vc.notHiddenNav = NO;
+//        vc.hiddenNavDisappear = YES;
+//        vc.typeString = @"0";
+//        vc.delegate = self;
+//        vc.isChange = YES;
+//        vc.isDownExpend = YES;
+//        vc.tableviewHeight = MainScreenHeight - MACRO_UI_UPHEIGHT - 120;
+//        vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
+//        vc.view.layer.backgroundColor = [UIColor colorWithRed:172/255.0 green:172/255.0 blue:172/255.0 alpha:1.0].CGColor;
+//        [self.view addSubview:vc.view];
+//        [self addChildViewController:vc];
+        CourseTypeVC *vc = [[CourseTypeVC alloc] init];
+        vc.typeString = @"exam";
         vc.notHiddenNav = NO;
+        vc.isMainPage = NO;
         vc.hiddenNavDisappear = YES;
-        vc.typeString = @"0";
         vc.delegate = self;
-        vc.isChange = YES;
-        vc.isDownExpend = YES;
-        vc.tableviewHeight = MainScreenHeight - MACRO_UI_UPHEIGHT - 120;
+        if (SWNOTEmptyStr(coursetypeIdString)) {
+            vc.typeId = coursetypeIdString;
+        }
         vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
-        vc.view.layer.backgroundColor = [UIColor colorWithRed:172/255.0 green:172/255.0 blue:172/255.0 alpha:1.0].CGColor;
         [self.view addSubview:vc.view];
         [self addChildViewController:vc];
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    }
+}
+
+- (void)chooseCourseType:(NSDictionary *)info {
+    if (SWNOTEmptyDictionary(info)) {
+        coursetypeString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+        coursetypeIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
+        _rightButton.selected = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        [self.tableView.mj_header beginRefreshing];
     }
 }
 
@@ -206,7 +233,7 @@
 
 // MARK: - 选择更换资讯类型代理
 - (void)chooseCategoryId:(NSString *)categoryId {
-    categoryString = categoryId;
+    coursetypeIdString = categoryId;
     [self.tableView.mj_header beginRefreshing];
 }
 

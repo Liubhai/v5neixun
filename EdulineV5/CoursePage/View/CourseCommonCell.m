@@ -34,7 +34,7 @@
     [self.contentView addSubview:_LeftLineView];
     _LeftLineView.hidden = YES;
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 59.5, _themeLabel.width, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 59, _themeLabel.width, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self.contentView addSubview:_lineView];
     _lineView.hidden = !_showOneLine;
