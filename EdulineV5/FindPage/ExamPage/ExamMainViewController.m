@@ -89,6 +89,7 @@
     NSString *examTheme = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"module_type"]];
     if ([examTheme isEqualToString:@"3"]) {
         SpecialProjectExamList *vc = [[SpecialProjectExamList alloc] init];
+        vc.examTypeId = examTheme;
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"1"]) {
         if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {

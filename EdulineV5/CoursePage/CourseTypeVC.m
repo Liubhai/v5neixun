@@ -79,7 +79,7 @@
         getUrl = [Net_Path openingExamCategoryNet];
         [param setObject:@"3" forKey:@"module_id"];
     }
-    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:param paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];

@@ -76,8 +76,8 @@
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
-//    _tableView.mj_footer.hidden = YES;
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     [_tableView.mj_header beginRefreshing];
@@ -123,6 +123,8 @@
     if (SWNOTEmptyStr(_institutionSearch.text)) {
         [param setObject:_institutionSearch.text forKey:@"title"];
     }
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path openingExamListSearchNet] : [Net_Path openingExamListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
@@ -152,13 +154,18 @@
 - (void)getMoreList {
     page = page + 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
-    [param setObject:@(page) forKey:@"page"];
-    [param setObject:@"10" forKey:@"count"];
-    // 大类型
+    if (SWNOTEmptyStr(_examTypeId)) {
+        [param setObject:_examTypeId forKey:@"module_id"];
+    }
     if (SWNOTEmptyStr(coursetypeIdString)) {
         [param setObject:coursetypeIdString forKey:@"category"];
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    if (SWNOTEmptyStr(_institutionSearch.text)) {
+        [param setObject:_institutionSearch.text forKey:@"title"];
+    }
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
+    [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path openingExamListSearchNet] : [Net_Path openingExamListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }
@@ -240,6 +247,7 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if ([string isEqualToString:@"\n"]) {
         [_institutionSearch resignFirstResponder];
+        [self.tableView.mj_header beginRefreshing];
         return NO;
     }
     return YES;

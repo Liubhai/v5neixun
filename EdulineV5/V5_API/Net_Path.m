@@ -611,7 +611,7 @@
 
 /** 公开考试分类接口 */
 + (NSString *)openingExamCategoryNet {
-    return [Net_Path fullPath:@"exam/paper/catetree" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"exam/paper/category" repalce:@"" byReplece:@""];
 }
 
 @end
