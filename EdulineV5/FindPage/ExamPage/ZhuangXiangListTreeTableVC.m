@@ -73,8 +73,8 @@
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getZhuanXiangListData)];
-//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
-//    _tableView.mj_footer.hidden = YES;
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     [_tableView.mj_header beginRefreshing];
@@ -179,7 +179,6 @@
     if ([string isEqualToString:@"\n"]) {
         [_institutionSearch resignFirstResponder];
         if (SWNOTEmptyStr(textField.text)) {
-//            [self searchZhuangXiangListNet];
             [_tableView.mj_header beginRefreshing];
         }
         return NO;
@@ -192,7 +191,7 @@
     // 思路 相当于获取总数据里面对应 model 的下级 只是下级
     NSMutableArray *childArray = [NSMutableArray new];
     NSMutableArray *originPassArray = [NSMutableArray new];
-    [originPassArray addObjectsFromArray:[NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[_originDict objectForKey:@"data"]]]];
+    [originPassArray addObjectsFromArray:[NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[[_originDict objectForKey:@"data"] objectForKey:@"data"]]]];
     for (int i = 0; i<originPassArray.count; i++) {
         ZhuanXiangModel *model1 = originPassArray[i];
         if ([model1.course_id isEqualToString:model.course_id]) {
@@ -235,18 +234,24 @@
 }
 
 - (void)getZhuanXiangListData {
+    page = 1;
     if (SWNOTEmptyStr(_examTypeId)) {
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:_examTypeId forKey:@"module_id"];
         if (SWNOTEmptyStr(_institutionSearch.text)) {
             [param setObject:_institutionSearch.text forKey:@"title"];
         }
+        [param setObject:@(page) forKey:@"page"];
+        [param setObject:@"10" forKey:@"count"];
+        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
         [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path specialExamSearchListNet] : [Net_Path specialExamList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-            [_tableView.mj_header endRefreshing];
+            if (_tableView.mj_header.refreshing) {
+                [_tableView.mj_header endRefreshing];
+            }
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_dataSource removeAllObjects];
-                    NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                    NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                     _originDict = [NSDictionary dictionaryWithDictionary:responseObject];
                     for (ZhuanXiangModel *object in pass) {
                         object.isLeaf = YES;
@@ -255,48 +260,22 @@
                     }
                     NSMutableSet *items = [NSMutableSet set];
                     [_dataSource enumerateObjectsUsingBlock:^(ZhuanXiangModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        
                         obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
                         obj.parentID = @"";
                         obj.parentItem = nil;
                         [items addObject:obj];
-//                        NSArray *zhangArray = obj.child;
-//
-//                        [zhangArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *zhang, NSUInteger idx, BOOL * _Nonnull stop) {
-//
-//                            zhang.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
-//                            zhang.parentID = obj.course_id;
-//                            zhang.parentItem = obj;
-//                            zhang.level = 1;
-//                            [items addObject:zhang];
-//                            NSArray *jieArray = obj.child;
-//
-//                            [jieArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *jie, NSUInteger idx, BOOL * _Nonnull stop) {
-//
-//                                jie.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
-//                                jie.parentID = zhang.course_id;
-//                                jie.parentItem = zhang;
-//                                jie.level = 2;
-//                                [items addObject:jie];
-//                                NSArray *keshiArray = jie.child;
-//
-//                                [keshiArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *keshi, NSUInteger idx, BOOL * _Nonnull stop) {
-//
-//                                    keshi.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
-//                                    keshi.parentID = jie.course_id;
-//                                    keshi.parentItem = jie;
-//                                    keshi.level = 3;
-//                                    [items addObject:keshi];
-//
-//                                }];
-//                            }];
-//                        }];
-                        
                     }];
                     
                     ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
                     _manager = manager;
                     
+                    if (_dataSource.count<10) {
+                        _tableView.mj_footer.hidden = YES;
+                    } else {
+                        _tableView.mj_footer.hidden = NO;
+                        [_tableView.mj_footer setState:MJRefreshStateIdle];
+                    }
+                    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
                     [_tableView reloadData];
                 }
             }
@@ -306,19 +285,23 @@
     }
 }
 
-- (void)searchZhuangXiangListNet {
+- (void)getMoreList {
+    page = page + 1;
     if (SWNOTEmptyStr(_examTypeId)) {
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:_examTypeId forKey:@"module_id"];
         if (SWNOTEmptyStr(_institutionSearch.text)) {
             [param setObject:_institutionSearch.text forKey:@"title"];
         }
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path specialExamSearchListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-            [_tableView.mj_header endRefreshing];
+        [param setObject:@(page) forKey:@"page"];
+        [param setObject:@"10" forKey:@"count"];
+        [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path specialExamSearchListNet] : [Net_Path specialExamList] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            if (_tableView.mj_footer.isRefreshing) {
+                [_tableView.mj_footer endRefreshing];
+            }
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    [_dataSource removeAllObjects];
-                    NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                    NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                     _originDict = [NSDictionary dictionaryWithDictionary:responseObject];
                     for (ZhuanXiangModel *object in pass) {
                         object.isLeaf = YES;
@@ -327,22 +310,26 @@
                     }
                     NSMutableSet *items = [NSMutableSet set];
                     [_dataSource enumerateObjectsUsingBlock:^(ZhuanXiangModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        
                         obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
                         obj.parentID = @"";
                         obj.parentItem = nil;
                         [items addObject:obj];
-                        
                     }];
                     
                     ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
                     _manager = manager;
                     
+                    if (pass.count<10) {
+                        [_tableView.mj_footer endRefreshingWithNoMoreData];
+                    }
                     [_tableView reloadData];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
-            [_tableView.mj_header endRefreshing];
+            page--;
+            if (_tableView.mj_footer.isRefreshing) {
+                [_tableView.mj_footer endRefreshing];
+            }
         }];
     }
 }
