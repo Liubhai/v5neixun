@@ -24,6 +24,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
+@property (strong, nonatomic) NSMutableArray *originSource;
 @property (strong, nonatomic) NSDictionary *originDict;
 
 @end
@@ -40,6 +41,7 @@
     
     _dataSource = [NSMutableArray new];
     _originDict = [NSDictionary new];
+    _originSource = [NSMutableArray new];
     page = 1;
     [self makeTableView];
 }
@@ -191,7 +193,7 @@
     // 思路 相当于获取总数据里面对应 model 的下级 只是下级
     NSMutableArray *childArray = [NSMutableArray new];
     NSMutableArray *originPassArray = [NSMutableArray new];
-    [originPassArray addObjectsFromArray:[NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[[_originDict objectForKey:@"data"] objectForKey:@"data"]]]];
+    [originPassArray addObjectsFromArray:[NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:_originSource]]];
     for (int i = 0; i<originPassArray.count; i++) {
         ZhuanXiangModel *model1 = originPassArray[i];
         if ([model1.course_id isEqualToString:model.course_id]) {
@@ -251,7 +253,9 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_dataSource removeAllObjects];
+                    [_originSource removeAllObjects];
                     NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
+                    [_originSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
                     _originDict = [NSDictionary dictionaryWithDictionary:responseObject];
                     for (ZhuanXiangModel *object in pass) {
                         object.isLeaf = YES;
@@ -302,6 +306,7 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
+                    [_originSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
                     _originDict = [NSDictionary dictionaryWithDictionary:responseObject];
                     for (ZhuanXiangModel *object in pass) {
                         object.isLeaf = YES;
