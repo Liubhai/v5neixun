@@ -63,9 +63,9 @@
         [btn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
         [btn setTitleColor:EdlineV5_Color.baseColor forState:UIControlStateSelected];
         btn.titleLabel.font = SYSTEMFONT(14);
-        btn.tag = i;
+        btn.tag = 66 + i;
         [btn setTitle:[_typeArray[i] objectForKey:@"title"] forState:0];
-        [btn addTarget:self action:@selector(topButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [btn addTarget:self action:@selector(cateButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         if (i == 0) {
             _lineView.centerX = btn.centerX;
             btn.selected = YES;
@@ -103,51 +103,47 @@
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"canScrollTable" object:nil userInfo:@{@"can":@"0"}];
-    if (scrollView == _mainScrollView) {
-        if (scrollView.contentOffset.x <= 0) {
-            self.lineView.centerX = self.allButton.centerX;
-            self.allButton.selected = YES;
-            self.needDealButton.selected = NO;
-            self.cancelButton.selected = NO;
-            self.finishButton.selected = NO;
-            self.otherButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= MainScreenWidth * 2 && scrollView.contentOffset.x <= 2 * MainScreenWidth){
-            self.lineView.centerX = self.cancelButton.centerX;
-            self.allButton.selected = NO;
-            self.needDealButton.selected = NO;
-            self.cancelButton.selected = YES;
-            self.finishButton.selected = NO;
-            self.otherButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
-            self.lineView.centerX = self.needDealButton.centerX;
-            self.allButton.selected = NO;
-            self.needDealButton.selected = YES;
-            self.cancelButton.selected = NO;
-            self.finishButton.selected = NO;
-            self.otherButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= 3*MainScreenWidth && scrollView.contentOffset.x <= 3*MainScreenWidth){
-            self.lineView.centerX = self.finishButton.centerX;
-            self.allButton.selected = NO;
-            self.needDealButton.selected = NO;
-            self.cancelButton.selected = NO;
-            self.finishButton.selected = YES;
-            self.otherButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= 4*MainScreenWidth){
-            self.lineView.centerX = self.otherButton.centerX;
-            self.allButton.selected = NO;
-            self.needDealButton.selected = NO;
-            self.cancelButton.selected = NO;
-            self.finishButton.selected = NO;
-            self.otherButton.selected = YES;
-        }
-    }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"canScrollTable" object:nil userInfo:@{@"can":@"1"}];
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+////    [[NSNotificationCenter defaultCenter] postNotificationName:@"canScrollTable" object:nil userInfo:@{@"can":@"0"}];
+//    if (scrollView == _mainScrollView) {
+//        if (scrollView.contentOffset.x <= 0) {
+//            self.lineView.centerX = self.allButton.centerX;
+//            self.allButton.selected = YES;
+//            self.needDealButton.selected = NO;
+//            self.cancelButton.selected = NO;
+//            self.finishButton.selected = NO;
+//            self.otherButton.selected = NO;
+//        }else if (scrollView.contentOffset.x >= MainScreenWidth * 2 && scrollView.contentOffset.x <= 2 * MainScreenWidth){
+//            self.lineView.centerX = self.cancelButton.centerX;
+//            self.allButton.selected = NO;
+//            self.needDealButton.selected = NO;
+//            self.cancelButton.selected = YES;
+//            self.finishButton.selected = NO;
+//            self.otherButton.selected = NO;
+//        }else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
+//            self.lineView.centerX = self.needDealButton.centerX;
+//            self.allButton.selected = NO;
+//            self.needDealButton.selected = YES;
+//            self.cancelButton.selected = NO;
+//            self.finishButton.selected = NO;
+//            self.otherButton.selected = NO;
+//        }else if (scrollView.contentOffset.x >= 3*MainScreenWidth && scrollView.contentOffset.x <= 3*MainScreenWidth){
+//            self.lineView.centerX = self.finishButton.centerX;
+//            self.allButton.selected = NO;
+//            self.needDealButton.selected = NO;
+//            self.cancelButton.selected = NO;
+//            self.finishButton.selected = YES;
+//            self.otherButton.selected = NO;
+//        }else if (scrollView.contentOffset.x >= 4*MainScreenWidth){
+//            self.lineView.centerX = self.otherButton.centerX;
+//            self.allButton.selected = NO;
+//            self.needDealButton.selected = NO;
+//            self.cancelButton.selected = NO;
+//            self.finishButton.selected = NO;
+//            self.otherButton.selected = YES;
+//        }
+//    }
+//}
 
 - (void)topButtonClick:(UIButton *)sender {
     [self.mainScrollView setContentOffset:CGPointMake(MainScreenWidth * sender.tag, 0) animated:YES];
@@ -168,5 +164,41 @@
 //    vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
 //    [self.navigationController pushViewController:vc animated:YES];
 }
+
+// MARK: - 滚动和点击事件最终逻辑
+- (void)cateExchanged:(UIButton *)sender {
+    for (UIButton *object in _topView.subviews) {
+        if ([object isKindOfClass:[UIButton class]]) {
+            if (object.tag == sender.tag) {
+                object.selected = YES;
+            } else {
+                object.selected = NO;
+            }
+        }
+    }
+    if (_lineView) {
+        [UIView animateWithDuration:0.2 animations:^{
+            
+        } completion:^(BOOL finished) {
+            _lineView.centerX = sender.centerX;
+        }];
+    }
+}
+
+
+// MARK: - 分类按钮点击事件
+- (void)cateButtonClick:(UIButton *)sender {
+    [self.mainScrollView setContentOffset:CGPointMake(MainScreenWidth * (sender.tag - 66), 0) animated:YES];
+    [self cateExchanged:sender];
+}
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSInteger index = scrollView.contentOffset.x / MainScreenWidth;
+    self.mainScrollView.contentOffset = CGPointMake(index * MainScreenWidth, 0);
+    [self cateExchanged:[_topView viewWithTag:index + 66]];
+}
+
 
 @end
