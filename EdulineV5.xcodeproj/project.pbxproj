@@ -107,6 +107,11 @@
 		785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E192498757200298054 /* UIActionSheet+Blocks.m */; };
 		785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E1D2498F65900298054 /* TeacherCategoryVC.m */; };
 		785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E222499C1AE00298054 /* TeacherCategoryModel.m */; };
+		786CD55025EF624A00172B88 /* MyExamPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD54F25EF624A00172B88 /* MyExamPage.m */; };
+		786CD55325EF638200172B88 /* ExamRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55225EF638200172B88 /* ExamRecordCell.m */; };
+		786CD55625EF64DF00172B88 /* EXamRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55525EF64DF00172B88 /* EXamRecordModel.m */; };
+		786CD55925EF6F5200172B88 /* ExamRecordManagerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55825EF6F5200172B88 /* ExamRecordManagerVC.m */; };
+		786CD55C25EF6F7B00172B88 /* ExamRecordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55B25EF6F7B00172B88 /* ExamRecordList.m */; };
 		7876572324347DB2008F475D /* FindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572224347DB2008F475D /* FindListCell.m */; };
 		787657282435C79E008F475D /* StudyRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787657272435C79E008F475D /* StudyRootVC.m */; };
 		7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572A2435D53A008F475D /* CourseSearchHistoryVC.m */; };
@@ -775,6 +780,16 @@
 		785A3E1D2498F65900298054 /* TeacherCategoryVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherCategoryVC.m; sourceTree = "<group>"; };
 		785A3E212499C1AE00298054 /* TeacherCategoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherCategoryModel.h; sourceTree = "<group>"; };
 		785A3E222499C1AE00298054 /* TeacherCategoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherCategoryModel.m; sourceTree = "<group>"; };
+		786CD54E25EF624A00172B88 /* MyExamPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyExamPage.h; sourceTree = "<group>"; };
+		786CD54F25EF624A00172B88 /* MyExamPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyExamPage.m; sourceTree = "<group>"; };
+		786CD55125EF638200172B88 /* ExamRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamRecordCell.h; sourceTree = "<group>"; };
+		786CD55225EF638200172B88 /* ExamRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamRecordCell.m; sourceTree = "<group>"; };
+		786CD55425EF64DF00172B88 /* EXamRecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EXamRecordModel.h; sourceTree = "<group>"; };
+		786CD55525EF64DF00172B88 /* EXamRecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EXamRecordModel.m; sourceTree = "<group>"; };
+		786CD55725EF6F5200172B88 /* ExamRecordManagerVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamRecordManagerVC.h; sourceTree = "<group>"; };
+		786CD55825EF6F5200172B88 /* ExamRecordManagerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamRecordManagerVC.m; sourceTree = "<group>"; };
+		786CD55A25EF6F7B00172B88 /* ExamRecordList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamRecordList.h; sourceTree = "<group>"; };
+		786CD55B25EF6F7B00172B88 /* ExamRecordList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamRecordList.m; sourceTree = "<group>"; };
 		7876572124347DB2008F475D /* FindListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindListCell.h; sourceTree = "<group>"; };
 		7876572224347DB2008F475D /* FindListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindListCell.m; sourceTree = "<group>"; };
 		787657262435C79E008F475D /* StudyRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyRootVC.h; sourceTree = "<group>"; };
@@ -1934,6 +1949,23 @@
 			path = CategoryCommonModel;
 			sourceTree = "<group>";
 		};
+		786CD54C25EF622200172B88 /* MyExamMainPage */ = {
+			isa = PBXGroup;
+			children = (
+				786CD54E25EF624A00172B88 /* MyExamPage.h */,
+				786CD54F25EF624A00172B88 /* MyExamPage.m */,
+				786CD55725EF6F5200172B88 /* ExamRecordManagerVC.h */,
+				786CD55825EF6F5200172B88 /* ExamRecordManagerVC.m */,
+				786CD55A25EF6F7B00172B88 /* ExamRecordList.h */,
+				786CD55B25EF6F7B00172B88 /* ExamRecordList.m */,
+				786CD55125EF638200172B88 /* ExamRecordCell.h */,
+				786CD55225EF638200172B88 /* ExamRecordCell.m */,
+				786CD55425EF64DF00172B88 /* EXamRecordModel.h */,
+				786CD55525EF64DF00172B88 /* EXamRecordModel.m */,
+			);
+			path = MyExamMainPage;
+			sourceTree = "<group>";
+		};
 		7876571F24347D9F008F475D /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -2206,6 +2238,7 @@
 				784FC8E624ACB48F00CAE7A6 /* MyErweimaViewController.h */,
 				784FC8E724ACB48F00CAE7A6 /* MyErweimaViewController.m */,
 				78D97FED24B83C08000DE0E4 /* MyClassCourse */,
+				786CD54C25EF622200172B88 /* MyExamMainPage */,
 				785A3E112497A14D00298054 /* ApplyPage */,
 				784FC8F324AF29AA00CAE7A6 /* MessageRoot */,
 				78D980AE24BD4886000DE0E4 /* MyTearchRoot */,
@@ -4270,6 +4303,7 @@
 				78AA139224441083007087F7 /* IntendedCourseVC.m in Sources */,
 				78C5483A2416213700A33FC4 /* SurePwViewController.m in Sources */,
 				788E95C4253FE24F0089251E /* ReplayViewController.m in Sources */,
+				786CD55925EF6F5200172B88 /* ExamRecordManagerVC.m in Sources */,
 				78C54845241873EB00A33FC4 /* V5_UserModel.m in Sources */,
 				787F1EA02479263200108F7B /* InstitutionListCell.m in Sources */,
 				789DB04A246AC624001302B4 /* LearnRecordCell.m in Sources */,
@@ -4283,6 +4317,7 @@
 				7839C9A6242368A2002F6595 /* CourseCatalogCell.m in Sources */,
 				7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */,
 				78C549DD241B674F00A33FC4 /* UIResponder+AlivcHelper.m in Sources */,
+				786CD55625EF64DF00172B88 /* EXamRecordModel.m in Sources */,
 				78A16C8B2452F7C100391430 /* TICReachability.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
 				78531645244FF60C007E239E /* MenberRootVC.m in Sources */,
@@ -4386,6 +4421,7 @@
 				788E9578253FE24E0089251E /* EEChatTextFiled.m in Sources */,
 				788E9562253FE24E0089251E /* MCTeacherVideoView.m in Sources */,
 				789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */,
+				786CD55025EF624A00172B88 /* MyExamPage.m in Sources */,
 				78D980B524BD48F5000DE0E4 /* MyTeachListVC.m in Sources */,
 				7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */,
 				78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */,
@@ -4440,6 +4476,7 @@
 				787F1E77247381A400108F7B /* AliyunPlayerViewControlView.m in Sources */,
 				788E95C3253FE24F0089251E /* EduButton.m in Sources */,
 				788E945A25305F9C0089251E /* NSData+Base64.m in Sources */,
+				786CD55325EF638200172B88 /* ExamRecordCell.m in Sources */,
 				789DB047246ABF2F001302B4 /* LearnRecordVC.m in Sources */,
 				787957622410E1F40013F95F /* LoginViewController.m in Sources */,
 				787F1E9A24791A6300108F7B /* TeacherListCell.m in Sources */,
@@ -4519,6 +4556,7 @@
 				78795757240FAA7A0013F95F /* UIView+HUD.m in Sources */,
 				787956D6240F9FCC0013F95F /* STRIAPManager.m in Sources */,
 				780487E92510A433001118F3 /* EmptyCell.m in Sources */,
+				786CD55C25EF6F7B00172B88 /* ExamRecordList.m in Sources */,
 				78AA13802440543D007087F7 /* SDCollectionViewCell.m in Sources */,
 				78C5483424124B4000A33FC4 /* AreaTableViewCell.m in Sources */,
 				788E95B6253FE24E0089251E /* WhiteManager.m in Sources */,
