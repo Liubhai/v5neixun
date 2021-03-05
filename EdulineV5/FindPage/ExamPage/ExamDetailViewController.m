@@ -26,6 +26,8 @@
 
 //  用一个专门数组去存储请求到的题的详情 上一题的时候就直接取出来去加载数据; 填充数据的时候 直接用 ExamDetailModel 去填充答案或者填空框内的内容
 
+@property (strong, nonatomic) UIImageView *rightOrErrorIcon;// 正确错误 图标
+
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *examIdListArray;// 获取得到题干ID数组
 @property (strong, nonatomic) NSMutableArray *examDetailArray;// 通过题干ID获取到具体试题内容数组
@@ -68,6 +70,11 @@
     [self makeTopView];
     [self makeHeaderView];
     [self makeTableView];
+    
+    _rightOrErrorIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 74 - 4, MACRO_UI_UPHEIGHT + 8, 74, 74)];
+    _rightOrErrorIcon.image = Image(@"exam_fault_icon");
+    [self.view addSubview:_rightOrErrorIcon];
+    
     [self makeBottomView];
     
     [self getData];

@@ -96,7 +96,8 @@
     
     _goodIconImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, 122, 122)];
     _goodIconImage.centerX = MainScreenWidth / 2.0;
-    _goodIconImage.image = Image(@"exam_top1_icon");
+    NSString *resultLevel = [NSString stringWithFormat:@"exam_top%@_icon",@(arc4random() % 4 + 1)];
+    _goodIconImage.image = Image(resultLevel);//@"exam_top1_icon"
     [self.view addSubview:_goodIconImage];
     
     _circleView = [[JustCircleProgress alloc] initWithFrame:CGRectMake(20, MACRO_UI_UPHEIGHT, 122, 122)];
