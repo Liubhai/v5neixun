@@ -126,19 +126,18 @@
     [_nextExamBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     // 1. 得到imageView和titleLabel的宽、高
-       CGFloat imageWith = _nextExamBtn.imageView.frame.size.width;
-       CGFloat imageHeight = _nextExamBtn.imageView.frame.size.height;
-    
-       CGFloat labelWidth = 0.0;
-       CGFloat labelHeight = 0.0;
-       if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
-           // 由于iOS8中titleLabel的size为0，用下面的这种设置
-           labelWidth = _nextExamBtn.titleLabel.intrinsicContentSize.width;
-           labelHeight = _nextExamBtn.titleLabel.intrinsicContentSize.height;
-       } else {
-           labelWidth = _nextExamBtn.titleLabel.frame.size.width;
-           labelHeight = _nextExamBtn.titleLabel.frame.size.height;
-       }
+    CGFloat imageWith = _nextExamBtn.imageView.frame.size.width;
+    CGFloat imageHeight = _nextExamBtn.imageView.frame.size.height;
+    CGFloat labelWidth = 0.0;
+    CGFloat labelHeight = 0.0;
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+        // 由于iOS8中titleLabel的size为0，用下面的这种设置
+        labelWidth = _nextExamBtn.titleLabel.intrinsicContentSize.width;
+        labelHeight = _nextExamBtn.titleLabel.intrinsicContentSize.height;
+    } else {
+        labelWidth = _nextExamBtn.titleLabel.frame.size.width;
+        labelHeight = _nextExamBtn.titleLabel.frame.size.height;
+    }
     CGFloat space = 7.5;
 
     _nextExamBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+space/2.0, 0, -labelWidth-space/2.0);

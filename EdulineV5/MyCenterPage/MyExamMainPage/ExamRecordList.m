@@ -75,7 +75,7 @@
 //    [_bottomView addSubview:line];
     
     _cancelCollectButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 88 - 30, 0, 88 + 30, 49)];
-    [_cancelCollectButton setTitle:@"取消收藏(0)" forState:0];
+    [_cancelCollectButton setTitle:@"删除(0)" forState:0];
     [_cancelCollectButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _cancelCollectButton.titleLabel.font = SYSTEMFONT(16);
     [_cancelCollectButton addTarget:self action:@selector(cancelButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -282,7 +282,7 @@
             [_selectedArray addObject:courseModel];
         }
     }
-    [_cancelCollectButton setTitle:[NSString stringWithFormat:@"取消收藏(%@)",@(_selectedArray.count)] forState:0];
+    [_cancelCollectButton setTitle:[NSString stringWithFormat:@"删除(%@)",@(_selectedArray.count)] forState:0];
 }
 
 - (void)showManagerBottomView:(NSNotification *)notice {

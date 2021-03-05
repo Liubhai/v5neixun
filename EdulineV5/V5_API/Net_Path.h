@@ -468,6 +468,9 @@ struct NetWorkUrl {
 /** 公开考试分类接口 */
 + (NSString *)openingExamCategoryNet;
 
+/** 考试收藏 */
++ (NSString *)examCollectionNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

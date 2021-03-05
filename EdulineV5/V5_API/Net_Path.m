@@ -614,4 +614,8 @@
     return [Net_Path fullPath:@"exam/paper/category" repalce:@"" byReplece:@""];
 }
 
+/** 考试收藏 */
++ (NSString *)examCollectionNet {
+    return [Net_Path fullPath:@"exam/topic/collect" repalce:@"" byReplece:@""];
+}
 @end

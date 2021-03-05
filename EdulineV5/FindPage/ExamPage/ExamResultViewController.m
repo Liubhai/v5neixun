@@ -17,6 +17,8 @@
 @property (strong, nonatomic) UILabel *examTitleLabel;
 @property (strong, nonatomic) UIImageView *backImageView;
 
+@property (strong, nonatomic) UIImageView *goodIconImage;
+
 @property (strong, nonatomic) JustCircleProgress *circleView;//157
 @property (strong, nonatomic) UILabel *percentlabel;
 
@@ -66,7 +68,17 @@
 
 - (void)makeTopView {
     _backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 270 + MACRO_UI_LIUHAI_HEIGHT)];
-    _backImageView.image = [Image(@"examresult_bg") converToOtherColor:EdlineV5_Color.themeColor];
+        
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = _backImageView.bounds;
+    // 渐变色颜色数组,可多个
+    gradientLayer.colors = [NSArray arrayWithObjects:(id)[EdlineV5_Color.buttonDisableColor CGColor], (id)[EdlineV5_Color.themeColor CGColor], nil];
+    // 渐变的开始点 (不同的起始点可以实现不同位置的渐变,如图)
+    gradientLayer.startPoint = CGPointMake(0.5, 0.0f); //(0, 0)
+    // 渐变的结束点
+    gradientLayer.endPoint = CGPointMake(0.5, 1.0f); //(1, 1)
+    [_backImageView.layer insertSublayer:gradientLayer atIndex:0];
+    
     [self.view addSubview:_backImageView];
     
     _leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -79,14 +91,21 @@
     _examTitleLabel.font = SYSTEMFONT(18);
     _examTitleLabel.textColor = [UIColor whiteColor];
     _examTitleLabel.textAlignment = NSTextAlignmentCenter;
+    _examTitleLabel.text = @"高一物理期中考试卷";
     [self.view addSubview:_examTitleLabel];
     
-    _circleView = [[JustCircleProgress alloc] initWithFrame:CGRectMake(20, MACRO_UI_UPHEIGHT + 15, 157, 157)];
-    _circleView.backgroundColor = EdlineV5_Color.themeColor;
+    _goodIconImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, 122, 122)];
+    _goodIconImage.centerX = MainScreenWidth / 2.0;
+    _goodIconImage.image = Image(@"exam_top1_icon");
+    [self.view addSubview:_goodIconImage];
+    
+    _circleView = [[JustCircleProgress alloc] initWithFrame:CGRectMake(20, MACRO_UI_UPHEIGHT, 122, 122)];
+    _circleView.backgroundColor = [UIColor clearColor];//EdlineV5_Color.themeColor;
     _circleView.lineWidth = 10.0;
     _circleView.bgColor = EdlineV5_Color.buttonDisableColor;
     _circleView.progressColor = [UIColor whiteColor];
     _circleView.progress = 90;
+    _circleView.centerX = MainScreenWidth / 2.0;
     [self.view addSubview:_circleView];
     
     _percentlabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 137, 137)];
@@ -108,43 +127,48 @@
     _percentlabel.textColor = [UIColor whiteColor];
     _percentlabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:att];
     
+    _circleView.hidden = YES;
+    _percentlabel.hidden = YES;
+    
     // 55 35 12 21 font 15 13
      
-    _useTimeLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(_circleView.right + 50, _circleView.top + 35, 46 + 5, 21)];
-    _useTimeLeftLabel.font = SYSTEMFONT(15);
+    _useTimeLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _circleView.bottom + 12, MainScreenWidth/2.0 - 10 - 25, 16)];
+    _useTimeLeftLabel.font = SYSTEMFONT(12);
     _useTimeLeftLabel.textColor = [UIColor whiteColor];
     _useTimeLeftLabel.text = @"用时";
+    _useTimeLeftLabel.textAlignment = NSTextAlignmentRight;
     [self.view addSubview:_useTimeLeftLabel];
     
-    _userTimelabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.right + 15, _useTimeLeftLabel.top, 53 + 28, 21)];
-    _userTimelabel.font = SYSTEMFONT(13);
+    _userTimelabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.right + 10, _useTimeLeftLabel.top, MainScreenWidth - (_useTimeLeftLabel.right + 10), 16)];
+    _userTimelabel.font = SYSTEMFONT(12);
     _userTimelabel.textColor = [UIColor whiteColor];
     _userTimelabel.text = @"00:33:21";
     [self.view addSubview:_userTimelabel];
     
-    _finishLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.left, _useTimeLeftLabel.bottom + 12, 46 + 5, 21)];
-    _finishLeftLabel.font = SYSTEMFONT(15);
+    _finishLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.left, _useTimeLeftLabel.bottom + 8, _useTimeLeftLabel.width, 16)];
+    _finishLeftLabel.font = SYSTEMFONT(12);
     _finishLeftLabel.textColor = [UIColor whiteColor];
-    _finishLeftLabel.text = @"完成率";
+    _finishLeftLabel.text = @"交卷时间";
+    _finishLeftLabel.textAlignment = NSTextAlignmentRight;
     [self.view addSubview:_finishLeftLabel];
     
-    _finishlabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.right + 15, _finishLeftLabel.top, 53 + 28, 21)];
-    _finishlabel.font = SYSTEMFONT(13);
+    _finishlabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.right + 10, _finishLeftLabel.top, _userTimelabel.width, 16)];
+    _finishlabel.font = SYSTEMFONT(12);
     _finishlabel.textColor = [UIColor whiteColor];
-    _finishlabel.text = @"0%";
+    _finishlabel.text = @"2021-12-32 12:33";
     [self.view addSubview:_finishlabel];
     
-    _correctLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.left, _finishLeftLabel.bottom + 12, 46 + 5, 21)];
-    _correctLeftLabel.font = SYSTEMFONT(15);
-    _correctLeftLabel.textColor = [UIColor whiteColor];
-    _correctLeftLabel.text = @"正确率";
-    [self.view addSubview:_correctLeftLabel];
-    
-    _correctlabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.right + 15, _correctLeftLabel.top, 53 + 28, 21)];
-    _correctlabel.font = SYSTEMFONT(13);
-    _correctlabel.textColor = [UIColor whiteColor];
-    _correctlabel.text = @"0%";
-    [self.view addSubview:_correctlabel];
+//    _correctLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.left, _finishLeftLabel.bottom + 12, 46 + 5, 21)];
+//    _correctLeftLabel.font = SYSTEMFONT(15);
+//    _correctLeftLabel.textColor = [UIColor whiteColor];
+//    _correctLeftLabel.text = @"正确率";
+//    [self.view addSubview:_correctLeftLabel];
+//
+//    _correctlabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.right + 15, _correctLeftLabel.top, 53 + 28, 21)];
+//    _correctlabel.font = SYSTEMFONT(13);
+//    _correctlabel.textColor = [UIColor whiteColor];
+//    _correctlabel.text = @"0%";
+//    [self.view addSubview:_correctlabel];
 }
 
 - (void)makeScrollview {
@@ -172,8 +196,10 @@
     [_mainScrollView addSubview:examTitle];
     
     UIView *finishView = [[UIView alloc] initWithFrame:CGRectMake(examTitle.right, 0, 14, 14)];
-    finishView.backgroundColor = EdlineV5_Color.themeColor;
     finishView.layer.masksToBounds = YES;
+    finishView.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
+    finishView.layer.borderWidth = 1.0;
+    finishView.backgroundColor = [UIColor whiteColor];
     finishView.layer.cornerRadius = 2;
     finishView.centerY = examTitle.centerY;
     [_mainScrollView addSubview:finishView];
@@ -319,9 +345,11 @@
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
                     if (btn.selected) {
-                        btn.backgroundColor = EdlineV5_Color.themeColor;
+                        btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
+                        btn.layer.borderWidth = 1.0;
+                        btn.backgroundColor = [UIColor whiteColor];
                     } else {
-                        btn.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+                        btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = [UIColor whiteColor];
                     }
