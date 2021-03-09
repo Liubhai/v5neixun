@@ -614,8 +614,33 @@
     return [Net_Path fullPath:@"exam/paper/category" repalce:@"" byReplece:@""];
 }
 
+/** 公开考试整套试卷每道题ID */
++ (NSString *)openingExamIdListNet {
+    return [Net_Path fullPath:@"exam/paper/base" repalce:@"" byReplece:@""];
+}
+
+/** 公开考试获取试题 */
++ (NSString *)openingExamDetailNet {
+    return [Net_Path fullPath:@"exam/paper/topic" repalce:@"" byReplece:@""];
+}
 /** 考试收藏 */
 + (NSString *)examCollectionNet {
     return [Net_Path fullPath:@"exam/topic/collect" repalce:@"" byReplece:@""];
 }
+
+/** 考试错题本 */
++ (NSString *)examWrongListNet {
+    return [Net_Path fullPath:@"exam/topic/wrong/list" repalce:@"" byReplece:@""];
+}
+
+/** 错题本获取试题 */
++ (NSString *)examWrongDetailNet {
+    return [Net_Path fullPath:@"exam/topic/wrong" repalce:@"" byReplece:@""];
+}
+
+/** 公共获取试题 */
++ (NSString *)examPublicDetailNet {
+    return [Net_Path fullPath:@"exam/topic" repalce:@"" byReplece:@""];
+}
+
 @end

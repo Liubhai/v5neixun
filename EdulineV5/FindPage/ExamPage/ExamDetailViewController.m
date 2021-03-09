@@ -100,6 +100,7 @@
     
     _examCollectBtn = [[UIButton alloc] initWithFrame:CGRectMake(_examSheetBtn.left - 25 - 20, 0, 20, 20)];
     [_examCollectBtn setImage:Image(@"star_nor") forState:0];
+    [_examCollectBtn setImage:Image(@"star_pre") forState:UIControlStateSelected];
     _examCollectBtn.centerY = _titleLabel.centerY;
     [_examCollectBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_examCollectBtn];
@@ -675,6 +676,10 @@
         [_headerView addSubview:examThemeLabel];
         
         ExamDetailModel *model = (ExamDetailModel *)examModel;
+        
+        // 是否收藏
+        _examCollectBtn.selected = model.collected;
+        
         if ([model.question_type isEqualToString:@"7"]) {
             // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
             [_headerView setHeight:examThemeLabel.bottom];
@@ -924,6 +929,11 @@
             [self getExamDetailForExamIds:examId];
         };
         [self.navigationController pushViewController:vc animated:YES];
+    } else if (sender == _examCollectBtn) {
+        // 收藏
+        _examCollectBtn.enabled = NO;
+        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+        [self collectionCurrentExamBy:model];
     }
 }
 
@@ -1088,6 +1098,37 @@
         return nil;
     } else {
         return nil;
+    }
+}
+
+// MARK: - 收藏和取消收藏当前试题
+- (void)collectionCurrentExamBy:(ExamDetailModel *)model {
+    if (model) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:model.examDetailId forKey:@"topic_id"];
+        [param setObject:model.collected ? @"0" : @"1" forKey:@"status"];
+        [Net_API requestPOSTWithURLStr:[Net_Path examCollectionNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    // 改变按钮状态 并且改变数据源
+                    _examCollectBtn.selected = !model.collected;
+                    model.collected = !model.collected;
+                    for (int i = 0; i<_examDetailArray.count; i++) {
+                        if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:model.examDetailId]) {
+                            [_examDetailArray replaceObjectAtIndex:i withObject:model];
+                            break;
+                        }
+                    }
+                }
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+            }
+            _examCollectBtn.enabled = YES;
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    } else {
+        _examCollectBtn.enabled = YES;
     }
 }
 

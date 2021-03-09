@@ -82,6 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL is_expand;
 @property (assign, nonatomic) BOOL is_answer;// 是否已经作答
 @property (assign, nonatomic) BOOL is_right;// 是否正确
+@property (assign, nonatomic) BOOL collected;// 是否收藏
 @property (strong, nonatomic) NSString *score;// 试题分数
 
 @end

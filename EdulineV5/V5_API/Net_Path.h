@@ -468,8 +468,23 @@ struct NetWorkUrl {
 /** 公开考试分类接口 */
 + (NSString *)openingExamCategoryNet;
 
+/** 公开考试整套试卷每道题ID */
++ (NSString *)openingExamIdListNet;
+
+/** 公开考试获取试题 */
++ (NSString *)openingExamDetailNet;
+
 /** 考试收藏 */
 + (NSString *)examCollectionNet;
+
+/** 考试错题本 */
++ (NSString *)examWrongListNet;
+
+/** 错题本获取试题 */
++ (NSString *)examWrongDetailNet;
+
+/** 公共获取试题 */
++ (NSString *)examPublicDetailNet;
 
 @end
 
