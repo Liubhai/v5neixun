@@ -439,6 +439,9 @@
 		78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */; };
 		78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13A8244708B4007087F7 /* SetingViewController.m */; };
 		78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AA13AB24470EB2007087F7 /* SetingCell.m */; };
+		78AAFEFB25F774EE002CD197 /* ExamCollectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFEFA25F774EC002CD197 /* ExamCollectCell.m */; };
+		78AAFEFE25F7753D002CD197 /* ExamCollectCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFEFD25F7753D002CD197 /* ExamCollectCellModel.m */; };
+		78AAFF0125F8781D002CD197 /* PublicAndTestExamRecordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0025F8781D002CD197 /* PublicAndTestExamRecordList.m */; };
 		78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */; };
 		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
 		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
@@ -1438,6 +1441,12 @@
 		78AA13A8244708B4007087F7 /* SetingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetingViewController.m; sourceTree = "<group>"; };
 		78AA13AA24470EB2007087F7 /* SetingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetingCell.h; sourceTree = "<group>"; };
 		78AA13AB24470EB2007087F7 /* SetingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetingCell.m; sourceTree = "<group>"; };
+		78AAFEF925F774EC002CD197 /* ExamCollectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamCollectCell.h; sourceTree = "<group>"; };
+		78AAFEFA25F774EC002CD197 /* ExamCollectCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamCollectCell.m; sourceTree = "<group>"; };
+		78AAFEFC25F7753D002CD197 /* ExamCollectCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamCollectCellModel.h; sourceTree = "<group>"; };
+		78AAFEFD25F7753D002CD197 /* ExamCollectCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamCollectCellModel.m; sourceTree = "<group>"; };
+		78AAFEFF25F8781D002CD197 /* PublicAndTestExamRecordList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicAndTestExamRecordList.h; sourceTree = "<group>"; };
+		78AAFF0025F8781D002CD197 /* PublicAndTestExamRecordList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicAndTestExamRecordList.m; sourceTree = "<group>"; };
 		78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatViewController.h; sourceTree = "<group>"; };
 		78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatViewController.m; sourceTree = "<group>"; };
 		78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatRightCell.h; sourceTree = "<group>"; };
@@ -1958,10 +1967,16 @@
 				786CD55825EF6F5200172B88 /* ExamRecordManagerVC.m */,
 				786CD55A25EF6F7B00172B88 /* ExamRecordList.h */,
 				786CD55B25EF6F7B00172B88 /* ExamRecordList.m */,
+				78AAFEFF25F8781D002CD197 /* PublicAndTestExamRecordList.h */,
+				78AAFF0025F8781D002CD197 /* PublicAndTestExamRecordList.m */,
 				786CD55125EF638200172B88 /* ExamRecordCell.h */,
 				786CD55225EF638200172B88 /* ExamRecordCell.m */,
+				78AAFEF925F774EC002CD197 /* ExamCollectCell.h */,
+				78AAFEFA25F774EC002CD197 /* ExamCollectCell.m */,
 				786CD55425EF64DF00172B88 /* EXamRecordModel.h */,
 				786CD55525EF64DF00172B88 /* EXamRecordModel.m */,
+				78AAFEFC25F7753D002CD197 /* ExamCollectCellModel.h */,
+				78AAFEFD25F7753D002CD197 /* ExamCollectCellModel.m */,
 			);
 			path = MyExamMainPage;
 			sourceTree = "<group>";
@@ -4357,6 +4372,7 @@
 				78C5497F241B642B00A33FC4 /* AlivcBeautySettingUIDefine.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
 				789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */,
+				78AAFF0125F8781D002CD197 /* PublicAndTestExamRecordList.m in Sources */,
 				782333BB2595B99E0076DD85 /* SpecialExamListCell.m in Sources */,
 				78C549D5241B674F00A33FC4 /* AlivcKeyboardManageViewController.m in Sources */,
 				7879572F240FA3840013F95F /* ZLPhotoPickerDatas.m in Sources */,
@@ -4498,6 +4514,7 @@
 				787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */,
 				787F1E7B247381A400108F7B /* AliyunPlayerViewProgressView.m in Sources */,
 				78C549C7241B674E00A33FC4 /* AlivcLiveUserCountTool.m in Sources */,
+				78AAFEFB25F774EE002CD197 /* ExamCollectCell.m in Sources */,
 				788E95A6253FE24E0089251E /* CombineReplayManager.m in Sources */,
 				788E95A3253FE24E0089251E /* OSSManager.m in Sources */,
 				78F7C5D024EFC2AF0010F1E9 /* XLCardCell.m in Sources */,
@@ -4606,6 +4623,7 @@
 				78C549DC241B674F00A33FC4 /* NSArray+AliyunDeepCopy.m in Sources */,
 				78C936CF248FBA2D00D5F1ED /* UserCommenListVC.m in Sources */,
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
+				78AAFEFE25F7753D002CD197 /* ExamCollectCellModel.m in Sources */,
 				782AC42D25BAA3E1009130F9 /* TaojuanDetailListViewController.m in Sources */,
 				78C549D1241B674E00A33FC4 /* AlivcBaseViewController.m in Sources */,
 				784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */,

@@ -23,16 +23,16 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ExamRecordCell : UITableViewCell
 
 @property (weak, nonatomic) id<ExamRecordCellDelegate> delegate;
-@property (strong, nonatomic) UIButton *selectedIconBtn;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *allCountLabel;
-@property (strong, nonatomic) UIView *lineView;
+@property (strong, nonatomic) UIView *fenggeLineView;
 @property (strong, nonatomic) UILabel *rightCountLabel;
 @property (strong, nonatomic) UILabel *timeLabel;
+@property (strong, nonatomic) UIView *lineView;
 @property (nonatomic, strong) NSIndexPath *cellIndex;
 @property (strong, nonatomic) EXamRecordModel *courseModel;
 
-- (void)setExamRecordRootManagerModel:(EXamRecordModel *)model indexpath:(NSIndexPath *)indexpath showSelect:(BOOL)showSelect;
+- (void)setExamRecordRootManagerModel:(EXamRecordModel *)model indexpath:(NSIndexPath *)indexpath isPublic:(BOOL)isPublic;
 
 @end
 

@@ -30,6 +30,10 @@
 #import "ClassCourseListVC.h"
 #import "MyTeachingRootVC.h"
 #import "RegisterAndForgetPwVC.h"
+
+// 考试
+#import "MyExamPage.h"
+
 // 板块儿视图
 #import "MyCenterOrderView.h"
 #import "MyCenterBalanceView.h"
@@ -189,8 +193,10 @@
         } else if ([iconKey isEqualToString:@"note"]) {
             [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"collection"]) {
-            MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
+            MyExamPage *vc = [[MyExamPage alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
+//            MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"record"]) {
             LearnRecordVC *vc = [[LearnRecordVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];

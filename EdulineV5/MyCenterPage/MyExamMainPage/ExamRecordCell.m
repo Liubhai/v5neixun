@@ -22,14 +22,7 @@
 
 - (void)makeSubViews {
     
-    // 73 (+ line)
-    _selectedIconBtn = [[UIButton alloc] initWithFrame:CGRectMake(15 - 5, 12 - 5, 30, 30)];
-    [_selectedIconBtn setImage:[Image(@"checkbox_orange") converToMainColor] forState:UIControlStateSelected];
-    [_selectedIconBtn setImage:Image(@"checkbox_def") forState:0];
-    [_selectedIconBtn addTarget:self action:@selector(selectedBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:_selectedIconBtn];
-    
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_selectedIconBtn.right + 10, 12, MainScreenWidth - 15 - (_selectedIconBtn.right + 10), 20)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - 30, 20)];
     _titleLabel.font = SYSTEMFONT(15);
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
     [self.contentView addSubview:_titleLabel];
@@ -42,10 +35,10 @@
     [_allCountLabel setWidth:allCountWidth];
     [self.contentView addSubview:_allCountLabel];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_allCountLabel.right + 6, 0, 1, 8)];
-    _lineView.backgroundColor = EdlineV5_Color.layarLineColor;
-    _lineView.centerY = _allCountLabel.centerY;
-    [self.contentView addSubview:_lineView];
+    _fenggeLineView = [[UIView alloc] initWithFrame:CGRectMake(_allCountLabel.right + 4, 0, 1, 8)];
+    _fenggeLineView.backgroundColor = EdlineV5_Color.layarLineColor;
+    _fenggeLineView.centerY = _allCountLabel.centerY;
+    [self.contentView addSubview:_fenggeLineView];
     
     _rightCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_lineView.right + 6, _allCountLabel.top, 50, 17)];
     _rightCountLabel.font = SYSTEMFONT(12);
@@ -55,35 +48,43 @@
     [_rightCountLabel setWidth:rightCountWidth];
     [self.contentView addSubview:_rightCountLabel];
     
-    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, _allCountLabel.top, 100, 17)];
+    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _allCountLabel.top, 200, 17)];
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     _timeLabel.textAlignment = NSTextAlignmentRight;
+    _timeLabel.text = @"2021-01-21 12:33";
     [self.contentView addSubview:_timeLabel];
+    
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_titleLabel.left, _timeLabel.bottom + 12, MainScreenWidth - _titleLabel.left, 1)];
+    _lineView.backgroundColor = EdlineV5_Color.layarLineColor;
+    [self.contentView addSubview:_lineView];
 }
 
-- (void)setExamRecordRootManagerModel:(EXamRecordModel *)model indexpath:(NSIndexPath *)indexpath showSelect:(BOOL)showSelect {
+- (void)setExamRecordRootManagerModel:(EXamRecordModel *)model indexpath:(NSIndexPath *)indexpath isPublic:(BOOL)isPublic {
     _courseModel = model;
     _cellIndex= indexpath;
-    
-    _selectedIconBtn.selected = model.selected;
-    _selectedIconBtn.hidden = showSelect;
+    _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, 20);
     _titleLabel.text = [NSString stringWithFormat:@"%@",model.title];
+    _titleLabel.numberOfLines = 0;
+    [_titleLabel sizeToFit];
+    [_titleLabel setHeight:_titleLabel.height>40 ? 40 : _titleLabel.height];
     _allCountLabel.text = [NSString stringWithFormat:@"共%@题",model.allCount];
-    _allCountLabel.text = [NSString stringWithFormat:@"答对%@题",model.rightCount];
+    if (isPublic) {
+        _allCountLabel.text = [NSString stringWithFormat:@"得分：%@分",model.score];
+    }
+    _rightCountLabel.text = [NSString stringWithFormat:@"答对%@题",model.rightCount];
     CGFloat allCountWidth = [_allCountLabel.text sizeWithFont:_allCountLabel.font].width + 4;
     CGFloat rightCountWidth = [_rightCountLabel.text sizeWithFont:_rightCountLabel.font].width + 4;
     
-    if (showSelect) {
-        _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, 20);
-        _allCountLabel.frame = CGRectMake(15, 73 - 1 - 11 - 17, allCountWidth, 17);
-    } else {
-        _titleLabel.frame = CGRectMake(_selectedIconBtn.right + 10, 12, MainScreenWidth - 15 - (_selectedIconBtn.right + 10), 20);
-        _allCountLabel.frame = CGRectMake(_selectedIconBtn.right + 10, 73 - 1 - 11 - 17, allCountWidth, 17);
-    }
-    _lineView.frame = CGRectMake(_allCountLabel.right + 6, 0, 1, 8);
-    _lineView.centerY = _allCountLabel.centerY;
-    _rightCountLabel.frame = CGRectMake(_lineView.right + 6, _allCountLabel.top, rightCountWidth, 17);
+    _allCountLabel.frame = CGRectMake(15, _titleLabel.bottom + 14, allCountWidth, 17);
+    [_fenggeLineView setLeft:_allCountLabel.right + 4];
+    _fenggeLineView.centerY = _allCountLabel.centerY;
+    _rightCountLabel.frame = CGRectMake(_fenggeLineView.right + 8, _titleLabel.bottom + 14, rightCountWidth, 17);
+    
+    _timeLabel.frame = CGRectMake(MainScreenWidth - 15 - 200, _titleLabel.bottom + 14, 200, 17);
+    
+    _lineView.frame = CGRectMake(_titleLabel.left, _timeLabel.bottom + 12, MainScreenWidth - _titleLabel.left, 1);
+    [self setHeight:_lineView.bottom];
 }
 
 - (void)selectedBtnClick:(UIButton *)sender {

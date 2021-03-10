@@ -8,7 +8,7 @@
 
 #import "ExamRecordManagerVC.h"
 #import "V5_Constant.h"
-#import "ExamRecordList.h"
+#import "PublicAndTestExamRecordList.h"
 #import "LBHScrollView.h"
 
 @interface ExamRecordManagerVC ()<UIScrollViewDelegate>
@@ -31,18 +31,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _titleLabel.text = @"练习记录";
-    [_rightButton setImage:nil forState:0];
-    [_rightButton setTitle:@"管理" forState:0];
-    [_rightButton setTitle:@"取消" forState:UIControlStateSelected];
-    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
-    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateSelected];
-    _rightButton.hidden = NO;
-    _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
-    _lineTL.hidden = NO;
     
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"专项练习",@"type":@"2"},@{@"title":@"知识点练习",@"type":@"1"},@{@"title":@"套卷练习",@"type":@"4"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"公开考试",@"type":@"2"},@{@"title":@"套卷练习",@"type":@"4"}]];
     
     [self makeTopView];
     [self makeScrollView];
@@ -50,7 +41,7 @@
 }
 
 - (void)makeTopView {
-    _topView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 45)];
+    _topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 45)];
     _topView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_topView];
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45 / 2.0 + 7 + 5, 20, 2)];
@@ -84,7 +75,7 @@
 }
 
 - (void)makeScrollView {
-    _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,_topView.bottom, MainScreenWidth, MainScreenHeight - _topView.bottom)];
+    _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,_topView.bottom, MainScreenWidth, MainScreenHeight - _topView.bottom - MACRO_UI_UPHEIGHT)];
     _mainScrollView.contentSize = CGSizeMake(MainScreenWidth*_typeArray.count, 0);
     _mainScrollView.pagingEnabled = YES;
     _mainScrollView.showsHorizontalScrollIndicator = NO;
@@ -94,8 +85,8 @@
     [self.view addSubview:_mainScrollView];
     
     for (int i = 0; i<_typeArray.count; i++) {
-        ExamRecordList *vc = [[ExamRecordList alloc] init];
-        vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
+        PublicAndTestExamRecordList *vc = [[PublicAndTestExamRecordList alloc] init];
+        vc.examType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
         vc.view.frame = CGRectMake(MainScreenWidth*i, 0, MainScreenWidth, _mainScrollView.height);
         [_mainScrollView addSubview:vc.view];
         [self addChildViewController:vc];
@@ -149,22 +140,6 @@
 
 - (void)topButtonClick:(UIButton *)sender {
     [self.mainScrollView setContentOffset:CGPointMake(MainScreenWidth * sender.tag, 0) animated:YES];
-}
-
-- (void)rightButtonClick:(id)sender {
-    _rightButton.selected = !_rightButton.selected;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"showManagerBottomView" object:nil userInfo:@{@"show":(_rightButton.selected ? @"1" : @"0")}];
-//    MyCollectionCourseManagerVC *vc = [[MyCollectionCourseManagerVC alloc] init];
-//    NSInteger i = 0;
-//    for (UIButton *btn in _topView.subviews) {
-//        if ([btn isKindOfClass:[UIButton class]]) {
-//            if (btn.selected) {
-//                i = btn.tag;
-//            }
-//        }
-//    }
-//    vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
-//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

@@ -34,6 +34,9 @@
         } else {
             [_dataSource addObjectsFromArray:@[@{@"title":@"全部",@"id":@"all"},@{@"title":@"推广",@"id":@"user"}]];
         }
+    } else if ([_pageClass isEqualToString:@"myExamType"]) {
+        // 我的考试里面几个分类
+        [_dataSource addObjectsFromArray:@[@{@"title":@"考试记录",@"id":@"examRecord"},@{@"title":@"错题本",@"id":@"errorExam"},@{@"title":@"题目收藏",@"id":@"examCollect"}]];
     } else {
         [_dataSource addObjectsFromArray:@[@{@"title":@"综合排序",@"id":@"default"},@{@"title":@"推荐",@"id":@"splendid"},@{@"title":@"畅销",@"id":@"popular"},@{@"title":@"最新",@"id":@"latest"}]];
     }

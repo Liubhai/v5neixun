@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ExamRecordList : BaseViewController
 
-@property (strong, nonatomic) NSString *courseType;// 类型
+@property (strong, nonatomic) NSString *courseType;// 类型( 2 公开考试 4 套卷练习)
+
+@property (strong, nonatomic) NSString *examListType;// 类型(错题本 error、题目收藏 collect)
 
 @end
 

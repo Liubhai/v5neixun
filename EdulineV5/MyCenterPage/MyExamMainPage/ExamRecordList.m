@@ -11,9 +11,10 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "LBHTableView.h"
-#import "ExamRecordCell.h"
 
-@interface ExamRecordList ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ExamRecordCellDelegate> {
+#import "ExamCollectCell.h"
+
+@interface ExamRecordList ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ExamCollectCellDelegate> {
     NSInteger page;
     BOOL allSeleted;
     NSString *course_ids;
@@ -46,9 +47,14 @@
 }
 
 - (void)makeBottomView {
-    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, (MainScreenHeight - MACRO_UI_UPHEIGHT - 45) - MACRO_UI_TABBAR_HEIGHT, MainScreenWidth, MACRO_UI_TABBAR_HEIGHT)];
+    _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_TABBAR_HEIGHT, MainScreenWidth, MACRO_UI_TABBAR_HEIGHT)];
     _bottomView.backgroundColor = [UIColor whiteColor];
     _bottomView.hidden = YES;
+
+    _bottomView.layer.shadowColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.06].CGColor;
+    _bottomView.layer.shadowOpacity = 1;// 阴影透明度，默认0
+    _bottomView.layer.shadowOffset = CGSizeMake(0, 1);//shadowOffset阴影偏移，默认(0, -3),这个跟shadowRadius配合使用
+    _bottomView.layer.shadowRadius = 7;//阴影半径，默认3
     [self.view addSubview:_bottomView];
     
     _selectAllButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, (MainScreenWidth - 1)/2.0, 49)];
@@ -87,38 +93,55 @@
 }
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
-    _tableView.mj_footer.hidden = YES;
+//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+//    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-    [_tableView.mj_header beginRefreshing];
+//    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _dataSource.count;
+    return 8;//_dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuse = @"ExamRecordManagerCell";
-    ExamRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-    if (!cell) {
-        cell = [[ExamRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+    if ([_examListType isEqualToString:@"error"]) {
+        static NSString *reuse = @"ExamCollectCellerror";
+            ExamCollectCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+            if (!cell) {
+                cell = [[ExamCollectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            }
+        //    cell.delegate = self;
+        //    [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath showSelect:_bottomView.hidden];
+            ExamCollectCellModel *model = [[ExamCollectCellModel alloc] init];
+            model.question_type = [NSString stringWithFormat:@"%@",@(arc4random() % 7 + 1)];
+        [cell setExamErorModel:model indexpath:indexPath];
+            return cell;
+    } else {
+        static NSString *reuse = @"ExamCollectCell";
+            ExamCollectCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+            if (!cell) {
+                cell = [[ExamCollectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            }
+        //    cell.delegate = self;
+        //    [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath showSelect:_bottomView.hidden];
+            ExamCollectCellModel *model = [[ExamCollectCellModel alloc] init];
+            model.question_type = [NSString stringWithFormat:@"%@",@(arc4random() % 7 + 1)];
+            [cell setExamCollectRootManagerModel:model indexpath:indexPath showSelect:_bottomView.hidden];
+            return cell;
     }
-    cell.delegate = self;
-    [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath showSelect:_bottomView.hidden];
-    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 73;
+    return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -142,7 +165,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[EXamRecordModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
+                [_dataSource addObjectsFromArray:[ExamCollectCellModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                 if (_dataSource.count<10) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
@@ -176,7 +199,7 @@
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSArray *pass = [NSArray arrayWithArray:[EXamRecordModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
+                NSArray *pass = [NSArray arrayWithArray:[ExamCollectCellModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                 if (pass.count<10) {
                     [_tableView.mj_footer endRefreshingWithNoMoreData];
                 }
@@ -196,18 +219,18 @@
 }
 
 // MARK: - 管理课程页面选择按钮代理
-- (void)courseManagerSelectButtonClick:(ExamRecordCell *)cell {
+- (void)examCollectManagerSelectButtonClick:(ExamCollectCell *)cell {
     // 第一要改变数据源
     cell.courseModel.selected = cell.selectedIconBtn.selected;
     
-    EXamRecordModel *cellCourseModel = cell.courseModel;
+    ExamCollectCellModel *cellCourseModel = cell.courseModel;
     NSIndexPath *path = cell.cellIndex;
     
     [_dataSource replaceObjectAtIndex:path.row withObject:cellCourseModel];
     
     // 判断每一个机构是不是全选与否
     for (int i = 0; i < _dataSource.count; i ++) {
-        EXamRecordModel *model = _dataSource[i];
+        ExamCollectCellModel *model = _dataSource[i];
         if (model.selected) {
             allSeleted = YES;
         } else {
@@ -230,7 +253,7 @@
     allSeleted = _selectAllButton.selected;
     
     for (int i = 0; i < _dataSource.count; i ++) {
-        EXamRecordModel *courseModel = _dataSource[i];
+        ExamCollectCellModel *courseModel = _dataSource[i];
         courseModel.selected = allSeleted;
         [_dataSource replaceObjectAtIndex:i withObject:courseModel];
     }
@@ -243,7 +266,7 @@
 - (void)cancelButtonClick:(UIButton *)sender {
     course_ids = @"";
     for (int i = 0; i<_selectedArray.count; i ++) {
-        EXamRecordModel *model = _selectedArray[i];
+        ExamCollectCellModel *model = _selectedArray[i];
         if (SWNOTEmptyStr(course_ids)) {
             course_ids = [NSString stringWithFormat:@"%@,%@",course_ids,model.topic_id];
         } else {
@@ -277,7 +300,7 @@
 - (void)dealDataSource {
     [_selectedArray removeAllObjects];
     for (int i = 0; i<_dataSource.count; i++) {
-        EXamRecordModel *courseModel = _dataSource[i];
+        ExamCollectCellModel *courseModel = _dataSource[i];
         if (courseModel.selected) {
             [_selectedArray addObject:courseModel];
         }
@@ -286,14 +309,16 @@
 }
 
 - (void)showManagerBottomView:(NSNotification *)notice {
-    if ([[notice.userInfo objectForKey:@"show"] boolValue]) {
-        _bottomView.hidden = NO;
-        _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45 - MACRO_UI_TABBAR_HEIGHT);
-    } else {
-        _bottomView.hidden = YES;
-        _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45);
+    if ([_examListType isEqualToString:@"collect"]) {
+        if ([[notice.userInfo objectForKey:@"show"] boolValue]) {
+            _bottomView.hidden = NO;
+            _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_TABBAR_HEIGHT);
+        } else {
+            _bottomView.hidden = YES;
+            _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
+        }
+        [_tableView reloadData];
     }
-    [_tableView reloadData];
 }
 
 @end
