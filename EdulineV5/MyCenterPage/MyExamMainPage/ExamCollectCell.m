@@ -40,9 +40,6 @@
     _allCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 73 - 1 - 11 - 17, 50, 17)];
     _allCountLabel.font = SYSTEMFONT(12);
     _allCountLabel.textColor = EdlineV5_Color.textThirdColor;
-    _allCountLabel.text = @"共100题";
-    CGFloat allCountWidth = [_allCountLabel.text sizeWithFont:_allCountLabel.font].width + 4;
-    [_allCountLabel setWidth:allCountWidth];
     [self.contentView addSubview:_allCountLabel];
     
     _fenggeLineView = [[UIView alloc] initWithFrame:CGRectMake(_allCountLabel.right + 4, 0, 1, 8)];
@@ -53,9 +50,6 @@
     _rightCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_fenggeLineView.right + 6, _allCountLabel.top, 50, 17)];
     _rightCountLabel.font = SYSTEMFONT(12);
     _rightCountLabel.textColor = EdlineV5_Color.textThirdColor;
-    _rightCountLabel.text = @"共100题";
-    CGFloat rightCountWidth = [_rightCountLabel.text sizeWithFont:_rightCountLabel.font].width + 4;
-    [_rightCountLabel setWidth:rightCountWidth];
     [self.contentView addSubview:_rightCountLabel];
     
     _allCountLabel.hidden = YES;
@@ -203,8 +197,18 @@
         [_titleLabel addView:_examTypeImageView range:NSMakeRange(0, 3) alignment:TYDrawAlignmentCenter];
     }
     
+    _allCountLabel.text = @"答错10次";
+    CGFloat allCountWidth = [_allCountLabel.text sizeWithFont:_allCountLabel.font].width + 4;
+    [_allCountLabel setWidth:allCountWidth];
+    
+    _rightCountLabel.text = @"累计作答10次";
+    CGFloat rightCountWidth = [_rightCountLabel.text sizeWithFont:_rightCountLabel.font].width + 4;
+    [_rightCountLabel setWidth:rightCountWidth];
+    
     [_allCountLabel setTop:_titleLabel.bottom + 14];
+    [_fenggeLineView setLeft:_allCountLabel.right + 4];
     _fenggeLineView.centerY = _allCountLabel.centerY;
+    [_rightCountLabel setLeft:_fenggeLineView.right + 8];
     _rightCountLabel.centerY = _allCountLabel.centerY;
     
     _timeLabel.text = @"2020-01-21 12:33:43";
