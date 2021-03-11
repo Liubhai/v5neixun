@@ -64,6 +64,7 @@
 
 - (void)rightButtonClick:(id)sender {
     _rightButton.selected = !_rightButton.selected;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"showManagerBottomView" object:nil userInfo:@{@"show":(_rightButton.selected ? @"1" : @"0")}];
 }
 

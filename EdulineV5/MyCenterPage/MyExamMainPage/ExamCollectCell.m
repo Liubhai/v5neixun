@@ -70,7 +70,7 @@
     _courseModel = model;
     _cellIndex= indexpath;
     
-//    _selectedIconBtn.selected = model.selected;
+    _selectedIconBtn.selected = model.selected;
     _selectedIconBtn.hidden = showSelect;
     
     if ([model.question_type isEqualToString:@"4"]) {
@@ -92,7 +92,7 @@
     _titleLabel.verticalAlignment = TYVerticalAlignmentTop;
     [_titleLabel sizeToFit];
     
-    _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, _titleLabel.height>40 ? 40 : _titleLabel.height);
+    [_titleLabel setHeight:_titleLabel.height>40 ? 40 : _titleLabel.height];
     
     // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
     if ([model.question_type isEqualToString:@"1"]) {
