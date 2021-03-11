@@ -44,6 +44,7 @@
     _dateLine = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _theme.bottom + 5, _theme.width, 15)];
     _dateLine.font = SYSTEMFONT(11);
     _dateLine.textColor = EdlineV5_Color.textThirdColor;
+    _dateLine.hidden = YES;
     [self.contentView addSubview:_dateLine];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 12 - 100, _faceImageView.top, 100, 24)];
