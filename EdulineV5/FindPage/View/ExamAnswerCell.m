@@ -17,8 +17,6 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.backgroundColor = EdlineV5_Color.backColor;
         [self makeSubView];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextViewChange:) name:UITextViewTextDidChangeNotification object:nil];
     }
     return self;
 }
@@ -271,16 +269,6 @@
         return NO;
     }
     return YES;
-}
-
-- (void)userTextFieldChange:(NSNotification *)notice {
-    UITextField *textF = (UITextField *)notice.object;
-    _cellOptionModel.userAnswerValue = textF.text;
-}
-
-- (void)userTextViewChange:(NSNotification *)notice {
-    UITextView *textF = (UITextView *)notice.object;
-    _cellOptionModel.userAnswerValue = textF.text;
 }
 
 - (void)awakeFromNib {

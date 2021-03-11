@@ -78,6 +78,9 @@
     [self makeBottomView];
     
     [self getData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextViewChange:) name:UITextViewTextDidChangeNotification object:nil];
 }
 
 - (void)makeTopView {
@@ -1067,6 +1070,7 @@
         [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             model.is_answer = YES;
             model.is_right = YES;
+            model.is_expand = YES;
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
@@ -1129,6 +1133,36 @@
         }];
     } else {
         _examCollectBtn.enabled = YES;
+    }
+}
+
+// MARK: - 输入框通知(textfield)
+- (void)userTextFieldChange:(NSNotification *)notice {
+    UITextField *textF = (UITextField *)notice.object;
+    ExamAnswerCell *cell = (ExamAnswerCell *)textF.superview.superview;
+    
+    ((ExamDetailOptionsModel *)cell.cellDetailModel.options[cell.cellIndexPath.row]).userAnswerValue = textF.text;
+    
+    for (int i = 0; i<_examDetailArray.count; i++) {
+        if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.cellDetailModel.examDetailId]) {
+            [_examDetailArray replaceObjectAtIndex:i withObject:cell.cellDetailModel];
+            break;
+        }
+    }
+}
+
+// MARK: - 输入框通知(textView)
+- (void)userTextViewChange:(NSNotification *)notice {
+    UITextView *textF = (UITextView *)notice.object;
+    ExamAnswerCell *cell = (ExamAnswerCell *)textF.superview.superview;
+    
+    ((ExamDetailOptionsModel *)cell.cellDetailModel.options[cell.cellIndexPath.row]).userAnswerValue = textF.text;
+    
+    for (int i = 0; i<_examDetailArray.count; i++) {
+        if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.cellDetailModel.examDetailId]) {
+            [_examDetailArray replaceObjectAtIndex:i withObject:cell.cellDetailModel];
+            break;
+        }
     }
 }
 
