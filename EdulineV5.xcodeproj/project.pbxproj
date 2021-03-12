@@ -443,6 +443,8 @@
 		78AAFEFE25F7753D002CD197 /* ExamCollectCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFEFD25F7753D002CD197 /* ExamCollectCellModel.m */; };
 		78AAFF0125F8781D002CD197 /* PublicAndTestExamRecordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0025F8781D002CD197 /* PublicAndTestExamRecordList.m */; };
 		78AAFF0725FB0E79002CD197 /* CourseActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0625FB0E79002CD197 /* CourseActivityView.m */; };
+		78AAFF0A25FB3E0E002CD197 /* GroupListPopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0925FB3E0D002CD197 /* GroupListPopViewController.m */; };
+		78AAFF0D25FB3E24002CD197 /* GrouListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0C25FB3E23002CD197 /* GrouListCell.m */; };
 		78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */; };
 		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
 		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
@@ -1450,6 +1452,10 @@
 		78AAFF0025F8781D002CD197 /* PublicAndTestExamRecordList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicAndTestExamRecordList.m; sourceTree = "<group>"; };
 		78AAFF0525FB0E79002CD197 /* CourseActivityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseActivityView.h; sourceTree = "<group>"; };
 		78AAFF0625FB0E79002CD197 /* CourseActivityView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseActivityView.m; sourceTree = "<group>"; };
+		78AAFF0825FB3E0C002CD197 /* GroupListPopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupListPopViewController.h; sourceTree = "<group>"; };
+		78AAFF0925FB3E0D002CD197 /* GroupListPopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupListPopViewController.m; sourceTree = "<group>"; };
+		78AAFF0B25FB3E23002CD197 /* GrouListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrouListCell.h; sourceTree = "<group>"; };
+		78AAFF0C25FB3E23002CD197 /* GrouListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrouListCell.m; sourceTree = "<group>"; };
 		78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatViewController.h; sourceTree = "<group>"; };
 		78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatViewController.m; sourceTree = "<group>"; };
 		78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatRightCell.h; sourceTree = "<group>"; };
@@ -1757,6 +1763,8 @@
 				7853BE0224342A0900F096EC /* ShopCarManagerFinalVC.m */,
 				788D35BE25B1758500C70D58 /* SharePosterViewController.h */,
 				788D35BF25B1758500C70D58 /* SharePosterViewController.m */,
+				78AAFF0825FB3E0C002CD197 /* GroupListPopViewController.h */,
+				78AAFF0925FB3E0D002CD197 /* GroupListPopViewController.m */,
 				7859FE3324C978C5006C7D4E /* TreeTableView */,
 				7853BDB52428956B00F096EC /* CourseModel */,
 				7839C98A2420D036002F6595 /* CourseCell */,
@@ -1782,6 +1790,8 @@
 				7876573224370560008F475D /* playAnimationView.m */,
 				78AAFF0525FB0E79002CD197 /* CourseActivityView.h */,
 				78AAFF0625FB0E79002CD197 /* CourseActivityView.m */,
+				78AAFF0B25FB3E23002CD197 /* GrouListCell.h */,
+				78AAFF0C25FB3E23002CD197 /* GrouListCell.m */,
 			);
 			path = courseView;
 			sourceTree = "<group>";
@@ -4423,11 +4433,13 @@
 				788E95BB253FE24E0089251E /* BaseEducationManager+Signal.m in Sources */,
 				78C5497C241B642B00A33FC4 /* _AlivcLiveBeautifyLevelView.m in Sources */,
 				787F1E6E247381A400108F7B /* AliyunDataSource.m in Sources */,
+				78AAFF0A25FB3E0E002CD197 /* GroupListPopViewController.m in Sources */,
 				7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */,
 				784E5CEC24A9802D00646916 /* LanchAnimationVC.m in Sources */,
 				78C549C8241B674E00A33FC4 /* AlivcScanViewController.m in Sources */,
 				789DB01E2465785C001302B4 /* MyScoreVC.m in Sources */,
 				7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */,
+				78AAFF0D25FB3E24002CD197 /* GrouListCell.m in Sources */,
 				7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */,
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
 				78531653245131AF007E239E /* LiveRoomViewController.m in Sources */,

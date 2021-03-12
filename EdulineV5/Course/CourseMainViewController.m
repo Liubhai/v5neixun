@@ -39,6 +39,7 @@
 #import "SharePosterViewController.h"
 
 #import "CourseActivityView.h"
+#import "GroupListPopViewController.h"
 
 #define FaceImageHeight 207
 
@@ -204,6 +205,8 @@
     [_headerView addSubview:_faceImageView];
     
     _courseActivityView = [[CourseActivityView alloc] initWithFrame:CGRectMake(0, _faceImageView.height - 45, MainScreenWidth, 45)];
+    UITapGestureRecognizer *groupTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showGroupList)];
+    [_courseActivityView addGestureRecognizer:groupTap];
     [_headerView addSubview:_courseActivityView];
     
     _navBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1122,5 +1125,26 @@
     } enError:^(NSError * _Nonnull error) {
         
     }];
+}
+
+// MARK: - 显示团购列表弹框
+- (void)showGroupList {
+    GroupListPopViewController *vc = [[GroupListPopViewController alloc] init];
+//    vc.activityInfo = [NSDictionary dictionaryWithDictionary:_activityInfo];
+//    vc.courseType = _isClassNew ? @"5" : @"1";
+//    vc.videoDataSource = _videoDataSource;
+//    if (SWNOTEmptyDictionary(_activityInfo)) {
+//        if (SWNOTEmptyArr([_activityInfo objectForKey:@"asb"])) {
+//            vc.dataSource = [NSMutableArray arrayWithArray:[_activityInfo objectForKey:@"asb"]];
+//        } else {
+//            [TKProgressHUD showError:@"还没有相关团购活动" toView:self.view];
+//            return;
+//        }
+//    } else {
+//        [TKProgressHUD showError:@"还没有相关团购活动" toView:self.view];
+//        return;
+//    }
+    [self.view addSubview:vc.view];
+    [self addChildViewController:vc];
 }
 @end
