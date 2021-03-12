@@ -95,6 +95,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 价格免费颜色 */
 + (UIColor *)priceFreeColor;
 
+/** 课程活动-开团 文字颜色 */
++ (UIColor *)courseActivityGroupColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

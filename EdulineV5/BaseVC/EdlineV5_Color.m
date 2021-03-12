@@ -273,4 +273,9 @@
     return HEXCOLORV5(0x67C23A);
 }
 
+/** 课程活动-开团 文字颜色 */
++ (UIColor *)courseActivityGroupColor {
+    return HEXCOLORV5(0xFF6B25);
+}
+
 @end

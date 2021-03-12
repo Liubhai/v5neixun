@@ -38,6 +38,8 @@
 
 #import "SharePosterViewController.h"
 
+#import "CourseActivityView.h"
+
 #define FaceImageHeight 207
 
 @interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,UMSocialShareMenuViewDelegate> {
@@ -55,6 +57,9 @@
 
 /**封面*/
 @property (strong, nonatomic) UIImageView *faceImageView;
+
+/** 活动板块儿 */
+@property (strong, nonatomic) CourseActivityView *courseActivityView;
 
 /**顶部内容*/
 @property (strong, nonatomic) CourseContentView *courseContentView;
@@ -197,6 +202,9 @@
     _faceImageView.image = DefaultImage;
     _faceImageView.userInteractionEnabled = YES;
     [_headerView addSubview:_faceImageView];
+    
+    _courseActivityView = [[CourseActivityView alloc] initWithFrame:CGRectMake(0, _faceImageView.height - 45, MainScreenWidth, 45)];
+    [_headerView addSubview:_courseActivityView];
     
     _navBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _navBackButton.frame = CGRectMake(0, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 54, 44);
