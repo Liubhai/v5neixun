@@ -445,6 +445,7 @@
 		78AAFF0725FB0E79002CD197 /* CourseActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0625FB0E79002CD197 /* CourseActivityView.m */; };
 		78AAFF0A25FB3E0E002CD197 /* GroupListPopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0925FB3E0D002CD197 /* GroupListPopViewController.m */; };
 		78AAFF0D25FB3E24002CD197 /* GrouListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0C25FB3E23002CD197 /* GrouListCell.m */; };
+		78AAFF1025FF2D6D002CD197 /* GroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */; };
 		78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */; };
 		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
 		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
@@ -1456,6 +1457,8 @@
 		78AAFF0925FB3E0D002CD197 /* GroupListPopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupListPopViewController.m; sourceTree = "<group>"; };
 		78AAFF0B25FB3E23002CD197 /* GrouListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrouListCell.h; sourceTree = "<group>"; };
 		78AAFF0C25FB3E23002CD197 /* GrouListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrouListCell.m; sourceTree = "<group>"; };
+		78AAFF0E25FF2D6C002CD197 /* GroupDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupDetailViewController.h; sourceTree = "<group>"; };
+		78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupDetailViewController.m; sourceTree = "<group>"; };
 		78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatViewController.h; sourceTree = "<group>"; };
 		78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatViewController.m; sourceTree = "<group>"; };
 		78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatRightCell.h; sourceTree = "<group>"; };
@@ -1765,6 +1768,8 @@
 				788D35BF25B1758500C70D58 /* SharePosterViewController.m */,
 				78AAFF0825FB3E0C002CD197 /* GroupListPopViewController.h */,
 				78AAFF0925FB3E0D002CD197 /* GroupListPopViewController.m */,
+				78AAFF0E25FF2D6C002CD197 /* GroupDetailViewController.h */,
+				78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */,
 				7859FE3324C978C5006C7D4E /* TreeTableView */,
 				7853BDB52428956B00F096EC /* CourseModel */,
 				7839C98A2420D036002F6595 /* CourseCell */,
@@ -4574,6 +4579,7 @@
 				78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */,
 				7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */,
 				789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */,
+				78AAFF1025FF2D6D002CD197 /* GroupDetailViewController.m in Sources */,
 				788E957F253FE24E0089251E /* KeyCenter.m in Sources */,
 				787F1E74247381A400108F7B /* AliyunPlayerViewPopLayer.m in Sources */,
 				782AC43025BAA6D4009130F9 /* TaoJuanDetailListCell.m in Sources */,

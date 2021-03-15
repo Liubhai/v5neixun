@@ -8,6 +8,7 @@
 
 #import "GroupListPopViewController.h"
 #import "GrouListCell.h"
+#import "GroupDetailViewController.h"
 
 @interface GroupListPopViewController ()<GrouListCellDelegate> {
     NSInteger timeCount;
@@ -95,6 +96,8 @@
 //    vc.isJoinGroup = YES;
 //    vc.isBuyAlone = YES;
 //    [self.parentViewController.navigationController pushViewController:vc animated:YES];
+    GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
+    [self.parentViewController.navigationController pushViewController:vc animated:YES];
 }
 
 // MARK: - 关闭按钮

@@ -44,6 +44,7 @@
     [priceOriginAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:[UIColor whiteColor]} range:NSMakeRange(0, fullOriginPrice.length)];
     _groupOriginPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceOriginAtt];
     _groupOriginPriceLabel.alpha = 0.82;
+    _groupOriginPriceLabel.font = SYSTEMFONT(12);
     [self addSubview:_groupOriginPriceLabel];
     
     _groupTimeTipLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.bounds.size.width - 120, 5.5, 120, 14)];
