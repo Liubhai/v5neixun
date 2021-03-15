@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ExamIDListModel, ExamIDModel, ExamDetailModel, ExamDetailOptionsModel;
+@class ExamIDListModel, ExamIDModel, ExamDetailModel, ExamDetailOptionsModel, ExamPaperIDListModel;
 
 @interface ExamIDListModel : NSObject
 
@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (strong, nonatomic) NSString *topic_id;
 @property (assign, nonatomic) BOOL has_answered;
+@property (strong, nonatomic) NSString *score;
 
 @end
 
@@ -105,6 +106,34 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL is_selected;
 @property (strong, nonatomic) NSString *userAnswerValue;// 用户自己的答案 填空 解答类型
 
+
+@end
+
+/** 试卷里面题干ID列表 */
+@interface ExamPaperIDListModel : NSObject
+
+/**
+ {
+     "id": 257,
+     "paper_id": 4,
+     "number": 1,
+     "title": "第一部分",
+     "description": "23424234234324324234234",
+     "value": [
+         {
+             "score": 10,
+             "topic_id": 130
+         }
+     ]
+ }
+ */
+@property (strong, nonatomic) NSString *title;
+@property (strong, nonatomic) NSString *question_type;
+@property (strong, nonatomic) NSString *num;
+@property (strong, nonatomic) NSString *examPartId;
+@property (strong, nonatomic) NSString *paper_id;
+@property (strong, nonatomic) NSString *examPartDescription;
+@property (strong, nonatomic) NSArray *child;
 
 @end
 

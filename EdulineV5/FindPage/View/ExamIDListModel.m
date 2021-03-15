@@ -105,3 +105,33 @@
 }
 
 @end
+
+@implementation ExamPaperIDListModel
+
++(NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"child":@"value",@"examPartId":@"id",@"examPartDescription":@"description"};
+}
+
++(NSDictionary *)mj_objectClassInArray
+{
+    return @{@"child":@"ExamIDModel"};
+}
+
+-(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
+{
+    if ([property.name isEqualToString:@"title"] || [property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"num"]) {
+        if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
+            return [NSString stringWithFormat:@"%@",oldValue];
+        }else if (!NOTNULL(oldValue)){
+            return @"";
+        }
+    } else if ([property.name isEqualToString:@"child"] || [property.name isEqualToString:@"data"]) {
+        if (!NOTNULL(oldValue)){
+            return @[];
+        }
+    }
+    return oldValue;
+}
+
+@end

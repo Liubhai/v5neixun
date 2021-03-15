@@ -446,6 +446,7 @@
 		78AAFF0A25FB3E0E002CD197 /* GroupListPopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0925FB3E0D002CD197 /* GroupListPopViewController.m */; };
 		78AAFF0D25FB3E24002CD197 /* GrouListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0C25FB3E23002CD197 /* GrouListCell.m */; };
 		78AAFF1025FF2D6D002CD197 /* GroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */; };
+		78AAFF1325FF6189002CD197 /* ExamPaperDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */; };
 		78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */; };
 		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
 		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
@@ -1459,6 +1460,8 @@
 		78AAFF0C25FB3E23002CD197 /* GrouListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrouListCell.m; sourceTree = "<group>"; };
 		78AAFF0E25FF2D6C002CD197 /* GroupDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupDetailViewController.h; sourceTree = "<group>"; };
 		78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupDetailViewController.m; sourceTree = "<group>"; };
+		78AAFF1125FF6189002CD197 /* ExamPaperDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamPaperDetailViewController.h; sourceTree = "<group>"; };
+		78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPaperDetailViewController.m; sourceTree = "<group>"; };
 		78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatViewController.h; sourceTree = "<group>"; };
 		78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatViewController.m; sourceTree = "<group>"; };
 		78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatRightCell.h; sourceTree = "<group>"; };
@@ -1735,6 +1738,8 @@
 				782AC44B25CA7062009130F9 /* ExamResultViewController.m */,
 				78ED079225CD3C8A00C30B26 /* ExamDetailViewController.h */,
 				78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */,
+				78AAFF1125FF6189002CD197 /* ExamPaperDetailViewController.h */,
+				78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -4412,6 +4417,7 @@
 				78A16C832452F7C100391430 /* TICDef.m in Sources */,
 				789DB02424663ECA001302B4 /* MyIncomeVC.m in Sources */,
 				78C54979241B642B00A33FC4 /* _AlivcLiveBeautifySliderView.m in Sources */,
+				78AAFF1325FF6189002CD197 /* ExamPaperDetailViewController.m in Sources */,
 				78AA1356243C214D007087F7 /* CourseClassifyVC.m in Sources */,
 				784FC8FA24AF2F5A00CAE7A6 /* MessageListVC.m in Sources */,
 				784FC8FD24AF2FA900CAE7A6 /* MessageListCell.m in Sources */,

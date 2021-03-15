@@ -88,6 +88,7 @@
 }
 
 - (void)setPublicExamCell:(NSDictionary *)dict {
+    _specialInfo = dict;
     _examPoint.hidden = YES;
     _lineView.hidden = YES;
     _learnCount.hidden = YES;

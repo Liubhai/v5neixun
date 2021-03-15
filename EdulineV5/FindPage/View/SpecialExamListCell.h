@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *learnCount;
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UIButton *getOrExamBtn;
+@property (strong, nonatomic) NSDictionary *specialInfo;
 
 - (void)setPublicExamCell:(NSDictionary *)dict;
 - (void)setExamPointCell:(NSDictionary *)dict;
