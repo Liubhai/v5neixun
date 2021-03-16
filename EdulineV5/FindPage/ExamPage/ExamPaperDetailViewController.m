@@ -257,30 +257,59 @@
         
         UIImageView *examTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(examCountLabel.right, 2, 32, 16)];
         // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
-        if ([model.question_type isEqualToString:@"1"]) {
-            examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"2"]) {
-            examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"3"]) {
-            examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"4"]) {
-            examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
-            [examTypeImageView setWidth:44];
-        } else if ([model.question_type isEqualToString:@"5"]) {
-            examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"6"]) {
-            examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"7"]) {
-            examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
-            [examTypeImageView setWidth:55];
-        } else if ([model.question_type isEqualToString:@"8"]) {
-            examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
+        if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
+            ExamDetailModel *cailiaoModel = model.topics[section];
+            if ([cailiaoModel.question_type isEqualToString:@"1"]) {
+                examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"2"]) {
+                examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"3"]) {
+                examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"4"]) {
+                examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
+                [examTypeImageView setWidth:44];
+            } else if ([cailiaoModel.question_type isEqualToString:@"5"]) {
+                examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"6"]) {
+                examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"7"]) {
+                examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
+                [examTypeImageView setWidth:55];
+            } else if ([cailiaoModel.question_type isEqualToString:@"8"]) {
+                examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            }
+        } else {
+            if ([model.question_type isEqualToString:@"1"]) {
+                examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"2"]) {
+                examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"3"]) {
+                examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"4"]) {
+                examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
+                [examTypeImageView setWidth:44];
+            } else if ([model.question_type isEqualToString:@"5"]) {
+                examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"6"]) {
+                examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"7"]) {
+                examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
+                [examTypeImageView setWidth:55];
+            } else if ([model.question_type isEqualToString:@"8"]) {
+                examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            }
         }
         [back addSubview:examTypeImageView];
         
@@ -578,13 +607,13 @@
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    examCount = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"topic_num"]] integerValue];
+                    examCount = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"total_count"]] integerValue];
                     currentExamRow = 0;
                     [_examIdListArray removeAllObjects];
-                    NSArray *pass = [NSArray arrayWithArray:[ExamIDListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"rules"]]];
+                    NSArray *pass = [NSArray arrayWithArray:[ExamPaperIDListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"parts"]]];
                     [_examIdListArray addObjectsFromArray:pass];
                     if (SWNOTEmptyArr(pass)) {
-                        ExamIDListModel *passDict = (ExamIDListModel *)pass[0];
+                        ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)pass[0];
                         NSArray *passArray = [NSArray arrayWithArray:passDict.child];
                         if (SWNOTEmptyArr(passArray)) {
                             ExamIDModel *passfinalDict = (ExamIDModel *)passArray[0];
@@ -623,8 +652,11 @@
         } else if ([_examType isEqualToString:@"2"]) {
             getUrl = [Net_Path specialExamDetailDataNet];
             [param setObject:examIds forKey:@"topic_id"];
+        } else if ([_examType isEqualToString:@"3"]) {
+            getUrl = [Net_Path openingExamDetailNet];
+            [param setObject:examIds forKey:@"topic_id"];
         }
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointDetailDataNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     NSMutableArray *passArray = [NSMutableArray arrayWithArray:[ExamDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
@@ -635,7 +667,7 @@
                         if (SWNOTEmptyArr(pass.topics)) {
                             for (int j = 0; j<pass.topics.count; j++) {
                                 ExamDetailModel *detail = pass.topics[j];
-                                detail.titleMutable = [self changeStringToMutA:detail.title];
+                                detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
                                 detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
                                 for (int j = 0; j<detail.options.count; j++) {
                                     ExamDetailOptionsModel *modelOp = detail.options[j];
@@ -787,7 +819,7 @@
             }
         }
         if (SWNOTEmptyArr(_examIdListArray)) {
-            ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
+            ExamPaperIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
                 currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row + 1 inSection:currentExamIndexPath.section];
             } else {
@@ -799,7 +831,7 @@
                     // 好像不对  这是倒数第二道题点击时候的逻辑
                 }
             }
-            ExamIDListModel *idListModelPass = _examIdListArray[currentExamIndexPath.section];
+            ExamPaperIDListModel *idListModelPass = _examIdListArray[currentExamIndexPath.section];
             // 这时候判断 并且更改底部按钮状态
             if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModelPass.child.count - 1)) {
                 _nextExamBtn.hidden = YES;
@@ -817,7 +849,7 @@
             }
             // 要请求数据了
             if (SWNOTEmptyArr(_examIdListArray)) {
-                ExamIDListModel *passDict = (ExamIDListModel *)_examIdListArray[currentExamIndexPath.section];
+                ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[currentExamIndexPath.section];
                 NSArray *passArray = [NSArray arrayWithArray:passDict.child];
                 if (SWNOTEmptyArr(passArray)) {
                     ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
@@ -840,12 +872,12 @@
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
         if (SWNOTEmptyArr(_examIdListArray)) {
-            ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
+            ExamPaperIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (currentExamIndexPath.row>0) {
                 currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row - 1 inSection:currentExamIndexPath.section];
             } else {
                 if (currentExamIndexPath.section>0) {
-                    ExamIDListModel *preModel = _examIdListArray[currentExamIndexPath.section-1];
+                    ExamPaperIDListModel *preModel = _examIdListArray[currentExamIndexPath.section-1];
                     currentExamIndexPath = [NSIndexPath indexPathForRow:preModel.child.count - 1 inSection:currentExamIndexPath.section-1];
                 }
             }
@@ -865,7 +897,7 @@
             }
             // 要请求数据了
             if (SWNOTEmptyArr(_examIdListArray)) {
-                ExamIDListModel *passDict = (ExamIDListModel *)_examIdListArray[currentExamIndexPath.section];
+                ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[currentExamIndexPath.section];
                 NSArray *passArray = [NSArray arrayWithArray:passDict.child];
                 if (SWNOTEmptyArr(passArray)) {
                     ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
@@ -899,7 +931,7 @@
                 if (is_find) {
                     break;
                 }
-                ExamIDListModel *idListModel = _examIdListArray[i];
+                ExamPaperIDListModel *idListModel = _examIdListArray[i];
                 for (int j = 0; j<idListModel.child.count; j++) {
                     indexCount = indexCount + 1;
                     if ([((ExamIDModel *)(idListModel.child[j])).topic_id isEqualToString:examId]) {
@@ -968,6 +1000,23 @@
         NSString *pass = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(attrString.length - 1, 1)]];
         if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
             [attrString replaceCharactersInRange:NSMakeRange(attrString.length - 1, 1) withString:@""];
+        }
+    }
+    return attrString;
+}
+
+// MARK: - 自己组装材料题编号进去
+- (NSMutableAttributedString *)changeCailiaoStringToMutA:(NSString *)commonString indexString:(NSString *)indexString {
+    
+    NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithData:[commonString dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+    if (SWNOTEmptyStr(commonString)) {
+        NSString *pass = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(attrString.length - 1, 1)]];
+        NSString *pass111 = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(indexString.length, 1)]];
+        if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+            [attrString replaceCharactersInRange:NSMakeRange(attrString.length - 1, 1) withString:@""];
+        }
+        if ([[pass111 substringToIndex:1] isEqualToString:@"\n"]) {
+            [attrString replaceCharactersInRange:NSMakeRange(indexString.length, 1) withString:@""];
         }
     }
     return attrString;

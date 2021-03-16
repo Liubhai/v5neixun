@@ -106,6 +106,55 @@
 
 @end
 
+@implementation ExamPaperDetailModel
+
++(NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"paper_id":@"id"};
+}
+
++(NSDictionary *)mj_objectClassInArray
+{
+    return @{@"parts":@"ExamPaperIDListModel"};
+}
+
+/**
+ @property (strong, nonatomic) NSString *paper_id;//id
+ @property (strong, nonatomic) NSString *mhm_id;
+ @property (strong, nonatomic) NSString *title;
+ @property (strong, nonatomic) NSString *info;
+ @property (strong, nonatomic) NSString *cate;
+ @property (strong, nonatomic) NSString *paper_type;
+ @property (strong, nonatomic) NSString *question_rand;
+ @property (strong, nonatomic) NSString *answer_options_rand;
+ @property (strong, nonatomic) NSString *start_time;
+ @property (strong, nonatomic) NSString *end_time;
+ @property (strong, nonatomic) NSString *total_time;
+ @property (strong, nonatomic) NSString *exam_number;
+ @property (strong, nonatomic) NSString *visible_answer;
+ @property (strong, nonatomic) NSString *total_count;
+ @property (strong, nonatomic) NSString *total_score;
+ @property (strong, nonatomic) NSString *topic_md5;
+ @property (strong, nonatomic) NSArray *parts;
+ */
+-(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
+{
+    if ([property.name isEqualToString:@"id"] || [property.name isEqualToString:@"mhm_id"] || [property.name isEqualToString:@"title"] || [property.name isEqualToString:@"info"] || [property.name isEqualToString:@"cate"] || [property.name isEqualToString:@"paper_type"] || [property.name isEqualToString:@"question_rand"]  || [property.name isEqualToString:@"answer_options_rand"]  || [property.name isEqualToString:@"start_time"]  || [property.name isEqualToString:@"end_time"]  || [property.name isEqualToString:@"total_time"]  || [property.name isEqualToString:@"exam_number"]  || [property.name isEqualToString:@"visible_answer"]  || [property.name isEqualToString:@"total_count"]  || [property.name isEqualToString:@"total_score"]  || [property.name isEqualToString:@"topic_md5"] ) {
+        if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
+            return [NSString stringWithFormat:@"%@",oldValue];
+        }else if (!NOTNULL(oldValue)){
+            return @"";
+        }
+    } else if ([property.name isEqualToString:@"parts"]) {
+        if (!NOTNULL(oldValue)){
+            return @[];
+        }
+    }
+    return oldValue;
+}
+
+@end
+
 @implementation ExamPaperIDListModel
 
 +(NSDictionary *)mj_replacedKeyFromPropertyName
@@ -120,13 +169,13 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"title"] || [property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"num"]) {
+    if ([property.name isEqualToString:@"title"] || [property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"num"] || [property.name isEqualToString:@"id"] || [property.name isEqualToString:@"description"] || [property.name isEqualToString:@"paper_id"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
             return @"";
         }
-    } else if ([property.name isEqualToString:@"child"] || [property.name isEqualToString:@"data"]) {
+    } else if ([property.name isEqualToString:@"child"] || [property.name isEqualToString:@"value"]) {
         if (!NOTNULL(oldValue)){
             return @[];
         }

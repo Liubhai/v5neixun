@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ExamIDListModel, ExamIDModel, ExamDetailModel, ExamDetailOptionsModel, ExamPaperIDListModel;
+@class ExamIDListModel, ExamIDModel, ExamDetailModel, ExamDetailOptionsModel, ExamPaperDetailModel, ExamPaperIDListModel;
 
 @interface ExamIDListModel : NSObject
 
@@ -74,6 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSMutableAttributedString *titleMutable;
 @property (strong, nonatomic) NSString *question_type;
+@property (strong, nonatomic) NSString *question_type_txt;
 @property (strong, nonatomic) NSString *analyze;
 @property (strong, nonatomic) NSMutableAttributedString *analyzeMutable;
 /** 【1：题干下即选项；2：题干下有小题，试题类型为材料题或完型填空】 */
@@ -106,6 +107,48 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL is_selected;
 @property (strong, nonatomic) NSString *userAnswerValue;// 用户自己的答案 填空 解答类型
 
+
+@end
+
+/** 试卷里面题干ID列表 */
+@interface ExamPaperDetailModel : NSObject
+
+/**
+ "id": 4,
+ "mhm_id": 1,
+ "title": "这是随机试卷",
+ "info": "简介",
+ "cate": 6,
+ "paper_type": 2,
+ "question_rand": 0,试题是否乱序【1：是；0：否；】
+ "answer_options_rand": 1,试题答案是否乱序【1：是；0：否；】
+ "start_time": 0,
+ "end_time": 0,
+ "total_time": 0,
+ "exam_number": 0,
+ "visible_answer": 0,
+ "total_count": 12,
+ "total_score": 0,
+ "topic_md5": "6273576c72d557b3d84f2e847c8cfee5",
+ "parts
+ */
+@property (strong, nonatomic) NSString *paper_id;//id
+@property (strong, nonatomic) NSString *mhm_id;
+@property (strong, nonatomic) NSString *title;
+@property (strong, nonatomic) NSString *info;
+@property (strong, nonatomic) NSString *cate;
+@property (strong, nonatomic) NSString *paper_type;
+@property (strong, nonatomic) NSString *question_rand;
+@property (strong, nonatomic) NSString *answer_options_rand;
+@property (strong, nonatomic) NSString *start_time;
+@property (strong, nonatomic) NSString *end_time;
+@property (strong, nonatomic) NSString *total_time;
+@property (strong, nonatomic) NSString *exam_number;
+@property (strong, nonatomic) NSString *visible_answer;
+@property (strong, nonatomic) NSString *total_count;
+@property (strong, nonatomic) NSString *total_score;
+@property (strong, nonatomic) NSString *topic_md5;
+@property (strong, nonatomic) NSArray *parts;
 
 @end
 
