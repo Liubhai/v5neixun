@@ -577,6 +577,33 @@
             if (SWNOTEmptyArr(model.topics)) {
                 // 小题有多个 材料题
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
+                if (modelpass.is_answer) {
+                    return;
+                }
+                
+                // 只有一个小题
+                // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题
+                if ([modelpass.question_type isEqualToString:@"1"] || [modelpass.question_type isEqualToString:@"2"]) {
+                    for (int i = 0; i<modelpass.options.count; i ++) {
+                        ExamDetailOptionsModel *op = (ExamDetailOptionsModel *)(modelpass.options[i]);
+                        if (i == indexPath.row) {
+                            op.is_selected = YES;
+                        } else {
+                            op.is_selected = NO;
+                        }
+                    }
+                    [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
+//                    [_tableView reloadData];
+                } else if ([modelpass.question_type isEqualToString:@"3"] || [modelpass.question_type isEqualToString:@"4"]) {
+                    for (int i = 0; i<modelpass.options.count; i ++) {
+                        ExamDetailOptionsModel *op = (ExamDetailOptionsModel *)(modelpass.options[i]);
+                        if (i == indexPath.row) {
+                            op.is_selected = !op.is_selected;
+                        }
+                    }
+                    [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
+//                    [_tableView reloadData];
+                }
             } else {
                 if (model.is_answer) {
                     return;
