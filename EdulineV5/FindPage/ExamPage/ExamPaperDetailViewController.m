@@ -202,6 +202,9 @@
         }
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[section];
+            if ([modelpass.question_type isEqualToString:@"8"]) {
+                return 1;
+            }
             return modelpass.options.count;
         } else {
             return model.options.count;
@@ -223,7 +226,11 @@
         } else {
             if (SWNOTEmptyArr(model.topics)) {
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
-                [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass cellIndex:indexPath];
+                if ([modelpass.question_type isEqualToString:@"8"]) {
+                    [cell setAnswerInfo:[ExamDetailOptionsModel new] examDetail:modelpass cellIndex:indexPath];
+                } else {
+                    [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass cellIndex:indexPath];
+                }
             } else {
                 [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) examDetail:model cellIndex:indexPath];
             }
@@ -316,7 +323,16 @@
         UILabel *examScore = [[UILabel alloc] initWithFrame:CGRectMake(examTypeImageView.right, 0, 100, 20)];
         examScore.font = SYSTEMFONT(15);
         examScore.textColor = EdlineV5_Color.textFirstColor;
-        examScore.text = [NSString stringWithFormat:@"（%@分）",model.score];
+        if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
+            
+        } else {
+            ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[currentExamIndexPath.section];
+            NSArray *passArray = [NSArray arrayWithArray:passDict.child];
+            if (SWNOTEmptyArr(passArray)) {
+                ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
+                examScore.text = [NSString stringWithFormat:@"（%@分）",passfinalDict.score];
+            }
+        }
         examScore.hidden = YES;
         [back addSubview:examScore];
         
@@ -331,8 +347,10 @@
         if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[section];
             attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
-            examTypeImageView.frame = CGRectMake(15, 2, 32, 16);
-            examScore.frame = CGRectMake(examTypeImageView.right, 0, 100, 20);
+            [examTypeImageView setLeft:15];
+//            examTypeImageView.frame = CGRectMake(15, 2, 32, 16);
+//            examScore.frame = CGRectMake(examTypeImageView.right, 0, 100, 20);
+            [examScore setLeft:examTypeImageView.right];
             examCountIcon.hidden = YES;
             examCountLabel.hidden = YES;
         } else {
@@ -747,7 +765,13 @@
                     UILabel *examScore = [[UILabel alloc] initWithFrame:CGRectMake(examTypeImageView.right, examThemeLabel.bottom, 100, 20)];
                     examScore.font = SYSTEMFONT(15);
                     examScore.textColor = EdlineV5_Color.textFirstColor;
-                    examScore.text = [NSString stringWithFormat:@"（%@分）",model.score];
+                    
+                    ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[currentExamIndexPath.section];
+                    NSArray *passArray = [NSArray arrayWithArray:passDict.child];
+                    if (SWNOTEmptyArr(passArray)) {
+                        ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
+                        examScore.text = [NSString stringWithFormat:@"（%@分）",passfinalDict.score];
+                    }
                     [_headerView addSubview:examScore];
                 }
                 
