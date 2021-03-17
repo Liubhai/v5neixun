@@ -447,6 +447,7 @@
 		78AAFF0D25FB3E24002CD197 /* GrouListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0C25FB3E23002CD197 /* GrouListCell.m */; };
 		78AAFF1025FF2D6D002CD197 /* GroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */; };
 		78AAFF1325FF6189002CD197 /* ExamPaperDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */; };
+		78AAFF162601A081002CD197 /* ExamCalculateHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF152601A081002CD197 /* ExamCalculateHeight.m */; };
 		78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */; };
 		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
 		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
@@ -1462,6 +1463,8 @@
 		78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupDetailViewController.m; sourceTree = "<group>"; };
 		78AAFF1125FF6189002CD197 /* ExamPaperDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamPaperDetailViewController.h; sourceTree = "<group>"; };
 		78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPaperDetailViewController.m; sourceTree = "<group>"; };
+		78AAFF142601A081002CD197 /* ExamCalculateHeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamCalculateHeight.h; sourceTree = "<group>"; };
+		78AAFF152601A081002CD197 /* ExamCalculateHeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamCalculateHeight.m; sourceTree = "<group>"; };
 		78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatViewController.h; sourceTree = "<group>"; };
 		78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatViewController.m; sourceTree = "<group>"; };
 		78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatRightCell.h; sourceTree = "<group>"; };
@@ -2035,6 +2038,8 @@
 				78ED079625CFC9CE00C30B26 /* ExamIDListModel.m */,
 				78ED079825D1129E00C30B26 /* ExamAnswerCell.h */,
 				78ED079925D1129E00C30B26 /* ExamAnswerCell.m */,
+				78AAFF142601A081002CD197 /* ExamCalculateHeight.h */,
+				78AAFF152601A081002CD197 /* ExamCalculateHeight.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4695,6 +4700,7 @@
 				787F1E70247381A400108F7B /* AliyunLog.m in Sources */,
 				78C549E2241B674F00A33FC4 /* NSData+AlivcHelper.m in Sources */,
 				78AA13A024469D04007087F7 /* MyCenterTypeOneCell.m in Sources */,
+				78AAFF162601A081002CD197 /* ExamCalculateHeight.m in Sources */,
 				7879573A240FA3840013F95F /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
 				78C5496E241B642B00A33FC4 /* AlivcLiveUser.m in Sources */,
 				788E959D253FE24E0089251E /* SignalUserModel.m in Sources */,

@@ -223,7 +223,7 @@
         XX = secondBtn.right + 10;
         if (i == cellModel.options.count - 1) {
             [_clozeBackView setHeight:secondBtn.bottom];
-            [self setHeight:secondBtn.bottom + 12];
+            [self setHeight:secondBtn.bottom + 12 + 5];
         }
         [_clozeBackView addSubview:secondBtn];
     }

@@ -14,6 +14,7 @@
 #import "ExamAnswerCell.h"
 
 #import "AnswerSheetViewController.h"
+#import "ExamCalculateHeight.h"
 
 @interface ExamPaperDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
     NSInteger examCount;//整套试卷的总题数
@@ -30,6 +31,10 @@
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *examIdListArray;// 获取得到题干ID数组
 @property (strong, nonatomic) NSMutableArray *examDetailArray;// 通过题干ID获取到具体试题内容数组
+
+@property (strong, nonatomic) NSMutableDictionary *examCellHeightDict;
+@property (strong, nonatomic) NSMutableArray *examCellHeightModelArray;// 每道试题的答案高度值 model 数组
+
 @property (strong, nonatomic) UIView *headerView;
 
 @property (strong, nonatomic) UIView *bottomView;
@@ -65,6 +70,9 @@
     
     _examIdListArray = [NSMutableArray new];
     _examDetailArray = [NSMutableArray new];
+    
+    _examCellHeightModelArray = [NSMutableArray new];
+    _examCellHeightDict = [NSMutableDictionary new];
     
     [self makeTopView];
     [self makeHeaderView];
@@ -186,7 +194,7 @@
             return 1;
         }
         if (SWNOTEmptyArr(model.topics)) {
-            return model.topics.count;
+            return model.topics.count;// 材料题
         } else {
             return 1;
         }
@@ -199,6 +207,9 @@
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
             return model.topics.count;
+        }
+        if ([model.question_type isEqualToString:@"8"]) {
+            return 1;
         }
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[section];
@@ -223,6 +234,8 @@
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
             [cell setExamDetail:model cellModel:model.topics[indexPath.row] cellIndex:indexPath];
+        } else if ([model.question_type isEqualToString:@"8"]) {
+            [cell setAnswerInfo:[ExamDetailOptionsModel new] examDetail:model cellIndex:indexPath];
         } else {
             if (SWNOTEmptyArr(model.topics)) {
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
@@ -550,6 +563,20 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+    if (SWNOTEmptyDictionary(_examCellHeightDict)) {
+        if ([_examCellHeightDict.allKeys containsObject:model.examDetailId]) {
+            NSMutableArray *pass = [NSMutableArray arrayWithArray:_examCellHeightDict[model.examDetailId]];
+            if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"] || [model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"] || [model.question_type isEqualToString:@"5"] || [model.question_type isEqualToString:@"7"] || [model.question_type isEqualToString:@"8"]) {
+                ExamCalculateHeight *cellHeight = pass[indexPath.row];
+                return cellHeight.cellHeight;
+            } else if ([model.question_type isEqualToString:@"6"]) {
+                NSMutableArray *pass1 = pass[indexPath.section];
+                ExamCalculateHeight *cellHeight = pass1[indexPath.row];
+                return cellHeight.cellHeight;
+            }
+        }
+    }
     return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
 }
 
@@ -701,6 +728,7 @@
             getUrl = [Net_Path openingExamDetailNet];
             [param setObject:examIds forKey:@"topic_id"];
         }
+        ShowHud(@"试题信息拉取中...");
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -729,13 +757,16 @@
                     
                     if (SWNOTEmptyArr(passArray)) {
                         [_examDetailArray addObject:passArray[0]];
+                        [self calculateAnswerCellHeight:passArray[0]];
                         [self makeUIByExamDetailModel:passArray[0]];
                     }
                 }
             }
+            [self hideHud];
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
+            [self hideHud];
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         }];
@@ -1062,12 +1093,14 @@
     NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithData:[commonString dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
     if (SWNOTEmptyStr(commonString)) {
         NSString *pass = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(attrString.length - 1, 1)]];
-        NSString *pass111 = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(indexString.length, 1)]];
         if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
             [attrString replaceCharactersInRange:NSMakeRange(attrString.length - 1, 1) withString:@""];
         }
-        if ([[pass111 substringToIndex:1] isEqualToString:@"\n"]) {
-            [attrString replaceCharactersInRange:NSMakeRange(indexString.length, 1) withString:@""];
+        if (commonString.length>indexString.length) {
+            NSString *pass111 = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(indexString.length, 1)]];
+            if ([[pass111 substringToIndex:1] isEqualToString:@"\n"]) {
+                [attrString replaceCharactersInRange:NSMakeRange(indexString.length, 1) withString:@""];
+            }
         }
     }
     return attrString;
@@ -1266,6 +1299,47 @@
             break;
         }
     }
+}
+
+// MARK: - 获取每个cell高度
+- (void)calculateAnswerCellHeight:(ExamDetailModel *)model {
+    /* 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题 **/
+    NSMutableArray *cellHeightArray = [NSMutableArray new];
+    if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"] || [model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"] || [model.question_type isEqualToString:@"5"]) {
+        // 取每一个 row
+        for (int i = 0; i<model.options.count; i++) {
+            ExamCalculateHeight *cellHeightModel = [[ExamCalculateHeight alloc] initWithExamDetailModel:model opitionModel:model.options[i]];
+            [cellHeightArray addObject:cellHeightModel];
+        }
+    } else if ([model.question_type isEqualToString:@"8"]) {
+        // 取每一个 row
+        ExamCalculateHeight *cellHeightModel = [[ExamCalculateHeight alloc] initWithExamDetailModel:model opitionModel:[ExamDetailOptionsModel new]];
+        [cellHeightArray addObject:cellHeightModel];
+    } else if ([model.question_type isEqualToString:@"6"]) {
+        // 取每一个 section 对应的 row
+        for (int i = 0; i<model.topics.count; i++) {
+            NSMutableArray *pass = [NSMutableArray new];
+            ExamDetailModel *modelpass = model.topics[i];
+            if ([modelpass.question_type isEqualToString:@"8"]) {
+                ExamCalculateHeight *cellHeightModel = [[ExamCalculateHeight alloc] initWithExamDetailModel:modelpass opitionModel:[ExamDetailOptionsModel new]];
+                [pass addObject:cellHeightModel];
+            } else {
+                for (int j = 0; j<modelpass.options.count; j++) {
+                    ExamCalculateHeight *cellHeightModel = [[ExamCalculateHeight alloc] initWithExamDetailModel:modelpass opitionModel:modelpass.options[j]];
+                    [pass addObject:cellHeightModel];
+                }
+            }
+            [cellHeightArray addObject:pass];
+        }
+    } else if ([model.question_type isEqualToString:@"7"]) {
+        // 取每一个 row
+        for (int i = 0; i<model.topics.count; i++) {
+            ExamDetailModel *modelpass = model.topics[i];
+            ExamCalculateHeight *cellHeightModel = [[ExamCalculateHeight alloc] initWithGapfillingExamDetailModel:model examDetailModel:modelpass opitionModel:[ExamDetailOptionsModel new]];
+            [cellHeightArray addObject:cellHeightModel];
+        }
+    }
+    [_examCellHeightDict setObject:cellHeightArray forKey:[NSString stringWithFormat:@"%@",model.examDetailId]];
 }
 
 
