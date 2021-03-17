@@ -235,17 +235,25 @@
         if ([model.question_type isEqualToString:@"7"]) {
             [cell setExamDetail:model cellModel:model.topics[indexPath.row] cellIndex:indexPath];
         } else if ([model.question_type isEqualToString:@"8"]) {
-            [cell setAnswerInfo:[ExamDetailOptionsModel new] examDetail:model cellIndex:indexPath];
+            if (!model.options.count) {
+                [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) mainExamDetail:model examDetail:model cellIndex:indexPath];
+            } else {
+                [cell setAnswerInfo:[ExamDetailOptionsModel new] mainExamDetail:model examDetail:model cellIndex:indexPath];
+            }
         } else {
             if (SWNOTEmptyArr(model.topics)) {
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
                 if ([modelpass.question_type isEqualToString:@"8"]) {
-                    [cell setAnswerInfo:[ExamDetailOptionsModel new] examDetail:modelpass cellIndex:indexPath];
+                    if (!modelpass.options.count) {
+                        [cell setAnswerInfo:[ExamDetailOptionsModel new] mainExamDetail:model examDetail:modelpass cellIndex:indexPath];
+                    } else {
+                        [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) mainExamDetail:model examDetail:modelpass cellIndex:indexPath];
+                    }
                 } else {
-                    [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass cellIndex:indexPath];
+                    [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) mainExamDetail:model examDetail:modelpass cellIndex:indexPath];
                 }
             } else {
-                [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) examDetail:model cellIndex:indexPath];
+                [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) mainExamDetail:model examDetail:model cellIndex:indexPath];
             }
         }
     }
@@ -742,15 +750,25 @@
                                 ExamDetailModel *detail = pass.topics[j];
                                 detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
                                 detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
-                                for (int j = 0; j<detail.options.count; j++) {
-                                    ExamDetailOptionsModel *modelOp = detail.options[j];
-                                    modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                if ([detail.question_type isEqualToString:@"8"]) {
+                                    ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
+                                    detail.options = [NSArray arrayWithObjects:op, nil];
+                                } else {
+                                    for (int k = 0; k<detail.options.count; k++) {
+                                        ExamDetailOptionsModel *modelOp = detail.options[k];
+                                        modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                    }
                                 }
                             }
                         } else {
-                            for (int j = 0; j<pass.options.count; j++) {
-                                ExamDetailOptionsModel *modelOp = pass.options[j];
-                                modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                            if ([pass.question_type isEqualToString:@"8"]) {
+                                ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
+                                pass.options = [NSArray arrayWithObjects:op, nil];
+                            } else {
+                                for (int j = 0; j<pass.options.count; j++) {
+                                    ExamDetailOptionsModel *modelOp = pass.options[j];
+                                    modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                }
                             }
                         }
                     }
@@ -1275,13 +1293,28 @@
 - (void)userTextFieldChange:(NSNotification *)notice {
     UITextField *textF = (UITextField *)notice.object;
     ExamAnswerCell *cell = (ExamAnswerCell *)textF.superview.superview;
-    
-    ((ExamDetailOptionsModel *)cell.cellDetailModel.options[cell.cellIndexPath.row]).userAnswerValue = textF.text;
-    
-    for (int i = 0; i<_examDetailArray.count; i++) {
-        if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.cellDetailModel.examDetailId]) {
-            [_examDetailArray replaceObjectAtIndex:i withObject:cell.cellDetailModel];
-            break;
+    if ([cell.examDetailModel.question_type isEqualToString:@"6"]) {
+        // 材料 填空题
+        // 先赋值 填空小题赋值, 再替换材料的填空小题
+        ((ExamDetailOptionsModel *)cell.cellDetailModel.options[cell.cellIndexPath.row]).userAnswerValue = textF.text;
+        NSMutableArray *pass = [NSMutableArray arrayWithArray:cell.examDetailModel.topics];
+        [pass replaceObjectAtIndex:cell.cellIndexPath.section withObject:(ExamDetailModel *)cell.cellDetailModel];
+        cell.examDetailModel.topics = [NSArray arrayWithArray:pass];
+        for (int i = 0; i<_examDetailArray.count; i++) {
+            if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.examDetailModel.examDetailId]) {
+                [_examDetailArray replaceObjectAtIndex:i withObject:cell.examDetailModel];
+                break;
+            }
+        }
+    } else {
+        // 普通 填空题
+        ((ExamDetailOptionsModel *)cell.cellDetailModel.options[cell.cellIndexPath.row]).userAnswerValue = textF.text;
+        
+        for (int i = 0; i<_examDetailArray.count; i++) {
+            if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.cellDetailModel.examDetailId]) {
+                [_examDetailArray replaceObjectAtIndex:i withObject:cell.cellDetailModel];
+                break;
+            }
         }
     }
 }
@@ -1290,13 +1323,41 @@
 - (void)userTextViewChange:(NSNotification *)notice {
     UITextView *textF = (UITextView *)notice.object;
     ExamAnswerCell *cell = (ExamAnswerCell *)textF.superview.superview;
-    
-    ((ExamDetailOptionsModel *)cell.cellDetailModel.options[cell.cellIndexPath.row]).userAnswerValue = textF.text;
-    
-    for (int i = 0; i<_examDetailArray.count; i++) {
-        if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.cellDetailModel.examDetailId]) {
-            [_examDetailArray replaceObjectAtIndex:i withObject:cell.cellDetailModel];
-            break;
+    if ([cell.examDetailModel.question_type isEqualToString:@"6"]) {
+        if (cell.cellDetailModel.options) {
+            // 材料 填空题
+            // 先赋值 填空小题赋值, 再替换材料的填空小题
+            ((ExamDetailOptionsModel *)cell.cellDetailModel.options[cell.cellIndexPath.row]).userAnswerValue = textF.text;
+            NSMutableArray *pass = [NSMutableArray arrayWithArray:cell.examDetailModel.topics];
+            [pass replaceObjectAtIndex:cell.cellIndexPath.section withObject:(ExamDetailModel *)cell.cellDetailModel];
+            cell.examDetailModel.topics = [NSArray arrayWithArray:pass];
+            for (int i = 0; i<_examDetailArray.count; i++) {
+                if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.examDetailModel.examDetailId]) {
+                    [_examDetailArray replaceObjectAtIndex:i withObject:cell.examDetailModel];
+                    break;
+                }
+            }
+        } else {
+            ExamDetailOptionsModel *opModel = [ExamDetailOptionsModel new];
+            opModel.userAnswerValue = textF.text;
+            cell.cellDetailModel.options = [NSArray arrayWithObjects:opModel, nil];
+            NSMutableArray *pass = [NSMutableArray arrayWithArray:cell.examDetailModel.topics];
+            [pass replaceObjectAtIndex:cell.cellIndexPath.section withObject:(ExamDetailModel *)cell.cellDetailModel];
+            cell.examDetailModel.topics = [NSArray arrayWithArray:pass];
+            for (int i = 0; i<_examDetailArray.count; i++) {
+                if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.examDetailModel.examDetailId]) {
+                    [_examDetailArray replaceObjectAtIndex:i withObject:cell.examDetailModel];
+                    break;
+                }
+            }
+        }
+    } else {
+        ((ExamDetailOptionsModel *)cell.cellDetailModel.options[cell.cellIndexPath.row]).userAnswerValue = textF.text;
+        for (int i = 0; i<_examDetailArray.count; i++) {
+            if ([((ExamDetailModel *)(_examDetailArray[i])).examDetailId isEqualToString:cell.cellDetailModel.examDetailId]) {
+                [_examDetailArray replaceObjectAtIndex:i withObject:cell.cellDetailModel];
+                break;
+            }
         }
     }
 }

@@ -84,7 +84,9 @@
     [self.contentView addSubview:_clozeBackView];
 }
 
-- (void)setAnswerInfo:(ExamDetailOptionsModel *)model examDetail:(nonnull ExamDetailModel *)detailModel cellIndex:(nonnull NSIndexPath *)cellIndexPath {
+- (void)setAnswerInfo:(ExamDetailOptionsModel *)model mainExamDetail:(ExamDetailModel *)mainExamDetail examDetail:(nonnull ExamDetailModel *)detailModel cellIndex:(nonnull NSIndexPath *)cellIndexPath {
+    
+    _examDetailModel = mainExamDetail;
     
     _cellDetailModel = detailModel;
     _cellOptionModel = model;

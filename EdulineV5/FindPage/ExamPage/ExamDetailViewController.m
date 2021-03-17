@@ -224,9 +224,9 @@
         } else {
             if (SWNOTEmptyArr(model.topics)) {
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
-                [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) examDetail:modelpass cellIndex:indexPath];
+                [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) mainExamDetail:model examDetail:modelpass cellIndex:indexPath];
             } else {
-                [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) examDetail:model cellIndex:indexPath];
+                [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) mainExamDetail:model examDetail:model cellIndex:indexPath];
             }
         }
     }
