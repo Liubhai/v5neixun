@@ -776,14 +776,24 @@
                 [_tableView reloadData];
                 _previousExamBtn.enabled = YES;
                 _nextExamBtn.enabled = YES;
+                [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:NO];
                 return;
             } else {
                 // 回答正确了 也需要在这里设置已作答
                 model.is_answer = YES;
                 model.is_expand = YES;
                 model.is_right = YES;
+                [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:YES];
             }
         }
+        
+        // 同步更新答题卡模型数组的已作答
+        if (SWNOTEmptyArr(_examIdListArray)) {
+            ExamIDListModel *currentExamIdListModel = _examIdListArray[currentExamIndexPath.section];
+            ExamIDModel *idModel = currentExamIdListModel.child[currentExamIndexPath.row];
+            idModel.has_answered = YES;
+        }
+        
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
@@ -1164,6 +1174,25 @@
             break;
         }
     }
+}
+
+// MARK: - 做试题-提交答案
+- (void)putExamResult:(NSString *)topic_id examLevel:(NSString *)level isRight:(BOOL)isRight {
+    NSString *getUrl = [Net_Path examPointPostAnswerNet];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if ([_examType isEqualToString:@"1"]) {
+        getUrl = [Net_Path examPointPostAnswerNet];
+    } else if ([_examType isEqualToString:@"2"]) {
+        getUrl = [Net_Path specialExamPostAnswerNet];
+    }
+    [param setObject:topic_id forKey:@"topic_id"];
+    [param setObject:level forKey:@"topic_level"];
+    [param setObject:isRight ? @"1" : @"0" forKey:@"is_right"];
+    [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        NSLog(@"第%@题 答案提交 = %@",topic_id,responseObject[@"msg"]);
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 /*
