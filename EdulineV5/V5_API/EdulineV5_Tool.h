@@ -42,6 +42,8 @@
 + (float) widthForString:(NSString *)value fontSize:(UIFont*)font andHeight:(float)height;
 
 + (NSString*)timeChangeWithSeconds:(NSInteger)seconds;
+/* 倒计时显示 **/
++ (NSString*)timeChangeTimerWithSeconds:(NSInteger)seconds;
 // isMinite 是否从分钟数开始 还是秒数开始
 + (NSAttributedString*)attributionTimeChangeWithSeconds:(NSInteger)seconds isMinite:(BOOL)isMinite;
 + (NSString*)timeChangeWithSecondsFormat:(NSInteger)seconds;

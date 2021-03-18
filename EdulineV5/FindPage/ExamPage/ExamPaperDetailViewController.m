@@ -22,6 +22,8 @@
     NSIndexPath *currentExamIndexPath;// 当前答题在整个列表中的下标
     NSString *currentExamId;//当前答题的试题ID
     BOOL canEnterNextExam;// 点击下一题的时候是 答对 答错 能否直接进入下一题 还是需要显示解析
+    NSTimer *paperTimer;// 试卷作答时候的计时器(倒计时或者正序即时)
+    NSInteger remainTime;
 }
 
 //  用一个专门数组去存储请求到的题的详情 上一题的时候就直接取出来去加载数据; 填充数据的时候 直接用 ExamDetailModel 去填充答案或者填空框内的内容
@@ -47,6 +49,8 @@
 
 @property (strong, nonatomic) NSMutableArray *answerManagerArray;// 选择的答案对应的数组 一维数组 遍历一次(添加 修改)
 
+@property (strong, nonatomic) ExamPaperDetailModel *currentExamPaperDetailModel;
+
 
 
 
@@ -59,7 +63,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _titleLabel.text = @"00:32:22";
+//    _titleLabel.text = @"00:32:22";
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
     _titleLabel.textAlignment = NSTextAlignmentLeft;
     _titleLabel.font = SYSTEMFONT(16);
@@ -687,6 +691,18 @@
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    
+                    // 考试试卷
+                    _currentExamPaperDetailModel = [ExamPaperDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
+                    if ([_currentExamPaperDetailModel.total_time isEqualToString:@"0"]) {
+                        // 正序计时
+                        remainTime = 0;
+                        paperTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerStart) userInfo:nil repeats:YES];
+                    } else {
+                        remainTime = [_currentExamPaperDetailModel.total_time integerValue] * 60;
+                        paperTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerStart) userInfo:nil repeats:YES];
+                    }
+                    
                     examCount = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"total_count"]] integerValue];
                     currentExamRow = 0;
                     [_examIdListArray removeAllObjects];
@@ -804,6 +820,9 @@
         examThemeLabel.font = SYSTEMFONT(16);
         examThemeLabel.textColor = EdlineV5_Color.textFirstColor;
         examThemeLabel.text = @"知识点练习";
+        if (_currentExamPaperDetailModel) {
+            examThemeLabel.text = _currentExamPaperDetailModel.title;
+        }
         [_headerView addSubview:examThemeLabel];
         
         ExamDetailModel *model = (ExamDetailModel *)examModel;
@@ -894,6 +913,9 @@
         // 这里需要判断是否能够直接进入下一题还是需要展开解析
         // 如果当前题答错了 并且是第一次答这道题 那么就显示 底部区域 并且 将这个道题上传 model.is_expend 设置成 yes
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+        model.is_answer = YES;
+        // todo 这里要开始组装答案
+        /**
         if (!model.is_answer) {
             // 这个地方需要判断是不是填空题 填空题需要请求接口 让接口去判断 其他类型自己判断
             if ([model.question_type isEqualToString:@"5"]) {
@@ -918,6 +940,7 @@
                 model.is_right = YES;
             }
         }
+        */
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamPaperIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
@@ -1403,5 +1426,39 @@
     [_examCellHeightDict setObject:cellHeightArray forKey:[NSString stringWithFormat:@"%@",model.examDetailId]];
 }
 
+// MARK: - 计时器开始计时
+- (void)timerStart {
+    if ([_currentExamPaperDetailModel.total_time isEqualToString:@"0"]) {
+        // 正序计时
+        // 显示时间
+        _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:remainTime]];
+        remainTime +=1;
+    } else {
+        // 倒序计时
+        // 显示时间
+        _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:remainTime]];
+        remainTime -=1;
+        if (remainTime==-1) {
+            [paperTimer invalidate];
+            paperTimer = nil;
+            remainTime = [_currentExamPaperDetailModel.total_time integerValue] * 60;
+        }
+    }
+}
+
+- (void)dealloc {
+    if (paperTimer) {
+        [paperTimer invalidate];
+        paperTimer = nil;
+    }
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        [paperTimer invalidate];
+        paperTimer = nil;
+    }
+}
 
 @end
