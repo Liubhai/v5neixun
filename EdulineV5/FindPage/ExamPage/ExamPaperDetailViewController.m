@@ -1313,7 +1313,7 @@
             }
             _examCollectBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
-            
+            _examCollectBtn.enabled = YES;
         }];
     } else {
         _examCollectBtn.enabled = YES;

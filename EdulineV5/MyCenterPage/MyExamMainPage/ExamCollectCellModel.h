@@ -22,6 +22,15 @@ NS_ASSUME_NONNULL_BEGIN
  "topic_title": "<p>判断题</p>"
  */
 
+/*
+ "topic_id": 3,
+ "user_id": 81,
+ "create_time": 1616053269,
+ "topic_title": "<p>判断题</p>",
+ "question_type": 2,
+ "question_type_text": "判断"
+ */
+
 @property (strong, nonatomic) NSString *errorId;//试题ID
 @property (strong, nonatomic) NSString *topic_id;//试题ID
 @property (strong, nonatomic) NSString *topic_type;// 试题类型
@@ -29,6 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *answer_count;// 总题数
 @property (strong, nonatomic) NSString *wrong_count;// 正确作答题数
 @property (strong, nonatomic) NSString *wrong_time; // 上次作答提交时间
+
+// 收藏
+@property (strong, nonatomic) NSString *question_type; //
+@property (strong, nonatomic) NSString *question_type_text; //
+@property (strong, nonatomic) NSString *create_time; //
 @property (assign, nonatomic) BOOL selected; // 管理时候是否选中
 
 @end

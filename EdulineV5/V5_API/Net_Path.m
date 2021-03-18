@@ -628,6 +628,11 @@
     return [Net_Path fullPath:@"exam/topic/collect" repalce:@"" byReplece:@""];
 }
 
+/** 考试收藏列表 */
++ (NSString *)examCollectionListNet {
+    return [Net_Path fullPath:@"exam/topic/collect/list" repalce:@"" byReplece:@""];
+}
+
 /** 考试错题本 */
 + (NSString *)examWrongListNet {
     return [Net_Path fullPath:@"exam/topic/wrong/list" repalce:@"" byReplece:@""];

@@ -477,6 +477,9 @@ struct NetWorkUrl {
 /** 考试收藏 */
 + (NSString *)examCollectionNet;
 
+/** 考试收藏 */
++ (NSString *)examCollectionListNet;
+
 /** 考试错题本 */
 + (NSString *)examWrongListNet;
 

@@ -119,21 +119,18 @@
         if (!cell) {
             cell = [[ExamCollectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        cell.delegate = self;
         [cell setExamErorModel:_dataSource[indexPath.row] indexpath:indexPath];
+        cell.delegate = self;
         return cell;
     } else {
         static NSString *reuse = @"ExamCollectCell";
-            ExamCollectCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-            if (!cell) {
-                cell = [[ExamCollectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-            }
-        //    cell.delegate = self;
-        //    [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath showSelect:_bottomView.hidden];
-            ExamCollectCellModel *model = [[ExamCollectCellModel alloc] init];
-            model.topic_type = [NSString stringWithFormat:@"%@",@(arc4random() % 7 + 1)];
-            [cell setExamCollectRootManagerModel:model indexpath:indexPath showSelect:_bottomView.hidden];
-            return cell;
+        ExamCollectCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[ExamCollectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setExamCollectRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath showSelect:_bottomView.hidden];
+        cell.delegate = self;
+        return cell;
     }
 }
 
@@ -152,7 +149,7 @@
     if ([_examListType isEqualToString:@"error"]) {
         getUrl = [Net_Path examWrongListNet];
     } else {
-        getUrl = [Net_Path examCollectionNet];
+        getUrl = [Net_Path examCollectionListNet];
     }
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
@@ -190,7 +187,7 @@
     if ([_examListType isEqualToString:@"error"]) {
         getUrl = [Net_Path examWrongListNet];
     } else {
-        getUrl = [Net_Path examCollectionNet];
+        getUrl = [Net_Path examCollectionListNet];
     }
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
@@ -275,15 +272,15 @@
         }
     }
     if (!SWNOTEmptyStr(course_ids)) {
-        [self showHudInView:self.view showHint:@"请选择一个课程"];
+        [self showHudInView:self.view showHint:@"请选择一个试题"];
         return;
     }
     
     NSMutableDictionary *param = [NSMutableDictionary new];
-    [param setObject:_courseType forKey:@"source_type"];
-    [param setObject:course_ids forKey:@"ids"];
+    [param setObject:@"0" forKey:@"status"];
+    [param setObject:course_ids forKey:@"topic_id"];
     
-    [Net_API requestDeleteWithURLStr:[Net_Path unCollectNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPOSTWithURLStr:[Net_Path examCollectionNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
