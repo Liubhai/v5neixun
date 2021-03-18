@@ -11,9 +11,23 @@
 
 @implementation ExamCollectCellModel
 
++(NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"errorId":@"id"};
+}
+
+/*
+"id": 2,
+"topic_type": 1,
+"topic_id": 3,
+"wrong_count": 11,
+"answer_count": 13,
+"wrong_time": 1614740800,
+"topic_title": "<p>判断题</p>"
+*/
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"topic_id"] || [property.name isEqualToString:@"allCount"] || [property.name isEqualToString:@"rightCount"] || [property.name isEqualToString:@"qustion_type"] || [property.name isEqualToString:@"title"] || [property.name isEqualToString:@"examTime"]) {
+    if ([property.name isEqualToString:@"topic_id"] || [property.name isEqualToString:@"topic_id"] || [property.name isEqualToString:@"answer_count"] || [property.name isEqualToString:@"wrong_count"] || [property.name isEqualToString:@"topic_type"] || [property.name isEqualToString:@"topic_title"] || [property.name isEqualToString:@"wrong_time"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){

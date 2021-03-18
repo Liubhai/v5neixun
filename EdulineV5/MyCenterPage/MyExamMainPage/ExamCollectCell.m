@@ -73,9 +73,9 @@
     _selectedIconBtn.selected = model.selected;
     _selectedIconBtn.hidden = showSelect;
     
-    if ([model.question_type isEqualToString:@"4"]) {
+    if ([model.topic_type isEqualToString:@"4"]) {
         _titleLabel.text = @"      题目标题显示2排在这里题显示在这里题显示在这里题显示在这里题显示在这里？";
-    } else if ([model.question_type isEqualToString:@"7"]) {
+    } else if ([model.topic_type isEqualToString:@"7"]) {
         _titleLabel.text = @"      题目标题显示2排在这里题显示在这里题显示在这里题显示在这里题显示在这里？";
     } else {
         _titleLabel.text = @"     题目标题显示2排在这里题显示在这里题显示在这里题显示在这里题显示在这里？题目标题显示2排在这里题显示在这里题显示在这里题显示在这里题显示在这里？";
@@ -95,35 +95,35 @@
     [_titleLabel setHeight:_titleLabel.height>40 ? 40 : _titleLabel.height];
     
     // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
-    if ([model.question_type isEqualToString:@"1"]) {
+    if ([model.topic_type isEqualToString:@"1"]) {
         _examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"2"]) {
+    } else if ([model.topic_type isEqualToString:@"2"]) {
         _examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"3"]) {
+    } else if ([model.topic_type isEqualToString:@"3"]) {
         _examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"4"]) {
+    } else if ([model.topic_type isEqualToString:@"4"]) {
         _examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
         [_examTypeImageView setWidth:44];
-    } else if ([model.question_type isEqualToString:@"5"]) {
+    } else if ([model.topic_type isEqualToString:@"5"]) {
         _examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"6"]) {
+    } else if ([model.topic_type isEqualToString:@"6"]) {
         _examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"7"]) {
+    } else if ([model.topic_type isEqualToString:@"7"]) {
         _examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
         [_examTypeImageView setWidth:55];
-    } else if ([model.question_type isEqualToString:@"8"]) {
+    } else if ([model.topic_type isEqualToString:@"8"]) {
         _examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
     }
     
-    if ([model.question_type isEqualToString:@"4"]) {
+    if ([model.topic_type isEqualToString:@"4"]) {
         [_titleLabel addView:_examTypeImageView range:NSMakeRange(0, 4) alignment:TYDrawAlignmentCenter];
-    } else if ([model.question_type isEqualToString:@"7"]) {
+    } else if ([model.topic_type isEqualToString:@"7"]) {
         [_titleLabel addView:_examTypeImageView range:NSMakeRange(0, 4) alignment:TYDrawAlignmentCenter];
     } else {
         [_titleLabel addView:_examTypeImageView range:NSMakeRange(0, 3) alignment:TYDrawAlignmentCenter];
@@ -145,13 +145,7 @@
     _fenggeLineView.hidden = NO;
     _rightCountLabel.hidden = NO;
     
-    if ([model.question_type isEqualToString:@"4"]) {
-        _titleLabel.text = @"      题目标题显示2排在这里题显示在这里题显示在这里题显示在这里题显示在这里？";
-    } else if ([model.question_type isEqualToString:@"7"]) {
-        _titleLabel.text = @"      题目标题显示2排在这里题显示在这里题显示在这里题显示在这里题显示在这里？";
-    } else {
-        _titleLabel.text = @"     题目标题显示2排在这里题显示在这里题显示在这里题显示在这里题显示在这里？题目标题显示2排在这里题显示在这里题显示在这里题显示在这里题显示在这里？";
-    }
+    _titleLabel.text = model.topic_title;
     
     _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, 20);
     _titleLabel.font = SYSTEMFONT(14);
@@ -163,45 +157,45 @@
     _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, _titleLabel.height>40 ? 40 : _titleLabel.height);
     
     // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
-    if ([model.question_type isEqualToString:@"1"]) {
+    if ([model.topic_type isEqualToString:@"1"]) {
         _examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"2"]) {
+    } else if ([model.topic_type isEqualToString:@"2"]) {
         _examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"3"]) {
+    } else if ([model.topic_type isEqualToString:@"3"]) {
         _examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"4"]) {
+    } else if ([model.topic_type isEqualToString:@"4"]) {
         _examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
         [_examTypeImageView setWidth:44];
-    } else if ([model.question_type isEqualToString:@"5"]) {
+    } else if ([model.topic_type isEqualToString:@"5"]) {
         _examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"6"]) {
+    } else if ([model.topic_type isEqualToString:@"6"]) {
         _examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
-    } else if ([model.question_type isEqualToString:@"7"]) {
+    } else if ([model.topic_type isEqualToString:@"7"]) {
         _examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
         [_examTypeImageView setWidth:55];
-    } else if ([model.question_type isEqualToString:@"8"]) {
+    } else if ([model.topic_type isEqualToString:@"8"]) {
         _examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
         [_examTypeImageView setWidth:32];
     }
     
-    if ([model.question_type isEqualToString:@"4"]) {
+    if ([model.topic_type isEqualToString:@"4"]) {
         [_titleLabel addView:_examTypeImageView range:NSMakeRange(0, 4) alignment:TYDrawAlignmentCenter];
-    } else if ([model.question_type isEqualToString:@"7"]) {
+    } else if ([model.topic_type isEqualToString:@"7"]) {
         [_titleLabel addView:_examTypeImageView range:NSMakeRange(0, 4) alignment:TYDrawAlignmentCenter];
     } else {
         [_titleLabel addView:_examTypeImageView range:NSMakeRange(0, 3) alignment:TYDrawAlignmentCenter];
     }
     
-    _allCountLabel.text = @"答错10次";
+    _allCountLabel.text = [NSString stringWithFormat:@"答错%@次",model.wrong_count];
     CGFloat allCountWidth = [_allCountLabel.text sizeWithFont:_allCountLabel.font].width + 4;
     [_allCountLabel setWidth:allCountWidth];
     
-    _rightCountLabel.text = @"累计作答10次";
+    _rightCountLabel.text = [NSString stringWithFormat:@"累计作答%@次",model.answer_count];
     CGFloat rightCountWidth = [_rightCountLabel.text sizeWithFont:_rightCountLabel.font].width + 4;
     [_rightCountLabel setWidth:rightCountWidth];
     
@@ -211,7 +205,7 @@
     [_rightCountLabel setLeft:_fenggeLineView.right + 8];
     _rightCountLabel.centerY = _allCountLabel.centerY;
     
-    _timeLabel.text = @"2020-01-21 12:33:43";
+    _timeLabel.text = [EdulineV5_Tool timeForBalanceYYMMDDHHMM:[NSString stringWithFormat:@"%@",model.wrong_time]];
     _timeLabel.frame = CGRectMake(MainScreenWidth - 15 - 200, _titleLabel.bottom + 14, 200, 17);
     _timeLabel.textAlignment = NSTextAlignmentRight;
     

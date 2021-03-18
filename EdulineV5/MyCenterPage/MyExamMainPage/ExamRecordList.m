@@ -100,31 +100,28 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
-//    _tableView.mj_footer.hidden = YES;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 8;//_dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([_examListType isEqualToString:@"error"]) {
         static NSString *reuse = @"ExamCollectCellerror";
-            ExamCollectCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-            if (!cell) {
-                cell = [[ExamCollectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-            }
-        //    cell.delegate = self;
-        //    [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath showSelect:_bottomView.hidden];
-            ExamCollectCellModel *model = [[ExamCollectCellModel alloc] init];
-            model.question_type = [NSString stringWithFormat:@"%@",@(arc4random() % 7 + 1)];
-        [cell setExamErorModel:model indexpath:indexPath];
-            return cell;
+        ExamCollectCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[ExamCollectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        cell.delegate = self;
+        [cell setExamErorModel:_dataSource[indexPath.row] indexpath:indexPath];
+        return cell;
     } else {
         static NSString *reuse = @"ExamCollectCell";
             ExamCollectCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
@@ -134,7 +131,7 @@
         //    cell.delegate = self;
         //    [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath showSelect:_bottomView.hidden];
             ExamCollectCellModel *model = [[ExamCollectCellModel alloc] init];
-            model.question_type = [NSString stringWithFormat:@"%@",@(arc4random() % 7 + 1)];
+            model.topic_type = [NSString stringWithFormat:@"%@",@(arc4random() % 7 + 1)];
             [cell setExamCollectRootManagerModel:model indexpath:indexPath showSelect:_bottomView.hidden];
             return cell;
     }
@@ -150,15 +147,17 @@
 
 - (void)getFirstList {
     page = 1;
+    NSString *getUrl = [Net_Path examPointIdListNet];
     NSMutableDictionary *param = [NSMutableDictionary new];
+    if ([_examListType isEqualToString:@"error"]) {
+        getUrl = [Net_Path examWrongListNet];
+    } else {
+        getUrl = [Net_Path examCollectionNet];
+    }
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(_courseType)) {
-        [param setObject:_courseType forKey:@"source_type"];
-    }
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -186,14 +185,16 @@
 
 - (void)getMoreList {
     page = page + 1;
+    NSString *getUrl = [Net_Path examPointIdListNet];
     NSMutableDictionary *param = [NSMutableDictionary new];
+    if ([_examListType isEqualToString:@"error"]) {
+        getUrl = [Net_Path examWrongListNet];
+    } else {
+        getUrl = [Net_Path examCollectionNet];
+    }
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(_courseType)) {
-        [param setObject:_courseType forKey:@"source_type"];
-    }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }
