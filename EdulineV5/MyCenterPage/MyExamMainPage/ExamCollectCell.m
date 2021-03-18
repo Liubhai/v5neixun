@@ -145,7 +145,13 @@
     _fenggeLineView.hidden = NO;
     _rightCountLabel.hidden = NO;
     
-    _titleLabel.text = model.topic_title;
+    if ([model.topic_type isEqualToString:@"4"]) {
+        _titleLabel.text = [NSString stringWithFormat:@"      %@",model.topic_title];
+    } else if ([model.topic_type isEqualToString:@"7"]) {
+        _titleLabel.text = [NSString stringWithFormat:@"      %@",model.topic_title];
+    } else {
+        _titleLabel.text = [NSString stringWithFormat:@"     %@",model.topic_title];
+    }
     
     _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, 20);
     _titleLabel.font = SYSTEMFONT(14);
