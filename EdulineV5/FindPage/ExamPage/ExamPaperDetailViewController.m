@@ -914,6 +914,13 @@
         // 如果当前题答错了 并且是第一次答这道题 那么就显示 底部区域 并且 将这个道题上传 model.is_expend 设置成 yes
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         model.is_answer = YES;
+        
+        // 并且这里需要把 答题卡数组里面的 has_answer 修改值
+        if (SWNOTEmptyArr(_examIdListArray)) {
+            ExamPaperIDListModel *currentExamIdListModel = _examIdListArray[currentExamIndexPath.section];
+            ExamIDModel *idModel = currentExamIdListModel.child[currentExamIndexPath.row];
+            idModel.has_answered = YES;
+        }
         // todo 这里要开始组装答案
         /**
         if (!model.is_answer) {
@@ -1042,6 +1049,7 @@
     } else if (sender == _examSheetBtn) {
         // 跳转到答题卡页面
         AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
+        vc.isPaper = YES;
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
         vc.chooseOtherExam = ^(NSString * _Nonnull examId) {
             _previousExamBtn.enabled = NO;

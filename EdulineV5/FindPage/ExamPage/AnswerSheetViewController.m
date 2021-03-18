@@ -127,11 +127,19 @@
             UILabel *typeTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
             typeTitleLabel.font = SYSTEMFONT(14);
             typeTitleLabel.textColor = EdlineV5_Color.textFirstColor;
-            typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamIDListModel *)_examArray[j]).title];
-            [hotView addSubview:typeTitleLabel];
             NSMutableArray *childArray = [NSMutableArray new];
-            if (SWNOTEmptyArr(((ExamIDListModel *)_examArray[j]).child)) {
-                [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamIDListModel *)_examArray[j]).child]];
+            if (_isPaper) {
+                typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamPaperIDListModel *)_examArray[j]).title];
+                [hotView addSubview:typeTitleLabel];
+                if (SWNOTEmptyArr(((ExamPaperIDListModel *)_examArray[j]).child)) {
+                    [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamPaperIDListModel *)_examArray[j]).child]];
+                }
+            } else {
+                typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamIDListModel *)_examArray[j]).title];
+                [hotView addSubview:typeTitleLabel];
+                if (SWNOTEmptyArr(((ExamIDListModel *)_examArray[j]).child)) {
+                    [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamIDListModel *)_examArray[j]).child]];
+                }
             }
             if (childArray.count) {
                 CGFloat topSpacee = 15.0;
@@ -186,15 +194,28 @@
 - (void)thirdBtnClick:(UIButton *)sender {
     UIView *view = (UIView *)sender.superview;
     
-    ExamIDListModel *secondModel = (ExamIDListModel *)_examArray[view.tag - 10];
-    
-    NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
-    
-    ExamIDModel *thirdModel = (ExamIDModel *)passThird[sender.tag - 400];
-    // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
-    if (thirdModel.topic_id) {
-        self.chooseOtherExam(thirdModel.topic_id);
-        [self.navigationController popViewControllerAnimated:YES];
+    if (_isPaper) {
+        ExamPaperIDListModel *secondModel = (ExamPaperIDListModel *)_examArray[view.tag - 10];
+        
+        NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
+        
+        ExamIDModel *thirdModel = (ExamIDModel *)passThird[sender.tag - 400];
+        // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
+        if (thirdModel.topic_id) {
+            self.chooseOtherExam(thirdModel.topic_id);
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } else {
+        ExamIDListModel *secondModel = (ExamIDListModel *)_examArray[view.tag - 10];
+        
+        NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
+        
+        ExamIDModel *thirdModel = (ExamIDModel *)passThird[sender.tag - 400];
+        // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
+        if (thirdModel.topic_id) {
+            self.chooseOtherExam(thirdModel.topic_id);
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
 }
 

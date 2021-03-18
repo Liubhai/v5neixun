@@ -15,6 +15,7 @@ typedef void(^chooseOtherExam)(NSString *examId);
 @interface AnswerSheetViewController : BaseViewController
 
 @property (nonatomic, strong) chooseOtherExam chooseOtherExam;
+@property (assign, nonatomic) BOOL isPaper; // yes 是试卷 no 是试题
 @property (strong, nonatomic) NSMutableArray *examArray;// 整个试卷的题目id列表(列表里面的 has_answered 字段来判断是否作答)
 
 @end
