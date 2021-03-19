@@ -644,6 +644,13 @@
 }
 
 /** 公共获取试题 */
+/*
+ origin
+ 5
+ 必填
+ Number
+ 来源【1：知识点；2：专项；3：考试；4：套卷；5错题；6：收藏；】
+ */
 + (NSString *)examPublicDetailNet {
     return [Net_Path fullPath:@"exam/topic" repalce:@"" byReplece:@""];
 }

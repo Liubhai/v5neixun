@@ -193,10 +193,8 @@
         } else if ([iconKey isEqualToString:@"note"]) {
             [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
         } else if ([iconKey isEqualToString:@"collection"]) {
-            MyExamPage *vc = [[MyExamPage alloc] init];
+            MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
-//            MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
-//            [self.navigationController pushViewController:vc animated:YES];
         } else if ([iconKey isEqualToString:@"record"]) {
             LearnRecordVC *vc = [[LearnRecordVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -262,6 +260,9 @@
         } else if ([iconKey isEqualToString:@"my_teach"]) {
             MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
+        } else if ([iconKey isEqualToString:@"exam"]) {
+            MyExamPage *vc = [[MyExamPage alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
 }
@@ -299,7 +300,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-// MARK: -
+// MARK: - 横排点击事件
 - (void)jumpToOtherPage:(UIButton *)sender {
     if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
@@ -355,6 +356,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"my_teach"]) {
         MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"exam"]) {
+        MyExamPage *vc = [[MyExamPage alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

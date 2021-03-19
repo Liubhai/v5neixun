@@ -7,12 +7,13 @@
 //
 
 #import "ExamRecordList.h"
-#import "HomePageCourseTypeOneCell.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "LBHTableView.h"
 
 #import "ExamCollectCell.h"
+
+#import "ExamTestDetailViewController.h"
 
 @interface ExamRecordList ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ExamCollectCellDelegate> {
     NSInteger page;
@@ -140,6 +141,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ExamCollectCellModel *model = _dataSource[indexPath.row];
+    ExamTestDetailViewController *vc = [[ExamTestDetailViewController alloc] init];
+    vc.examType = [_examListType isEqualToString:@"error"] ? @"error" : @"collect";
+    vc.examIds = model.topic_id;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getFirstList {

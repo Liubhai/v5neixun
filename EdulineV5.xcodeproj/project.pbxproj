@@ -117,6 +117,7 @@
 		7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572A2435D53A008F475D /* CourseSearchHistoryVC.m */; };
 		787657302435DC81008F475D /* SearchHistoryListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572F2435DC81008F475D /* SearchHistoryListCell.m */; };
 		7876573324370560008F475D /* playAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876573224370560008F475D /* playAnimationView.m */; };
+		78781D4926045208000DF351 /* ExamTestDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78781D4826045208000DF351 /* ExamTestDetailViewController.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
 		7879561B240DE7A50013F95F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78795619240DE7A50013F95F /* Main.storyboard */; };
@@ -809,6 +810,8 @@
 		7876572F2435DC81008F475D /* SearchHistoryListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchHistoryListCell.m; sourceTree = "<group>"; };
 		7876573124370560008F475D /* playAnimationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = playAnimationView.h; sourceTree = "<group>"; };
 		7876573224370560008F475D /* playAnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = playAnimationView.m; sourceTree = "<group>"; };
+		78781D4726045208000DF351 /* ExamTestDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamTestDetailViewController.h; sourceTree = "<group>"; };
+		78781D4826045208000DF351 /* ExamTestDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamTestDetailViewController.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* Eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1743,6 +1746,8 @@
 				78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */,
 				78AAFF1125FF6189002CD197 /* ExamPaperDetailViewController.h */,
 				78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */,
+				78781D4726045208000DF351 /* ExamTestDetailViewController.h */,
+				78781D4826045208000DF351 /* ExamTestDetailViewController.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -4430,6 +4435,7 @@
 				78A16C872452F7C100391430 /* NetAssociation.m in Sources */,
 				787ED6F8255A62C000906846 /* OneToOneLiveRoomVC.m in Sources */,
 				788E958D253FE24E0089251E /* aeskey.c in Sources */,
+				78781D4926045208000DF351 /* ExamTestDetailViewController.m in Sources */,
 				7853164824502E49007E239E /* MenberCell.m in Sources */,
 				7887451824E3830C00257029 /* InstitutionSearchVC.m in Sources */,
 				7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */,
