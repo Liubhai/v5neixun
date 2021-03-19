@@ -71,6 +71,7 @@
     _rightOrErrorIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 74 - 4, MACRO_UI_UPHEIGHT + 8, 74, 74)];
     _rightOrErrorIcon.image = Image(@"exam_fault_icon");
     [self.view addSubview:_rightOrErrorIcon];
+    _rightOrErrorIcon.hidden = YES;
     
     [self makeBottomView];
     
@@ -633,6 +634,7 @@
 
 - (void)bottomButtonClick:(UIButton *)sender {
     if (sender == _nextExamBtn) {
+        _rightOrErrorIcon.hidden = YES;
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
         // 这里需要判断是否能够直接进入下一题还是需要展开解析
@@ -655,6 +657,8 @@
                 _previousExamBtn.enabled = YES;
                 _nextExamBtn.enabled = YES;
                 [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:NO];
+                _rightOrErrorIcon.hidden = NO;
+                _rightOrErrorIcon.image = Image(@"exam_fault_icon");
                 return;
             } else {
                 // 回答正确了 也需要在这里设置已作答
@@ -662,6 +666,12 @@
                 model.is_expand = YES;
                 model.is_right = YES;
                 [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:YES];
+            }
+        } else {
+            if ([_examType isEqualToString:@"collect"]) {
+                _rightOrErrorIcon.hidden = YES;
+            } else {
+                _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
             }
         }
         

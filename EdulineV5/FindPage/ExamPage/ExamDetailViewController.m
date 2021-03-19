@@ -74,6 +74,7 @@
     _rightOrErrorIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 74 - 4, MACRO_UI_UPHEIGHT + 8, 74, 74)];
     _rightOrErrorIcon.image = Image(@"exam_fault_icon");
     [self.view addSubview:_rightOrErrorIcon];
+    _rightOrErrorIcon.hidden = YES;
     
     [self makeBottomView];
     
@@ -757,6 +758,7 @@
     if (sender == _nextExamBtn) {
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
+        _rightOrErrorIcon.hidden = YES;
         // 这里需要判断是否能够直接进入下一题还是需要展开解析
         // 如果当前题答错了 并且是第一次答这道题 那么就显示 底部区域 并且 将这个道题上传 model.is_expend 设置成 yes
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
@@ -777,6 +779,8 @@
                 _previousExamBtn.enabled = YES;
                 _nextExamBtn.enabled = YES;
                 [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:NO];
+                _rightOrErrorIcon.hidden = NO;
+                _rightOrErrorIcon.image = Image(@"exam_fault_icon");
                 return;
             } else {
                 // 回答正确了 也需要在这里设置已作答
@@ -784,6 +788,13 @@
                 model.is_expand = YES;
                 model.is_right = YES;
                 [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:YES];
+            }
+        } else {
+            if ([_examType isEqualToString:@"collect"]) {
+                _rightOrErrorIcon.hidden = YES;
+            } else {
+                _rightOrErrorIcon.hidden = NO;
+                _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
             }
         }
         

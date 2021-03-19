@@ -260,7 +260,7 @@
         } else if ([iconKey isEqualToString:@"my_teach"]) {
             MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
-        } else if ([iconKey isEqualToString:@"exam"]) {
+        } else if ([iconKey isEqualToString:@"my_exams"]) {
             MyExamPage *vc = [[MyExamPage alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -357,7 +357,7 @@
     } else if ([iconKey isEqualToString:@"my_teach"]) {
         MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
-    } else if ([iconKey isEqualToString:@"exam"]) {
+    } else if ([iconKey isEqualToString:@"my_exams"]) {
         MyExamPage *vc = [[MyExamPage alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
