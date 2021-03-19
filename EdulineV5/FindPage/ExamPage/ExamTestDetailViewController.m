@@ -535,6 +535,10 @@
                         ExamDetailModel *pass = passArray[i];
                         pass.titleMutable = [self changeStringToMutA:pass.title];
                         pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
+                        if ([_examType isEqualToString:@"collect"]) {
+                            pass.is_answer = YES;
+                            pass.is_expand = YES;
+                        }
                         if (SWNOTEmptyArr(pass.topics)) {
                             for (int j = 0; j<pass.topics.count; j++) {
                                 ExamDetailModel *detail = pass.topics[j];
