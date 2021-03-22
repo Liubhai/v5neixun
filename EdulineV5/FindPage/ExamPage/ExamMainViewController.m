@@ -107,11 +107,6 @@
         ZhuangXiangListTreeTableVC *vc = [[ZhuangXiangListTreeTableVC alloc] init];
         vc.examTypeId = examTheme;
         [self.navigationController pushViewController:vc animated:YES];
-        
-//        AnswerSheetViewController  ExamResultViewController
-//        AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
-//        [self.navigationController pushViewController:vc animated:YES];
-        
     }
 }
 
