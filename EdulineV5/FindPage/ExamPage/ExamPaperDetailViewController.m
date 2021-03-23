@@ -239,7 +239,7 @@
         if ([model.question_type isEqualToString:@"7"]) {
             [cell setExamDetail:model cellModel:model.topics[indexPath.row] cellIndex:indexPath];
         } else if ([model.question_type isEqualToString:@"8"]) {
-            if (!model.options.count) {
+            if (model.options.count) {
                 [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) mainExamDetail:model examDetail:model cellIndex:indexPath];
             } else {
                 [cell setAnswerInfo:[ExamDetailOptionsModel new] mainExamDetail:model examDetail:model cellIndex:indexPath];
