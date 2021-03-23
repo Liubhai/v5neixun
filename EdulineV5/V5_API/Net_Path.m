@@ -623,6 +623,12 @@
 + (NSString *)openingExamDetailNet {
     return [Net_Path fullPath:@"exam/paper/topic" repalce:@"" byReplece:@""];
 }
+
+/** 试卷提交答案 */
++ (NSString *)submitPaperNet {
+    return [Net_Path fullPath:@"exam/paper/answer" repalce:@"" byReplece:@""];
+}
+
 /** 考试收藏 */
 + (NSString *)examCollectionNet {
     return [Net_Path fullPath:@"exam/topic/collect" repalce:@"" byReplece:@""];

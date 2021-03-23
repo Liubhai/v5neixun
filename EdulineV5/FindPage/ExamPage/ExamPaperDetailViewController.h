@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *examType;
 @property (strong, nonatomic) NSString *examIds;
+@property (strong, nonatomic) NSDictionary *paperInfo;// 试卷信息
 
 @end
 

@@ -129,7 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
  "visible_answer": 0,
  "total_count": 12,
  "total_score": 0,
- "topic_md5": "6273576c72d557b3d84f2e847c8cfee5",
+ "unique_code": "6273576c72d557b3d84f2e847c8cfee5",
  "parts
  */
 @property (strong, nonatomic) NSString *paper_id;//id
@@ -147,7 +147,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *visible_answer;
 @property (strong, nonatomic) NSString *total_count;
 @property (strong, nonatomic) NSString *total_score;
-@property (strong, nonatomic) NSString *topic_md5;
+@property (strong, nonatomic) NSString *unique_code;
 @property (strong, nonatomic) NSArray *parts;
 
 @end

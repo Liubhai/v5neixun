@@ -474,6 +474,9 @@ struct NetWorkUrl {
 /** 公开考试获取试题 */
 + (NSString *)openingExamDetailNet;
 
+/** 试卷提交答案 */
++ (NSString *)submitPaperNet;
+
 /** 考试收藏 */
 + (NSString *)examCollectionNet;
 
