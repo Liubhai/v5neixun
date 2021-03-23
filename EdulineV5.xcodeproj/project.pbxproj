@@ -118,7 +118,6 @@
 		787657302435DC81008F475D /* SearchHistoryListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572F2435DC81008F475D /* SearchHistoryListCell.m */; };
 		7876573324370560008F475D /* playAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876573224370560008F475D /* playAnimationView.m */; };
 		78781D4926045208000DF351 /* ExamTestDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78781D4826045208000DF351 /* ExamTestDetailViewController.m */; };
-		78781D4C260887A5000DF351 /* ExamShowParsingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78781D4B260887A5000DF351 /* ExamShowParsingViewController.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
 		7879561B240DE7A50013F95F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78795619240DE7A50013F95F /* Main.storyboard */; };
@@ -813,8 +812,6 @@
 		7876573224370560008F475D /* playAnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = playAnimationView.m; sourceTree = "<group>"; };
 		78781D4726045208000DF351 /* ExamTestDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamTestDetailViewController.h; sourceTree = "<group>"; };
 		78781D4826045208000DF351 /* ExamTestDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamTestDetailViewController.m; sourceTree = "<group>"; };
-		78781D4A260887A5000DF351 /* ExamShowParsingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamShowParsingViewController.h; sourceTree = "<group>"; };
-		78781D4B260887A5000DF351 /* ExamShowParsingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamShowParsingViewController.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* Eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1751,8 +1748,6 @@
 				78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */,
 				78781D4726045208000DF351 /* ExamTestDetailViewController.h */,
 				78781D4826045208000DF351 /* ExamTestDetailViewController.m */,
-				78781D4A260887A5000DF351 /* ExamShowParsingViewController.h */,
-				78781D4B260887A5000DF351 /* ExamShowParsingViewController.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -4471,7 +4466,6 @@
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
 				78531653245131AF007E239E /* LiveRoomViewController.m in Sources */,
 				788E95C0253FE24F0089251E /* SliderView.m in Sources */,
-				78781D4C260887A5000DF351 /* ExamShowParsingViewController.m in Sources */,
 				78C936C0248DE41900D5F1ED /* ZPScrollerScaleView.m in Sources */,
 				78795723240FA3840013F95F /* ZLCamera.m in Sources */,
 				7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */,

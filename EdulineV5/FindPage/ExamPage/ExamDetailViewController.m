@@ -1206,6 +1206,58 @@
     }];
 }
 
+
+// MARK: - 交卷
+/*
+ [{"answer": [{"id": 11}, {"id": 13}, {"id": 12}], "topic_id": 6, "topic_level": 1, "question_type": 4},{"answer": ["填空题1-2", "填空题2",""], "topic_id": 7, "topic_level": 1, "question_type": 5}, {"answer": [{"id": 190}], "topic_id": 126, "topic_level": 1, "question_type": 4}, {"answer": "填空题type5简答题type8答案", "topic_id": 13, "topic_level": 1, "question_type": 8}]
+ */
+- (void)putExamAnswer {
+}
+
+// MARK: - 组装答案
+- (void)managerAnswer {
+    // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
+    // 检索每一道题 首先判断题型 再获取数据 完形填空和材料题 区别对待
+    [_answerManagerArray removeAllObjects];
+    
+    for (int i = 0; i<_examDetailArray.count; i++) {
+        NSMutableDictionary *passDict = [NSMutableDictionary new];
+        ExamDetailModel *model = _examDetailArray[i];
+        
+        [passDict setObject:model.examDetailId forKey:@"topic_id"];
+        [passDict setObject:model.topic_level forKey:@"topic_level"];
+        [passDict setObject:model.question_type forKey:@"question_type"];
+        
+        if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"] || [model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"]) {
+            NSMutableArray *passArray = [NSMutableArray new];
+            for (int j = 0; j<model.options.count; j++) {
+                ExamDetailOptionsModel *opModel = model.options[j];
+                if (opModel.is_selected) {
+                    [passArray addObject:@{@"id":opModel.examDetailOptionId}];
+                }
+            }
+            [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
+            [_examDetailArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+        } else if ([model.question_type isEqualToString:@"5"] || [model.question_type isEqualToString:@"8"]) {
+            NSMutableArray *passArray = [NSMutableArray new];
+            for (int j = 0; j<model.options.count; j++) {
+                ExamDetailOptionsModel *opModel = model.options[j];
+                if (opModel.userAnswerValue) {
+                    [passArray addObject:opModel.userAnswerValue];
+                } else {
+                    [passArray addObject:@""];
+                }
+            }
+            [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
+            [_examDetailArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+        } else if ([model.question_type isEqualToString:@"7"]) {
+            // 完形填空
+        } else if ([model.question_type isEqualToString:@"6"]) {
+            // 材料题
+        }
+    }
+}
+
 /*
 #pragma mark - Navigation
 
