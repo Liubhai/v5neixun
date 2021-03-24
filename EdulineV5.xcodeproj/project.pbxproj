@@ -118,6 +118,7 @@
 		787657302435DC81008F475D /* SearchHistoryListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572F2435DC81008F475D /* SearchHistoryListCell.m */; };
 		7876573324370560008F475D /* playAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876573224370560008F475D /* playAnimationView.m */; };
 		78781D4926045208000DF351 /* ExamTestDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78781D4826045208000DF351 /* ExamTestDetailViewController.m */; };
+		78781D4F260B2EEF000DF351 /* CheckUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78781D4E260B2EEF000DF351 /* CheckUserInfoViewController.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
 		7879561B240DE7A50013F95F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78795619240DE7A50013F95F /* Main.storyboard */; };
@@ -812,6 +813,8 @@
 		7876573224370560008F475D /* playAnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = playAnimationView.m; sourceTree = "<group>"; };
 		78781D4726045208000DF351 /* ExamTestDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamTestDetailViewController.h; sourceTree = "<group>"; };
 		78781D4826045208000DF351 /* ExamTestDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamTestDetailViewController.m; sourceTree = "<group>"; };
+		78781D4D260B2EEF000DF351 /* CheckUserInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheckUserInfoViewController.h; sourceTree = "<group>"; };
+		78781D4E260B2EEF000DF351 /* CheckUserInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CheckUserInfoViewController.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* Eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -2054,6 +2057,8 @@
 			children = (
 				787657262435C79E008F475D /* StudyRootVC.h */,
 				787657272435C79E008F475D /* StudyRootVC.m */,
+				78781D4D260B2EEF000DF351 /* CheckUserInfoViewController.h */,
+				78781D4E260B2EEF000DF351 /* CheckUserInfoViewController.m */,
 				789DB03924698BC3001302B4 /* JoinCourseVC.h */,
 				789DB03A24698BC3001302B4 /* JoinCourseVC.m */,
 				789DB03C24698EE8001302B4 /* JoinCourseTypeVC.h */,
@@ -4319,6 +4324,7 @@
 				78AA1397244596B0007087F7 /* MyCenterOrderView.m in Sources */,
 				7839C98324206B72002F6595 /* CourseCouponView.m in Sources */,
 				78795618240DE7A50013F95F /* ViewController.m in Sources */,
+				78781D4F260B2EEF000DF351 /* CheckUserInfoViewController.m in Sources */,
 				7879571F240FA3840013F95F /* DALabeledCircularProgressView.m in Sources */,
 				78ED079A25D1129E00C30B26 /* ExamAnswerCell.m in Sources */,
 				7853BDD3242D964300F096EC /* ShitikaCell.m in Sources */,
