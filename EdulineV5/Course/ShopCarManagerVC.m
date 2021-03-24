@@ -71,20 +71,22 @@
     _bottomView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_bottomView];
     
-    NSString *openText = @"全选";
-    CGFloat openWidth = [openText sizeWithFont:SYSTEMFONT(13)].width + 4 + 20;
-    CGFloat space = 2.0;
     
-    _allSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, openWidth, 30)];
+    _allSelectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, (MainScreenWidth - 1)/2.0, 49)];
+    [_allSelectBtn setTitle:@"全选" forState:0];
+    [_allSelectBtn setTitle:@"全选" forState:UIControlStateSelected];
     [_allSelectBtn setImage:[Image(@"checkbox_orange") converToMainColor] forState:UIControlStateSelected];
     [_allSelectBtn setImage:Image(@"checkbox_def") forState:0];
-    [_allSelectBtn setTitle:@"全选" forState:0];
+    
     [_allSelectBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-    _allSelectBtn.titleLabel.font = SYSTEMFONT(13);
-    _allSelectBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
-    _allSelectBtn.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+    _allSelectBtn.titleLabel.font = SYSTEMFONT(16);
     [_allSelectBtn addTarget:self action:@selector(headSelectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    _allSelectBtn.centerY = 49/2.0;
+    
+    CGFloat selectAllBtnWidth = [_allSelectBtn.titleLabel.text sizeWithFont:_allSelectBtn.titleLabel.font].width + 15 + 20 + 7 + 15;
+    [_allSelectBtn setWidth:selectAllBtnWidth];
+    
+    _allSelectBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -3.5, 0, 3.5);
+    _allSelectBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, -3.5);
     [_bottomView addSubview:_allSelectBtn];
     
     _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 110, 0, 110, 36)];
@@ -112,7 +114,7 @@
     line.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_bottomView addSubview:line];
     
-    _deleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth/2.0, 0, MainScreenWidth/2.0, 49)];
+    _deleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 88 - 30, 0, 88 + 30, 49)];
     [_deleteBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
     _deleteBtn.titleLabel.font = SYSTEMFONT(16);
     [_deleteBtn setTitle:@"删除" forState:0];
@@ -120,11 +122,11 @@
     [_bottomView addSubview:_deleteBtn];
     _deleteBtn.hidden = YES;
     
-    _midLine = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth/2.0, 0, 0.5, 12)];
-    _midLine.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [_bottomView addSubview:_midLine];
-    _midLine.centerY = _deleteBtn.centerY;
-    _midLine.hidden = YES;
+//    _midLine = [[UIView alloc] initWithFrame:CGRectMake(MainScreenWidth/2.0, 0, 0.5, 12)];
+//    _midLine.backgroundColor = EdlineV5_Color.fengeLineColor;
+//    [_bottomView addSubview:_midLine];
+//    _midLine.centerY = _deleteBtn.centerY;
+//    _midLine.hidden = YES;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -260,14 +262,15 @@
 - (void)rightButtonClick:(id)sender {
     _rightButton.selected = !_rightButton.selected;
     if (_rightButton.selected) {
-        _allSelectBtn.centerX = MainScreenWidth / 4.0;
-        _midLine.hidden = NO;
+//        _allSelectBtn.centerX = MainScreenWidth / 4.0;
+//        _midLine.hidden = NO;
+//        [_allSelectBtn setLeft:0];
         _deleteBtn.hidden = NO;
         _finalPriceLabel.hidden = YES;
         _submitButton.hidden = YES;
     } else {
-        [_allSelectBtn setLeft:10];
-        _midLine.hidden = YES;
+//        [_allSelectBtn setLeft:10];
+//        _midLine.hidden = YES;
         _deleteBtn.hidden = YES;
         _finalPriceLabel.hidden = NO;
         _submitButton.hidden = NO;
