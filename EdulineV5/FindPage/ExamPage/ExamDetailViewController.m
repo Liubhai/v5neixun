@@ -681,6 +681,9 @@
         
         ExamDetailModel *model = (ExamDetailModel *)examModel;
         
+        _rightOrErrorIcon.hidden = !model.is_answer;
+        _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
+        
         // 是否收藏
         _examCollectBtn.selected = model.collected;
         
@@ -793,8 +796,8 @@
             if ([_examType isEqualToString:@"collect"]) {
                 _rightOrErrorIcon.hidden = YES;
             } else {
-                _rightOrErrorIcon.hidden = NO;
-                _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
+//                _rightOrErrorIcon.hidden = NO;
+//                _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
             }
         }
         
@@ -858,6 +861,7 @@
     } else if (sender == _previousExamBtn) {
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
+        _rightOrErrorIcon.hidden = YES;
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
             if (currentExamIndexPath.row>0) {
