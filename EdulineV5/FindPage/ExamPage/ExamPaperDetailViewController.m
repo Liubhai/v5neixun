@@ -85,6 +85,7 @@
     _rightOrErrorIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 74 - 4, MACRO_UI_UPHEIGHT + 8, 74, 74)];
     _rightOrErrorIcon.image = Image(@"exam_fault_icon");
     [self.view addSubview:_rightOrErrorIcon];
+    _rightOrErrorIcon.hidden = YES;
     
     [self makeBottomView];
     
@@ -1102,6 +1103,9 @@
         _examCollectBtn.enabled = NO;
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         [self collectionCurrentExamBy:model];
+    } else if (sender == _submitBtn) {
+        // 交卷
+        [self managerAnswer];
     }
 }
 
@@ -1466,11 +1470,116 @@
 }
 
 // MARK: - 组装答案
+// [{"part_id": 304, "data":[{"answer": [11,13,12], "topic_id": 6, "topic_level": 1, "question_type": 4},{"answer": ["填空题1-2", "3-1", "填空题2-1"], "topic_id": 7, "topic_level": 1, "question_type": 5}, {"answer": [190], "topic_id": 126, "topic_level": 1, "question_type": 1}, {"answer": ["填空题type5简答题type8答案"], "topic_id": 13, "topic_level": 1, "question_type": 8}]}]
+
+// 首先获取 _currentExamPaperDetailModel 的 parts 数组; 从数组中每个元素里面获取每一部分题型的 ID 数组; 根据 ID 去从 _examDetailArray 数组里面匹配到试题的信息(用户的答案等信息); 再根据题型去组装数据;如此循环 直至 parts 里面循环结束
 - (void)managerAnswer {
+    
     // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
     // 检索每一道题 首先判断题型 再获取数据 完形填空和材料题 区别对待
     [_answerManagerArray removeAllObjects];
+    for (int i = 0; i<_examIdListArray.count; i++) {
+        NSMutableDictionary *partDict = [NSMutableDictionary new];
+        ExamPaperIDListModel *paperIDListModel = _examIdListArray[i];
+        [partDict setObject:paperIDListModel.examPartId forKey:@"part_id"];
+        NSMutableArray *dataArray = [NSMutableArray new];
+        for (int j = 0; j<paperIDListModel.child.count; j++) {
+            ExamIDModel *idModel = paperIDListModel.child[j];
+            for (int k = 0; k<_examDetailArray.count; k++) {
+                ExamDetailModel *model = _examDetailArray[k];
+                
+                if ([idModel.topic_id isEqualToString:model.examDetailId]) {
+                    NSMutableDictionary *passDict = [NSMutableDictionary new];
+                    
+                    // 这里区分类型 材料题 和  完形填空 组装的数据是每个小题的数据 topic_level 除外
+                    [passDict setObject:model.topic_level forKey:@"topic_level"];
+                    
+                    if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"] || [model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"]) {
+                        // 单多选 不定项 判断题
+                        [passDict setObject:model.examDetailId forKey:@"topic_id"];
+                        [passDict setObject:model.question_type forKey:@"question_type"];
+                        
+                        NSMutableArray *passArray = [NSMutableArray new];
+                        for (int l = 0; l<model.options.count; l++) {
+                            ExamDetailOptionsModel *opModel = model.options[l];
+                            if (opModel.is_selected) {
+                                [passArray addObject:opModel.examDetailOptionId];
+                            }
+                        }
+                        [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
+                        [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                    } else if ([model.question_type isEqualToString:@"5"] || [model.question_type isEqualToString:@"8"]) {
+                        // 填空题 和 解答题
+                        [passDict setObject:model.examDetailId forKey:@"topic_id"];
+                        [passDict setObject:model.question_type forKey:@"question_type"];
+                        
+                        NSMutableArray *passArray = [NSMutableArray new];
+                        for (int l = 0; l<model.options.count; l++) {
+                            ExamDetailOptionsModel *opModel = model.options[l];
+                            if (opModel.userAnswerValue) {
+                                [passArray addObject:opModel.userAnswerValue];
+                            } else {
+                                [passArray addObject:@""];
+                            }
+                        }
+                        [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
+                        [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                    } else if ([model.question_type isEqualToString:@"7"]) {
+                        // 完形填空
+                        for (int l = 0; l<model.topics.count; l++) {
+                            ExamDetailModel *topicDetailModel = model.topics[l];
+                            [passDict setObject:topicDetailModel.examDetailId forKey:@"topic_id"];
+                            [passDict setObject:topicDetailModel.question_type forKey:@"question_type"];
+                            NSMutableArray *topicPassArray = [NSMutableArray new];
+                            for (int m = 0; m<topicDetailModel.options.count; m++) {
+                                ExamDetailOptionsModel *opModel = topicDetailModel.options[m];
+                                if (opModel.is_selected) {
+                                    [topicPassArray addObject:opModel.examDetailOptionId];
+                                }
+                            }
+                            [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
+                            [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                        }
+                    } else if ([model.question_type isEqualToString:@"6"]) {
+                        // 材料题
+                        for (int l = 0; l<model.topics.count; l++) {
+                            ExamDetailModel *topicDetailModel = model.topics[l];
+                            [passDict setObject:topicDetailModel.examDetailId forKey:@"topic_id"];
+                            [passDict setObject:topicDetailModel.question_type forKey:@"question_type"];
+                            NSMutableArray *topicPassArray = [NSMutableArray new];
+                            
+                            if ([topicDetailModel.question_type isEqualToString:@"1"] || [topicDetailModel.question_type isEqualToString:@"2"] || [topicDetailModel.question_type isEqualToString:@"3"] || [topicDetailModel.question_type isEqualToString:@"4"]) {
+                                for (int m = 0; m<topicDetailModel.options.count; m++) {
+                                    ExamDetailOptionsModel *opModel = topicDetailModel.options[m];
+                                    if (opModel.is_selected) {
+                                        [topicPassArray addObject:opModel.examDetailOptionId];
+                                    }
+                                }
+                                [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
+                                [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                            } else if ([topicDetailModel.question_type isEqualToString:@"5"] || [topicDetailModel.question_type isEqualToString:@"8"]) {
+                                for (int l = 0; l<topicDetailModel.options.count; l++) {
+                                    ExamDetailOptionsModel *opModel = topicDetailModel.options[l];
+                                    if (opModel.userAnswerValue) {
+                                        [topicPassArray addObject:opModel.userAnswerValue];
+                                    } else {
+                                        [topicPassArray addObject:@""];
+                                    }
+                                }
+                                [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
+                                [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        [partDict setObject:[NSArray arrayWithArray:dataArray] forKey:@"data"];
+        [_answerManagerArray addObject:[NSDictionary dictionaryWithDictionary:partDict]];
+    }
     
+    NSLog(@" 组装后的答案以及传值数据 = %@",_answerManagerArray);
+    /**
     for (int i = 0; i<_examDetailArray.count; i++) {
         NSMutableDictionary *passDict = [NSMutableDictionary new];
         ExamDetailModel *model = _examDetailArray[i];
@@ -1488,7 +1597,7 @@
                 }
             }
             [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
-            [_examDetailArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+            [_answerManagerArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
         } else if ([model.question_type isEqualToString:@"5"] || [model.question_type isEqualToString:@"8"]) {
             NSMutableArray *passArray = [NSMutableArray new];
             for (int j = 0; j<model.options.count; j++) {
@@ -1500,13 +1609,14 @@
                 }
             }
             [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
-            [_examDetailArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+            [_answerManagerArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
         } else if ([model.question_type isEqualToString:@"7"]) {
             // 完形填空
         } else if ([model.question_type isEqualToString:@"6"]) {
             // 材料题
         }
     }
+    */
 }
 
 // MARK: - 计时器开始计时
