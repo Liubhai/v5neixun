@@ -661,4 +661,13 @@
     return [Net_Path fullPath:@"exam/topic" repalce:@"" byReplece:@""];
 }
 
+/** 考试获取资格 */
++ (NSString *)examGetByMoney {
+    return [Net_Path fullPath:@"order/exam" repalce:@"" byReplece:@""];
+}
+
+/** 考试订单生成 */
++ (NSString *)examOrderNet {
+    return [Net_Path fullPath:@"order/exam/paper" repalce:@"" byReplece:@""];
+}
 @end

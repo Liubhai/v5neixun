@@ -381,12 +381,20 @@
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
+    } else if ([_orderTypeString isEqualToString:@"exam"]) {
+        courseOrderInfoUrl = [Net_Path examOrderNet];
+    } else {
+        
     }
     
     NSMutableDictionary *pass = [[NSMutableDictionary alloc] init];
     if ([_orderTypeString isEqualToString:@"course"]) {
         [pass setObject:_orderId forKey:@"course_id"];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
+        [pass setObject:_orderId forKey:@"section_id"];
+    } else if ([_orderTypeString isEqualToString:@"exam"]) {
+        [pass setObject:_orderId forKey:@"section_id"];
+    } else {
         [pass setObject:_orderId forKey:@"section_id"];
     }
     
@@ -442,6 +450,8 @@
             } else {
                 _courseFaceImageView.image = Image(@"contents_icon_video");
             }
+        } else if ([_orderTypeString isEqualToString:@"exam"]) {
+            _courseFaceImageView.image = Image(@"contents_icon_test");
         }
         
         _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]];

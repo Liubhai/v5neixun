@@ -13,6 +13,7 @@
 #import "ZhuanXiangModel.h"
 #import "ZhuangXiangListCell.h"
 #import "ExamDetailViewController.h"
+#import "OrderViewController.h"
 
 @interface ZhuangXiangListTreeTableVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,ZhuangXiangListCellDelegate> {
     NSInteger page;
@@ -343,6 +344,10 @@
 - (void)userBuyOrExam:(ZhuangXiangListCell *)cell {
     if ([cell.treeItem.price floatValue]>0 && !cell.treeItem.has_bought) {
         // 购买
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"exam";
+        vc.orderId = cell.treeItem.course_id;
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 开始答题
         ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
@@ -363,6 +368,11 @@
     }
     if ([courseId floatValue]>0 && !pmodel.has_bought) {
         // 购买
+        // 购买
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"exam";
+        vc.orderId = cell.treeItem.course_id;
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 开始答题
         ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];

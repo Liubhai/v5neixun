@@ -492,6 +492,12 @@ struct NetWorkUrl {
 /** 公共获取试题 */
 + (NSString *)examPublicDetailNet;
 
+/** 考试获取资格 */
++ (NSString *)examGetByMoney;
+
+/** 考试订单生成 */
++ (NSString *)examOrderNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
