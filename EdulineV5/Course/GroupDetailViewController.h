@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GroupDetailViewController : BaseViewController
 
+@property (strong, nonatomic) NSString *activityType;
+
 @end
 
 NS_ASSUME_NONNULL_END

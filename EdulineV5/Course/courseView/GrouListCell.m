@@ -30,13 +30,13 @@
     _groupFace.layer.masksToBounds = YES;
     _groupFace.layer.cornerRadius = 20;
     _groupFace.image = DefaultImage;;
-    [self addSubview:_groupFace];
+    [self.contentView addSubview:_groupFace];
     
     _groupTitle = [[UILabel alloc] initWithFrame:CGRectMake(_groupFace.right + 5, _groupFace.top, 100, 15)];
     _groupTitle.font = SYSTEMFONT(13);
     _groupTitle.textColor = EdlineV5_Color.textFirstColor;
     _groupTitle.text = @"还差3人成团";
-    [self addSubview:_groupTitle];
+    [self.contentView addSubview:_groupTitle];
     
 //    _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_groupTitle.right + 10, 0, 100, GroupListCellHeight)];
 //    _priceLabel.textColor = RGBHex(0xFF0000);
@@ -48,7 +48,7 @@
     _timeCountDownLabel.textColor = EdlineV5_Color.textThirdColor;
     _timeCountDownLabel.text = @"剩余时间00:22:33结束";
     _timeCountDownLabel.font = SYSTEMFONT(10);
-    [self addSubview:_timeCountDownLabel];
+    [self.contentView addSubview:_timeCountDownLabel];
     
     _groupJoinButton = [[UIButton alloc] initWithFrame:CGRectMake(GroupListCellWidth - 15 - 60, 0, 60, 25)];
     [_groupJoinButton setBackgroundColor:EdlineV5_Color.courseActivityGroupColor];
@@ -59,7 +59,7 @@
     _groupJoinButton.titleLabel.font = SYSTEMFONT(13);
     _groupJoinButton.centerY = _groupFace.centerY;
     [_groupJoinButton addTarget:self action:@selector(joinGroupButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_groupJoinButton];
+    [self.contentView addSubview:_groupJoinButton];
 }
 
 - (void)setGroupListInfo:(NSDictionary *)groupInfo timeCount:(NSInteger)timeCount {

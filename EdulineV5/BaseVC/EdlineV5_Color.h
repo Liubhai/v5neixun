@@ -98,6 +98,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 课程活动-开团 文字颜色 */
 + (UIColor *)courseActivityGroupColor;
 
+/** 背景色 课程活动-开团  */
++ (UIColor *)courseActivityBackColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

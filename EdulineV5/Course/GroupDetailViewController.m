@@ -8,8 +8,9 @@
 
 #import "GroupDetailViewController.h"
 #import "V5_Constant.h"
+#import "KanjiaListCell.h"
 
-@interface GroupDetailViewController ()
+@interface GroupDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) UIImageView *topBackImage;
 
@@ -34,9 +35,24 @@
 @property (strong, nonatomic) UILabel *label2;
 @property (strong, nonatomic) UILabel *secondLabel;
 
+// 团购 (参团成员)
 @property (strong, nonatomic) UIScrollView *menberScrollView;
-
+// 团购操作按钮
 @property (strong, nonatomic) UIButton *doButton;
+
+// 砍价(砍价icon)
+@property (strong, nonatomic) UIImageView *kanjiaImage;
+@property (strong, nonatomic) UIView *progressDefault;
+@property (strong, nonatomic) UIView *progressCount;
+@property (strong, nonatomic) UILabel *kanjiaCountLabel;
+@property (strong, nonatomic) UIImageView *kanjiaTrianGleImage;
+@property (strong, nonatomic) UIButton *kanjiaButton;
+
+@property (strong, nonatomic) UIView *kanjiaListBack;
+@property (strong, nonatomic) UIImageView *kanjiaListIcon;
+@property (strong, nonatomic) UITableView *kanjiaTableView;
+
+
 
 @end
 
@@ -97,7 +113,7 @@
 
 // MARK: - 开团的具体详情UI
 - (void)groupDetailUI {
-    _groupBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _courseInfoBackView.bottom + 12, MainScreenWidth - 30, MainScreenHeight - (_courseInfoBackView.bottom + 12) - 36)];
+    _groupBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _courseInfoBackView.bottom + 12, MainScreenWidth - 30, MainScreenHeight - (_courseInfoBackView.bottom + 12) - 0)];
     _groupBackView.layer.masksToBounds = YES;
     _groupBackView.layer.cornerRadius = 4;
     _groupBackView.backgroundColor = [UIColor whiteColor];
@@ -173,6 +189,8 @@
     [_timeBackView setWidth:_secondLabel.right];
     _timeBackView.centerX = _groupBackView.width / 2.0;
     
+    // todo 这里要区分类型了 团购 砍价
+    
     _menberScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _groupResult.bottom + 16 + 14 + 36, _groupBackView.width, _groupBackView.height - 40 - 40 - 40)];
     [_groupBackView addSubview:_menberScrollView];
     
@@ -185,6 +203,94 @@
     _doButton.titleLabel.font = SYSTEMFONT(16);
     _doButton.centerX = _groupBackView.width / 2.0;
     [_groupBackView addSubview:_doButton];
+    
+    [self makeKanjiaUI];
+}
+
+// MARK: - 砍价UI
+- (void)makeKanjiaUI {
+    _progressDefault = [[UIView alloc] initWithFrame:CGRectMake(15, _timeBackView.bottom + 35, _groupBackView.width - 30, 14)];
+    _progressDefault.backgroundColor = EdlineV5_Color.courseActivityBackColor;
+    _progressDefault.layer.masksToBounds = YES;
+    _progressDefault.layer.cornerRadius = _progressDefault.height / 2.0;
+    _progressDefault.layer.borderWidth = 0.5;
+    _progressDefault.layer.borderColor = EdlineV5_Color.courseActivityGroupColor.CGColor;
+    [_groupBackView addSubview:_progressDefault];
+    
+    _progressCount = [[UIView alloc] initWithFrame:CGRectMake(15, _timeBackView.bottom + 35, (_groupBackView.width - 30) * 0.6, 14)];
+    _progressCount.backgroundColor = EdlineV5_Color.courseActivityGroupColor;
+    _progressCount.layer.masksToBounds = YES;
+    _progressCount.layer.cornerRadius = _progressCount.height / 2.0;
+    [_groupBackView addSubview:_progressCount];
+    
+    _kanjiaImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 28, 24)];
+    _kanjiaImage.image = Image(@"kanjia_details_coin");
+    _kanjiaImage.center = CGPointMake(15, _progressCount.centerY);
+    [_groupBackView addSubview:_kanjiaImage];
+    
+    NSString *kanjianCount = [NSString stringWithFormat:@"已砍%@32.89",IOSMoneyTitle];
+    _kanjiaCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _progressCount.bottom + 10, 0, 18)];
+    _kanjiaCountLabel.backgroundColor = EdlineV5_Color.courseActivityBackColor;
+    _kanjiaCountLabel.textAlignment = NSTextAlignmentCenter;
+    _kanjiaCountLabel.text = kanjianCount;
+    _kanjiaCountLabel.font = SYSTEMFONT(10);
+    _kanjiaCountLabel.textColor = EdlineV5_Color.courseActivityGroupColor;
+    _kanjiaCountLabel.layer.masksToBounds = YES;
+    _kanjiaCountLabel.layer.cornerRadius = 4;
+    CGFloat kanjianCountWidth = [_kanjiaCountLabel.text sizeWithFont:_kanjiaCountLabel.font].width + 10;
+    _kanjiaCountLabel.frame = CGRectMake(0, _progressCount.bottom + 10, kanjianCountWidth, 18);
+    _kanjiaCountLabel.centerX = _progressCount.right;
+    [_groupBackView addSubview:_kanjiaCountLabel];
+    
+    _kanjiaTrianGleImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 5, 3)];
+    _kanjiaTrianGleImage.center = CGPointMake(_kanjiaCountLabel.centerX, _kanjiaCountLabel.top - _kanjiaTrianGleImage.height / 2.0);
+    _kanjiaTrianGleImage.image = Image(@"kanjia_sanjiao_icon");
+    [_groupBackView addSubview:_kanjiaTrianGleImage];
+    
+    _kanjiaButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _kanjiaCountLabel.bottom + 25, 200, 40)];
+    _kanjiaButton.layer.masksToBounds = YES;
+    _kanjiaButton.layer.cornerRadius = 20;
+    [_kanjiaButton setBackgroundColor:EdlineV5_Color.courseActivityGroupColor];
+    [_kanjiaButton setTitle:@"邀请好友砍价" forState:0];
+    [_kanjiaButton setTitleColor:[UIColor whiteColor] forState:0];
+    _kanjiaButton.titleLabel.font = SYSTEMFONT(16);
+    _kanjiaButton.centerX = _groupBackView.width / 2.0;
+    [_groupBackView addSubview:_kanjiaButton];
+    
+    _kanjiaListBack = [[UIView alloc] initWithFrame:CGRectMake(15, _kanjiaButton.bottom + 28, _groupBackView.width - 30, _groupBackView.height - 34 - (_kanjiaButton.bottom + 28))];
+    _kanjiaListBack.backgroundColor = EdlineV5_Color.courseActivityBackColor;
+    _kanjiaListBack.layer.masksToBounds = YES;
+    _kanjiaListBack.layer.cornerRadius = 8;
+    [_groupBackView addSubview:_kanjiaListBack];
+    
+    _kanjiaListIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 19, 106, 16)];
+    _kanjiaListIcon.image = Image(@"kanjia_list");
+    _kanjiaListIcon.centerX = _kanjiaListBack.width / 2.0;
+    [_kanjiaListBack addSubview:_kanjiaListIcon];
+    
+    _kanjiaTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _kanjiaListIcon.bottom + 13, _kanjiaListBack.width, _kanjiaListBack.height - (_kanjiaListIcon.bottom + 13) - 8)];
+    _kanjiaTableView.backgroundColor = EdlineV5_Color.courseActivityBackColor;
+    _kanjiaTableView.delegate = self;
+    _kanjiaTableView.dataSource = self;
+    _kanjiaTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_kanjiaListBack addSubview:_kanjiaTableView];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellId = @"kanjiaCell";
+    KanjiaListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[KanjiaListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 64;
 }
 
 @end

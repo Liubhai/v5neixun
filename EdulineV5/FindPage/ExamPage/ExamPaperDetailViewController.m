@@ -1449,9 +1449,9 @@
         [passDict setObject:_currentExamPaperDetailModel.unique_code forKey:@"unique_code"];
         [passDict setObject:[NSArray arrayWithArray:_answerManagerArray] forKey:@"answer_data"];
         if ([_currentExamPaperDetailModel.total_time isEqualToString:@"0"]) {
-            [passDict setObject:@(remainTime) forKey:@"paper_id"];
+            [passDict setObject:@(remainTime) forKey:@"time_takes"];
         } else {
-            [passDict setObject:@([_currentExamPaperDetailModel.total_time integerValue] * 60 - remainTime) forKey:@"paper_id"];
+            [passDict setObject:@([_currentExamPaperDetailModel.total_time integerValue] * 60 - remainTime) forKey:@"time_takes"];
         }
         
         [Net_API requestPOSTWithURLStr:[Net_Path submitPaperNet] WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {
@@ -1579,6 +1579,7 @@
     }
     
     NSLog(@" 组装后的答案以及传值数据 = %@",_answerManagerArray);
+    [self putExamAnswer];
     /**
     for (int i = 0; i<_examDetailArray.count; i++) {
         NSMutableDictionary *passDict = [NSMutableDictionary new];

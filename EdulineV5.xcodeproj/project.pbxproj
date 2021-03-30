@@ -554,6 +554,7 @@
 		78D980B524BD48F5000DE0E4 /* MyTeachListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B424BD48F5000DE0E4 /* MyTeachListVC.m */; };
 		78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */; };
 		78D980BB24BDB737000DE0E4 /* NewClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */; };
+		78DC9FBE261312860025C962 /* KanjiaListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DC9FBD261312860025C962 /* KanjiaListCell.m */; };
 		78EA7F33254A9525004DF369 /* AgoraRtm.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EA7F32254A9524004DF369 /* AgoraRtm.m */; };
 		78ED079425CD3C8A00C30B26 /* ExamDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */; };
 		78ED079725CFC9CE00C30B26 /* ExamIDListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079625CFC9CE00C30B26 /* ExamIDListModel.m */; };
@@ -1660,6 +1661,8 @@
 		78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseModel.m; sourceTree = "<group>"; };
 		78D980B924BDB737000DE0E4 /* NewClassCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewClassCourseCell.h; sourceTree = "<group>"; };
 		78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseCell.m; sourceTree = "<group>"; };
+		78DC9FBC261312860025C962 /* KanjiaListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KanjiaListCell.h; sourceTree = "<group>"; };
+		78DC9FBD261312860025C962 /* KanjiaListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KanjiaListCell.m; sourceTree = "<group>"; };
 		78EA7F31254A9524004DF369 /* AgoraRtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		78EA7F32254A9524004DF369 /* AgoraRtm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
 		78ED079225CD3C8A00C30B26 /* ExamDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamDetailViewController.h; sourceTree = "<group>"; };
@@ -1813,6 +1816,8 @@
 				78AAFF0625FB0E79002CD197 /* CourseActivityView.m */,
 				78AAFF0B25FB3E23002CD197 /* GrouListCell.h */,
 				78AAFF0C25FB3E23002CD197 /* GrouListCell.m */,
+				78DC9FBC261312860025C962 /* KanjiaListCell.h */,
+				78DC9FBD261312860025C962 /* KanjiaListCell.m */,
 			);
 			path = courseView;
 			sourceTree = "<group>";
@@ -4377,6 +4382,7 @@
 				786CD55625EF64DF00172B88 /* EXamRecordModel.m in Sources */,
 				78A16C8B2452F7C100391430 /* TICReachability.m in Sources */,
 				7879572D240FA3840013F95F /* UIImage+ZLPhotoLib.m in Sources */,
+				78DC9FBE261312860025C962 /* KanjiaListCell.m in Sources */,
 				78531645244FF60C007E239E /* MenberRootVC.m in Sources */,
 				788E9584253FE24E0089251E /* NSArray+Copy.m in Sources */,
 				788E9585253FE24E0089251E /* AlertViewUtil.m in Sources */,

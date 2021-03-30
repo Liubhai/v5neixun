@@ -278,4 +278,9 @@
     return HEXCOLORV5(0xFF6B25);
 }
 
+/** 背景色 课程活动-开团  */
++ (UIColor *)courseActivityBackColor {
+    return HEXCOLORV5(0xFFECE3);
+}
+
 @end
