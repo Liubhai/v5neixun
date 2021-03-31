@@ -28,12 +28,15 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     _titleLabel.text = @"显示考试时间";
+    
+    _titleLabel.hidden = !_isPaper;
+    
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     
     [_leftButton setImage:Image(@"nav_sheetclose_icon") forState:0];
  
-    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - (MACRO_UI_UPHEIGHT + 44 + MACRO_UI_SAFEAREA))];
+    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - (_isPaper ? (44 + MACRO_UI_SAFEAREA) : 0))];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     _mainScrollView.showsVerticalScrollIndicator = NO;
     _mainScrollView.showsHorizontalScrollIndicator = NO;
@@ -43,14 +46,16 @@
     
     [self makeExamSheetUI];
     
-    [self makeBottomView];
+    if (_isPaper) {
+        [self makeBottomView];
+    }
 }
 
 - (void)makeTopUI {
     UILabel *examTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, MainScreenWidth - 30, 22)];
     examTitle.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];
     examTitle.textColor = EdlineV5_Color.textFirstColor;
-    examTitle.text = @"这里显示考试的标题";
+    examTitle.text = _sheetTitle;
     [_mainScrollView addSubview:examTitle];
     
     UIView *finishView = [[UIView alloc] initWithFrame:CGRectMake(15, examTitle.bottom + 14, 14, 14)];
@@ -165,6 +170,13 @@
                         btn.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = [UIColor whiteColor];
+                    }
+                    if (_currentIndexpath) {
+                        if (j == _currentIndexpath.section && i == _currentIndexpath.row) {
+                            btn.layer.borderColor = EdlineV5_Color.themeColor.CGColor;
+                            btn.layer.borderWidth = 1.0;
+                            btn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+                        }
                     }
                     if (btn.right > (MainScreenWidth - 15)) {
                         XX = 15.0;

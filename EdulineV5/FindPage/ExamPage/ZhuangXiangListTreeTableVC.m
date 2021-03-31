@@ -353,6 +353,7 @@
         ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
         vc.examIds = cell.treeItem.course_id;
         vc.examType = _examTypeId;
+        vc.examTitle = cell.treeItem.title;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -378,6 +379,7 @@
         ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
         vc.examIds = cell.treeItem.course_id;
         vc.examType = _examTypeId;
+        vc.examTitle = cell.treeItem.title;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

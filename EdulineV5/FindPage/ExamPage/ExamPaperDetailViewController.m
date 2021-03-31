@@ -1052,6 +1052,7 @@
         AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
         vc.isPaper = YES;
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
+        vc.currentIndexpath = currentExamIndexPath;
         vc.chooseOtherExam = ^(NSString * _Nonnull examId) {
             _previousExamBtn.enabled = NO;
             _nextExamBtn.enabled = NO;

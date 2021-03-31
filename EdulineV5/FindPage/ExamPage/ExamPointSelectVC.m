@@ -295,6 +295,7 @@
     ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
     vc.examIds = examIds;
     vc.examType = _examTypeId;
+    vc.examTitle = @"知识点练习";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -325,6 +326,9 @@
                     
                     [_firstArray removeAllObjects];
                     [_firstArray addObjectsFromArray:[NSArray arrayWithArray:[ExamPointModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"point_tree"]]]];
+                    for (int i = 0; i<_firstArray.count; i++) {
+                        ((ExamPointModel *)_firstArray[i]).isExpend = YES;
+                    }
                     if (SWNOTEmptyArr(_firstArray)) {
                         [self makeScrollViewSubView:_firstArray];
                     }
