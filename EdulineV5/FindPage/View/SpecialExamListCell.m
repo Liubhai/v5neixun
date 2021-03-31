@@ -124,11 +124,18 @@
 }
 
 - (void)setExamPointCell:(NSDictionary *)dict {
-    _examTitle.text = @"考试标题只能显示1排文字题只能显示1排文字";
+    
+    _examPoint.hidden = NO;
+    _lineView.hidden = NO;
+    _learnCount.hidden = NO;
+    _priceLabel.hidden = NO;
+    _gotImage.hidden = YES;
+    
+    _examTitle.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
     _examPoint.numberOfLines = 0;
     _examPoint.frame = CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 14);
-    _examPoint.text = @"知识点：知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介绍最多显示3排,知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介,知识点介绍最多显示3排，知识点介绍最多显示3排知识点介绍最多显示3排知识点介";
-    _learnCount.text = @"120人已练习";
+    _examPoint.text = [NSString stringWithFormat:@"知识点：%@",dict[@"title"]];
+    _learnCount.text = [NSString stringWithFormat:@"%@人已练习",dict[@"bought_count"]];
     
     [_examPoint sizeToFit];
     
@@ -138,7 +145,7 @@
         _examPoint.frame = CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 11*3 + 7.5*2);
     }
     
-    _examCount.text = @"13套";
+    _examCount.text = [NSString stringWithFormat:@"%@套",dict[@"paper_count"]];
     CGFloat examCountWidth = [_examCount.text sizeWithFont:_examCount.font].width + 4;
     _examCount.frame = CGRectMake(12, _examPoint.bottom + 12, examCountWidth, 16);
     
@@ -147,8 +154,36 @@
     _lineView.centerY = _examCount.centerY;
     _learnCount.centerY = _examCount.centerY;
     
+    _priceLabel.frame = CGRectMake(_whiteBack.width - (100 + 14 + 82 + 12), 0, 100, 21);
+    NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"price"]];
+    CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
+    _priceLabel.frame = CGRectMake(_whiteBack.width - (priceWidth + 14 + 82 + 12), 0, priceWidth, 21);
+    
     _priceLabel.centerY = _examCount.centerY;
     _getOrExamBtn.centerY = _examCount.centerY;
+    
+    if ([priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
+        _priceLabel.hidden = YES;
+        _gotImage.hidden = NO;
+        _gotImage.image = Image(@"exam_free_icon");
+        _examTitle.frame = CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20);
+        [_getOrExamBtn setTitle:@"开始答题" forState:0];
+    } else {
+        // 不是免费的
+        _priceLabel.hidden = NO;
+        if ([[NSString stringWithFormat:@"%@",dict[@"has_bought"]] boolValue]) {
+            // 已购买
+            _gotImage.hidden = NO;
+            _gotImage.image = Image(@"exam_yigouamai_icon");
+            _examTitle.frame = CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20);
+            [_getOrExamBtn setTitle:@"开始答题" forState:0];
+        } else {
+            _gotImage.hidden = YES;
+            _examTitle.frame = CGRectMake(12, 14, _whiteBack.width - 12, 20);
+            [_getOrExamBtn setTitle:@"购买" forState:0];
+        }
+    }
     
     [_whiteBack setHeight:_examCount.top + 36];
     
