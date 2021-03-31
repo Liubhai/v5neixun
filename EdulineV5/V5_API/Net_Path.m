@@ -670,4 +670,15 @@
 + (NSString *)examOrderNet {
     return [Net_Path fullPath:@"order/exam/paper" repalce:@"" byReplece:@""];
 }
+
+/** 套卷搜索接口 */
++ (NSString *)setOfVolumeSearchNet {
+    return [Net_Path fullPath:@"exam/rollup/search" repalce:@"" byReplece:@""];
+}
+
+/** 套卷列表接口 */
++ (NSString *)setOfVolumeListNet {
+    return [Net_Path fullPath:@"exam/rollup/list" repalce:@"" byReplece:@""];
+}
+
 @end

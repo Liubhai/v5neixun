@@ -269,6 +269,7 @@
     [_kanjiaListBack addSubview:_kanjiaListIcon];
     
     _kanjiaTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _kanjiaListIcon.bottom + 13, _kanjiaListBack.width, _kanjiaListBack.height - (_kanjiaListIcon.bottom + 13) - 8)];
+    _kanjiaTableView.showsVerticalScrollIndicator = NO;
     _kanjiaTableView.backgroundColor = EdlineV5_Color.courseActivityBackColor;
     _kanjiaTableView.delegate = self;
     _kanjiaTableView.dataSource = self;

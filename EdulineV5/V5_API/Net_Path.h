@@ -498,6 +498,12 @@ struct NetWorkUrl {
 /** 考试订单生成 */
 + (NSString *)examOrderNet;
 
+/** 套卷搜索接口 */
++ (NSString *)setOfVolumeSearchNet;
+
+/** 套卷列表接口 */
++ (NSString *)setOfVolumeListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

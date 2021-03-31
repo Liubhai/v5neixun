@@ -66,12 +66,12 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
-//    _tableView.mj_footer.hidden = YES;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -106,14 +106,17 @@
 - (void)getFirstList {
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_module_id)) {
+        [param setObject:_module_id forKey:@"module_id"];
+    }
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
-//    if (SWNOTEmptyStr(categoryString)) {
-//        [param setObject:categoryString forKey:@"category"];
-//    }
+    if (SWNOTEmptyStr(_institutionSearch.text)) {
+        [param setObject:_institutionSearch.text forKey:@"title"];
+    }
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path setOfVolumeSearchNet] : [Net_Path setOfVolumeListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -141,13 +144,16 @@
 - (void)getMoreList {
     page = page + 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_module_id)) {
+        [param setObject:_module_id forKey:@"module_id"];
+    }
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
-//    if (SWNOTEmptyStr(categoryString)) {
-//        [param setObject:categoryString forKey:@"category"];
-//    }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    if (SWNOTEmptyStr(_institutionSearch.text)) {
+        [param setObject:_institutionSearch.text forKey:@"title"];
+    }
+    [Net_API requestGETSuperAPIWithURLStr:SWNOTEmptyStr(_institutionSearch.text) ? [Net_Path setOfVolumeSearchNet] : [Net_Path setOfVolumeListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }
@@ -172,6 +178,7 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if ([string isEqualToString:@"\n"]) {
         [_institutionSearch resignFirstResponder];
+        [_tableView.mj_header beginRefreshing];
         return NO;
     }
     return YES;
