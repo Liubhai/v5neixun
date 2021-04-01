@@ -1305,6 +1305,7 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     // 改变按钮状态 并且改变数据源
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMyCollectionList" object:nil];
                     _examCollectBtn.selected = !model.collected;
                     model.collected = !model.collected;
                     for (int i = 0; i<_examDetailArray.count; i++) {

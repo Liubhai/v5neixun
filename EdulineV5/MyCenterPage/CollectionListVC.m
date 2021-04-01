@@ -327,6 +327,10 @@
             [_selectedArray addObject:courseModel];
         }
     }
+    if (_selectedArray.count == 0) {
+        allSeleted = NO;
+        _selectAllButton.selected = NO;
+    }
     [_cancelCollectButton setTitle:[NSString stringWithFormat:@"取消收藏(%@)",@(_selectedArray.count)] forState:0];
 }
 

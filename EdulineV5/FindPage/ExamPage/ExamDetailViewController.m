@@ -585,6 +585,7 @@
             getUrl = [Net_Path specialExamIdListNet];
             [param setObject:_examIds forKey:@"special_id"];
         }
+        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -606,6 +607,10 @@
                             currentExamRow = 1;
                             [self getExamDetailForExamIds:passfinalDict.topic_id];
                         }
+                    } else {
+                        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_examIdListArray.count isLoading:NO tableViewShowHeight:_tableView.height];
+                        _bottomView.hidden = YES;
+                        [_tableView reloadData];
                     }
                 }
             }
@@ -1191,6 +1196,7 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     // 改变按钮状态 并且改变数据源
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMyCollectionList" object:nil];
                     _examCollectBtn.selected = !model.collected;
                     model.collected = !model.collected;
                     for (int i = 0; i<_examDetailArray.count; i++) {

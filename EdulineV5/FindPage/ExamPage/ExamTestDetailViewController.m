@@ -1015,6 +1015,7 @@
             
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMyCollectionList" object:nil];
                     // 改变按钮状态 并且改变数据源
                     _examCollectBtn.selected = !model.collected;
                     model.collected = !model.collected;
@@ -1083,6 +1084,14 @@
     } enError:^(NSError * _Nonnull error) {
         
     }];
+}
+
+// MARK: - 返回的时候直接刷新收藏列表数据
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMyCollectionList" object:nil];
+    }
 }
 
 @end
