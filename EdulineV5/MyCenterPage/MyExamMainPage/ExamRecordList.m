@@ -29,6 +29,7 @@
 @property (strong, nonatomic) UIView *bottomView;
 @property (strong, nonatomic) UIButton *selectAllButton;
 @property (strong, nonatomic) UIButton *cancelCollectButton;
+@property (strong, nonatomic) UIButton *orderTestButton;
 
 @end
 
@@ -43,8 +44,27 @@
     page = 1;
     [self makeTableView];
     [self makeBottomView];
+    if ([_examListType isEqualToString:@"error"]) {
+        [self makeOrderTestButton];
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFirstList) name:@"reloadMyCollectionList" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showManagerBottomView:) name:@"showManagerBottomView" object:nil];
+}
+
+- (void)makeOrderTestButton {
+    _orderTestButton = [[UIButton alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_SAFEAREA - 36 - 40, 150, 40)];
+    _orderTestButton.centerX = MainScreenWidth / 2.0;
+    _orderTestButton.backgroundColor = EdlineV5_Color.themeColor;
+    _orderTestButton.layer.masksToBounds = YES;
+    _orderTestButton.layer.cornerRadius = _orderTestButton.height / 2.0;
+    [_orderTestButton setImage:Image(@"shunxu_icon") forState:0];
+    [_orderTestButton setTitle:@"顺序重练" forState:0];
+    [_orderTestButton setTitleColor:[UIColor whiteColor] forState:0];
+    CGFloat space = 7.5;
+    _orderTestButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+    _orderTestButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+    [_orderTestButton addTarget:self action:@selector(orderTestButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_orderTestButton];
 }
 
 - (void)makeBottomView {
@@ -316,6 +336,7 @@
     [_cancelCollectButton setTitle:[NSString stringWithFormat:@"取消收藏(%@)",@(_selectedArray.count)] forState:0];
 }
 
+// MARK: - 管理收藏列表通知
 - (void)showManagerBottomView:(NSNotification *)notice {
     if ([_examListType isEqualToString:@"collect"]) {
         if ([[notice.userInfo objectForKey:@"show"] boolValue]) {
@@ -326,6 +347,18 @@
             _tableView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
         }
         [_tableView reloadData];
+    }
+}
+
+// MARK: - 顺序重练点击事件
+- (void)orderTestButtonClick {
+    if (SWNOTEmptyArr(_dataSource)) {
+        ExamCollectCellModel *model = _dataSource[0];
+        ExamTestDetailViewController *vc = [[ExamTestDetailViewController alloc] init];
+        vc.examType = @"error";
+        vc.examIds = model.topic_id;
+        vc.isOrderTest = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

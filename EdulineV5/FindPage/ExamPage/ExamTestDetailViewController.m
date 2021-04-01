@@ -73,7 +73,7 @@
     [self.view addSubview:_rightOrErrorIcon];
     _rightOrErrorIcon.hidden = YES;
     
-    [self makeBottomView];
+//    [self makeBottomView];
     
 //    [self getData];
     [self getExamDetailForExamIds:_examIds];
@@ -92,7 +92,7 @@
     [_titleImage addSubview:_examCollectBtn];
 }
 
-- (void)makeBottomView {
+- (void)makeBottomView:(ExamDetailModel *)model {
     if ([_examType isEqualToString:@"collect"]) {
         return;
     }
@@ -116,31 +116,34 @@
     [_bottomView addSubview:_previousExamBtn];
     
     _nextExamBtn = [[UIButton alloc] initWithFrame:CGRectMake(_previousExamBtn.right, 0, MainScreenWidth / 2.0, 44)];
-    [_nextExamBtn setTitle:@"下一题" forState:0];
-    [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
     [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
     _nextExamBtn.titleLabel.font = SYSTEMFONT(16);
     [_nextExamBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    // 1. 得到imageView和titleLabel的宽、高
-    CGFloat imageWith = _nextExamBtn.imageView.frame.size.width;
-    CGFloat imageHeight = _nextExamBtn.imageView.frame.size.height;
-    CGFloat labelWidth = 0.0;
-    CGFloat labelHeight = 0.0;
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
-        // 由于iOS8中titleLabel的size为0，用下面的这种设置
-        labelWidth = _nextExamBtn.titleLabel.intrinsicContentSize.width;
-        labelHeight = _nextExamBtn.titleLabel.intrinsicContentSize.height;
-    } else {
-        labelWidth = _nextExamBtn.titleLabel.frame.size.width;
-        labelHeight = _nextExamBtn.titleLabel.frame.size.height;
-    }
-    CGFloat space = 7.5;
+    if (_isOrderTest && SWNOTEmptyStr(model.next_topic_id)) {
+        [_nextExamBtn setTitle:@"下一题" forState:0];
+        [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+        // 1. 得到imageView和titleLabel的宽、高
+        CGFloat imageWith = _nextExamBtn.imageView.frame.size.width;
+        CGFloat imageHeight = _nextExamBtn.imageView.frame.size.height;
+        CGFloat labelWidth = 0.0;
+        CGFloat labelHeight = 0.0;
+        if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+            // 由于iOS8中titleLabel的size为0，用下面的这种设置
+            labelWidth = _nextExamBtn.titleLabel.intrinsicContentSize.width;
+            labelHeight = _nextExamBtn.titleLabel.intrinsicContentSize.height;
+        } else {
+            labelWidth = _nextExamBtn.titleLabel.frame.size.width;
+            labelHeight = _nextExamBtn.titleLabel.frame.size.height;
+        }
+        CGFloat space = 7.5;
 
-    _nextExamBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+space/2.0, 0, -labelWidth-space/2.0);
-    _nextExamBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith-space/2.0, 0, imageWith+space/2.0);
+        _nextExamBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+space/2.0, 0, -labelWidth-space/2.0);
+        _nextExamBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith-space/2.0, 0, imageWith+space/2.0);
+    } else {
+        [_nextExamBtn setTitle:@"提交" forState:0];
+    }
     [_bottomView addSubview:_nextExamBtn];
-    
     _nextExamBtn.hidden = NO;
     _previousExamBtn.hidden = YES;
     [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
@@ -561,6 +564,7 @@
                     if (SWNOTEmptyArr(passArray)) {
                         [_examDetailArray addObject:passArray[0]];
                         [self makeUIByExamDetailModel:passArray[0]];
+                        [self makeBottomView:passArray[0]];
                     }
                 }
             }
@@ -659,6 +663,13 @@
                 [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:NO];
                 _rightOrErrorIcon.hidden = NO;
                 _rightOrErrorIcon.image = Image(@"exam_fault_icon");
+                if (!_isOrderTest) {
+                    _nextExamBtn.hidden = YES;
+                } else {
+                    if (!SWNOTEmptyStr(model.next_topic_id)) {
+                        _nextExamBtn.hidden = YES;
+                    }
+                }
                 return;
             } else {
                 // 回答正确了 也需要在这里设置已作答
@@ -666,172 +677,39 @@
                 model.is_expand = YES;
                 model.is_right = YES;
                 [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:YES];
+                if (!_isOrderTest || !SWNOTEmptyStr(model.next_topic_id)) {
+                    _nextExamBtn.hidden = YES;
+                    [_tableView reloadData];
+                    _previousExamBtn.enabled = YES;
+                    _nextExamBtn.enabled = YES;
+                    _rightOrErrorIcon.hidden = NO;
+                    _rightOrErrorIcon.image = Image(@"exam_correct_icon");
+                    return;
+                }
             }
         } else {
             if ([_examType isEqualToString:@"collect"]) {
                 _rightOrErrorIcon.hidden = YES;
             } else {
-                _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
+//                _rightOrErrorIcon.hidden = NO;
+//                _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
             }
         }
         
-        // todo 如果是错题重练 这里需要请求下一题的信息; 如果是单个题重练 本按钮直接是提交
+        if (!SWNOTEmptyStr(model.next_topic_id)) {
+            _rightOrErrorIcon.hidden = NO;
+            _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
+            _nextExamBtn.hidden = YES;
+        }
         
-        // 同步更新答题卡模型数组的已作答
-//        if (SWNOTEmptyArr(_examIdListArray)) {
-//            ExamIDListModel *currentExamIdListModel = _examIdListArray[currentExamIndexPath.section];
-//            ExamIDModel *idModel = currentExamIdListModel.child[currentExamIndexPath.row];
-//            idModel.has_answered = YES;
-//        }
         
-//        if (SWNOTEmptyArr(_examIdListArray)) {
-//            ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
-//            if (idListModel.child.count > (currentExamIndexPath.row + 1)) {
-//                currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row + 1 inSection:currentExamIndexPath.section];
-//            } else {
-//                if (_examIdListArray.count > (currentExamIndexPath.section + 1)) {
-//                    currentExamIndexPath = [NSIndexPath indexPathForRow:0 inSection:currentExamIndexPath.section + 1];
-//                } else {
-//                    // 最后一道题点击 其实是只有"上一题"按钮了 这时候就是显示上一题干的最后一个 也不对 这时候这个按钮都被隐藏了
-//                    // 最后一题了(改变当前底部按钮的样式  只显示"上一题"按钮)
-//                    // 好像不对  这是倒数第二道题点击时候的逻辑
-//                }
-//            }
-//            ExamIDListModel *idListModelPass = _examIdListArray[currentExamIndexPath.section];
-//            // 这时候判断 并且更改底部按钮状态
-//            if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModelPass.child.count - 1)) {
-//                _nextExamBtn.hidden = YES;
-//                _previousExamBtn.hidden = NO;
-//                [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
-//                [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
-//                [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
-//            } else {
-//                _nextExamBtn.hidden = NO;
-//                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
-//                _previousExamBtn.hidden = NO;
-//                [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
-//                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
-//                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-//            }
-//            // 要请求数据了
-//            if (SWNOTEmptyArr(_examIdListArray)) {
-//                ExamIDListModel *passDict = (ExamIDListModel *)_examIdListArray[currentExamIndexPath.section];
-//                NSArray *passArray = [NSArray arrayWithArray:passDict.child];
-//                if (SWNOTEmptyArr(passArray)) {
-//                    ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
-//                    currentExamId = [NSString stringWithFormat:@"%@",passfinalDict.topic_id];
-//                    currentExamRow = currentExamRow + 1;
-//                    [self getExamDetailForExamIds:passfinalDict.topic_id];
-//                } else {
-//                    _previousExamBtn.enabled = YES;
-//                    _nextExamBtn.enabled = YES;
-//                }
-//            } else {
-//                _previousExamBtn.enabled = YES;
-//                _nextExamBtn.enabled = YES;
-//            }
-//        } else {
-//            _previousExamBtn.enabled = YES;
-//            _nextExamBtn.enabled = YES;
-//        }
+        if (_isOrderTest && SWNOTEmptyStr(model.next_topic_id)) {
+            [self getExamDetailForExamIds:model.next_topic_id];
+            _previousExamBtn.enabled = YES;
+             _nextExamBtn.enabled = YES;
+        }
     } else if (sender == _previousExamBtn) {
-//        _previousExamBtn.enabled = NO;
-//        _nextExamBtn.enabled = NO;
-//        if (SWNOTEmptyArr(_examIdListArray)) {
-//            ExamIDListModel *idListModel = _examIdListArray[currentExamIndexPath.section];
-//            if (currentExamIndexPath.row>0) {
-//                currentExamIndexPath = [NSIndexPath indexPathForRow:currentExamIndexPath.row - 1 inSection:currentExamIndexPath.section];
-//            } else {
-//                if (currentExamIndexPath.section>0) {
-//                    ExamIDListModel *preModel = _examIdListArray[currentExamIndexPath.section-1];
-//                    currentExamIndexPath = [NSIndexPath indexPathForRow:preModel.child.count - 1 inSection:currentExamIndexPath.section-1];
-//                }
-//            }
-//            // 这时候判断 并且更改底部按钮状态
-//            if (currentExamIndexPath.section == 0 && currentExamIndexPath.row == 0) {
-//                _nextExamBtn.hidden = NO;
-//                _previousExamBtn.hidden = YES;
-//                [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
-//            } else {
-//                _nextExamBtn.hidden = NO;
-//                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
-//                _previousExamBtn.hidden = NO;
-//                [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
-//                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
-//                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-//
-//            }
-//            // 要请求数据了
-//            if (SWNOTEmptyArr(_examIdListArray)) {
-//                ExamIDListModel *passDict = (ExamIDListModel *)_examIdListArray[currentExamIndexPath.section];
-//                NSArray *passArray = [NSArray arrayWithArray:passDict.child];
-//                if (SWNOTEmptyArr(passArray)) {
-//                    ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
-//                    currentExamId = [NSString stringWithFormat:@"%@",passfinalDict.topic_id];
-//                    currentExamRow = currentExamRow - 1;
-//                    [self getExamDetailForExamIds:passfinalDict.topic_id];
-//                } else {
-//                    _previousExamBtn.enabled = YES;
-//                    _nextExamBtn.enabled = YES;
-//                }
-//            } else {
-//                _previousExamBtn.enabled = YES;
-//                _nextExamBtn.enabled = YES;
-//            }
-//        } else {
-//            _previousExamBtn.enabled = YES;
-//            _nextExamBtn.enabled = YES;
-//        }
     } else if (sender == _examSheetBtn) {
-//        // 跳转到答题卡页面
-//        AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
-//        vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
-//        vc.chooseOtherExam = ^(NSString * _Nonnull examId) {
-//            _previousExamBtn.enabled = NO;
-//            _nextExamBtn.enabled = NO;
-//            currentExamId = [NSString stringWithFormat:@"%@",examId];
-//            NSInteger indexCount = 0;
-//          // 获取当前点击的试题的ID 请求接口 刷新页面  处理下标 当前试题的排序号 并且改变底部按钮的状态
-//            BOOL is_find = NO;
-//            for (int i = 0; i < _examIdListArray.count; i ++) {
-//                if (is_find) {
-//                    break;
-//                }
-//                ExamIDListModel *idListModel = _examIdListArray[i];
-//                for (int j = 0; j<idListModel.child.count; j++) {
-//                    indexCount = indexCount + 1;
-//                    if ([((ExamIDModel *)(idListModel.child[j])).topic_id isEqualToString:examId]) {
-//                        is_find = YES;
-//                        currentExamIndexPath = [NSIndexPath indexPathForRow:j inSection:i];
-//                        // 这时候判断 并且更改底部按钮状态
-//                        if (currentExamIndexPath.section == 0 && currentExamIndexPath.row == 0) {
-//                            _nextExamBtn.hidden = NO;
-//                            _previousExamBtn.hidden = YES;
-//                            [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
-//                        } else if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
-//                            _nextExamBtn.hidden = YES;
-//                            _previousExamBtn.hidden = NO;
-//                            [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
-//                            [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
-//                            [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
-//                        } else {
-//                            _nextExamBtn.hidden = NO;
-//                            [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
-//                            _previousExamBtn.hidden = NO;
-//                            [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
-//                            [_previousExamBtn setImage:Image(@"exam_last") forState:0];
-//                            [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-//
-//                        }
-//                        break;
-//                    }
-//                }
-//            }
-//            currentExamRow = indexCount;
-//
-//            [self getExamDetailForExamIds:examId];
-//        };
-//        [self.navigationController pushViewController:vc animated:YES];
     } else if (sender == _examCollectBtn) {
         // 收藏
         _examCollectBtn.enabled = NO;

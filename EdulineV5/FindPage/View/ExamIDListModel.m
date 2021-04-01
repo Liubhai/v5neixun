@@ -69,7 +69,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"title"] || [property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"id"] || [property.name isEqualToString:@"analyze"] || [property.name isEqualToString:@"topic_level"] ) {
+    if ([property.name isEqualToString:@"title"] || [property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"id"] || [property.name isEqualToString:@"analyze"] || [property.name isEqualToString:@"topic_level"] || [property.name isEqualToString:@"next_topic_id"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
