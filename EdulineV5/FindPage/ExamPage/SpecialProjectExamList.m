@@ -15,6 +15,7 @@
 #import "CourseTypeVC.h"
 #import "ExamDetailViewController.h"
 #import "ExamPaperDetailViewController.h"
+#import "OrderViewController.h"
 
 @interface SpecialProjectExamList ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TeacherCategoryVCDelegate, CourseTypeVCDelegate> {
     NSInteger page;
@@ -109,16 +110,18 @@
 }
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
-    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-    vc.examType = _examTypeId;
-    vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
-    [self.navigationController pushViewController:vc animated:YES];
-//    if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
-//        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-//        vc.examType = _examTypeId;
-//        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
-//        [self.navigationController pushViewController:vc animated:YES];
-//    }
+    if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
+        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+        vc.examType = _examTypeId;
+        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        // 购买
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"exam";
+        vc.orderId = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)getFirstList {

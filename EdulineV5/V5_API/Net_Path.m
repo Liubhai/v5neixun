@@ -681,4 +681,9 @@
     return [Net_Path fullPath:@"exam/rollup/list" repalce:@"" byReplece:@""];
 }
 
+/** 套卷详情接口 */
++ (NSString *)volumePaperDetailNet {
+    return [Net_Path fullPath:@"exam/rollup/detail" repalce:@"" byReplece:@""];
+}
+
 @end

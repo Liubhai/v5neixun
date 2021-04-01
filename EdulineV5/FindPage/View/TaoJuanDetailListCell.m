@@ -26,30 +26,29 @@
     _titleLabel.font = SYSTEMFONT(15);
     [self.contentView addSubview:_titleLabel];
     
-    _learnProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(_titleLabel.left, 80 - 23, 60, 6)];
-    _learnProgress.layer.masksToBounds = YES;
-    _learnProgress.layer.cornerRadius = 3;
-    _learnProgress.progress = 0.5;
-    //设置它的风格，为默认的
-    _learnProgress.trackTintColor= HEXCOLOR(0xF1F1F1);
-    //设置轨道的颜色
-    _learnProgress.progressTintColor= EdlineV5_Color.themeColor;
-    [self.contentView addSubview:_learnProgress];
+//    _learnProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(_titleLabel.left, 80 - 23, 60, 6)];
+//    _learnProgress.layer.masksToBounds = YES;
+//    _learnProgress.layer.cornerRadius = 3;
+//    _learnProgress.progress = 0.5;
+//    //设置它的风格，为默认的
+//    _learnProgress.trackTintColor= HEXCOLOR(0xF1F1F1);
+//    //设置轨道的颜色
+//    _learnProgress.progressTintColor= EdlineV5_Color.themeColor;
+//    [self.contentView addSubview:_learnProgress];
+//
+//    _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(_learnProgress.right + 5, 0, 100, 14)];
+//    _progressLabel.font = SYSTEMFONT(11);
+//    _progressLabel.textColor = EdlineV5_Color.textThirdColor;
+//    [self.contentView addSubview:_progressLabel];
+//    _progressLabel.centerY = _learnProgress.centerY;
     
-    _progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(_learnProgress.right + 5, 0, 100, 14)];
-    _progressLabel.font = SYSTEMFONT(11);
-    _progressLabel.textColor = EdlineV5_Color.textThirdColor;
-    [self.contentView addSubview:_progressLabel];
-    _progressLabel.centerY = _learnProgress.centerY;
-    
-    _learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_progressLabel.right + 25, 0, 100, 14)];
+    _learnCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _titleLabel.bottom + 18, 100, 14)];//_progressLabel.right + 25
     _learnCountLabel.font = SYSTEMFONT(11);
     _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
     [self.contentView addSubview:_learnCountLabel];
-    _learnCountLabel.centerY = _learnProgress.centerY;
     
     _examDoButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 22, 0, 22, 22)];
-    _examDoButton.centerY = _learnProgress.centerY;
+    _examDoButton.centerY = _learnCountLabel.centerY;
     [_examDoButton setImage:Image(@"exam_icon_disabled") forState:0];
     [self.contentView addSubview:_examDoButton];
     
@@ -60,12 +59,12 @@
 }
 
 - (void)setTaojuanDetailListCellInfo:(NSDictionary *)dict {
-    _titleLabel.text = @"子专项名称-高中一年级数学函数重点题型";
-    _progressLabel.text = @"12/30";
-    CGFloat progressWidth = [_progressLabel.text sizeWithFont:_progressLabel.font].width + 2;
-    [_progressLabel setWidth:progressWidth];
-    [_learnCountLabel setLeft:_progressLabel.right + 25];
-    _learnCountLabel.text = @"49人练习";
+    _titleLabel.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
+//    _progressLabel.text = @"12/30";
+//    CGFloat progressWidth = [_progressLabel.text sizeWithFont:_progressLabel.font].width + 2;
+//    [_progressLabel setWidth:progressWidth];
+//    [_learnCountLabel setLeft:_progressLabel.right + 25];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人练习",dict[@"bought_num"]];
 }
 
 - (void)awakeFromNib {

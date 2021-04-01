@@ -341,6 +341,8 @@
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
+    } else if ([_orderTypeString isEqualToString:@"exam"]) {
+        courseOrderInfoUrl = [Net_Path examOrderNet];
     }
     
     
@@ -350,6 +352,8 @@
             [param setObject:_orderId forKey:@"course_id"];
         } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
             [param setObject:_orderId forKey:@"section_id"];
+        } else if ([_orderTypeString isEqualToString:@"exam"]) {
+            [param setObject:_orderId forKey:@"paper_id"];
         }
     }
     if (_couponModel) {
@@ -393,7 +397,7 @@
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         [pass setObject:_orderId forKey:@"section_id"];
     } else if ([_orderTypeString isEqualToString:@"exam"]) {
-        [pass setObject:_orderId forKey:@"section_id"];
+        [pass setObject:_orderId forKey:@"paper_id"];
     } else {
         [pass setObject:_orderId forKey:@"section_id"];
     }

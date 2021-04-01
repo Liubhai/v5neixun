@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TaojuanDetailListViewController : BaseViewController
 
+@property (strong, nonatomic) NSString *rollup_id;
+
 @end
 
 NS_ASSUME_NONNULL_END

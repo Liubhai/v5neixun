@@ -504,6 +504,9 @@ struct NetWorkUrl {
 /** 套卷列表接口 */
 + (NSString *)setOfVolumeListNet;
 
+/** 套卷详情接口 */
++ (NSString *)volumePaperDetailNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

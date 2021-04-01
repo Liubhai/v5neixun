@@ -96,6 +96,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     TaojuanDetailListViewController *vc = [[TaojuanDetailListViewController alloc] init];
+    vc.rollup_id = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

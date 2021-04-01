@@ -19,6 +19,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
+@property (strong, nonatomic) NSMutableDictionary *detailInfo;
 
 @end
 
@@ -32,6 +33,7 @@
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     
     _dataSource = [NSMutableArray new];
+    _detailInfo = [NSMutableDictionary new];
     page = 1;
     [self makeTableView];
 }
@@ -43,12 +45,12 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
 //    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
 //    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -57,9 +59,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 1;
+        return SWNOTEmptyDictionary(_detailInfo) ? 1 : 0;
     }
-    return 3;//_dataSource.count;
+    return _dataSource.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -79,7 +81,7 @@
         if (!cell) {
             cell = [[SpecialExamListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell setExamPointDetailCell:@{}];
+        [cell setExamPointDetailCell:_detailInfo];
         cell.delegate = self;
         return cell;
     }
@@ -88,7 +90,7 @@
     if (!cell) {
         cell = [[TaoJuanDetailListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setTaojuanDetailListCellInfo:@{}];
+    [cell setTaojuanDetailListCellInfo:_dataSource[indexPath.row]];
     return cell;
 }
 
@@ -123,28 +125,34 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-//    if (SWNOTEmptyStr(categoryString)) {
-//        [param setObject:categoryString forKey:@"category"];
-//    }
+    [param setObject:_rollup_id forKey:@"rollup_id"];
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path institutionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path volumePaperDetailNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _detailInfo = [NSMutableDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                if (_dataSource.count<10) {
-                    _tableView.mj_footer.hidden = YES;
-                } else {
-                    _tableView.mj_footer.hidden = NO;
-                    [_tableView.mj_footer setState:MJRefreshStateIdle];
-                }
+                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"rollup_paper"]];
+//                if (_dataSource.count<10) {
+//                    _tableView.mj_footer.hidden = YES;
+//                } else {
+//                    _tableView.mj_footer.hidden = NO;
+//                    [_tableView.mj_footer setState:MJRefreshStateIdle];
+//                }
+                [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
+                [_tableView reloadData];
+            } else {
+                _detailInfo = nil;
                 [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
                 [_tableView reloadData];
             }
+        } else {
+            _detailInfo = nil;
+            [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
+            [_tableView reloadData];
         }
     } enError:^(NSError * _Nonnull error) {
         if (_tableView.mj_header.refreshing) {
