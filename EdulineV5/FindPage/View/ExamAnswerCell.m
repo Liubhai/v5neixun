@@ -36,7 +36,7 @@
     [self.contentView addSubview:_mutSelectButton];
     _mutSelectButton.hidden = YES;
     
-    _keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(_selectButton.right, 12 + 7, 42, 20)];
+    _keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(_selectButton.right, 12 + 7, 25, 20)];
     _keyTitle.font = SYSTEMFONT(15);
     _keyTitle.textColor = EdlineV5_Color.textFirstColor;
     _keyTitle.textAlignment = NSTextAlignmentRight;

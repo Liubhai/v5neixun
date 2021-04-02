@@ -74,11 +74,11 @@
     _selectedIconBtn.hidden = showSelect;
     
     if ([model.question_type isEqualToString:@"4"]) {
-        _titleLabel.text = [NSString stringWithFormat:@"      %@",model.topic_title];
+        _titleLabel.text = [NSString stringWithFormat:@"      %@",[self filterHTML:model.topic_title]];
     } else if ([model.question_type isEqualToString:@"7"]) {
-        _titleLabel.text = [NSString stringWithFormat:@"      %@",model.topic_title];
+        _titleLabel.text = [NSString stringWithFormat:@"      %@",[self filterHTML:model.topic_title]];
     } else {
-        _titleLabel.text = [NSString stringWithFormat:@"     %@",model.topic_title];
+        _titleLabel.text = [NSString stringWithFormat:@"     %@",[self filterHTML:model.topic_title]];
     }
     
     if (showSelect) {
@@ -146,11 +146,11 @@
     _rightCountLabel.hidden = NO;
     
     if ([model.topic_type isEqualToString:@"4"]) {
-        _titleLabel.text = [NSString stringWithFormat:@"      %@",model.topic_title];
+        _titleLabel.text = [NSString stringWithFormat:@"      %@",[self filterHTML:model.topic_title]];
     } else if ([model.topic_type isEqualToString:@"7"]) {
-        _titleLabel.text = [NSString stringWithFormat:@"      %@",model.topic_title];
+        _titleLabel.text = [NSString stringWithFormat:@"      %@",[self filterHTML:model.topic_title]];
     } else {
-        _titleLabel.text = [NSString stringWithFormat:@"     %@",model.topic_title];
+        _titleLabel.text = [NSString stringWithFormat:@"     %@",[self filterHTML:model.topic_title]];
     }
     
     _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, 20);
@@ -218,6 +218,21 @@
     
     _lineView.frame = CGRectMake(_titleLabel.left, _timeLabel.bottom + 12, MainScreenWidth - _titleLabel.left, 1);
     [self setHeight:_lineView.bottom];
+}
+
+- (NSString *)filterHTML:(NSString *)html {
+    NSScanner * scanner = [NSScanner scannerWithString:html];
+    NSString * text = nil;
+    while([scanner isAtEnd]==NO)
+    {
+        //找到标签的起始位置
+        [scanner scanUpToString:@"<" intoString:nil];
+        //找到标签的结束位置
+        [scanner scanUpToString:@">" intoString:&text];
+        //替换字符
+        html = [html stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@>",text] withString:@""];
+    }
+    return html;
 }
 
 - (void)selectedBtnClick:(UIButton *)sender {

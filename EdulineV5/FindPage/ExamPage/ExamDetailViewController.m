@@ -429,13 +429,15 @@
         
         if (modelxxx.is_expand) {
             
-            UILabel *rightAnswerTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, expandButton.bottom + 16, 80, 20)];
+            UILabel *rightAnswerTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, expandButton.bottom + 16, 75, 20)];
             rightAnswerTitle.font = SYSTEMFONT(15);
             rightAnswerTitle.textColor = HEXCOLOR(0x67C23A);
             rightAnswerTitle.text = @"正确答案：";
             [back addSubview:rightAnswerTitle];
+            CGFloat rightAnswerTitleWidth = [rightAnswerTitle.text sizeWithFont:rightAnswerTitle.font].width;
+            [rightAnswerTitle setWidth:rightAnswerTitleWidth];
             
-            UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(rightAnswerTitle.right, rightAnswerTitle.top - 7, MainScreenWidth - rightAnswerTitle.right - 15, 20)];
+            UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(rightAnswerTitle.right - 10, rightAnswerTitle.top - 7, MainScreenWidth - (rightAnswerTitle.right - 10) - 15, 20)];
             rightValueTextView.showsVerticalScrollIndicator = NO;
             rightValueTextView.showsHorizontalScrollIndicator = NO;
             rightValueTextView.editable = NO;
@@ -447,13 +449,13 @@
             [rightValueTextView setHeight:rightValueTextView.height];
             [back addSubview:rightValueTextView];
             
-            UILabel *keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, MAX(rightAnswerTitle.bottom, rightValueTextView.bottom) + 7, 54, 20)];
+            UILabel *keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, MAX(rightAnswerTitle.bottom, rightValueTextView.bottom) + 7, 50, 20)];
             keyTitle.font = SYSTEMFONT(14);
             keyTitle.textColor = EdlineV5_Color.textFirstColor;
             keyTitle.text = @"解析：";
             [back addSubview:keyTitle];
             
-            UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(keyTitle.right, keyTitle.top - 7, MainScreenWidth - keyTitle.right - 15, 20)];
+            UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(keyTitle.right - 15, keyTitle.top - 7, MainScreenWidth - keyTitle.right, 20)];
             analyzeTextView.showsVerticalScrollIndicator = NO;
             analyzeTextView.showsHorizontalScrollIndicator = NO;
             analyzeTextView.editable = NO;
