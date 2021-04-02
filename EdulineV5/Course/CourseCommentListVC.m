@@ -128,7 +128,7 @@
 //        } else {
 //            [_vc showHudInView:_vc.view showHint:@"购买课程后方可进入他人评论详情页"];
 //        }
-        return;
+//        return;
     }
     
     NSDictionary *pass = [NSDictionary dictionaryWithDictionary:_dataSource[indexPath.row]];
@@ -199,6 +199,13 @@
         [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
+    
+    CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
+    vc.cellType = _cellType;
+    vc.topCellInfo = cell.userCommentInfo;
+    [self.navigationController pushViewController:vc animated:YES];
+    return;
+    
     NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
     if ([isBuy isEqualToString:@"1"]) {
         CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
