@@ -341,8 +341,12 @@
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
-    } else if ([_orderTypeString isEqualToString:@"exam"]) {
+    } else if ([_orderTypeString isEqualToString:@"exam_public"]) {
         courseOrderInfoUrl = [Net_Path examOrderNet];
+    } else if ([_orderTypeString isEqualToString:@"exam_special"]) {
+        courseOrderInfoUrl = [Net_Path examSpecialOrderNet];
+    } else if ([_orderTypeString isEqualToString:@"exam_volume"]) {
+        courseOrderInfoUrl = [Net_Path examVolumeOrderNet];
     }
     
     
@@ -352,8 +356,12 @@
             [param setObject:_orderId forKey:@"course_id"];
         } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
             [param setObject:_orderId forKey:@"section_id"];
-        } else if ([_orderTypeString isEqualToString:@"exam"]) {
+        } else if ([_orderTypeString isEqualToString:@"exam_special"]) {
+            [param setObject:_orderId forKey:@"special_id"];
+        } else if ([_orderTypeString isEqualToString:@"exam_public"]) {
             [param setObject:_orderId forKey:@"paper_id"];
+        } else if ([_orderTypeString isEqualToString:@"exam_volume"]) {
+            [param setObject:_orderId forKey:@"rollup_id"];
         }
     }
     if (_couponModel) {
@@ -385,8 +393,12 @@
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
-    } else if ([_orderTypeString isEqualToString:@"exam"]) {
+    } else if ([_orderTypeString isEqualToString:@"exam_public"]) {
         courseOrderInfoUrl = [Net_Path examOrderNet];
+    } else if ([_orderTypeString isEqualToString:@"exam_special"]) {
+        courseOrderInfoUrl = [Net_Path examSpecialOrderNet];
+    } else if ([_orderTypeString isEqualToString:@"exam_volume"]) {
+        courseOrderInfoUrl = [Net_Path examVolumeOrderNet];
     } else {
         
     }
@@ -396,10 +408,12 @@
         [pass setObject:_orderId forKey:@"course_id"];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         [pass setObject:_orderId forKey:@"section_id"];
-    } else if ([_orderTypeString isEqualToString:@"exam"]) {
+    } else if ([_orderTypeString isEqualToString:@"exam_special"]) {
+        [pass setObject:_orderId forKey:@"special_id"];
+    } else if ([_orderTypeString isEqualToString:@"exam_public"]) {
         [pass setObject:_orderId forKey:@"paper_id"];
-    } else {
-        [pass setObject:_orderId forKey:@"section_id"];
+    } else if ([_orderTypeString isEqualToString:@"exam_volume"]) {
+        [pass setObject:_orderId forKey:@"rollup_id"];
     }
     
     [Net_API requestGETSuperAPIWithURLStr:courseOrderInfoUrl WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
@@ -454,7 +468,7 @@
             } else {
                 _courseFaceImageView.image = Image(@"contents_icon_video");
             }
-        } else if ([_orderTypeString isEqualToString:@"exam"]) {
+        } else if ([_orderTypeString containsString:@"exam"]) {
             _courseFaceImageView.image = Image(@"contents_icon_test");
         }
         
@@ -468,7 +482,7 @@
         _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
         
         NSString *timeLine = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"term_time"]];
-        if ([timeLine isEqualToString:@"0"]) {
+        if ([timeLine isEqualToString:@"0"] || ![[_orderInfo objectForKey:@"data"] objectForKey:@"term_time"]) {
             _timeLabel.text = @"永久有效";
         } else {
             _timeLabel.text = [NSString stringWithFormat:@"有效期至%@",[EdulineV5_Tool timeForYYYYMMDD:timeLine]];

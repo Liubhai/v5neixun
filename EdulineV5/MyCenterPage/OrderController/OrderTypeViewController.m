@@ -229,7 +229,7 @@
     if ([courseType isEqualToString:@"1"]) {
         CourseMainViewController *vc = [[CourseMainViewController alloc] init];
         vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
-        if ([typeString isEqualToString:@"5"] || [typeString isEqualToString:@"6"] || [typeString isEqualToString:@"7"] || [typeString isEqualToString:@"8"]) {
+        if ([typeString isEqualToString:@"101"] || [typeString isEqualToString:@"102"] || [typeString isEqualToString:@"103"] || [typeString isEqualToString:@"104"]) {
             vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_id"]];
         }
         vc.courselayer = [NSString stringWithFormat:@"%@",[pass objectForKey:@"section_level"]];
@@ -239,7 +239,7 @@
     } else if ([courseType isEqualToString:@"2"]) {
         CourseMainViewController *vc = [[CourseMainViewController alloc] init];
         vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
-        if ([typeString isEqualToString:@"5"] || [typeString isEqualToString:@"6"] || [typeString isEqualToString:@"7"] || [typeString isEqualToString:@"8"]) {
+        if ([typeString isEqualToString:@"101"] || [typeString isEqualToString:@"102"] || [typeString isEqualToString:@"103"] || [typeString isEqualToString:@"104"]) {
             vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_id"]];
         }
         vc.isLive = [[NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
@@ -250,7 +250,7 @@
     } else if ([courseType isEqualToString:@"4"]) {
         CourseMainViewController *vc = [[CourseMainViewController alloc] init];
         vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"id"]];
-        if ([typeString isEqualToString:@"5"] || [typeString isEqualToString:@"6"] || [typeString isEqualToString:@"7"] || [typeString isEqualToString:@"8"]) {
+        if ([typeString isEqualToString:@"101"] || [typeString isEqualToString:@"102"] || [typeString isEqualToString:@"103"] || [typeString isEqualToString:@"104"]) {
             vc.ID = [NSString stringWithFormat:@"%@",[pass objectForKey:@"course_id"]];
         }
         vc.isLive = [[NSString stringWithFormat:@"%@",[pass objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;

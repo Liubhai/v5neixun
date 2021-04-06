@@ -666,9 +666,19 @@
     return [Net_Path fullPath:@"order/exam" repalce:@"" byReplece:@""];
 }
 
-/** 考试订单生成 */
+/** 公开考试订单生成 */
 + (NSString *)examOrderNet {
     return [Net_Path fullPath:@"order/exam/paper" repalce:@"" byReplece:@""];
+}
+
+/** 专项列表订单生成 */
++ (NSString *)examSpecialOrderNet {
+    return [Net_Path fullPath:@"order/exam/special" repalce:@"" byReplece:@""];
+}
+
+/** 套卷练习订单生成 */
++ (NSString *)examVolumeOrderNet {
+    return [Net_Path fullPath:@"order/exam/rollup" repalce:@"" byReplece:@""];
 }
 
 /** 套卷搜索接口 */

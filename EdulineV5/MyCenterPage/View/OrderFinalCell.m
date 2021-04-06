@@ -71,8 +71,9 @@
     //_courseFaceImageView.frame = CGRectMake(15, 15, 32, 16);
     NSString *courseType = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"type_id"]];
     [_faceImageView sd_setImageWithURL:EdulineUrlString([OrderFinalInfo objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
-    _faceImageView.frame = CGRectMake(12, 7.5, 120, 66);
+    _faceImageView.hidden = NO;
     _courseTypeImage.hidden = NO;
+    [_courseTypeImage setSize:CGSizeMake(33, 20)];
     if ([courseType isEqualToString:@"1"]) {
         _courseTypeImage.image = Image(@"dianbo");
     } else if ([courseType isEqualToString:@"2"]) {
@@ -81,32 +82,32 @@
         _courseTypeImage.image = Image(@"mianshou");
     } else if ([courseType isEqualToString:@"4"]) {
         _courseTypeImage.image = Image(@"class_icon");
-    } else if ([courseType isEqualToString:@"5"]) {
-        _courseTypeImage.hidden = YES;
-        _faceImageView.image = Image(@"contents_icon_video");
-        _faceImageView.frame = CGRectMake(12, 7.5, 32, 16);
-    } else if ([courseType isEqualToString:@"6"]) {
-        _courseTypeImage.hidden = YES;
-        _faceImageView.image = Image(@"contents_icon_vioce");
-        _faceImageView.frame = CGRectMake(12, 7.5, 32, 16);
-    } else if ([courseType isEqualToString:@"7"]) {
-        _courseTypeImage.hidden = YES;
-        _faceImageView.image = Image(@"img_text_icon");
-        _faceImageView.frame = CGRectMake(12, 7.5, 32, 16);
-    } else if ([courseType isEqualToString:@"8"]) {
-        _courseTypeImage.hidden = YES;
-        _faceImageView.image = Image(@"ebook_icon_word");
-        _faceImageView.frame = CGRectMake(12, 7.5, 32, 16);
-    } else if ([courseType isEqualToString:@"9"]) {
-        _courseTypeImage.hidden = YES;
-        _faceImageView.image = Image(@"contents_icon_test");
-        _faceImageView.frame = CGRectMake(12, 7.5, 32, 16);
-    } else if ([courseType isEqualToString:@"10"]) {
+    } else if ([courseType isEqualToString:@"101"]) {
+        _faceImageView.hidden = YES;
+        [_courseTypeImage setSize:CGSizeMake(32, 16)];
+        _courseTypeImage.image = Image(@"contents_icon_video");
+    } else if ([courseType isEqualToString:@"102"]) {
+        _faceImageView.hidden = YES;
+        [_courseTypeImage setSize:CGSizeMake(32, 16)];
+        _courseTypeImage.image = Image(@"contents_icon_vioce");
+    } else if ([courseType isEqualToString:@"103"]) {
+        _faceImageView.hidden = YES;
+        [_courseTypeImage setSize:CGSizeMake(32, 16)];
+        _courseTypeImage.image = Image(@"img_text_icon");
+    } else if ([courseType isEqualToString:@"104"]) {
+        _faceImageView.hidden = YES;
+        [_courseTypeImage setSize:CGSizeMake(32, 16)];
+        _courseTypeImage.image = Image(@"ebook_icon_word");
+    } else if ([courseType isEqualToString:@"8"] || [courseType isEqualToString:@"9"] || [courseType isEqualToString:@"10"]) {
+        _faceImageView.hidden = YES;
+        [_courseTypeImage setSize:CGSizeMake(32, 16)];
+        _courseTypeImage.image = Image(@"contents_icon_test");
+    } else if ([courseType isEqualToString:@"11"]) {
         _courseTypeImage.hidden = YES;
     }
     
     _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[OrderFinalInfo objectForKey:@"user_price"]];
-    if ([courseType isEqualToString:@"5"] || [courseType isEqualToString:@"6"] || [courseType isEqualToString:@"7"] || [courseType isEqualToString:@"8"]) {
+    if ([courseType isEqualToString:@"101"] || [courseType isEqualToString:@"102"] || [courseType isEqualToString:@"103"] || [courseType isEqualToString:@"104"]) {
         _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[OrderFinalInfo objectForKey:@"price"]];
     }
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
@@ -123,8 +124,21 @@
     
     _theme.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"title"]];
     
-//    [_theme sizeToFit];
-    
+    if ([courseType isEqualToString:@"1"] || [courseType isEqualToString:@"2"] || [courseType isEqualToString:@"3"] || [courseType isEqualToString:@"4"]) {
+        _theme.numberOfLines = 1;
+        [_theme setHeight:24];
+    } else if ([courseType isEqualToString:@"101"] || [courseType isEqualToString:@"102"] || [courseType isEqualToString:@"103"] || [courseType isEqualToString:@"104"] || [courseType isEqualToString:@"8"] || [courseType isEqualToString:@"9"] || [courseType isEqualToString:@"10"]) {
+        _theme.frame = CGRectMake(_courseTypeImage.right + 10, _courseTypeImage.top, _priceLabel.left - _courseTypeImage.right - 10 - 10, _theme.height);
+        _theme.numberOfLines = 0;
+        [_theme sizeToFit];
+        if (_theme.height > 32) {
+            [_theme setHeight:32];
+        } else {
+            [_theme setHeight:_theme.height];
+        }
+    } else if ([courseType isEqualToString:@"11"]) {
+        [self setHeight:_faceImageView.bottom + 7.5];
+    }
     
     
     _dateLine.frame = CGRectMake(_faceImageView.right + 10, _theme.bottom + 5, _theme.width, 15);
@@ -153,17 +167,9 @@
         [self setHeight:_faceImageView.bottom + 7.5];
     } else if ([courseType isEqualToString:@"4"]) {
         [self setHeight:_faceImageView.bottom + 7.5];
-    } else if ([courseType isEqualToString:@"5"]) {
+    } else if ([courseType isEqualToString:@"101"] || [courseType isEqualToString:@"102"] || [courseType isEqualToString:@"103"] || [courseType isEqualToString:@"104"] || [courseType isEqualToString:@"8"] || [courseType isEqualToString:@"9"] || [courseType isEqualToString:@"10"]) {
         [self setHeight:_dateLine.bottom + 16.5];
-    } else if ([courseType isEqualToString:@"6"]) {
-        [self setHeight:_dateLine.bottom + 16.5];
-    } else if ([courseType isEqualToString:@"7"]) {
-        [self setHeight:_dateLine.bottom + 16.5];
-    } else if ([courseType isEqualToString:@"8"]) {
-        [self setHeight:_dateLine.bottom + 16.5];
-    } else if ([courseType isEqualToString:@"9"]) {
-        [self setHeight:_dateLine.bottom + 16.5];
-    } else if ([courseType isEqualToString:@"10"]) {
+    } else if ([courseType isEqualToString:@"11"]) {
         [self setHeight:_faceImageView.bottom + 7.5];
     }
 }

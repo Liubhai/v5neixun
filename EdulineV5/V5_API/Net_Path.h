@@ -495,8 +495,14 @@ struct NetWorkUrl {
 /** 考试获取资格 */
 + (NSString *)examGetByMoney;
 
-/** 考试订单生成 */
+/** 公开考试订单生成 */
 + (NSString *)examOrderNet;
+
+/** 专项列表订单生成 */
++ (NSString *)examSpecialOrderNet;
+
+/** 套卷练习订单生成 */
++ (NSString *)examVolumeOrderNet;
 
 /** 套卷搜索接口 */
 + (NSString *)setOfVolumeSearchNet;
