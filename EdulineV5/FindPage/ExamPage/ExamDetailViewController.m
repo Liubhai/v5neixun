@@ -453,7 +453,7 @@
             rightValueTextView.editable = NO;
             rightValueTextView.scrollEnabled = NO;
             rightValueTextView.backgroundColor = EdlineV5_Color.backColor;
-            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.titleMutable];
+            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             rightValueTextView.font = SYSTEMFONT(15);
             [rightValueTextView sizeToFit];
             [rightValueTextView setHeight:rightValueTextView.height];
@@ -509,7 +509,7 @@
         
         if (modelxxx.is_expand) {
             UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 80, 12 + 20 + 16 - 7, MainScreenWidth - 95 - 15, 20)];
-            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.titleMutable];
+            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             rightValueTextView.font = SYSTEMFONT(15);
             [rightValueTextView sizeToFit];
             [rightValueTextView setHeight:rightValueTextView.height];
@@ -663,6 +663,7 @@
                         pass.titleMutable = [self changeStringToMutA:pass.title];
                         pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
                         if (SWNOTEmptyArr(pass.topics)) {
+                            NSString *examAnswer = @"";
                             for (int j = 0; j<pass.topics.count; j++) {
                                 ExamDetailModel *detail = pass.topics[j];
                                 detail.titleMutable = [self changeStringToMutA:detail.title];
@@ -670,13 +671,22 @@
                                 for (int j = 0; j<detail.options.count; j++) {
                                     ExamDetailOptionsModel *modelOp = detail.options[j];
                                     modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                    if (modelOp.is_right) {
+                                        examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                    }
                                 }
                             }
+                            pass.examAnswer = examAnswer;
                         } else {
+                            NSString *examAnswer = @"";
                             for (int j = 0; j<pass.options.count; j++) {
                                 ExamDetailOptionsModel *modelOp = pass.options[j];
                                 modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                if (modelOp.is_right) {
+                                    examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                }
                             }
+                            pass.examAnswer = examAnswer;
                         }
                     }
                     
