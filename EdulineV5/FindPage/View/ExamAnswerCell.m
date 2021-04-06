@@ -153,7 +153,7 @@
 //    paragraphStyle.paragraphSpacingBefore = 0.1;
     NSMutableAttributedString *mutable = [[NSMutableAttributedString alloc] initWithAttributedString:model.mutvalue];
     
-    if (model.mutvalue) {
+    if (SWNOTEmptyStr(model.value) && model.mutvalue.length) {
         NSString *pass = [NSString stringWithFormat:@"%@",[mutable attributedSubstringFromRange:NSMakeRange(mutable.length - 1, 1)]];
         if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
             [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
