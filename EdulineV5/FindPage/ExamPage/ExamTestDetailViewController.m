@@ -190,8 +190,14 @@
         if ([model.question_type isEqualToString:@"7"]) {
             return model.topics.count;
         }
+        if ([model.question_type isEqualToString:@"8"]) {
+            return 1;
+        }
         if (SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *modelpass = model.topics[section];
+            if ([modelpass.question_type isEqualToString:@"8"]) {
+                return 1;
+            }
             return modelpass.options.count;
         } else {
             return model.options.count;
@@ -210,10 +216,24 @@
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
             [cell setExamDetail:model cellModel:model.topics[indexPath.row] cellIndex:indexPath];
+        } else if ([model.question_type isEqualToString:@"8"]) {
+            if (model.options.count) {
+                [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) mainExamDetail:model examDetail:model cellIndex:indexPath];
+            } else {
+                [cell setAnswerInfo:[ExamDetailOptionsModel new] mainExamDetail:model examDetail:model cellIndex:indexPath];
+            }
         } else {
             if (SWNOTEmptyArr(model.topics)) {
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
-                [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) mainExamDetail:model examDetail:modelpass cellIndex:indexPath];
+                if ([modelpass.question_type isEqualToString:@"8"]) {
+                    if (!modelpass.options.count) {
+                        [cell setAnswerInfo:[ExamDetailOptionsModel new] mainExamDetail:model examDetail:modelpass cellIndex:indexPath];
+                    } else {
+                        [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) mainExamDetail:model examDetail:modelpass cellIndex:indexPath];
+                    }
+                } else {
+                    [cell setAnswerInfo:(ExamDetailOptionsModel *)(modelpass.options[indexPath.row]) mainExamDetail:model examDetail:modelpass cellIndex:indexPath];
+                }
             } else {
                 [cell setAnswerInfo:(ExamDetailOptionsModel *)(model.options[indexPath.row]) mainExamDetail:model examDetail:model cellIndex:indexPath];
             }
@@ -232,30 +252,59 @@
         
         UIImageView *examTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 2, 32, 16)];
         // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
-        if ([model.question_type isEqualToString:@"1"]) {
-            examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"2"]) {
-            examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"3"]) {
-            examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"4"]) {
-            examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
-            [examTypeImageView setWidth:44];
-        } else if ([model.question_type isEqualToString:@"5"]) {
-            examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"6"]) {
-            examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
-        } else if ([model.question_type isEqualToString:@"7"]) {
-            examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
-            [examTypeImageView setWidth:55];
-        } else if ([model.question_type isEqualToString:@"8"]) {
-            examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
-            [examTypeImageView setWidth:32];
+        if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
+            ExamDetailModel *cailiaoModel = model.topics[section];
+            if ([cailiaoModel.question_type isEqualToString:@"1"]) {
+                examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"2"]) {
+                examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"3"]) {
+                examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"4"]) {
+                examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
+                [examTypeImageView setWidth:44];
+            } else if ([cailiaoModel.question_type isEqualToString:@"5"]) {
+                examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"6"]) {
+                examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([cailiaoModel.question_type isEqualToString:@"7"]) {
+                examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
+                [examTypeImageView setWidth:55];
+            } else if ([cailiaoModel.question_type isEqualToString:@"8"]) {
+                examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            }
+        } else {
+            if ([model.question_type isEqualToString:@"1"]) {
+                examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"2"]) {
+                examTypeImageView.image = [Image(@"judge_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"3"]) {
+                examTypeImageView.image = [Image(@"duoxuan_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"4"]) {
+                examTypeImageView.image = [Image(@"budingxaing_icon") converToMainColor];
+                [examTypeImageView setWidth:44];
+            } else if ([model.question_type isEqualToString:@"5"]) {
+                examTypeImageView.image = [Image(@"tiankong_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"6"]) {
+                examTypeImageView.image = [Image(@"cailiao_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            } else if ([model.question_type isEqualToString:@"7"]) {
+                examTypeImageView.image = [Image(@"wanxing_icon") converToMainColor];
+                [examTypeImageView setWidth:55];
+            } else if ([model.question_type isEqualToString:@"8"]) {
+                examTypeImageView.image = [Image(@"jieda_icon") converToMainColor];
+                [examTypeImageView setWidth:32];
+            }
         }
         [back addSubview:examTypeImageView];
         
@@ -387,7 +436,7 @@
             rightValueTextView.editable = NO;
             rightValueTextView.scrollEnabled = NO;
             rightValueTextView.backgroundColor = EdlineV5_Color.backColor;
-            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.titleMutable];
+            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             rightValueTextView.font = SYSTEMFONT(15);
             [rightValueTextView sizeToFit];
             [rightValueTextView setHeight:rightValueTextView.height];
@@ -449,7 +498,7 @@
             [rightValueTextView setHeight:rightValueTextView.height];
             
             UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 54, MAX((12 + 20 + 16 + 20), rightValueTextView.bottom), MainScreenWidth - 69 - 15, 20)];
-            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
+            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             analyzeTextView.font = SYSTEMFONT(15);
             [analyzeTextView sizeToFit];
             [analyzeTextView setHeight:analyzeTextView.height];
@@ -555,19 +604,34 @@
                             pass.is_expand = YES;
                         }
                         if (SWNOTEmptyArr(pass.topics)) {
+                            NSString *examAnswer = @"";
                             for (int j = 0; j<pass.topics.count; j++) {
                                 ExamDetailModel *detail = pass.topics[j];
-                                detail.titleMutable = [self changeStringToMutA:detail.title];
+                                detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
                                 detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
-                                for (int j = 0; j<detail.options.count; j++) {
-                                    ExamDetailOptionsModel *modelOp = detail.options[j];
-                                    modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                if ([_examType isEqualToString:@"collect"]) {
+                                    detail.is_answer = YES;
+                                    detail.is_expand = YES;
+                                }
+                                if ([detail.question_type isEqualToString:@"8"]) {
+                                    ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
+                                    detail.options = [NSArray arrayWithObjects:op, nil];
+                                } else {
+                                    for (int k = 0; k<detail.options.count; k++) {
+                                        ExamDetailOptionsModel *modelOp = detail.options[k];
+                                        modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                    }
                                 }
                             }
                         } else {
-                            for (int j = 0; j<pass.options.count; j++) {
-                                ExamDetailOptionsModel *modelOp = pass.options[j];
-                                modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                            if ([pass.question_type isEqualToString:@"8"]) {
+                                ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
+                                pass.options = [NSArray arrayWithObjects:op, nil];
+                            } else {
+                                for (int j = 0; j<pass.options.count; j++) {
+                                    ExamDetailOptionsModel *modelOp = pass.options[j];
+                                    modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                }
                             }
                         }
                     }
@@ -755,6 +819,25 @@
         NSString *pass = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(attrString.length - 1, 1)]];
         if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
             [attrString replaceCharactersInRange:NSMakeRange(attrString.length - 1, 1) withString:@""];
+        }
+    }
+    return attrString;
+}
+
+// MARK: - 自己组装材料题编号进去
+- (NSMutableAttributedString *)changeCailiaoStringToMutA:(NSString *)commonString indexString:(NSString *)indexString {
+    
+    NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] initWithData:[commonString dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+    if (SWNOTEmptyStr(commonString)) {
+        NSString *pass = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(attrString.length - 1, 1)]];
+        if ([[pass substringToIndex:1] isEqualToString:@"\n"]) {
+            [attrString replaceCharactersInRange:NSMakeRange(attrString.length - 1, 1) withString:@""];
+        }
+        if (commonString.length>indexString.length) {
+            NSString *pass111 = [NSString stringWithFormat:@"%@",[attrString attributedSubstringFromRange:NSMakeRange(indexString.length, 1)]];
+            if ([[pass111 substringToIndex:1] isEqualToString:@"\n"]) {
+                [attrString replaceCharactersInRange:NSMakeRange(indexString.length, 1) withString:@""];
+            }
         }
     }
     return attrString;

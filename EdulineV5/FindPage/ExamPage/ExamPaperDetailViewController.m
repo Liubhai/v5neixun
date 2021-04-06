@@ -467,7 +467,16 @@
         UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - (58 + 33) - 15, 20)];
         examPointTitle.textColor = EdlineV5_Color.textFirstColor;
         examPointTitle.font = SYSTEMFONT(14);
-        examPointTitle.text = @"考点：后台并未返回";
+        examPointTitle.text = @"考点：";
+        NSString *pointS = @"";
+        for (int i = 0; i<modelxxx.points.count; i++) {
+            if (i == 0) {
+                pointS = [NSString stringWithFormat:@"%@",modelxxx.points[i]];
+            } else {
+                pointS = [NSString stringWithFormat:@"%@、%@",pointS,modelxxx.points[i]];
+            }
+        }
+        examPointTitle.text = [NSString stringWithFormat:@"考点：%@",pointS];
         [back addSubview:examPointTitle];
         
         UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), 12, (58 + 33) - 15, 20)];
@@ -503,7 +512,7 @@
             rightValueTextView.editable = NO;
             rightValueTextView.scrollEnabled = NO;
             rightValueTextView.backgroundColor = EdlineV5_Color.backColor;
-            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.titleMutable];
+            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             rightValueTextView.font = SYSTEMFONT(15);
             [rightValueTextView sizeToFit];
             [rightValueTextView setHeight:rightValueTextView.height];
@@ -565,7 +574,7 @@
             [rightValueTextView setHeight:rightValueTextView.height];
             
             UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 54, MAX((12 + 20 + 16 + 20), rightValueTextView.bottom), MainScreenWidth - 69 - 15, 20)];
-            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
+            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             analyzeTextView.font = SYSTEMFONT(15);
             [analyzeTextView sizeToFit];
             [analyzeTextView setHeight:analyzeTextView.height];
