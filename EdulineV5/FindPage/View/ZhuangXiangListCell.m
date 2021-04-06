@@ -104,7 +104,7 @@
     _doExamButton.hidden = NO;
     
     _titleLabel.text = model.title;
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,model.price];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,model.user_price];
     
     [_jiantouImageView setWidth:13];
     
@@ -117,7 +117,7 @@
         _getOrExamBtn.hidden = NO;
         _doExamButton.hidden = YES;
         
-        if ([model.price floatValue]>0) {
+        if ([model.user_price floatValue]>0) {
             _priceLabel.hidden = NO;
             if (model.has_bought) {
                 _getOrFreeIamgeView.hidden = NO;

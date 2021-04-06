@@ -404,10 +404,20 @@
         UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
         back.backgroundColor = EdlineV5_Color.backColor;
         
+        
         UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - (58 + 33) - 15, 20)];
         examPointTitle.textColor = EdlineV5_Color.textFirstColor;
         examPointTitle.font = SYSTEMFONT(14);
-        examPointTitle.text = @"考点：后台并未返回";
+        examPointTitle.text = @"考点：";
+        NSString *pointS = @"";
+        for (int i = 0; i<modelxxx.points.count; i++) {
+            if (i == 0) {
+                pointS = [NSString stringWithFormat:@"%@",modelxxx.points[i]];
+            } else {
+                pointS = [NSString stringWithFormat:@"%@、%@",pointS,modelxxx.points[i]];
+            }
+        }
+        examPointTitle.text = [NSString stringWithFormat:@"考点：%@",pointS];
         [back addSubview:examPointTitle];
         
         UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), 12, (58 + 33) - 15, 20)];

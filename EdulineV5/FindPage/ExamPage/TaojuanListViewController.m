@@ -11,6 +11,8 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "TaojuanDetailListViewController.h"
+#import "ExamPaperDetailViewController.h"
+#import "OrderViewController.h"
 
 @interface TaojuanListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate> {
     NSInteger page;
@@ -101,7 +103,18 @@
 }
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
-    
+    if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
+        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+        vc.examType = _module_id;
+        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        // 购买
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"exam_volume";
+        vc.orderId = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)getFirstList {

@@ -50,6 +50,7 @@
     _examDoButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 22, 0, 22, 22)];
     _examDoButton.centerY = _learnCountLabel.centerY;
     [_examDoButton setImage:Image(@"exam_icon_disabled") forState:0];
+    [_examDoButton addTarget:self action:@selector(examDoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_examDoButton];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 79, MainScreenWidth - 15, 1)];
@@ -59,12 +60,19 @@
 }
 
 - (void)setTaojuanDetailListCellInfo:(NSDictionary *)dict {
+    _taojuanDetailInfo = dict;
     _titleLabel.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
 //    _progressLabel.text = @"12/30";
 //    CGFloat progressWidth = [_progressLabel.text sizeWithFont:_progressLabel.font].width + 2;
 //    [_progressLabel setWidth:progressWidth];
 //    [_learnCountLabel setLeft:_progressLabel.right + 25];
     _learnCountLabel.text = [NSString stringWithFormat:@"%@人练习",dict[@"bought_num"]];
+}
+
+- (void)examDoButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(doVolumeOrBuyExam:)]) {
+        [_delegate doVolumeOrBuyExam:self];
+    }
 }
 
 - (void)awakeFromNib {

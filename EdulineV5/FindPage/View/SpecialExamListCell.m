@@ -97,8 +97,8 @@
     
     _examTitle.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
     _examCount.text = [NSString stringWithFormat:@"共%@题",dict[@"total_count"]];
-    NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"price"]];
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"price"]];
+    NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"user_price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"user_price"]];
     
     if ([priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
         _priceLabel.hidden = YES;
@@ -124,7 +124,7 @@
 }
 
 - (void)setExamPointCell:(NSDictionary *)dict {
-    
+    _specialInfo = dict;
     _examPoint.hidden = NO;
     _lineView.hidden = NO;
     _learnCount.hidden = NO;
@@ -155,8 +155,8 @@
     _learnCount.centerY = _examCount.centerY;
     
     _priceLabel.frame = CGRectMake(_whiteBack.width - (100 + 14 + 82 + 12), 0, 100, 21);
-    NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"price"]];
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"price"]];
+    NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"user_price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"user_price"]];
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     _priceLabel.frame = CGRectMake(_whiteBack.width - (priceWidth + 14 + 82 + 12), 0, priceWidth, 21);
     
@@ -191,6 +191,8 @@
 }
 
 - (void)setExamPointDetailCell:(NSDictionary *)dict {
+    
+    _specialInfo = dict;
     
     _whiteBack.frame = CGRectMake(0, 0, MainScreenWidth, 93);
     _whiteBack.backgroundColor = [UIColor whiteColor];
@@ -235,8 +237,8 @@
     _learnCount.centerY = _examCount.centerY;
     
     _priceLabel.frame = CGRectMake(_whiteBack.width - (100 + 14 + 82 + 12), 0, 100, 21);
-    NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"price"]];
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"price"]];
+    NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"user_price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"user_price"]];
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     _priceLabel.frame = CGRectMake(_whiteBack.width - (priceWidth + 14 + 82 + 12), 0, priceWidth, 21);
     

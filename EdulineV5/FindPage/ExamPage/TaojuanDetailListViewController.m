@@ -11,8 +11,10 @@
 #import "TaoJuanDetailListCell.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "ExamPaperDetailViewController.h"
+#import "OrderViewController.h"
 
-@interface TaojuanDetailListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate> {
+@interface TaojuanDetailListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TaoJuanDetailListCellDelegate> {
     NSInteger page;
 }
 
@@ -91,6 +93,7 @@
         cell = [[TaoJuanDetailListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
     [cell setTaojuanDetailListCellInfo:_dataSource[indexPath.row]];
+    cell.delegate = self;
     return cell;
 }
 
@@ -117,7 +120,36 @@
 }
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
-    
+    if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
+        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+        vc.examType = @"4";
+        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        // 购买
+        OrderViewController *vc = [[OrderViewController alloc] init];
+        vc.orderTypeString = @"exam_volume";
+        vc.orderId = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)doVolumeOrBuyExam:(TaoJuanDetailListCell *)cell {
+    if (SWNOTEmptyDictionary(_detailInfo)) {
+        NSString *priceCount = [NSString stringWithFormat:@"%@",_detailInfo[@"user_price"]];
+        if ([_detailInfo[@"has_bought"] integerValue] || [priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
+            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+            vc.examType = @"4";
+            vc.examIds = [NSString stringWithFormat:@"%@",[_detailInfo objectForKey:@"id"]];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            // 购买
+            OrderViewController *vc = [[OrderViewController alloc] init];
+            vc.orderTypeString = @"exam_volume";
+            vc.orderId = [NSString stringWithFormat:@"%@",[_detailInfo objectForKey:@"id"]];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
 }
 
 - (void)getFirstList {
@@ -191,5 +223,7 @@
         }
     }];
 }
+
+
 
 @end

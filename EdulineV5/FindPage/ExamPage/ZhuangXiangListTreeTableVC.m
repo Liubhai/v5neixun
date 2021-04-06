@@ -342,10 +342,10 @@
 
 // MARK: - 专项列表cell上按钮的一些操作代理
 - (void)userBuyOrExam:(ZhuangXiangListCell *)cell {
-    if ([cell.treeItem.price floatValue]>0 && !cell.treeItem.has_bought) {
+    if ([cell.treeItem.user_price floatValue]>0 && !cell.treeItem.has_bought) {
         // 购买
         OrderViewController *vc = [[OrderViewController alloc] init];
-        vc.orderTypeString = @"exam";
+        vc.orderTypeString = @"exam_special";
         vc.orderId = cell.treeItem.course_id;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
@@ -360,26 +360,28 @@
 
 - (void)userExamBy:(ZhuangXiangListCell *)cell {
     // 获取最顶级的 价格和是否购买 去判断
-    NSString *courseId = cell.treeItem.price;
+    NSString *courseId = cell.treeItem.user_price;
+    NSString *course_id = cell.treeItem.course_id;
     
     ZhuanXiangModel *pmodel = cell.treeItem.parentItem;
     while (pmodel) {
-        courseId = pmodel.price;
+        courseId = pmodel.user_price;
+        course_id = pmodel.course_id;
         pmodel = pmodel.parentItem;
     }
     if ([courseId floatValue]>0 && !pmodel.has_bought) {
         // 购买
         // 购买
         OrderViewController *vc = [[OrderViewController alloc] init];
-        vc.orderTypeString = @"exam";
-        vc.orderId = cell.treeItem.course_id;
+        vc.orderTypeString = @"exam_special";
+        vc.orderId = course_id;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 开始答题
         ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
-        vc.examIds = cell.treeItem.course_id;
+        vc.examIds = course_id;
         vc.examType = _examTypeId;
-        vc.examTitle = cell.treeItem.title;
+        vc.examTitle = pmodel ? pmodel.title : cell.treeItem.title;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
