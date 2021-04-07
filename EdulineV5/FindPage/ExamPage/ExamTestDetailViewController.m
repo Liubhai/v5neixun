@@ -32,6 +32,7 @@
 //@property (strong, nonatomic) NSMutableArray *examIdListArray;// 获取得到题干ID数组
 @property (strong, nonatomic) NSMutableArray *examDetailArray;// 通过题干ID获取到具体试题内容数组
 @property (strong, nonatomic) UIView *headerView;
+@property (strong, nonatomic) UIView *footerView;
 
 @property (strong, nonatomic) UIView *bottomView;
 @property (strong, nonatomic) UIButton *previousExamBtn;
@@ -367,9 +368,10 @@
     } else {
         
         ExamDetailModel *modelxxx;
-        
+        NSString *currentModelType = @"";
         if (SWNOTEmptyArr(_examDetailArray)) {
             ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+            currentModelType = model.question_type;
             if ([model.question_type isEqualToString:@"7"]) {
                 modelxxx = model;
             } else {
@@ -402,6 +404,9 @@
         }
         examPointTitle.text = [NSString stringWithFormat:@"考点：%@",pointS];
         [back addSubview:examPointTitle];
+        if ([currentModelType isEqualToString:@"6"]) {
+            examPointTitle.hidden = YES;
+        }
         
         UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), 12, (58 + 33) - 15, 20)];
         [expandButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
@@ -591,6 +596,7 @@
             [param setObject:examIds forKey:@"topic_id"];
             [param setObject:@"6" forKey:@"origin"];
         }
+        ShowHud(@"试题信息拉取中...");
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -643,9 +649,11 @@
                     }
                 }
             }
+            [self hideHud];
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
+            [self hideHud];
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         }];

@@ -443,9 +443,10 @@
     } else {
         
         ExamDetailModel *modelxxx;
-        
+        NSString *currentModelType = @"";
         if (SWNOTEmptyArr(_examDetailArray)) {
             ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+            currentModelType = model.question_type;
             if ([model.question_type isEqualToString:@"7"]) {
                 modelxxx = model;
             } else {
@@ -478,6 +479,9 @@
         }
         examPointTitle.text = [NSString stringWithFormat:@"考点：%@",pointS];
         [back addSubview:examPointTitle];
+        if ([currentModelType isEqualToString:@"6"]) {
+            examPointTitle.hidden = YES;
+        }
         
         UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), 12, (58 + 33) - 15, 20)];
         [expandButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
