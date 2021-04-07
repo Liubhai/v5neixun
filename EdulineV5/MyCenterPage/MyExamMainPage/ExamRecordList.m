@@ -252,19 +252,6 @@
     
     [_dataSource replaceObjectAtIndex:path.row withObject:cellCourseModel];
     
-    // 判断每一个机构是不是全选与否
-    for (int i = 0; i < _dataSource.count; i ++) {
-        ExamCollectCellModel *model = _dataSource[i];
-        if (model.selected) {
-            allSeleted = YES;
-        } else {
-            allSeleted = NO;
-            break;
-        }
-    }
-    
-    _selectAllButton.selected = allSeleted;
-    
     [self dealDataSource];
     
     // 第二 刷新页面
@@ -329,6 +316,20 @@
             [_selectedArray addObject:courseModel];
         }
     }
+    
+    // 判断每一个机构是不是全选与否
+    for (int i = 0; i < _dataSource.count; i ++) {
+        ExamCollectCellModel *model = _dataSource[i];
+        if (model.selected) {
+            allSeleted = YES;
+        } else {
+            allSeleted = NO;
+            break;
+        }
+    }
+    
+    _selectAllButton.selected = allSeleted;
+    
     if (_selectedArray.count == 0) {
         allSeleted = NO;
         _selectAllButton.selected = NO;

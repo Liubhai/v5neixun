@@ -86,4 +86,7 @@
 // MARK: - 显示两个时间戳之间的时间段
 + (NSString *)evaluateStarTime:(NSString *)starTime endTime:(NSString *)eTime;
 
+/** 移除普通标签 */
++ (NSString *)removeFilterHTML:(NSString *)html;
+
 @end
