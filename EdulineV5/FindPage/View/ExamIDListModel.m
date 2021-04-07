@@ -100,6 +100,10 @@
         }else if (!NOTNULL(oldValue)){
             return @"";
         }
+    } else if ([property.name isEqualToString:@"values"]) {
+        if (!NOTNULL(oldValue)){
+            return @[];
+        }
     }
     return oldValue;
 }

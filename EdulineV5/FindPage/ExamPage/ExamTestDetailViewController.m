@@ -156,6 +156,8 @@
 - (void)makeHeaderView {
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
     _headerView.backgroundColor = EdlineV5_Color.backColor;
+    _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+    _footerView.backgroundColor = EdlineV5_Color.backColor;
 }
 
 - (void)makeTableView {
@@ -497,17 +499,18 @@
         
         if (modelxxx.is_expand) {
             UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 80, 12 + 20 + 16 - 7, MainScreenWidth - 95 - 15, 20)];
-            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.titleMutable];
+            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             rightValueTextView.font = SYSTEMFONT(15);
             [rightValueTextView sizeToFit];
             [rightValueTextView setHeight:rightValueTextView.height];
             
             UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 54, MAX((12 + 20 + 16 + 20), rightValueTextView.bottom), MainScreenWidth - 69 - 15, 20)];
-            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
+            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
             analyzeTextView.font = SYSTEMFONT(15);
             [analyzeTextView sizeToFit];
             [analyzeTextView setHeight:analyzeTextView.height];
-            return MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12;
+            CGFloat viewHeight = MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12;
+            return viewHeight;
         } else {
             return 12 + 20 + 12;
         }
@@ -610,9 +613,9 @@
                             pass.is_expand = YES;
                         }
                         if (SWNOTEmptyArr(pass.topics)) {
-                            NSString *examAnswer = @"";
                             for (int j = 0; j<pass.topics.count; j++) {
                                 ExamDetailModel *detail = pass.topics[j];
+                                NSString *examAnswer = @"";
                                 detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
                                 detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
                                 if ([_examType isEqualToString:@"collect"]) {
@@ -626,18 +629,51 @@
                                     for (int k = 0; k<detail.options.count; k++) {
                                         ExamDetailOptionsModel *modelOp = detail.options[k];
                                         modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                        if ([detail.question_type isEqualToString:@"5"]) {
+                                            NSString *gapFillAnswer = [NSString stringWithFormat:@"（%@）",@(k + 1)];
+                                            for (int m = 0; m < modelOp.values.count; m++) {
+                                                if (m == 0) {
+                                                    gapFillAnswer = [NSString stringWithFormat:@"%@%@",gapFillAnswer,modelOp.values[m]];
+                                                } else {
+                                                    gapFillAnswer = [NSString stringWithFormat:@"%@、%@",gapFillAnswer,modelOp.values[m]];
+                                                }
+                                            }
+                                            examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
+                                        } else {
+                                            if (modelOp.is_right) {
+                                                examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                            }
+                                        }
                                     }
                                 }
+                                detail.examAnswer = examAnswer;
                             }
                         } else {
                             if ([pass.question_type isEqualToString:@"8"]) {
                                 ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
                                 pass.options = [NSArray arrayWithObjects:op, nil];
                             } else {
+                                NSString *examAnswer = @"";
                                 for (int j = 0; j<pass.options.count; j++) {
                                     ExamDetailOptionsModel *modelOp = pass.options[j];
                                     modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                    if ([pass.question_type isEqualToString:@"5"]) {
+                                        NSString *gapFillAnswer = [NSString stringWithFormat:@"（%@）",@(j + 1)];
+                                        for (int m = 0; m < modelOp.values.count; m++) {
+                                            if (m == 0) {
+                                                gapFillAnswer = [NSString stringWithFormat:@"%@%@",gapFillAnswer,modelOp.values[m]];
+                                            } else {
+                                                gapFillAnswer = [NSString stringWithFormat:@"%@、%@",gapFillAnswer,modelOp.values[m]];
+                                            }
+                                        }
+                                        examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
+                                    } else {
+                                        if (modelOp.is_right) {
+                                            examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                        }
+                                    }
                                 }
+                                pass.examAnswer = examAnswer;
                             }
                         }
                     }
@@ -667,9 +703,39 @@
             _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
             _headerView.backgroundColor = EdlineV5_Color.backColor;
         }
+        if (!_footerView) {
+            _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+            _footerView.backgroundColor = EdlineV5_Color.backColor;
+        }
         [_headerView removeAllSubviews];
+        [_footerView removeAllSubviews];
         
         ExamDetailModel *model = (ExamDetailModel *)examModel;
+        
+        if (model.is_answer && [model.question_type isEqualToString:@"6"]) {
+            UIView *footerLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
+            footerLine.backgroundColor = EdlineV5_Color.backColor;
+            [_footerView addSubview:footerLine];
+            UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, MainScreenWidth - 30, 20)];
+            examPointTitle.numberOfLines = 0;
+            examPointTitle.textColor = EdlineV5_Color.textFirstColor;
+            examPointTitle.font = SYSTEMFONT(14);
+            examPointTitle.text = @"考点：";
+            NSString *pointS = @"";
+            for (int i = 0; i<model.points.count; i++) {
+                if (i == 0) {
+                    pointS = [NSString stringWithFormat:@"%@",model.points[i]];
+                } else {
+                    pointS = [NSString stringWithFormat:@"%@、%@",pointS,model.points[i]];
+                }
+            }
+            examPointTitle.text = [NSString stringWithFormat:@"考点：%@",pointS];
+            [examPointTitle sizeToFit];
+            [examPointTitle setHeight:examPointTitle.height];
+            [_footerView addSubview:examPointTitle];
+            [_footerView setHeight:examPointTitle.bottom + 20];
+        }
+        _tableView.tableFooterView = _footerView;
         
         // 是否收藏
         _examCollectBtn.selected = model.collected;
