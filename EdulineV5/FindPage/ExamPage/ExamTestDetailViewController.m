@@ -215,6 +215,7 @@
     if (!cell) {
         cell = [[ExamAnswerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
+    cell.examModuleType = NO;
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
@@ -795,11 +796,11 @@
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if (!model.is_answer) {
             // 这个地方需要判断是不是填空题 填空题需要请求接口 让接口去判断 其他类型自己判断
-            if ([model.question_type isEqualToString:@"5"]) {
-                // 请求接口 并根据接口返回的判断结果 修改 model 的 is_answer 并且在请求接口完成后 释放 上一题 下一题的 enable 属性
-                [self requestExamJudgeIsRight:model];
-                return;
-            }
+//            if ([model.question_type isEqualToString:@"5"]) {
+//                // 请求接口 并根据接口返回的判断结果 修改 model 的 is_answer 并且在请求接口完成后 释放 上一题 下一题的 enable 属性
+//                [self requestExamJudgeIsRight:model];
+//                return;
+//            }
             if (![self judgeCurrentExamIsRight]) {
                 // 提交答案 并且 展开解析
                 // 这时候要把已作答的题目和对应的作答内容组装起来 便于后面赋值
@@ -973,24 +974,19 @@
                 return is_right;
             } else if ([model.question_type isEqualToString:@"5"]) {
                 // 匹配对应题id的对应填空的内容
-                return YES;
-//                NSMutableDictionary *pass = [NSMutableDictionary new];
-//                for (int i = 0; i<_answerManagerArray.count; i++) {
-//                    pass = _answerManagerArray[i];
-//                    if ([pass.allKeys containsObject:model.examDetailId]) {
-//                        NSMutableArray *opLocalAnswer = [NSMutableArray arrayWithArray:[pass objectForKey:model.examDetailId]];
-//
-//                        if (opLocalAnswer.count != model.options.count) {
-//                            return is_right;
-//                        } else {
-//                            for (int j = 0; j<model.options.count; j++) {
-//
-//                            }
-//                        }
-//                    } else {
-//                        return is_right;
-//                    }
-//                }
+                is_right = YES;
+                for (int i = 0; i<model.options.count; i++) {
+                    ExamDetailOptionsModel *modelOp = model.options[i];
+                    if (!SWNOTEmptyStr(modelOp.userAnswerValue)) {
+                        is_right = NO;
+                        break;
+                    }
+                    if (![modelOp.values containsObject:modelOp.userAnswerValue]) {
+                        is_right = NO;
+                        break;
+                    }
+                }
+                return is_right;
             }
             return is_right;
         }

@@ -103,6 +103,10 @@
     _gapfillingIndexTitle.hidden = YES;
     _gapfillingIndexTitle.text = [NSString stringWithFormat:@"(%@)",@(cellIndexPath.row + 1)];
     
+    // 如果允许 已作答的题 输入框还能操作 那么就和 已作答 同步
+    _userInputTextField.enabled = _examModuleType ? YES : (_examDetailModel.is_answer ? NO : YES);
+    _userInputTextView.editable = _examModuleType ? YES : (_examDetailModel.is_answer ? NO : YES);
+    
     _clozeBackView.hidden = YES;
     
     _keyTitle.hidden = NO;
@@ -190,6 +194,9 @@
     
     _userInputTextView.hidden = YES;
     _userInputTextField.hidden = YES;
+    
+    _userInputTextField.enabled = _examModuleType ? YES : (_examDetailModel.is_answer ? NO : YES);
+    _userInputTextView.editable = _examModuleType ? YES : (_examDetailModel.is_answer ? NO : YES);
     
     _keyTitle.hidden = YES;
     _gapfillingIndexTitle.hidden = NO;

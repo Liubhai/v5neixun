@@ -235,6 +235,7 @@
     if (!cell) {
         cell = [[ExamAnswerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
+    cell.examModuleType = YES;
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {

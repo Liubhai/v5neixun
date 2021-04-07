@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) ExamDetailModel *cellDetailModel;//当前cell对应的试题详情
 @property (strong, nonatomic) ExamDetailModel *examDetailModel;//当前完形填空或者材料题cell对应的试题详情
 @property (strong, nonatomic) ExamDetailOptionsModel *cellOptionModel;//当前cell对应的选项详情
+@property (assign, nonatomic) BOOL examModuleType; // 区分是否能操作主观题(填空 解答题 能否输入)
 
 - (void)setAnswerInfo:(ExamDetailOptionsModel *)model mainExamDetail:(ExamDetailModel *)mainExamDetail  examDetail:(ExamDetailModel *)detailModel cellIndex:(NSIndexPath *)cellIndexPath;
 
