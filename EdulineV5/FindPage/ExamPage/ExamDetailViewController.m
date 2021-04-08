@@ -655,6 +655,7 @@
             getUrl = [Net_Path specialExamDetailDataNet];
             [param setObject:examIds forKey:@"topic_id"];
         }
+        ShowHud(@"试题信息拉取中...");
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointDetailDataNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -709,9 +710,11 @@
                     }
                 }
             }
+            [self hideHud];
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
+            [self hideHud];
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         }];

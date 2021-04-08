@@ -648,6 +648,7 @@
                             op.is_selected = NO;
                         }
                     }
+//                    [_tableView reloadRow:indexPath.row inSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
                     [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
 //                    [_tableView reloadData];
                 } else if ([modelpass.question_type isEqualToString:@"3"] || [modelpass.question_type isEqualToString:@"4"]) {
@@ -657,6 +658,7 @@
                             op.is_selected = !op.is_selected;
                         }
                     }
+//                    [_tableView reloadRow:indexPath.row inSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
                     [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
 //                    [_tableView reloadData];
                 }
@@ -1141,7 +1143,8 @@
             }
         }
     }
-    [_tableView reloadData];
+//    [_tableView reloadData];
+    [_tableView reloadSection:sender.tag withRowAnimation:UITableViewRowAnimationNone];
 }
 
 // MARK: - 将标签转为富文本并且过滤换行符

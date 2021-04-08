@@ -22,6 +22,8 @@
     NSIndexPath *currentExamIndexPath;// 当前答题在整个列表中的下标
     NSString *currentExamId;//当前答题的试题ID
     BOOL canEnterNextExam;// 点击下一题的时候是 答对 答错 能否直接进入下一题 还是需要显示解析
+    NSInteger currentSection;
+    BOOL shouldCareCurrentSection;// 是否应该按照 currentSection 来刷新
 }
 
 //  用一个专门数组去存储请求到的题的详情 上一题的时候就直接取出来去加载数据; 填充数据的时候 直接用 ExamDetailModel 去填充答案或者填空框内的内容
@@ -562,7 +564,8 @@
                             op.is_selected = NO;
                         }
                     }
-                    [_tableView reloadData];
+//                    [_tableView reloadData];
+                    [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
                 } else if ([model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"]) {
                     for (int i = 0; i<model.options.count; i ++) {
                         ExamDetailOptionsModel *op = (ExamDetailOptionsModel *)(model.options[i]);
@@ -570,7 +573,8 @@
                             op.is_selected = !op.is_selected;
                         }
                     }
-                    [_tableView reloadData];
+//                    [_tableView reloadData];
+                    [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
                 }
             }
         }
@@ -883,7 +887,12 @@
             }
         }
     }
-    [_tableView reloadData];
+    
+    NSInteger relod_section = sender.tag;
+
+    [UIView performWithoutAnimation:^{
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:relod_section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
 }
 
 // MARK: - 将标签转为富文本并且过滤换行符
