@@ -450,6 +450,9 @@
 		78AAFF1025FF2D6D002CD197 /* GroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */; };
 		78AAFF1325FF6189002CD197 /* ExamPaperDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */; };
 		78AAFF162601A081002CD197 /* ExamCalculateHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF152601A081002CD197 /* ExamCalculateHeight.m */; };
+		78BBB38E26202252009F5D10 /* QuestionRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB38D26202252009F5D10 /* QuestionRootViewController.m */; };
+		78BBB391262024A0009F5D10 /* QuestionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB390262024A0009F5D10 /* QuestionListViewController.m */; };
+		78BBB394262024CB009F5D10 /* QuestionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB393262024CB009F5D10 /* QuestionListCell.m */; };
 		78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */; };
 		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
 		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
@@ -1472,6 +1475,12 @@
 		78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPaperDetailViewController.m; sourceTree = "<group>"; };
 		78AAFF142601A081002CD197 /* ExamCalculateHeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamCalculateHeight.h; sourceTree = "<group>"; };
 		78AAFF152601A081002CD197 /* ExamCalculateHeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamCalculateHeight.m; sourceTree = "<group>"; };
+		78BBB38C26202252009F5D10 /* QuestionRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionRootViewController.h; sourceTree = "<group>"; };
+		78BBB38D26202252009F5D10 /* QuestionRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionRootViewController.m; sourceTree = "<group>"; };
+		78BBB38F262024A0009F5D10 /* QuestionListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionListViewController.h; sourceTree = "<group>"; };
+		78BBB390262024A0009F5D10 /* QuestionListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionListViewController.m; sourceTree = "<group>"; };
+		78BBB392262024CB009F5D10 /* QuestionListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionListCell.h; sourceTree = "<group>"; };
+		78BBB393262024CB009F5D10 /* QuestionListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionListCell.m; sourceTree = "<group>"; };
 		78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatViewController.h; sourceTree = "<group>"; };
 		78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatViewController.m; sourceTree = "<group>"; };
 		78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatRightCell.h; sourceTree = "<group>"; };
@@ -2228,6 +2237,7 @@
 		7879565A240E5FC80013F95F /* FindPage */ = {
 			isa = PBXGroup;
 			children = (
+				78BBB38A2620222B009F5D10 /* QuestionMainPage */,
 				78060FA5255E831D00009171 /* ExamPage */,
 				78795664240E605A0013F95F /* FindRootViewController.h */,
 				78795665240E605A0013F95F /* FindRootViewController.m */,
@@ -3668,6 +3678,19 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		78BBB38A2620222B009F5D10 /* QuestionMainPage */ = {
+			isa = PBXGroup;
+			children = (
+				78BBB38C26202252009F5D10 /* QuestionRootViewController.h */,
+				78BBB38D26202252009F5D10 /* QuestionRootViewController.m */,
+				78BBB38F262024A0009F5D10 /* QuestionListViewController.h */,
+				78BBB390262024A0009F5D10 /* QuestionListViewController.m */,
+				78BBB392262024CB009F5D10 /* QuestionListCell.h */,
+				78BBB393262024CB009F5D10 /* QuestionListCell.m */,
+			);
+			path = QuestionMainPage;
+			sourceTree = "<group>";
+		};
 		78C5482E2412469200A33FC4 /* AreaCodeListPlist */ = {
 			isa = PBXGroup;
 			children = (
@@ -4300,6 +4323,7 @@
 				788E95CC2542D7470089251E /* HorizontalScrollText.m in Sources */,
 				784FC8F724AF29C000CAE7A6 /* MessageRootVC.m in Sources */,
 				78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */,
+				78BBB394262024CB009F5D10 /* QuestionListCell.m in Sources */,
 				784FC90024AF5DEF00CAE7A6 /* MessageDetailVC.m in Sources */,
 				787F1E82247381A400108F7B /* AliyunSpeedButton.m in Sources */,
 				789DB02124658C8D001302B4 /* OrderFinalCell.m in Sources */,
@@ -4491,6 +4515,7 @@
 				789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */,
 				786CD55025EF624A00172B88 /* MyExamPage.m in Sources */,
 				78D980B524BD48F5000DE0E4 /* MyTeachListVC.m in Sources */,
+				78BBB391262024A0009F5D10 /* QuestionListViewController.m in Sources */,
 				7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */,
 				78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
@@ -4683,6 +4708,7 @@
 				784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */,
 				788E95B9253FE24E0089251E /* BaseEducationManager+WhiteBoard.m in Sources */,
 				78795731240FA3840013F95F /* ZLPhotoAssets.m in Sources */,
+				78BBB38E26202252009F5D10 /* QuestionRootViewController.m in Sources */,
 				787ED6F5255A341E00906846 /* BCLiveRoomViewController.m in Sources */,
 				785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */,
 				788E95B4253FE24E0089251E /* MinEducationManager.m in Sources */,

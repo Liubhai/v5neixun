@@ -888,6 +888,107 @@
         }
     }
     
+//    UIView *back = [sender superview];
+//
+//
+//    ExamDetailModel *modelxxx;
+//    NSString *currentModelType = @"";
+//    if (SWNOTEmptyArr(_examDetailArray)) {
+//        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+//        currentModelType = model.question_type;
+//        if ([model.question_type isEqualToString:@"7"]) {
+//            modelxxx = model;
+//        } else {
+//            if (SWNOTEmptyArr(model.topics)) {
+//                ExamDetailModel *modelpass = model.topics[sender.tag];
+//                modelxxx = modelpass;
+//            } else {
+//                modelxxx = model;
+//            }
+//        }
+//    }
+//    if (!modelxxx.is_answer) {
+//        return;
+//    }
+//
+//    [back removeAllSubviews];
+//
+//    UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - (58 + 33) - 15, 20)];
+//    examPointTitle.textColor = EdlineV5_Color.textFirstColor;
+//    examPointTitle.font = SYSTEMFONT(14);
+//    examPointTitle.text = @"考点：";
+//    NSString *pointS = @"";
+//    for (int i = 0; i<modelxxx.points.count; i++) {
+//        if (i == 0) {
+//            pointS = [NSString stringWithFormat:@"%@",modelxxx.points[i]];
+//        } else {
+//            pointS = [NSString stringWithFormat:@"%@、%@",pointS,modelxxx.points[i]];
+//        }
+//    }
+//    examPointTitle.text = [NSString stringWithFormat:@"考点：%@",pointS];
+//    [back addSubview:examPointTitle];
+//    if ([currentModelType isEqualToString:@"6"]) {
+//        examPointTitle.hidden = YES;
+//    }
+//
+//    UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), 12, (58 + 33) - 15, 20)];
+//    [expandButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+//    expandButton.titleLabel.font = SYSTEMFONT(14);
+//    [expandButton setTitle:@"查看解析" forState:0];
+//    [expandButton setImage:Image(@"exam_parsingdown_icon") forState:0];
+//
+//    [expandButton setTitle:@"收起解析" forState:UIControlStateSelected];
+//    [expandButton setImage:Image(@"exam_parsingup_icon") forState:UIControlStateSelected];
+//    expandButton.tag = sender.tag;
+//    [expandButton addTarget:self action:@selector(expandButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//
+//    expandButton.selected = modelxxx.is_expand;
+//
+//    [EdulineV5_Tool dealButtonImageAndTitleUI:expandButton];
+//    [back addSubview:expandButton];
+//    [back setHeight:expandButton.bottom + 12];
+//
+//    if (modelxxx.is_expand) {
+//
+//        UILabel *rightAnswerTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, expandButton.bottom + 16, 75, 20)];
+//        rightAnswerTitle.font = SYSTEMFONT(15);
+//        rightAnswerTitle.textColor = HEXCOLOR(0x67C23A);
+//        rightAnswerTitle.text = @"正确答案：";
+//        [back addSubview:rightAnswerTitle];
+//        CGFloat rightAnswerTitleWidth = [rightAnswerTitle.text sizeWithFont:rightAnswerTitle.font].width;
+//        [rightAnswerTitle setWidth:rightAnswerTitleWidth];
+//
+//        UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(rightAnswerTitle.right - 10, rightAnswerTitle.top - 7, MainScreenWidth - (rightAnswerTitle.right - 10) - 15, 20)];
+//        rightValueTextView.showsVerticalScrollIndicator = NO;
+//        rightValueTextView.showsHorizontalScrollIndicator = NO;
+//        rightValueTextView.editable = NO;
+//        rightValueTextView.scrollEnabled = NO;
+//        rightValueTextView.backgroundColor = EdlineV5_Color.backColor;
+//        rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
+//        rightValueTextView.font = SYSTEMFONT(15);
+//        [rightValueTextView sizeToFit];
+//        [rightValueTextView setHeight:rightValueTextView.height];
+//        [back addSubview:rightValueTextView];
+//
+//        UILabel *keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, MAX(rightAnswerTitle.bottom, rightValueTextView.bottom) + 7, 50, 20)];
+//        keyTitle.font = SYSTEMFONT(14);
+//        keyTitle.textColor = EdlineV5_Color.textFirstColor;
+//        keyTitle.text = @"解析：";
+//        [back addSubview:keyTitle];
+//
+//        UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(keyTitle.right - 15, keyTitle.top - 7, MainScreenWidth - keyTitle.right, 20)];
+//        analyzeTextView.showsVerticalScrollIndicator = NO;
+//        analyzeTextView.showsHorizontalScrollIndicator = NO;
+//        analyzeTextView.editable = NO;
+//        analyzeTextView.scrollEnabled = NO;
+//        analyzeTextView.backgroundColor = EdlineV5_Color.backColor;
+//        analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
+//        analyzeTextView.font = SYSTEMFONT(15);
+//        [analyzeTextView sizeToFit];
+//        [analyzeTextView setHeight:analyzeTextView.height];
+//        [back addSubview:analyzeTextView];
+//        [back setHeight:MAX(keyTitle.bottom, analyzeTextView.bottom) + 12];
+//    }
     NSInteger relod_section = sender.tag;
 
     [UIView performWithoutAnimation:^{
