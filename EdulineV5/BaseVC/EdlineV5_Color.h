@@ -101,6 +101,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 背景色 课程活动-开团  */
 + (UIColor *)courseActivityBackColor;
 
+/** 富贵色 */
++ (UIColor *)questionSeeButtonLayerColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

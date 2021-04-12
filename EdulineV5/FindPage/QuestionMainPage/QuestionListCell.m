@@ -47,6 +47,9 @@
     _contentLabel.numberOfLines = 0;
     [self.contentView addSubview:_contentLabel];
     
+    _maskView = [[UIView alloc] initWithFrame:CGRectMake(15, _contentLabel.top, MainScreenWidth - 30, 20)];
+    [self.contentView addSubview:_maskView];
+    
     _pictureViews = [[UIView alloc] initWithFrame:CGRectMake(0, _contentLabel.bottom + 12, MainScreenWidth, 0)];
     [self.contentView addSubview:_pictureViews];
     
@@ -83,6 +86,21 @@
     _contentLabel.text = @"问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！当地时间23日，中国驻比利时大使曹忠明和驻德国大使吴恳也分别向比方和德方提出严";
     [_contentLabel sizeToFit];
     [_contentLabel setHeight:(_contentLabel.height > 80) ? 80 : _contentLabel.height];
+    
+    [_maskView setHeight:_contentLabel.height];
+    
+    [_maskView.layer removeAllSublayers];
+    
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.frame = _maskView.bounds;
+    gradientLayer.startPoint = CGPointMake(0.5, 0); //渐变色起始位置
+    gradientLayer.endPoint = CGPointMake(0.5, 1); //渐变色终止位置
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.37].CGColor, (__bridge id)[UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor];
+    gradientLayer.locations = @[@(0), @(1.0)]; // 对应colors的alpha值
+//    gradientLayer.rasterizationScale = UIScreen.mainScreen.scale;
+
+    [_maskView.layer insertSublayer:gradientLayer atIndex:0];
+    
     
     [_pictureViews removeAllSubviews];
     NSInteger picCount = 5;
@@ -162,7 +180,7 @@
     CGFloat scanWidth = [_scanCountLabel.text sizeWithFont:_scanCountLabel.font].width + 4;
     _scanCountLabel.frame = CGRectMake(15, _pictureViews.bottom + 20, scanWidth, 17);
     
-    _fengeLine = [[UIView alloc] initWithFrame:CGRectMake(_scanCountLabel.right + 4, 0, 1, 8)];
+    _fengeLine.frame = CGRectMake(_scanCountLabel.right + 4, 0, 1, 8);
     _fengeLine.centerY = _scanCountLabel.centerY;
     
     _answerCountLabel.text = @"回答 13";

@@ -255,30 +255,32 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_dataSource removeAllObjects];
                     [_originSource removeAllObjects];
-                    NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
-                    [_originSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                    _originDict = [NSDictionary dictionaryWithDictionary:responseObject];
-                    for (ZhuanXiangModel *object in pass) {
-                        object.isLeaf = YES;
-                        object.level = 0;
-                        [_dataSource addObject:object];
-                    }
-                    NSMutableSet *items = [NSMutableSet set];
-                    [_dataSource enumerateObjectsUsingBlock:^(ZhuanXiangModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
-                        obj.parentID = @"";
-                        obj.parentItem = nil;
-                        [items addObject:obj];
-                    }];
-                    
-                    ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
-                    _manager = manager;
-                    
-                    if (_dataSource.count<10) {
-                        _tableView.mj_footer.hidden = YES;
-                    } else {
-                        _tableView.mj_footer.hidden = NO;
-                        [_tableView.mj_footer setState:MJRefreshStateIdle];
+                    if ([[responseObject objectForKey:@"data"] allKeys]) {
+                        NSArray *pass = [NSArray arrayWithArray:[ZhuanXiangModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
+                        [_originSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                        _originDict = [NSDictionary dictionaryWithDictionary:responseObject];
+                        for (ZhuanXiangModel *object in pass) {
+                            object.isLeaf = YES;
+                            object.level = 0;
+                            [_dataSource addObject:object];
+                        }
+                        NSMutableSet *items = [NSMutableSet set];
+                        [_dataSource enumerateObjectsUsingBlock:^(ZhuanXiangModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                            obj.orderNo = [NSString stringWithFormat:@"%@", @(idx)];
+                            obj.parentID = @"";
+                            obj.parentItem = nil;
+                            [items addObject:obj];
+                        }];
+                        
+                        ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
+                        _manager = manager;
+                        
+                        if (_dataSource.count<10) {
+                            _tableView.mj_footer.hidden = YES;
+                        } else {
+                            _tableView.mj_footer.hidden = NO;
+                            [_tableView.mj_footer setState:MJRefreshStateIdle];
+                        }
                     }
                     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
                     [_tableView reloadData];

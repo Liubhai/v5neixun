@@ -283,4 +283,9 @@
     return HEXCOLORV5(0xFFECE3);
 }
 
+/** 富贵色 */
++ (UIColor *)questionSeeButtonLayerColor {
+    return HEXCOLORV5(0xCA9D66);
+}
+
 @end

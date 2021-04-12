@@ -1,18 +1,18 @@
 //
-//  QuestionListViewController.m
+//  QuestionDetailListViewController.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2021/4/9.
+//  Created by 刘邦海 on 2021/4/12.
 //  Copyright © 2021 刘邦海. All rights reserved.
 //
 
-#import "QuestionListViewController.h"
+#import "QuestionDetailListViewController.h"
 #import "V5_Constant.h"
 #import "QuestionListCell.h"
+#import "QuestionAnswerCell.h"
 #import "Net_Path.h"
-#import "QuestionDetailListViewController.h"
 
-@interface QuestionListViewController ()<UITableViewDelegate, UITableViewDataSource, QuestionListCellDelegate, ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource> {
+@interface QuestionDetailListViewController ()<UITableViewDelegate, UITableViewDataSource, QuestionListCellDelegate, ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource> {
     NSInteger page;
     UIImageView *currentShowPicImageView;
 }
@@ -24,12 +24,14 @@
 
 @end
 
-@implementation QuestionListViewController
+@implementation QuestionDetailListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _titleImage.hidden = YES;
+    _titleLabel.text = @"问答详情";
+    _rightButton.hidden = NO;
+    [_rightButton setImage:Image(@"nav_more_white_QD") forState:0];
     _dataSource = [NSMutableArray new];
     _currentShowPicArray = [NSMutableArray new];
     [_currentShowPicArray addObjectsFromArray:@[DefaultImage,DefaultImage,DefaultImage,DefaultImage,DefaultImage]];
@@ -38,7 +40,7 @@
 }
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
@@ -53,18 +55,34 @@
 //    [_tableView.mj_header beginRefreshing];
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return 1;
+    }
     return 8;//_dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuse = @"QuestionListCell";
-    QuestionListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-    if (!cell) {
-        cell = [[QuestionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+    if (indexPath.section == 0) {
+        static NSString *reuse = @"QuestionListCell";
+        QuestionListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[QuestionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setQustionDetailCellInfo:@{}];
+        cell.delegate = self;
+        return cell;
     }
-    [cell setQuestionListCellInfo:@{}];
-    cell.delegate = self;
+    static NSString *reuse = @"QuestionAnswerCell";
+    QuestionAnswerCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+    if (!cell) {
+        cell = [[QuestionAnswerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+    }
+    [cell setQuestionAnswerListCellInfo:@{}];
     return cell;
 }
 
@@ -74,8 +92,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    QuestionDetailListViewController *vc = [[QuestionDetailListViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getFirstList {
@@ -178,15 +194,5 @@
 //    photo.toView = currentShowPicImageView;
     return photo;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
