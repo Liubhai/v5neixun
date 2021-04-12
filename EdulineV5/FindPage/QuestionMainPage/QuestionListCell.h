@@ -26,10 +26,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *timeLabel;
 @property (strong, nonatomic) UILabel *contentLabel;
 @property (strong, nonatomic) UIView *pictureViews;
+
+@property (strong, nonatomic) UILabel *scanCountLabel;
+@property (strong, nonatomic) UIView *fengeLine;
+@property (strong, nonatomic) UILabel *answerCountLabel;
+
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) NSDictionary *questionCellInfo;
 
 - (void)setQuestionListCellInfo:(NSDictionary *)dict;
+
+- (void)setQustionDetailCellInfo:(NSDictionary *)dict;
 
 @end
 

@@ -50,6 +50,20 @@
     _pictureViews = [[UIView alloc] initWithFrame:CGRectMake(0, _contentLabel.bottom + 12, MainScreenWidth, 0)];
     [self.contentView addSubview:_pictureViews];
     
+    _scanCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _pictureViews.bottom + 20, 50, 17)];
+    _scanCountLabel.font = SYSTEMFONT(12);
+    _scanCountLabel.textColor = EdlineV5_Color.textThirdColor;
+    [self.contentView addSubview:_scanCountLabel];
+    
+    _fengeLine = [[UIView alloc] initWithFrame:CGRectMake(_scanCountLabel.right + 8, 0, 1, 8)];
+    _fengeLine.backgroundColor = EdlineV5_Color.backColor;
+    [self.contentView addSubview:_fengeLine];
+    
+    _answerCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_fengeLine.right + 8, _scanCountLabel.top, 50, 17)];
+    _answerCountLabel.font = SYSTEMFONT(12);
+    _answerCountLabel.textColor = EdlineV5_Color.textThirdColor;
+    [self.contentView addSubview:_answerCountLabel];
+    
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _pictureViews.bottom + 20, MainScreenWidth, 1)];
     _lineView.backgroundColor = EdlineV5_Color.backColor;
     [self.contentView addSubview:_lineView];
@@ -57,6 +71,10 @@
 
 // MARK: - 数据赋值
 - (void)setQuestionListCellInfo:(NSDictionary *)dict {
+    
+    _scanCountLabel.hidden = YES;
+    _fengeLine.hidden = YES;
+    _answerCountLabel.hidden = YES;
     
     _questionCellInfo = dict;
     
@@ -96,6 +114,65 @@
     
     [_lineView setTop:_pictureViews.bottom + 20];
     [self setHeight:_lineView.bottom];
+}
+
+- (void)setQustionDetailCellInfo:(NSDictionary *)dict {
+    
+    _userFace.hidden = YES;
+    _userName.hidden = YES;
+    _timeLabel.hidden = YES;
+    
+    _questionCellInfo = dict;
+    
+    _contentLabel.frame = CGRectMake(15, 15, MainScreenWidth - 30, 20);
+    _contentLabel.numberOfLines = 0;
+    _contentLabel.text = @"问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！当地时间23日，中国驻比利时大使曹忠明和驻德国大使吴恳也分别向比方和德方提出严";
+    [_contentLabel sizeToFit];
+    [_contentLabel setHeight:_contentLabel.height];
+    
+    [_pictureViews removeAllSubviews];
+    NSInteger picCount = 5;
+    CGFloat leftSpace = 15;
+    CGFloat inSpace = 11;
+    CGFloat picWidth = (MainScreenWidth - leftSpace * 2 - inSpace * 2) / 3.0;
+    
+    if (picCount) {
+        [_pictureViews setTop:_contentLabel.bottom + 12];
+    } else {
+        [_pictureViews setTop:_contentLabel.bottom];
+    }
+    
+    for (int i = 0; i<picCount; i++) {
+        // x 余 y 正
+        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace + (picWidth + inSpace) * (i%3), (inSpace + picWidth) * (i/3), picWidth, picWidth)];
+        pic.clipsToBounds = YES;
+        pic.contentMode = UIViewContentModeScaleAspectFill;
+        pic.image = DefaultImage;
+        pic.tag = 66 + i;
+        pic.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(picTap:)];
+        [pic addGestureRecognizer:tap];
+        [_pictureViews addSubview:pic];
+        if (i == (picCount - 1)) {
+            [_pictureViews setHeight:pic.bottom];
+        }
+    }
+    
+    _scanCountLabel.text = @"浏览 32";
+    CGFloat scanWidth = [_scanCountLabel.text sizeWithFont:_scanCountLabel.font].width + 4;
+    _scanCountLabel.frame = CGRectMake(15, _pictureViews.bottom + 20, scanWidth, 17);
+    
+    _fengeLine = [[UIView alloc] initWithFrame:CGRectMake(_scanCountLabel.right + 4, 0, 1, 8)];
+    _fengeLine.centerY = _scanCountLabel.centerY;
+    
+    _answerCountLabel.text = @"回答 13";
+    CGFloat answerWidth = [_answerCountLabel.text sizeWithFont:_answerCountLabel.font].width + 4;
+    _answerCountLabel.frame = CGRectMake(_fengeLine.right + 8, _scanCountLabel.top, answerWidth, 17);
+    
+    [_lineView setTop:_scanCountLabel.bottom + 15];
+    [_lineView setHeight:8];
+    [self setHeight:_lineView.bottom];
+    
 }
 
 - (void)picTap:(UITapGestureRecognizer *)tap {
