@@ -83,6 +83,11 @@
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+                
+                if ([_typeString isEqualToString:@"exam"]) {
+                    [_dataSource insertObject:@{@"id":@"0",@"num":@"0",@"title":@"全部"} atIndex:0];
+                }
+                
                 _tableView.frame = CGRectMake(0, 0, MainScreenWidth, _dataSource.count * 60 > (MainScreenHeight - MACRO_UI_UPHEIGHT) ? (MainScreenHeight - MACRO_UI_UPHEIGHT) : _dataSource.count * 60);
                 [_tableView reloadData];
                 self.view.hidden = NO;
