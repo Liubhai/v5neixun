@@ -618,40 +618,58 @@
                             pass.is_expand = YES;
                         }
                         if (SWNOTEmptyArr(pass.topics)) {
-                            for (int j = 0; j<pass.topics.count; j++) {
-                                ExamDetailModel *detail = pass.topics[j];
+                            // 区分完形填空和材料
+                            if ([pass.question_type isEqualToString:@"7"]) {
                                 NSString *examAnswer = @"";
-                                detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
-                                detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
-                                if ([_examType isEqualToString:@"collect"]) {
-                                    detail.is_answer = YES;
-                                    detail.is_expand = YES;
-                                }
-                                if ([detail.question_type isEqualToString:@"8"]) {
-                                    ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
-                                    detail.options = [NSArray arrayWithObjects:op, nil];
-                                } else {
-                                    for (int k = 0; k<detail.options.count; k++) {
-                                        ExamDetailOptionsModel *modelOp = detail.options[k];
+                                for (int j = 0; j<pass.topics.count; j++) {
+                                    ExamDetailModel *detail = pass.topics[j];
+                                    detail.titleMutable = [self changeStringToMutA:detail.title];
+                                    detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
+                                    for (int j = 0; j<detail.options.count; j++) {
+                                        ExamDetailOptionsModel *modelOp = detail.options[j];
                                         modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
-                                        if ([detail.question_type isEqualToString:@"5"]) {
-                                            NSString *gapFillAnswer = [NSString stringWithFormat:@"（%@）",@(k + 1)];
-                                            for (int m = 0; m < modelOp.values.count; m++) {
-                                                if (m == 0) {
-                                                    gapFillAnswer = [NSString stringWithFormat:@"%@%@",gapFillAnswer,modelOp.values[m]];
-                                                } else {
-                                                    gapFillAnswer = [NSString stringWithFormat:@"%@、%@",gapFillAnswer,modelOp.values[m]];
-                                                }
-                                            }
-                                            examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
-                                        } else {
-                                            if (modelOp.is_right) {
-                                                examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
-                                            }
+                                        if (modelOp.is_right) {
+                                            examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
                                         }
                                     }
                                 }
-                                detail.examAnswer = examAnswer;
+                                pass.examAnswer = examAnswer;
+                            } else {
+                                for (int j = 0; j<pass.topics.count; j++) {
+                                    ExamDetailModel *detail = pass.topics[j];
+                                    NSString *examAnswer = @"";
+                                    detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
+                                    detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
+                                    if ([_examType isEqualToString:@"collect"]) {
+                                        detail.is_answer = YES;
+                                        detail.is_expand = YES;
+                                    }
+                                    if ([detail.question_type isEqualToString:@"8"]) {
+                                        ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
+                                        detail.options = [NSArray arrayWithObjects:op, nil];
+                                    } else {
+                                        for (int k = 0; k<detail.options.count; k++) {
+                                            ExamDetailOptionsModel *modelOp = detail.options[k];
+                                            modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                            if ([detail.question_type isEqualToString:@"5"]) {
+                                                NSString *gapFillAnswer = [NSString stringWithFormat:@"（%@）",@(k + 1)];
+                                                for (int m = 0; m < modelOp.values.count; m++) {
+                                                    if (m == 0) {
+                                                        gapFillAnswer = [NSString stringWithFormat:@"%@%@",gapFillAnswer,modelOp.values[m]];
+                                                    } else {
+                                                        gapFillAnswer = [NSString stringWithFormat:@"%@、%@",gapFillAnswer,modelOp.values[m]];
+                                                    }
+                                                }
+                                                examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
+                                            } else {
+                                                if (modelOp.is_right) {
+                                                    examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                                }
+                                            }
+                                        }
+                                    }
+                                    detail.examAnswer = examAnswer;
+                                }
                             }
                         } else {
                             if ([pass.question_type isEqualToString:@"8"]) {

@@ -696,4 +696,14 @@
     return [Net_Path fullPath:@"exam/rollup/detail" repalce:@"" byReplece:@""];
 }
 
+/** 砍价活动详情 */
++ (NSString *)kanjiaDetailInfoNet {
+    return [Net_Path fullPath:@"promotion/bargain/detail" repalce:@"" byReplece:@""];
+}
+
+/** 好友砍价详情 */
++ (NSString *)kanjiaDetailByFriendNet {
+    return [Net_Path fullPath:@"promotion/bargain/doit" repalce:@"" byReplece:@""];
+}
+
 @end

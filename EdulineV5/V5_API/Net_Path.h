@@ -513,6 +513,12 @@ struct NetWorkUrl {
 /** 套卷详情接口 */
 + (NSString *)volumePaperDetailNet;
 
+/** 砍价活动详情 */
++ (NSString *)kanjiaDetailInfoNet;
+
+/** 好友砍价详情 */
++ (NSString *)kanjiaDetailByFriendNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
