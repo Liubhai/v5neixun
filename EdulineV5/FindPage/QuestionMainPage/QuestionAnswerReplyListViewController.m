@@ -93,6 +93,44 @@
     return 8;//_dataSource.count;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return nil;
+    }
+    // todo...
+    // 这里需要判断评论数量
+    UIView *sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 50)];
+    sectionHeader.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 49)];
+    countLabel.text = @"共12条评论";
+    countLabel.textColor = EdlineV5_Color.textFirstColor;
+    countLabel.font = SYSTEMFONT(16);
+    [sectionHeader addSubview:countLabel];
+    
+    UIView *line0 = [[UIView alloc] initWithFrame:CGRectMake(0, 49, MainScreenWidth, 1)];
+    line0.backgroundColor = EdlineV5_Color.layarLineColor;
+    [sectionHeader addSubview:line0];
+    
+    return sectionHeader;;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return 0.001;
+    }
+    return 50;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.001;
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         static NSString *reuse = @"QuestionAnswerCell";
