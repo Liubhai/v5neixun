@@ -489,6 +489,9 @@
         // 刷新订单所有页面
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadOrderList" object:nil];
         [self.navigationController popViewControllerAnimated:YES];
+    } else if ([_orderTypeString containsString:@"exam"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadExamList" object:nil];
+        [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:NO];
     } else if ([_orderTypeString isEqualToString:@"member"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMember" object:nil];
         [self.navigationController popViewControllerAnimated:YES];

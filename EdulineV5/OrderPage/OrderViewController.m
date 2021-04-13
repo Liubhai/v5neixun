@@ -373,7 +373,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 OrderSureViewController *vc = [[OrderSureViewController alloc] init];
                 vc.orderSureInfo = responseObject;
-                vc.orderTypeString = @"course";
+                vc.orderTypeString = SWNOTEmptyStr(_orderTypeString) ? _orderTypeString : @"course";
                 [self.navigationController pushViewController:vc animated:YES];
             } else {
                 [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];

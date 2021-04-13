@@ -38,6 +38,8 @@
     _dataSource = [NSMutableArray new];
     page = 1;
     [self makeTableView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFirstList) name:@"reloadExamList" object:nil];
 }
 
 - (void)makeTopSearch {

@@ -38,6 +38,7 @@
     _detailInfo = [NSMutableDictionary new];
     page = 1;
     [self makeTableView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFirstList) name:@"reloadExamList" object:nil];
 }
 
 - (void)makeTableView {
