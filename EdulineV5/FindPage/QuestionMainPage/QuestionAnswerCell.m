@@ -13,6 +13,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self makeSubViews];
     }
     return self;
@@ -176,6 +177,60 @@
     
     [_lineView setTop:_replyIcon.bottom + 15];
     [self setHeight:_lineView.bottom];
+}
+
+- (void)setQuestionAnswerDetailListCellInfo:(NSDictionary *)dict {
+    
+    _questionAnswerCellInfo = dict;
+    
+    _contentLabel.frame = CGRectMake(15, _userFace.bottom + 12, MainScreenWidth - 30, 20);
+    _contentLabel.numberOfLines = 0;
+    _contentLabel.text = @"问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！问答标题列表最多显示4排！当地时间23日，中国驻比利时大使曹忠明和驻德国大使吴恳也分别向比方和德方提出严";
+    [_contentLabel sizeToFit];
+    [_contentLabel setHeight:_contentLabel.height];
+    
+    _maskView.hidden = YES;
+    _seeButton.hidden = YES;
+    
+    [_pictureViews removeAllSubviews];
+    NSInteger picCount = 5;
+    CGFloat leftSpace = 15;
+    CGFloat inSpace = 11;
+    CGFloat picWidth = (MainScreenWidth - leftSpace * 2 - inSpace * 2) / 3.0;
+    
+    if (picCount) {
+        [_pictureViews setTop:_contentLabel.bottom + 12];
+    } else {
+        [_pictureViews setTop:_contentLabel.bottom];
+    }
+    
+    for (int i = 0; i<picCount; i++) {
+        // x 余 y 正
+        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace + (picWidth + inSpace) * (i%3), (inSpace + picWidth) * (i/3), picWidth, picWidth)];
+        pic.clipsToBounds = YES;
+        pic.contentMode = UIViewContentModeScaleAspectFill;
+        pic.image = DefaultImage;
+        pic.tag = 66 + i;
+        pic.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(detailPicTap:)];
+        [pic addGestureRecognizer:tap];
+        [_pictureViews addSubview:pic];
+        if (i == (picCount - 1)) {
+            [_pictureViews setHeight:pic.bottom];
+        }
+    }
+    
+    _replyCountLabel.hidden = YES;
+    _replyIcon.hidden = YES;
+    
+    _zanCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 50, _pictureViews.bottom + 16, 50, 20);
+    _zanCountLabel.text = @"55";
+    
+    _zanIcon.frame = CGRectMake(_zanCountLabel.left - 4 - 20, _pictureViews.bottom + 16, 20, 20);
+    
+    [_lineView setTop:_zanCountLabel.bottom + 15];
+    [self setHeight:_lineView.bottom];
+    
 }
 
 - (void)detailPicTap:(UITapGestureRecognizer *)tap {

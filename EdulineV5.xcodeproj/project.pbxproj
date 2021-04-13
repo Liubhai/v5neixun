@@ -455,6 +455,8 @@
 		78BBB394262024CB009F5D10 /* QuestionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB393262024CB009F5D10 /* QuestionListCell.m */; };
 		78BBB39726242D0E009F5D10 /* QuestionAnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB39626242D0E009F5D10 /* QuestionAnswerCell.m */; };
 		78BBB39A26243E2B009F5D10 /* QuestionDetailListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB39926243E2B009F5D10 /* QuestionDetailListViewController.m */; };
+		78BBB39D26256D84009F5D10 /* QuestionAnswerReplyListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB39C26256D84009F5D10 /* QuestionAnswerReplyListCell.m */; };
+		78BBB3A0262572AE009F5D10 /* QuestionAnswerReplyListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB39F262572AE009F5D10 /* QuestionAnswerReplyListViewController.m */; };
 		78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */; };
 		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
 		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
@@ -1487,6 +1489,10 @@
 		78BBB39626242D0E009F5D10 /* QuestionAnswerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionAnswerCell.m; sourceTree = "<group>"; };
 		78BBB39826243E2B009F5D10 /* QuestionDetailListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionDetailListViewController.h; sourceTree = "<group>"; };
 		78BBB39926243E2B009F5D10 /* QuestionDetailListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionDetailListViewController.m; sourceTree = "<group>"; };
+		78BBB39B26256D84009F5D10 /* QuestionAnswerReplyListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionAnswerReplyListCell.h; sourceTree = "<group>"; };
+		78BBB39C26256D84009F5D10 /* QuestionAnswerReplyListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionAnswerReplyListCell.m; sourceTree = "<group>"; };
+		78BBB39E262572AE009F5D10 /* QuestionAnswerReplyListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionAnswerReplyListViewController.h; sourceTree = "<group>"; };
+		78BBB39F262572AE009F5D10 /* QuestionAnswerReplyListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionAnswerReplyListViewController.m; sourceTree = "<group>"; };
 		78BCF94824D7BB8C002F691C /* QuestionChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatViewController.h; sourceTree = "<group>"; };
 		78BCF94924D7BB8C002F691C /* QuestionChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatViewController.m; sourceTree = "<group>"; };
 		78BCF94E24D7C287002F691C /* QuestionChatRightCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatRightCell.h; sourceTree = "<group>"; };
@@ -3693,10 +3699,14 @@
 				78BBB390262024A0009F5D10 /* QuestionListViewController.m */,
 				78BBB39826243E2B009F5D10 /* QuestionDetailListViewController.h */,
 				78BBB39926243E2B009F5D10 /* QuestionDetailListViewController.m */,
+				78BBB39E262572AE009F5D10 /* QuestionAnswerReplyListViewController.h */,
+				78BBB39F262572AE009F5D10 /* QuestionAnswerReplyListViewController.m */,
 				78BBB392262024CB009F5D10 /* QuestionListCell.h */,
 				78BBB393262024CB009F5D10 /* QuestionListCell.m */,
 				78BBB39526242D0E009F5D10 /* QuestionAnswerCell.h */,
 				78BBB39626242D0E009F5D10 /* QuestionAnswerCell.m */,
+				78BBB39B26256D84009F5D10 /* QuestionAnswerReplyListCell.h */,
+				78BBB39C26256D84009F5D10 /* QuestionAnswerReplyListCell.m */,
 			);
 			path = QuestionMainPage;
 			sourceTree = "<group>";
@@ -4689,6 +4699,7 @@
 				788E957D253FE24E0089251E /* OTOTeacherView.m in Sources */,
 				788D4E9D259046D500D024AC /* SHLineView.m in Sources */,
 				78795739240FA3840013F95F /* ZLPhotoPickerImageView.m in Sources */,
+				78BBB39D26256D84009F5D10 /* QuestionAnswerReplyListCell.m in Sources */,
 				787657302435DC81008F475D /* SearchHistoryListCell.m in Sources */,
 				787F1E7D247381A400108F7B /* AliyunPlayerViewQualityListView.m in Sources */,
 				78AA13812440543D007087F7 /* TADotView.m in Sources */,
@@ -4738,6 +4749,7 @@
 				78795754240FAA7A0013F95F /* NSString+Valid.m in Sources */,
 				7879575A240FAA7A0013F95F /* UIResponder+Router.m in Sources */,
 				78C549D7241B674F00A33FC4 /* AlivcBaseNavigationController+aliyun_autorotate.m in Sources */,
+				78BBB3A0262572AE009F5D10 /* QuestionAnswerReplyListViewController.m in Sources */,
 				787F1E7C247381A400108F7B /* AliyunPlayerViewBottomView.m in Sources */,
 				787F1E80247381A400108F7B /* AliyunPlayerViewGifView.m in Sources */,
 				788E9575253FE24E0089251E /* EENavigationView.m in Sources */,

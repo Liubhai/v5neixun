@@ -1,21 +1,22 @@
 //
-//  QuestionDetailListViewController.m
+//  QuestionAnswerReplyListViewController.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2021/4/12.
+//  Created by 刘邦海 on 2021/4/13.
 //  Copyright © 2021 刘邦海. All rights reserved.
 //
 
-#import "QuestionDetailListViewController.h"
-#import "V5_Constant.h"
-#import "QuestionListCell.h"
-#import "QuestionAnswerCell.h"
-#import "Net_Path.h"
 #import "QuestionAnswerReplyListViewController.h"
+#import "V5_Constant.h"
+#import "QuestionAnswerCell.h"
+#import "QuestionAnswerReplyListCell.h"
+#import "Net_Path.h"
+#import "CommentBaseView.h"
 
-@interface QuestionDetailListViewController ()<UITableViewDelegate, UITableViewDataSource, QuestionListCellDelegate, ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource> {
+@interface QuestionAnswerReplyListViewController ()<UITableViewDelegate, UITableViewDataSource, QuestionAnswerCellDelegate, ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource,CommentBaseViewDelegate> {
     NSInteger page;
     UIImageView *currentShowPicImageView;
+    CGFloat keyHeight;
 }
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -23,25 +24,37 @@
 
 @property (strong, nonatomic) NSMutableArray *currentShowPicArray;
 
+@property (strong, nonatomic) UILabel *replayCountLabel;
+@property (strong, nonatomic) CommentBaseView *commentView;
+@property (strong, nonatomic) UIView *commentBackView;
+
 @end
 
-@implementation QuestionDetailListViewController
+@implementation QuestionAnswerReplyListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _titleLabel.text = @"问答详情";
+    _titleLabel.text = @"问题回答详情页";
+    _titleLabel.textAlignment = NSTextAlignmentLeft;
     _rightButton.hidden = NO;
     [_rightButton setImage:Image(@"nav_more_white_QD") forState:0];
+    _lineTL.hidden = NO;
+    _lineTL.backgroundColor = EdlineV5_Color.layarLineColor;
     _dataSource = [NSMutableArray new];
     _currentShowPicArray = [NSMutableArray new];
     [_currentShowPicArray addObjectsFromArray:@[DefaultImage,DefaultImage,DefaultImage,DefaultImage,DefaultImage]];
     page = 1;
     [self makeTableView];
+    
+    // 键盘相关通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - CommenViewHeight - MACRO_UI_SAFEAREA)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
@@ -54,6 +67,19 @@
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
 //    [_tableView.mj_header beginRefreshing];
+    
+    
+    _commentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:nil placeHolderTitle:nil sendButtonTitle:@"发布"];
+    _commentView.delegate = self;
+    [_commentView.sendButton setTitleColor:HEXCOLOR(0x5191FF) forState:0];
+    [self.view addSubview:_commentView];
+    
+    _commentBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.001)];
+    _commentBackView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.7];
+    UITapGestureRecognizer *backViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(commentBackViewTap:)];
+    [_commentBackView addGestureRecognizer:backViewTap];
+    _commentBackView.hidden = YES;
+    [self.view addSubview:_commentBackView];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -69,21 +95,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        static NSString *reuse = @"QuestionListCell";
-        QuestionListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        static NSString *reuse = @"QuestionAnswerCell";
+        QuestionAnswerCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
-            cell = [[QuestionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            cell = [[QuestionAnswerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell setQustionDetailCellInfo:@{}];
-        cell.delegate = self;
+        [cell setQuestionAnswerDetailListCellInfo:@{}];
         return cell;
     }
-    static NSString *reuse = @"QuestionAnswerCell";
-    QuestionAnswerCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+    static NSString *reuse = @"QuestionAnswerReplyListCell";
+    QuestionAnswerReplyListCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[QuestionAnswerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        cell = [[QuestionAnswerReplyListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setQuestionAnswerListCellInfo:@{}];
+    [cell setQuestionAnswerCommentInfo:@{} showAllContent:NO];
     return cell;
 }
 
@@ -93,8 +118,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    QuestionAnswerReplyListViewController *vc = [[QuestionAnswerReplyListViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getFirstList {
@@ -196,6 +219,88 @@
 //    photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:[NSURL URLWithString:imageURLStr]];
 //    photo.toView = currentShowPicImageView;
     return photo;
+}
+
+- (void)textViewValueDidChanged:(NSNotification *)notice {
+    UITextView *textView = (UITextView *)notice.object;
+    if (textView.text.length<=0) {
+        _commentView.placeHoderLab.hidden = NO;
+    } else {
+        _commentView.placeHoderLab.hidden = YES;
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification{
+    [_commentView setTop:MainScreenHeight - MACRO_UI_SAFEAREA - CommenViewHeight];
+    [_commentView setHeight:CommenViewHeight + MACRO_UI_SAFEAREA];
+    [_commentView.inputTextView setHeight:CommentInputHeight];
+    CGFloat XX = SWNOTEmptyArr(_commentView.leftButtonImageArray) ? (15 + _commentView.leftButtonImageArray.count * (CommentViewLeftButtonWidth + 8) + 13.5 - 8) : 15;
+    _commentView.inputTextView.frame = CGRectMake(XX, (CommenViewHeight - CommentInputHeight) / 2.0, MainScreenWidth - XX - 57.5, CommentInputHeight);
+    for (int i = 0; i<self.commentView.leftButtonImageArray.count; i++) {
+        UIButton *btn = (UIButton *)[_commentView viewWithTag:20 + i];
+        btn.hidden = NO;
+    }
+    [_commentView.sendButton setTop:0];
+    [_commentBackView setHeight:0.001];
+    _commentBackView.hidden = YES;
+    if (_commentView.inputTextView.text.length<=0) {
+        _commentView.placeHoderLab.hidden = NO;
+    } else {
+        _commentView.placeHoderLab.hidden = YES;
+    }
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification{
+    NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    keyHeight = [endValue CGRectValue].size.height;
+    if (IS_IPHONEX) {
+        keyHeight = keyHeight - 34;
+    }
+    [UIView animateWithDuration:0.1 animations:^{
+        for (int i = 0; i<self.commentView.leftButtonImageArray.count; i++) {
+            UIButton *btn = (UIButton *)[self.commentView viewWithTag:20 + i];
+            btn.hidden = YES;
+        }
+        [self.commentView setHeight:CommentViewMaxHeight];
+        self.commentView.inputTextView.frame = CGRectMake(15, (CommenViewHeight - CommentInputHeight) / 2.0, MainScreenWidth - 15 - 57.5, CommentViewMaxHeight - (CommenViewHeight - CommentInputHeight));
+        [self.commentView.sendButton setTop:self.commentView.inputTextView.bottom - CommenViewHeight + (CommenViewHeight - CommentInputHeight)/2.0];
+        [self.commentView setTop:MainScreenHeight - MACRO_UI_SAFEAREA - CommentViewMaxHeight - self->keyHeight];
+        [self.commentBackView setHeight:MainScreenHeight - MACRO_UI_SAFEAREA - CommentViewMaxHeight - self->keyHeight];
+    } completion:^(BOOL finished) {
+        self.commentBackView.hidden = NO;
+    }];
+}
+
+// MARK: - 评论框点击事件
+- (void)commentBackViewTap:(UIGestureRecognizer *)tap {
+    [_commentView.inputTextView resignFirstResponder];
+}
+
+// MARK: - 评论框点击发布按钮事件
+- (void)sendReplayMsg:(CommentBaseView *)view {
+    [view.inputTextView resignFirstResponder];
+    if (!SWNOTEmptyStr(view.inputTextView.text)) {
+        [self showHudInView:self.view showHint:@"请输入评论内容"];
+        return;
+    }
+//    NSString *content = [NSString stringWithFormat:@"%@",view.inputTextView.text];
+//    NSMutableDictionary *param = [NSMutableDictionary new];
+//    [param setObject:content forKey:@"content"];
+//    [param setObject:SWNOTEmptyStr(replayUserId) ? replayUserId : @"0" forKey:@"reply_user_id"];
+//    [Net_API requestPOSTWithURLStr:[Net_Path zixunPostCommentReplay:_commentId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+//        if (SWNOTEmptyDictionary(responseObject)) {
+//            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+//            if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                replayUserId = @"";
+//                _commentView.placeHoderLab.text = @"评论";
+//                [self getCommentReplayList];
+//            }
+//        }
+//    } enError:^(NSError * _Nonnull error) {
+//        [self showHudInView:self.view showHint:@"评论失败"];
+//    }];
+    view.inputTextView.text = @"";
+    view.placeHoderLab.hidden = NO;
 }
 
 @end

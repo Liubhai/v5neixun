@@ -46,6 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setQuestionAnswerListCellInfo:(NSDictionary *)dict;
 
+/** 回答详情里面顶部cell */
+- (void)setQuestionAnswerDetailListCellInfo:(NSDictionary *)dict;
+
 @end
 
 NS_ASSUME_NONNULL_END
