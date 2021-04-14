@@ -375,7 +375,9 @@
     }
     if ([courseId floatValue]>0 && !pmodel.has_bought) {
         // 购买
-        // 购买
+        // 只做提示 不做跳转
+        [self showHudInView:self.view showHint:@"请先购买"];
+        return;
         OrderViewController *vc = [[OrderViewController alloc] init];
         vc.orderTypeString = @"exam_special";
         vc.orderId = course_id;
@@ -383,9 +385,9 @@
     } else {
         // 开始答题
         ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
-        vc.examIds = course_id;
+        vc.examIds = cell.treeItem.course_id;//course_id;
         vc.examType = _examTypeId;
-        vc.examTitle = pmodel ? pmodel.title : cell.treeItem.title;
+        vc.examTitle = cell.treeItem.title;//pmodel ? pmodel.title : cell.treeItem.title;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
