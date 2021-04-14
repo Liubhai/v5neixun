@@ -123,6 +123,7 @@
                 _getOrFreeIamgeView.hidden = NO;
                 _getOrFreeIamgeView.image = Image(@"exam_yigouamai_icon");
                 [_getOrExamBtn setTitle:@"开始答题" forState:0];
+                _priceLabel.hidden = YES;
             } else {
                 _getOrFreeIamgeView.hidden = YES;
                 [_getOrExamBtn setTitle:@"购买" forState:0];
