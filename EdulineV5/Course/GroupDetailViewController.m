@@ -9,6 +9,7 @@
 #import "GroupDetailViewController.h"
 #import "V5_Constant.h"
 #import "KanjiaListCell.h"
+#import "Net_Path.h"
 
 @interface GroupDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -293,5 +294,33 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 64;
 }
+
+// MARK: - 请求砍价详情
+- (void)requestActivityDetailInfo {
+    if (!SWNOTEmptyStr(_activityId)) {
+        return;
+    }
+    if (SWNOTEmptyStr(_activityType)) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        NSString *getUrl = [Net_Path kanjiaDetailInfoNet];
+        if ([_activityType isEqualToString:@"1"]) {
+            // 限时打折
+        } else if ([_activityType isEqualToString:@"2"]) {
+            // 秒杀
+        } else if ([_activityType isEqualToString:@"3"]) {
+            // 砍价
+            getUrl = [Net_Path kanjiaDetailInfoNet];
+            [param setObject:_activityId forKey:@"promotion_id"];
+        } else if ([_activityType isEqualToString:@"4"]) {
+            // 拼团
+        }
+        [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
 
 @end

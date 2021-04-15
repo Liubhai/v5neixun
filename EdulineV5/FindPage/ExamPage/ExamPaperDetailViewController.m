@@ -119,6 +119,7 @@
     _examCollectBtn.centerY = _titleLabel.centerY;
     [_examCollectBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_examCollectBtn];
+    _examCollectBtn.hidden = YES;
 }
 
 - (void)makeBottomView {
@@ -1066,9 +1067,14 @@
             _nextExamBtn.enabled = YES;
         }
     } else if (sender == _examSheetBtn) {
+        [self managerAnswer];
         // 跳转到答题卡页面
         AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
+        vc.remainTime = remainTime;
+        vc.orderType = [_currentExamPaperDetailModel.total_time isEqualToString:@"0"] ? YES : NO;
         vc.isPaper = YES;
+        vc.currentExamPaperDetailModel = _currentExamPaperDetailModel;
+        vc.answerManagerArray = [NSMutableArray arrayWithArray:_answerManagerArray];
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
         vc.currentIndexpath = currentExamIndexPath;
         vc.chooseOtherExam = ^(NSString * _Nonnull examId) {
@@ -1657,6 +1663,10 @@
             [paperTimer invalidate];
             paperTimer = nil;
             remainTime = [_currentExamPaperDetailModel.total_time integerValue] * 60;
+        }
+        if (remainTime==0) {
+            // 倒计时结束自动提交
+            [self managerAnswer];
         }
     }
 }

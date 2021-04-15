@@ -10,8 +10,11 @@
 #import "V5_Constant.h"
 //#import "ExamSheetModel.h"
 #import "ExamIDListModel.h"
+#import "Net_Path.h"
 
-@interface AnswerSheetViewController ()
+@interface AnswerSheetViewController () {
+    NSTimer *paperTimer;// 试卷作答时候的计时器(倒计时或者正序即时)
+}
 
 @property (strong, nonatomic) UIButton *resetButton;//清空筛选
 @property (strong, nonatomic) UIButton *sureButton;//开始学习
@@ -27,7 +30,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _titleLabel.text = @"显示考试时间";
+    if (_remainTime>0) {
+        _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:_remainTime]];
+        paperTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerStart) userInfo:nil repeats:YES];
+    }
     
     _titleLabel.hidden = !_isPaper;
     
@@ -112,6 +118,31 @@
 }
 
 - (void)sureButtonClick {
+    if (SWNOTEmptyStr(_currentExamPaperDetailModel.paper_id)) {
+        
+        NSMutableDictionary *passDict = [NSMutableDictionary new];
+        [passDict setObject:_currentExamPaperDetailModel.paper_id forKey:@"paper_id"];
+        [passDict setObject:_currentExamPaperDetailModel.unique_code forKey:@"unique_code"];
+        [passDict setObject:[NSArray arrayWithArray:_answerManagerArray] forKey:@"answer_data"];
+        if ([_currentExamPaperDetailModel.total_time isEqualToString:@"0"]) {
+            [passDict setObject:@(_remainTime) forKey:@"time_takes"];
+        } else {
+            [passDict setObject:@([_currentExamPaperDetailModel.total_time integerValue] * 60 - _remainTime) forKey:@"time_takes"];
+        }
+        
+        [Net_API requestPOSTWithURLStr:[Net_Path submitPaperNet] WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 - (void)resetButtonClick {
@@ -228,6 +259,45 @@
             self.chooseOtherExam(thirdModel.topic_id);
             [self.navigationController popViewControllerAnimated:YES];
         }
+    }
+}
+
+// MARK: - 计时器开始计时
+- (void)timerStart {
+    if (_orderType) {
+        // 正序计时
+        // 显示时间
+        _remainTime +=1;
+        _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:_remainTime]];
+    } else {
+        // 倒序计时
+        // 显示时间
+        _remainTime -=1;
+        if (_remainTime==-1) {
+            [paperTimer invalidate];
+            paperTimer = nil;
+            _remainTime = 0;
+        } else {
+            _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:_remainTime]];
+            if (_remainTime == 0) {
+                [self sureButtonClick];
+            }
+        }
+    }
+}
+
+- (void)dealloc {
+    if (paperTimer) {
+        [paperTimer invalidate];
+        paperTimer = nil;
+    }
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        [paperTimer invalidate];
+        paperTimer = nil;
     }
 }
 

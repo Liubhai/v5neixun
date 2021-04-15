@@ -706,4 +706,9 @@
     return [Net_Path fullPath:@"promotion/bargain/doit" repalce:@"" byReplece:@""];
 }
 
+/** 发起拼团接口 */
++ (NSString *)groupApplyNet {
+    return [Net_Path fullPath:@"promotion/pintuan/create" repalce:@"" byReplece:@""];
+}
+
 @end

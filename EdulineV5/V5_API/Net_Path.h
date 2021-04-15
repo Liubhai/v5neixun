@@ -519,6 +519,9 @@ struct NetWorkUrl {
 /** 好友砍价详情 */
 + (NSString *)kanjiaDetailByFriendNet;
 
+/** 发起拼团接口 */
++ (NSString *)groupApplyNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

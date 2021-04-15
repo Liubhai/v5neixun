@@ -53,6 +53,10 @@
     _priceLabel.textAlignment = NSTextAlignmentRight;
     _priceLabel.centerY = _learnCountLabel.centerY;
     [self.contentView addSubview:_priceLabel];
+    
+    _courseActivityIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.bottom - 17, 32, 17)];
+    _courseActivityIcon.hidden = YES;
+    [self.contentView addSubview:_courseActivityIcon];
 }
 
 - (void)setCourseListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex cellType:(BOOL)cellType {
@@ -124,6 +128,25 @@
             _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[info objectForKey:@"price"]];
             _priceLabel.textColor = EdlineV5_Color.faildColor;
         }
+    }
+    // 1 限时折扣 2 限时秒杀 3 砍价 4 拼团 0 没有活动
+    _courseActivityIcon.frame = CGRectMake(_courseFace.right - 32, _courseFace.bottom - 17, 32, 17);
+    NSString *activityType = [NSString stringWithFormat:@"%@",[info objectForKey:@"promotion_type"]];
+    if ([activityType isEqualToString:@"0"]) {
+        _courseActivityIcon.hidden = YES;
+    } else if ([activityType isEqualToString:@"2"]) {
+        _courseActivityIcon.hidden = NO;
+        _courseActivityIcon.image = Image(@"seckill_icon");
+    } else if ([activityType isEqualToString:@"3"]) {
+        _courseActivityIcon.hidden = NO;
+        _courseActivityIcon.image = Image(@"kanjia_icon");
+    } else if ([activityType isEqualToString:@"4"]) {
+        _courseActivityIcon.hidden = NO;
+        _courseActivityIcon.image = Image(@"pintuan_icon");
+    } else if ([activityType isEqualToString:@"1"]) {
+        _courseActivityIcon.hidden = NO;
+        _courseActivityIcon.image = Image(@"discount_icon");
+        _courseActivityIcon.frame = CGRectMake(_courseFace.right - 52, _courseFace.bottom - 17, 52, 17);
     }
 }
 

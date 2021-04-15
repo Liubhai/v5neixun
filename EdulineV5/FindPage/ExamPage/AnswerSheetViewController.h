@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "ExamIDListModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,6 +22,12 @@ typedef void(^chooseOtherExam)(NSString *examId);
 @property (strong, nonatomic) NSString *sheetTitle;
 
 @property (strong, nonatomic) NSIndexPath *currentIndexpath;
+
+@property (assign, nonatomic) NSInteger remainTime;// 如果有值 那么就需要计时器开启
+@property (assign, nonatomic) BOOL orderType;// yes 正序计时 no 倒计时
+
+@property (strong, nonatomic) ExamPaperDetailModel *currentExamPaperDetailModel;
+@property (strong, nonatomic) NSMutableArray *answerManagerArray;
 
 @end
 
