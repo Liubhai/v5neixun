@@ -49,7 +49,7 @@
     
     _examDoButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 22, 0, 22, 22)];
     _examDoButton.centerY = _learnCountLabel.centerY;
-    [_examDoButton setImage:Image(@"exam_icon_disabled") forState:0];
+    [_examDoButton setImage:[Image(@"exam_icon_disabled") converToMainColor] forState:0];
     [_examDoButton addTarget:self action:@selector(examDoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_examDoButton];
     

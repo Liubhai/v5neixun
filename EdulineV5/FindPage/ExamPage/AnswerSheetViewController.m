@@ -280,7 +280,7 @@
         } else {
             _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:_remainTime]];
             if (_remainTime == 0) {
-                [self sureButtonClick];
+                // 这里不需要提交试卷了 因为在答题详情页会做这一步操作
             }
         }
     }

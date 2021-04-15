@@ -144,6 +144,9 @@
             vc.examIds = [NSString stringWithFormat:@"%@",[_detailInfo objectForKey:@"id"]];
             [self.navigationController pushViewController:vc animated:YES];
         } else {
+            // 提示请先购买
+            [self showHudInView:self.view showHint:@"请先购买"];
+            return;
             // 购买
             OrderViewController *vc = [[OrderViewController alloc] init];
             vc.orderTypeString = @"exam_volume";
