@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TaojuanListViewController : BaseViewController
 
 @property (strong, nonatomic) NSString *module_id;
+@property (strong, nonatomic) NSString *module_title;
 
 @end
 

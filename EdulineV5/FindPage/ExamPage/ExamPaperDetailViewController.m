@@ -1070,6 +1070,7 @@
         [self managerAnswer];
         // 跳转到答题卡页面
         AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
+        vc.sheetTitle = _currentExamPaperDetailModel ? _currentExamPaperDetailModel.title : @"";
         vc.remainTime = remainTime;
         vc.orderType = [_currentExamPaperDetailModel.total_time isEqualToString:@"0"] ? YES : NO;
         vc.isPaper = YES;

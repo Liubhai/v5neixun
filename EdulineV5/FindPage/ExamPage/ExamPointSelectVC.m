@@ -295,7 +295,7 @@
     ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
     vc.examIds = examIds;
     vc.examType = _examTypeId;
-    vc.examTitle = @"知识点练习";
+    vc.examTitle = _examTypeString;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

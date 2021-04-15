@@ -55,7 +55,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _titleLabel.text = @"00:32:22";
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
     _titleLabel.textAlignment = NSTextAlignmentLeft;
     _titleLabel.font = SYSTEMFONT(16);
@@ -990,6 +989,7 @@
         // 跳转到答题卡页面
         AnswerSheetViewController *vc = [[AnswerSheetViewController alloc] init];
         vc.sheetTitle = _examTitle;
+        vc.module_title = _module_title;
         vc.currentIndexpath = currentExamIndexPath;
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
         vc.chooseOtherExam = ^(NSString * _Nonnull examId) {

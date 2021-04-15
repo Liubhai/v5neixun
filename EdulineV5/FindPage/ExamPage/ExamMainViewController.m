@@ -103,6 +103,7 @@
     } else if (([examTheme isEqualToString:@"4"])) {
         TaojuanListViewController *vc = [[TaojuanListViewController alloc] init];
         vc.module_id = examTheme;
+        vc.module_title = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"2"]) {
         ZhuangXiangListTreeTableVC *vc = [[ZhuangXiangListTreeTableVC alloc] init];

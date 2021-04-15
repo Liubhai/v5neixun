@@ -14,7 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *examType;
 @property (strong, nonatomic) NSString *examIds;
-@property (strong, nonatomic) NSString *examTitle;
+@property (strong, nonatomic) NSString *examTitle;//
+
+@property (strong, nonatomic) NSString *module_title;// 考试主页 板块儿名称
 
 @end
 

@@ -21,6 +21,8 @@ typedef void(^chooseOtherExam)(NSString *examId);
 
 @property (strong, nonatomic) NSString *sheetTitle;
 
+@property (strong, nonatomic) NSString *module_title;// 考试主页板块儿名称
+
 @property (strong, nonatomic) NSIndexPath *currentIndexpath;
 
 @property (assign, nonatomic) NSInteger remainTime;// 如果有值 那么就需要计时器开启

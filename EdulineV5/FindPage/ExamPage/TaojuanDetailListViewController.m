@@ -31,6 +31,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    _titleLabel.text = _module_title;
+    
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     
