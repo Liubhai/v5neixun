@@ -1660,13 +1660,12 @@
         // 显示时间
         _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:remainTime]];
         remainTime -=1;
-        if (remainTime==-1) {
+        if (remainTime==0) {
+            _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:remainTime]];
+            // 倒计时结束自动提交
             [paperTimer invalidate];
             paperTimer = nil;
-            remainTime = [_currentExamPaperDetailModel.total_time integerValue] * 60;
-        }
-        if (remainTime==0) {
-            // 倒计时结束自动提交
+//            remainTime = [_currentExamPaperDetailModel.total_time integerValue] * 60;
             [self managerAnswer];
         }
     }

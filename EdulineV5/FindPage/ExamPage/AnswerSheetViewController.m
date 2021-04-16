@@ -30,7 +30,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    if (_remainTime>0) {
+    if (_isPaper) {
         _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:_remainTime]];
         paperTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerStart) userInfo:nil repeats:YES];
     }
@@ -272,8 +272,14 @@
     } else {
         // 倒序计时
         // 显示时间
+        if (_remainTime <= 0) {
+            _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:_remainTime]];
+            [paperTimer invalidate];
+            paperTimer = nil;
+            _remainTime = 0;
+        }
         _remainTime -=1;
-        if (_remainTime==-1) {
+        if (_remainTime<=-1) {
             [paperTimer invalidate];
             paperTimer = nil;
             _remainTime = 0;
