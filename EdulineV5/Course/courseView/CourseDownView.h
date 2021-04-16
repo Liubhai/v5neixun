@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)joinShopCarEvent:(CourseDownView *)downView;
 - (void)joinStudyEvent:(CourseDownView *)downView;
 - (void)jumpToCommentVC;
+- (void)kanJiaAndPinTuan:(CourseDownView *)downView;
 
 @end
 
@@ -33,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *shopCountLabel;
 @property (strong, nonatomic) UIButton *joinShopCarButton;
 @property (strong, nonatomic) UIButton *joinStudyButton;
+
+// 拼团、砍价 专用
+@property (strong, nonatomic) UIButton *activityButton;
+@property (strong, nonatomic) UIButton *activityJoinStudyButton;
 
 @property (strong, nonatomic) UIButton *recordButton;
 

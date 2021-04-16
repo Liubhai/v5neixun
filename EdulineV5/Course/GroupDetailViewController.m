@@ -66,6 +66,7 @@
     
     [self makeCourseInfoView];
     [self groupDetailUI];
+    [self requestActivityDetailInfo];
     // Do any additional setup after loading the view.
 }
 
@@ -205,7 +206,10 @@
     _doButton.centerX = _groupBackView.width / 2.0;
     [_groupBackView addSubview:_doButton];
     
-    [self makeKanjiaUI];
+    if ([_activityType isEqualToString:@"3"]) {
+        [self makeKanjiaUI];
+    }
+    
 }
 
 // MARK: - 砍价UI
@@ -313,8 +317,16 @@
             [param setObject:_activityId forKey:@"promotion_id"];
         } else if ([_activityType isEqualToString:@"4"]) {
             // 拼团
+            getUrl = [Net_Path pintuanDetailInfoNet];
+            [param setObject:_activityId forKey:@"tuan_id"];
         }
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    
+                }
+            }
             
         } enError:^(NSError * _Nonnull error) {
             

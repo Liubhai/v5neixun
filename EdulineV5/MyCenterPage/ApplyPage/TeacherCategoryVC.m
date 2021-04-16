@@ -53,12 +53,12 @@
     
     if ([_typeString isEqualToString:@"1"]) {
         _titleLabel.text = @"讲师";
-        _rightButton.hidden = NO;
+        _rightButton.hidden = YES;
     }
     
     if ([_typeString isEqualToString:@"2"]) {
         _titleLabel.text = @"机构";
-        _rightButton.hidden = NO;
+        _rightButton.hidden = YES;
     }
     
     if (_isDownExpend) {

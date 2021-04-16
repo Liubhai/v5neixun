@@ -16,8 +16,11 @@
 @property (strong, nonatomic) NSDictionary *activityInfo;//是否有活动详情
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) LBHTableView *tableView;
+@property (strong, nonatomic) UIView *applyPintuanButtonBackView;
+@property (strong, nonatomic) UIButton *applyPintuanButton;
 @property (strong, nonatomic) UIButton *closeButton;
 @property (strong, nonatomic) UILabel *groupTitleLabel;
 @property (strong, nonatomic) NSString *courseType;// 1 点播 2 直播 3 线下课 4 套餐 5 班级课
+@property (strong, nonatomic) NSString *courseId;// 课程ID
 
 @end

@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *label2;
 @property (strong, nonatomic) UILabel *secondLabel;
 
+- (void)setActivityInfo:(NSDictionary *)activityInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

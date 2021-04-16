@@ -101,7 +101,7 @@
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     NSString *keyType = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"key"]];
     if ([keyType isEqualToString:@"school"]) {
-        QuestionRootViewController *vc = [[QuestionRootViewController alloc] init];
+        InstitutionListVC *vc = [[InstitutionListVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([keyType isEqualToString:@"news"]) {
         ZiXunListVC *vc = [[ZiXunListVC alloc] init];

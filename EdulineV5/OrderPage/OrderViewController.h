@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong,nonatomic) UIView *topContentView;
 @property (strong,nonatomic) UIImageView *courseFaceImageView;
 @property (strong, nonatomic) UIImageView *courseTypeImage;
+@property (strong, nonatomic) UIImageView *courseActivityIcon;
+
 @property (strong,nonatomic) UILabel *textLabel;
 @property (strong,nonatomic) UILabel *courseHourLabel;
 @property (strong,nonatomic) UILabel *priceLabel;

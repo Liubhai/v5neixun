@@ -40,6 +40,7 @@
 
 #import "CourseActivityView.h"
 #import "GroupListPopViewController.h"
+#import "GroupDetailViewController.h"
 
 #define FaceImageHeight 207
 
@@ -205,9 +206,8 @@
     [_headerView addSubview:_faceImageView];
     
     _courseActivityView = [[CourseActivityView alloc] initWithFrame:CGRectMake(0, _faceImageView.height - 45, MainScreenWidth, 45)];
-    UITapGestureRecognizer *groupTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showGroupList)];
-    [_courseActivityView addGestureRecognizer:groupTap];
     [_headerView addSubview:_courseActivityView];
+    _courseActivityView.hidden = YES;
     
     _navBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _navBackButton.frame = CGRectMake(0, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 54, 44);
@@ -982,6 +982,40 @@
     }
 }
 
+- (void)kanJiaAndPinTuan:(CourseDownView *)downView {
+    // 活动
+    if (SWNOTEmptyDictionary(_dataSource[@"promotion"])) {
+        NSDictionary *promotion = [NSDictionary dictionaryWithDictionary:_dataSource[@"promotion"]];
+        NSString *promotionType = [NSString stringWithFormat:@"%@",promotion[@"type"]];
+        /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
+        if ([promotionType isEqualToString:@"1"] || [promotionType isEqualToString:@"2"]) {
+            
+        } else if ([promotionType isEqualToString:@"3"]) {
+            // 砍价
+        } else if ([promotionType isEqualToString:@"4"]) {
+            // 拼团
+            if (SWNOTEmptyDictionary(_dataSource[@"pintuan_data"])) {
+                NSString *pintuanStatus = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"status"]];
+                /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功；】 */
+                if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
+                    // 进入拼团详情
+                    GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
+                    /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
+                    vc.activityType = @"4";
+                    vc.activityId = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"id"]];
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    // 弹框
+                    [self showGroupList];
+                }
+            } else {
+                // 弹框
+                [self showGroupList];
+            }
+        }
+    }
+}
+
 - (void)jumpToCommentVC {
     if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         return;
@@ -1077,6 +1111,13 @@
             _faceImageView.image = DefaultImage;
         }
         
+        if (SWNOTEmptyDictionary(_dataSource[@"promotion"])) {
+            _courseActivityView.hidden = NO;
+            [_courseActivityView setActivityInfo:_dataSource];
+        } else {
+            _courseActivityView.hidden = YES;
+        }
+        
         if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
             [_navZanButton setImage:Image(@"course_collect_pre") forState:0];
             [_zanButton setImage:Image(@"nav_collect_pre") forState:0];
@@ -1130,6 +1171,7 @@
 // MARK: - 显示团购列表弹框
 - (void)showGroupList {
     GroupListPopViewController *vc = [[GroupListPopViewController alloc] init];
+    vc.courseId = _ID;
 //    vc.activityInfo = [NSDictionary dictionaryWithDictionary:_activityInfo];
 //    vc.courseType = _isClassNew ? @"5" : @"1";
 //    vc.videoDataSource = _videoDataSource;

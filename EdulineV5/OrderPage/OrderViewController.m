@@ -60,6 +60,10 @@
     [_topContentView addSubview:_courseTypeImage];
     _courseTypeImage.hidden = YES;
     
+    _courseActivityIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.right - 32, _courseFaceImageView.bottom - 17, 32, 17)];
+    _courseActivityIcon.hidden = YES;
+    [_topContentView addSubview:_courseActivityIcon];
+    
     _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 15, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
     _textLabel.textColor = EdlineV5_Color.textFirstColor;
     _textLabel.font = SYSTEMFONT(14);
@@ -454,6 +458,28 @@
             } else if ([courseType isEqualToString:@"4"]) {
                 _courseTypeImage.image = Image(@"class_icon");
             }
+            
+            if (SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"])) {
+                _otherView.hidden = YES;
+                NSString *activityType = [NSString stringWithFormat:@"%@",[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"type"]];
+                if ([activityType isEqualToString:@"0"]) {
+                    _courseActivityIcon.hidden = YES;
+                } else if ([activityType isEqualToString:@"2"]) {
+                    _courseActivityIcon.hidden = NO;
+                    _courseActivityIcon.image = Image(@"seckill_icon");
+                } else if ([activityType isEqualToString:@"3"]) {
+                    _courseActivityIcon.hidden = NO;
+                    _courseActivityIcon.image = Image(@"kanjia_icon");
+                } else if ([activityType isEqualToString:@"4"]) {
+                    _courseActivityIcon.hidden = NO;
+                    _courseActivityIcon.image = Image(@"pintuan_icon");
+                } else if ([activityType isEqualToString:@"1"]) {
+                    _courseActivityIcon.hidden = NO;
+                    _courseActivityIcon.image = Image(@"discount_icon");
+                    _courseActivityIcon.frame = CGRectMake(_courseFaceImageView.right - 52, _courseFaceImageView.bottom - 17, 52, 17);
+                }
+            }
+            
             _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",[[_orderInfo objectForKey:@"data"] objectForKey:@"section_count"]];
         } else if ([_orderTypeString isEqualToString:@"courseHourse"]) {
             NSString *courseHourseType = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"data_type"]];
@@ -480,6 +506,14 @@
         NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
         [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
         _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+        
+        if ((SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"]))) {
+            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]];
+            NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+            [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+            _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+        }
         
         NSString *timeLine = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"term_time"]];
         if ([timeLine isEqualToString:@"0"] || ![[_orderInfo objectForKey:@"data"] objectForKey:@"term_time"]) {

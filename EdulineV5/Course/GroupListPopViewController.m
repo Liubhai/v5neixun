@@ -9,6 +9,7 @@
 #import "GroupListPopViewController.h"
 #import "GrouListCell.h"
 #import "GroupDetailViewController.h"
+#import "OrderViewController.h"
 
 @interface GroupListPopViewController ()<GrouListCellDelegate> {
     NSInteger timeCount;
@@ -55,8 +56,29 @@
     _groupTitleLabel.layer.mask = maskLayer1;
     [self.view addSubview:_groupTitleLabel];
     
+    _applyPintuanButtonBackView = [[UIView alloc] initWithFrame:CGRectMake(_tableView.left, _tableView.bottom - 3, _tableView.width, 64)];
+    _applyPintuanButtonBackView.backgroundColor = [UIColor whiteColor];
+    _applyPintuanButtonBackView.layer.masksToBounds = YES;
+    UIBezierPath * path2 = [UIBezierPath bezierPathWithRoundedRect:_applyPintuanButtonBackView.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(7, 7)];
+    CAShapeLayer *maskLayer2 = [[CAShapeLayer alloc] init];
+    maskLayer2.frame = _groupTitleLabel.bounds;
+    maskLayer2.path = path2.CGPath;
+    _applyPintuanButtonBackView.layer.mask = maskLayer2;
+    [self.view addSubview:_applyPintuanButtonBackView];
+    
+    
+    _applyPintuanButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 16, MainScreenWidth - 45 * 2, 32)];
+    [_applyPintuanButton setTitle:@"发起拼团" forState:0];
+    [_applyPintuanButton setTitleColor:[UIColor whiteColor] forState:0];
+    _applyPintuanButton.titleLabel.font = SYSTEMFONT(15);
+    _applyPintuanButton.layer.masksToBounds = YES;
+    _applyPintuanButton.layer.cornerRadius = 2.0;
+    _applyPintuanButton.backgroundColor = EdlineV5_Color.courseActivityGroupColor;
+    [_applyPintuanButtonBackView addSubview:_applyPintuanButton];
+    [_applyPintuanButton addTarget:self action:@selector(applyPintuan) forControlEvents:UIControlEventTouchUpInside];
+    
     // 关闭按钮
-    _closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _tableView.bottom + 25, 44, 44)];
+    _closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _applyPintuanButtonBackView.bottom + 25, 44, 44)];
     _closeButton.centerX = MainScreenWidth / 2.0;
     [_closeButton setImage:Image(@"close_button_white") forState:0];
     [_closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -97,6 +119,13 @@
 //    vc.isBuyAlone = YES;
 //    [self.parentViewController.navigationController pushViewController:vc animated:YES];
     GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
+    [self.parentViewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)applyPintuan {
+    OrderViewController *vc = [[OrderViewController alloc] init];
+    vc.orderTypeString = @"course";
+    vc.orderId = _courseId;
     [self.parentViewController.navigationController pushViewController:vc animated:YES];
 }
 

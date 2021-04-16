@@ -711,4 +711,9 @@
     return [Net_Path fullPath:@"promotion/pintuan/create" repalce:@"" byReplece:@""];
 }
 
+/** 拼团详情 */
++ (NSString *)pintuanDetailInfoNet {
+    return [Net_Path fullPath:@"promotion/pintuan/detail" repalce:@"" byReplece:@""];
+}
+
 @end

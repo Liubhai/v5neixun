@@ -26,25 +26,9 @@
     [self addSubview:_backIconImage];
     
     _groupSellPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 3, 200, 23)];
-    NSString *sellPrice = @"16999.99";
-    NSString *moneyIcon = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
-    NSString *fullSellPrice = [NSString stringWithFormat:@"%@%@",moneyIcon,sellPrice];
-    NSRange rangNow = NSMakeRange(moneyIcon.length, sellPrice.length);
-    NSRange rangOld = NSMakeRange(0, moneyIcon.length);
-    NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:fullSellPrice];
-    [priceAtt addAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Medium" size:15],NSForegroundColorAttributeName:[UIColor whiteColor]} range:rangOld];
-    [priceAtt addAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Medium" size:22],NSForegroundColorAttributeName:[UIColor whiteColor]} range:rangNow];
-    _groupSellPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
     [self addSubview:_groupSellPriceLabel];
     
     _groupOriginPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_groupSellPriceLabel.left, _groupSellPriceLabel.bottom + 0.5, _groupSellPriceLabel.width, 15)];
-    NSString *originPrice = @"23999.99";
-    NSString *fullOriginPrice = [NSString stringWithFormat:@"%@%@",moneyIcon,originPrice];
-    NSMutableAttributedString *priceOriginAtt = [[NSMutableAttributedString alloc] initWithString:fullOriginPrice];
-    [priceOriginAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:[UIColor whiteColor]} range:NSMakeRange(0, fullOriginPrice.length)];
-    _groupOriginPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceOriginAtt];
-    _groupOriginPriceLabel.alpha = 0.82;
-    _groupOriginPriceLabel.font = SYSTEMFONT(12);
     [self addSubview:_groupOriginPriceLabel];
     
     _groupTimeTipLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.bounds.size.width - 120, 5.5, 120, 14)];
@@ -106,5 +90,44 @@
     [self addSubview:_dayLabel];
 }
 
+- (void)setActivityInfo:(NSDictionary *)activityInfo {
+    if (SWNOTEmptyDictionary(activityInfo)) {
+        if (SWNOTEmptyDictionary(activityInfo[@"promotion"])) {
+            NSDictionary *promotion = [NSDictionary dictionaryWithDictionary:activityInfo[@"promotion"]];
+            NSString *promotionType = [NSString stringWithFormat:@"%@",promotion[@"type"]];
+            /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
+            if ([promotionType isEqualToString:@"1"]) {
+                _backIconImage.image = Image(@"details_discount_bg");
+            } else if ([promotionType isEqualToString:@"2"]) {
+                _backIconImage.image = Image(@"detials_seckill_bg");
+            } else if ([promotionType isEqualToString:@"3"]) {
+                _backIconImage.image = Image(@"detials_kanjia_bg");
+            } else if ([promotionType isEqualToString:@"4"]) {
+                _backIconImage.image = Image(@"detials_pintuan_bg");
+            }
+            
+            NSString *sellPrice = [NSString stringWithFormat:@"%@",promotion[@"price"]];
+            NSString *moneyIcon = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
+            NSString *fullSellPrice = [NSString stringWithFormat:@"%@%@",moneyIcon,sellPrice];
+            NSRange rangNow = NSMakeRange(moneyIcon.length, sellPrice.length);
+            NSRange rangOld = NSMakeRange(0, moneyIcon.length);
+            NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:fullSellPrice];
+            [priceAtt addAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Medium" size:15],NSForegroundColorAttributeName:[UIColor whiteColor]} range:rangOld];
+            [priceAtt addAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Medium" size:22],NSForegroundColorAttributeName:[UIColor whiteColor]} range:rangNow];
+            _groupSellPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+         
+            NSString *originPrice = [NSString stringWithFormat:@"%@",promotion[@"price"]];
+            NSString *fullOriginPrice = [NSString stringWithFormat:@"%@%@",moneyIcon,originPrice];
+            NSMutableAttributedString *priceOriginAtt = [[NSMutableAttributedString alloc] initWithString:fullOriginPrice];
+            [priceOriginAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:[UIColor whiteColor]} range:NSMakeRange(0, fullOriginPrice.length)];
+            _groupOriginPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceOriginAtt];
+            _groupOriginPriceLabel.alpha = 0.82;
+            _groupOriginPriceLabel.font = SYSTEMFONT(12);
+            
+            
+            
+        }
+    }
+}
 
 @end
