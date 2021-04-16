@@ -25,11 +25,11 @@
     _backIconImage.image = Image(@"detials_pintuan_bg");
     [self addSubview:_backIconImage];
     
-    _groupSellPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 3, 200, 23)];
+    _groupSellPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 0, 200, self.bounds.size.height)];
     [self addSubview:_groupSellPriceLabel];
     
-    _groupOriginPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_groupSellPriceLabel.left, _groupSellPriceLabel.bottom + 0.5, _groupSellPriceLabel.width, 15)];
-    [self addSubview:_groupOriginPriceLabel];
+//    _groupOriginPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_groupSellPriceLabel.left, _groupSellPriceLabel.bottom + 0.5, _groupSellPriceLabel.width, 15)];
+//    [self addSubview:_groupOriginPriceLabel];
     
     _groupTimeTipLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.bounds.size.width - 120, 5.5, 120, 14)];
     _groupTimeTipLabel.font = SYSTEMFONT(10);
@@ -116,13 +116,13 @@
             [priceAtt addAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Medium" size:22],NSForegroundColorAttributeName:[UIColor whiteColor]} range:rangNow];
             _groupSellPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
          
-            NSString *originPrice = [NSString stringWithFormat:@"%@",promotion[@"price"]];
-            NSString *fullOriginPrice = [NSString stringWithFormat:@"%@%@",moneyIcon,originPrice];
-            NSMutableAttributedString *priceOriginAtt = [[NSMutableAttributedString alloc] initWithString:fullOriginPrice];
-            [priceOriginAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:[UIColor whiteColor]} range:NSMakeRange(0, fullOriginPrice.length)];
-            _groupOriginPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceOriginAtt];
-            _groupOriginPriceLabel.alpha = 0.82;
-            _groupOriginPriceLabel.font = SYSTEMFONT(12);
+//            NSString *originPrice = [NSString stringWithFormat:@"%@",promotion[@"price"]];
+//            NSString *fullOriginPrice = [NSString stringWithFormat:@"%@%@",moneyIcon,originPrice];
+//            NSMutableAttributedString *priceOriginAtt = [[NSMutableAttributedString alloc] initWithString:fullOriginPrice];
+//            [priceOriginAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:[UIColor whiteColor]} range:NSMakeRange(0, fullOriginPrice.length)];
+//            _groupOriginPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceOriginAtt];
+//            _groupOriginPriceLabel.alpha = 0.82;
+//            _groupOriginPriceLabel.font = SYSTEMFONT(12);
             
             
             
