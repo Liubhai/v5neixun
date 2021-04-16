@@ -992,6 +992,11 @@
             
         } else if ([promotionType isEqualToString:@"3"]) {
             // 砍价
+            GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
+            /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
+            vc.activityType = @"3";
+            vc.activityId = [NSString stringWithFormat:@"%@",_dataSource[@"promotion"][@"id"]];
+            [self.navigationController pushViewController:vc animated:YES];
         } else if ([promotionType isEqualToString:@"4"]) {
             // 拼团
             if (SWNOTEmptyDictionary(_dataSource[@"pintuan_data"])) {

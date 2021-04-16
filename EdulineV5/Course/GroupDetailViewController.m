@@ -18,6 +18,7 @@
 @property (strong, nonatomic) UIView *courseInfoBackView;
 @property (strong, nonatomic) UIImageView *courseFaceImage;
 @property (strong, nonatomic) UIImageView *courseTypeIcon;
+@property (strong, nonatomic) UIImageView *courseActivityIcon;
 @property (strong, nonatomic) UILabel *courseTitleLabel;
 @property (strong, nonatomic) UILabel *courseSellPrice;
 @property (strong, nonatomic) UILabel *courseOriginPrice;
@@ -53,7 +54,7 @@
 @property (strong, nonatomic) UIImageView *kanjiaListIcon;
 @property (strong, nonatomic) UITableView *kanjiaTableView;
 
-
+@property (strong, nonatomic) NSDictionary *activityInfo;
 
 @end
 
@@ -62,7 +63,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = EdlineV5_Color.backColor;
-    _titleLabel.text = @"拼团详情";
+    _titleLabel.text = [_activityType isEqualToString:@"4"] ? @"拼团详情" : @"砍价详情";
     
     [self makeCourseInfoView];
     [self groupDetailUI];
@@ -94,6 +95,10 @@
     _courseTypeIcon.layer.masksToBounds = YES;
     _courseTypeIcon.layer.cornerRadius = 2;
     [_courseInfoBackView addSubview:_courseTypeIcon];
+    
+    _courseActivityIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImage.right - 32, _courseFaceImage.bottom - 17, 32, 17)];
+    _courseActivityIcon.hidden = YES;
+    [_courseInfoBackView addSubview:_courseActivityIcon];
     
     _courseTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImage.right + 8, 15, _courseInfoBackView.width - (_courseFaceImage.right + 8) - 8, 40)];
     _courseTitleLabel.textColor = EdlineV5_Color.textFirstColor;
@@ -324,9 +329,10 @@
             
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    
+                    _activityInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"]];
                 }
             }
+            [self setActivityData];
             
         } enError:^(NSError * _Nonnull error) {
             
@@ -334,5 +340,45 @@
     }
 }
 
+- (void)setActivityData {
+    if ([_activityType isEqualToString:@"3"]) {
+        // 砍价
+        if (SWNOTEmptyDictionary(_activityInfo)) {
+            [_courseFaceImage sd_setImageWithURL:EdulineUrlString(_activityInfo[@"product_cover"]) placeholderImage:DefaultImage];
+            NSString *courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+            if ([courseType isEqualToString:@"1"]) {
+                _courseTypeIcon.image = Image(@"dianbo");
+            } else if ([courseType isEqualToString:@"2"]) {
+                _courseTypeIcon.image = Image(@"live");
+            } else if ([courseType isEqualToString:@"3"]) {
+                _courseTypeIcon.image = Image(@"mianshou");
+            } else if ([courseType isEqualToString:@"4"]) {
+                _courseTypeIcon.image = Image(@"class_icon");
+            }
+            _courseActivityIcon.hidden = NO;
+            _courseActivityIcon.image = Image(@"kanjia_icon");
+            
+            _courseTitleLabel.text = [NSString stringWithFormat:@"%@",_activityInfo[@"product_title"]];
+            
+            _courseSellPrice.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
+            
+            CGFloat kanjiatotal = [[NSString stringWithFormat:@"%@",_activityInfo[@"bargained_total_price"]] floatValue];
+            CGFloat total = [[NSString stringWithFormat:@"%@",_activityInfo[@"bargain_price"]] floatValue];
+            
+            _progressCount = [[UIView alloc] initWithFrame:CGRectMake(15, _timeBackView.bottom + 35, (_groupBackView.width - 30) * kanjiatotal / total, 14)];
+            
+            NSString *kanjianCount = [NSString stringWithFormat:@"已砍%@%@",IOSMoneyTitle,_activityInfo[@"bargained_total_price"]];
+            _kanjiaCountLabel.text = kanjianCount;
+            CGFloat kanjianCountWidth = [_kanjiaCountLabel.text sizeWithFont:_kanjiaCountLabel.font].width + 10;
+            _kanjiaCountLabel.frame = CGRectMake(0, _progressCount.bottom + 10, kanjianCountWidth, 18);
+            _kanjiaCountLabel.centerX = _groupBackView.width / 2.0;
+            
+        }
+    } else {
+        _courseActivityIcon.hidden = NO;
+        _courseActivityIcon.image = Image(@"discount_icon");
+        _courseActivityIcon.frame = CGRectMake(_courseFaceImage.right - 52, _courseFaceImage.bottom - 17, 52, 17);
+    }
+}
 
 @end
