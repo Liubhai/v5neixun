@@ -143,6 +143,8 @@
     [alldBtn setImage:Image(@"erji_more") forState:0];
     [alldBtn setImage:[Image(@"erji_more") converToMainColor] forState:UIControlStateSelected];
     [alldBtn setTitle:allTitle forState:0];
+    alldBtn.titleLabel.numberOfLines = 0;
+    alldBtn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [alldBtn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     [alldBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
     alldBtn.selected = selectedInfo.selected;
@@ -158,17 +160,19 @@
     [_secondArray addObjectsFromArray:selectedInfo.child];
     if (SWNOTEmptyArr(_secondArray)) {
         for (int j = 0; j < _secondArray.count; j++) {
-            UIView *hotView = [[UIView alloc] initWithFrame:CGRectMake(0, hotYY, MainScreenWidth, 0)];
+            UIView *hotView = [[UIView alloc] initWithFrame:CGRectMake(0, hotYY, MainScreenWidth * 3 / 4.0, 0)];
             hotView.backgroundColor = [UIColor whiteColor];
             hotView.tag = 10 + j;
             [_mainScrollView addSubview:hotView];
             
             NSString *secondTitle = [NSString stringWithFormat:@"%@",((CateGoryModelSecond *)_secondArray[j]).title];//@"热门搜索";
-            CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(15)].width + 4 + 7;
+            CGFloat secondBtnWidth = ([secondTitle sizeWithFont:SYSTEMFONT(15)].width + 4 + 7) > (hotView.width - 30) ? (hotView.width - 30) : ([secondTitle sizeWithFont:SYSTEMFONT(15)].width + 4 + 7);
             UIButton *secondBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 0, secondBtnWidth, 32)];
             secondBtn.tag = 100 + j;
             [secondBtn setImage:Image(@"erji_more") forState:0];
             [secondBtn setImage:[Image(@"erji_more") converToMainColor] forState:UIControlStateSelected];
+            secondBtn.titleLabel.numberOfLines = 0;
+            secondBtn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
             [secondBtn setTitle:secondTitle forState:0];
             [secondBtn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
             [secondBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
@@ -194,6 +198,8 @@
                     btn.tag = 400 + i;
                     [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
                     [btn setTitle:[NSString stringWithFormat:@"%@",((CateGoryModelThird *)_thirdArray[i]).title] forState:0];
+                    btn.titleLabel.numberOfLines = 0;
+                    btn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
                     btn.titleLabel.font = SYSTEMFONT(14);
                     [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
                     [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
@@ -206,7 +212,7 @@
                     }
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = btnHeight / 2.0;
-                    CGFloat btnWidth = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2;
+                    CGFloat btnWidth = ([btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2) > (hotView.width - 30) ? (hotView.width - 30) : ([btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2);//[btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2;
                     if ((btnWidth + XX) > (MainScreenWidth * 3/4.0 - 15)) {
                         XX = 15.0;
                         YY = YY + topSpacee + btnHeight;
