@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *timeCountDownLabel;
 @property (strong, nonatomic) UILabel *priceLabel;
 
+/** 设置砍价数据 */
+- (void)setKanjieDetailInfo:(NSDictionary *)dict;
+
 @end
 
 NS_ASSUME_NONNULL_END

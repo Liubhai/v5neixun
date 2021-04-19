@@ -56,6 +56,9 @@
 
 @property (strong, nonatomic) NSDictionary *activityInfo;
 
+/** 砍价人列表 */
+@property (strong, nonatomic) NSMutableArray *kanjiaDataSource;
+
 @end
 
 @implementation GroupDetailViewController
@@ -64,6 +67,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = EdlineV5_Color.backColor;
     _titleLabel.text = [_activityType isEqualToString:@"4"] ? @"拼团详情" : @"砍价详情";
+    
+    _kanjiaDataSource = [NSMutableArray new];
     
     [self makeCourseInfoView];
     [self groupDetailUI];
@@ -297,6 +302,7 @@
     if (!cell) {
         cell = [[KanjiaListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
+    [cell setKanjieDetailInfo:_kanjiaDataSource[indexPath.row]];
     return cell;
 }
 
@@ -373,6 +379,9 @@
             _kanjiaCountLabel.frame = CGRectMake(0, _progressCount.bottom + 10, kanjianCountWidth, 18);
             _kanjiaCountLabel.centerX = _groupBackView.width / 2.0;
             
+            [_kanjiaDataSource removeAllObjects];
+            [_kanjiaDataSource addObjectsFromArray:_activityInfo[@"bargain_data"]];
+            [_kanjiaTableView reloadData];
         }
     } else {
         _courseActivityIcon.hidden = NO;

@@ -55,4 +55,21 @@
     [self.contentView addSubview:_priceLabel];
 }
 
+// MARK: - 设置数据
+- (void)setKanjieDetailInfo:(NSDictionary *)dict {
+    /**
+     "current_user_id": 20,
+     "current_bargain_price": 2.64,
+     "create_time": 1618294803,
+     "current_user_name": "用户15208432365",
+     "current_user_avatar_url": null
+     */
+    if (SWNOTEmptyDictionary(dict)) {
+        [_groupFace sd_setImageWithURL:EdulineUrlString(dict[@"current_user_avatar_url"]) placeholderImage:DefaultUserImage];
+        _groupTitle.text = [NSString stringWithFormat:@"%@",dict[@"current_user_name"]];
+        _timeCountDownLabel.text = [EdulineV5_Tool timeForBalanceYYMMDDHHMM:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];
+        _priceLabel.text = [NSString stringWithFormat:@"砍掉%@元",dict[@"current_bargain_price"]];
+    }
+}
+
 @end
