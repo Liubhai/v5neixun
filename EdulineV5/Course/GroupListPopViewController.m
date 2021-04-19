@@ -10,6 +10,7 @@
 #import "GrouListCell.h"
 #import "GroupDetailViewController.h"
 #import "OrderViewController.h"
+#import "Net_Path.h"
 
 @interface GroupListPopViewController ()<GrouListCellDelegate> {
     NSInteger timeCount;
@@ -110,23 +111,13 @@
 
 // MARK: - 加入团的点击事件 GrouListCellDelegate
 - (void)joinGroupByGroupId:(NSString *)groupID groupInfo:(NSDictionary *)groupInfo {
-//    ClassAndLivePayViewController *vc = [[ClassAndLivePayViewController alloc] init];
-//    vc.dict = _videoDataSource;
-//    vc.typeStr = _courseType;
-//    vc.cid = [_videoDataSource stringValueForKey:@"id"];
-//    vc.activityInfo = [NSDictionary dictionaryWithDictionary:_activityInfo];
-//    vc.isJoinGroup = YES;
-//    vc.isBuyAlone = YES;
+    [self joinPintuanBeforeNet:groupID];
+//    GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
 //    [self.parentViewController.navigationController pushViewController:vc animated:YES];
-    GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
-    [self.parentViewController.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)applyPintuan {
-    OrderViewController *vc = [[OrderViewController alloc] init];
-    vc.orderTypeString = @"course";
-    vc.orderId = _courseId;
-    [self.parentViewController.navigationController pushViewController:vc animated:YES];
+    [self applyPintuanBeforeNet];
 }
 
 // MARK: - 关闭按钮
@@ -142,6 +133,44 @@
 - (void)eventCellTimerDown {
     timeCount++;
     [_tableView reloadData];
+}
+
+// MARK: - 发起拼团前的一个请求
+- (void)applyPintuanBeforeNet {
+    if (SWNOTEmptyDictionary(_videoDataSource)) {
+        if (SWNOTEmptyDictionary(_videoDataSource[@"promotion"])) {
+            [Net_API requestPOSTWithURLStr:[Net_Path groupApplyNet] WithAuthorization:nil paramDic:@{@"promotion_id":[NSString stringWithFormat:@"%@",_videoDataSource[@"promotion"][@"id"]]} finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        OrderViewController *vc = [[OrderViewController alloc] init];
+                        vc.orderTypeString = @"course";
+                        vc.orderId = _courseId;
+                        [self.parentViewController.navigationController pushViewController:vc animated:YES];
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        }
+    }
+}
+
+// MARK: - 参加拼团前的一个请求
+- (void)joinPintuanBeforeNet:(NSString *)tuanId {
+    if (SWNOTEmptyStr(tuanId)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path joinPintuanNet] WithAuthorization:nil paramDic:@{@"tuan_id":tuanId} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    OrderViewController *vc = [[OrderViewController alloc] init];
+                    vc.orderTypeString = @"course";
+                    vc.orderId = _courseId;
+                    [self.parentViewController.navigationController pushViewController:vc animated:YES];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 @end

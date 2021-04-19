@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSDictionary *videoDataSource;
 @property (strong, nonatomic) NSDictionary *activityInfo;//是否有活动详情
 @property (strong, nonatomic) NSMutableArray *dataSource;
+
 @property (strong, nonatomic) LBHTableView *tableView;
 @property (strong, nonatomic) UIView *applyPintuanButtonBackView;
 @property (strong, nonatomic) UIButton *applyPintuanButton;

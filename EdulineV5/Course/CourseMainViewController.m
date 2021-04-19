@@ -1177,6 +1177,7 @@
 - (void)showGroupList {
     GroupListPopViewController *vc = [[GroupListPopViewController alloc] init];
     vc.courseId = _ID;
+    vc.videoDataSource = [NSDictionary dictionaryWithDictionary:_dataSource];
 //    vc.activityInfo = [NSDictionary dictionaryWithDictionary:_activityInfo];
 //    vc.courseType = _isClassNew ? @"5" : @"1";
 //    vc.videoDataSource = _videoDataSource;

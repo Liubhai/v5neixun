@@ -711,6 +711,11 @@
     return [Net_Path fullPath:@"promotion/pintuan/create" repalce:@"" byReplece:@""];
 }
 
+/** 加入拼团前接口 */
++ (NSString *)joinPintuanNet {
+    return [Net_Path fullPath:@"promotion/pintuan/join" repalce:@"" byReplece:@""];
+}
+
 /** 拼团详情 */
 + (NSString *)pintuanDetailInfoNet {
     return [Net_Path fullPath:@"promotion/pintuan/detail" repalce:@"" byReplece:@""];

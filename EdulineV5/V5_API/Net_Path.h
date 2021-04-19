@@ -522,6 +522,9 @@ struct NetWorkUrl {
 /** 发起拼团接口 */
 + (NSString *)groupApplyNet;
 
+/** 加入拼团前接口 */
++ (NSString *)joinPintuanNet;
+
 /** 拼团详情 */
 + (NSString *)pintuanDetailInfoNet;
 
