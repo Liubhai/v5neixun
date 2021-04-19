@@ -220,33 +220,35 @@
             
             // 活动
             if (SWNOTEmptyDictionary(courseInfo[@"promotion"])) {
-                _joinShopCarButton.hidden = YES;
-                NSDictionary *promotion = [NSDictionary dictionaryWithDictionary:courseInfo[@"promotion"]];
-                NSString *promotionType = [NSString stringWithFormat:@"%@",promotion[@"type"]];
-                /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
-                if ([promotionType isEqualToString:@"1"] || [promotionType isEqualToString:@"2"]) {
-                    [_joinStudyButton setLeft:_joinShopCarButton.left];
-                    [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
-                    [_joinStudyButton setTitle:@"立即加入" forState:0];
-                } else if ([promotionType isEqualToString:@"3"]) {
-                    _joinStudyButton.hidden = YES;
-                    _activityButton.hidden = NO;
-                    _activityJoinStudyButton.hidden = NO;
-                    [_activityButton setTitle:@"邀请砍价" forState:0];
-                } else if ([promotionType isEqualToString:@"4"]) {
-                    _joinStudyButton.hidden = YES;
-                    _activityButton.hidden = NO;
-                    _activityJoinStudyButton.hidden = NO;
-                    [_activityButton setTitle:@"发起拼团" forState:0];
-                    if (SWNOTEmptyDictionary(courseInfo[@"pintuan_data"])) {
-                        NSString *pintuanStatus = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"status"]];
-                        /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功；】 */
-                        if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
-                            [_activityButton setTitle:@"发起拼团" forState:0];
-                        } else {
-                            NSString *total_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"total_num"]];
-                            NSString *join_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"join_num"]];
-                            [_activityButton setTitle:[NSString stringWithFormat:@"已参团%@/%@人",join_num,total_num] forState:0];
+                if ([[NSString stringWithFormat:@"%@",courseInfo[@"promotion"][@"running_status"]] isEqualToString:@"1"]) {
+                    _joinShopCarButton.hidden = YES;
+                    NSDictionary *promotion = [NSDictionary dictionaryWithDictionary:courseInfo[@"promotion"]];
+                    NSString *promotionType = [NSString stringWithFormat:@"%@",promotion[@"type"]];
+                    /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
+                    if ([promotionType isEqualToString:@"1"] || [promotionType isEqualToString:@"2"]) {
+                        [_joinStudyButton setLeft:_joinShopCarButton.left];
+                        [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
+                        [_joinStudyButton setTitle:@"立即加入" forState:0];
+                    } else if ([promotionType isEqualToString:@"3"]) {
+                        _joinStudyButton.hidden = YES;
+                        _activityButton.hidden = NO;
+                        _activityJoinStudyButton.hidden = NO;
+                        [_activityButton setTitle:@"邀请砍价" forState:0];
+                    } else if ([promotionType isEqualToString:@"4"]) {
+                        _joinStudyButton.hidden = YES;
+                        _activityButton.hidden = NO;
+                        _activityJoinStudyButton.hidden = NO;
+                        [_activityButton setTitle:@"发起拼团" forState:0];
+                        if (SWNOTEmptyDictionary(courseInfo[@"pintuan_data"])) {
+                            NSString *pintuanStatus = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"status"]];
+                            /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功；】 */
+                            if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
+                                [_activityButton setTitle:@"发起拼团" forState:0];
+                            } else {
+                                NSString *total_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"total_num"]];
+                                NSString *join_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"join_num"]];
+                                [_activityButton setTitle:[NSString stringWithFormat:@"已参团%@/%@人",join_num,total_num] forState:0];
+                            }
                         }
                     }
                 }
