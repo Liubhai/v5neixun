@@ -434,6 +434,40 @@
             }
         }
     }
+    
+    // 判断每一个机构是不是全选与否
+    BOOL hasSectionSchoolUnSelect = NO;
+    for (int i = 0; i < _dataSourse.count; i ++) {
+        ShopCarModel *carModel = _dataSourse[i];
+        BOOL carSelect = carModel.selected;
+        for (int j = 0; j < carModel.course_list.count; j ++) {
+            ShopCarCourseModel *courseModel = carModel.course_list[j];
+            if (courseModel.selected) {
+                carSelect = YES;
+            } else {
+                carSelect = NO;
+                break;
+            }
+        }
+        carModel.selected = carSelect;
+        [_dataSourse replaceObjectAtIndex:i withObject:carModel];
+        
+        // 判断是不是所有都选择了
+        if (!carModel.selected) {
+            // 说明有机构没有全选
+            hasSectionSchoolUnSelect = YES;
+        }
+    }
+    
+    allSeleted = !hasSectionSchoolUnSelect;
+    
+    _allSelectBtn.selected = allSeleted;
+    
+    if (_selectedArray.count == 0) {
+        allSeleted = NO;
+        _allSelectBtn.selected = NO;
+    }
+    
     if (_rightButton.selected) {
         [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%@)",@(_selectedArray.count)] forState:0];
     } else {
