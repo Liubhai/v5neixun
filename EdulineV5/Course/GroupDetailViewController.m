@@ -11,7 +11,11 @@
 #import "KanjiaListCell.h"
 #import "Net_Path.h"
 
-@interface GroupDetailViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface GroupDetailViewController ()<UITableViewDelegate, UITableViewDataSource> {
+    // 活动倒计时
+    NSInteger eventTime;
+    NSTimer *eventTimer;
+}
 
 @property (strong, nonatomic) UIImageView *topBackImage;
 
@@ -293,7 +297,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return _kanjiaDataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -379,14 +383,64 @@
             _kanjiaCountLabel.frame = CGRectMake(0, _progressCount.bottom + 10, kanjianCountWidth, 18);
             _kanjiaCountLabel.centerX = _groupBackView.width / 2.0;
             
+            NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"end_countdown"]];
+            NSString *start_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"start_countdown"]];
+            
+            if ([[_activityInfo objectForKey:@"running_status"] integerValue] == 1) {
+                eventTime = [end_countdown integerValue];
+            } else {
+                eventTime = [start_countdown integerValue];
+            }
+            [self startTimer];
+            
             [_kanjiaDataSource removeAllObjects];
-            [_kanjiaDataSource addObjectsFromArray:_activityInfo[@"bargain_data"]];
+            if (SWNOTEmptyArr(_activityInfo[@"bargain_data"])) {
+                [_kanjiaDataSource addObjectsFromArray:_activityInfo[@"bargain_data"]];
+            }
             [_kanjiaTableView reloadData];
         }
     } else {
         _courseActivityIcon.hidden = NO;
         _courseActivityIcon.image = Image(@"discount_icon");
         _courseActivityIcon.frame = CGRectMake(_courseFaceImage.right - 52, _courseFaceImage.bottom - 17, 52, 17);
+    }
+}
+
+- (void)startTimer {
+    __weak typeof(self) weakself = self;
+    [NSObject cancelPreviousPerformRequestsWithTarget:weakself];
+    [NSObject cancelPreviousPerformRequestsWithTarget:weakself selector:@selector(startTimer) object:nil];
+    eventTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(eventTimerDown) userInfo:nil repeats:YES];
+}
+
+// MARK: - 活动倒计时
+- (void)eventTimerDown {
+    eventTime--;
+    if (eventTime<=0) {
+        [self requestActivityDetailInfo];
+        [eventTimer invalidate];
+        eventTimer = nil;
+    } else {
+        _dayLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][0];
+        _hourLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][1];
+        _minuteLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][2];
+        _secondLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][3];
+    }
+}
+
+- (void)dealloc {
+    if (eventTimer) {
+        [eventTimer invalidate];
+        eventTimer = nil;
+    }
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [eventTimer invalidate];
+        eventTimer = nil;
     }
 }
 
