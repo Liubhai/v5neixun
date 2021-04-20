@@ -721,4 +721,9 @@
     return [Net_Path fullPath:@"promotion/pintuan/detail" repalce:@"" byReplece:@""];
 }
 
+/** 课程拼团列表 */
++ (NSString *)pintuanListNet {
+    return [Net_Path fullPath:@"promotion/pintuan/list" repalce:@"" byReplece:@""];
+}
+
 @end

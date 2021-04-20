@@ -203,9 +203,12 @@ static EdulineV5_Tool *_sharedInstance;
     NSInteger m = temp1 % 60;
     NSInteger s = seconds %60;
     NSString * hour = h<= 9 ? [NSString stringWithFormat:@"0%ld",(long)h] :[NSString stringWithFormat:@"%ld",(long)h];
-    NSString *day = d <= 9 ? [NSString stringWithFormat:@"%ld",(long)d] : [NSString stringWithFormat:@"%ld",(long)d];
+    NSString *day = d <= 9 ? [NSString stringWithFormat:@"%0ld",(long)d] : [NSString stringWithFormat:@"%ld",(long)d];
     NSString *minite = m <= 9 ? [NSString stringWithFormat:@"0%ld",(long)m] : [NSString stringWithFormat:@"%ld",(long)m];
     NSString *second = s <= 9 ? [NSString stringWithFormat:@"0%ld",(long)s] : [NSString stringWithFormat:@"%ld",(long)s];
+    if ([day integerValue]>0) {
+        return [NSString stringWithFormat:@"%@:%@:%@:%@",day,hour,minite,second];
+    }
     return [NSString stringWithFormat:@"%@:%@:%@",hour,minite,second];
 }
 

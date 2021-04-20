@@ -528,6 +528,9 @@ struct NetWorkUrl {
 /** 拼团详情 */
 + (NSString *)pintuanDetailInfoNet;
 
+/** 课程拼团列表 */
++ (NSString *)pintuanListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

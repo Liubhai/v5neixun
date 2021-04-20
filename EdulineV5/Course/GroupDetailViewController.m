@@ -43,6 +43,7 @@
 
 // 团购 (参团成员)
 @property (strong, nonatomic) UIScrollView *menberScrollView;
+@property (strong, nonatomic) NSMutableArray *tuanMenberDataSource;
 // 团购操作按钮
 @property (strong, nonatomic) UIButton *doButton;
 
@@ -73,6 +74,7 @@
     _titleLabel.text = [_activityType isEqualToString:@"4"] ? @"拼团详情" : @"砍价详情";
     
     _kanjiaDataSource = [NSMutableArray new];
+    _tuanMenberDataSource = [NSMutableArray new];
     
     [self makeCourseInfoView];
     [self groupDetailUI];
@@ -205,6 +207,11 @@
     [_timeBackView setWidth:_secondLabel.right];
     _timeBackView.centerX = _groupBackView.width / 2.0;
     
+    if ([_activityType isEqualToString:@"3"]) {
+        [self makeKanjiaUI];
+        return;
+    }
+    
     // todo 这里要区分类型了 团购 砍价
     
     _menberScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _groupResult.bottom + 16 + 14 + 36, _groupBackView.width, _groupBackView.height - 40 - 40 - 40)];
@@ -219,10 +226,6 @@
     _doButton.titleLabel.font = SYSTEMFONT(16);
     _doButton.centerX = _groupBackView.width / 2.0;
     [_groupBackView addSubview:_doButton];
-    
-    if ([_activityType isEqualToString:@"3"]) {
-        [self makeKanjiaUI];
-    }
     
 }
 
@@ -391,7 +394,9 @@
             } else {
                 eventTime = [start_countdown integerValue];
             }
-            [self startTimer];
+            if (eventTime>0) {
+                [self startTimer];
+            }
             
             [_kanjiaDataSource removeAllObjects];
             if (SWNOTEmptyArr(_activityInfo[@"bargain_data"])) {
@@ -400,12 +405,80 @@
             [_kanjiaTableView reloadData];
         }
     } else {
-        _courseActivityIcon.hidden = NO;
-        _courseActivityIcon.image = Image(@"discount_icon");
-        _courseActivityIcon.frame = CGRectMake(_courseFaceImage.right - 52, _courseFaceImage.bottom - 17, 52, 17);
+        if (SWNOTEmptyDictionary(_activityInfo)) {
+            [_courseFaceImage sd_setImageWithURL:EdulineUrlString(_activityInfo[@"product_cover"]) placeholderImage:DefaultImage];
+            NSString *courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+            if ([courseType isEqualToString:@"1"]) {
+                _courseTypeIcon.image = Image(@"dianbo");
+            } else if ([courseType isEqualToString:@"2"]) {
+                _courseTypeIcon.image = Image(@"live");
+            } else if ([courseType isEqualToString:@"3"]) {
+                _courseTypeIcon.image = Image(@"mianshou");
+            } else if ([courseType isEqualToString:@"4"]) {
+                _courseTypeIcon.image = Image(@"class_icon");
+            }
+            _courseActivityIcon.hidden = NO;
+            _courseActivityIcon.image = Image(@"pintuan_icon");
+            
+            _courseTitleLabel.text = [NSString stringWithFormat:@"%@",_activityInfo[@"product_title"]];
+            
+            _courseSellPrice.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
+            
+            NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"expiry_countdown"]];
+//            NSString *start_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"start_countdown"]];
+            
+//            if ([[_activityInfo objectForKey:@"running_status"] integerValue] == 1) {
+//                eventTime = [end_countdown integerValue];
+//            } else {
+//                eventTime = [end_countdown integerValue];
+//            }
+            eventTime = [end_countdown integerValue];
+            if (eventTime>0) {
+                [self startTimer];
+            }
+            
+            [_tuanMenberDataSource removeAllObjects];
+            if (SWNOTEmptyArr(_activityInfo[@"tuan_data"])) {
+                [_tuanMenberDataSource addObjectsFromArray:_activityInfo[@"tuan_data"]];
+            }
+            // 处理团员信息 todo...
+            [self makeGroupMenberUI];
+        }
     }
 }
 
+// MARK: - 处理团购成员信息
+- (void)makeGroupMenberUI {
+    [_menberScrollView removeAllSubviews];
+    
+    CGFloat xx = 25;
+    CGFloat yy = 0.0;
+    CGFloat ww = 44;
+    CGFloat inSpace = (_groupBackView.width - xx * 2 - ww * 4) / 4.0;
+    CGFloat menberTopSpace = 17;
+    
+    for (int i = 0; i<_tuanMenberDataSource.count; i++) {
+        UIImageView *menberImage = [[UIImageView alloc] initWithFrame:CGRectMake(xx + (ww + inSpace) * (i%5), yy + (ww + menberTopSpace) * (i/5), ww, ww)];
+        menberImage.layer.masksToBounds = YES;
+        menberImage.layer.cornerRadius = ww / 2.0;
+        menberImage.clipsToBounds = YES;
+        menberImage.contentMode = UIViewContentModeScaleAspectFill;
+        [menberImage sd_setImageWithURL:EdulineUrlString([_tuanMenberDataSource[i] objectForKey:@"current_user_avatar_url"]) placeholderImage:DefaultUserImage];
+        [_menberScrollView addSubview:menberImage];
+        NSString *menberId = [NSString stringWithFormat:@"%@",[_tuanMenberDataSource[i] objectForKey:@"user_id"]];
+        if ([menberId isEqualToString:[NSString stringWithFormat:@"%@",_activityInfo[@"user_id"]]]) {
+            menberImage.layer.borderColor = EdlineV5_Color.courseActivityGroupColor.CGColor;
+            menberImage.layer.borderWidth = 1.0;
+            UIImageView *pintuan_captain_icon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 19, 10)];
+            pintuan_captain_icon.image = Image(@"pintuan_captain_icon");
+            pintuan_captain_icon.center = CGPointMake(menberImage.centerX, menberImage.bottom);
+            [_menberScrollView addSubview:pintuan_captain_icon];
+        }
+    }
+    _menberScrollView.contentSize = CGSizeMake(0, (_tuanMenberDataSource.count % 5 == 0) ? (_tuanMenberDataSource.count * (ww + menberTopSpace) / 5) : (_tuanMenberDataSource.count * (ww + menberTopSpace) / 5) + (ww + menberTopSpace));
+}
+
+// MARK: - 开始倒计时
 - (void)startTimer {
     __weak typeof(self) weakself = self;
     [NSObject cancelPreviousPerformRequestsWithTarget:weakself];

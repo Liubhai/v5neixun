@@ -24,6 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    _dataSource = [NSMutableArray new];
     timeCount = 0;
     if (groupTimer) {
         [groupTimer invalidate];
@@ -40,8 +41,6 @@
     _tableView.centerY = MainScreenHeight / 2.0;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableView];
-    
-    groupTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(eventCellTimerDown) userInfo:nil repeats:YES];
     
     _groupTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_tableView.left, _tableView.top - 40 + 3, MainScreenWidth - 60, 40)];
     _groupTitleLabel.text = @"正在开团";
@@ -84,6 +83,8 @@
     [_closeButton setImage:Image(@"close_button_white") forState:0];
     [_closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_closeButton];
+    
+    [self getPintuanListData];
 }
 
 - (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -92,13 +93,13 @@
     if (!cell) {
         cell = [[GrouListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-//    [cell setGroupListInfo:_dataSource[indexPath.row] timeCount:timeCount];
+    [cell setGroupListInfo:_dataSource[indexPath.row] timeCount:timeCount];
     cell.delegate = self;
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;//_dataSource.count;
+    return _dataSource.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -170,6 +171,46 @@
         } enError:^(NSError * _Nonnull error) {
             
         }];
+    }
+}
+
+// MARK: - 获取拼团列表
+- (void)getPintuanListData {
+    if (SWNOTEmptyDictionary(_videoDataSource)) {
+        if (SWNOTEmptyDictionary(_videoDataSource[@"promotion"])) {
+            NSString *promotionId = [NSString stringWithFormat:@"%@",_videoDataSource[@"promotion"][@"id"]];
+            if (SWNOTEmptyStr(promotionId)) {
+                [Net_API requestGETSuperAPIWithURLStr:[Net_Path pintuanListNet] WithAuthorization:nil paramDic:@{@"promotion_id":promotionId} finish:^(id  _Nonnull responseObject) {
+                    if (SWNOTEmptyDictionary(responseObject)) {
+                        if ([[responseObject objectForKey:@"code"] integerValue]) {
+                            [_dataSource removeAllObjects];
+                            [_dataSource addObjectsFromArray:responseObject[@"data"]];
+                            [_tableView reloadData];
+                            if (_dataSource.count) {
+                                groupTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(eventCellTimerDown) userInfo:nil repeats:YES];
+                            }
+                        }
+                    }
+                } enError:^(NSError * _Nonnull error) {
+                    
+                }];
+            }
+        }
+    }
+}
+
+- (void)dealloc {
+    if (groupTimer) {
+        [groupTimer invalidate];
+        groupTimer = nil;
+    }
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        [groupTimer invalidate];
+        groupTimer = nil;
     }
 }
 

@@ -63,17 +63,18 @@
 }
 
 - (void)setGroupListInfo:(NSDictionary *)groupInfo timeCount:(NSInteger)timeCount {
-//    _groupInfo = groupInfo;
-//    [_groupFace sd_setImageWithURL:[NSURL URLWithString:[groupInfo objectForKey:@"avatar"]] placeholderImage:Image(@"站位图")];
+    _groupInfo = groupInfo;
+    [_groupFace sd_setImageWithURL:EdulineUrlString([groupInfo objectForKey:@"current_user_avatar_url"]) placeholderImage:Image(@"站位图")];
 //    _priceLabel.text = [NSString stringWithFormat:@"%@",[groupInfo objectForKey:@"oprice"]];
-//    _groupTitle.text = [NSString stringWithFormat:@"还差%@人成团",[groupInfo objectForKey:@"rest_count"]];
-//    NSInteger timeSpan = [[NSString stringWithFormat:@"%@",[groupInfo objectForKey:@"timespan"]] integerValue];
-//    _timeCountDownLabel.text = [NSString stringWithFormat:@"剩余时间%@结束",[YunKeTang_Api_Tool timeChangeWithSeconds:timeSpan - timeCount]];
-//    if (cellTimer) {
-//        [cellTimer invalidate];
-//        cellTimer = nil;
-//    }
-//    cellTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(eventCellTimerDown) userInfo:nil repeats:YES];
+    NSString *totalCount = [NSString stringWithFormat:@"%@",[groupInfo objectForKey:@"total_num"]];
+    NSString *joinCount = [NSString stringWithFormat:@"%@",[groupInfo objectForKey:@"join_num"]];
+    _groupTitle.text = [NSString stringWithFormat:@"还差%@人成团",@([totalCount integerValue] - [joinCount integerValue])];
+    NSInteger timeSpan = [[NSString stringWithFormat:@"%@",[groupInfo objectForKey:@"expiry_countdown"]] integerValue];
+    if (timeSpan - timeCount<=0) {
+        _timeCountDownLabel.text = @"已结束";
+    } else {
+        _timeCountDownLabel.text = [NSString stringWithFormat:@"剩余%@",[EdulineV5_Tool timeChangeTimerWithSeconds:timeSpan - timeCount]];
+    }
 }
 
 - (void)joinGroupButtonClick {

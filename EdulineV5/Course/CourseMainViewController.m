@@ -1005,6 +1005,16 @@
             // 拼团
             if (SWNOTEmptyDictionary(_dataSource[@"pintuan_data"])) {
                 NSString *pintuanStatus = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"status"]];
+                
+//                // test...
+//                // 进入拼团详情
+//                GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
+//                /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
+//                vc.activityType = @"4";
+//                vc.activityId = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"id"]];
+//                [self.navigationController pushViewController:vc animated:YES];
+//                return;
+                
                 /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功；】 */
                 if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
                     // 进入拼团详情
@@ -1138,7 +1148,9 @@
                 _courseActivityView.groupTimeTipLabel.text = @"距开始还有";
                 [_courseActivityView setDateInfo:eventTime];
             }
-            [self startTimer];
+            if (eventTime>0) {
+                [self startTimer];
+            }
         } else {
             _courseActivityView.hidden = YES;
         }
