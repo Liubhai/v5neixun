@@ -19,8 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *introTitleL;
 @property (strong ,nonatomic) WKWebView *ClassIntroWeb;
 @property (assign, nonatomic) CGFloat tabelHeight;
-@property (strong, nonatomic) CourseMainViewController *vc;
-@property (strong, nonatomic) CourseDetailPlayVC *detailVC;
+@property (weak, nonatomic) CourseMainViewController *vc;
+@property (weak, nonatomic) CourseDetailPlayVC *detailVC;
 @property (assign, nonatomic) BOOL cellTabelCanScroll;
 @property (assign, nonatomic) BOOL isZhibo;
 

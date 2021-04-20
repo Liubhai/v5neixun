@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *courseId;
 @property (assign, nonatomic) CGFloat tabelHeight;
 
-@property (strong, nonatomic) CourseMainViewController *vc;
+@property (weak, nonatomic) CourseMainViewController *vc;
 @property (assign, nonatomic) BOOL cellTabelCanScroll;
 @property (assign, nonatomic) BOOL canPlayRecordVideo;
 

@@ -44,6 +44,8 @@
 + (NSString*)timeChangeWithSeconds:(NSInteger)seconds;
 /* 倒计时显示 **/
 + (NSString*)timeChangeTimerWithSeconds:(NSInteger)seconds;
+/** 分离出 日  时 分 秒 */
++ (NSArray *)timeChangeTimerDayHoursMinuteSeconds:(NSInteger)seconds;
 // isMinite 是否从分钟数开始 还是秒数开始
 + (NSAttributedString*)attributionTimeChangeWithSeconds:(NSInteger)seconds isMinite:(BOOL)isMinite;
 + (NSString*)timeChangeWithSecondsFormat:(NSInteger)seconds;

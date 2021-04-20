@@ -210,6 +210,22 @@ static EdulineV5_Tool *_sharedInstance;
 }
 
 
+// MARK: - 倒计时 拆分 日 时 分 秒
+// MARK: - 倒计时显示
++ (NSArray *)timeChangeTimerDayHoursMinuteSeconds:(NSInteger)seconds {
+    NSInteger temp1 = seconds/60;
+    NSInteger temp2 = temp1/ 60;
+    NSInteger d = temp2 / 24;
+    NSInteger h = temp2 % 24;
+    NSInteger m = temp1 % 60;
+    NSInteger s = seconds %60;
+    NSString * hour = h<= 9 ? [NSString stringWithFormat:@"0%ld",(long)h] :[NSString stringWithFormat:@"%ld",(long)h];
+    NSString *day = d <= 9 ? [NSString stringWithFormat:@"0%ld",(long)d] : [NSString stringWithFormat:@"%ld",(long)d];
+    NSString *minite = m <= 9 ? [NSString stringWithFormat:@"0%ld",(long)m] : [NSString stringWithFormat:@"%ld",(long)m];
+    NSString *second = s <= 9 ? [NSString stringWithFormat:@"0%ld",(long)s] : [NSString stringWithFormat:@"%ld",(long)s];
+    return @[day,hour,minite,second];
+}
+
 
 + (NSAttributedString*)attributionTimeChangeWithSeconds:(NSInteger)seconds isMinite:(BOOL)isMinite {
     NSInteger temp1 = seconds/60;

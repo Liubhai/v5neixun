@@ -48,6 +48,10 @@
     // 新增内容
     CGFloat sectionHeight;
     BOOL shouldLoad;
+    
+    // 活动倒计时
+    NSInteger eventTime;
+    NSTimer *eventTimer;
 }
 
 /**三大子页面*/
@@ -284,11 +288,12 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (_bg == nil) {
-        _bg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, sectionHeight)];
-        _bg.backgroundColor = [UIColor whiteColor];
+    __weak CourseMainViewController *weakself = self;
+    if (weakself.bg == nil) {
+        weakself.bg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, sectionHeight)];
+        weakself.bg.backgroundColor = [UIColor whiteColor];
     } else {
-        _bg.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight);
+        weakself.bg.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight);
     }
     if (sectionHeight>1) {
         if (_introButton == nil) {
@@ -308,7 +313,7 @@
                 } else if (i == 3) {
                     self.recordButton = btn;
                 }
-                [_bg addSubview:btn];
+                [weakself.bg addSubview:btn];
             }
             
             // 添加试看标志
@@ -353,50 +358,50 @@
         } else {
             self.mainScroll.frame = CGRectMake(0,47, MainScreenWidth, sectionHeight - 47);
         }
-        
-        if (_courseIntroduce == nil) {
-            _courseIntroduce = [[CourseIntroductionVC alloc] init];
-            _courseIntroduce.courseId = _ID;
-            _courseIntroduce.dataSource = _dataSource;
-            _courseIntroduce.tabelHeight = sectionHeight - 47;
-            _courseIntroduce.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-            _courseIntroduce.vc = self;
-            _courseIntroduce.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
-            [self.mainScroll addSubview:_courseIntroduce.view];
-            [self addChildViewController:_courseIntroduce];
+
+        if (weakself.courseIntroduce == nil) {
+            weakself.courseIntroduce = [[CourseIntroductionVC alloc] init];
+            weakself.courseIntroduce.courseId = weakself.ID;
+            weakself.courseIntroduce.dataSource = weakself.dataSource;
+            weakself.courseIntroduce.tabelHeight = sectionHeight - 47;
+            weakself.courseIntroduce.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+            weakself.courseIntroduce.vc = weakself;
+            weakself.courseIntroduce.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
+            [weakself.mainScroll addSubview:weakself.courseIntroduce.view];
+            [weakself addChildViewController:weakself.courseIntroduce];
         } else {
-            _courseIntroduce.dataSource = _dataSource;
-            _courseIntroduce.tabelHeight = sectionHeight - 47;
-            _courseIntroduce.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-            _courseIntroduce.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
-            [_courseIntroduce changeMainScrollViewHeight:sectionHeight - 47];
+            weakself.courseIntroduce.dataSource = weakself.dataSource;
+            weakself.courseIntroduce.tabelHeight = sectionHeight - 47;
+            weakself.courseIntroduce.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+            weakself.courseIntroduce.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
+            [weakself.courseIntroduce changeMainScrollViewHeight:sectionHeight - 47];
         }
-        
+
         if ([_courseType isEqualToString:@"4"]) {
             if (_courseTreeListVC == nil) {
                 _courseTreeListVC = [[CourseTreeListViewController alloc] init];
-                _courseTreeListVC.courseId = _ID;
-                _courseTreeListVC.courselayer = _courselayer;
+                _courseTreeListVC.courseId = weakself.ID;
+                _courseTreeListVC.courselayer = weakself.courselayer;
                 _courseTreeListVC.isMainPage = YES;
-                _courseTreeListVC.sid = _sid;
+                _courseTreeListVC.sid = weakself.sid;
                 _courseTreeListVC.tabelHeight = sectionHeight - 47;
-                _courseTreeListVC.vc = self;
-                _courseTreeListVC.delegate = self;
-                _courseTreeListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-                _courseTreeListVC.videoInfoDict = _dataSource;
+                _courseTreeListVC.vc = weakself;
+                _courseTreeListVC.delegate = weakself;
+                _courseTreeListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                _courseTreeListVC.videoInfoDict = weakself.dataSource;
                 _courseTreeListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
-                [self.mainScroll addSubview:_courseTreeListVC.view];
-                [self addChildViewController:_courseTreeListVC];
+                [weakself.mainScroll addSubview:weakself.courseTreeListVC.view];
+                [weakself addChildViewController:weakself.courseTreeListVC];
             } else {
-                _courseTreeListVC.courseId = _ID;
-                _courseTreeListVC.courselayer = _courselayer;
+                _courseTreeListVC.courseId = weakself.ID;
+                _courseTreeListVC.courselayer = weakself.courselayer;
                 _courseTreeListVC.isMainPage = YES;
-                _courseTreeListVC.sid = _sid;
+                _courseTreeListVC.sid = weakself.sid;
                 _courseTreeListVC.tabelHeight = sectionHeight - 47;
-                _courseTreeListVC.vc = self;
-                _courseTreeListVC.delegate = self;
-                _courseTreeListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-                _courseTreeListVC.videoInfoDict = _dataSource;
+                _courseTreeListVC.vc = weakself;
+                _courseTreeListVC.delegate = weakself;
+                _courseTreeListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                _courseTreeListVC.videoInfoDict = weakself.dataSource;
                 _courseTreeListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
                 _courseTreeListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
                 [_courseTreeListVC getClassCourseList];
@@ -404,85 +409,84 @@
         } else {
             if (_courseListVC == nil) {
                 _courseListVC = [[CourseListVC alloc] init];
-                _courseListVC.courseId = _ID;
-                _courseListVC.courselayer = _courselayer;
+                _courseListVC.courseId = weakself.ID;
+                _courseListVC.courselayer = weakself.courselayer;
                 _courseListVC.isMainPage = YES;
-                _courseListVC.isClassCourse = _isClassNew;
-                _courseListVC.sid = _sid;
+                _courseListVC.isClassCourse = weakself.isClassNew;
+                _courseListVC.sid = weakself.sid;
                 _courseListVC.tabelHeight = sectionHeight - 47;
-                _courseListVC.vc = self;
-                _courseListVC.delegate = self;
-                _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-                _courseListVC.videoInfoDict = _dataSource;
+                _courseListVC.vc = weakself;
+                _courseListVC.delegate = weakself;
+                _courseListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                _courseListVC.videoInfoDict = weakself.dataSource;
                 _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
-                [self.mainScroll addSubview:_courseListVC.view];
-                [self addChildViewController:_courseListVC];
+                [weakself.mainScroll addSubview:weakself.courseListVC.view];
+                [weakself addChildViewController:weakself.courseListVC];
             } else {
-                _courseListVC.courseId = _ID;
-                _courseListVC.courselayer = _courselayer;
+                _courseListVC.courseId = weakself.ID;
+                _courseListVC.courselayer = weakself.courselayer;
                 _courseListVC.isMainPage = YES;
-                _courseListVC.isClassCourse = _isClassNew;
-                _courseListVC.sid = _sid;
+                _courseListVC.isClassCourse = weakself.isClassNew;
+                _courseListVC.sid = weakself.sid;
                 _courseListVC.tabelHeight = sectionHeight - 47;
-                _courseListVC.vc = self;
-                _courseListVC.delegate = self;
-                _courseListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
-                _courseListVC.videoInfoDict = _dataSource;
+                _courseListVC.vc = weakself;
+                _courseListVC.delegate = weakself;
+                _courseListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                _courseListVC.videoInfoDict = weakself.dataSource;
                 _courseListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
                 _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
                 [_courseListVC getCourseListData];
             }
         }
-        
+
         if (_commentVC == nil) {
             _commentVC = [[CourseCommentListVC alloc] init];
-            _commentVC.courseId = _ID;
+            _commentVC.courseId = weakself.ID;
             _commentVC.tabelHeight = sectionHeight - 47;
-            _commentVC.vc = self;
-            _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _commentVC.vc = weakself;
+            _commentVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
-            [self.mainScroll addSubview:_commentVC.view];
-            [self addChildViewController:_commentVC];
+            [weakself.mainScroll addSubview:weakself.commentVC.view];
+            [weakself addChildViewController:weakself.commentVC];
         } else {
-            _commentVC.courseId = _ID;
+            _commentVC.courseId = weakself.ID;
             _commentVC.tabelHeight = sectionHeight - 47;
-            _commentVC.vc = self;
-            _commentVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+            _commentVC.vc = weakself;
+            _commentVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
             _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
             _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
             [_commentVC getCourseCommentList];
         }
-        
+
         if ([_courseType isEqualToString:@"4"]) {
             if (_courseStudentListVC == nil) {
                 _courseStudentListVC = [[CourseStudentListViewController alloc] init];
-                _courseStudentListVC.courseId = _ID;
+                _courseStudentListVC.courseId = weakself.ID;
                 _courseStudentListVC.tabelHeight = sectionHeight - 47;
-                _courseStudentListVC.vc = self;
-                _courseStudentListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+                _courseStudentListVC.vc = weakself;
+                _courseStudentListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
                 _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
-                [self.mainScroll addSubview:_courseStudentListVC.view];
-                [self addChildViewController:_courseStudentListVC];
+                [weakself.mainScroll addSubview:weakself.courseStudentListVC.view];
+                [weakself addChildViewController:weakself.courseStudentListVC];
             } else {
-                _courseStudentListVC.courseId = _ID;
+                _courseStudentListVC.courseId = weakself.ID;
                 _courseStudentListVC.tabelHeight = sectionHeight - 47;
-                _courseStudentListVC.vc = self;
-                _courseStudentListVC.cellTabelCanScroll = !_canScrollAfterVideoPlay;
+                _courseStudentListVC.vc = weakself;
+                _courseStudentListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
                 _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
                 _courseStudentListVC.collectionView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
                 [_courseStudentListVC getStudentListInfo];
             }
         }
-        
     }
-    if (SWNOTEmptyDictionary(self.dataSource)) {
-        NSString *audition_stat = [NSString stringWithFormat:@"%@",self.dataSource[@"audition_stat"]];
+    if (SWNOTEmptyDictionary(weakself.dataSource)) {
+        NSString *audition_stat = [NSString stringWithFormat:@"%@",weakself.dataSource[@"audition_stat"]];
         self.seeFreeIcon.hidden = [audition_stat boolValue] ? NO : YES;
-        if ([[self.dataSource objectForKey:@"is_buy"] boolValue]) {
+        if ([[weakself.dataSource objectForKey:@"is_buy"] boolValue]) {
             self.seeFreeIcon.hidden = YES;
         }
     }
-    return _bg;
+    return weakself.bg;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -1116,9 +1120,25 @@
             _faceImageView.image = DefaultImage;
         }
         
+        __weak typeof(self) weakself = self;
+        
         if (SWNOTEmptyDictionary(_dataSource[@"promotion"])) {
             _courseActivityView.hidden = NO;
-            [_courseActivityView setActivityInfo:_dataSource];
+            [_courseActivityView setActivityInfo:weakself.dataSource];
+            
+            NSString *end_countdown = [NSString stringWithFormat:@"%@",[weakself.dataSource[@"promotion"] objectForKey:@"end_countdown"]];
+            NSString *start_countdown = [NSString stringWithFormat:@"%@",[weakself.dataSource[@"promotion"] objectForKey:@"start_countdown"]];
+            
+            if ([[_dataSource[@"promotion"] objectForKey:@"running_status"] integerValue] == 1) {
+                eventTime = [end_countdown integerValue];
+                _courseActivityView.groupTimeTipLabel.text = @"距结束仅剩";
+                [weakself.courseActivityView setDateInfo:eventTime];
+            } else {
+                eventTime = [start_countdown integerValue];
+                _courseActivityView.groupTimeTipLabel.text = @"距开始还有";
+                [_courseActivityView setDateInfo:eventTime];
+            }
+            [self startTimer];
         } else {
             _courseActivityView.hidden = YES;
         }
@@ -1195,4 +1215,40 @@
     [self.view addSubview:vc.view];
     [self addChildViewController:vc];
 }
+
+- (void)startTimer {
+    __weak typeof(self) weakself = self;
+    [NSObject cancelPreviousPerformRequestsWithTarget:weakself];
+    [NSObject cancelPreviousPerformRequestsWithTarget:weakself selector:@selector(startTimer) object:nil];
+    eventTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(eventTimerDown) userInfo:nil repeats:YES];
+}
+
+// MARK: - 活动倒计时
+- (void)eventTimerDown {
+    eventTime--;
+    if (eventTime<=0) {
+        [self getCourseInfo];
+        [eventTimer invalidate];
+        eventTimer = nil;
+    } else {
+        [self.courseActivityView setDateInfo:eventTime];
+    }
+}
+
+- (void)dealloc {
+    if (eventTimer) {
+        [eventTimer invalidate];
+        eventTimer = nil;
+    }
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [eventTimer invalidate];
+        eventTimer = nil;
+    }
+}
+
 @end

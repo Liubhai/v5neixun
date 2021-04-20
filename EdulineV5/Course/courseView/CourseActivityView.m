@@ -130,4 +130,11 @@
     }
 }
 
+- (void)setDateInfo:(NSInteger)dateLine {
+    _dayLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:dateLine][0];
+    _hourLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:dateLine][1];
+    _minuteLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:dateLine][2];
+    _secondLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:dateLine][3];
+}
+
 @end

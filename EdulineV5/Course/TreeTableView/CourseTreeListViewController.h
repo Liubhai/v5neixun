@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) MYTreeTableManager *manager;
 @property (strong, nonatomic) NSString *courseId;
 @property (assign, nonatomic) CGFloat tabelHeight;
-@property (strong, nonatomic) CourseMainViewController *vc;
+@property (weak, nonatomic) CourseMainViewController *vc;
 @property (weak, nonatomic) CourseDetailPlayVC *detailVC;
 @property (assign, nonatomic) BOOL cellTabelCanScroll;
 @property (strong ,nonatomic)NSDictionary    *videoInfoDict;//这个课程的详情

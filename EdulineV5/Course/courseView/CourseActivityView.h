@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setActivityInfo:(NSDictionary *)activityInfo;
 
+- (void)setDateInfo:(NSInteger)dateLine;
+
 @end
 
 NS_ASSUME_NONNULL_END
