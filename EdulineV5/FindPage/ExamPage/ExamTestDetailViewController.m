@@ -602,6 +602,7 @@
         } else if ([_examType isEqualToString:@"collect"]) {
             getUrl = [Net_Path examPublicDetailNet];
             [param setObject:examIds forKey:@"topic_id"];
+            //来源【1：知识点；2：专项；3：考试；4：套卷；5错题；6：收藏；】
             [param setObject:@"6" forKey:@"origin"];
         }
         ShowHud(@"试题信息拉取中...");

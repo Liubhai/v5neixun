@@ -521,7 +521,7 @@
         [eventTimer invalidate];
         eventTimer = nil;
     } else {
-        _dayLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][0];
+        _dayLabel.text = [NSString stringWithFormat:@"%@天",[EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][0]];
         _hourLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][1];
         _minuteLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][2];
         _secondLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][3];

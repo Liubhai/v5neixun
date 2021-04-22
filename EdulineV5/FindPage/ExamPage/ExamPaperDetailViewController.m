@@ -87,8 +87,6 @@
     [self.view addSubview:_rightOrErrorIcon];
     _rightOrErrorIcon.hidden = YES;
     
-    [self makeBottomView];
-    
     [self getData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
@@ -149,23 +147,27 @@
     _nextExamBtn.titleLabel.font = SYSTEMFONT(16);
     [_nextExamBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    // 1. 得到imageView和titleLabel的宽、高
-    CGFloat imageWith = _nextExamBtn.imageView.frame.size.width;
-    CGFloat imageHeight = _nextExamBtn.imageView.frame.size.height;
-    CGFloat labelWidth = 0.0;
-    CGFloat labelHeight = 0.0;
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
-        // 由于iOS8中titleLabel的size为0，用下面的这种设置
-        labelWidth = _nextExamBtn.titleLabel.intrinsicContentSize.width;
-        labelHeight = _nextExamBtn.titleLabel.intrinsicContentSize.height;
+    if (examCount == 1) {
+        
     } else {
-        labelWidth = _nextExamBtn.titleLabel.frame.size.width;
-        labelHeight = _nextExamBtn.titleLabel.frame.size.height;
-    }
-    CGFloat space = 7.5;
+        // 1. 得到imageView和titleLabel的宽、高
+        CGFloat imageWith = _nextExamBtn.imageView.frame.size.width;
+        CGFloat imageHeight = _nextExamBtn.imageView.frame.size.height;
+        CGFloat labelWidth = 0.0;
+        CGFloat labelHeight = 0.0;
+        if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
+            // 由于iOS8中titleLabel的size为0，用下面的这种设置
+            labelWidth = _nextExamBtn.titleLabel.intrinsicContentSize.width;
+            labelHeight = _nextExamBtn.titleLabel.intrinsicContentSize.height;
+        } else {
+            labelWidth = _nextExamBtn.titleLabel.frame.size.width;
+            labelHeight = _nextExamBtn.titleLabel.frame.size.height;
+        }
+        CGFloat space = 7.5;
 
-    _nextExamBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+space/2.0, 0, -labelWidth-space/2.0);
-    _nextExamBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith-space/2.0, 0, imageWith+space/2.0);
+        _nextExamBtn.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+space/2.0, 0, -labelWidth-space/2.0);
+        _nextExamBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith-space/2.0, 0, imageWith+space/2.0);
+    }
     [_bottomView addSubview:_nextExamBtn];
     
     _nextExamBtn.hidden = NO;
@@ -174,6 +176,11 @@
     
     _previousExamBtn.enabled = NO;
     _nextExamBtn.enabled = NO;
+    if (examCount == 1) {
+        [_nextExamBtn setTitle:@"提交" forState:0];
+        [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+        [_nextExamBtn setImage:nil forState:0];
+    }
 }
 
 - (void)makeHeaderView {
@@ -724,6 +731,7 @@
                     }
                     
                     examCount = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"total_count"]] integerValue];
+                    [self makeBottomView];
                     currentExamRow = 0;
                     [_examIdListArray removeAllObjects];
                     NSArray *pass = [NSArray arrayWithArray:[ExamPaperIDListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"parts"]]];
@@ -979,24 +987,52 @@
                     // 最后一道题点击 其实是只有"上一题"按钮了 这时候就是显示上一题干的最后一个 也不对 这时候这个按钮都被隐藏了
                     // 最后一题了(改变当前底部按钮的样式  只显示"上一题"按钮)
                     // 好像不对  这是倒数第二道题点击时候的逻辑
+                    if ([_nextExamBtn.titleLabel.text isEqualToString:@"提交"]) {
+                        [self putExamAnswer];
+                        return;
+                    }
                 }
             }
-            ExamPaperIDListModel *idListModelPass = _examIdListArray[currentExamIndexPath.section];
+            ExamIDListModel *idListModelPass = _examIdListArray[currentExamIndexPath.section];
             // 这时候判断 并且更改底部按钮状态
             if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModelPass.child.count - 1)) {
-                _nextExamBtn.hidden = YES;
+                
+                _nextExamBtn.hidden = NO;
+                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                [_nextExamBtn setTitle:@"提交" forState:0];
+                [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                [_nextExamBtn setImage:nil forState:0];
                 _previousExamBtn.hidden = NO;
-                [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
-                [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
-                [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
+                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
             } else {
                 _nextExamBtn.hidden = NO;
+                [_nextExamBtn setTitle:@"下一题" forState:0];
+                [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                 [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
                 _previousExamBtn.hidden = NO;
                 [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
                 [_previousExamBtn setImage:Image(@"exam_last") forState:0];
                 [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
             }
+            
+//            ExamPaperIDListModel *idListModelPass = _examIdListArray[currentExamIndexPath.section];
+//            // 这时候判断 并且更改底部按钮状态
+//            if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModelPass.child.count - 1)) {
+//                _nextExamBtn.hidden = YES;
+//                _previousExamBtn.hidden = NO;
+//                [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
+//                [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+//                [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
+//            } else {
+//                _nextExamBtn.hidden = NO;
+//                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+//                _previousExamBtn.hidden = NO;
+//                [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
+//                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+//                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+//            }
             // 要请求数据了
             if (SWNOTEmptyArr(_examIdListArray)) {
                 ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[currentExamIndexPath.section];
@@ -1036,8 +1072,14 @@
                 _nextExamBtn.hidden = NO;
                 _previousExamBtn.hidden = YES;
                 [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+                [_nextExamBtn setTitle:@"下一题" forState:0];
+                [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
             } else {
                 _nextExamBtn.hidden = NO;
+                [_nextExamBtn setTitle:@"下一题" forState:0];
+                [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                 [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
                 _previousExamBtn.hidden = NO;
                 [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
@@ -1045,6 +1087,20 @@
                 [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
                 
             }
+//            // 这时候判断 并且更改底部按钮状态
+//            if (currentExamIndexPath.section == 0 && currentExamIndexPath.row == 0) {
+//                _nextExamBtn.hidden = NO;
+//                _previousExamBtn.hidden = YES;
+//                [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+//            } else {
+//                _nextExamBtn.hidden = NO;
+//                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+//                _previousExamBtn.hidden = NO;
+//                [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
+//                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+//                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+//
+//            }
             // 要请求数据了
             if (SWNOTEmptyArr(_examIdListArray)) {
                 ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[currentExamIndexPath.section];
@@ -1100,14 +1156,25 @@
                             _nextExamBtn.hidden = NO;
                             _previousExamBtn.hidden = YES;
                             [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+                            if (examCount == 1) {
+                                [_nextExamBtn setTitle:@"提交" forState:0];
+                                [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                                [_nextExamBtn setImage:nil forState:0];
+                            }
                         } else if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
-                            _nextExamBtn.hidden = YES;
+                            _nextExamBtn.hidden = NO;
+                            [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                            [_nextExamBtn setTitle:@"提交" forState:0];
+                            [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                            [_nextExamBtn setImage:nil forState:0];
                             _previousExamBtn.hidden = NO;
-                            [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
-                            [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
-                            [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
+                            [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+                            [_previousExamBtn setImage:Image(@"exam_last") forState:0];
                         } else {
                             _nextExamBtn.hidden = NO;
+                            [_nextExamBtn setTitle:@"下一题" forState:0];
+                            [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                            [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                             [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
                             _previousExamBtn.hidden = NO;
                             [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
@@ -1115,6 +1182,26 @@
                             [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
                             
                         }
+//                        // 这时候判断 并且更改底部按钮状态
+//                        if (currentExamIndexPath.section == 0 && currentExamIndexPath.row == 0) {
+//                            _nextExamBtn.hidden = NO;
+//                            _previousExamBtn.hidden = YES;
+//                            [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+//                        } else if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
+//                            _nextExamBtn.hidden = YES;
+//                            _previousExamBtn.hidden = NO;
+//                            [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
+//                            [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+//                            [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
+//                        } else {
+//                            _nextExamBtn.hidden = NO;
+//                            [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+//                            _previousExamBtn.hidden = NO;
+//                            [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
+//                            [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+//                            [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+//
+//                        }
                         break;
                     }
                 }
@@ -1471,6 +1558,7 @@
  [{"answer": [{"id": 11}, {"id": 13}, {"id": 12}], "topic_id": 6, "topic_level": 1, "question_type": 4},{"answer": ["填空题1-2", "填空题2",""], "topic_id": 7, "topic_level": 1, "question_type": 5}, {"answer": [{"id": 190}], "topic_id": 126, "topic_level": 1, "question_type": 4}, {"answer": "填空题type5简答题type8答案", "topic_id": 13, "topic_level": 1, "question_type": 8}]
  */
 - (void)putExamAnswer {
+    [self managerAnswer];
     if (SWNOTEmptyStr(_currentExamPaperDetailModel.paper_id)) {
         NSMutableDictionary *passDict = [NSMutableDictionary new];
         [passDict setObject:_currentExamPaperDetailModel.paper_id forKey:@"paper_id"];
@@ -1607,7 +1695,6 @@
     }
     
     NSLog(@" 组装后的答案以及传值数据 = %@",_answerManagerArray);
-    [self putExamAnswer];
 }
 
 // MARK: - 计时器开始计时
@@ -1628,7 +1715,7 @@
             [paperTimer invalidate];
             paperTimer = nil;
 //            remainTime = [_currentExamPaperDetailModel.total_time integerValue] * 60;
-            [self managerAnswer];
+            [self putExamAnswer];
         }
     }
 }
