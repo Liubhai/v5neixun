@@ -79,7 +79,7 @@
 
 - (void)joinGroupButtonClick {
     if (_delegate && [_delegate respondsToSelector:@selector(joinGroupByGroupId:groupInfo:)]) {
-        [_delegate joinGroupByGroupId:[NSString stringWithFormat:@"%@",[_groupInfo objectForKey:@"event_id"]] groupInfo:_groupInfo];
+        [_delegate joinGroupByGroupId:[NSString stringWithFormat:@"%@",[_groupInfo objectForKey:@"id"]] groupInfo:_groupInfo];
     }
 }
 

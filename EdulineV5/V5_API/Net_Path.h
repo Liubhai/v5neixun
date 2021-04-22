@@ -510,6 +510,15 @@ struct NetWorkUrl {
 /** 套卷列表接口 */
 + (NSString *)setOfVolumeListNet;
 
+/** 考试记录列表 */
++ (NSString *)examPaperRecordListNet;
+
+/** 考试结果基础 */
++ (NSString *)examResultNet;
+
+/** 考试结果试题信息 */
++ (NSString *)examResultTestDetailInfoNet;
+
 /** 套卷详情接口 */
 + (NSString *)volumePaperDetailNet;
 

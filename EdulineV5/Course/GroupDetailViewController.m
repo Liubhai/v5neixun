@@ -225,6 +225,7 @@
     [_doButton setTitleColor:[UIColor whiteColor] forState:0];
     _doButton.titleLabel.font = SYSTEMFONT(16);
     _doButton.centerX = _groupBackView.width / 2.0;
+    [_doButton addTarget:self action:@selector(groupDoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_groupBackView addSubview:_doButton];
     
 }
@@ -424,14 +425,28 @@
             
             _courseSellPrice.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
             
-            NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"expiry_countdown"]];
-//            NSString *start_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"start_countdown"]];
+            /*团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功；3：团购失败；】**/
+            NSString *groupStatus = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"status"]];
+            if ([groupStatus isEqualToString:@"1"]) {
+                NSString *totalCount = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"total_num"]];
+                NSString *joinCount = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"join_num"]];
+                NSString *needCount = [NSString stringWithFormat:@"%@",@([totalCount integerValue] - [joinCount integerValue])];
+                NSString *final = [NSString stringWithFormat:@"距离拼团成功还差%@人",needCount];
+                NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:final];
+                [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.courseActivityGroupColor} range:[final rangeOfString:needCount]];
+                _groupResult.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+                [_doButton setTitle:@"邀请好友参团" forState:0];
+            } else if ([groupStatus isEqualToString:@"2"]) {
+                _groupResult.text = @"拼团成功";
+                _groupResultTip.text = @"恭喜您拼团成功，快去观看课程吧～";
+                [_doButton setTitle:@"查看课程" forState:0];
+            } else if ([groupStatus isEqualToString:@"3"]) {
+                _groupResult.text = @"拼团失败";
+                _groupResultTip.text = @"拼团时间已过，款项将自动退回";
+                [_doButton setTitle:@"重新开团" forState:0];
+            }
             
-//            if ([[_activityInfo objectForKey:@"running_status"] integerValue] == 1) {
-//                eventTime = [end_countdown integerValue];
-//            } else {
-//                eventTime = [end_countdown integerValue];
-//            }
+            NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"expiry_countdown"]];
             eventTime = [end_countdown integerValue];
             if (eventTime>0) {
                 [self startTimer];
@@ -441,7 +456,6 @@
             if (SWNOTEmptyArr(_activityInfo[@"tuan_data"])) {
                 [_tuanMenberDataSource addObjectsFromArray:_activityInfo[@"tuan_data"]];
             }
-            // 处理团员信息 todo...
             [self makeGroupMenberUI];
         }
     }
@@ -476,6 +490,19 @@
         }
     }
     _menberScrollView.contentSize = CGSizeMake(0, (_tuanMenberDataSource.count % 5 == 0) ? (_tuanMenberDataSource.count * (ww + menberTopSpace) / 5) : (_tuanMenberDataSource.count * (ww + menberTopSpace) / 5) + (ww + menberTopSpace));
+}
+
+// MARK: - 团购底部按钮点击事件
+- (void)groupDoButtonClick:(UIButton *)sender {
+    NSString *groupStatus = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"status"]];
+    if ([groupStatus isEqualToString:@"1"]) {
+        // 邀请好友
+    } else if ([groupStatus isEqualToString:@"2"]) {
+        // 返回上一级课程详情页面或者跳转到对应课程详情页
+        [self.navigationController popViewControllerAnimated:YES];
+    } else if ([groupStatus isEqualToString:@"3"]) {
+        // 重新开团流程未知
+    }
 }
 
 // MARK: - 开始倒计时

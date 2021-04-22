@@ -296,21 +296,11 @@
             }
             if (SWNOTEmptyStr(courseIdString)) {
                 [param setObject:[NSString stringWithFormat:@"%@,",courseIdString] forKey:@"course_ids"];
-//                [param setObject:courseIdString forKey:@"course_ids"];
             }
             passString = [NSString stringWithFormat:@"[{course_ids:%@}]",[NSString stringWithFormat:@"%@,",courseIdString]];
             [paramArray addObject:[NSDictionary dictionaryWithDictionary:param]];
         }
     }
-//    NSData *data = [NSJSONSerialization dataWithJSONObject:[NSArray arrayWithArray:paramArray]
-//                                                   options:NSJSONWritingPrettyPrinted
-//                                                     error:nil];
-//    NSString *string = [[NSString alloc] initWithData:data
-//                                             encoding:NSUTF8StringEncoding];
-//    NSString *jsonTemp = [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-//    NSString *jsonResult = [jsonTemp stringByReplacingOccurrencesOfString:@" " withString:@""];
-//    NSLog(@"json array is: %@", jsonResult);
-//,@"from":@"ios"
     if (SWNOTEmptyArr(paramArray)) {
         [Net_API requestPOSTWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course":paramArray} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {

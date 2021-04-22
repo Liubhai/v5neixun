@@ -113,8 +113,6 @@
 // MARK: - 加入团的点击事件 GrouListCellDelegate
 - (void)joinGroupByGroupId:(NSString *)groupID groupInfo:(NSDictionary *)groupInfo {
     [self joinPintuanBeforeNet:groupID];
-//    GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
-//    [self.parentViewController.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)applyPintuan {
@@ -147,6 +145,7 @@
                         vc.orderTypeString = @"course";
                         vc.orderId = _courseId;
                         [self.parentViewController.navigationController pushViewController:vc animated:YES];
+                        [self closeButtonClick];
                     }
                 }
             } enError:^(NSError * _Nonnull error) {
@@ -166,6 +165,7 @@
                     vc.orderTypeString = @"course";
                     vc.orderId = _courseId;
                     [self.parentViewController.navigationController pushViewController:vc animated:YES];
+                    [self closeButtonClick];
                 }
             }
         } enError:^(NSError * _Nonnull error) {

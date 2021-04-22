@@ -1025,7 +1025,7 @@
                     [self.navigationController pushViewController:vc animated:YES];
                 } else {
                     // 弹框
-                    [self showGroupList];
+                    [self showHudInView:self.view showHint:@"已入团成功，请确认支付"];
                 }
             } else {
                 // 弹框
@@ -1210,20 +1210,6 @@
     GroupListPopViewController *vc = [[GroupListPopViewController alloc] init];
     vc.courseId = _ID;
     vc.videoDataSource = [NSDictionary dictionaryWithDictionary:_dataSource];
-//    vc.activityInfo = [NSDictionary dictionaryWithDictionary:_activityInfo];
-//    vc.courseType = _isClassNew ? @"5" : @"1";
-//    vc.videoDataSource = _videoDataSource;
-//    if (SWNOTEmptyDictionary(_activityInfo)) {
-//        if (SWNOTEmptyArr([_activityInfo objectForKey:@"asb"])) {
-//            vc.dataSource = [NSMutableArray arrayWithArray:[_activityInfo objectForKey:@"asb"]];
-//        } else {
-//            [TKProgressHUD showError:@"还没有相关团购活动" toView:self.view];
-//            return;
-//        }
-//    } else {
-//        [TKProgressHUD showError:@"还没有相关团购活动" toView:self.view];
-//        return;
-//    }
     [self.view addSubview:vc.view];
     [self addChildViewController:vc];
 }

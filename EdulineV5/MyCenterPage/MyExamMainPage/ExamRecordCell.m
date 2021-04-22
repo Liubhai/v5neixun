@@ -64,7 +64,7 @@
     _courseModel = model;
     _cellIndex= indexpath;
     _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, 20);
-    _titleLabel.text = [NSString stringWithFormat:@"%@",model.title];
+    _titleLabel.text = [NSString stringWithFormat:@"%@",model.paper_title];
     _titleLabel.numberOfLines = 0;
     [_titleLabel sizeToFit];
     [_titleLabel setHeight:_titleLabel.height>40 ? 40 : _titleLabel.height];

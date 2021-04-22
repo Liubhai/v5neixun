@@ -12,14 +12,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EXamRecordModel : NSObject
 
-@property (strong, nonatomic) NSString *topic_id;//试题ID
-@property (strong, nonatomic) NSString *qustion_type;// 试题类型
-@property (strong, nonatomic) NSString *title; // 试题题干
+/**
+ "id": 1,
+ "paper_id": 1,
+ "unique_code": "6883c67c6babe7bd94ef51d8e857624d",
+ "answer_times": 1,
+ "time_takes": 1100,
+ "commit_time": 1618826226,
+ "answer_status": 0,
+ "score": 0,
+ "paper_title": "第一套试卷"
+ */
+
+@property (strong, nonatomic) NSString *topic_id;//排序Id
+@property (strong, nonatomic) NSString *paper_id;//试题ID
+@property (strong, nonatomic) NSString *score;//得分
+@property (strong, nonatomic) NSString *answer_status;//阅卷状态【0：提交答案；1：客观题已阅卷；2：主观题已阅卷，完成阅卷】
+@property (strong, nonatomic) NSString *paper_title; // 试题题干
+@property (strong, nonatomic) NSString *commit_time;// 提交时间
+@property (strong, nonatomic) NSString *time_takes;// 考试用时/秒
+@property (strong, nonatomic) NSString *answer_times; // 参考次数
+@property (strong, nonatomic) NSString *unique_code; // 上次作答提交时间
+
 @property (strong, nonatomic) NSString *allCount;// 总题数
 @property (strong, nonatomic) NSString *rightCount;// 正确作答题数
-@property (strong, nonatomic) NSString *examTime; // 上次作答提交时间
-@property (assign, nonatomic) BOOL selected; // 管理时候是否选中
-@property (strong, nonatomic) NSString *score; // 上次作答提交时间
 
 @end
 

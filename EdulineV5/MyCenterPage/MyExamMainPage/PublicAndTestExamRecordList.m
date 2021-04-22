@@ -55,16 +55,16 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
-//    _tableView.mj_footer.hidden = YES;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 8;//_dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -75,12 +75,7 @@
             cell = [[ExamRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         cell.delegate = self;
-        EXamRecordModel *model = [[EXamRecordModel alloc] init];
-        model.title = @"试卷名称显示试卷名称显示试卷名称显示试卷名称显示名称显示试卷名称显示,试卷名称显示试卷名称显示试卷名称显示试卷名称显示名称显示试卷名称显示";
-        model.allCount = @"100";
-        model.rightCount = @"30";
-        model.score = @"90";
-        [cell setExamRecordRootManagerModel:model indexpath:indexPath isPublic:YES];
+        [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath isPublic:YES];
         return cell;
     } else {
         static NSString *reuse = @"ExamRecordCellTest";
@@ -89,12 +84,7 @@
             cell = [[ExamRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         cell.delegate = self;
-        EXamRecordModel *model = [[EXamRecordModel alloc] init];
-        model.title = @"试卷名称显示试卷名称显示试卷名称显示试卷名称显示名称显示试卷名称显示";
-        model.allCount = @"100";
-        model.rightCount = @"30";
-        model.score = @"90";
-        [cell setExamRecordRootManagerModel:model indexpath:indexPath isPublic:NO];
+        [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath isPublic:NO];
         return cell;
     }
 }
@@ -117,7 +107,7 @@
         [param setObject:_examType forKey:@"source_type"];
     }
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[_examType isEqualToString:@"2"] ? [Net_Path examPaperRecordListNet] : [Net_Path examPaperRecordListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -151,7 +141,7 @@
     if (SWNOTEmptyStr(_examType)) {
         [param setObject:_examType forKey:@"source_type"];
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[_examType isEqualToString:@"2"] ? [Net_Path examPaperRecordListNet] : [Net_Path examPaperRecordListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }

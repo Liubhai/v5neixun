@@ -1608,44 +1608,6 @@
     
     NSLog(@" 组装后的答案以及传值数据 = %@",_answerManagerArray);
     [self putExamAnswer];
-    /**
-    for (int i = 0; i<_examDetailArray.count; i++) {
-        NSMutableDictionary *passDict = [NSMutableDictionary new];
-        ExamDetailModel *model = _examDetailArray[i];
-        
-        [passDict setObject:model.examDetailId forKey:@"topic_id"];
-        [passDict setObject:model.topic_level forKey:@"topic_level"];
-        [passDict setObject:model.question_type forKey:@"question_type"];
-        
-        if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"] || [model.question_type isEqualToString:@"3"] || [model.question_type isEqualToString:@"4"]) {
-            NSMutableArray *passArray = [NSMutableArray new];
-            for (int j = 0; j<model.options.count; j++) {
-                ExamDetailOptionsModel *opModel = model.options[j];
-                if (opModel.is_selected) {
-                    [passArray addObject:@{@"id":opModel.examDetailOptionId}];
-                }
-            }
-            [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
-            [_answerManagerArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
-        } else if ([model.question_type isEqualToString:@"5"] || [model.question_type isEqualToString:@"8"]) {
-            NSMutableArray *passArray = [NSMutableArray new];
-            for (int j = 0; j<model.options.count; j++) {
-                ExamDetailOptionsModel *opModel = model.options[j];
-                if (opModel.userAnswerValue) {
-                    [passArray addObject:opModel.userAnswerValue];
-                } else {
-                    [passArray addObject:@""];
-                }
-            }
-            [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
-            [_answerManagerArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
-        } else if ([model.question_type isEqualToString:@"7"]) {
-            // 完形填空
-        } else if ([model.question_type isEqualToString:@"6"]) {
-            // 材料题
-        }
-    }
-    */
 }
 
 // MARK: - 计时器开始计时
