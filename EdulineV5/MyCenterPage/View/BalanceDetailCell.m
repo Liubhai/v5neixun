@@ -49,7 +49,7 @@
         _titleLabel.text = [NSString stringWithFormat:@"%@",[infoData objectForKey:@"note"]];
         NSString *alter_type = [NSString stringWithFormat:@"%@",[infoData objectForKey:@"alter_type"]];
         if ([listType isEqualToString:@"balance"]) {
-            if ([[infoData objectForKey:@"alter_type"] boolValue]) {
+            if ([alter_type isEqualToString:@"2"] || [alter_type isEqualToString:@"6"] || [alter_type isEqualToString:@"10"]) {
                 _priceLabel.text = [NSString stringWithFormat:@"+%@%@",IOSMoneyTitle,[infoData objectForKey:@"num"]];
                 _priceLabel.textColor = EdlineV5_Color.faildColor;
             } else {
