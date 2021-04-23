@@ -82,6 +82,7 @@
     _rightCountLabel.frame = CGRectMake(_fenggeLineView.right + 8, _titleLabel.bottom + 14, rightCountWidth, 17);
     
     _timeLabel.frame = CGRectMake(MainScreenWidth - 15 - 200, _titleLabel.bottom + 14, 200, 17);
+    _timeLabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",model.commit_time]];
     
     _lineView.frame = CGRectMake(_titleLabel.left, _timeLabel.bottom + 12, MainScreenWidth - _titleLabel.left, 1);
     [self setHeight:_lineView.bottom];

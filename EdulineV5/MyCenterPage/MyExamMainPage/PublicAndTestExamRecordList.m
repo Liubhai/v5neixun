@@ -98,7 +98,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ExamResultViewController *vc = [[ExamResultViewController alloc] init];
     EXamRecordModel *model = _dataSource[indexPath.row];
-    vc.record_id = [NSString stringWithFormat:@"%@",model.paper_id];
+    vc.record_id = [NSString stringWithFormat:@"%@",model.topic_id];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
