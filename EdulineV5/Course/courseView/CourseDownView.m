@@ -211,7 +211,9 @@
             _joinStudyButton.hidden = NO;
             if ([courseInfo objectForKey:@"recent_learn"]) {
                 if (SWNOTEmptyDictionary([courseInfo objectForKey:@"recent_learn"])) {
-                    [_joinStudyButton setTitle:@"继续学习" forState:0];
+                    if (SWNOTEmptyDictionary([[courseInfo objectForKey:@"recent_learn"] objectForKey:@"section_data"])) {
+                        [_joinStudyButton setTitle:@"继续学习" forState:0];
+                    }
                 }
             }
         } else {

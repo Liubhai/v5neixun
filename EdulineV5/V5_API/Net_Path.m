@@ -706,6 +706,11 @@
     return [Net_Path fullPath:@"user/examination/record/topic" repalce:@"" byReplece:@""];
 }
 
+/** 我的考试-错题重练 */
++ (NSString *)examResultErrorTestAgain {
+    return [Net_Path fullPath:@"user/examination/record/wrong/do" repalce:@"" byReplece:@""];
+}
+
 /** 套卷详情接口 */
 + (NSString *)volumePaperDetailNet {
     return [Net_Path fullPath:@"exam/rollup/detail" repalce:@"" byReplece:@""];
