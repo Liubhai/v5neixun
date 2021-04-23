@@ -11,25 +11,35 @@
 
 @implementation ExamSheetModel
 
-//+(NSDictionary *)mj_replacedKeyFromPropertyName
-//{
-//    return @{@"cateGoryId":@"id"};
-//}
+/**
+ @property (strong, nonatomic) NSString *question_type;
+ @property (strong, nonatomic) NSString *section_id;// 部分ID
+ @property (strong, nonatomic) NSString *title;
+ @property (strong, nonatomic) NSString *number;
+ @property (strong, nonatomic) NSString *paper_id;
+ @property (strong, nonatomic) NSString *section_description;
+ @property (strong, nonatomic) NSMutableArray<ExamModel *> *child;
+ */
 
-//+(NSDictionary *)mj_objectClassInArray
-//{
-//    return @{@"child":@"ExamModel"};
-//}
++(NSDictionary *)mj_replacedKeyFromPropertyName
+{
+    return @{@"section_id":@"id",@"child":@"value",@"section_description":@"description"};
+}
+
++(NSDictionary *)mj_objectClassInArray
+{
+    return @{@"child":@"ExamModel"};
+}
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"question_type"]) {
+    if ([property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"section_id"] || [property.name isEqualToString:@"title"] || [property.name isEqualToString:@"number"] || [property.name isEqualToString:@"paper_id"] || [property.name isEqualToString:@"section_description"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
             return @"";
         }
-    } else if ([property.name isEqualToString:@"child"]) {
+    } else if ([property.name isEqualToString:@"child"] || [property.name isEqualToString:@"value"]) {
         if (!NOTNULL(oldValue)){
             return @[];
         }
@@ -39,19 +49,58 @@
 
 @end
 
+
 @implementation ExamModel
+
+/**
+ "epar_id": 1,
+ "epart_id": 316,
+ "topic_id": 10,
+ "topic_level": 2,
+ "topics": [
+     {
+         "topic_id": 5,
+         "answer_right": 0
+     },
+     {
+         "topic_id": 4,
+         "answer_right": 1
+     }
+ ]
+ */
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"title"] || [property.name isEqualToString:@"exam_id"]) {
+    if ([property.name isEqualToString:@"epar_id"] || [property.name isEqualToString:@"epart_id"] || [property.name isEqualToString:@"topic_id"] || [property.name isEqualToString:@"topic_level"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
             return @"";
         }
-    } else if ([property.name isEqualToString:@"child"]) {
+    } else if ([property.name isEqualToString:@"topics"]) {
         if (!NOTNULL(oldValue)){
             return @[];
+        }
+    }
+    return oldValue;
+}
+
+@end
+
+@implementation ExamTopicModel
+
+/**
+ "topic_id": 3,
+ "answer_right": 1
+ */
+
+-(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
+{
+    if ([property.name isEqualToString:@"topic_id"]) {
+        if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
+            return [NSString stringWithFormat:@"%@",oldValue];
+        }else if (!NOTNULL(oldValue)){
+            return @"";
         }
     }
     return oldValue;

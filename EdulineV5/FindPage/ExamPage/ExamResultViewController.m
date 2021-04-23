@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "JustCircleProgress.h"
 #import "ExamSheetModel.h"
+#import "Net_Path.h"
 
 @interface ExamResultViewController ()
 
@@ -39,7 +40,8 @@
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
 
-@property (strong, nonatomic) NSMutableArray *examArray;
+@property (strong, nonatomic) NSDictionary *resultDict;// 考试结果信息
+@property (strong, nonatomic) NSMutableArray *examArray;// 每部分数组
 
 @end
 
@@ -53,14 +55,17 @@
     [self makeTopView];
     
     _examArray = [NSMutableArray new];
+    _resultDict = [NSDictionary new];
     
     [self makeScrollview];
     
     [self makeTopUI];
     
-    [self makeTestData];
+    [self getExamPaperResultInfo];
     
-    [self makeExamSheetUI];
+//    [self makeTestData];
+    
+//    [self makeExamSheetUI];
     
     [self makeBottomView];
     
@@ -98,7 +103,7 @@
     _goodIconImage.centerX = MainScreenWidth / 2.0;
     NSString *resultLevel = [NSString stringWithFormat:@"exam_top%@_icon",@(arc4random() % 4 + 1)];
     _goodIconImage.image = Image(resultLevel);//@"exam_top1_icon"
-    [self.view addSubview:_goodIconImage];
+//    [self.view addSubview:_goodIconImage];
     
     _circleView = [[JustCircleProgress alloc] initWithFrame:CGRectMake(20, MACRO_UI_UPHEIGHT, 122, 122)];
     _circleView.backgroundColor = [UIColor clearColor];//EdlineV5_Color.themeColor;
@@ -122,14 +127,14 @@
     NSRange scoreRange = NSMakeRange(0, score.length);
     // 40 20 14
     NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:fullScore];
-    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(40)} range:scoreRange];
-    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:NSMakeRange(scoreRange.length, 1)];
-    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(14)} range:NSMakeRange(scoreRange.length + 1, fullScore.length - scoreRange.length - 1)];
+    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(32)} range:scoreRange];
+    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(17)} range:NSMakeRange(scoreRange.length, 1)];
+    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(13)} range:NSMakeRange(scoreRange.length + 1, fullScore.length - scoreRange.length - 1)];
     _percentlabel.textColor = [UIColor whiteColor];
     _percentlabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:att];
     
-    _circleView.hidden = YES;
-    _percentlabel.hidden = YES;
+    _circleView.hidden = NO;
+    _percentlabel.hidden = NO;
     
     // 55 35 12 21 font 15 13
      
@@ -299,8 +304,8 @@
         NSMutableArray *pass = [NSMutableArray new];
         for (int j = 0; j < Y; j++) {
             ExamModel *model = [[ExamModel alloc] init];
-            model.exam_id = [NSString stringWithFormat:@"%@",@(arc4random() % Y)];
-            model.selected = (j % 2 == 0) ? YES : NO;
+            model.topic_id = [NSString stringWithFormat:@"%@",@(arc4random() % Y)];
+            model.answer_right = (j % 2 == 0) ? YES : NO;
             [pass addObject:model];
         }
         sheetModel.child = [NSMutableArray arrayWithArray:pass];
@@ -312,6 +317,7 @@
     
     CGFloat hotYY = 15 + 22 + 14 + 14 + 20;
     if (SWNOTEmptyArr(_examArray)) {
+        NSInteger order = 1;
         for (int j = 0; j < _examArray.count; j++) {
             UIView *hotView = [[UIView alloc] initWithFrame:CGRectMake(0, hotYY, MainScreenWidth, 0)];
             hotView.backgroundColor = [UIColor whiteColor];
@@ -337,12 +343,12 @@
                     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(XX, YY, btnHeight, btnHeight)];
                     btn.tag = 400 + i;
                     [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-                    [btn setTitle:[NSString stringWithFormat:@"%@",((ExamModel *)childArray[i]).exam_id] forState:0];
+                    [btn setTitle:[NSString stringWithFormat:@"%@",@(order)] forState:0];
                     btn.titleLabel.font = SYSTEMFONT(14);
                     [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
                     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
                     btn.backgroundColor = EdlineV5_Color.backColor;
-                    btn.selected = ((ExamModel *)childArray[i]).selected;
+                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
                     if (btn.selected) {
@@ -364,6 +370,7 @@
                         [hotView setHeight:btn.bottom];
                     }
                     [hotView addSubview:btn];
+                    order = order + 1;
                 }
             } else {
                 [hotView setHeight:typeTitleLabel.bottom];
@@ -386,6 +393,49 @@
     NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
     
     ExamModel *thirdModel = (ExamModel *)passThird[sender.tag - 400];
+}
+
+// MARK: - 请求考试结果信息
+- (void)getExamPaperResultInfo {
+    if (SWNOTEmptyStr(_record_id)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examResultNet] WithAuthorization:nil paramDic:@{@"record_id":_record_id} finish:^(id  _Nonnull responseObject) {
+            
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    _resultDict = [NSDictionary dictionaryWithDictionary:responseObject[@"data"]];
+                    [self setTopInfoData];
+                    [_examArray removeAllObjects];
+                    [_examArray addObjectsFromArray:[ExamSheetModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"paper_parts"]]];
+                    [self makeExamSheetUI];
+                    
+                }
+            }
+            
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK: - 头部信息赋值
+- (void)setTopInfoData {
+    if (SWNOTEmptyDictionary(_resultDict)) {
+        _examTitleLabel.text = [NSString stringWithFormat:@"%@",_resultDict[@"paper_title"]];
+        _userTimelabel.text = [EdulineV5_Tool timeChangeTimerWithSeconds:[[NSString stringWithFormat:@"%@",_resultDict[@"time_takes"]] integerValue]];
+        _finishlabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",_resultDict[@"commit_time"]]];
+        
+        NSString *score = [NSString stringWithFormat:@"%@",_resultDict[@"user_score"]];
+        NSString *paperFullScore = [NSString stringWithFormat:@"%@",_resultDict[@"paper_score"]];
+        NSString *fullScore = [NSString stringWithFormat:@"%@ 分\n满分%@分",score,paperFullScore];
+        NSRange scoreRange = NSMakeRange(0, score.length);
+        // 40 20 14
+        NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:fullScore];
+        [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(32)} range:scoreRange];
+        [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(17)} range:NSMakeRange(scoreRange.length, 1)];
+        [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(13)} range:NSMakeRange(scoreRange.length + 1, fullScore.length - scoreRange.length - 1)];
+        _percentlabel.textColor = [UIColor whiteColor];
+        _percentlabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:att];
+    }
 }
 
 @end

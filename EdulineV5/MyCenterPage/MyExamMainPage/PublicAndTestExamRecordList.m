@@ -12,6 +12,7 @@
 #import "LBHTableView.h"
 
 #import "ExamRecordCell.h"
+#import "ExamResultViewController.h"
 
 @interface PublicAndTestExamRecordList ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ExamRecordCellDelegate> {
     NSInteger page;
@@ -95,6 +96,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ExamResultViewController *vc = [[ExamResultViewController alloc] init];
+    EXamRecordModel *model = _dataSource[indexPath.row];
+    vc.record_id = [NSString stringWithFormat:@"%@",model.paper_id];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getFirstList {

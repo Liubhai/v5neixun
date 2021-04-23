@@ -1580,8 +1580,11 @@
                     });
                 }
             }
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
-            
+            _previousExamBtn.enabled = YES;
+            _nextExamBtn.enabled = YES;
         }];
     }
 }

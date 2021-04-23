@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ExamResultViewController : BaseViewController
 
+@property (strong, nonatomic) NSString *record_id;// 考试结果列表里面的id
+
 @end
 
 NS_ASSUME_NONNULL_END
