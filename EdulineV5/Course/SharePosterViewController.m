@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import <UShareUI/UShareUI.h>
+#import "V5_UserModel.h"
 
 @interface SharePosterViewController ()<UMSocialShareMenuViewDelegate>
 
@@ -34,10 +35,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = EdlineV5_Color.backColor;
-    _titleLabel.text = @"分享";
+    _titleLabel.text = @"推广赚收益";
     
-    _posterImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 285, 456)];
-    _posterImageView.centerY = MainScreenHeight / 2.0 - 43 / 2.0;
+    _posterImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT + 12, 285, 440)];
+//    _posterImageView.centerY = MainScreenHeight / 2.0 - 43 / 2.0;
     _posterImageView.centerX = MainScreenWidth / 2.0; // 127 84
     _posterImageView.image = Image(@"share_bg");
     [self.view addSubview:_posterImageView];
@@ -48,48 +49,65 @@
 // MARK: - 布局分享内容
 - (void)makeShareContentUI {
     
-    _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(27.5, 78, 230, 124)];
+    _teacherFace = [[UIImageView alloc] initWithFrame:CGRectMake(0, 10, 45, 45)];
+    _teacherFace.layer.masksToBounds = YES;
+    _teacherFace.layer.cornerRadius = _teacherFace.height / 2.0;
+    _teacherFace.layer.borderColor = [UIColor whiteColor].CGColor;
+    _teacherFace.layer.borderWidth = 1.0;
+    _teacherFace.centerX = _posterImageView.width / 2.0;
+    [_teacherFace sd_setImageWithURL:EdulineUrlString([V5_UserModel avatar]) placeholderImage:DefaultUserImage];
+    [_posterImageView addSubview:_teacherFace];
+    
+    _teacherName = [[UILabel alloc] initWithFrame:CGRectMake(0, _teacherFace.bottom + 6, _posterImageView.width, 15)];
+    _teacherName.font = SYSTEMFONT(13);
+    _teacherName.textColor = [UIColor whiteColor];
+    _teacherName.textAlignment = NSTextAlignmentCenter;
+    _teacherName.text = SWNOTEmptyStr([V5_UserModel uname]) ? [V5_UserModel uname] : @"";
+    [_posterImageView addSubview:_teacherName];
+    
+    UILabel *inviteLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _teacherName.bottom, _posterImageView.width, 15)];
+    inviteLabel.font = SYSTEMFONT(10);
+    inviteLabel.textColor = [UIColor whiteColor];
+    inviteLabel.textAlignment = NSTextAlignmentCenter;
+    inviteLabel.text = @"邀您一起学习";
+    [_posterImageView addSubview:inviteLabel];
+    
+    _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(27.5, 118, 230, 124)];
     _courseFace.layer.masksToBounds = YES;
     _courseFace.layer.cornerRadius = 5;
     [_posterImageView addSubview:_courseFace];
     
-    _courseTitle = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _courseFace.bottom + 10, _courseFace.width, 38)];
+    _courseTitle = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _courseFace.bottom + 5, _courseFace.width, 25)];
     _courseTitle.font = SYSTEMFONT(15);
     _courseTitle.textColor = EdlineV5_Color.textFirstColor;
-    _courseTitle.numberOfLines = 2;
     [_posterImageView addSubview:_courseTitle];
     
-    _coursePricelabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _courseTitle.bottom + 10, _courseFace.width, 19)];
+    _coursePricelabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _courseTitle.bottom + 3, _courseFace.width, 19)];
     _coursePricelabel.font = SYSTEMFONT(15);
     _coursePricelabel.textColor = EdlineV5_Color.faildColor;
     [_posterImageView addSubview:_coursePricelabel];
     
-    _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _coursePricelabel.bottom + 9, _courseFace.width, 19)];
-    _tipLabel.font = SYSTEMFONT(9);
-    _tipLabel.textColor = EdlineV5_Color.textThirdColor;
-    [_posterImageView addSubview:_tipLabel];
+    _codeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _coursePricelabel.bottom + 12, 63, 63)];
+    _codeImageView.centerX = _posterImageView.width / 2.0;
+    [_posterImageView addSubview:_codeImageView];
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(_courseFace.left, _tipLabel.bottom + 5, _courseFace.width, 1)];
-    _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [_posterImageView addSubview:_lineView];
-    
-    _teacherFace = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.left, _lineView.bottom + 10, 38, 38)];
-    _teacherFace.layer.masksToBounds = YES;
-    _teacherFace.layer.cornerRadius = 19;
-    [_posterImageView addSubview:_teacherFace];
-    
-    _teacherName = [[UILabel alloc] initWithFrame:CGRectMake(_teacherFace.right + 8, _teacherFace.top, _courseFace.width - _teacherFace.width - 8 - 63, 38)];
-    _teacherName.font = SYSTEMFONT(13);
-    _teacherName.textColor = EdlineV5_Color.textFirstColor;
-    [_posterImageView addSubview:_teacherName];
-    
-    _fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _teacherFace.bottom + 8, _courseFace.width - 63, 15)];
+    _fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _posterImageView.height - 10 - 15, _posterImageView.width, 15)];
     _fromLabel.font = SYSTEMFONT(10);
-    _fromLabel.textColor = EdlineV5_Color.textThirdColor;
+    _fromLabel.textColor = [UIColor whiteColor];
+    _fromLabel.textAlignment = NSTextAlignmentCenter;
     [_posterImageView addSubview:_fromLabel];
     
-    _codeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 63, _lineView.bottom + 9.5, 63, 63)];
-    [_posterImageView addSubview:_codeImageView];
+    UIImageView *tipBackImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _posterImageView.bottom + 15, 286, 25)];
+    tipBackImageView.image = Image(@"income_bg");
+    tipBackImageView.centerX = MainScreenWidth / 2.0;
+    [self.view addSubview:tipBackImageView];
+    
+    _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tipBackImageView.width, 25)];
+    _tipLabel.font = SYSTEMFONT(11);
+    _tipLabel.textColor = EdlineV5_Color.themeColor;
+    _tipLabel.textAlignment = NSTextAlignmentCenter;
+    _tipLabel.center = CGPointMake(tipBackImageView.width / 2.0, tipBackImageView.height / 2.0);
+    [tipBackImageView addSubview:_tipLabel];
     
     if (SWNOTEmptyDictionary(_shareContentDict)) {
         [_courseFace sd_setImageWithURL:EdulineUrlString(_shareContentDict[@"cover_url"]) placeholderImage:DefaultImage];
@@ -99,23 +117,24 @@
         NSString *tipPrice = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_shareContentDict[@"max_profit"]];
         NSString *tipText = [NSString stringWithFormat:@"每成功邀请一名用户预计最多收入 %@",tipPrice];
         NSMutableAttributedString *atr1 = [[NSMutableAttributedString alloc] initWithString:tipText];
-        [atr1 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor,NSFontAttributeName:SYSTEMFONT(11)} range:[tipText rangeOfString:tipPrice]];
+        [atr1 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor,NSFontAttributeName:SYSTEMFONT(12)} range:[tipText rangeOfString:tipPrice]];
         _tipLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr1];
         
-        [_teacherFace sd_setImageWithURL:EdulineUrlString(_shareContentDict[@"teacher_avatar"]) placeholderImage:DefaultUserImage];
+//        [_teacherFace sd_setImageWithURL:EdulineUrlString(_shareContentDict[@"teacher_avatar"]) placeholderImage:DefaultUserImage];
         
-        _teacherName.text = [NSString stringWithFormat:@"%@",_shareContentDict[@"teacher_name"]];
+//        _teacherName.text = [NSString stringWithFormat:@"%@",_shareContentDict[@"teacher_name"]];
         
         NSString *institutionName = [NSString stringWithFormat:@"%@",_shareContentDict[@"mhm_title"]];
         NSString *finalName = [NSString stringWithFormat:@"%@",_shareContentDict[@"mhm_title"]];
         NSString *fromText = [NSString stringWithFormat:@"本课程由 %@ 提供",institutionName];
-        if (institutionName.length>8) {
-            finalName = [institutionName  substringWithRange:NSMakeRange(0, 8)];
-            fromText = [NSString stringWithFormat:@"本课程由 %@... 提供",finalName];
-        }
-        NSMutableAttributedString *atr2 = [[NSMutableAttributedString alloc] initWithString:fromText];
-        [atr2 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:[fromText rangeOfString:finalName]];
-        _fromLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr2];
+        _fromLabel.text = fromText;
+//        if (institutionName.length>8) {
+//            finalName = [institutionName  substringWithRange:NSMakeRange(0, 8)];
+//            fromText = [NSString stringWithFormat:@"本课程由 %@... 提供",finalName];
+//        }
+//        NSMutableAttributedString *atr2 = [[NSMutableAttributedString alloc] initWithString:fromText];
+//        [atr2 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:[fromText rangeOfString:finalName]];
+//        _fromLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr2];
     }
 }
 

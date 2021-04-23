@@ -946,6 +946,7 @@
         // 并且这里需要把 答题卡数组里面的 has_answer 修改值
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamPaperIDListModel *currentExamIdListModel = _examIdListArray[currentExamIndexPath.section];
+            // 这个地方有可能会出现因为题型部分里面没有试题导致崩溃
             ExamIDModel *idModel = currentExamIdListModel.child[currentExamIndexPath.row];
             idModel.has_answered = YES;
         }
