@@ -1,16 +1,16 @@
 //
-//  AnswerSheetViewController.m
+//  ExamResultSheetViewController.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2021/1/26.
+//  Created by 刘邦海 on 2021/4/25.
 //  Copyright © 2021 刘邦海. All rights reserved.
 //
 
-#import "AnswerSheetViewController.h"
+#import "ExamResultSheetViewController.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
 
-@interface AnswerSheetViewController () {
+@interface ExamResultSheetViewController () {
     NSTimer *paperTimer;// 试卷作答时候的计时器(倒计时或者正序即时)
 }
 
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation AnswerSheetViewController
+@implementation ExamResultSheetViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,7 +40,7 @@
     
     [_leftButton setImage:Image(@"nav_sheetclose_icon") forState:0];
  
-    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - (_isPaper ? (44 + MACRO_UI_SAFEAREA) : 0))];
+    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     _mainScrollView.showsVerticalScrollIndicator = NO;
     _mainScrollView.showsHorizontalScrollIndicator = NO;
@@ -56,26 +56,43 @@
 }
 
 - (void)makeTopUI {
-    UILabel *examTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, MainScreenWidth - 30, 22)];
-    examTitle.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];
-    examTitle.textColor = EdlineV5_Color.textFirstColor;
-    examTitle.text = _sheetTitle;
+    UILabel *examTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 30, 22)];
+    examTitle.font = SYSTEMFONT(13);
+    examTitle.textColor = EdlineV5_Color.textThirdColor;
+    examTitle.text = @"注:";
     [_mainScrollView addSubview:examTitle];
     
-    UIView *finishView = [[UIView alloc] initWithFrame:CGRectMake(15, examTitle.bottom + 14, 14, 14)];
-    finishView.backgroundColor = EdlineV5_Color.themeColor;
+    UIView *finishView = [[UIView alloc] initWithFrame:CGRectMake(examTitle.right, 0, 14, 14)];
     finishView.layer.masksToBounds = YES;
+    finishView.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
+    finishView.layer.borderWidth = 1.0;
+    finishView.backgroundColor = [UIColor whiteColor];
     finishView.layer.cornerRadius = 2;
+    finishView.centerY = examTitle.centerY;
     [_mainScrollView addSubview:finishView];
     
     UILabel *finishLabel = [[UILabel alloc] initWithFrame:CGRectMake(finishView.right + 2.5, 0, 32 + 26, 18.5)];
-    finishLabel.text = @"已答";
+    finishLabel.text = @"正确";
     finishLabel.font = SYSTEMFONT(13);
     finishLabel.textColor = EdlineV5_Color.textFirstColor;
     finishLabel.centerY = finishView.centerY;
     [_mainScrollView addSubview:finishLabel];
     
-    UIView *unfinishView = [[UIView alloc] initWithFrame:CGRectMake(finishLabel.right, examTitle.bottom + 14, 14, 14)];
+    UIView *errorView = [[UIView alloc] initWithFrame:CGRectMake(finishLabel.right, finishView.top, 14, 14)];
+    errorView.layer.masksToBounds = YES;
+    errorView.layer.cornerRadius = 2;
+    errorView.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
+    errorView.layer.borderWidth = 1;
+    [_mainScrollView addSubview:errorView];
+    
+    UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(errorView.right + 2.5, 0, 32 + 26, 18.5)];
+    errorLabel.text = @"错误";
+    errorLabel.font = SYSTEMFONT(13);
+    errorLabel.textColor = EdlineV5_Color.textFirstColor;
+    errorLabel.centerY = finishView.centerY;
+    [_mainScrollView addSubview:errorLabel];
+    
+    UIView *unfinishView = [[UIView alloc] initWithFrame:CGRectMake(errorLabel.right, finishView.top, 14, 14)];
     unfinishView.layer.masksToBounds = YES;
     unfinishView.layer.cornerRadius = 2;
     unfinishView.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
@@ -122,11 +139,11 @@
         [passDict setObject:_currentExamPaperDetailModel.paper_id forKey:@"paper_id"];
         [passDict setObject:_currentExamPaperDetailModel.unique_code forKey:@"unique_code"];
         [passDict setObject:[NSArray arrayWithArray:_answerManagerArray] forKey:@"answer_data"];
-        if ([_currentExamPaperDetailModel.total_time isEqualToString:@"0"]) {
-            [passDict setObject:@(_remainTime) forKey:@"time_takes"];
-        } else {
-            [passDict setObject:@([_currentExamPaperDetailModel.total_time integerValue] * 60 - _remainTime) forKey:@"time_takes"];
-        }
+//        if ([_currentExamPaperDetailModel.total_time isEqualToString:@"0"]) {
+//            [passDict setObject:@(_remainTime) forKey:@"time_takes"];
+//        } else {
+//            [passDict setObject:@([_currentExamPaperDetailModel.total_time integerValue] * 60 - _remainTime) forKey:@"time_takes"];
+//        }
         
         [Net_API requestPOSTWithURLStr:[Net_Path submitPaperNet] WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
@@ -162,19 +179,24 @@
             typeTitleLabel.font = SYSTEMFONT(14);
             typeTitleLabel.textColor = EdlineV5_Color.textFirstColor;
             NSMutableArray *childArray = [NSMutableArray new];
-            if (_isPaper) {
-                typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamPaperIDListModel *)_examArray[j]).title];
-                [hotView addSubview:typeTitleLabel];
-                if (SWNOTEmptyArr(((ExamPaperIDListModel *)_examArray[j]).child)) {
-                    [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamPaperIDListModel *)_examArray[j]).child]];
-                }
-            } else {
-                typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamIDListModel *)_examArray[j]).title];
-                [hotView addSubview:typeTitleLabel];
-                if (SWNOTEmptyArr(((ExamIDListModel *)_examArray[j]).child)) {
-                    [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamIDListModel *)_examArray[j]).child]];
-                }
+            typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamSheetModel *)_examArray[j]).title];
+            [hotView addSubview:typeTitleLabel];
+            if (SWNOTEmptyArr(((ExamSheetModel *)_examArray[j]).child)) {
+                [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamSheetModel *)_examArray[j]).child]];
             }
+//            if (_isPaper) {
+//                typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamPaperIDListModel *)_examArray[j]).title];
+//                [hotView addSubview:typeTitleLabel];
+//                if (SWNOTEmptyArr(((ExamPaperIDListModel *)_examArray[j]).child)) {
+//                    [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamPaperIDListModel *)_examArray[j]).child]];
+//                }
+//            } else {
+//                typeTitleLabel.text = [NSString stringWithFormat:@"%@",((ExamIDListModel *)_examArray[j]).title];
+//                [hotView addSubview:typeTitleLabel];
+//                if (SWNOTEmptyArr(((ExamIDListModel *)_examArray[j]).child)) {
+//                    [childArray addObjectsFromArray:[NSArray arrayWithArray:((ExamIDListModel *)_examArray[j]).child]];
+//                }
+//            }
             if (childArray.count) {
                 CGFloat topSpacee = 15.0;
                 CGFloat rightSpace = 15.0;
@@ -190,15 +212,19 @@
                     [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
                     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
                     btn.backgroundColor = EdlineV5_Color.backColor;
-                    btn.selected = ((ExamIDModel *)childArray[i]).has_answered;
+                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
                     if (btn.selected) {
-                        btn.backgroundColor = EdlineV5_Color.themeColor;
-                    } else {
-                        btn.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+                        btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = [UIColor whiteColor];
+                        [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
+                    } else {
+                        btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
+                        btn.layer.borderWidth = 1.0;
+                        btn.backgroundColor = [UIColor whiteColor];
+                        [btn setTitleColor:EdlineV5_Color.faildColor forState:0];
                     }
                     if (_currentIndexpath) {
                         if (j == _currentIndexpath.section && i == _currentIndexpath.row) {
@@ -235,29 +261,40 @@
 - (void)thirdBtnClick:(UIButton *)sender {
     UIView *view = (UIView *)sender.superview;
     
-    if (_isPaper) {
-        ExamPaperIDListModel *secondModel = (ExamPaperIDListModel *)_examArray[view.tag - 10];
-        
-        NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
-        
-        ExamIDModel *thirdModel = (ExamIDModel *)passThird[sender.tag - 400];
-        // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
-        if (thirdModel.topic_id) {
-            self.chooseOtherExam(thirdModel.topic_id);
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    } else {
-        ExamIDListModel *secondModel = (ExamIDListModel *)_examArray[view.tag - 10];
-        
-        NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
-        
-        ExamIDModel *thirdModel = (ExamIDModel *)passThird[sender.tag - 400];
-        // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
-        if (thirdModel.topic_id) {
-            self.chooseOtherExam(thirdModel.topic_id);
-            [self.navigationController popViewControllerAnimated:YES];
-        }
+    ExamSheetModel *secondModel = (ExamSheetModel *)_examArray[view.tag - 10];
+    
+    NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
+    
+    ExamModel *thirdModel = (ExamModel *)passThird[sender.tag - 400];
+    // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
+    if (thirdModel.topic_id) {
+        self.chooseOtherExam(thirdModel);
+        [self.navigationController popViewControllerAnimated:YES];
     }
+    
+//    if (_isPaper) {
+//        ExamSheetModel *secondModel = (ExamSheetModel *)_examArray[view.tag - 10];
+//
+//        NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
+//
+//        ExamModel *thirdModel = (ExamModel *)passThird[sender.tag - 400];
+//        // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
+//        if (thirdModel.topic_id) {
+//            self.chooseOtherExam(thirdModel);
+//            [self.navigationController popViewControllerAnimated:YES];
+//        }
+//    } else {
+//        ExamIDListModel *secondModel = (ExamIDListModel *)_examArray[view.tag - 10];
+//
+//        NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
+//
+//        ExamIDModel *thirdModel = (ExamIDModel *)passThird[sender.tag - 400];
+//        // 跳转到答题详情页 处理  当前题下标 整个试题id列表的index
+//        if (thirdModel.topic_id) {
+//            self.chooseOtherExam(thirdModel);
+//            [self.navigationController popViewControllerAnimated:YES];
+//        }
+//    }
 }
 
 // MARK: - 计时器开始计时

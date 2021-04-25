@@ -11,6 +11,7 @@
 #import "JustCircleProgress.h"
 #import "ExamSheetModel.h"
 #import "Net_Path.h"
+#import "ExamResultDetailViewController.h"
 
 @interface ExamResultViewController ()
 
@@ -43,6 +44,9 @@
 @property (strong, nonatomic) NSDictionary *resultDict;// 考试结果信息
 @property (strong, nonatomic) NSMutableArray *examArray;// 每部分数组
 
+@property (strong, nonatomic) NSDictionary *resultDictWrong;// 考试结果信息(所有错题)
+@property (strong, nonatomic) NSMutableArray *examWrongArray;// 每部分数组(所有错题)
+
 @end
 
 @implementation ExamResultViewController
@@ -57,11 +61,15 @@
     _examArray = [NSMutableArray new];
     _resultDict = [NSDictionary new];
     
+    _examWrongArray = [NSMutableArray new];
+    _resultDictWrong = [NSDictionary new];
+    
     [self makeScrollview];
     
     [self makeTopUI];
     
     [self getExamPaperResultInfo];
+    [self getExamPaperResultWrongInfo];
     
 //    [self makeTestData];
     
@@ -252,7 +260,7 @@
     [self.view addSubview:_bottomView];
     
     _resetButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth / 3.0, 44)];
-    [_resetButton setTitle:@"重新考试" forState:0];
+    [_resetButton setTitle:@"错题重练" forState:0];
     [_resetButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _resetButton.titleLabel.font = SYSTEMFONT(16);
     [_resetButton addTarget:self action:@selector(resetButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -280,15 +288,28 @@
 }
 
 - (void)resetButtonClick {
+    if (![_answer_status isEqualToString:@"2"]) {
+        return;
+    }
     
 }
 
 - (void)allAnalysisButtonClick {
-    
+//    if (![_answer_status isEqualToString:@"2"]) {
+//        return;
+//    }
+    ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
+    vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)sureButtonClick {
-    
+//    if (![_answer_status isEqualToString:@"2"]) {
+//        return;
+//    }
+    ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
+    vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDictWrong];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)leftBtnClick {
@@ -355,10 +376,12 @@
                         btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = [UIColor whiteColor];
+                        [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
                     } else {
                         btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = [UIColor whiteColor];
+                        [btn setTitleColor:EdlineV5_Color.faildColor forState:0];
                     }
                     if (btn.right > (MainScreenWidth - 15)) {
                         XX = 15.0;
@@ -395,7 +418,7 @@
     ExamModel *thirdModel = (ExamModel *)passThird[sender.tag - 400];
 }
 
-// MARK: - 请求考试结果信息
+// MARK: - 请求考试结果信息(全部)
 - (void)getExamPaperResultInfo {
     if (SWNOTEmptyStr(_record_id)) {
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path examResultNet] WithAuthorization:nil paramDic:@{@"record_id":_record_id} finish:^(id  _Nonnull responseObject) {
@@ -408,6 +431,24 @@
                     [_examArray addObjectsFromArray:[ExamSheetModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"paper_parts"]]];
                     [self makeExamSheetUI];
                     
+                }
+            }
+            
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK: - 请求考试结果信息(错题)
+- (void)getExamPaperResultWrongInfo {
+    if (SWNOTEmptyStr(_record_id)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examResultWrongNet] WithAuthorization:nil paramDic:@{@"record_id":_record_id} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    _resultDictWrong = [NSDictionary dictionaryWithDictionary:responseObject[@"data"]];
+                    [_examWrongArray removeAllObjects];
+                    [_examWrongArray addObjectsFromArray:[ExamSheetModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"paper_parts"]]];
                 }
             }
             

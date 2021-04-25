@@ -519,6 +519,9 @@ struct NetWorkUrl {
 /** 考试结果试题信息 */
 + (NSString *)examResultTestDetailInfoNet;
 
+/** 考试结果试题信息(错题) */
++ (NSString *)examResultWrongNet;
+
 /** 我的考试-错题重练 */
 + (NSString *)examResultErrorTestAgain;
 

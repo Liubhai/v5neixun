@@ -706,6 +706,11 @@
     return [Net_Path fullPath:@"user/examination/record/topic" repalce:@"" byReplece:@""];
 }
 
+/** 考试结果试题信息(错题) */
++ (NSString *)examResultWrongNet {
+    return [Net_Path fullPath:@"user/examination/record/wrong" repalce:@"" byReplece:@""];
+}
+
 /** 我的考试-错题重练 */
 + (NSString *)examResultErrorTestAgain {
     return [Net_Path fullPath:@"user/examination/record/wrong/do" repalce:@"" byReplece:@""];

@@ -48,6 +48,8 @@
 		7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C99F242313F6002F6595 /* CourseIntroductionVC.m */; };
 		7839C9A32423655B002F6595 /* CourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A22423655A002F6595 /* CourseListVC.m */; };
 		7839C9A6242368A2002F6595 /* CourseCatalogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A5242368A2002F6595 /* CourseCatalogCell.m */; };
+		78447C5226351C5E00CCC6D2 /* ExamResultDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78447C5126351C5E00CCC6D2 /* ExamResultDetailViewController.m */; };
+		78447C5526355E8900CCC6D2 /* ExamResultSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78447C5426355E8900CCC6D2 /* ExamResultSheetViewController.m */; };
 		784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD324A8288200646916 /* ZiXunListCell.m */; };
 		784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD624A8340A00646916 /* ZiXunListVC.m */; };
 		784E5CDA24A8450700646916 /* ZiXunDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD924A8450700646916 /* ZiXunDetailVC.m */; };
@@ -691,6 +693,10 @@
 		7839C9A22423655A002F6595 /* CourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseListVC.m; sourceTree = "<group>"; };
 		7839C9A4242368A2002F6595 /* CourseCatalogCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseCatalogCell.h; sourceTree = "<group>"; };
 		7839C9A5242368A2002F6595 /* CourseCatalogCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseCatalogCell.m; sourceTree = "<group>"; };
+		78447C5026351C5E00CCC6D2 /* ExamResultDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamResultDetailViewController.h; sourceTree = "<group>"; };
+		78447C5126351C5E00CCC6D2 /* ExamResultDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamResultDetailViewController.m; sourceTree = "<group>"; };
+		78447C5326355E8900CCC6D2 /* ExamResultSheetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamResultSheetViewController.h; sourceTree = "<group>"; };
+		78447C5426355E8900CCC6D2 /* ExamResultSheetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamResultSheetViewController.m; sourceTree = "<group>"; };
 		784E5CD224A8288200646916 /* ZiXunListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListCell.h; sourceTree = "<group>"; };
 		784E5CD324A8288200646916 /* ZiXunListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunListCell.m; sourceTree = "<group>"; };
 		784E5CD524A8340A00646916 /* ZiXunListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListVC.h; sourceTree = "<group>"; };
@@ -1767,8 +1773,12 @@
 				782AC43625BC125B009130F9 /* ZhuangXiangListTreeTableVC.m */,
 				782AC44125BFEDB8009130F9 /* AnswerSheetViewController.h */,
 				782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */,
+				78447C5326355E8900CCC6D2 /* ExamResultSheetViewController.h */,
+				78447C5426355E8900CCC6D2 /* ExamResultSheetViewController.m */,
 				782AC44A25CA7062009130F9 /* ExamResultViewController.h */,
 				782AC44B25CA7062009130F9 /* ExamResultViewController.m */,
+				78447C5026351C5E00CCC6D2 /* ExamResultDetailViewController.h */,
+				78447C5126351C5E00CCC6D2 /* ExamResultDetailViewController.m */,
 				78ED079225CD3C8A00C30B26 /* ExamDetailViewController.h */,
 				78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */,
 				78AAFF1125FF6189002CD197 /* ExamPaperDetailViewController.h */,
@@ -4305,6 +4315,7 @@
 				78C5497A241B642B00A33FC4 /* AlivcPushBeautyDataManager.m in Sources */,
 				78A16C892452F7C100391430 /* TICRecorder.mm in Sources */,
 				787F1E68247381A400108F7B /* AlivcVideoPlayThumbnailView.m in Sources */,
+				78447C5226351C5E00CCC6D2 /* ExamResultDetailViewController.m in Sources */,
 				788E9596253FE24E0089251E /* SSZipArchive.m in Sources */,
 				787F1E7E247381A400108F7B /* AliyunPlayerViewSlider.m in Sources */,
 				78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */,
@@ -4727,6 +4738,7 @@
 				78AAFEFE25F7753D002CD197 /* ExamCollectCellModel.m in Sources */,
 				782AC42D25BAA3E1009130F9 /* TaojuanDetailListViewController.m in Sources */,
 				78C549D1241B674E00A33FC4 /* AlivcBaseViewController.m in Sources */,
+				78447C5526355E8900CCC6D2 /* ExamResultSheetViewController.m in Sources */,
 				784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */,
 				784FC8E524ACA3B800CAE7A6 /* MySubordinateVC.m in Sources */,
 				788E95B9253FE24E0089251E /* BaseEducationManager+WhiteBoard.m in Sources */,

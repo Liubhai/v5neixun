@@ -75,7 +75,7 @@
         }else if (!NOTNULL(oldValue)){
             return @"";
         }
-    } else if ([property.name isEqualToString:@"options"] || [property.name isEqualToString:@"topics"]) {
+    } else if ([property.name isEqualToString:@"options"] || [property.name isEqualToString:@"topics"] || [property.name isEqualToString:@"answer_data"]) {
         if (!NOTNULL(oldValue)){
             return @[];
         }
