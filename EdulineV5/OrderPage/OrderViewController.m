@@ -460,23 +460,25 @@
             }
             
             if (SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"])) {
-                _otherView.hidden = YES;
-                NSString *activityType = [NSString stringWithFormat:@"%@",[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"type"]];
-                if ([activityType isEqualToString:@"0"]) {
-                    _courseActivityIcon.hidden = YES;
-                } else if ([activityType isEqualToString:@"2"]) {
-                    _courseActivityIcon.hidden = NO;
-                    _courseActivityIcon.image = Image(@"seckill_icon");
-                } else if ([activityType isEqualToString:@"3"]) {
-                    _courseActivityIcon.hidden = NO;
-                    _courseActivityIcon.image = Image(@"kanjia_icon");
-                } else if ([activityType isEqualToString:@"4"]) {
-                    _courseActivityIcon.hidden = NO;
-                    _courseActivityIcon.image = Image(@"pintuan_icon");
-                } else if ([activityType isEqualToString:@"1"]) {
-                    _courseActivityIcon.hidden = NO;
-                    _courseActivityIcon.image = Image(@"discount_icon");
-                    _courseActivityIcon.frame = CGRectMake(_courseFaceImageView.right - 52, _courseFaceImageView.bottom - 17, 52, 17);
+                if ([[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"running_status"] integerValue]) {
+                    _otherView.hidden = YES;
+                    NSString *activityType = [NSString stringWithFormat:@"%@",[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"type"]];
+                    if ([activityType isEqualToString:@"0"]) {
+                        _courseActivityIcon.hidden = YES;
+                    } else if ([activityType isEqualToString:@"2"]) {
+                        _courseActivityIcon.hidden = NO;
+                        _courseActivityIcon.image = Image(@"seckill_icon");
+                    } else if ([activityType isEqualToString:@"3"]) {
+                        _courseActivityIcon.hidden = NO;
+                        _courseActivityIcon.image = Image(@"kanjia_icon");
+                    } else if ([activityType isEqualToString:@"4"]) {
+                        _courseActivityIcon.hidden = NO;
+                        _courseActivityIcon.image = Image(@"pintuan_icon");
+                    } else if ([activityType isEqualToString:@"1"]) {
+                        _courseActivityIcon.hidden = NO;
+                        _courseActivityIcon.image = Image(@"discount_icon");
+                        _courseActivityIcon.frame = CGRectMake(_courseFaceImageView.right - 52, _courseFaceImageView.bottom - 17, 52, 17);
+                    }
                 }
             }
             
@@ -508,11 +510,13 @@
         _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
         
         if ((SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"]))) {
-            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]];
-            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]];
-            NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
-            [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
-            _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+            if ([[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"running_status"] integerValue]) {
+                _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]];
+                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]];
+                NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+                [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+                _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+            }
         }
         
         NSString *timeLine = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"term_time"]];
