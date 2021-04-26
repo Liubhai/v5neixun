@@ -1,13 +1,12 @@
 //
-//  ExamTestDetailViewController.m
+//  ExamPaperErrorTestAgainVC.m
 //  EdulineV5
 //
-//  Created by 刘邦海 on 2021/3/19.
+//  Created by 刘邦海 on 2021/4/26.
 //  Copyright © 2021 刘邦海. All rights reserved.
 //
 
-#import "ExamTestDetailViewController.h"
-#import "TYAttributedLabel.h"
+#import "ExamPaperErrorTestAgainVC.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "ExamIDListModel.h"
@@ -15,8 +14,14 @@
 #import "ExamAnswerCell.h"
 
 #import "AnswerSheetViewController.h"
+#import "ExamCalculateHeight.h"
+#import "ExamSheetModel.h"
+#import "ExamResultSheetViewController.h"
 
-@interface ExamTestDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
+#import "TYAttributedLabel.h"
+#import "ExamSheetModel.h"
+
+@interface ExamPaperErrorTestAgainVC ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
     NSInteger examCount;//整套试卷的总题数
     NSInteger currentExamRow;// 当前答题是第几道题
     NSIndexPath *currentExamIndexPath;// 当前答题在整个列表中的下标
@@ -24,6 +29,7 @@
     BOOL canEnterNextExam;// 点击下一题的时候是 答对 答错 能否直接进入下一题 还是需要显示解析
     NSInteger currentSection;
     BOOL shouldCareCurrentSection;// 是否应该按照 currentSection 来刷新
+    BOOL isFirst;// 是不是第一道题
 }
 
 //  用一个专门数组去存储请求到的题的详情 上一题的时候就直接取出来去加载数据; 填充数据的时候 直接用 ExamDetailModel 去填充答案或者填空框内的内容
@@ -46,13 +52,12 @@
 
 @property (strong, nonatomic) NSMutableArray *answerManagerArray;// 选择的答案对应的数组 一维数组 遍历一次(添加 修改)
 
-
-
-
+@property (strong, nonatomic) ExamResultDetailModel *currentExamPaperDetailModel;// 整个试卷
+@property (strong, nonatomic) ExamResultPaperTestDetailModel *currentExamPaperTestDetailModel;// 当前某一道大题
 
 @end
 
-@implementation ExamTestDetailViewController
+@implementation ExamPaperErrorTestAgainVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -64,7 +69,6 @@
     
     _answerManagerArray = [NSMutableArray new];
     
-//    _examIdListArray = [NSMutableArray new];
     _examDetailArray = [NSMutableArray new];
     
     [self makeTopView];
@@ -76,10 +80,7 @@
     [self.view addSubview:_rightOrErrorIcon];
     _rightOrErrorIcon.hidden = YES;
     
-//    [self makeBottomView];
-    
-//    [self getData];
-    [self getExamDetailForExamIds:_examIds];
+    [self getData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextViewChange:) name:UITextViewTextDidChangeNotification object:nil];
@@ -123,7 +124,7 @@
     _nextExamBtn.titleLabel.font = SYSTEMFONT(16);
     [_nextExamBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    if (_isOrderTest && SWNOTEmptyStr(model.next_topic_id)) {
+    if (_isOrderTest && SWNOTEmptyStr(_currentExamPaperTestDetailModel.next.topic_id)) {
         [_nextExamBtn setTitle:@"下一题" forState:0];
         [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
         // 1. 得到imageView和titleLabel的宽、高
@@ -581,11 +582,36 @@
     }
 }
 
-- (void)getExamDetailForExamIds:(NSString *)examIds {
-    if (SWNOTEmptyStr(examIds)) {
-        currentExamId = examIds;
+- (void)getData {
+    
+    if (SWNOTEmptyDictionary(_paperInfo)) {
+        // 考试试卷
+        _currentExamPaperDetailModel = [ExamResultDetailModel mj_objectWithKeyValues:_paperInfo];
+        
+        examCount = [[NSString stringWithFormat:@"%@",_paperInfo[@"total_count"]] integerValue];
+        currentExamRow = 0;
+        NSArray *pass = [NSArray arrayWithArray:[ExamSheetModel mj_objectArrayWithKeyValuesArray:_paperInfo[@"paper_parts"]]];
+        
+        if (SWNOTEmptyArr(pass)) {
+            ExamSheetModel *passDict = (ExamSheetModel *)pass[0];
+            NSArray *passArray = [NSArray arrayWithArray:passDict.child];
+            if (SWNOTEmptyArr(passArray)) {
+                ExamModel *passfinalDict = (ExamModel *)passArray[0];
+                currentExamIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                currentExamId = [NSString stringWithFormat:@"%@",passfinalDict.topic_id];
+                currentExamRow = 1;
+                isFirst = YES;
+                [self getExamDetailForExamIds:passfinalDict];
+            }
+        }
+    }
+}
+
+- (void)getExamDetailForExamIds:(ExamModel *)examIds {
+    if (SWNOTEmptyStr(examIds.topic_id)) {
+        currentExamId = examIds.topic_id;
         // 首选通过 ID 去获取 获取不到再去请求数据
-        ExamDetailModel *c_model = [self checkExamDetailArray:examIds];
+        ExamDetailModel *c_model = [self checkExamDetailArray:examIds.topic_id];
         if (c_model) {
             [self makeUIByExamDetailModel:c_model];
             _previousExamBtn.enabled = YES;
@@ -594,30 +620,29 @@
         }
         
         // 匹配不到对应试题ID的试题详情model 就需要请求接口
-        NSString *getUrl = [Net_Path examWrongDetailNet];
+        NSString *getUrl = [Net_Path examResultErrorTestAgain];
         NSMutableDictionary *param = [NSMutableDictionary new];
-        if ([_examType isEqualToString:@"error"]) {
-            getUrl = [Net_Path examWrongDetailNet];
-            [param setObject:examIds forKey:@"topic_id"];
-        } else if ([_examType isEqualToString:@"collect"]) {
-            getUrl = [Net_Path examPublicDetailNet];
-            [param setObject:examIds forKey:@"topic_id"];
-            //来源【1：知识点；2：专项；3：考试；4：套卷；5错题；6：收藏；】
-            [param setObject:@"6" forKey:@"origin"];
+        [param setObject:_currentExamPaperDetailModel.unique_code forKey:@"unique_code"];
+        [param setObject:examIds.epar_id forKey:@"epar_id"];
+        if (isFirst) {
+            [param setObject:@"0" forKey:@"topic_id"];
+            [param setObject:@"0" forKey:@"part_id"];
+            isFirst = NO;
+        } else {
+            [param setObject:examIds.topic_id forKey:@"topic_id"];
+            [param setObject:examIds.part_id forKey:@"part_id"];
         }
         ShowHud(@"试题信息拉取中...");
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            [self hideHud];
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    NSMutableArray *passArray = [NSMutableArray arrayWithArray:[ExamDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
+                    _currentExamPaperTestDetailModel = [ExamResultPaperTestDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
+                    NSMutableArray *passArray = [NSMutableArray arrayWithObject:_currentExamPaperTestDetailModel.topic];
                     for (int i = 0; i<passArray.count; i++) {
                         ExamDetailModel *pass = passArray[i];
                         pass.titleMutable = [self changeStringToMutA:pass.title];
                         pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
-                        if ([_examType isEqualToString:@"collect"]) {
-                            pass.is_answer = YES;
-                            pass.is_expand = YES;
-                        }
                         if (SWNOTEmptyArr(pass.topics)) {
                             // 区分完形填空和材料
                             if ([pass.question_type isEqualToString:@"7"]) {
@@ -641,10 +666,6 @@
                                     NSString *examAnswer = @"";
                                     detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
                                     detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
-                                    if ([_examType isEqualToString:@"collect"]) {
-                                        detail.is_answer = YES;
-                                        detail.is_expand = YES;
-                                    }
                                     if ([detail.question_type isEqualToString:@"8"]) {
                                         ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
                                         detail.options = [NSArray arrayWithObjects:op, nil];
@@ -709,7 +730,6 @@
                     }
                 }
             }
-            [self hideHud];
             _previousExamBtn.enabled = YES;
             _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
@@ -766,6 +786,7 @@
         
         if ([model.question_type isEqualToString:@"7"]) {
             // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
+            [_headerView setHeight:10];
             _tableView.tableHeaderView = _headerView;
         } else {
             if (SWNOTEmptyArr(model.topics)) {
@@ -839,7 +860,7 @@
                 if (!_isOrderTest) {
                     _nextExamBtn.hidden = YES;
                 } else {
-                    if (!SWNOTEmptyStr(model.next_topic_id)) {
+                    if (!SWNOTEmptyStr(_currentExamPaperTestDetailModel.next.topic_id)) {
                         _nextExamBtn.hidden = YES;
                     }
                 }
@@ -850,7 +871,7 @@
                 model.is_expand = YES;
                 model.is_right = YES;
                 [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:YES];
-                if (!_isOrderTest || !SWNOTEmptyStr(model.next_topic_id)) {
+                if (!_isOrderTest || !SWNOTEmptyStr(_currentExamPaperTestDetailModel.next.topic_id)) {
                     _nextExamBtn.hidden = YES;
                     [_tableView reloadData];
                     _previousExamBtn.enabled = YES;
@@ -869,15 +890,15 @@
             }
         }
         
-        if (!SWNOTEmptyStr(model.next_topic_id)) {
+        if (!SWNOTEmptyStr(_currentExamPaperTestDetailModel.next.topic_id)) {
             _rightOrErrorIcon.hidden = NO;
             _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
             _nextExamBtn.hidden = YES;
         }
         
         
-        if (_isOrderTest && SWNOTEmptyStr(model.next_topic_id)) {
-            [self getExamDetailForExamIds:model.next_topic_id];
+        if (_isOrderTest && SWNOTEmptyStr(_currentExamPaperTestDetailModel.next.topic_id)) {
+            [self getExamDetailForExamIds:_currentExamPaperTestDetailModel.next];
             _previousExamBtn.enabled = YES;
              _nextExamBtn.enabled = YES;
         }
@@ -906,108 +927,6 @@
             }
         }
     }
-    
-//    UIView *back = [sender superview];
-//
-//
-//    ExamDetailModel *modelxxx;
-//    NSString *currentModelType = @"";
-//    if (SWNOTEmptyArr(_examDetailArray)) {
-//        ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
-//        currentModelType = model.question_type;
-//        if ([model.question_type isEqualToString:@"7"]) {
-//            modelxxx = model;
-//        } else {
-//            if (SWNOTEmptyArr(model.topics)) {
-//                ExamDetailModel *modelpass = model.topics[sender.tag];
-//                modelxxx = modelpass;
-//            } else {
-//                modelxxx = model;
-//            }
-//        }
-//    }
-//    if (!modelxxx.is_answer) {
-//        return;
-//    }
-//
-//    [back removeAllSubviews];
-//
-//    UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - (58 + 33) - 15, 20)];
-//    examPointTitle.textColor = EdlineV5_Color.textFirstColor;
-//    examPointTitle.font = SYSTEMFONT(14);
-//    examPointTitle.text = @"考点：";
-//    NSString *pointS = @"";
-//    for (int i = 0; i<modelxxx.points.count; i++) {
-//        if (i == 0) {
-//            pointS = [NSString stringWithFormat:@"%@",modelxxx.points[i]];
-//        } else {
-//            pointS = [NSString stringWithFormat:@"%@、%@",pointS,modelxxx.points[i]];
-//        }
-//    }
-//    examPointTitle.text = [NSString stringWithFormat:@"考点：%@",pointS];
-//    [back addSubview:examPointTitle];
-//    if ([currentModelType isEqualToString:@"6"]) {
-//        examPointTitle.hidden = YES;
-//    }
-//
-//    UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), 12, (58 + 33) - 15, 20)];
-//    [expandButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
-//    expandButton.titleLabel.font = SYSTEMFONT(14);
-//    [expandButton setTitle:@"查看解析" forState:0];
-//    [expandButton setImage:Image(@"exam_parsingdown_icon") forState:0];
-//
-//    [expandButton setTitle:@"收起解析" forState:UIControlStateSelected];
-//    [expandButton setImage:Image(@"exam_parsingup_icon") forState:UIControlStateSelected];
-//    expandButton.tag = sender.tag;
-//    [expandButton addTarget:self action:@selector(expandButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-//
-//    expandButton.selected = modelxxx.is_expand;
-//
-//    [EdulineV5_Tool dealButtonImageAndTitleUI:expandButton];
-//    [back addSubview:expandButton];
-//    [back setHeight:expandButton.bottom + 12];
-//
-//    if (modelxxx.is_expand) {
-//
-//        UILabel *rightAnswerTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, expandButton.bottom + 16, 75, 20)];
-//        rightAnswerTitle.font = SYSTEMFONT(15);
-//        rightAnswerTitle.textColor = HEXCOLOR(0x67C23A);
-//        rightAnswerTitle.text = @"正确答案：";
-//        [back addSubview:rightAnswerTitle];
-//        CGFloat rightAnswerTitleWidth = [rightAnswerTitle.text sizeWithFont:rightAnswerTitle.font].width;
-//        [rightAnswerTitle setWidth:rightAnswerTitleWidth];
-//
-//        UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(rightAnswerTitle.right - 10, rightAnswerTitle.top - 7, MainScreenWidth - (rightAnswerTitle.right - 10) - 15, 20)];
-//        rightValueTextView.showsVerticalScrollIndicator = NO;
-//        rightValueTextView.showsHorizontalScrollIndicator = NO;
-//        rightValueTextView.editable = NO;
-//        rightValueTextView.scrollEnabled = NO;
-//        rightValueTextView.backgroundColor = EdlineV5_Color.backColor;
-//        rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
-//        rightValueTextView.font = SYSTEMFONT(15);
-//        [rightValueTextView sizeToFit];
-//        [rightValueTextView setHeight:rightValueTextView.height];
-//        [back addSubview:rightValueTextView];
-//
-//        UILabel *keyTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, MAX(rightAnswerTitle.bottom, rightValueTextView.bottom) + 7, 50, 20)];
-//        keyTitle.font = SYSTEMFONT(14);
-//        keyTitle.textColor = EdlineV5_Color.textFirstColor;
-//        keyTitle.text = @"解析：";
-//        [back addSubview:keyTitle];
-//
-//        UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(keyTitle.right - 15, keyTitle.top - 7, MainScreenWidth - keyTitle.right, 20)];
-//        analyzeTextView.showsVerticalScrollIndicator = NO;
-//        analyzeTextView.showsHorizontalScrollIndicator = NO;
-//        analyzeTextView.editable = NO;
-//        analyzeTextView.scrollEnabled = NO;
-//        analyzeTextView.backgroundColor = EdlineV5_Color.backColor;
-//        analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
-//        analyzeTextView.font = SYSTEMFONT(15);
-//        [analyzeTextView sizeToFit];
-//        [analyzeTextView setHeight:analyzeTextView.height];
-//        [back addSubview:analyzeTextView];
-//        [back setHeight:MAX(keyTitle.bottom, analyzeTextView.bottom) + 12];
-//    }
     NSInteger relod_section = sender.tag;
 
     [UIView performWithoutAnimation:^{

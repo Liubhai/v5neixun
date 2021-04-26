@@ -117,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *topic_id;
 @property (strong, nonatomic) NSString *epar_id;
-@property (strong, nonatomic) NSString *epart_id;
+@property (strong, nonatomic) NSString *part_id;
 @property (strong, nonatomic) NSString *topic_level;
 @property (strong, nonatomic) NSString *unique_code;
 @property (assign, nonatomic) BOOL answer_right;

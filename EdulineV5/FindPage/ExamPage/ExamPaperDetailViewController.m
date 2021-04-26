@@ -359,7 +359,16 @@
         examScore.font = SYSTEMFONT(15);
         examScore.textColor = EdlineV5_Color.textFirstColor;
         if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
-            
+            ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[currentExamIndexPath.section];
+            NSArray *passArray = [NSArray arrayWithArray:passDict.child];
+            if (SWNOTEmptyArr(passArray)) {
+                ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
+                NSArray *inExamIdModelArray = [NSArray arrayWithArray:passfinalDict.sub_topics];
+                if (SWNOTEmptyArr(inExamIdModelArray)) {
+                    ExamIDModel *passfinal = (ExamIDModel *)passArray[section];
+                    examScore.text = [NSString stringWithFormat:@"（%@分）",passfinal.score];
+                }
+            }
         } else {
             ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[currentExamIndexPath.section];
             NSArray *passArray = [NSArray arrayWithArray:passDict.child];

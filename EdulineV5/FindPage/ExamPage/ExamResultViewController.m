@@ -12,6 +12,7 @@
 #import "ExamSheetModel.h"
 #import "Net_Path.h"
 #import "ExamResultDetailViewController.h"
+#import "ExamPaperErrorTestAgainVC.h"
 
 @interface ExamResultViewController ()
 
@@ -288,10 +289,14 @@
 }
 
 - (void)resetButtonClick {
-    if (![_answer_status isEqualToString:@"2"]) {
-        return;
-    }
-    
+//    if (![_answer_status isEqualToString:@"2"]) {
+//        return;
+//    }
+    ExamPaperErrorTestAgainVC *vc = [[ExamPaperErrorTestAgainVC alloc] init];
+    vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
+    vc.isOrderTest = YES;
+    vc.examType = @"error";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)allAnalysisButtonClick {

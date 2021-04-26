@@ -50,6 +50,7 @@
 		7839C9A6242368A2002F6595 /* CourseCatalogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C9A5242368A2002F6595 /* CourseCatalogCell.m */; };
 		78447C5226351C5E00CCC6D2 /* ExamResultDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78447C5126351C5E00CCC6D2 /* ExamResultDetailViewController.m */; };
 		78447C5526355E8900CCC6D2 /* ExamResultSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78447C5426355E8900CCC6D2 /* ExamResultSheetViewController.m */; };
+		78447C58263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78447C57263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m */; };
 		784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD324A8288200646916 /* ZiXunListCell.m */; };
 		784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD624A8340A00646916 /* ZiXunListVC.m */; };
 		784E5CDA24A8450700646916 /* ZiXunDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD924A8450700646916 /* ZiXunDetailVC.m */; };
@@ -697,6 +698,8 @@
 		78447C5126351C5E00CCC6D2 /* ExamResultDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamResultDetailViewController.m; sourceTree = "<group>"; };
 		78447C5326355E8900CCC6D2 /* ExamResultSheetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamResultSheetViewController.h; sourceTree = "<group>"; };
 		78447C5426355E8900CCC6D2 /* ExamResultSheetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamResultSheetViewController.m; sourceTree = "<group>"; };
+		78447C56263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamPaperErrorTestAgainVC.h; sourceTree = "<group>"; };
+		78447C57263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPaperErrorTestAgainVC.m; sourceTree = "<group>"; };
 		784E5CD224A8288200646916 /* ZiXunListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListCell.h; sourceTree = "<group>"; };
 		784E5CD324A8288200646916 /* ZiXunListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunListCell.m; sourceTree = "<group>"; };
 		784E5CD524A8340A00646916 /* ZiXunListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListVC.h; sourceTree = "<group>"; };
@@ -1785,6 +1788,8 @@
 				78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */,
 				78781D4726045208000DF351 /* ExamTestDetailViewController.h */,
 				78781D4826045208000DF351 /* ExamTestDetailViewController.m */,
+				78447C56263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.h */,
+				78447C57263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m */,
 			);
 			path = ExamPage;
 			sourceTree = "<group>";
@@ -4473,6 +4478,7 @@
 				788E95AD253FE24E0089251E /* ReplayModel.m in Sources */,
 				785A3E152497A16B00298054 /* TeacherApplyVC.m in Sources */,
 				78C5497F241B642B00A33FC4 /* AlivcBeautySettingUIDefine.m in Sources */,
+				78447C58263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
 				789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */,
 				78AAFF0125F8781D002CD197 /* PublicAndTestExamRecordList.m in Sources */,

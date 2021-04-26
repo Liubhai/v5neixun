@@ -45,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *topic_id;
 @property (assign, nonatomic) BOOL has_answered;
 @property (strong, nonatomic) NSString *score;
+@property (strong, nonatomic) NSArray *sub_topics;
 
 @end
 

@@ -38,6 +38,7 @@
 @property (strong, nonatomic) NSMutableArray *examCellHeightModelArray;// 每道试题的答案高度值 model 数组
 
 @property (strong, nonatomic) UIView *headerView;
+@property (strong, nonatomic) UIView *footerView;
 
 @property (strong, nonatomic) UIView *bottomView;
 @property (strong, nonatomic) UIButton *previousExamBtn;
@@ -181,6 +182,8 @@
 - (void)makeHeaderView {
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
     _headerView.backgroundColor = EdlineV5_Color.backColor;
+    _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+    _footerView.backgroundColor = EdlineV5_Color.backColor;
 }
 
 - (void)makeTableView {
@@ -238,7 +241,7 @@
     if (!cell) {
         cell = [[ExamAnswerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
-    cell.examModuleType = YES;
+    cell.examModuleType = NO;
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
@@ -354,7 +357,8 @@
         examScore.font = SYSTEMFONT(15);
         examScore.textColor = EdlineV5_Color.textFirstColor;
         if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
-            
+            ExamDetailModel *cailiaoModel = model.topics[section];
+            examScore.text = [NSString stringWithFormat:@"（%@分）",cailiaoModel.score];
         } else {
             examScore.text = [NSString stringWithFormat:@"（%@分）",model.score];
         }
@@ -729,7 +733,7 @@
         [param setObject:_currentExamPaperDetailModel.unique_code forKey:@"unique_code"];
         [param setObject:examIds.topic_id forKey:@"topic_id"];
         [param setObject:examIds.epar_id forKey:@"epar_id"];
-        [param setObject:examIds.epart_id forKey:@"part_id"];
+        [param setObject:examIds.part_id forKey:@"part_id"];
         ShowHud(@"试题信息拉取中...");
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
@@ -758,6 +762,9 @@
                                         if (modelOp.is_right) {
                                             examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
                                         }
+                                        if (SWNOTEmptyArr(detail.answer_data)) {
+                                            modelOp.is_selected = [detail.answer_data containsObject:modelOp.examDetailOptionId] ? YES : NO;
+                                        }
                                     }
                                 }
                                 pass.examAnswer = examAnswer;
@@ -767,9 +774,14 @@
                                     NSString *examAnswer = @"";
                                     detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
                                     detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
+                                    detail.is_answer = YES;
+                                    detail.is_expand = YES;
                                     if ([detail.question_type isEqualToString:@"8"]) {
                                         ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
                                         detail.options = [NSArray arrayWithObjects:op, nil];
+                                        if (SWNOTEmptyArr(detail.answer_data)) {
+                                            op.userAnswerValue = detail.answer_data[0];
+                                        }
                                     } else {
                                         for (int k = 0; k<detail.options.count; k++) {
                                             ExamDetailOptionsModel *modelOp = detail.options[k];
@@ -784,9 +796,13 @@
                                                     }
                                                 }
                                                 examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
+                                                modelOp.userAnswerValue = detail.answer_data[j];
                                             } else {
                                                 if (modelOp.is_right) {
                                                     examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                                }
+                                                if (SWNOTEmptyArr(detail.answer_data)) {
+                                                    modelOp.is_selected = [detail.answer_data containsObject:modelOp.examDetailOptionId] ? YES : NO;
                                                 }
                                             }
                                         }
@@ -822,55 +838,13 @@
                                             examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
                                         }
                                         if (SWNOTEmptyArr(pass.answer_data)) {
-                                            modelOp.is_selected = [pass.answer_data[0] isEqualToString:modelOp.examDetailOptionId] ? YES : NO;
+                                            modelOp.is_selected = [pass.answer_data containsObject:modelOp.examDetailOptionId] ? YES : NO;
                                         }
                                     }
                                 }
                                 pass.examAnswer = examAnswer;
                             }
                         }
-
-                        
-//                        if (SWNOTEmptyArr(pass.topics)) {
-//                            for (int j = 0; j<pass.topics.count; j++) {
-//                                ExamDetailModel *detail = pass.topics[j];
-//                                detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
-//                                detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
-//                                if ([detail.question_type isEqualToString:@"8"]) {
-//                                    ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
-//                                    detail.options = [NSArray arrayWithObjects:op, nil];
-//                                } else {
-//                                    for (int k = 0; k<detail.options.count; k++) {
-//                                        ExamDetailOptionsModel *modelOp = detail.options[k];
-//                                        modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
-//                                    }
-//                                }
-//                            }
-//                        } else {
-//                            if ([pass.question_type isEqualToString:@"8"]) {
-//                                ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
-//                                pass.options = [NSArray arrayWithObjects:op, nil];
-//                                if (SWNOTEmptyArr(pass.answer_data)) {
-//                                    op.userAnswerValue = pass.answer_data[0];
-//                                }
-//                            } else {
-//                                if ([pass.question_type isEqualToString:@"5"]) {
-//                                    for (int j = 0; j<pass.options.count; j++) {
-//                                        ExamDetailOptionsModel *modelOp = pass.options[j];
-//                                        modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
-//                                        modelOp.userAnswerValue = pass.answer_data[j];
-//                                    }
-//                                } else {
-//                                    for (int j = 0; j<pass.options.count; j++) {
-//                                        ExamDetailOptionsModel *modelOp = pass.options[j];
-//                                        modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
-//                                        if (SWNOTEmptyArr(pass.answer_data)) {
-//                                            modelOp.is_selected = [pass.answer_data[0] isEqualToString:modelOp.examDetailOptionId] ? YES : NO;
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
                     }
                     
                     if (SWNOTEmptyArr(passArray)) {
@@ -898,7 +872,12 @@
             _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
             _headerView.backgroundColor = EdlineV5_Color.backColor;
         }
+        if (!_footerView) {
+            _footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+            _footerView.backgroundColor = EdlineV5_Color.backColor;
+        }
         [_headerView removeAllSubviews];
+        [_footerView removeAllSubviews];
         
         UILabel *examThemeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth-15 - 14 - 53, 53)];
         examThemeLabel.font = SYSTEMFONT(16);
@@ -910,6 +889,31 @@
         [_headerView addSubview:examThemeLabel];
         
         ExamDetailModel *model = (ExamDetailModel *)examModel;
+        
+        if (model.is_answer && [model.question_type isEqualToString:@"6"]) {
+            UIView *footerLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
+            footerLine.backgroundColor = EdlineV5_Color.backColor;
+            [_footerView addSubview:footerLine];
+            UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, MainScreenWidth - 30, 20)];
+            examPointTitle.numberOfLines = 0;
+            examPointTitle.textColor = EdlineV5_Color.textFirstColor;
+            examPointTitle.font = SYSTEMFONT(14);
+            examPointTitle.text = @"考点：";
+            NSString *pointS = @"";
+            for (int i = 0; i<model.points.count; i++) {
+                if (i == 0) {
+                    pointS = [NSString stringWithFormat:@"%@",model.points[i]];
+                } else {
+                    pointS = [NSString stringWithFormat:@"%@、%@",pointS,model.points[i]];
+                }
+            }
+            examPointTitle.text = [NSString stringWithFormat:@"考点：%@",pointS];
+            [examPointTitle sizeToFit];
+            [examPointTitle setHeight:examPointTitle.height];
+            [_footerView addSubview:examPointTitle];
+            [_footerView setHeight:examPointTitle.bottom + 20];
+        }
+        _tableView.tableFooterView = _footerView;
         
         // 是否收藏
         _examCollectBtn.selected = model.collected;
@@ -944,13 +948,14 @@
                 UILabel *examScore = [[UILabel alloc] initWithFrame:CGRectMake(examTypeImageView.right, examThemeLabel.bottom, 100, 20)];
                 examScore.font = SYSTEMFONT(15);
                 examScore.textColor = EdlineV5_Color.textFirstColor;
+                examScore.text = [NSString stringWithFormat:@"（%@分）",model.score];
                 
-                ExamSheetModel *passDict = (ExamSheetModel *)_examIdListArray[currentExamIndexPath.section];
-                NSArray *passArray = [NSArray arrayWithArray:passDict.child];
-                if (SWNOTEmptyArr(passArray)) {
-                    ExamModel *passfinalDict = (ExamModel *)passArray[currentExamIndexPath.row];
-                    examScore.text = [NSString stringWithFormat:@"（%@分）",passfinalDict];
-                }
+//                ExamSheetModel *passDict = (ExamSheetModel *)_examIdListArray[currentExamIndexPath.section];
+//                NSArray *passArray = [NSArray arrayWithArray:passDict.child];
+//                if (SWNOTEmptyArr(passArray)) {
+//                    ExamModel *passfinalDict = (ExamModel *)passArray[currentExamIndexPath.row];
+//                    examScore.text = [NSString stringWithFormat:@"（%@分）",passfinalDict.];
+//                }
                 [_headerView addSubview:examScore];
                 
                 // 有多道小试题 这里就需要设置 整个 tableview 的 头部

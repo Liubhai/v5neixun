@@ -41,6 +41,11 @@
 
 @implementation ExamIDModel
 
++(NSDictionary *)mj_objectClassInArray
+{
+    return @{@"sub_topics":@"ExamIDModel"};
+}
+
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
     if ([property.name isEqualToString:@"topic_id"]) {
@@ -48,6 +53,10 @@
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
             return @"";
+        }
+    }else if ([property.name isEqualToString:@"sub_topics"]) {
+        if (!NOTNULL(oldValue)){
+            return @[];
         }
     }
     return oldValue;
