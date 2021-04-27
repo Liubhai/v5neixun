@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "KanjiaListCell.h"
 #import "Net_Path.h"
+#import "V5_UserModel.h"
 
 @interface GroupDetailViewController ()<UITableViewDelegate, UITableViewDataSource> {
     // 活动倒计时
@@ -376,10 +377,17 @@
             
             _courseSellPrice.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
             
+            NSString *bargained_nums = [NSString stringWithFormat:@"%@",_activityInfo[@"bargained_nums"]];
+            NSString *remain_nums = [NSString stringWithFormat:@"%@",_activityInfo[@"remain_nums"]];
+            NSString *bargain_finished = [NSString stringWithFormat:@"%@",_activityInfo[@"bargain_finished"]];
+            // 当前用户是否砍价
+            NSString *current_bargain_count = [NSString stringWithFormat:@"%@",_activityInfo[@"current_bargain_count"]];
+            NSString *current_bargain_price = [NSString stringWithFormat:@"%@",_activityInfo[@"current_bargain_price"]];
+            
             CGFloat kanjiatotal = [[NSString stringWithFormat:@"%@",_activityInfo[@"bargained_total_price"]] floatValue];
             CGFloat total = [[NSString stringWithFormat:@"%@",_activityInfo[@"bargain_price"]] floatValue];
             
-            _progressCount = [[UIView alloc] initWithFrame:CGRectMake(15, _timeBackView.bottom + 35, (_groupBackView.width - 30) * kanjiatotal / total, 14)];
+            _progressCount.frame = CGRectMake(15, _timeBackView.bottom + 35, (_groupBackView.width - 30) * kanjiatotal / total, 14);
             
             NSString *kanjianCount = [NSString stringWithFormat:@"已砍%@%@",IOSMoneyTitle,_activityInfo[@"bargained_total_price"]];
             _kanjiaCountLabel.text = kanjianCount;
@@ -390,10 +398,72 @@
             NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"end_countdown"]];
             NSString *start_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"start_countdown"]];
             
+            NSString *sponsor_user_id = [NSString stringWithFormat:@"%@",_activityInfo[@"sponsor_user_id"]];
+            BOOL isMine = [sponsor_user_id isEqualToString:[V5_UserModel uid]];
+            
             if ([[_activityInfo objectForKey:@"running_status"] integerValue] == 1) {
                 eventTime = [end_countdown integerValue];
+                if (eventTime<=0) {
+                    // 活动已经结束 显示成功或者失败
+                    if ([bargain_finished isEqualToString:@"1"]) {
+                        // 活动成功
+                        _groupResult.text = @"恭喜您，砍价成功";
+                        [_kanjiaButton setTitle:@"去支付" forState:0];
+                        if (!isMine) {
+                            _groupResult.text = @"砍价已结束";
+                            [_kanjiaButton setTitle:@"我也想要" forState:0];
+                        }
+                    } else {
+                        // 失败了
+                        _groupResult.text = @"砍价已结束，砍价失败";
+                        [_kanjiaButton setTitle:@"活动已结束" forState:0];
+                        if (!isMine) {
+                            _groupResult.text = @"砍价已结束";
+                            [_kanjiaButton setTitle:@"我也想要" forState:0];
+                        }
+                    }
+                } else {
+                    // 砍价已经完成
+                    if ([bargain_finished isEqualToString:@"1"]) {
+                        // 活动成功
+                        _groupResult.text = @"恭喜您，砍价成功";
+                        [_kanjiaButton setTitle:@"去支付" forState:0];
+                        if (!isMine) {
+                            _groupResult.text = @"砍价已结束";
+                            [_kanjiaButton setTitle:@"我也想要" forState:0];
+                        }
+                    } else {
+                        // 砍价中...
+                        if (isMine) {
+                            _groupResult.text = [NSString stringWithFormat:@"已邀请%@名好友，再邀请%@名即可砍价成功",bargained_nums,remain_nums];
+                            [_kanjiaButton setTitle:@"邀请好友砍价" forState:0];
+                            
+                            NSRange fRange = NSMakeRange(2, bargained_nums.length);
+                            NSRange sRange = NSMakeRange(9 + bargained_nums.length, remain_nums.length);
+                            
+                            NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_groupResult.text];
+                            [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.courseActivityGroupColor} range:fRange];
+                            [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.courseActivityGroupColor} range:sRange];
+                            _groupResult.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+                        } else {
+                            if ([current_bargain_count isEqualToString:@"1"]) {
+                                // 当前用户已经帮忙砍价了
+                                _groupResult.text = [NSString stringWithFormat:@"谢谢您，成功砍价%@元",current_bargain_price];
+                                [_kanjiaButton setTitle:@"我也想要" forState:0];
+                                NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_groupResult.text];
+                                [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.courseActivityGroupColor} range:[_groupResult.text rangeOfString:current_bargain_price]];
+                                _groupResult.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+                            } else {
+                                _groupResult.text = @"帮我砍一刀吧～";
+                                [_kanjiaButton setTitle:@"帮TA砍一刀" forState:0];
+                            }
+                        }
+                    }
+                }
             } else {
                 eventTime = [start_countdown integerValue];
+                _groupResult.text = @"距活动开始还有";
+                [_kanjiaButton setTitle:@"邀请好友砍价" forState:0];
             }
             if (eventTime>0) {
                 [self startTimer];
