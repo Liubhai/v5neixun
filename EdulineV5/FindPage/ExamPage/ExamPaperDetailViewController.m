@@ -788,6 +788,7 @@
         } else if ([_examType isEqualToString:@"3"]) {
             getUrl = [Net_Path openingExamDetailNet];
             [param setObject:examIds forKey:@"topic_id"];
+            [param setObject:_examIds forKey:@"paper_id"];
         }
         ShowHud(@"试题信息拉取中...");
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {

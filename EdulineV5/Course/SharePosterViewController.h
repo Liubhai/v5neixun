@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SharePosterViewController : BaseViewController
 
-@property (strong, nonatomic) NSString *type;
-@property (strong, nonatomic) NSString *courseType;
-@property (strong, nonatomic) NSString *sourceId;
+@property (strong, nonatomic) NSString *type;// 1 课程 2 资讯
+@property (strong, nonatomic) NSString *courseType;// 课程类型
+@property (strong, nonatomic) NSString *sourceId;// 资源ID
 
 @end
 

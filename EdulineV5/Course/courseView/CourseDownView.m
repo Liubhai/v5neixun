@@ -243,13 +243,13 @@
                         [_activityButton setTitle:@"发起拼团" forState:0];
                         if (SWNOTEmptyDictionary(courseInfo[@"pintuan_data"])) {
                             NSString *pintuanStatus = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"status"]];
-                            /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功；】 */
+                            /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功(应该是已经购买了)；3:拼团失败】 */
                             if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
-                                [_activityButton setTitle:@"发起拼团" forState:0];
-                            } else {
                                 NSString *total_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"total_num"]];
                                 NSString *join_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"join_num"]];
                                 [_activityButton setTitle:[NSString stringWithFormat:@"已参团%@/%@人",join_num,total_num] forState:0];
+                            } else {
+                                [_activityButton setTitle:@"发起拼团" forState:0];
                             }
                         }
                     }

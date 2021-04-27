@@ -726,8 +726,8 @@
     return [Net_Path fullPath:@"promotion/bargain/detail" repalce:@"" byReplece:@""];
 }
 
-/** 好友砍价详情 */
-+ (NSString *)kanjiaDetailByFriendNet {
+/** 好友砍价 */
++ (NSString *)kanjiaByFriendNet {
     return [Net_Path fullPath:@"promotion/bargain/doit" repalce:@"" byReplece:@""];
 }
 

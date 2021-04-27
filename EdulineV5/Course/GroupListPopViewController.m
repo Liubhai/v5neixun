@@ -43,7 +43,7 @@
     [self.view addSubview:_tableView];
     
     _groupTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_tableView.left, _tableView.top - 40 + 3, MainScreenWidth - 60, 40)];
-    _groupTitleLabel.text = @"正在开团";
+    _groupTitleLabel.text = @"正在拼团";
     _groupTitleLabel.backgroundColor = [UIColor whiteColor];
     _groupTitleLabel.font = SYSTEMFONT(18);
     _groupTitleLabel.textColor = EdlineV5_Color.textFirstColor;

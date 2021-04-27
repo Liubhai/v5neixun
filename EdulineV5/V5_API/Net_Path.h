@@ -532,7 +532,7 @@ struct NetWorkUrl {
 + (NSString *)kanjiaDetailInfoNet;
 
 /** 好友砍价详情 */
-+ (NSString *)kanjiaDetailByFriendNet;
++ (NSString *)kanjiaByFriendNet;
 
 /** 发起拼团接口 */
 + (NSString *)groupApplyNet;

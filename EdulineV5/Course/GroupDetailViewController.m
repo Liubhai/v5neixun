@@ -11,6 +11,8 @@
 #import "KanjiaListCell.h"
 #import "Net_Path.h"
 #import "V5_UserModel.h"
+#import "OrderViewController.h"
+#import "SharePosterViewController.h"
 
 @interface GroupDetailViewController ()<UITableViewDelegate, UITableViewDataSource> {
     // 活动倒计时
@@ -278,6 +280,7 @@
     [_kanjiaButton setTitle:@"邀请好友砍价" forState:0];
     [_kanjiaButton setTitleColor:[UIColor whiteColor] forState:0];
     _kanjiaButton.titleLabel.font = SYSTEMFONT(16);
+    [_kanjiaButton addTarget:self action:@selector(kanjiaButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     _kanjiaButton.centerX = _groupBackView.width / 2.0;
     [_groupBackView addSubview:_kanjiaButton];
     
@@ -564,14 +567,124 @@
 
 // MARK: - 团购底部按钮点击事件
 - (void)groupDoButtonClick:(UIButton *)sender {
+    _doButton.enabled = NO;
     NSString *groupStatus = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"status"]];
     if ([groupStatus isEqualToString:@"1"]) {
         // 邀请好友
+        SharePosterViewController *vc = [[SharePosterViewController alloc] init];
+        vc.type = @"1";
+        vc.sourceId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+        vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
+        _doButton.enabled = YES;
     } else if ([groupStatus isEqualToString:@"2"]) {
         // 返回上一级课程详情页面或者跳转到对应课程详情页
         [self.navigationController popViewControllerAnimated:YES];
     } else if ([groupStatus isEqualToString:@"3"]) {
         // 重新开团流程未知
+        _doButton.enabled = YES;
+    }
+}
+
+// MARK: - 砍价按钮点击事件
+- (void)kanjiaButtonClick:(UIButton *)sender {
+    _kanjiaButton.enabled = NO;
+    if (!SWNOTEmptyDictionary(_activityInfo)) {
+        return;
+    }
+    NSString *bargain_finished = [NSString stringWithFormat:@"%@",_activityInfo[@"bargain_finished"]];
+    // 当前用户是否砍价
+    NSString *current_bargain_count = [NSString stringWithFormat:@"%@",_activityInfo[@"current_bargain_count"]];
+    
+    NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"end_countdown"]];
+    
+    NSString *sponsor_user_id = [NSString stringWithFormat:@"%@",_activityInfo[@"sponsor_user_id"]];
+    BOOL isMine = [sponsor_user_id isEqualToString:[V5_UserModel uid]];
+    NSInteger eventTimeeee = 0;
+    if ([[_activityInfo objectForKey:@"running_status"] integerValue] == 1) {
+        eventTimeeee = [end_countdown integerValue];
+        if (eventTimeeee<=0) {
+            // 活动已经结束 显示成功或者失败
+            if ([bargain_finished isEqualToString:@"1"]) {
+                if (isMine) {
+                    // 去支付
+                    OrderViewController *vc = [[OrderViewController alloc] init];
+                    vc.orderTypeString = @"course";
+                    vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    [self.navigationController pushViewController:vc animated:YES];
+                    _kanjiaButton.enabled = YES;
+                } else {
+                    // 我也想要
+                    _kanjiaButton.enabled = YES;
+                }
+            } else {
+                // 失败了
+                if (isMine) {
+                    // 砍价活动因为时间到了而失败
+                    _kanjiaButton.enabled = YES;
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    // 我也想要
+                    _kanjiaButton.enabled = YES;
+                }
+            }
+        } else {
+            // 砍价已经完成
+            if ([bargain_finished isEqualToString:@"1"]) {
+                // 活动成功
+                if (isMine) {
+                    // 去支付
+                    OrderViewController *vc = [[OrderViewController alloc] init];
+                    vc.orderTypeString = @"course";
+                    vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    [self.navigationController pushViewController:vc animated:YES];
+                    _kanjiaButton.enabled = YES;
+                } else {
+                    // 我也想要
+                    _kanjiaButton.enabled = YES;
+                }
+            } else {
+                // 砍价中...
+                if (isMine) {
+                    // 邀请好友砍价
+                    SharePosterViewController *vc = [[SharePosterViewController alloc] init];
+                    vc.type = @"1";
+                    vc.sourceId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+                    [self.navigationController pushViewController:vc animated:YES];
+                    _kanjiaButton.enabled = YES;
+                } else {
+                    if ([current_bargain_count isEqualToString:@"1"]) {
+                        // 当前用户已经帮忙砍价了
+                        // 我也想要
+                        _kanjiaButton.enabled = YES;
+                    } else {
+                        // 帮好友砍价 砍价成功后请求接口刷新页面数据
+                        [self kanjiaByFriend:sponsor_user_id];
+                    }
+                }
+            }
+        }
+    } else {
+        _groupResult.text = @"距活动开始还有";
+        [_kanjiaButton setTitle:@"邀请好友砍价" forState:0];
+    }
+}
+
+// MARK: - 好友帮忙砍价接口调用
+- (void)kanjiaByFriend:(NSString *)kanjiaApplyUid {
+    if (SWNOTEmptyDictionary(_activityInfo) && SWNOTEmptyStr(kanjiaApplyUid) && SWNOTEmptyStr(_activityId)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path kanjiaByFriendNet] WithAuthorization:nil paramDic:@{@"promotion_id":_activityId,@"sponsor_user_id":kanjiaApplyUid} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [self requestActivityDetailInfo];
+                }
+            }
+            _kanjiaButton.enabled = YES;
+        } enError:^(NSError * _Nonnull error) {
+            _kanjiaButton.enabled = YES;
+        }];
     }
 }
 
