@@ -28,7 +28,6 @@
 @property (strong, nonatomic) UIImageView *courseActivityIcon;
 @property (strong, nonatomic) UILabel *courseTitleLabel;
 @property (strong, nonatomic) UILabel *courseSellPrice;
-@property (strong, nonatomic) UILabel *courseOriginPrice;
 @property (strong, nonatomic) UIImageView *courseActivityTypeIcon;
 
 @property (strong, nonatomic) UIView *groupBackView;
@@ -121,15 +120,10 @@
     _courseTitleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [_courseInfoBackView addSubview:_courseTitleLabel];
     
-    _courseSellPrice = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImage.right + 8, _courseFaceImage.bottom - 15, _courseTitleLabel.width / 2.0, 15)];
+    _courseSellPrice = [[UILabel alloc] initWithFrame:CGRectMake(_courseFaceImage.right + 8, _courseFaceImage.bottom - 15, _courseTitleLabel.width, 15)];
     _courseSellPrice.font = SYSTEMFONT(13);
     _courseSellPrice.textColor = EdlineV5_Color.faildColor;
     [_courseInfoBackView addSubview:_courseSellPrice];
-    
-    _courseOriginPrice = [[UILabel alloc] initWithFrame:CGRectMake(_courseSellPrice.right, _courseFaceImage.bottom - 15, _courseTitleLabel.width / 2.0, 15)];
-    _courseOriginPrice.font = SYSTEMFONT(12);
-    _courseOriginPrice.textColor = EdlineV5_Color.textSecendColor;
-    [_courseInfoBackView addSubview:_courseOriginPrice];
 }
 
 // MARK: - 开团的具体详情UI
@@ -378,7 +372,27 @@
             
             _courseTitleLabel.text = [NSString stringWithFormat:@"%@",_activityInfo[@"product_title"]];
             
-            _courseSellPrice.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
+            NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"price"]];
+            NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
+            
+            if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]]) {
+                price = @"免费";
+                NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];
+                NSRange rangNow = NSMakeRange(price.length, scribing_price.length);
+                NSRange rangOld = NSMakeRange(0, price.length);
+                NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+                [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.priceFreeColor} range:rangOld];
+                [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangNow];
+                _courseSellPrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+            } else {
+                NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];
+                NSRange rangNow = NSMakeRange(price.length, scribing_price.length);
+                NSRange rangOld = NSMakeRange(0, price.length);
+                NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+                [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.textPriceColor} range:rangOld];
+                [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangNow];
+                _courseSellPrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+            }
             
             NSString *bargained_nums = [NSString stringWithFormat:@"%@",_activityInfo[@"bargained_nums"]];
             NSString *remain_nums = [NSString stringWithFormat:@"%@",_activityInfo[@"remain_nums"]];
@@ -441,8 +455,8 @@
                             _groupResult.text = [NSString stringWithFormat:@"已邀请%@名好友，再邀请%@名即可砍价成功",bargained_nums,remain_nums];
                             [_kanjiaButton setTitle:@"邀请好友砍价" forState:0];
                             
-                            NSRange fRange = NSMakeRange(2, bargained_nums.length);
-                            NSRange sRange = NSMakeRange(9 + bargained_nums.length, remain_nums.length);
+                            NSRange fRange = NSMakeRange(3, bargained_nums.length);
+                            NSRange sRange = NSMakeRange(10 + bargained_nums.length, remain_nums.length);
                             
                             NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_groupResult.text];
                             [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.courseActivityGroupColor} range:fRange];
@@ -496,7 +510,27 @@
             
             _courseTitleLabel.text = [NSString stringWithFormat:@"%@",_activityInfo[@"product_title"]];
             
-            _courseSellPrice.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
+            NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"price"]];
+            NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
+            
+            if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]]) {
+                price = @"免费";
+                NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];
+                NSRange rangNow = NSMakeRange(price.length, scribing_price.length);
+                NSRange rangOld = NSMakeRange(0, price.length);
+                NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+                [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.priceFreeColor} range:rangOld];
+                [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangNow];
+                _courseSellPrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+            } else {
+                NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];
+                NSRange rangNow = NSMakeRange(price.length, scribing_price.length);
+                NSRange rangOld = NSMakeRange(0, price.length);
+                NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+                [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(18),NSForegroundColorAttributeName: EdlineV5_Color.textPriceColor} range:rangOld];
+                [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangNow];
+                _courseSellPrice.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+            }
             
             /*团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功；3：团购失败；】**/
             NSString *groupStatus = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"status"]];

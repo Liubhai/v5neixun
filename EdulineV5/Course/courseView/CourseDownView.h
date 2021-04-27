@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)joinStudyEvent:(CourseDownView *)downView;
 - (void)jumpToCommentVC;
 - (void)kanJiaAndPinTuan:(CourseDownView *)downView;
+- (void)pinTuanJoinStudy:(CourseDownView *)downView;
 
 @end
 

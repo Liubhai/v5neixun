@@ -459,7 +459,7 @@
                 _courseTypeImage.image = Image(@"class_icon");
             }
             
-            if (SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"])) {
+            if (SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"]) && !_ignoreActivity) {
                 if ([[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"running_status"] integerValue]) {
                     _otherView.hidden = YES;
                     NSString *activityType = [NSString stringWithFormat:@"%@",[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"type"]];
@@ -509,7 +509,7 @@
         [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
         _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
         
-        if ((SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"]))) {
+        if ((SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"])) && !_ignoreActivity) {
             if ([[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"running_status"] integerValue]) {
                 _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]];
                 _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]];

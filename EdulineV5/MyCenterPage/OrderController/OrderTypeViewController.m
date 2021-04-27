@@ -83,7 +83,7 @@
     orderNum.text = [NSString stringWithFormat:@"订单号：%@",_dataSource[section][@"order_no"]];//@"订单号：AWN8923779294";
     [view addSubview:orderNum];
     
-    // 支付状态:0-已取消 10-未付款 20-已付款 30-已申请退款,待确认 40-退款已确认,退款中 50-已退款 60-交易被关闭  70:已支付,但被管理员移除
+    // 支付状态:0-已取消 10-未付款 20-已付款 30-已申请退款,待确认 40-退款已确认,退款中 50-已退款 60-交易被关闭  70:已支付,但被管理员移除 80:拼团已支付，未成团
     
     NSString *statusString = [NSString stringWithFormat:@"%@",_dataSource[section][@"status"]];
     UILabel *orderStatus = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, 0, 100, 39.5)];
@@ -93,6 +93,12 @@
     
     if ([statusString isEqualToString:@"20"]) {
         orderStatus.textColor = HEXCOLOR(0x67C23A);
+    } else if ([statusString isEqualToString:@"80"]) {
+        orderStatus.text = @"待成团/已支付";
+        orderStatus.textColor = HEXCOLOR(0x67C23A);
+        NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:orderStatus.text];
+        [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor} range:NSMakeRange(0, 4)];
+        orderStatus.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
     } else if ([statusString isEqualToString:@"10"]) {
         orderStatus.textColor = EdlineV5_Color.faildColor;
     } else {
@@ -170,6 +176,8 @@
     button1.hidden = NO;
     button2.hidden = NO;
     
+    // 支付状态:0-已取消 10-未付款 20-已付款 30-已申请退款,待确认 40-退款已确认,退款中 50-已退款 60-交易被关闭  70:已支付,但被管理员移除 80:拼团已支付，未成团
+    
     NSString *orderStatus = [NSString stringWithFormat:@"%@",_dataSource[section][@"status"]];
     if ([orderStatus isEqualToString:@"0"]) {
         // 已取消
@@ -180,7 +188,7 @@
         // 待支付
         [button2 setTitle:@"去支付" forState:0];
         [button1 setTitle:@"取消订单" forState:0];
-    } else if ([orderStatus isEqualToString:@"20"]) {
+    } else if ([orderStatus isEqualToString:@"20"] || [orderStatus isEqualToString:@"80"]) {
         // 已完成
         button2.hidden = YES;
         button1.hidden = YES;
@@ -208,7 +216,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     NSString *orderStatus = [NSString stringWithFormat:@"%@",_dataSource[section][@"status"]];
-    if ([orderStatus isEqualToString:@"20"]) {
+    // 支付状态:0-已取消 10-未付款 20-已付款 30-已申请退款,待确认 40-退款已确认,退款中 50-已退款 60-交易被关闭  70:已支付,但被管理员移除 80:拼团已支付，未成团
+    if ([orderStatus isEqualToString:@"20"] || [orderStatus isEqualToString:@"80"]) {
         // 已完成
         return 0.5 + 43 + 8;
     }

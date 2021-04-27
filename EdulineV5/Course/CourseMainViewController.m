@@ -980,6 +980,30 @@
                 OrderViewController *vc = [[OrderViewController alloc] init];
                 vc.orderTypeString = @"course";
                 vc.orderId = _ID;
+                // 这里需要判断下有没有活动
+                    if (SWNOTEmptyDictionary(_dataSource[@"promotion"])) {
+                        NSDictionary *promotion = [NSDictionary dictionaryWithDictionary:_dataSource[@"promotion"]];
+                        NSString *promotionType = [NSString stringWithFormat:@"%@",promotion[@"type"]];
+                        /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
+                        if ([promotionType isEqualToString:@"1"] || [promotionType isEqualToString:@"2"]) {
+
+                        } else if ([promotionType isEqualToString:@"3"]) {
+
+                        } else if ([promotionType isEqualToString:@"4"]) {
+                            // 拼团
+                            if (SWNOTEmptyDictionary(_dataSource[@"pintuan_data"])) {
+                                NSString *pintuanStatus = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"status"]];
+
+                                /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功(应该是已经购买了)；3:拼团失败】 */
+                                if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
+                                } else if ([pintuanStatus isEqualToString:@"0"]) {
+                                    vc.ignoreActivity = YES;
+                                } else {
+                                }
+                            } else {
+                            }
+                        }
+                    }
                 [self.navigationController pushViewController:vc animated:YES];
             }
         }

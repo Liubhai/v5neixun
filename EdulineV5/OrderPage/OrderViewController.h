@@ -66,6 +66,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) CouponModel *couponModel;
 
+@property (assign, nonatomic) BOOL ignoreActivity;// 是不是不顾活动 按照正常购买显示
+
 @end
 
 NS_ASSUME_NONNULL_END

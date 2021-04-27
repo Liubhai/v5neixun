@@ -245,9 +245,12 @@
                             NSString *pintuanStatus = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"status"]];
                             /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功(应该是已经购买了)；3:拼团失败】 */
                             if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
+                                _activityJoinStudyButton.hidden = YES;
                                 NSString *total_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"total_num"]];
                                 NSString *join_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"join_num"]];
                                 [_activityButton setTitle:[NSString stringWithFormat:@"已参团%@/%@人",join_num,total_num] forState:0];
+                                [_activityButton setLeft:_activityJoinStudyButton.left];
+                                [_activityButton setWidth:MainScreenWidth - 15 - _activityJoinStudyButton.left];
                             } else {
                                 [_activityButton setTitle:@"发起拼团" forState:0];
                             }
@@ -260,6 +263,9 @@
         NSString *user_price = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"user_price"]];
         if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
             _joinShopCarButton.hidden = YES;
+            _joinStudyButton.hidden = NO;
+            _activityJoinStudyButton.hidden = YES;
+            _activityButton.hidden = YES;
             [_joinStudyButton setLeft:_joinShopCarButton.left];
             [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
         }
