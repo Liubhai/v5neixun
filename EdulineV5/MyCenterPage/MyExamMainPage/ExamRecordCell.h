@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) id<ExamRecordCellDelegate> delegate;
 @property (strong, nonatomic) UILabel *titleLabel;
+@property (strong, nonatomic) UILabel *taojuanTitleLabel;
 @property (strong, nonatomic) UILabel *allCountLabel;
 @property (strong, nonatomic) UIView *fenggeLineView;
 @property (strong, nonatomic) UILabel *rightCountLabel;

@@ -1038,9 +1038,10 @@
                     vc.activityType = @"4";
                     vc.activityId = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"id"]];
                     [self.navigationController pushViewController:vc animated:YES];
+                } else if ([pintuanStatus isEqualToString:@"0"]) {
+                    [self showHudInView:self.view showHint:@"已入团成功，请确认支付"];
                 } else {
                     // 弹框
-//                    [self showHudInView:self.view showHint:@"已入团成功，请确认支付"];
                     [self showGroupList];
                 }
             } else {
