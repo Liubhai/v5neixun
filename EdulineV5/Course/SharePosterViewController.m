@@ -238,15 +238,49 @@
         } else if ([sender.titleLabel.text isEqualToString:@"分享海报"]) {
             [self jiepingBtn];
         } else if ([sender.titleLabel.text isEqualToString:@"复制口令"]) {
-            NSString *courseTitle = [NSString stringWithFormat:@"[%@]",_shareContentDict[@"course_title"]];
+            /**
+             "$randomString|$this|$courseType|$courseId"
+有活动就加上 "|$activeType|$activeId"
+             吥再娛樂  14:44:31
+             随机字符串4-8位，this是share_code
+             吥再娛樂  14:45:08
+             最后拼接得字符串转换成字节数组，每个字节-i+1
+             */
+            NSString *final = @"";
+            NSString *randomString = [self generateTradeNO];
+            final = [NSString stringWithFormat:@"%@",randomString];
+            
             NSString *shareCode = [NSString stringWithFormat:@"%@",_shareContentDict[@"share_code"]];
-            NSString *courseId = [NSString stringWithFormat:@"「courseId=%@」",_sourceId];
-            NSString *courseType = [NSString stringWithFormat:@"{courseType=%@}",_courseType];
+            final = [NSString stringWithFormat:@"%@|%@",final,shareCode];
+            
+            NSString *courseType = [NSString stringWithFormat:@"%@",_courseType];
+            final = [NSString stringWithFormat:@"%@|%@",final,courseType];
+            
+            NSString *courseId = [NSString stringWithFormat:@"%@",_sourceId];
+            final = [NSString stringWithFormat:@"%@|%@",final,courseId];
+            
+            NSString *activityType = [NSString stringWithFormat:@"%@",_activityType];
+            NSString *activityid = [NSString stringWithFormat:@"%@",_activityId];
+            if (SWNOTEmptyStr(activityType) && SWNOTEmptyStr(activityid)) {
+                final = [NSString stringWithFormat:@"%@|%@|%@",final,activityType,activityid];
+            }
+            
+            NSData *shareData = [final dataUsingEncoding:NSUTF8StringEncoding];
+            Byte *bytes = (Byte *)[shareData bytes];
+            NSString *byteString = @"";
+            for (int i = 0; i < shareData.length; i++) {
+                bytes[i] = bytes[i] - i + 1;
+                //字节数组转换成字符
+                NSData *d1 = [NSData dataWithBytes:bytes length:i+1];
+                byteString = [[NSString alloc] initWithData:d1 encoding:NSUTF8StringEncoding];
+            }
+            
+            NSString *courseTitle = [NSString stringWithFormat:@"%@",_shareContentDict[@"course_title"]];
+            
+            NSString *passString = [NSString stringWithFormat:@"￥%@￥Eduline网校【%@】",byteString,courseTitle];
             
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = [NSString stringWithFormat:@"%@%@%@%@",shareCode,courseId,courseType,courseTitle];
-//            NSData *shareData = [NSJSONSerialization dataWithJSONObject:@{@"eduline":@"1",@"courseId":_sourceId,@"courseType":_courseType} options:NSJSONWritingPrettyPrinted error:nil];
-//            NSString * str = [[NSString alloc] initWithData:shareData encoding:NSUTF8StringEncoding];
+            pasteboard.string = passString;
             [self showHudInView:self.view showHint:@"复制口令成功"];
         }
     }
@@ -406,6 +440,21 @@ return image;
 - (UIView*)UMSocialParentView:(UIView*)defaultSuperView
 {
     return self.view;
+}
+
+// MARK: - 随机字符串8位
+//产生随机字符串
+- (NSString *)generateTradeNO {
+    static int kNumber = 8;
+    NSString *sourceStr = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    NSMutableString *resultStr = [[NSMutableString alloc] init];
+    srand(time(0));
+    for (int i = 0; i < kNumber; i++) {
+        unsigned index = rand() % [sourceStr length];
+        NSString *oneStr = [sourceStr substringWithRange:NSMakeRange(index, 1)];
+        [resultStr appendString:oneStr];
+    }
+    return resultStr;
 }
 
 @end

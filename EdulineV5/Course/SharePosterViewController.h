@@ -16,6 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *courseType;// 课程类型
 @property (strong, nonatomic) NSString *sourceId;// 资源ID
 
+@property (strong, nonatomic) NSString *activityId;// 活动ID
+@property (strong, nonatomic) NSString *activityType;// 活动类型
+
+
 @end
 
 NS_ASSUME_NONNULL_END

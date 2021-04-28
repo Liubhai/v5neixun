@@ -30,6 +30,8 @@
 #import "LanchAnimationVC.h"
 #import "HcdGuideView.h"
 #import "InstitutionsChooseVC.h"
+#import "CourseMainViewController.h"
+#import "GroupDetailViewController.h"
 
 //
 //                       _oo0oo_
@@ -167,7 +169,37 @@
         if(!systemBoard.numberOfItems) {
             return;
         }
-        
+        NSArray *pasteboardArray = [systemBoard.string componentsSeparatedByString:@"￥"]; //字符串按照【分隔成数组
+        if (SWNOTEmptyArr(pasteboardArray)) {
+            NSString *byteStringPass = [NSString stringWithFormat:@"%@",pasteboardArray[1]];
+            NSData *shareData = [byteStringPass dataUsingEncoding:NSUTF8StringEncoding];
+            Byte *bytes = (Byte *)[shareData bytes];
+            NSString *byteString = @"";
+            for (int i = 0; i < shareData.length; i++) {
+                bytes[i] = bytes[i] + i - 1;
+                //字节数组转换成字符
+                NSData *d1 = [NSData dataWithBytes:bytes length:i+1];
+                byteString = [[NSString alloc] initWithData:d1 encoding:NSUTF8StringEncoding];
+            }
+            NSLog(@"获取课程口令信息 = %@",byteString);
+            NSArray *byteStringArray = [byteString componentsSeparatedByString:@"|"];
+            if (SWNOTEmptyArr(byteStringArray)) {
+                if (byteStringArray.count>4) {
+                    GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
+                    /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
+                    vc.activityType = [NSString stringWithFormat:@"%@",byteStringArray[4]];
+                    vc.activityId = [NSString stringWithFormat:@"%@",byteStringArray[5]];
+                    [self.tabbar.selectedViewController pushViewController:vc animated:YES];
+                } else {
+                    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+                    vc.ID = [NSString stringWithFormat:@"%@",byteStringArray[3]];
+                    vc.isLive = [[NSString stringWithFormat:@"%@",byteStringArray[2]] isEqualToString:@"2"] ? YES : NO;
+                    vc.courseType = [NSString stringWithFormat:@"%@",byteStringArray[2]];
+                    [self.tabbar.selectedViewController pushViewController:vc animated:YES];
+                }
+            }
+        }
+        /**
         NSData *jsonData = [systemBoard.string dataUsingEncoding:NSUTF8StringEncoding];
 
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
@@ -194,6 +226,7 @@
             }
         }
         NSLog(@"要打开的课程ID是 = %@ ; 要打开的课程类型是 = %@",courseId,courseType);
+        */
     }
 }
 
@@ -203,15 +236,17 @@
     if(!systemBoard.numberOfItems) {
         return NO;
     }
-    
-    NSArray<NSDictionary<NSString *, id> *> *items = systemBoard.items;
-    long count = systemBoard.numberOfItems;
-    for(int i=0; i < count; i++){
-        NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
-        if([[item allKeys] containsObject:@"eduline"]){
-            return YES;
-        }
+    if ([systemBoard.string containsString:@"Eduline"]) {
+        return YES;
     }
+//    NSArray<NSDictionary<NSString *, id> *> *items = systemBoard.items;
+//    long count = systemBoard.numberOfItems;
+//    for(int i=0; i < count; i++){
+//        NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
+//        if([[item allKeys] containsObject:@"Eduline"]){
+//            return YES;
+//        }
+//    }
     return NO;
 }
 

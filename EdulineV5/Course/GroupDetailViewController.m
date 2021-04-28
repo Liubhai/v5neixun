@@ -609,6 +609,8 @@
         vc.type = @"1";
         vc.sourceId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
         vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+        vc.activityType = _activityType;
+        vc.activityId = _activityId;
         [self.navigationController pushViewController:vc animated:YES];
         _doButton.enabled = YES;
     } else if ([groupStatus isEqualToString:@"2"]) {
@@ -685,6 +687,8 @@
                     vc.type = @"1";
                     vc.sourceId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
                     vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+                    vc.activityType = _activityType;
+                    vc.activityId = _activityId;
                     [self.navigationController pushViewController:vc animated:YES];
                     _kanjiaButton.enabled = YES;
                 } else {
