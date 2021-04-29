@@ -365,7 +365,7 @@
                 ExamIDModel *passfinalDict = (ExamIDModel *)passArray[currentExamIndexPath.row];
                 NSArray *inExamIdModelArray = [NSArray arrayWithArray:passfinalDict.sub_topics];
                 if (SWNOTEmptyArr(inExamIdModelArray)) {
-                    ExamIDModel *passfinal = (ExamIDModel *)passArray[section];
+                    ExamIDModel *passfinal = (ExamIDModel *)inExamIdModelArray[section];
                     examScore.text = [NSString stringWithFormat:@"（%@分）",passfinal.score];
                 }
             }
@@ -716,7 +716,7 @@
         if ([_examType isEqualToString:@"1"]) {
             getUrl = [Net_Path examPointIdListNet];
             [param setObject:_examIds forKey:@"point_ids"];
-            [param setObject:_examType forKey:@"module_id"];
+            [param setObject:_examModuleId forKey:@"module_id"];
         } else if ([_examType isEqualToString:@"2"]) {
             getUrl = [Net_Path specialExamIdListNet];
             [param setObject:_examIds forKey:@"special_id"];

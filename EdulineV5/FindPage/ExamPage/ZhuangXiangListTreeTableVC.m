@@ -240,9 +240,9 @@
 
 - (void)getZhuanXiangListData {
     page = 1;
-    if (SWNOTEmptyStr(_examTypeId)) {
+    if (SWNOTEmptyStr(_examModuleId)) {
         NSMutableDictionary *param = [NSMutableDictionary new];
-        [param setObject:_examTypeId forKey:@"module_id"];
+        [param setObject:_examModuleId forKey:@"module_id"];
         if (SWNOTEmptyStr(_institutionSearch.text)) {
             [param setObject:_institutionSearch.text forKey:@"title"];
         }
@@ -296,9 +296,9 @@
 
 - (void)getMoreList {
     page = page + 1;
-    if (SWNOTEmptyStr(_examTypeId)) {
+    if (SWNOTEmptyStr(_examModuleId)) {
         NSMutableDictionary *param = [NSMutableDictionary new];
-        [param setObject:_examTypeId forKey:@"module_id"];
+        [param setObject:_examModuleId forKey:@"module_id"];
         if (SWNOTEmptyStr(_institutionSearch.text)) {
             [param setObject:_institutionSearch.text forKey:@"title"];
         }
@@ -358,6 +358,7 @@
         vc.examIds = cell.treeItem.course_id;
         vc.examType = _examTypeId;
         vc.examTitle = cell.treeItem.title;
+        vc.examModuleId = _examModuleId;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -387,7 +388,8 @@
         ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
         vc.examIds = cell.treeItem.course_id;//course_id;
         vc.examType = _examTypeId;
-        vc.examTitle = cell.treeItem.title;//pmodel ? pmodel.title : cell.treeItem.title;
+        vc.examTitle = cell.treeItem.title;
+        vc.examModuleId = _examModuleId;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

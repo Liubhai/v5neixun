@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *examIds;
 @property (strong, nonatomic) NSString *examTitle;//
 
+@property (strong, nonatomic) NSString *examModuleId;// 模块ID(每个板块可以添加很多模块)
+
 @property (strong, nonatomic) NSString *module_title;// 考试主页 板块儿名称
 
 @end

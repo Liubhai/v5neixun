@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *examTypeString;
 @property (strong, nonatomic) NSString *examTypeId;
 
+@property (strong, nonatomic) NSString *examModuleId;// 模块ID(每个板块可以添加很多模块)
+
 @end
 
 NS_ASSUME_NONNULL_END

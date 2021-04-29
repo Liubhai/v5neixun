@@ -109,6 +109,7 @@
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = _module_id;
+        vc.examModuleId = _examModuleId;
         vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
@@ -123,8 +124,8 @@
 - (void)getFirstList {
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if (SWNOTEmptyStr(_module_id)) {
-        [param setObject:_module_id forKey:@"module_id"];
+    if (SWNOTEmptyStr(_examModuleId)) {
+        [param setObject:_examModuleId forKey:@"module_id"];
     }
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
@@ -161,8 +162,8 @@
 - (void)getMoreList {
     page = page + 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if (SWNOTEmptyStr(_module_id)) {
-        [param setObject:_module_id forKey:@"module_id"];
+    if (SWNOTEmptyStr(_examModuleId)) {
+        [param setObject:_examModuleId forKey:@"module_id"];
     }
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];

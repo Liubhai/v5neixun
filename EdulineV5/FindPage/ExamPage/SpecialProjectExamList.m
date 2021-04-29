@@ -115,6 +115,7 @@
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = _examTypeId;
         vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"paper_id"]];
+        vc.examModuleId = _examModuleId;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 购买
@@ -129,8 +130,8 @@
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
     // 大类型
-    if (SWNOTEmptyStr(_examTypeId)) {
-        [param setObject:_examTypeId forKey:@"module_id"];
+    if (SWNOTEmptyStr(_examModuleId)) {
+        [param setObject:_examModuleId forKey:@"module_id"];
     }
     if (SWNOTEmptyStr(coursetypeIdString)) {
         [param setObject:coursetypeIdString forKey:@"category"];
@@ -169,8 +170,8 @@
 - (void)getMoreList {
     page = page + 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if (SWNOTEmptyStr(_examTypeId)) {
-        [param setObject:_examTypeId forKey:@"module_id"];
+    if (SWNOTEmptyStr(_examModuleId)) {
+        [param setObject:_examModuleId forKey:@"module_id"];
     }
     if (SWNOTEmptyStr(coursetypeIdString)) {
         [param setObject:coursetypeIdString forKey:@"category"];

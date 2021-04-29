@@ -90,6 +90,7 @@
     if ([examTheme isEqualToString:@"3"]) {
         SpecialProjectExamList *vc = [[SpecialProjectExamList alloc] init];
         vc.examTypeId = examTheme;
+        vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"1"]) {
         if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
@@ -99,15 +100,18 @@
         ExamPointSelectVC *vc = [[ExamPointSelectVC alloc] init];
         vc.examTypeString = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
         vc.examTypeId = examTheme;
+        vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];;
         [self.navigationController pushViewController:vc animated:YES];
     } else if (([examTheme isEqualToString:@"4"])) {
         TaojuanListViewController *vc = [[TaojuanListViewController alloc] init];
         vc.module_id = examTheme;
+        vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];;
         vc.module_title = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"2"]) {
         ZhuangXiangListTreeTableVC *vc = [[ZhuangXiangListTreeTableVC alloc] init];
         vc.examTypeId = examTheme;
+        vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

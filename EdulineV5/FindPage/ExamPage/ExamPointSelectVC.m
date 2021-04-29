@@ -296,6 +296,7 @@
     vc.examIds = examIds;
     vc.examType = _examTypeId;
     vc.examTitle = _examTypeString;
+    vc.examModuleId = _examModuleId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -316,8 +317,8 @@
 }
 
 - (void)getExamPointListData {
-    if (SWNOTEmptyStr(_examTypeId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointListNet] WithAuthorization:nil paramDic:@{@"module_id":_examTypeId} finish:^(id  _Nonnull responseObject) {
+    if (SWNOTEmptyStr(_examModuleId)) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointListNet] WithAuthorization:nil paramDic:@{@"module_id":_examModuleId} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     // 改变右上角按钮状态
