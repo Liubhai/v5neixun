@@ -132,7 +132,7 @@
     [self.view addSubview:_percentlabel];
     
     NSString *score = [NSString stringWithFormat:@"%@",@"90"];
-    NSString *fullScore = [NSString stringWithFormat:@"%@ 分\n满分100分",score];
+    NSString *fullScore = [NSString stringWithFormat:@"%@ 分\n总分100分",score];
     NSRange scoreRange = NSMakeRange(0, score.length);
     // 40 20 14
     NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:fullScore];
@@ -293,7 +293,7 @@
 //        return;
 //    }
     ExamPaperErrorTestAgainVC *vc = [[ExamPaperErrorTestAgainVC alloc] init];
-    vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
+    vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDictWrong];
     vc.isOrderTest = YES;
     vc.examType = @"error";
     [self.navigationController pushViewController:vc animated:YES];
@@ -371,13 +371,13 @@
                     [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
                     [btn setTitle:[NSString stringWithFormat:@"%@",@(order)] forState:0];
                     btn.titleLabel.font = SYSTEMFONT(14);
-                    [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
-                    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+//                    [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+//                    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
                     btn.backgroundColor = EdlineV5_Color.backColor;
-                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
+//                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
-                    if (btn.selected) {
+                    if (((ExamModel *)childArray[i]).answer_right) {
                         btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = [UIColor whiteColor];
@@ -419,8 +419,12 @@
     ExamSheetModel *secondModel = (ExamSheetModel *)_examArray[view.tag - 10];
     
     NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
-    
     ExamModel *thirdModel = (ExamModel *)passThird[sender.tag - 400];
+    
+    ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
+    vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
+    vc.currentResultModel = thirdModel;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 // MARK: - 请求考试结果信息(全部)
@@ -468,11 +472,14 @@
     if (SWNOTEmptyDictionary(_resultDict)) {
         _examTitleLabel.text = [NSString stringWithFormat:@"%@",_resultDict[@"paper_title"]];
         _userTimelabel.text = [EdulineV5_Tool timeChangeTimerWithSeconds:[[NSString stringWithFormat:@"%@",_resultDict[@"time_takes"]] integerValue]];
-        _finishlabel.text = [EdulineV5_Tool formateTime:[NSString stringWithFormat:@"%@",_resultDict[@"commit_time"]]];
+        _finishlabel.text = [EdulineV5_Tool formateYYYYMMDDHHMMTime:[NSString stringWithFormat:@"%@",_resultDict[@"commit_time"]]];
         
         NSString *score = [NSString stringWithFormat:@"%@",_resultDict[@"user_score"]];
         NSString *paperFullScore = [NSString stringWithFormat:@"%@",_resultDict[@"paper_score"]];
-        NSString *fullScore = [NSString stringWithFormat:@"%@ 分\n满分%@分",score,paperFullScore];
+        
+        _circleView.progress = [score floatValue] * 100 / [paperFullScore floatValue];
+        
+        NSString *fullScore = [NSString stringWithFormat:@"%@ 分\n总分%@分",score,paperFullScore];
         NSRange scoreRange = NSMakeRange(0, score.length);
         // 40 20 14
         NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:fullScore];

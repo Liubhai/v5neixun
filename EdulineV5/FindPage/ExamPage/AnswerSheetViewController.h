@@ -28,6 +28,9 @@ typedef void(^chooseOtherExam)(NSString *examId);
 @property (assign, nonatomic) NSInteger remainTime;// 如果有值 那么就需要计时器开启
 @property (assign, nonatomic) BOOL orderType;// yes 正序计时 no 倒计时
 
+@property (strong, nonatomic) NSString *examType;// 3 公开考试 4 套卷练习
+@property (strong, nonatomic) NSString *rollup_id;// 套卷练习才会有这个
+
 @property (strong, nonatomic) ExamPaperDetailModel *currentExamPaperDetailModel;
 @property (strong, nonatomic) NSMutableArray *answerManagerArray;
 

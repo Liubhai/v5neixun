@@ -56,7 +56,18 @@
 }
 
 - (void)makeTopUI {
-    UILabel *examTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 30, 22)];
+    
+    UILabel *examtttTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, MainScreenWidth - 30, 22)];
+    examtttTitle.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];
+    examtttTitle.textColor = EdlineV5_Color.textFirstColor;
+    examtttTitle.text = _sheetTitle;
+    [_mainScrollView addSubview:examtttTitle];
+    
+    if (_isError) {
+        return;
+    }
+    
+    UILabel *examTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, examtttTitle.bottom + 14, 30, 22)];
     examTitle.font = SYSTEMFONT(13);
     examTitle.textColor = EdlineV5_Color.textThirdColor;
     examTitle.text = @"注:";
@@ -166,7 +177,7 @@
 
 - (void)makeExamSheetUI {
     
-    CGFloat hotYY = 15 + 22 + 14 + 14 + 20;
+    CGFloat hotYY = 15 + 22 + 14 + (_isError ? 0 : (14 + 20));
     if (SWNOTEmptyArr(_examArray)) {
         NSInteger order = 1;
         for (int j = 0; j < _examArray.count; j++) {
@@ -209,13 +220,13 @@
                     [btn addTarget:self action:@selector(thirdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
                     [btn setTitle:[NSString stringWithFormat:@"%@",@(order)] forState:0];
                     btn.titleLabel.font = SYSTEMFONT(14);
-                    [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
-                    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+//                    [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+//                    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
                     btn.backgroundColor = EdlineV5_Color.backColor;
-                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
+//                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
-                    if (btn.selected) {
+                    if (((ExamModel *)childArray[i]).answer_right) {
                         btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = [UIColor whiteColor];

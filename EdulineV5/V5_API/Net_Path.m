@@ -721,6 +721,21 @@
     return [Net_Path fullPath:@"exam/rollup/detail" repalce:@"" byReplece:@""];
 }
 
+/** 套卷试题基础信息 */
++ (NSString *)volumePaperIdListNet {
+    return [Net_Path fullPath:@"exam/rollup/paper/base" repalce:@"" byReplece:@""];
+}
+
+/** 套卷获取某个试题 */
++ (NSString *)volumePaperTestDetailNet {
+    return [Net_Path fullPath:@"exam/rollup/paper/topic" repalce:@"" byReplece:@""];
+}
+
+/** 套卷练习提交答案 */
++ (NSString *)volumePaperSubmitAnswerNet {
+    return [Net_Path fullPath:@"exam/rollup/paper/answer" repalce:@"" byReplece:@""];
+}
+
 /** 砍价活动详情 */
 + (NSString *)kanjiaDetailInfoNet {
     return [Net_Path fullPath:@"promotion/bargain/detail" repalce:@"" byReplece:@""];

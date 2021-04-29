@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PublicAndTestExamRecordList : BaseViewController
-@property (strong, nonatomic) NSString *examType;// 类型( 2 公开考试 4 套卷练习)
+@property (strong, nonatomic) NSString *examType;// 类型( 3 公开考试 4 套卷练习)
 @end
 
 NS_ASSUME_NONNULL_END

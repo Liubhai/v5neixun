@@ -528,6 +528,15 @@ struct NetWorkUrl {
 /** 套卷详情接口 */
 + (NSString *)volumePaperDetailNet;
 
+/** 套卷试题基础信息 */
++ (NSString *)volumePaperIdListNet;
+
+/** 套卷获取某个试题 */
++ (NSString *)volumePaperTestDetailNet;
+
+/** 套卷练习提交答案 */
++ (NSString *)volumePaperSubmitAnswerNet;
+
 /** 砍价活动详情 */
 + (NSString *)kanjiaDetailInfoNet;
 

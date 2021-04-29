@@ -178,6 +178,7 @@
     _nextExamBtn.enabled = NO;
     if (examCount == 1) {
         [_nextExamBtn setTitle:@"提交" forState:0];
+        _nextExamBtn.hidden = YES;
         [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
         [_nextExamBtn setImage:nil forState:0];
     }
@@ -654,6 +655,10 @@
                     return;
                 }
                 
+                if (model.is_answer) {
+                    return;
+                }
+                
                 // 只有一个小题
                 // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题
                 if ([modelpass.question_type isEqualToString:@"1"] || [modelpass.question_type isEqualToString:@"2"]) {
@@ -723,6 +728,10 @@
         } else if ([_examType isEqualToString:@"3"]) {
             getUrl = [Net_Path openingExamIdListNet];
             [param setObject:_examIds forKey:@"paper_id"];
+        } else if ([_examType isEqualToString:@"4"]) {
+            getUrl = [Net_Path volumePaperIdListNet];
+            [param setObject:_examIds forKey:@"paper_id"];
+            [param setObject:_rollup_id forKey:@"rollup_id"];
         }
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
@@ -787,6 +796,10 @@
             [param setObject:examIds forKey:@"topic_id"];
         } else if ([_examType isEqualToString:@"3"]) {
             getUrl = [Net_Path openingExamDetailNet];
+            [param setObject:examIds forKey:@"topic_id"];
+            [param setObject:_examIds forKey:@"paper_id"];
+        } else if ([_examType isEqualToString:@"4"]) {
+            getUrl = [Net_Path volumePaperTestDetailNet];
             [param setObject:examIds forKey:@"topic_id"];
             [param setObject:_examIds forKey:@"paper_id"];
         }
@@ -1011,6 +1024,7 @@
                 _nextExamBtn.hidden = NO;
                 [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
                 [_nextExamBtn setTitle:@"提交" forState:0];
+                _nextExamBtn.hidden = YES;
                 [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                 [_nextExamBtn setImage:nil forState:0];
                 _previousExamBtn.hidden = NO;
@@ -1141,6 +1155,8 @@
         vc.remainTime = remainTime;
         vc.orderType = [_currentExamPaperDetailModel.total_time isEqualToString:@"0"] ? YES : NO;
         vc.isPaper = YES;
+        vc.examType = _examType;
+        vc.rollup_id = _rollup_id;
         vc.currentExamPaperDetailModel = _currentExamPaperDetailModel;
         vc.answerManagerArray = [NSMutableArray arrayWithArray:_answerManagerArray];
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
@@ -1169,6 +1185,7 @@
                             [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
                             if (examCount == 1) {
                                 [_nextExamBtn setTitle:@"提交" forState:0];
+                                _nextExamBtn.hidden = YES;
                                 [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                                 [_nextExamBtn setImage:nil forState:0];
                             }
@@ -1178,6 +1195,7 @@
                             [_nextExamBtn setTitle:@"提交" forState:0];
                             [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                             [_nextExamBtn setImage:nil forState:0];
+                            _nextExamBtn.hidden = YES;
                             _previousExamBtn.hidden = NO;
                             [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
                             [_previousExamBtn setImage:Image(@"exam_last") forState:0];
@@ -1229,7 +1247,7 @@
         [self collectionCurrentExamBy:model];
     } else if (sender == _submitBtn) {
         // 交卷
-        [self managerAnswer];
+        [self putExamAnswer];
     }
 }
 
@@ -1571,6 +1589,7 @@
 - (void)putExamAnswer {
     [self managerAnswer];
     if (SWNOTEmptyStr(_currentExamPaperDetailModel.paper_id)) {
+        NSString *getUrl = [Net_Path submitPaperNet];
         NSMutableDictionary *passDict = [NSMutableDictionary new];
         [passDict setObject:_currentExamPaperDetailModel.paper_id forKey:@"paper_id"];
         [passDict setObject:_currentExamPaperDetailModel.unique_code forKey:@"unique_code"];
@@ -1581,7 +1600,12 @@
             [passDict setObject:@([_currentExamPaperDetailModel.total_time integerValue] * 60 - remainTime) forKey:@"time_takes"];
         }
         
-        [Net_API requestPOSTWithURLStr:[Net_Path submitPaperNet] WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {
+        if ([_examType isEqualToString:@"4"]) {
+            [passDict setObject:_rollup_id forKey:@"rollup_id"];
+            getUrl = [Net_Path volumePaperSubmitAnswerNet];
+        }
+        
+        [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:responseObject[@"msg"]];
                 if ([[responseObject objectForKey:@"code"] integerValue]) {

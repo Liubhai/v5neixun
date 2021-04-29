@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "ExamSheetModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *examType;
 @property (strong, nonatomic) NSString *examIds;
 @property (strong, nonatomic) NSDictionary *paperInfo;// 试卷信息
+@property (strong, nonatomic) ExamModel *currentResultModel;// 从结果页点击某个题跳转到这个解析页面
 
 @end
 

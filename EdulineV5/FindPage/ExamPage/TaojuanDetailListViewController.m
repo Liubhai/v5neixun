@@ -127,6 +127,7 @@
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = @"4";
         vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        vc.rollup_id = _rollup_id;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 购买
@@ -143,7 +144,8 @@
         if ([_detailInfo[@"has_bought"] integerValue] || [priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
             ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
             vc.examType = @"4";
-            vc.examIds = [NSString stringWithFormat:@"%@",[_detailInfo objectForKey:@"id"]];
+            vc.examIds = [NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]];
+            vc.rollup_id = _rollup_id;
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             // 提示请先购买

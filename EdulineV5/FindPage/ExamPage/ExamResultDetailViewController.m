@@ -15,7 +15,6 @@
 
 #import "AnswerSheetViewController.h"
 #import "ExamCalculateHeight.h"
-#import "ExamSheetModel.h"
 #import "ExamResultSheetViewController.h"
 
 @interface ExamResultDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
@@ -174,6 +173,7 @@
     _nextExamBtn.enabled = NO;
     if (examCount == 1) {
         [_nextExamBtn setTitle:@"提交" forState:0];
+        _nextExamBtn.hidden = YES;
         [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
         [_nextExamBtn setImage:nil forState:0];
     }
@@ -701,6 +701,66 @@
             }
         }
         
+        if (_currentResultModel) {
+            if (SWNOTEmptyStr(_currentResultModel.topic_id)) {
+                _previousExamBtn.enabled = NO;
+                _nextExamBtn.enabled = NO;
+                currentExamId = [NSString stringWithFormat:@"%@",_currentResultModel.topic_id];
+                NSInteger indexCount = 0;
+                BOOL is_find = NO;
+                for (int i = 0; i < _examIdListArray.count; i ++) {
+                    if (is_find) {
+                        break;
+                    }
+                    ExamSheetModel *idListModel = _examIdListArray[i];
+                    for (int j = 0; j<idListModel.child.count; j++) {
+                        indexCount = indexCount + 1;
+                        if ([((ExamModel *)(idListModel.child[j])).topic_id isEqualToString:_currentResultModel.topic_id]) {
+                            is_find = YES;
+                            currentExamIndexPath = [NSIndexPath indexPathForRow:j inSection:i];
+                            // 这时候判断 并且更改底部按钮状态
+                            if (currentExamIndexPath.section == 0 && currentExamIndexPath.row == 0) {
+                                _nextExamBtn.hidden = NO;
+                                _previousExamBtn.hidden = YES;
+                                [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+                                if (examCount == 1) {
+                                    [_nextExamBtn setTitle:@"提交" forState:0];
+                                    _nextExamBtn.hidden = YES;
+                                    [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                                    [_nextExamBtn setImage:nil forState:0];
+                                }
+                            } else if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
+                                _nextExamBtn.hidden = NO;
+                                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                                [_nextExamBtn setTitle:@"提交" forState:0];
+                                _nextExamBtn.hidden = YES;
+                                [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                                [_nextExamBtn setImage:nil forState:0];
+                                _previousExamBtn.hidden = NO;
+                                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+                                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                            } else {
+                                _nextExamBtn.hidden = NO;
+                                [_nextExamBtn setTitle:@"下一题" forState:0];
+                                [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                                [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                                [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                                _previousExamBtn.hidden = NO;
+                                [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
+                                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+
+                            }
+                            break;
+                        }
+                    }
+                }
+                currentExamRow = indexCount;
+                [self getExamDetailForExamIds:_currentResultModel];
+                return;
+            }
+        }
+        
         if (SWNOTEmptyArr(pass)) {
             ExamSheetModel *passDict = (ExamSheetModel *)pass[0];
             NSArray *passArray = [NSArray arrayWithArray:passDict.child];
@@ -1025,6 +1085,7 @@
                 _nextExamBtn.hidden = NO;
                 [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
                 [_nextExamBtn setTitle:@"提交" forState:0];
+                _nextExamBtn.hidden = YES;
                 [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                 [_nextExamBtn setImage:nil forState:0];
                 _previousExamBtn.hidden = NO;
@@ -1147,6 +1208,7 @@
                             [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
                             if (examCount == 1) {
                                 [_nextExamBtn setTitle:@"提交" forState:0];
+                                _nextExamBtn.hidden = YES;
                                 [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                                 [_nextExamBtn setImage:nil forState:0];
                             }
@@ -1154,6 +1216,7 @@
                             _nextExamBtn.hidden = NO;
                             [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
                             [_nextExamBtn setTitle:@"提交" forState:0];
+                            _nextExamBtn.hidden = YES;
                             [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                             [_nextExamBtn setImage:nil forState:0];
                             _previousExamBtn.hidden = NO;

@@ -69,7 +69,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([_examType isEqualToString:@"2"]) {
+    if ([_examType isEqualToString:@"3"]) {
         static NSString *reuse = @"ExamRecordCellPublic";
         ExamRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
@@ -107,12 +107,9 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(_examType)) {
-        [param setObject:_examType forKey:@"source_type"];
-    }
+    [param setObject:_examType forKey:@"type"];
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[_examType isEqualToString:@"2"] ? [Net_Path examPaperRecordListNet] : [Net_Path examPaperRecordListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPaperRecordListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -142,11 +139,8 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(_examType)) {
-        [param setObject:_examType forKey:@"source_type"];
-    }
-    [Net_API requestGETSuperAPIWithURLStr:[_examType isEqualToString:@"2"] ? [Net_Path examPaperRecordListNet] : [Net_Path examPaperRecordListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [param setObject:_examType forKey:@"type"];
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPaperRecordListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }

@@ -31,6 +31,7 @@ typedef void(^resultPageChooseOtherExam)(ExamModel *model);
 
 @property (strong, nonatomic) ExamResultDetailModel *currentExamPaperDetailModel;
 @property (strong, nonatomic) NSMutableArray *answerManagerArray;
+@property (assign, nonatomic) BOOL isError;// yes 错题解析 no 全部解析
 
 @end
 

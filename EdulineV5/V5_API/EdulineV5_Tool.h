@@ -51,6 +51,7 @@
 + (NSString*)timeChangeWithSecondsFormat:(NSInteger)seconds;
 + (NSString *)getLocalTime;
 + (NSString *)formateTime:(NSString *)time;
++ (NSString *)formateYYYYMMDDHHMMTime:(NSString *)time;
 + (NSString *)timeForHHmm:(NSString *)time;
 + (NSString *)timeForYYYYMMDD:(NSString *)time;
 + (NSString *)timeFormatterYYYYMMDD:(NSString *)time;

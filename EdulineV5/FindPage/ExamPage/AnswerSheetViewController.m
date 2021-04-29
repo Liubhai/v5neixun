@@ -117,7 +117,7 @@
 
 - (void)sureButtonClick {
     if (SWNOTEmptyStr(_currentExamPaperDetailModel.paper_id)) {
-        
+        NSString *getUrl = [Net_Path submitPaperNet];
         NSMutableDictionary *passDict = [NSMutableDictionary new];
         [passDict setObject:_currentExamPaperDetailModel.paper_id forKey:@"paper_id"];
         [passDict setObject:_currentExamPaperDetailModel.unique_code forKey:@"unique_code"];
@@ -128,7 +128,12 @@
             [passDict setObject:@([_currentExamPaperDetailModel.total_time integerValue] * 60 - _remainTime) forKey:@"time_takes"];
         }
         
-        [Net_API requestPOSTWithURLStr:[Net_Path submitPaperNet] WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {
+        if ([_examType isEqualToString:@"4"]) {
+            [passDict setObject:_rollup_id forKey:@"rollup_id"];
+            getUrl = [Net_Path volumePaperSubmitAnswerNet];
+        }
+        
+        [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:responseObject[@"msg"]];
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
