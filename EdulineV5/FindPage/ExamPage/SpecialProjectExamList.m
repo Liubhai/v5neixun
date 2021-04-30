@@ -112,7 +112,7 @@
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
     
-    NSString *start_status = [NSString stringWithFormat:@"%@",cell.specialInfo[@"start_status"]];
+    NSString *start_status = [NSString stringWithFormat:@"%@",cell.specialInfo[@"exam_status"]];
     if ([start_status isEqualToString:@"0"] || [start_status isEqualToString:@"<null>"]) {
         return;
     }

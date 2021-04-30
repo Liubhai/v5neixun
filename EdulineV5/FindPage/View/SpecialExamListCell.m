@@ -107,7 +107,7 @@
     if ([[NSString stringWithFormat:@"%@",dict[@"end_time"]] isEqualToString:@"0"] || [[NSString stringWithFormat:@"%@",dict[@"end_time"]] isEqualToString:@"<null>"]) {
         _publicTime.text = @"开放时间：永久开放";
     } else {
-        _publicTime.text = [NSString stringWithFormat:@"开放时间：%@",[EdulineV5_Tool evaluateStarTime:[NSString stringWithFormat:@"%@",dict[@"start_time"]] endTime:[NSString stringWithFormat:@"%@",dict[@"end_time"]]]];
+        _publicTime.text = [NSString stringWithFormat:@"开放时间：%@",[EdulineV5_Tool examEvaluateStarTime:[NSString stringWithFormat:@"%@",dict[@"start_time"]] endTime:[NSString stringWithFormat:@"%@",dict[@"end_time"]]]];
     }
     
     _examCount.text = [NSString stringWithFormat:@"共%@题",dict[@"total_count"]];
@@ -139,7 +139,7 @@
         }
     }
     
-    NSString *start_status = [NSString stringWithFormat:@"%@",dict[@"start_status"]];
+    NSString *start_status = [NSString stringWithFormat:@"%@",dict[@"exam_status"]];
     if ([start_status isEqualToString:@"0"] || [start_status isEqualToString:@"<null>"]) {
         [_getOrExamBtn setTitle:@"暂未开放" forState:0];
         _getOrExamBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
