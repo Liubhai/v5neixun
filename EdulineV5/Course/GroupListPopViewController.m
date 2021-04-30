@@ -144,6 +144,8 @@
                         OrderViewController *vc = [[OrderViewController alloc] init];
                         vc.orderTypeString = @"course";
                         vc.orderId = _courseId;
+                        vc.isTuanGou = YES;
+                        vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                         [self.parentViewController.navigationController pushViewController:vc animated:YES];
                         [self closeButtonClick];
                     }
@@ -164,6 +166,8 @@
                     OrderViewController *vc = [[OrderViewController alloc] init];
                     vc.orderTypeString = @"course";
                     vc.orderId = _courseId;
+                    vc.isTuanGou = YES;
+                    vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [self.parentViewController.navigationController pushViewController:vc animated:YES];
                     [self closeButtonClick];
                 }

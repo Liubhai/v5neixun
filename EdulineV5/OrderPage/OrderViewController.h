@@ -68,6 +68,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL ignoreActivity;// 是不是不顾活动 按照正常购买显示
 
+@property (assign, nonatomic) BOOL isTuanGou;// 是不是团购(团购只需要调用开团拼团前接口就获取到订单信息)
+
 @end
 
 NS_ASSUME_NONNULL_END

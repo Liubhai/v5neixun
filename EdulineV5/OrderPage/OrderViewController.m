@@ -30,7 +30,11 @@
     [self makeScrollView];
     [self makeSubView];
     [self makeDownView];
-    [self getCourseOrderInfo];
+    if (_isTuanGou && SWNOTEmptyDictionary(_orderInfo)) {
+        [self setCourseUIData];
+    } else {
+        [self getCourseOrderInfo];
+    }
 }
 
 - (void)makeScrollView {

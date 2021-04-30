@@ -693,27 +693,27 @@
 
 /** 考试记录列表 */
 + (NSString *)examPaperRecordListNet {
-    return [Net_Path fullPath:@"user/examination/list" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"user/exam/record/list" repalce:@"" byReplece:@""];
 }
 
 /** 考试结果基础 */
 + (NSString *)examResultNet {
-    return [Net_Path fullPath:@"user/examination/record" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"user/exam/record" repalce:@"" byReplece:@""];
 }
 
 /** 考试结果试题信息 */
 + (NSString *)examResultTestDetailInfoNet {
-    return [Net_Path fullPath:@"user/examination/record/topic" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"user/exam/record/topic" repalce:@"" byReplece:@""];
 }
 
 /** 考试结果试题信息(错题) */
 + (NSString *)examResultWrongNet {
-    return [Net_Path fullPath:@"user/examination/record/wrong" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"user/exam/record/wrong" repalce:@"" byReplece:@""];
 }
 
 /** 我的考试-错题重练 */
 + (NSString *)examResultErrorTestAgain {
-    return [Net_Path fullPath:@"user/examination/record/wrong/do" repalce:@"" byReplece:@""];
+    return [Net_Path fullPath:@"user/exam/record/wrong/topic" repalce:@"" byReplece:@""];
 }
 
 /** 套卷详情接口 */
