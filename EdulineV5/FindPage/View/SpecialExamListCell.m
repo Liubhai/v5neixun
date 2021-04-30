@@ -23,7 +23,7 @@
 
 - (void)makeSubView {
     
-    _whiteBack = [[UIView alloc] initWithFrame:CGRectMake(15, 10, MainScreenWidth - 30, 93)];
+    _whiteBack = [[UIView alloc] initWithFrame:CGRectMake(15, 10, MainScreenWidth - 30, 109)];
     _whiteBack.backgroundColor = [UIColor whiteColor];
     _whiteBack.layer.masksToBounds = YES;
     _whiteBack.layer.cornerRadius = 4;
@@ -39,6 +39,12 @@
     _examTitle.textColor = EdlineV5_Color.textFirstColor;
     [_whiteBack addSubview:_examTitle];
     _gotImage.centerY = _examTitle.centerY;
+    
+    _publicTime = [[UILabel alloc] initWithFrame:CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 16)];
+    _publicTime.font = SYSTEMFONT(11);
+    _publicTime.textColor = EdlineV5_Color.textThirdColor;
+    [_whiteBack addSubview:_publicTime];
+    _publicTime.hidden = YES;
     
     _examPoint = [[UILabel alloc] initWithFrame:CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 14)];
     _examPoint.font = SYSTEMFONT(11);
@@ -95,10 +101,20 @@
     _priceLabel.hidden = NO;
     _gotImage.hidden = YES;
     
+    _publicTime.hidden = NO;
+    
     _examTitle.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
+    if ([[NSString stringWithFormat:@"%@",dict[@"end_time"]] isEqualToString:@"0"] || [[NSString stringWithFormat:@"%@",dict[@"end_time"]] isEqualToString:@"<null>"]) {
+        _publicTime.text = @"开放时间：永久开放";
+    } else {
+        _publicTime.text = [NSString stringWithFormat:@"开放时间：%@",[EdulineV5_Tool evaluateStarTime:[NSString stringWithFormat:@"%@",dict[@"start_time"]] endTime:[NSString stringWithFormat:@"%@",dict[@"end_time"]]]];
+    }
+    
     _examCount.text = [NSString stringWithFormat:@"共%@题",dict[@"total_count"]];
     NSString *priceCount = [NSString stringWithFormat:@"%@",dict[@"user_price"]];
     _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,dict[@"user_price"]];
+    
+    _getOrExamBtn.backgroundColor = EdlineV5_Color.themeColor;
     
     if ([priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
         _priceLabel.hidden = YES;
@@ -122,6 +138,13 @@
             [_getOrExamBtn setTitle:@"购买" forState:0];
         }
     }
+    
+    NSString *start_status = [NSString stringWithFormat:@"%@",dict[@"start_status"]];
+    if ([start_status isEqualToString:@"0"] || [start_status isEqualToString:@"<null>"]) {
+        [_getOrExamBtn setTitle:@"暂未开放" forState:0];
+        _getOrExamBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+    }
+    
 }
 
 - (void)setExamPointCell:(NSDictionary *)dict {

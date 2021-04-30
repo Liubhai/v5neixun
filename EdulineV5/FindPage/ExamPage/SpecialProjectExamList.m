@@ -103,7 +103,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 103;
+    return 119;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -111,6 +111,12 @@
 }
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
+    
+    NSString *start_status = [NSString stringWithFormat:@"%@",cell.specialInfo[@"start_status"]];
+    if ([start_status isEqualToString:@"0"] || [start_status isEqualToString:@"<null>"]) {
+        return;
+    }
+    
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = _examTypeId;
