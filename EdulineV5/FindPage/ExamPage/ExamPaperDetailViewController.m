@@ -753,9 +753,15 @@
                     currentExamRow = 0;
                     [_examIdListArray removeAllObjects];
                     NSArray *pass = [NSArray arrayWithArray:[ExamPaperIDListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"parts"]]];
-                    [_examIdListArray addObjectsFromArray:pass];
-                    if (SWNOTEmptyArr(pass)) {
-                        ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)pass[0];
+                    
+                    for (int i = 0; i<pass.count; i++) {
+                        ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)pass[i];
+                        if (SWNOTEmptyArr(passDict.child)) {
+                            [_examIdListArray addObject:passDict];
+                        }
+                    }
+                    if (SWNOTEmptyArr(_examIdListArray)) {
+                        ExamPaperIDListModel *passDict = (ExamPaperIDListModel *)_examIdListArray[0];
                         NSArray *passArray = [NSArray arrayWithArray:passDict.child];
                         if (SWNOTEmptyArr(passArray)) {
                             ExamIDModel *passfinalDict = (ExamIDModel *)passArray[0];
@@ -970,8 +976,10 @@
         if (SWNOTEmptyArr(_examIdListArray)) {
             ExamPaperIDListModel *currentExamIdListModel = _examIdListArray[currentExamIndexPath.section];
             // 这个地方有可能会出现因为题型部分里面没有试题导致崩溃
-            ExamIDModel *idModel = currentExamIdListModel.child[currentExamIndexPath.row];
-            idModel.has_answered = YES;
+            if (SWNOTEmptyArr(currentExamIdListModel.child)) {
+                ExamIDModel *idModel = currentExamIdListModel.child[currentExamIndexPath.row];
+                idModel.has_answered = YES;
+            }
         }
         // todo 这里要开始组装答案
         /**
