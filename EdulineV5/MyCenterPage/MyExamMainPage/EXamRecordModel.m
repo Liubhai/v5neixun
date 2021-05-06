@@ -29,7 +29,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"topic_id"] || [property.name isEqualToString:@"paper_id"] || [property.name isEqualToString:@"unique_code"] || [property.name isEqualToString:@"answer_times"] || [property.name isEqualToString:@"time_takes"] || [property.name isEqualToString:@"commit_time"] || [property.name isEqualToString:@"answer_status"] || [property.name isEqualToString:@"score"] || [property.name isEqualToString:@"paper_title"] || [property.name isEqualToString:@"allCount"] || [property.name isEqualToString:@"rightCount"]) {
+    if ([property.name isEqualToString:@"topic_id"] || [property.name isEqualToString:@"paper_id"] || [property.name isEqualToString:@"unique_code"] || [property.name isEqualToString:@"answer_times"] || [property.name isEqualToString:@"time_takes"] || [property.name isEqualToString:@"commit_time"] || [property.name isEqualToString:@"answer_status"] || [property.name isEqualToString:@"user_score"] || [property.name isEqualToString:@"paper_score"] || [property.name isEqualToString:@"paper_title"] || [property.name isEqualToString:@"answer_count"] || [property.name isEqualToString:@"right_count"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){

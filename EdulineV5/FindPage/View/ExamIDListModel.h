@@ -94,6 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSArray *points;
 @property (strong, nonatomic) NSArray *answer_data;
 @property (strong, nonatomic) NSString *examAnswer;
+@property (strong, nonatomic) NSString *reference_answer;// 解答题正确答案
 
 @end
 

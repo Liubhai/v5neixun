@@ -26,7 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *topic_id;//排序Id
 @property (strong, nonatomic) NSString *paper_id;//试题ID
-@property (strong, nonatomic) NSString *score;//得分
+@property (strong, nonatomic) NSString *user_score;//得分
+@property (strong, nonatomic) NSString *paper_score;//试卷总分
 @property (strong, nonatomic) NSString *answer_status;//阅卷状态【0：提交答案；1：客观题已阅卷；2：主观题已阅卷，完成阅卷】
 @property (strong, nonatomic) NSString *paper_title; // 试题题干
 @property (strong, nonatomic) NSString *commit_time;// 提交时间
@@ -34,8 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *answer_times; // 参考次数
 @property (strong, nonatomic) NSString *unique_code; // 上次作答提交时间
 
-@property (strong, nonatomic) NSString *allCount;// 总题数
-@property (strong, nonatomic) NSString *rightCount;// 正确作答题数
+@property (strong, nonatomic) NSString *answer_count;// 总题数
+@property (strong, nonatomic) NSString *right_count;// 正确作答题数
 
 @end
 

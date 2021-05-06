@@ -127,9 +127,9 @@
     }
     
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
-        NSString *exam_number = [NSString stringWithFormat:@"%@",cell.specialInfo[@"exam_number"]];
+        NSString *exam_number = [NSString stringWithFormat:@"%@",cell.specialInfo[@"exam_rest_num"]];
         if ([exam_number isEqualToString:@"0"]) {
-            [self showHudInView:self.view showHint:@"可用考试次数位0"];
+            [self showHudInView:self.view showHint:@"考试次数已用完"];
             return;
         }
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];

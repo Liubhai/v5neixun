@@ -75,10 +75,10 @@
     _titleLabel.numberOfLines = 0;
     [_titleLabel sizeToFit];
     [_titleLabel setHeight:_titleLabel.height>40 ? 40 : _titleLabel.height];
-    _allCountLabel.text = [NSString stringWithFormat:@"共%@题",model.allCount];
+    _allCountLabel.text = [NSString stringWithFormat:@"共%@题",model.answer_count];
     if (isPublic) {
         if ([model.answer_status isEqualToString:@"2"]) {
-            _allCountLabel.text = [NSString stringWithFormat:@"得分：%@分",model.score];
+            _allCountLabel.text = [NSString stringWithFormat:@"得分：%@分",model.user_score];
         } else {
             _allCountLabel.text = @"正在阅卷";
         }
@@ -87,7 +87,7 @@
         _taojuanTitleLabel.text = [NSString stringWithFormat:@"--%@",model.paper_title];
         _taojuanTitleLabel.frame = CGRectMake(_titleLabel.left, _titleLabel.bottom + 8, _titleLabel.width, 17);
     }
-    _rightCountLabel.text = [NSString stringWithFormat:@"答对%@题",model.rightCount];
+    _rightCountLabel.text = [NSString stringWithFormat:@"答对%@题",model.right_count];
     CGFloat allCountWidth = [_allCountLabel.text sizeWithFont:_allCountLabel.font].width + 4;
     CGFloat rightCountWidth = [_rightCountLabel.text sizeWithFont:_rightCountLabel.font].width + 4;
     

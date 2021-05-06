@@ -877,6 +877,11 @@
                                 if (SWNOTEmptyArr(pass.answer_data)) {
                                     op.userAnswerValue = pass.answer_data[0];
                                 }
+                                if (SWNOTEmptyStr(pass.reference_answer)) {
+                                    pass.examAnswer = pass.reference_answer;
+                                } else {
+                                    pass.examAnswer = @"";
+                                }
                             } else {
                                 NSString *examAnswer = @"";
                                 for (int j = 0; j<pass.options.count; j++) {
