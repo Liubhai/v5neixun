@@ -638,6 +638,12 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _currentExamPaperTestDetailModel = [ExamResultPaperTestDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
+                    if (!_currentExamPaperTestDetailModel) {
+                        return;
+                    }
+                    if (!SWNOTEmptyArr(_currentExamPaperTestDetailModel.topic)) {
+                        return;
+                    }
                     NSMutableArray *passArray = [NSMutableArray arrayWithObject:_currentExamPaperTestDetailModel.topic];
                     for (int i = 0; i<passArray.count; i++) {
                         ExamDetailModel *pass = passArray[i];

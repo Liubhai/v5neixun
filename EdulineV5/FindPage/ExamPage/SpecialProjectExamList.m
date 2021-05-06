@@ -23,6 +23,7 @@
     // 课程类型
     NSString *coursetypeString;
     NSString *coursetypeIdString;
+    BOOL shouldLoad;
 }
 
 @property (strong, nonatomic) UITextField *institutionSearch;
@@ -34,6 +35,14 @@
 @end
 
 @implementation SpecialProjectExamList
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (shouldLoad) {
+        [self getFirstList];
+    }
+    shouldLoad = YES;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
