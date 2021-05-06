@@ -79,7 +79,7 @@
 //    [self makeBottomView];
     
 //    [self getData];
-    [self getExamDetailForExamIds:_examIds];
+    [self getExamDetailForExamIds:_examIds keyId:@"0"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextViewChange:) name:UITextViewTextDidChangeNotification object:nil];
@@ -581,7 +581,7 @@
     }
 }
 
-- (void)getExamDetailForExamIds:(NSString *)examIds {
+- (void)getExamDetailForExamIds:(NSString *)examIds keyId:(NSString *)errorId {
     if (SWNOTEmptyStr(examIds)) {
         currentExamId = examIds;
         // 首选通过 ID 去获取 获取不到再去请求数据
@@ -598,7 +598,7 @@
         NSMutableDictionary *param = [NSMutableDictionary new];
         if ([_examType isEqualToString:@"error"]) {
             getUrl = [Net_Path examWrongDetailNet];
-            [param setObject:examIds forKey:@"topic_id"];
+            [param setObject:errorId forKey:@"record_id"];
         } else if ([_examType isEqualToString:@"collect"]) {
             getUrl = [Net_Path examPublicDetailNet];
             [param setObject:examIds forKey:@"topic_id"];
@@ -877,7 +877,7 @@
         
         
         if (_isOrderTest && SWNOTEmptyStr(model.next_topic_id)) {
-            [self getExamDetailForExamIds:model.next_topic_id];
+            [self getExamDetailForExamIds:model.next_topic_id keyId:model.next_record_id];
             _previousExamBtn.enabled = YES;
              _nextExamBtn.enabled = YES;
         }

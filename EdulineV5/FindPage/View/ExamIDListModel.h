@@ -89,6 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *part_id;// 错题练习 顺序重练是否有下一题id
 @property (assign, nonatomic) BOOL collected;// 是否收藏
 @property (strong, nonatomic) NSString *next_topic_id;// 错题练习 顺序重练是否有下一题id
+@property (strong, nonatomic) NSString *next_record_id;// 错题练习 顺序重练是否有下一题id
 
 @property (strong, nonatomic) NSString *score;// 试题分数
 @property (strong, nonatomic) NSArray *points;
