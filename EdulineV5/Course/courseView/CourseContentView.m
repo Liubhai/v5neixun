@@ -118,11 +118,11 @@
     [_courseStar setStarValue:[[NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"score_star"]] floatValue]];
     _courseLearn.text = [NSString stringWithFormat:@"%@人在学",[contentInfo objectForKey:@"sale_count"]];
     
-    NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[contentInfo objectForKey:@"price"]];
-    NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[contentInfo objectForKey:@"scribing_price"]];
+    NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[contentInfo objectForKey:@"price"]]];
+    NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[contentInfo objectForKey:@"scribing_price"]]];
     
     if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
-        NSString *user_price = [NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"user_price"]];
+        NSString *user_price = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:[contentInfo objectForKey:@"user_price"]]];
         if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
             price = @"免费";
             NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];
@@ -153,7 +153,7 @@
                 _coursePrice.font = SYSTEMFONT(18);
             }
         } else {
-            NSString *user_price = [NSString stringWithFormat:@"%@",[contentInfo objectForKey:@"user_price"]];
+            NSString *user_price = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:[contentInfo objectForKey:@"user_price"]]];
             if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
                 price = @"免费";
                 NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];

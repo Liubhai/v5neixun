@@ -78,7 +78,7 @@
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     _learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",[info objectForKey:@"sale_count"]];
 
-    NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
+    NSString *priceValue = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:[info objectForKey:@"price"]]];
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if ([[info objectForKey:@"is_buy"] integerValue]) {
         _priceLabel.text = @"已购买";
@@ -88,7 +88,7 @@
             _priceLabel.text = @"免费";
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[info objectForKey:@"price"]];
+            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[info objectForKey:@"price"]]];
             _priceLabel.textColor = EdlineV5_Color.faildColor;
         }
     }
@@ -139,7 +139,7 @@
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     _learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",[info objectForKey:@"sale_count"]];
 
-    NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
+    NSString *priceValue = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:[info objectForKey:@"price"]]];
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if ([[info objectForKey:@"is_buy"] integerValue]) {
         _priceLabel.text = @"已购买";
@@ -149,7 +149,7 @@
             _priceLabel.text = @"免费";
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[info objectForKey:@"price"]];
+            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[info objectForKey:@"price"]]];
             _priceLabel.textColor = EdlineV5_Color.faildColor;
         }
     }

@@ -111,7 +111,7 @@
         
         titleL.text = [NSString stringWithFormat:@"%@",infoArray[i][@"title"]];
         learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",infoArray[i][@"sale_count"]];
-        NSString *priceValue = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"price"]];
+        NSString *priceValue = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:[infoArray[i] objectForKey:@"price"]]];
         priceLabel.textColor = EdlineV5_Color.faildColor;
         if ([[infoArray[i] objectForKey:@"is_buy"] integerValue]) {
             priceLabel.text = @"已购买";
@@ -121,7 +121,7 @@
                 priceLabel.text = @"免费";
                 priceLabel.textColor = EdlineV5_Color.priceFreeColor;
             } else {
-                priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[infoArray[i] objectForKey:@"price"]];
+                priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[infoArray[i] objectForKey:@"price"]]];
                 priceLabel.textColor = EdlineV5_Color.faildColor;
             }
         }

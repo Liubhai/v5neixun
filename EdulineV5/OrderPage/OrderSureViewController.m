@@ -54,9 +54,9 @@
     _priceLabel.textAlignment = NSTextAlignmentCenter;
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
-        _payment = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+        _payment = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]]];
         if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
-            _payment = [NSString stringWithFormat:@"VIP:%@%@",IOSMoneyTitle,[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+            _payment = [NSString stringWithFormat:@"VIP:%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]]];
         }
         _order_no = [NSString stringWithFormat:@"%@",[[_orderSureInfo objectForKey:@"data"] objectForKey:@"order_no"]];
     }

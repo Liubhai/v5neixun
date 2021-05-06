@@ -106,7 +106,7 @@
         _courseTypeImage.hidden = YES;
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[OrderFinalInfo objectForKey:@"user_price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[OrderFinalInfo objectForKey:@"user_price"]]];
     if ([courseType isEqualToString:@"101"] || [courseType isEqualToString:@"102"] || [courseType isEqualToString:@"103"] || [courseType isEqualToString:@"104"]) {
         _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[OrderFinalInfo objectForKey:@"price"]];
     }
@@ -115,7 +115,7 @@
     
     
     
-    _scribing_price.text = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"scribing_price"]];
+    _scribing_price.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:[OrderFinalInfo objectForKey:@"scribing_price"]]];
     NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_scribing_price.text];
     [mut addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:NSMakeRange(0, _scribing_price.text.length)];
     _scribing_price.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];

@@ -95,4 +95,6 @@
 /** 移除普通标签 */
 + (NSString *)removeFilterHTML:(NSString *)html;
 
++ (NSString *)reviseString: (NSString *)str;
+
 @end
