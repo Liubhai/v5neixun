@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *scanCountLabel;
 @property (strong, nonatomic) UIView *fengeLine;
 @property (strong, nonatomic) UILabel *answerCountLabel;
+@property (strong, nonatomic) UILabel *xuanshangLabel;//悬赏
 
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) NSDictionary *questionCellInfo;

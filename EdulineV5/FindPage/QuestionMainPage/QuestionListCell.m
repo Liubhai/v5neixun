@@ -68,6 +68,13 @@
     _answerCountLabel.textColor = EdlineV5_Color.textThirdColor;
     [self.contentView addSubview:_answerCountLabel];
     
+    _xuanshangLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 100, _pictureViews.bottom + 20, 100, 17)];
+    _xuanshangLabel.font = SYSTEMFONT(12);
+    _xuanshangLabel.text = @"悬赏132积分";
+    _xuanshangLabel.textAlignment = NSTextAlignmentRight;
+    _xuanshangLabel.textColor = EdlineV5_Color.questionSeeButtonLayerColor;
+    [self.contentView addSubview:_xuanshangLabel];
+    
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, _pictureViews.bottom + 20, MainScreenWidth, 1)];
     _lineView.backgroundColor = EdlineV5_Color.backColor;
     [self.contentView addSubview:_lineView];
@@ -131,7 +138,10 @@
         }
     }
     
-    [_lineView setTop:_pictureViews.bottom + 20];
+    _xuanshangLabel.frame = CGRectMake(_contentLabel.left, _pictureViews.bottom + 12, 100, 17);
+    
+//    [_lineView setTop:_pictureViews.bottom + 20];
+    [_lineView setTop:_xuanshangLabel.bottom + 16];
     [self setHeight:_lineView.bottom];
 }
 
@@ -187,6 +197,8 @@
     _answerCountLabel.text = @"回答 13";
     CGFloat answerWidth = [_answerCountLabel.text sizeWithFont:_answerCountLabel.font].width + 4;
     _answerCountLabel.frame = CGRectMake(_fengeLine.right + 8, _scanCountLabel.top, answerWidth, 17);
+    
+    _xuanshangLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _scanCountLabel.top, 100, 17);
     
     [_lineView setTop:_scanCountLabel.bottom + 15];
     [_lineView setHeight:8];
