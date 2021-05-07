@@ -1189,6 +1189,7 @@
         vc.currentExamPaperDetailModel = _currentExamPaperDetailModel;
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
         vc.currentIndexpath = currentExamIndexPath;
+        vc.isError = _isErrorAnalysis;
         vc.chooseOtherExam = ^(ExamModel * _Nonnull model) {
             _previousExamBtn.enabled = NO;
             _nextExamBtn.enabled = NO;

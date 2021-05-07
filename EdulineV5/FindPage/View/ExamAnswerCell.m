@@ -239,7 +239,7 @@
 }
 
 - (void)secondBtnClick:(UIButton *)sender {
-    if (_examDetailModel.is_answer) {
+    if (_examDetailModel.is_answer && !_examModuleType) {
         return;
     }
     if (_delegate && [_delegate respondsToSelector:@selector(gapfillingChooseStatusChanged:button:)]) {

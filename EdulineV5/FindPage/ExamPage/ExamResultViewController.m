@@ -314,6 +314,7 @@
 //    }
     ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDictWrong];
+    vc.isErrorAnalysis = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

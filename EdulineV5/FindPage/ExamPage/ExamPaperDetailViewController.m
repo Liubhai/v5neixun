@@ -651,13 +651,13 @@
             if (SWNOTEmptyArr(model.topics)) {
                 // 小题有多个 材料题
                 ExamDetailModel *modelpass = model.topics[indexPath.section];
-                if (modelpass.is_answer) {
-                    return;
-                }
-                
-                if (model.is_answer) {
-                    return;
-                }
+//                if (modelpass.is_answer) {
+//                    return;
+//                }
+//
+//                if (model.is_answer) {
+//                    return;
+//                }
                 
                 // 只有一个小题
                 // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题
@@ -685,9 +685,9 @@
 //                    [_tableView reloadData];
                 }
             } else {
-                if (model.is_answer) {
-                    return;
-                }
+//                if (model.is_answer) {
+//                    return;
+//                }
                 // 只有一个小题
                 // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题
                 if ([model.question_type isEqualToString:@"1"] || [model.question_type isEqualToString:@"2"]) {
@@ -1036,8 +1036,9 @@
                 [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                 [_nextExamBtn setImage:nil forState:0];
                 _previousExamBtn.hidden = NO;
-                [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-                [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
+                [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
             } else {
                 _nextExamBtn.hidden = NO;
                 [_nextExamBtn setTitle:@"下一题" forState:0];
@@ -1205,8 +1206,9 @@
                             [_nextExamBtn setImage:nil forState:0];
                             _nextExamBtn.hidden = YES;
                             _previousExamBtn.hidden = NO;
-                            [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-                            [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                            [_previousExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                            [_previousExamBtn setImage:[Image(@"exam_last") converToMainColor] forState:0];
+                            [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
                         } else {
                             _nextExamBtn.hidden = NO;
                             [_nextExamBtn setTitle:@"下一题" forState:0];

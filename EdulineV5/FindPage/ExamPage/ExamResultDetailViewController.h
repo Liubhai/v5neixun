@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *examIds;
 @property (strong, nonatomic) NSDictionary *paperInfo;// 试卷信息
 @property (strong, nonatomic) ExamModel *currentResultModel;// 从结果页点击某个题跳转到这个解析页面
+@property (assign, nonatomic) BOOL isErrorAnalysis;// 是不是错题解析
 
 @end
 
