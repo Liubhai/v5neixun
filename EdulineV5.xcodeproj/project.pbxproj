@@ -453,6 +453,7 @@
 		78AAFF1025FF2D6D002CD197 /* GroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF0F25FF2D6C002CD197 /* GroupDetailViewController.m */; };
 		78AAFF1325FF6189002CD197 /* ExamPaperDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */; };
 		78AAFF162601A081002CD197 /* ExamCalculateHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AAFF152601A081002CD197 /* ExamCalculateHeight.m */; };
+		78AF5354264533ED0058B55E /* QuestionPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AF5353264533ED0058B55E /* QuestionPostViewController.m */; };
 		78BBB38E26202252009F5D10 /* QuestionRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB38D26202252009F5D10 /* QuestionRootViewController.m */; };
 		78BBB391262024A0009F5D10 /* QuestionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB390262024A0009F5D10 /* QuestionListViewController.m */; };
 		78BBB394262024CB009F5D10 /* QuestionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB393262024CB009F5D10 /* QuestionListCell.m */; };
@@ -1488,6 +1489,8 @@
 		78AAFF1225FF6189002CD197 /* ExamPaperDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPaperDetailViewController.m; sourceTree = "<group>"; };
 		78AAFF142601A081002CD197 /* ExamCalculateHeight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamCalculateHeight.h; sourceTree = "<group>"; };
 		78AAFF152601A081002CD197 /* ExamCalculateHeight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamCalculateHeight.m; sourceTree = "<group>"; };
+		78AF5352264533ED0058B55E /* QuestionPostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionPostViewController.h; sourceTree = "<group>"; };
+		78AF5353264533ED0058B55E /* QuestionPostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionPostViewController.m; sourceTree = "<group>"; };
 		78BBB38C26202252009F5D10 /* QuestionRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionRootViewController.h; sourceTree = "<group>"; };
 		78BBB38D26202252009F5D10 /* QuestionRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionRootViewController.m; sourceTree = "<group>"; };
 		78BBB38F262024A0009F5D10 /* QuestionListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionListViewController.h; sourceTree = "<group>"; };
@@ -3716,6 +3719,8 @@
 				78BBB39926243E2B009F5D10 /* QuestionDetailListViewController.m */,
 				78BBB39E262572AE009F5D10 /* QuestionAnswerReplyListViewController.h */,
 				78BBB39F262572AE009F5D10 /* QuestionAnswerReplyListViewController.m */,
+				78AF5352264533ED0058B55E /* QuestionPostViewController.h */,
+				78AF5353264533ED0058B55E /* QuestionPostViewController.m */,
 				78BBB392262024CB009F5D10 /* QuestionListCell.h */,
 				78BBB393262024CB009F5D10 /* QuestionListCell.m */,
 				78BBB39526242D0E009F5D10 /* QuestionAnswerCell.h */,
@@ -4381,6 +4386,7 @@
 				788E95B2253FE24E0089251E /* ConfigModel.m in Sources */,
 				788E9579253FE24E0089251E /* EEColorShowView.m in Sources */,
 				78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */,
+				78AF5354264533ED0058B55E /* QuestionPostViewController.m in Sources */,
 				78C5496F241B642B00A33FC4 /* AlivcProfile.m in Sources */,
 				787F1E84247381A400108F7B /* AliyunPlayerViewFirstStartGuideView.m in Sources */,
 				78C549DB241B674F00A33FC4 /* UIApplication+AlivcHelper.m in Sources */,
