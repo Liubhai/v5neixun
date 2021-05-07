@@ -121,11 +121,6 @@
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
     
-    NSString *start_status = [NSString stringWithFormat:@"%@",cell.specialInfo[@"exam_status"]];
-    if ([start_status isEqualToString:@"0"] || [start_status isEqualToString:@"<null>"]) {
-        return;
-    }
-    
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
         NSString *exam_number = [NSString stringWithFormat:@"%@",cell.specialInfo[@"exam_rest_num"]];
         if ([exam_number isEqualToString:@"0"]) {
@@ -137,7 +132,7 @@
         vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"paper_id"]];
         vc.examModuleId = _examModuleId;
         [self.navigationController pushViewController:vc animated:YES];
-    } else {
+    } else if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"购买"]) {
         // 购买
         OrderViewController *vc = [[OrderViewController alloc] init];
         vc.orderTypeString = @"exam_public";

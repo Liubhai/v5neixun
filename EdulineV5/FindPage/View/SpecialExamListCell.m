@@ -116,12 +116,18 @@
     
     _getOrExamBtn.backgroundColor = EdlineV5_Color.themeColor;
     
+    NSString *start_status = [NSString stringWithFormat:@"%@",dict[@"exam_status"]];
+    
     if ([priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
         _priceLabel.hidden = YES;
         _gotImage.hidden = NO;
         _gotImage.image = Image(@"exam_free_icon");
         _examTitle.frame = CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20);
         [_getOrExamBtn setTitle:@"开始答题" forState:0];
+        if ([start_status isEqualToString:@"0"] || [start_status isEqualToString:@"<null>"]) {
+            [_getOrExamBtn setTitle:@"暂未开放" forState:0];
+            _getOrExamBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        }
     } else {
         // 不是免费的
         _priceLabel.hidden = NO;
@@ -132,19 +138,16 @@
             _gotImage.image = Image(@"exam_yigouamai_icon");
             _examTitle.frame = CGRectMake(_gotImage.right + 6, 14, _whiteBack.width - (_gotImage.right + 6 + 12), 20);
             [_getOrExamBtn setTitle:@"开始答题" forState:0];
+            if ([start_status isEqualToString:@"0"] || [start_status isEqualToString:@"<null>"]) {
+                [_getOrExamBtn setTitle:@"暂未开放" forState:0];
+                _getOrExamBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
+            }
         } else {
             _gotImage.hidden = YES;
             _examTitle.frame = CGRectMake(12, 14, _whiteBack.width - 12, 20);
             [_getOrExamBtn setTitle:@"购买" forState:0];
         }
     }
-    
-    NSString *start_status = [NSString stringWithFormat:@"%@",dict[@"exam_status"]];
-    if ([start_status isEqualToString:@"0"] || [start_status isEqualToString:@"<null>"]) {
-        [_getOrExamBtn setTitle:@"暂未开放" forState:0];
-        _getOrExamBtn.backgroundColor = EdlineV5_Color.buttonDisableColor;
-    }
-    
 }
 
 - (void)setExamPointCell:(NSDictionary *)dict {

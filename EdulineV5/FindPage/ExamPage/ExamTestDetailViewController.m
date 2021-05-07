@@ -79,7 +79,7 @@
 //    [self makeBottomView];
     
 //    [self getData];
-    [self getExamDetailForExamIds:_examIds keyId:@"0"];
+    [self getExamDetailForExamIds:_examIds keyId:_examOrderId];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextViewChange:) name:UITextViewTextDidChangeNotification object:nil];
@@ -123,7 +123,7 @@
     _nextExamBtn.titleLabel.font = SYSTEMFONT(16);
     [_nextExamBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    if (_isOrderTest && SWNOTEmptyStr(model.next_topic_id)) {
+    if (_isOrderTest && (SWNOTEmptyStr(model.next_topic_id) || SWNOTEmptyStr(model.next_record_id))) {
         [_nextExamBtn setTitle:@"下一题" forState:0];
         [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
         // 1. 得到imageView和titleLabel的宽、高
@@ -582,7 +582,7 @@
 }
 
 - (void)getExamDetailForExamIds:(NSString *)examIds keyId:(NSString *)errorId {
-    if (SWNOTEmptyStr(examIds)) {
+    if (SWNOTEmptyStr(examIds) || SWNOTEmptyStr(errorId)) {
         currentExamId = examIds;
         // 首选通过 ID 去获取 获取不到再去请求数据
         ExamDetailModel *c_model = [self checkExamDetailArray:examIds];
@@ -735,6 +735,7 @@
         [_footerView removeAllSubviews];
         
         ExamDetailModel *model = (ExamDetailModel *)examModel;
+        currentExamId = model.examDetailId;
         
         if (model.is_answer && [model.question_type isEqualToString:@"6"]) {
             UIView *footerLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
@@ -839,7 +840,7 @@
                 if (!_isOrderTest) {
                     _nextExamBtn.hidden = YES;
                 } else {
-                    if (!SWNOTEmptyStr(model.next_topic_id)) {
+                    if (!SWNOTEmptyStr(model.next_record_id)) {
                         _nextExamBtn.hidden = YES;
                     }
                 }
@@ -850,7 +851,7 @@
                 model.is_expand = YES;
                 model.is_right = YES;
                 [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:YES];
-                if (!_isOrderTest || !SWNOTEmptyStr(model.next_topic_id)) {
+                if (!_isOrderTest || !SWNOTEmptyStr(model.next_record_id)) {
                     _nextExamBtn.hidden = YES;
                     [_tableView reloadData];
                     _previousExamBtn.enabled = YES;
@@ -869,14 +870,14 @@
             }
         }
         
-        if (!SWNOTEmptyStr(model.next_topic_id)) {
+        if (!SWNOTEmptyStr(model.next_record_id)) {
             _rightOrErrorIcon.hidden = NO;
             _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
             _nextExamBtn.hidden = YES;
         }
         
         
-        if (_isOrderTest && SWNOTEmptyStr(model.next_topic_id)) {
+        if (_isOrderTest && SWNOTEmptyStr(model.next_record_id)) {
             [self getExamDetailForExamIds:model.next_topic_id keyId:model.next_record_id];
             _previousExamBtn.enabled = YES;
              _nextExamBtn.enabled = YES;

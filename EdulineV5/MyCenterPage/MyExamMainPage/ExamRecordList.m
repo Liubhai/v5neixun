@@ -165,6 +165,7 @@
     ExamTestDetailViewController *vc = [[ExamTestDetailViewController alloc] init];
     vc.examType = [_examListType isEqualToString:@"error"] ? @"error" : @"collect";
     vc.examIds = model.topic_id;
+    vc.examOrderId = model.errorId;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -358,6 +359,7 @@
         ExamTestDetailViewController *vc = [[ExamTestDetailViewController alloc] init];
         vc.examType = @"error";
         vc.examIds = model.topic_id;
+        vc.examOrderId = model.errorId;
         vc.isOrderTest = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
