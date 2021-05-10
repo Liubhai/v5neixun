@@ -162,7 +162,7 @@
     _examPoint.numberOfLines = 0;
     _examPoint.frame = CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 14);
     _examPoint.text = [NSString stringWithFormat:@"%@",dict[@"intro"]];
-    _learnCount.text = [NSString stringWithFormat:@"%@人已练习",dict[@"bought_count"]];
+    _learnCount.text = [NSString stringWithFormat:@"%@人已练习",dict[@"practice_count"]];
     
     [_examPoint sizeToFit];
     
@@ -245,7 +245,7 @@
     _examPoint.numberOfLines = 0;
     _examPoint.frame = CGRectMake(12, _examTitle.bottom + 6, _whiteBack.width - 24, 14);
     _examPoint.text = [NSString stringWithFormat:@"%@",dict[@"intro"]];
-    _learnCount.text = [NSString stringWithFormat:@"%@人已练习",dict[@"bought_count"]];
+    _learnCount.text = [NSString stringWithFormat:@"%@人已练习",dict[@"practice_count"]];
     
     [_examPoint sizeToFit];
     

@@ -184,11 +184,13 @@
         if (SWNOTEmptyDictionary(_videoDataSource[@"promotion"])) {
             NSString *promotionId = [NSString stringWithFormat:@"%@",_videoDataSource[@"promotion"][@"id"]];
             if (SWNOTEmptyStr(promotionId)) {
+                [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.frame.size.height];
                 [Net_API requestGETSuperAPIWithURLStr:[Net_Path pintuanListNet] WithAuthorization:nil paramDic:@{@"promotion_id":promotionId} finish:^(id  _Nonnull responseObject) {
                     if (SWNOTEmptyDictionary(responseObject)) {
                         if ([[responseObject objectForKey:@"code"] integerValue]) {
                             [_dataSource removeAllObjects];
                             [_dataSource addObjectsFromArray:responseObject[@"data"]];
+                            [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.frame.size.height];
                             [_tableView reloadData];
                             if (_dataSource.count) {
                                 groupTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(eventCellTimerDown) userInfo:nil repeats:YES];

@@ -66,7 +66,7 @@
 //    CGFloat progressWidth = [_progressLabel.text sizeWithFont:_progressLabel.font].width + 2;
 //    [_progressLabel setWidth:progressWidth];
 //    [_learnCountLabel setLeft:_progressLabel.right + 25];
-    _learnCountLabel.text = [NSString stringWithFormat:@"%@人练习",dict[@"bought_num"]];
+    _learnCountLabel.text = [NSString stringWithFormat:@"%@人练习",dict[@"practice_count"]];
 }
 
 - (void)examDoButtonClick:(UIButton *)sender {

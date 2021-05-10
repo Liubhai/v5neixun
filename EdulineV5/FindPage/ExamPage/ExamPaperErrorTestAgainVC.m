@@ -641,7 +641,7 @@
                     if (!_currentExamPaperTestDetailModel) {
                         return;
                     }
-                    if (!SWNOTEmptyArr(_currentExamPaperTestDetailModel.topic)) {
+                    if (!_currentExamPaperTestDetailModel.topic) {
                         return;
                     }
                     NSMutableArray *passArray = [NSMutableArray arrayWithObject:_currentExamPaperTestDetailModel.topic];
