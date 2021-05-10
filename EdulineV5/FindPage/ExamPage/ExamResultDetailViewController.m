@@ -737,6 +737,7 @@
                                 [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                                 [_nextExamBtn setImage:nil forState:0];
                                 _previousExamBtn.hidden = NO;
+                                [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
                                 [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
                                 [_previousExamBtn setImage:Image(@"exam_last") forState:0];
                             } else {
@@ -1094,6 +1095,7 @@
                 [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                 [_nextExamBtn setImage:nil forState:0];
                 _previousExamBtn.hidden = NO;
+                [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
                 [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
                 [_previousExamBtn setImage:Image(@"exam_last") forState:0];
             } else {
@@ -1226,6 +1228,7 @@
                             [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                             [_nextExamBtn setImage:nil forState:0];
                             _previousExamBtn.hidden = NO;
+                            [_previousExamBtn setCenterX:MainScreenWidth / 2.0];
                             [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
                             [_previousExamBtn setImage:Image(@"exam_last") forState:0];
                         } else {
