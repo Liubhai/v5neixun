@@ -9,8 +9,9 @@
 #import "QuestionPostViewController.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "ScanPhotoViewController.h"
 
-@interface QuestionPostViewController ()<UITextFieldDelegate, UITextViewDelegate> {
+@interface QuestionPostViewController ()<UITextFieldDelegate, UITextViewDelegate, TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,sendPhotoArrDelegate> {
     BOOL isTextField;
 }
 
@@ -23,6 +24,9 @@
 @property (strong, nonatomic) UIView *swicthBackView;// 悬赏开关父视图
 @property (strong, nonatomic) UISwitch *switchOther;// 悬赏开关
 @property (strong, nonatomic) UITextField *scoreTextField;// 悬赏额度
+
+// 储存图片信息
+@property (strong, nonatomic) NSMutableArray *pictureArray;
 
 
 @end
@@ -39,6 +43,9 @@
     [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = [EdlineV5_Color backColor];
+    
+    _pictureArray = [NSMutableArray new];
+    
     [self makeSubView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -47,7 +54,7 @@
 }
 
 - (void)makeSubView {
-    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight)];
+    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _mainScrollView.backgroundColor = [EdlineV5_Color backColor];
     [self.view addSubview:_mainScrollView];
     
@@ -78,6 +85,8 @@
     _pictureBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _contentTextBackView.bottom, MainScreenWidth, 10 + 109 + 10)];// 上下间距10
     _pictureBackView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_pictureBackView];
+    
+    [self dealPictureUI];
     
     _swicthBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _pictureBackView.bottom + 10, MainScreenWidth, 100)];
     _swicthBackView.backgroundColor = [UIColor whiteColor];
@@ -120,6 +129,129 @@
     
 }
 
+// MARK: - 根据图片数据布置界面
+- (void)dealPictureUI {
+    [_pictureBackView removeAllSubviews];
+    CGFloat xx = 15.0;
+    CGFloat yy = 10.0;
+    CGFloat inSpace = (MainScreenWidth - xx * 2 - 109 * 3) / 2.0;
+    CGFloat ww = 109;
+    for (int i = 0; i<_pictureArray.count+1; i++) {
+        UIImageView *postIcon = [[UIImageView alloc] initWithFrame:CGRectMake(xx + (inSpace + ww) * (i%3), yy + (yy + ww) * (i/3), ww, ww)];
+        postIcon.tag = i + 66;
+        postIcon.clipsToBounds = YES;
+        postIcon.contentMode = UIViewContentModeScaleAspectFill;
+        if (i==_pictureArray.count) {
+            // 这个是添加按钮
+            postIcon.image = Image(@"addimg");
+        } else {
+            // 普通图片
+            if ([_pictureArray[i] isKindOfClass:[UIImage class]]) {
+                postIcon.image = (UIImage *)_pictureArray[i];
+            } else {
+                [postIcon sd_setImageWithURL:[NSURL URLWithString:_pictureArray[i]] placeholderImage:Image(@"站位图")];
+            }
+        }
+        postIcon.userInteractionEnabled = YES;
+        UITapGestureRecognizer *picTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pictureViewTap:)];
+        [postIcon addGestureRecognizer:picTap];
+        if (i == _pictureArray.count) {
+            [_pictureBackView setHeight:postIcon.bottom + yy];
+            [_swicthBackView setTop:_pictureBackView.bottom + 10];
+            _mainScrollView.contentSize = CGSizeMake(0, ((_swicthBackView.bottom + 40) > _mainScrollView.height) ? (_swicthBackView.bottom + 40) : _mainScrollView.height);
+        }
+        [_pictureBackView addSubview:postIcon];
+    }
+}
+
+- (void)pictureViewTap:(UITapGestureRecognizer *)sender {
+    if (sender.view.tag == _pictureArray.count + 66) {
+        // 选择图片
+        if (_pictureArray.count >= PostImageMaxCount) {
+            [MBProgressHUD showError:[NSString stringWithFormat:@"最多选%d张图片",PostImageMaxCount] toView:self.view];
+            return;
+        }
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"图片选择" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"相册里选" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:PostImageMaxCount - _pictureArray.count delegate:self];
+            [self presentViewController:imagePickerVc animated:YES completion:nil];
+        }];
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                UIImagePickerController *_imagePickerController1 = [[UIImagePickerController alloc]init];
+                _imagePickerController1.sourceType = UIImagePickerControllerSourceTypeCamera;
+                _imagePickerController1.delegate = self;
+                _imagePickerController1.mediaTypes = [[NSArray alloc]initWithObjects:(NSString *)kUTTypeImage, nil];
+                _imagePickerController1.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+                _imagePickerController1.modalPresentationStyle = UIModalPresentationFullScreen;
+                [self presentViewController:_imagePickerController1 animated:YES completion:^{
+                    
+                }];
+            } else {
+                [self showHudInView:self.view showHint:@"设备不支持"];
+            }
+        }];
+        [deleteAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [cameraAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [alertController addAction:deleteAction];
+        [alertController addAction:cameraAction];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [cancelAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [alertController addAction:cancelAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else {
+        // 查看图片
+        ScanPhotoViewController *scanVC = [[ScanPhotoViewController alloc]init];
+        scanVC.imgArr = _pictureArray;
+        scanVC.index = sender.view.tag - 66;
+        scanVC.delegate = self;
+        scanVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:scanVC animated:YES completion:^{
+        }];
+        return;
+    }
+}
+
+// MARK: - 图片选择代理
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto infos:(NSArray<NSDictionary *> *)infos {
+    [_pictureArray removeAllObjects];
+    [_pictureArray addObjectsFromArray:photos];
+    [self dealPictureUI];
+}
+
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingVideo:(UIImage *)coverImage sourceAssets:(PHAsset *)asset {
+    [_pictureArray removeAllObjects];
+    [_pictureArray addObject:coverImage];
+    [self dealPictureUI];
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        [_pictureArray removeAllObjects];
+        [_pictureArray addObject:image];
+        [self dealPictureUI];
+    }];
+}
+
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray *)photos sourceAssets:(NSArray *)assets{
+    [_pictureArray removeAllObjects];
+    [_pictureArray addObjectsFromArray:photos];
+    [self dealPictureUI];
+}
+
+-(void)sendPhotoArr:(NSArray *)array{
+    [_pictureArray removeAllObjects];
+    [_pictureArray addObjectsFromArray:array];
+    [self dealPictureUI];
+}
+
+// MARK: - 输入框代理
 - (void)textViewValueDidChanged:(NSNotification *)notice {
     UITextView *textView = (UITextView *)notice.object;
     if (textView.text.length<=0) {

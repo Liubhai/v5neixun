@@ -169,6 +169,8 @@
 #define findSingleRightSpace 3
 #define findFaceImageHeight (MainScreenWidth/2.0 - findSingleRightSpace - findSingleLeftSpace)
 
+#define PostImageMaxCount 9
+
 // `APP_ID`:`WASD123456`
 
 // `APP_KEY`:`7WFDuCGYa1XEBj6Y`
