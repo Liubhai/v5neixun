@@ -110,7 +110,7 @@
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = _module_id;
         vc.examModuleId = _examModuleId;
-        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"first_paper_id"]];
         vc.rollup_id = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
