@@ -84,7 +84,7 @@
         }
     } else {
         _taojuanTitleLabel.hidden = NO;
-        _taojuanTitleLabel.text = [NSString stringWithFormat:@"--%@",model.paper_title];
+        _taojuanTitleLabel.text = [NSString stringWithFormat:@"--%@",model.rollup_title];
         _taojuanTitleLabel.frame = CGRectMake(_titleLabel.left, _titleLabel.bottom + 8, _titleLabel.width, 17);
     }
     _rightCountLabel.text = [NSString stringWithFormat:@"答对%@题",model.right_count];
