@@ -1288,7 +1288,7 @@
         getUrl = [Net_Path specialExamPostAnswerNet];
     }
     [param setObject:topic_id forKey:@"topic_id"];
-    [param setObject:level forKey:@"topic_level"];
+    [param setObject:@"1" forKey:@"topic_level"];
     [param setObject:isRight ? @"1" : @"0" forKey:@"is_right"];
     [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         NSLog(@"第%@题 答案提交 = %@",topic_id,responseObject[@"msg"]);
