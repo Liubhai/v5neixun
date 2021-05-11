@@ -104,7 +104,7 @@
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     NSString *keyType = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"key"]];
     if ([keyType isEqualToString:@"school"]) {
-        QuestionPostViewController *vc = [[QuestionPostViewController alloc] init];
+        InstitutionListVC *vc = [[InstitutionListVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([keyType isEqualToString:@"news"]) {
         ZiXunListVC *vc = [[ZiXunListVC alloc] init];
@@ -114,7 +114,6 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
-
 
 - (void)getCourseMainList {
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path findPageNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {

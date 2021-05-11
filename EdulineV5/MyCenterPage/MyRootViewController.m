@@ -45,7 +45,9 @@
 #import "UIImage+Util.h"
 #import "NSObject+PYThemeExtension.h"
 
-@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate,MyCenterBalanceViewDelegate,MyCenterTypeOneCellDelegate>
+@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate,MyCenterBalanceViewDelegate,MyCenterTypeOneCellDelegate> {
+    BOOL shouldLoad;
+}
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -66,7 +68,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self getUserInfo];
+    if (shouldLoad) {
+        [self getUserInfo];
+    }
+    shouldLoad = YES;
 }
 
 - (void)viewDidLoad {
