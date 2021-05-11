@@ -50,6 +50,7 @@
         }
     }];
     _passwordTextView.passwordSecureEntry = YES;//安全密码
+    [_passwordTextView.textField becomeFirstResponder];
     [_whiteBackView addSubview:_passwordTextView];
     
     _forgetBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, _passwordTextView.bottom + 25, 70, 20)];

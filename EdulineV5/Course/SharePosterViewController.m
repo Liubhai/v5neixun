@@ -278,7 +278,8 @@
             NSString *courseTitle = [NSString stringWithFormat:@"%@",_shareContentDict[@"course_title"]];
             
             NSString *passString = [NSString stringWithFormat:@"￥%@￥Eduline网校【%@】",byteString,courseTitle];
-            
+            [[NSUserDefaults standardUserDefaults] setObject:passString forKey:@"localSharePost"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             pasteboard.string = passString;
             [self showHudInView:self.view showHint:@"复制口令成功"];

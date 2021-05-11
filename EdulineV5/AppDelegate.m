@@ -169,6 +169,15 @@
         if(!systemBoard.numberOfItems) {
             return;
         }
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"localSharePost"]) {
+            NSString *localSharePost = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"localSharePost"]];
+            if ([systemBoard.string isEqualToString:localSharePost]) {
+                UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                pasteboard.string = @"";
+                return;
+            }
+        }
+        
         NSArray *pasteboardArray = [systemBoard.string componentsSeparatedByString:@"￥"]; //字符串按照【分隔成数组
         if (SWNOTEmptyArr(pasteboardArray)) {
             NSString *byteStringPass = [NSString stringWithFormat:@"%@",pasteboardArray[1]];
@@ -198,6 +207,9 @@
                     [self.tabbar.selectedViewController pushViewController:vc animated:YES];
                 }
             }
+            // 置空剪切板
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = @"";
         }
         /**
         NSData *jsonData = [systemBoard.string dataUsingEncoding:NSUTF8StringEncoding];
