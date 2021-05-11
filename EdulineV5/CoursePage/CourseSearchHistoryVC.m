@@ -12,7 +12,9 @@
 #import "Net_Path.h"
 #import "CourseSearchListVC.h"
 
-@interface CourseSearchHistoryVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface CourseSearchHistoryVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource> {
+    BOOL shouldLoad;
+}
 
 @property (strong, nonatomic) UITextField *institutionSearch;
 @property (strong, nonatomic) UIScrollView *mainScrollView;
@@ -28,7 +30,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self searchHotSearchInfo];
+    if (shouldLoad) {
+        [self searchHotSearchInfo];
+    }
+    shouldLoad = YES;
 }
 
 - (void)viewDidLoad {
