@@ -353,6 +353,7 @@
 }
 
 - (void)setActivityData {
+    _timeBackView.hidden = NO;
     if ([_activityType isEqualToString:@"3"]) {
         // 砍价
         if (SWNOTEmptyDictionary(_activityInfo)) {
@@ -439,6 +440,7 @@
                             [_kanjiaButton setTitle:@"我也想要" forState:0];
                         }
                     }
+                    _timeBackView.hidden = YES;
                 } else {
                     // 砍价已经完成
                     if ([bargain_finished isEqualToString:@"1"]) {
@@ -449,6 +451,7 @@
                             _groupResult.text = @"砍价已结束";
                             [_kanjiaButton setTitle:@"我也想要" forState:0];
                         }
+                        _timeBackView.hidden = YES;
                     } else {
                         // 砍价中...
                         if (isMine) {
@@ -475,15 +478,18 @@
                                 [_kanjiaButton setTitle:@"帮TA砍一刀" forState:0];
                             }
                         }
+                        if (eventTime>0) {
+                            [self startTimer];
+                        }
                     }
                 }
             } else {
                 eventTime = [start_countdown integerValue];
                 _groupResult.text = @"距活动开始还有";
                 [_kanjiaButton setTitle:@"邀请好友砍价" forState:0];
-            }
-            if (eventTime>0) {
-                [self startTimer];
+                if (eventTime>0) {
+                    [self startTimer];
+                }
             }
             
             [_kanjiaDataSource removeAllObjects];
@@ -534,6 +540,10 @@
             
             /*团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功；3：团购失败；】**/
             NSString *groupStatus = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"status"]];
+            
+            NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"expiry_countdown"]];
+            eventTime = [end_countdown integerValue];
+            
             if ([groupStatus isEqualToString:@"1"]) {
                 NSString *totalCount = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"total_num"]];
                 NSString *joinCount = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"join_num"]];
@@ -543,20 +553,19 @@
                 [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.courseActivityGroupColor} range:[final rangeOfString:needCount]];
                 _groupResult.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
                 [_doButton setTitle:@"邀请好友参团" forState:0];
+                if (eventTime>0) {
+                    [self startTimer];
+                }
             } else if ([groupStatus isEqualToString:@"2"]) {
                 _groupResult.text = @"拼团成功";
                 _groupResultTip.text = @"恭喜您拼团成功，快去观看课程吧～";
                 [_doButton setTitle:@"查看课程" forState:0];
+                _timeBackView.hidden = YES;
             } else if ([groupStatus isEqualToString:@"3"]) {
                 _groupResult.text = @"拼团失败";
                 _groupResultTip.text = @"拼团时间已过，款项将自动退回";
                 [_doButton setTitle:@"重新开团" forState:0];
-            }
-            
-            NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"expiry_countdown"]];
-            eventTime = [end_countdown integerValue];
-            if (eventTime>0) {
-                [self startTimer];
+                _timeBackView.hidden = YES;
             }
             
             [_tuanMenberDataSource removeAllObjects];
