@@ -813,49 +813,63 @@
         [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    if (paperTimer) {
+                        [paperTimer setFireDate:[NSDate distantFuture]];
+                    }
                     NSMutableArray *passArray = [NSMutableArray arrayWithArray:[ExamDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
+                    dispatch_group_t group = dispatch_group_create();//group计数=0
                     for (int i = 0; i<passArray.count; i++) {
-                        ExamDetailModel *pass = passArray[i];
-                        pass.titleMutable = [self changeStringToMutA:pass.title];
-                        pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
-                        if (SWNOTEmptyArr(pass.topics)) {
-                            for (int j = 0; j<pass.topics.count; j++) {
-                                ExamDetailModel *detail = pass.topics[j];
-                                detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
-                                detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
-                                if ([detail.question_type isEqualToString:@"8"]) {
+                        dispatch_group_enter(group);//group计数+1
+                        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                            ExamDetailModel *pass = passArray[i];
+                            pass.titleMutable = [self changeStringToMutA:pass.title];
+                            pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
+                            if (SWNOTEmptyArr(pass.topics)) {
+                                for (int j = 0; j<pass.topics.count; j++) {
+                                    ExamDetailModel *detail = pass.topics[j];
+                                    detail.titleMutable = [self changeCailiaoStringToMutA:[NSString stringWithFormat:@"(%@）%@",@(j + 1),detail.title] indexString:[NSString stringWithFormat:@"(%@）",@(j + 1)]];
+                                    detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
+                                    if ([detail.question_type isEqualToString:@"8"]) {
+                                        ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
+                                        detail.options = [NSArray arrayWithObjects:op, nil];
+                                    } else {
+                                        for (int k = 0; k<detail.options.count; k++) {
+                                            ExamDetailOptionsModel *modelOp = detail.options[k];
+                                            modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                        }
+                                    }
+                                }
+                            } else {
+                                if ([pass.question_type isEqualToString:@"8"]) {
                                     ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
-                                    detail.options = [NSArray arrayWithObjects:op, nil];
+                                    pass.options = [NSArray arrayWithObjects:op, nil];
                                 } else {
-                                    for (int k = 0; k<detail.options.count; k++) {
-                                        ExamDetailOptionsModel *modelOp = detail.options[k];
+                                    for (int j = 0; j<pass.options.count; j++) {
+                                        ExamDetailOptionsModel *modelOp = pass.options[j];
                                         modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
                                     }
                                 }
                             }
-                        } else {
-                            if ([pass.question_type isEqualToString:@"8"]) {
-                                ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
-                                pass.options = [NSArray arrayWithObjects:op, nil];
-                            } else {
-                                for (int j = 0; j<pass.options.count; j++) {
-                                    ExamDetailOptionsModel *modelOp = pass.options[j];
-                                    modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
-                                }
-                            }
-                        }
+                            dispatch_group_leave(group);//group计数-1
+                        });
                     }
                     
-                    if (SWNOTEmptyArr(passArray)) {
-                        [_examDetailArray addObject:passArray[0]];
-                        [self calculateAnswerCellHeight:passArray[0]];
-                        [self makeUIByExamDetailModel:passArray[0]];
-                    }
+                    //监听group计数，=0时执行block
+                    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+                        if (SWNOTEmptyArr(passArray)) {
+                            [_examDetailArray addObject:passArray[0]];
+                            [self calculateAnswerCellHeight:passArray[0]];
+                            [self makeUIByExamDetailModel:passArray[0]];
+                        }
+                        if (paperTimer) {
+                            [paperTimer setFireDate:[NSDate date]];
+                        }
+                        [self hideHud];
+                        _previousExamBtn.enabled = YES;
+                        _nextExamBtn.enabled = YES;
+                    });
                 }
             }
-            [self hideHud];
-            _previousExamBtn.enabled = YES;
-            _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
             [self hideHud];
             _previousExamBtn.enabled = YES;
