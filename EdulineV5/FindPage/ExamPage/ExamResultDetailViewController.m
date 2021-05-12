@@ -690,6 +690,15 @@
         currentExamRow = 0;
         [_examIdListArray removeAllObjects];
         NSArray *pass = [NSArray arrayWithArray:[ExamSheetModel mj_objectArrayWithKeyValuesArray:_paperInfo[@"paper_parts"]]];
+        
+        if (!SWNOTEmptyArr(pass)) {
+            _rightOrErrorIcon.hidden = YES;
+            _bottomView.hidden = YES;
+            [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:NO tableViewShowHeight:_tableView.height];
+            [_tableView reloadData];
+            return;
+        }
+        
         [_examIdListArray addObjectsFromArray:pass];
         
         for (int i = 0; i<_examIdListArray.count; i++) {
@@ -773,6 +782,11 @@
                 [self getExamDetailForExamIds:passfinalDict];
             }
         }
+    } else {
+        _rightOrErrorIcon.hidden = YES;
+        _bottomView.hidden = YES;
+        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:NO tableViewShowHeight:_tableView.height];
+        [_tableView reloadData];
     }
 }
 
