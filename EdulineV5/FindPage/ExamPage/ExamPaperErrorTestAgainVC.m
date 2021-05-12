@@ -591,7 +591,13 @@
         examCount = [[NSString stringWithFormat:@"%@",_paperInfo[@"total_count"]] integerValue];
         currentExamRow = 0;
         NSArray *pass = [NSArray arrayWithArray:[ExamSheetModel mj_objectArrayWithKeyValuesArray:_paperInfo[@"paper_parts"]]];
-        
+        if (!SWNOTEmptyArr(pass)) {
+            _rightOrErrorIcon.hidden = YES;
+            _bottomView.hidden = YES;
+            [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:NO tableViewShowHeight:_tableView.height];
+            [_tableView reloadData];
+            return;
+        }
         if (SWNOTEmptyArr(pass)) {
             ExamSheetModel *passDict = (ExamSheetModel *)pass[0];
             NSArray *passArray = [NSArray arrayWithArray:passDict.child];
@@ -604,6 +610,11 @@
                 [self getExamDetailForExamIds:passfinalDict];
             }
         }
+    } else {
+        _rightOrErrorIcon.hidden = YES;
+        _bottomView.hidden = YES;
+        [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:NO tableViewShowHeight:_tableView.height];
+        [_tableView reloadData];
     }
 }
 
