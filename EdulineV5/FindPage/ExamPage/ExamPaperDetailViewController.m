@@ -1678,48 +1678,62 @@
                         [passDict setObject:model.question_type forKey:@"question_type"];
                         
                         NSMutableArray *passArray = [NSMutableArray new];
+                        BOOL has_selected = NO;
                         for (int l = 0; l<model.options.count; l++) {
                             ExamDetailOptionsModel *opModel = model.options[l];
                             if (opModel.is_selected) {
+                                has_selected = YES;
                                 [passArray addObject:opModel.examDetailOptionId];
                             }
                         }
-                        [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
-                        [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                        if (has_selected) {
+                            [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
+                            [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                        }
                     } else if ([model.question_type isEqualToString:@"5"] || [model.question_type isEqualToString:@"8"]) {
                         // 填空题 和 解答题
                         [passDict setObject:model.examDetailId forKey:@"topic_id"];
                         [passDict setObject:model.question_type forKey:@"question_type"];
                         
                         NSMutableArray *passArray = [NSMutableArray new];
+                        BOOL has_selected = NO;
                         for (int l = 0; l<model.options.count; l++) {
                             ExamDetailOptionsModel *opModel = model.options[l];
                             if (opModel.userAnswerValue) {
+                                has_selected = YES;
                                 [passArray addObject:opModel.userAnswerValue];
                             } else {
                                 [passArray addObject:@""];
                             }
                         }
-                        [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
-                        [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                        if (has_selected) {
+                            [passDict setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
+                            [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                        }
                     } else if ([model.question_type isEqualToString:@"7"]) {
                         // 完形填空
+                        BOOL has_selected = NO;
                         for (int l = 0; l<model.topics.count; l++) {
                             ExamDetailModel *topicDetailModel = model.topics[l];
                             [passDict setObject:topicDetailModel.examDetailId forKey:@"topic_id"];
                             [passDict setObject:topicDetailModel.question_type forKey:@"question_type"];
                             NSMutableArray *topicPassArray = [NSMutableArray new];
+                            has_selected = NO;
                             for (int m = 0; m<topicDetailModel.options.count; m++) {
                                 ExamDetailOptionsModel *opModel = topicDetailModel.options[m];
                                 if (opModel.is_selected) {
+                                    has_selected = YES;
                                     [topicPassArray addObject:opModel.examDetailOptionId];
                                 }
                             }
-                            [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
-                            [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                            if (has_selected) {
+                                [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
+                                [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                            }
                         }
                     } else if ([model.question_type isEqualToString:@"6"]) {
                         // 材料题
+                        BOOL has_selected = NO;
                         for (int l = 0; l<model.topics.count; l++) {
                             ExamDetailModel *topicDetailModel = model.topics[l];
                             [passDict setObject:topicDetailModel.examDetailId forKey:@"topic_id"];
@@ -1727,25 +1741,33 @@
                             NSMutableArray *topicPassArray = [NSMutableArray new];
                             
                             if ([topicDetailModel.question_type isEqualToString:@"1"] || [topicDetailModel.question_type isEqualToString:@"2"] || [topicDetailModel.question_type isEqualToString:@"3"] || [topicDetailModel.question_type isEqualToString:@"4"]) {
+                                has_selected = NO;
                                 for (int m = 0; m<topicDetailModel.options.count; m++) {
                                     ExamDetailOptionsModel *opModel = topicDetailModel.options[m];
                                     if (opModel.is_selected) {
+                                        has_selected = YES;
                                         [topicPassArray addObject:opModel.examDetailOptionId];
                                     }
                                 }
-                                [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
-                                [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                                if (has_selected) {
+                                    [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
+                                    [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                                }
                             } else if ([topicDetailModel.question_type isEqualToString:@"5"] || [topicDetailModel.question_type isEqualToString:@"8"]) {
+                                has_selected = NO;
                                 for (int l = 0; l<topicDetailModel.options.count; l++) {
                                     ExamDetailOptionsModel *opModel = topicDetailModel.options[l];
                                     if (opModel.userAnswerValue) {
+                                        has_selected = YES;
                                         [topicPassArray addObject:opModel.userAnswerValue];
                                     } else {
                                         [topicPassArray addObject:@""];
                                     }
                                 }
-                                [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
-                                [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                                if (has_selected) {
+                                    [passDict setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
+                                    [dataArray addObject:[NSDictionary dictionaryWithDictionary:passDict]];
+                                }
                             }
                         }
                     }
