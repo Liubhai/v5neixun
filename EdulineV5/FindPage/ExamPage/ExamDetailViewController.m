@@ -659,59 +659,66 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     NSMutableArray *passArray = [NSMutableArray arrayWithArray:[ExamDetailModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
+                    dispatch_group_t group = dispatch_group_create();//group计数=0
                     for (int i = 0; i<passArray.count; i++) {
-                        ExamDetailModel *pass = passArray[i];
-                        pass.titleMutable = [self changeStringToMutA:pass.title];
-                        pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
-                        if (SWNOTEmptyArr(pass.topics)) {
-                            NSString *examAnswer = @"";
-                            for (int j = 0; j<pass.topics.count; j++) {
-                                ExamDetailModel *detail = pass.topics[j];
-                                detail.titleMutable = [self changeStringToMutA:detail.title];
-                                detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
-                                for (int j = 0; j<detail.options.count; j++) {
-                                    ExamDetailOptionsModel *modelOp = detail.options[j];
-                                    modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
-                                    if (modelOp.is_right) {
-                                        examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
-                                    }
-                                }
-                            }
-                            pass.examAnswer = examAnswer;
-                        } else {
-                            NSString *examAnswer = @"";
-                            for (int j = 0; j<pass.options.count; j++) {
-                                ExamDetailOptionsModel *modelOp = pass.options[j];
-                                modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
-                                if ([pass.question_type isEqualToString:@"5"]) {
-                                    NSString *gapFillAnswer = [NSString stringWithFormat:@"（%@）",@(j + 1)];
-                                    for (int m = 0; m < modelOp.values.count; m++) {
-                                        if (m == 0) {
-                                            gapFillAnswer = [NSString stringWithFormat:@"%@%@",gapFillAnswer,modelOp.values[m]];
-                                        } else {
-                                            gapFillAnswer = [NSString stringWithFormat:@"%@、%@",gapFillAnswer,modelOp.values[m]];
+                        dispatch_group_enter(group);//group计数+1
+                        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                            ExamDetailModel *pass = passArray[i];
+                            pass.titleMutable = [self changeStringToMutA:pass.title];
+                            pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
+                            if (SWNOTEmptyArr(pass.topics)) {
+                                NSString *examAnswer = @"";
+                                for (int j = 0; j<pass.topics.count; j++) {
+                                    ExamDetailModel *detail = pass.topics[j];
+                                    detail.titleMutable = [self changeStringToMutA:detail.title];
+                                    detail.analyzeMutable = [self changeStringToMutA:detail.analyze];
+                                    for (int j = 0; j<detail.options.count; j++) {
+                                        ExamDetailOptionsModel *modelOp = detail.options[j];
+                                        modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                        if (modelOp.is_right) {
+                                            examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
                                         }
                                     }
-                                    examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
-                                } else {
-                                    if (modelOp.is_right) {
-                                        examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                }
+                                pass.examAnswer = examAnswer;
+                            } else {
+                                NSString *examAnswer = @"";
+                                for (int j = 0; j<pass.options.count; j++) {
+                                    ExamDetailOptionsModel *modelOp = pass.options[j];
+                                    modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
+                                    if ([pass.question_type isEqualToString:@"5"]) {
+                                        NSString *gapFillAnswer = [NSString stringWithFormat:@"（%@）",@(j + 1)];
+                                        for (int m = 0; m < modelOp.values.count; m++) {
+                                            if (m == 0) {
+                                                gapFillAnswer = [NSString stringWithFormat:@"%@%@",gapFillAnswer,modelOp.values[m]];
+                                            } else {
+                                                gapFillAnswer = [NSString stringWithFormat:@"%@、%@",gapFillAnswer,modelOp.values[m]];
+                                            }
+                                        }
+                                        examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
+                                    } else {
+                                        if (modelOp.is_right) {
+                                            examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                        }
                                     }
                                 }
+                                pass.examAnswer = examAnswer;
                             }
-                            pass.examAnswer = examAnswer;
+                            dispatch_group_leave(group);//group计数-1
+                        });
+                    }
+                    //监听group计数，=0时执行block
+                    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+                        if (SWNOTEmptyArr(passArray)) {
+                            [_examDetailArray addObject:passArray[0]];
+                            [self makeUIByExamDetailModel:passArray[0]];
                         }
-                    }
-                    
-                    if (SWNOTEmptyArr(passArray)) {
-                        [_examDetailArray addObject:passArray[0]];
-                        [self makeUIByExamDetailModel:passArray[0]];
-                    }
+                        [self hideHud];
+                        _previousExamBtn.enabled = YES;
+                        _nextExamBtn.enabled = YES;
+                    });
                 }
             }
-            [self hideHud];
-            _previousExamBtn.enabled = YES;
-            _nextExamBtn.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
             [self hideHud];
             _previousExamBtn.enabled = YES;
