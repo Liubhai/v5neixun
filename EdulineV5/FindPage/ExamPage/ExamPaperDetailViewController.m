@@ -664,24 +664,28 @@
                 if ([modelpass.question_type isEqualToString:@"1"] || [modelpass.question_type isEqualToString:@"2"]) {
                     for (int i = 0; i<modelpass.options.count; i ++) {
                         ExamDetailOptionsModel *op = (ExamDetailOptionsModel *)(modelpass.options[i]);
+                        ExamAnswerCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
                         if (i == indexPath.row) {
                             op.is_selected = YES;
                         } else {
                             op.is_selected = NO;
                         }
+                        cell.selectButton.selected = op.is_selected;
                     }
 //                    [_tableView reloadRow:indexPath.row inSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
-                    [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
+//                    [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
 //                    [_tableView reloadData];
                 } else if ([modelpass.question_type isEqualToString:@"3"] || [modelpass.question_type isEqualToString:@"4"]) {
                     for (int i = 0; i<modelpass.options.count; i ++) {
                         ExamDetailOptionsModel *op = (ExamDetailOptionsModel *)(modelpass.options[i]);
+                        ExamAnswerCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
                         if (i == indexPath.row) {
                             op.is_selected = !op.is_selected;
                         }
+                        cell.mutSelectButton.selected = op.is_selected;
                     }
 //                    [_tableView reloadRow:indexPath.row inSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
-                    [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
+//                    [_tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationNone];
 //                    [_tableView reloadData];
                 }
             } else {
