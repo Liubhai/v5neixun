@@ -96,6 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSArray *answer_data;
 @property (strong, nonatomic) NSString *examAnswer;
 @property (strong, nonatomic) NSString *reference_answer;// 解答题正确答案
+@property (assign, nonatomic) BOOL answered;// 考试试题解析里面某个试题信息(真实情况是否作答)
 
 @end
 

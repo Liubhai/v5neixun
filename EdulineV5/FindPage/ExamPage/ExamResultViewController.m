@@ -378,16 +378,23 @@
 //                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
-                    if (((ExamModel *)childArray[i]).answer_right) {
-                        btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
-                        btn.layer.borderWidth = 1.0;
-                        btn.backgroundColor = [UIColor whiteColor];
-                        [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
+                    if (((ExamModel *)childArray[i]).answered) {
+                        if (((ExamModel *)childArray[i]).answer_right) {
+                            btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
+                            btn.layer.borderWidth = 1.0;
+                            btn.backgroundColor = [UIColor whiteColor];
+                            [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
+                        } else {
+                            btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
+                            btn.layer.borderWidth = 1.0;
+                            btn.backgroundColor = [UIColor whiteColor];
+                            [btn setTitleColor:EdlineV5_Color.faildColor forState:0];
+                        }
                     } else {
-                        btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
+                        btn.layer.borderColor = HEXCOLOR(0xDCDFE6).CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = [UIColor whiteColor];
-                        [btn setTitleColor:EdlineV5_Color.faildColor forState:0];
+                        [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
                     }
                     if (btn.right > (MainScreenWidth - 15)) {
                         XX = 15.0;

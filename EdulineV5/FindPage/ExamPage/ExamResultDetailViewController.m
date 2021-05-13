@@ -79,7 +79,6 @@
     [self makeTableView];
     
     _rightOrErrorIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 74 - 4, MACRO_UI_UPHEIGHT + 8, 74, 74)];
-    _rightOrErrorIcon.image = Image(@"exam_fault_icon");
     [self.view addSubview:_rightOrErrorIcon];
     
     [self getData];
@@ -997,7 +996,7 @@
         
         // 是否收藏
         _examCollectBtn.selected = model.collected;
-        _rightOrErrorIcon.image = model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon");
+        _rightOrErrorIcon.image = model.answered ? (model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon")) : Image(@"exam_notanswer_icon");
         
         if ([model.question_type isEqualToString:@"7"]) {
             // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
