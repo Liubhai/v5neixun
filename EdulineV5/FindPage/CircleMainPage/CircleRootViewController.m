@@ -9,6 +9,9 @@
 #import "CircleRootViewController.h"
 #import "V5_Constant.h"
 #import "CircleListVC.h"
+#import "CirclePostViewController.h"
+#import "V5_UserModel.h"
+#import "AppDelegate.h"
 
 @interface CircleRootViewController ()<UIScrollViewDelegate>
 
@@ -128,6 +131,16 @@
     NSInteger index = scrollView.contentOffset.x / MainScreenWidth;
     self.mainScrollView.contentOffset = CGPointMake(index * MainScreenWidth, 0);
     [self cateExchanged:[_topView viewWithTag:index + 66]];
+}
+
+// MARK: - 发布按钮点击事件
+- (void)rightButtonClick:(id)sender {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    CirclePostViewController *vc = [[CirclePostViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

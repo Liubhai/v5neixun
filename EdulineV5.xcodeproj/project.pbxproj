@@ -125,6 +125,7 @@
 		78793A43264E1EE8000554C8 /* CircleRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A42264E1EE8000554C8 /* CircleRootViewController.m */; };
 		78793A46264E2368000554C8 /* CircleListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A45264E2368000554C8 /* CircleListVC.m */; };
 		78793A49264E26B1000554C8 /* CircleListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A48264E26B1000554C8 /* CircleListCell.m */; };
+		78793A4C264E4D18000554C8 /* CirclePostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A4B264E4D18000554C8 /* CirclePostViewController.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
 		7879561B240DE7A50013F95F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78795619240DE7A50013F95F /* Main.storyboard */; };
@@ -842,6 +843,8 @@
 		78793A45264E2368000554C8 /* CircleListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleListVC.m; sourceTree = "<group>"; };
 		78793A47264E26B1000554C8 /* CircleListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleListCell.h; sourceTree = "<group>"; };
 		78793A48264E26B1000554C8 /* CircleListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleListCell.m; sourceTree = "<group>"; };
+		78793A4A264E4D18000554C8 /* CirclePostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CirclePostViewController.h; sourceTree = "<group>"; };
+		78793A4B264E4D18000554C8 /* CirclePostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CirclePostViewController.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* Eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -2139,6 +2142,8 @@
 				78793A42264E1EE8000554C8 /* CircleRootViewController.m */,
 				78793A44264E2368000554C8 /* CircleListVC.h */,
 				78793A45264E2368000554C8 /* CircleListVC.m */,
+				78793A4A264E4D18000554C8 /* CirclePostViewController.h */,
+				78793A4B264E4D18000554C8 /* CirclePostViewController.m */,
 				78793A47264E26B1000554C8 /* CircleListCell.h */,
 				78793A48264E26B1000554C8 /* CircleListCell.m */,
 			);
@@ -4577,6 +4582,7 @@
 				788E95BA253FE24E0089251E /* BaseEducationManager.m in Sources */,
 				7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */,
 				788E95A7253FE24E0089251E /* BigEducationManager.m in Sources */,
+				78793A4C264E4D18000554C8 /* CirclePostViewController.m in Sources */,
 				78AA137F2440543D007087F7 /* UIView+SDExtension.m in Sources */,
 				788E9578253FE24E0089251E /* EEChatTextFiled.m in Sources */,
 				788E9562253FE24E0089251E /* MCTeacherVideoView.m in Sources */,
