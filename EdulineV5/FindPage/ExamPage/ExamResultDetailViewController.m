@@ -736,6 +736,10 @@
                                     _nextExamBtn.hidden = YES;
                                     [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                                     [_nextExamBtn setImage:nil forState:0];
+                                } else {
+                                    [_nextExamBtn setTitle:@"下一题" forState:0];
+                                    [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                                    [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                                 }
                             } else if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
                                 _nextExamBtn.hidden = NO;
@@ -1232,6 +1236,10 @@
                                 _nextExamBtn.hidden = YES;
                                 [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                                 [_nextExamBtn setImage:nil forState:0];
+                            } else {
+                                [_nextExamBtn setTitle:@"下一题" forState:0];
+                                [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                                [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
                             }
                         } else if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
                             _nextExamBtn.hidden = NO;
