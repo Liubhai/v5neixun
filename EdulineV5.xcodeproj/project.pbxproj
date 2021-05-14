@@ -122,6 +122,9 @@
 		7876573324370560008F475D /* playAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876573224370560008F475D /* playAnimationView.m */; };
 		78781D4926045208000DF351 /* ExamTestDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78781D4826045208000DF351 /* ExamTestDetailViewController.m */; };
 		78781D4F260B2EEF000DF351 /* CheckUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78781D4E260B2EEF000DF351 /* CheckUserInfoViewController.m */; };
+		78793A43264E1EE8000554C8 /* CircleRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A42264E1EE8000554C8 /* CircleRootViewController.m */; };
+		78793A46264E2368000554C8 /* CircleListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A45264E2368000554C8 /* CircleListVC.m */; };
+		78793A49264E26B1000554C8 /* CircleListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A48264E26B1000554C8 /* CircleListCell.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
 		7879561B240DE7A50013F95F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78795619240DE7A50013F95F /* Main.storyboard */; };
@@ -833,6 +836,12 @@
 		78781D4826045208000DF351 /* ExamTestDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamTestDetailViewController.m; sourceTree = "<group>"; };
 		78781D4D260B2EEF000DF351 /* CheckUserInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheckUserInfoViewController.h; sourceTree = "<group>"; };
 		78781D4E260B2EEF000DF351 /* CheckUserInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CheckUserInfoViewController.m; sourceTree = "<group>"; };
+		78793A41264E1EE8000554C8 /* CircleRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleRootViewController.h; sourceTree = "<group>"; };
+		78793A42264E1EE8000554C8 /* CircleRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleRootViewController.m; sourceTree = "<group>"; };
+		78793A44264E2368000554C8 /* CircleListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleListVC.h; sourceTree = "<group>"; };
+		78793A45264E2368000554C8 /* CircleListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleListVC.m; sourceTree = "<group>"; };
+		78793A47264E26B1000554C8 /* CircleListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleListCell.h; sourceTree = "<group>"; };
+		78793A48264E26B1000554C8 /* CircleListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleListCell.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* Eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -2123,6 +2132,19 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		78793A3F264E1D68000554C8 /* CircleMainPage */ = {
+			isa = PBXGroup;
+			children = (
+				78793A41264E1EE8000554C8 /* CircleRootViewController.h */,
+				78793A42264E1EE8000554C8 /* CircleRootViewController.m */,
+				78793A44264E2368000554C8 /* CircleListVC.h */,
+				78793A45264E2368000554C8 /* CircleListVC.m */,
+				78793A47264E26B1000554C8 /* CircleListCell.h */,
+				78793A48264E26B1000554C8 /* CircleListCell.m */,
+			);
+			path = CircleMainPage;
+			sourceTree = "<group>";
+		};
 		78795604240DE7A50013F95F = {
 			isa = PBXGroup;
 			children = (
@@ -2267,6 +2289,7 @@
 		7879565A240E5FC80013F95F /* FindPage */ = {
 			isa = PBXGroup;
 			children = (
+				78793A3F264E1D68000554C8 /* CircleMainPage */,
 				78BBB38A2620222B009F5D10 /* QuestionMainPage */,
 				78060FA5255E831D00009171 /* ExamPage */,
 				78795664240E605A0013F95F /* FindRootViewController.h */,
@@ -4400,6 +4423,7 @@
 				78ED079A25D1129E00C30B26 /* ExamAnswerCell.m in Sources */,
 				7853BDD3242D964300F096EC /* ShitikaCell.m in Sources */,
 				78795733240FA3840013F95F /* ZLPhotoPickerAssetsViewController.m in Sources */,
+				78793A46264E2368000554C8 /* CircleListVC.m in Sources */,
 				78ED079425CD3C8A00C30B26 /* ExamDetailViewController.m in Sources */,
 				789DB041246A4436001302B4 /* MycouponsRootVC.m in Sources */,
 				788E9563253FE24E0089251E /* MCStudentListView.m in Sources */,
@@ -4472,6 +4496,7 @@
 				788E95B5253FE24E0089251E /* RTCManager.m in Sources */,
 				788E95C9254188500089251E /* CommonPopView.m in Sources */,
 				782AC44025BE96CB009130F9 /* ExamPointModel.m in Sources */,
+				78793A49264E26B1000554C8 /* CircleListCell.m in Sources */,
 				787657282435C79E008F475D /* StudyRootVC.m in Sources */,
 				785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */,
 				780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */,
@@ -4582,6 +4607,7 @@
 				78795650240E3FB60013F95F /* EdulineV5_Tool.m in Sources */,
 				788E959B253FE24E0089251E /* SignalReplayModel.m in Sources */,
 				78C5496D241B642B00A33FC4 /* AlivcUserInfoManager.m in Sources */,
+				78793A43264E1EE8000554C8 /* CircleRootViewController.m in Sources */,
 				789DB03E24698EE8001302B4 /* JoinCourseTypeVC.m in Sources */,
 				78AA135F243C254B007087F7 /* CourseCommonCell.m in Sources */,
 				788E95CF25466F8C0089251E /* LiveMenberCell.m in Sources */,

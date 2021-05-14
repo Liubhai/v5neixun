@@ -13,6 +13,7 @@
 #import "InstitutionListVC.h"
 #import "ZiXunListVC.h"
 #import "ExamMainViewController.h"
+#import "CircleRootViewController.h"
 
 // test
 #import "QuestionRootViewController.h"
@@ -111,6 +112,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([keyType isEqualToString:@"exam"]) {
         ExamMainViewController *vc = [[ExamMainViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([keyType isEqualToString:@"friend"]) {
+        CircleRootViewController *vc = [[CircleRootViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
