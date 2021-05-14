@@ -39,6 +39,17 @@
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     [self.contentView addSubview:_timeLabel];
     
+    _guanzhuButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 47, 0, 47, 21)];
+    _guanzhuButton.layer.masksToBounds = YES;
+    _guanzhuButton.layer.cornerRadius = 2;
+    _guanzhuButton.centerY = _userFace.centerY;
+    [_guanzhuButton setTitle:@"+ 关注" forState:0];
+    [_guanzhuButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    _guanzhuButton.layer.borderColor = EdlineV5_Color.themeColor.CGColor;
+    _guanzhuButton.layer.borderWidth = 1;
+    _guanzhuButton.titleLabel.font = SYSTEMFONT(11);
+    [self.contentView addSubview:_guanzhuButton];
+    
     _contentLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 15, MainScreenWidth - _nameLabel.left - 15, 50)];
     _contentLabel.text = @"但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦";
     _contentLabel.textColor = EdlineV5_Color.textFirstColor;
