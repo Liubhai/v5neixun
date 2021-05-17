@@ -9,9 +9,14 @@
 #import "OrderRootVC.h"
 #import "OrderTypeViewController.h"
 #import "V5_Constant.h"
+#import "OrderScreenViewController.h"
 
-@interface OrderRootVC ()<UIScrollViewDelegate> {
+@interface OrderRootVC ()<UIScrollViewDelegate,OrderScreenViewControllerDelegate> {
     NSInteger currentSelect;
+    
+    // 筛选
+    NSString *screenTitle;
+    NSString *screenType;
 }
 
 @property (strong, nonatomic) UIView *topView;
@@ -33,9 +38,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"我的订单";
+    _rightButton.hidden = NO;
+    [_rightButton setImage:[Image(@"lesson_screen_sel") converToMainColor] forState:0];
     currentSelect = 0;
     _typeArray = [NSMutableArray new];
-    //@{@"title":@"课程售后",@"type":@"shouhou"}
     [_typeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all"},@{@"title":@"待支付",@"type":@"waiting"},@{@"title":@"已取消",@"type":@"cancel"},@{@"title":@"已完成",@"type":@"finish"}]];
     
     [self makeTopView];
@@ -146,6 +152,28 @@
     [self.mainScrollView setContentOffset:CGPointMake(MainScreenWidth * sender.tag, 0) animated:YES];
 }
 
+- (void)rightButtonClick:(id)sender {
+    _rightButton.selected = !_rightButton.selected;
+    if (_rightButton.selected) {
+        OrderScreenViewController *vc = [[OrderScreenViewController alloc] init];
+        vc.delegate = self;
+        vc.screenTitle = screenTitle;
+        vc.screenType = screenType;
+        vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45);
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenOrderScreenAll" object:nil];
+    }
+}
 
+- (void)sureChooseOrderScreen:(NSDictionary *)orderScreenInfo {
+    if (SWNOTEmptyDictionary(orderScreenInfo)) {
+        screenTitle = [NSString stringWithFormat:@"%@",[orderScreenInfo objectForKey:@"screenTitle"]];
+        screenType = [NSString stringWithFormat:@"%@",[orderScreenInfo objectForKey:@"screenType"]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenOrderScreenAll" object:nil];
+        _rightButton.selected = NO;
+    }
+}
 
 @end

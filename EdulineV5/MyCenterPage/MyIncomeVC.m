@@ -14,11 +14,22 @@
 #import <UMShare/UMShare.h>
 #import "V5_UserModel.h"
 #import "MoubaoBindViewController.h"
+#import "CourseSortVC.h"
 
-@interface MyIncomeVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate> {
+#import "PromotionCourseCell.h"
+#import "PromotionUserCell.h"
+
+@interface MyIncomeVC ()<WKUIDelegate,WKNavigationDelegate,TYAttributedLabelDelegate,UITextFieldDelegate,CourseSortVCDelegate, UITableViewDelegate, UITableViewDataSource> {
     NSString *typeString;//方式
     NSString *sple_score_str_first;//比例
     NSString *sple_score_str_second;//比例
+    
+    // 选择
+    NSString *courseSortString;
+    NSString *courseSortIdString;
+    
+    NSInteger page;
+
 }
 
 @property (strong, nonatomic) UILabel *priceLabel;
@@ -68,6 +79,11 @@
 @property (strong, nonatomic) NSDictionary *balanceInfo;
 @property (strong, nonatomic) WKWebView *wkWebView;
 
+/** 头部按钮 */
+@property (strong, nonatomic) UIButton *headerButton;
+@property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) NSMutableArray *dataSource;
+
 @end
 
 @implementation MyIncomeVC
@@ -84,8 +100,25 @@
     _typeArray = [NSMutableArray new];
     _titleImage.backgroundColor = EdlineV5_Color.themeColor;
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
-    _titleLabel.text = @"我的收入";
-    _titleLabel.textColor = [UIColor whiteColor];
+//    _titleLabel.text = @"推广收入";
+//    _titleLabel.textColor = [UIColor whiteColor];
+    _titleLabel.hidden = YES;
+    
+    _headerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, _titleLabel.height)];
+    [_headerButton setTitle:@"推广收入" forState:UIControlStateNormal];
+    [_headerButton setImage:Image(@"income_down_icon") forState:UIControlStateNormal];
+    [_headerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _headerButton.titleLabel.font = _titleLabel.font;
+    [EdulineV5_Tool dealButtonImageAndTitleUI:_headerButton];
+    [_headerButton addTarget:self action:@selector(headerButtonCilck:) forControlEvents:UIControlEventTouchUpInside];
+    [_titleImage addSubview:_headerButton];
+    _headerButton.center = _titleLabel.center;
+    
+    courseSortString = @"推广收入";
+    courseSortIdString = @"all";
+    
+    _dataSource = [NSMutableArray new];
+    
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"明细" forState:0];
     [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
@@ -678,6 +711,9 @@
                         
                         [self makeBottomView];
                     }
+                    if (!_tableView) {
+                        [self makeTableView];
+                    }
                 }
             }
         }
@@ -835,5 +871,96 @@
     [_moubaoSureView removeAllSubviews];
     [_moubaoSureView removeFromSuperview];
 }
+
+// MARK: - 顶部分类按钮点击事件
+- (void)headerButtonCilck:(UIButton *)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    sender.selected = !sender.selected;
+    if (sender.selected) {
+        CourseSortVC *vc = [[CourseSortVC alloc] init];
+        vc.notHiddenNav = NO;
+        vc.hiddenNavDisappear = YES;
+        vc.isMainPage = NO;
+        vc.pageClass =  @"incomeMainType";
+        vc.delegate = self;
+        vc.typeId = courseSortIdString;
+        vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
+    }
+}
+
+// MARK: - CourseSortVCDelegate(顶部分类选择)
+- (void)sortTypeChoose:(NSDictionary *)info {
+    if (SWNOTEmptyDictionary(info)) {
+        courseSortString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+        courseSortIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
+        _headerButton.selected = NO;
+        [_headerButton setTitle:courseSortString forState:0];
+        [EdulineV5_Tool dealButtonImageAndTitleUI:_headerButton];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        if ([courseSortIdString isEqualToString:@"course"] || [courseSortIdString isEqualToString:@"user"]) {
+            if (_tableView) {
+                _tableView.hidden = NO;
+            }
+        } else {
+            _tableView.hidden = YES;
+        }
+    }
+}
+
+// MARK: - 创建table
+- (void)makeTableView {
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.showsVerticalScrollIndicator = NO;
+    _tableView.showsHorizontalScrollIndicator = NO;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstData)];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreDataList)];
+    _tableView.mj_footer.hidden = YES;
+    [self.view addSubview:_tableView];
+    [EdulineV5_Tool adapterOfIOS11With:_tableView];
+    _tableView.hidden = YES;
+//    [_tableView.mj_header beginRefreshing];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _dataSource.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([courseSortIdString isEqualToString:@"course"]) {
+        static NSString *reuse = @"PromotionCourseCell";
+        PromotionCourseCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[PromotionCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setPromotionCourseCellInfo:_dataSource[indexPath.row]];
+        return cell;
+    } else {
+        static NSString *reuse = @"PromotionUserCell";
+        PromotionUserCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[PromotionUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setPromotionUserCellInfo:_dataSource[indexPath.row]];
+        return cell;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([courseSortIdString isEqualToString:@"course"]) {
+        return 101;
+    }
+    return 72;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 
 @end

@@ -126,6 +126,9 @@
 		78793A46264E2368000554C8 /* CircleListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A45264E2368000554C8 /* CircleListVC.m */; };
 		78793A49264E26B1000554C8 /* CircleListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A48264E26B1000554C8 /* CircleListCell.m */; };
 		78793A4C264E4D18000554C8 /* CirclePostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A4B264E4D18000554C8 /* CirclePostViewController.m */; };
+		78793A4F26522115000554C8 /* OrderScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A4E26522115000554C8 /* OrderScreenViewController.m */; };
+		78793A52265252BA000554C8 /* PromotionCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A51265252BA000554C8 /* PromotionCourseCell.m */; };
+		78793A55265252EB000554C8 /* PromotionUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78793A54265252EB000554C8 /* PromotionUserCell.m */; };
 		78795612240DE7A50013F95F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795611240DE7A50013F95F /* AppDelegate.m */; };
 		78795618240DE7A50013F95F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78795617240DE7A50013F95F /* ViewController.m */; };
 		7879561B240DE7A50013F95F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78795619240DE7A50013F95F /* Main.storyboard */; };
@@ -845,6 +848,12 @@
 		78793A48264E26B1000554C8 /* CircleListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleListCell.m; sourceTree = "<group>"; };
 		78793A4A264E4D18000554C8 /* CirclePostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CirclePostViewController.h; sourceTree = "<group>"; };
 		78793A4B264E4D18000554C8 /* CirclePostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CirclePostViewController.m; sourceTree = "<group>"; };
+		78793A4D26522115000554C8 /* OrderScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderScreenViewController.h; sourceTree = "<group>"; };
+		78793A4E26522115000554C8 /* OrderScreenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderScreenViewController.m; sourceTree = "<group>"; };
+		78793A50265252BA000554C8 /* PromotionCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PromotionCourseCell.h; sourceTree = "<group>"; };
+		78793A51265252BA000554C8 /* PromotionCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PromotionCourseCell.m; sourceTree = "<group>"; };
+		78793A53265252EB000554C8 /* PromotionUserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PromotionUserCell.h; sourceTree = "<group>"; };
+		78793A54265252EB000554C8 /* PromotionUserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PromotionUserCell.m; sourceTree = "<group>"; };
 		7879560D240DE7A50013F95F /* Eduline网校.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eduline网校.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78795610240DE7A50013F95F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		78795611240DE7A50013F95F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -2707,6 +2716,8 @@
 				787E19AD24566F0300E2E016 /* OrderRootVC.m */,
 				787E19B2245685E100E2E016 /* OrderTypeViewController.h */,
 				787E19B3245685E100E2E016 /* OrderTypeViewController.m */,
+				78793A4D26522115000554C8 /* OrderScreenViewController.h */,
+				78793A4E26522115000554C8 /* OrderScreenViewController.m */,
 			);
 			path = OrderController;
 			sourceTree = "<group>";
@@ -3732,6 +3743,10 @@
 				78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */,
 				78BCF95424D7C2B7002F691C /* QuestionChatTimeCell.h */,
 				78BCF95524D7C2B7002F691C /* QuestionChatTimeCell.m */,
+				78793A50265252BA000554C8 /* PromotionCourseCell.h */,
+				78793A51265252BA000554C8 /* PromotionCourseCell.m */,
+				78793A53265252EB000554C8 /* PromotionUserCell.h */,
+				78793A54265252EB000554C8 /* PromotionUserCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4349,8 +4364,10 @@
 				789DB038246943E1001302B4 /* StudyCourseCell.m in Sources */,
 				78C549DF241B674F00A33FC4 /* MBProgressHUD+AlivcHelper.m in Sources */,
 				78C549CA241B674E00A33FC4 /* AlivcAppServer.m in Sources */,
+				78793A4F26522115000554C8 /* OrderScreenViewController.m in Sources */,
 				782AC43D25BC1DFD009130F9 /* ZhuangXiangModelManager.m in Sources */,
 				78C5497A241B642B00A33FC4 /* AlivcPushBeautyDataManager.m in Sources */,
+				78793A52265252BA000554C8 /* PromotionCourseCell.m in Sources */,
 				78A16C892452F7C100391430 /* TICRecorder.mm in Sources */,
 				787F1E68247381A400108F7B /* AlivcVideoPlayThumbnailView.m in Sources */,
 				78447C5226351C5E00CCC6D2 /* ExamResultDetailViewController.m in Sources */,
@@ -4532,6 +4549,7 @@
 				78C5496B241B642B00A33FC4 /* AliVideoClientUser.m in Sources */,
 				78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */,
 				787F1E87247381A400108F7B /* AVC_VP_VideoPlayViewController.m in Sources */,
+				78793A55265252EB000554C8 /* PromotionUserCell.m in Sources */,
 				7839C99D2423044A002F6595 /* CourseRecordCell.m in Sources */,
 				78A16C832452F7C100391430 /* TICDef.m in Sources */,
 				789DB02424663ECA001302B4 /* MyIncomeVC.m in Sources */,

@@ -21,7 +21,7 @@
 }
 
 - (void)makeSubView {
-    NSArray *balanceArray = @[@"我的余额",@"我的收入",@"我的积分"];
+    NSArray *balanceArray = @[@"我的余额",@"我的推广",@"我的积分"];
     CGFloat WW = self.bounds.size.width / (balanceArray.count * 1.0);
     self.backgroundColor = [UIColor whiteColor];
     for (int i = 0; i<balanceArray.count; i++) {

@@ -766,4 +766,14 @@
     return [Net_Path fullPath:@"promotion/pintuan/list" repalce:@"" byReplece:@""];
 }
 
+/** 圈子发布 */
++ (NSString *)circlePost {
+    return [Net_Path fullPath:@"circle" repalce:@"" byReplece:@""];
+}
+
+/** 圈子转发 */
++ (NSString *)circleForward {
+    return [Net_Path fullPath:@"circle/recircle" repalce:@"" byReplece:@""];
+}
+
 @end

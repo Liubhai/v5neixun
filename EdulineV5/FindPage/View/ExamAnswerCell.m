@@ -15,7 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = EdlineV5_Color.backColor;
+        self.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
         [self makeSubView];
     }
     return self;
@@ -48,7 +48,7 @@
     _valueTextView.showsHorizontalScrollIndicator = NO;
     _valueTextView.editable = NO;
     _valueTextView.scrollEnabled = NO;
-    _valueTextView.backgroundColor = EdlineV5_Color.backColor;
+    _valueTextView.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
     [self.contentView addSubview:_valueTextView];
     
     _userInputTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - 30, 120)];
@@ -80,7 +80,7 @@
     _gapfillingIndexTitle.centerY = _userInputTextField.centerY;
     
     _clozeBackView = [[UIView alloc] initWithFrame:CGRectMake(_gapfillingIndexTitle.right + 8, _gapfillingIndexTitle.top, MainScreenWidth - 15 - _gapfillingIndexTitle.right - 8, 0)];
-    _clozeBackView.backgroundColor = EdlineV5_Color.backColor;
+    _clozeBackView.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
     [self.contentView addSubview:_clozeBackView];
 }
 

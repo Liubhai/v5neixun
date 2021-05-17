@@ -37,6 +37,8 @@
     } else if ([_pageClass isEqualToString:@"myExamType"]) {
         // 我的考试里面几个分类
         [_dataSource addObjectsFromArray:@[@{@"title":@"考试记录",@"id":@"examRecord"},@{@"title":@"错题本",@"id":@"errorExam"},@{@"title":@"题目收藏",@"id":@"examCollect"}]];
+    } else if ([_pageClass isEqualToString:@"incomeMainType"]) {
+        [_dataSource addObjectsFromArray:@[@{@"title":@"推广收入",@"id":@"all"},@{@"title":@"推广课程",@"id":@"course"},@{@"title":@"推广用户",@"id":@"user"}]];
     } else {
         [_dataSource addObjectsFromArray:@[@{@"title":@"综合排序",@"id":@"default"},@{@"title":@"推荐",@"id":@"splendid"},@{@"title":@"畅销",@"id":@"popular"},@{@"title":@"最新",@"id":@"latest"}]];
     }

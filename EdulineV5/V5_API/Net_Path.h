@@ -555,6 +555,12 @@ struct NetWorkUrl {
 /** 课程拼团列表 */
 + (NSString *)pintuanListNet;
 
+/** 圈子发布 */
++ (NSString *)circlePost;
+
+/** 圈子转发 */
++ (NSString *)circleForward;
+
 @end
 
 NS_ASSUME_NONNULL_END

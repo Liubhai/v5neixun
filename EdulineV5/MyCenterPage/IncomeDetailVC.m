@@ -40,7 +40,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSource = [NSMutableArray new];
-    _titleLabel.text = @"收入明细";
+    _titleLabel.text = @"明细";
     page = 1;
     courseSortString = @"全部";
     courseSortIdString = @"all";

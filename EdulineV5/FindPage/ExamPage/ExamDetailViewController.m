@@ -60,6 +60,9 @@
     _titleLabel.font = SYSTEMFONT(16);
     _titleLabel.hidden = YES;
     
+    _lineTL.hidden = NO;
+    _lineTL.backgroundColor = EdlineV5_Color.layarLineColor;
+    
     canEnterNextExam = NO;
     
     _answerManagerArray = [NSMutableArray new];
@@ -114,6 +117,11 @@
 - (void)makeBottomView {
     _bottomView = [[UIButton alloc] initWithFrame:CGRectMake(0, MainScreenHeight - (MACRO_UI_SAFEAREA + 44), MainScreenWidth, MACRO_UI_SAFEAREA + 44)];
     _bottomView.backgroundColor = [UIColor whiteColor];
+    _bottomView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+    _bottomView.layer.shadowColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.08].CGColor;
+    _bottomView.layer.shadowOffset = CGSizeMake(0,1);
+    _bottomView.layer.shadowOpacity = 1;
+    _bottomView.layer.shadowRadius = 3;
     [self.view addSubview:_bottomView];
     
     _previousExamBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth / 2.0, 44)];
@@ -176,12 +184,12 @@
 
 - (void)makeHeaderView {
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
-    _headerView.backgroundColor = EdlineV5_Color.backColor;
+    _headerView.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
 }
 
 - (void)makeTableView {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_TABBAR_HEIGHT) style:UITableViewStyleGrouped];
-    _tableView.backgroundColor = EdlineV5_Color.backColor;
+    _tableView.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.showsVerticalScrollIndicator = NO;
@@ -248,7 +256,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
-    back.backgroundColor = EdlineV5_Color.backColor;
+    back.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
     
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
@@ -309,7 +317,7 @@
         }
         
         UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(11, 20, MainScreenWidth - 22, 20)];
-        lable1111.backgroundColor = EdlineV5_Color.backColor;
+        lable1111.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
         NSMutableAttributedString * attrString;
         
         if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
@@ -402,7 +410,7 @@
         }
         
         UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
-        back.backgroundColor = EdlineV5_Color.backColor;
+        back.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
         
         
         UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - (58 + 33) - 15, 20)];
@@ -452,7 +460,7 @@
             rightValueTextView.showsHorizontalScrollIndicator = NO;
             rightValueTextView.editable = NO;
             rightValueTextView.scrollEnabled = NO;
-            rightValueTextView.backgroundColor = EdlineV5_Color.backColor;
+            rightValueTextView.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
             rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             rightValueTextView.font = SYSTEMFONT(15);
             [rightValueTextView sizeToFit];
@@ -470,7 +478,7 @@
             analyzeTextView.showsHorizontalScrollIndicator = NO;
             analyzeTextView.editable = NO;
             analyzeTextView.scrollEnabled = NO;
-            analyzeTextView.backgroundColor = EdlineV5_Color.backColor;
+            analyzeTextView.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
             analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
             analyzeTextView.font = SYSTEMFONT(15);
             [analyzeTextView sizeToFit];
@@ -732,7 +740,7 @@
     if (examModel) {
         if (!_headerView) {
             _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
-            _headerView.backgroundColor = EdlineV5_Color.backColor;
+            _headerView.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
         }
         [_headerView removeAllSubviews];
         
@@ -797,7 +805,7 @@
                 [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.titleMutable.length)];
                 
                 UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(11, examThemeLabel.bottom + 20, MainScreenWidth - 22, 100)];
-                lable1111.backgroundColor = EdlineV5_Color.backColor;
+                lable1111.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
 
                 lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:mutable];
                 [lable1111 sizeToFit];
