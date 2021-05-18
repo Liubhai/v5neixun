@@ -78,6 +78,8 @@
 
 + (void)dealButtonImageAndTitleUI:(UIButton *)sender;
 
++ (void)dealButtonImageAndTitleUIWidthSpace:(UIButton *)sender space:(CGFloat)space;
+
 + (NSString *)timeForYYYYMMDDHHMM:(NSString *)time;
 
 /** 获取某个颜色值的rgb值 */

@@ -806,6 +806,15 @@ static EdulineV5_Tool *_sharedInstance;
     [sender setImageEdgeInsets:UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth)];
 }
 
++ (void)dealButtonImageAndTitleUIWidthSpace:(UIButton *)sender space:(CGFloat)space {
+    CGFloat labelWidth = [sender.titleLabel.text sizeWithFont:sender.titleLabel.font].width;
+    if (labelWidth>(sender.size.width - sender.currentImage.size.width)) {
+        labelWidth = 71.5 * WidthRatio;
+    }
+    [sender setTitleEdgeInsets:UIEdgeInsetsMake(0, -sender.currentImage.size.width-space/2.0, 0, sender.currentImage.size.width+space/2.0)];
+    [sender setImageEdgeInsets:UIEdgeInsetsMake(0, labelWidth+space/2.0, 0, -labelWidth-space/2.0)];
+}
+
 + (const CGFloat *)getColorRGB:(UIColor *)currentColor {
     CGColorRef color = [currentColor CGColor];
     int numComponents = CGColorGetNumberOfComponents(color);

@@ -50,8 +50,9 @@
     _topCateButton.titleLabel.font = SYSTEMFONT(18);
     [_topCateButton setTitle:@"考试记录" forState:UIControlStateNormal];
     [_topCateButton setImage:Image(@"myexam_down_icon") forState:0];
+    [_topCateButton setImage:Image(@"myexam_up_icon") forState:UIControlStateSelected];
     [_topCateButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateNormal];
-    [EdulineV5_Tool dealButtonImageAndTitleUI:_topCateButton];
+    [EdulineV5_Tool dealButtonImageAndTitleUIWidthSpace:_topCateButton space:6];
     [_topCateButton addTarget:self action:@selector(headerButtonCilck:) forControlEvents:UIControlEventTouchUpInside];
     _topCateButton.center = _titleLabel.center;
     [_titleImage addSubview:_topCateButton];
@@ -105,7 +106,7 @@
         
         _topCateButton.selected = NO;
         [_topCateButton setTitle:courseSortString forState:0];
-        [EdulineV5_Tool dealButtonImageAndTitleUI:_topCateButton];
+        [EdulineV5_Tool dealButtonImageAndTitleUIWidthSpace:_topCateButton space:6];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
 //        [self getCourseMainList];
     }
