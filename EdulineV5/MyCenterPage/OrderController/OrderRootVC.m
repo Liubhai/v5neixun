@@ -45,9 +45,9 @@
     [_rightButton setImage:[Image(@"lesson_screen_sel") converToMainColor] forState:0];
     currentSelect = 0;
     _typeArray = [NSMutableArray new];
-    _timeTypeArray = [NSMutableArray new];
+//    _timeTypeArray = [NSMutableArray new];
     
-    [_timeTypeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all",@"timeType":@"",@"timeTitle":@""},@{@"title":@"待支付",@"type":@"waiting",@"timeType":@"",@"timeTitle":@""},@{@"title":@"已取消",@"type":@"cancel",@"timeType":@"",@"timeTitle":@""},@{@"title":@"已完成",@"type":@"finish",@"timeType":@"",@"timeTitle":@""}]];
+//    [_timeTypeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all",@"timeType":@"",@"timeTitle":@""},@{@"title":@"待支付",@"type":@"waiting",@"timeType":@"",@"timeTitle":@""},@{@"title":@"已取消",@"type":@"cancel",@"timeType":@"",@"timeTitle":@""},@{@"title":@"已完成",@"type":@"finish",@"timeType":@"",@"timeTitle":@""}]];
     
     [_typeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all"},@{@"title":@"待支付",@"type":@"waiting"},@{@"title":@"已取消",@"type":@"cancel"},@{@"title":@"已完成",@"type":@"finish"}]];
     
@@ -164,15 +164,17 @@
     if (_rightButton.selected) {
         OrderScreenViewController *vc = [[OrderScreenViewController alloc] init];
         vc.delegate = self;
-        NSInteger index = _mainScrollView.contentOffset.x / MainScreenWidth;
-        NSString *currentOrderType = [_typeArray[index] objectForKey:@"type"];
-        for (int i = 0; i<_timeTypeArray.count; i++) {
-            if ([[_timeTypeArray[i] objectForKey:@"type"] isEqualToString:currentOrderType]) {
-                vc.screenTitle = [_timeTypeArray[i] objectForKey:@"timeTitle"];
-                vc.screenType = [_timeTypeArray[i] objectForKey:@"timeType"];
-                break;
-            }
-        }
+//        NSInteger index = _mainScrollView.contentOffset.x / MainScreenWidth;
+//        NSString *currentOrderType = [_typeArray[index] objectForKey:@"type"];
+//        for (int i = 0; i<_timeTypeArray.count; i++) {
+//            if ([[_timeTypeArray[i] objectForKey:@"type"] isEqualToString:currentOrderType]) {
+//                vc.screenTitle = [_timeTypeArray[i] objectForKey:@"timeTitle"];
+//                vc.screenType = [_timeTypeArray[i] objectForKey:@"timeType"];
+//                break;
+//            }
+//        }
+        vc.screenTitle = screenTitle;
+        vc.screenType = screenType;
         vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45);
         [self.view addSubview:vc.view];
         [self addChildViewController:vc];
@@ -187,10 +189,11 @@
         screenType = [NSString stringWithFormat:@"%@",[orderScreenInfo objectForKey:@"screenType"]];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenOrderScreenAll" object:nil];
         _rightButton.selected = NO;
-        NSInteger index = _mainScrollView.contentOffset.x / MainScreenWidth;
-        NSString *currentOrderType = [_typeArray[index] objectForKey:@"type"];
-        [self changeTimeChooseData:screenTitle timeType:screenType];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"relodOrderData" object:nil userInfo:@{@"orderType":currentOrderType,@"orderTime":screenType}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"relodOrderData" object:nil userInfo:@{@"orderTime":screenType}];
+//        NSInteger index = _mainScrollView.contentOffset.x / MainScreenWidth;
+//        NSString *currentOrderType = [_typeArray[index] objectForKey:@"type"];
+//        [self changeTimeChooseData:screenTitle timeType:screenType];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"relodOrderData" object:nil userInfo:@{@"orderType":currentOrderType,@"orderTime":screenType}];
     }
 }
 

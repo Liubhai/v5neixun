@@ -420,12 +420,14 @@
 - (void)relodOrderData:(NSNotification *)notice {
     NSDictionary *dict = notice.userInfo;
     if (SWNOTEmptyDictionary(dict)) {
-        NSString *type = [NSString stringWithFormat:@"%@",dict[@"orderType"]];
+//        NSString *type = [NSString stringWithFormat:@"%@",dict[@"orderType"]];
         NSString *orderTimee = [NSString stringWithFormat:@"%@",dict[@"orderTime"]];
-        if ([type isEqualToString:_orderType]) {
-            _orderTime = orderTimee;
-            [_tableView.mj_header beginRefreshing];
-        }
+        _orderTime = orderTimee;
+        [_tableView.mj_header beginRefreshing];
+//        if ([type isEqualToString:_orderType]) {
+//            _orderTime = orderTimee;
+//            [_tableView.mj_header beginRefreshing];
+//        }
     }
 }
 
