@@ -18,6 +18,7 @@
     // 活动倒计时
     NSInteger eventTime;
     NSTimer *eventTimer;
+    NSString *usersharecodeString;
 }
 
 @property (strong, nonatomic) UIImageView *topBackImage;
@@ -345,6 +346,9 @@
                 }
             }
             [self setActivityData];
+            usersharecodeString = usersharecode;
+            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"usersharecode"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             
         } enError:^(NSError * _Nonnull error) {
             
@@ -725,12 +729,52 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    [self requestActivityDetailInfo];
+                    [self kanjiaRequestActivityDetailInfo];
                 }
             }
             _kanjiaButton.enabled = YES;
         } enError:^(NSError * _Nonnull error) {
             _kanjiaButton.enabled = YES;
+        }];
+    }
+}
+
+// MARK: - 砍价后请求接口
+- (void)kanjiaRequestActivityDetailInfo {
+    if (!SWNOTEmptyStr(_activityId)) {
+        return;
+    }
+    if (SWNOTEmptyStr(_activityType)) {
+        [[NSUserDefaults standardUserDefaults] setObject:usersharecodeString forKey:@"usersharecode"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        NSString *getUrl = [Net_Path kanjiaDetailInfoNet];
+        if ([_activityType isEqualToString:@"1"]) {
+            // 限时打折
+        } else if ([_activityType isEqualToString:@"2"]) {
+            // 秒杀
+        } else if ([_activityType isEqualToString:@"3"]) {
+            // 砍价
+            getUrl = [Net_Path kanjiaDetailInfoNet];
+            [param setObject:_activityId forKey:@"promotion_id"];
+        } else if ([_activityType isEqualToString:@"4"]) {
+            // 拼团
+            getUrl = [Net_Path pintuanDetailInfoNet];
+            [param setObject:_activityId forKey:@"tuan_id"];
+        }
+        [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+            
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    _activityInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"]];
+                }
+            }
+            [self setActivityData];
+            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"usersharecode"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+        } enError:^(NSError * _Nonnull error) {
+            
         }];
     }
 }
@@ -747,7 +791,7 @@
 - (void)eventTimerDown {
     eventTime--;
     if (eventTime<=0) {
-        [self requestActivityDetailInfo];
+        [self kanjiaRequestActivityDetailInfo];
         [eventTimer invalidate];
         eventTimer = nil;
     } else {
@@ -768,6 +812,8 @@
 - (void)didMoveToParentViewController:(UIViewController*)parent{
     [super didMoveToParentViewController:parent];
     if (!parent) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"usersharecode"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         [eventTimer invalidate];
         eventTimer = nil;

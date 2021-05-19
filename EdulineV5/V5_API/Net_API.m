@@ -58,6 +58,12 @@
         }
     }
     
+    if ([usersharecode isEqualToString:@"0"]) {
+        
+    } else {
+        [manager.requestSerializer setValue:usersharecode forHTTPHeaderField:@"E-SHARE-CODE"];
+    }
+    
     if ([regardlessOrNot isEqualToString:@"1"]) {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"regardless_mhm_id"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -127,6 +133,12 @@
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
     } else {
         [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
+    }
+    
+    if ([usersharecode isEqualToString:@"0"]) {
+        
+    } else {
+        [manager.requestSerializer setValue:usersharecode forHTTPHeaderField:@"E-SHARE-CODE"];
     }
     
    [manager POST:urlStr parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -199,6 +211,11 @@
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
     } else {
         [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
+    }
+    if ([usersharecode isEqualToString:@"0"]) {
+        
+    } else {
+        [manager.requestSerializer setValue:usersharecode forHTTPHeaderField:@"E-SHARE-CODE"];
     }
     
     [manager PUT:urlStr parameters:paramDic success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -273,6 +290,11 @@
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
     } else {
         [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
+    }
+    if ([usersharecode isEqualToString:@"0"]) {
+        
+    } else {
+        [manager.requestSerializer setValue:usersharecode forHTTPHeaderField:@"E-SHARE-CODE"];
     }
     manager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithArray:@[@""]];
  
@@ -360,6 +382,11 @@
         [manager.requestSerializer setValue:Institution_Id forHTTPHeaderField:@"E-MHM-ID"];
     } else {
         [manager.requestSerializer setValue:@"1" forHTTPHeaderField:@"E-MHM-ID"];
+    }
+    if ([usersharecode isEqualToString:@"0"]) {
+        
+    } else {
+        [manager.requestSerializer setValue:usersharecode forHTTPHeaderField:@"E-SHARE-CODE"];
     }
     
     return  [manager POST:URLString parameters:mutaDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {

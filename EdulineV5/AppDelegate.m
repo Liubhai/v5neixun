@@ -131,11 +131,13 @@
                 self.tabbar = [RootV5VC sharedBaseTabBarViewController];
                 self.window.rootViewController = self.tabbar;
                 [self.window makeKeyAndVisible];
+                [self judgePastBoardInfo];
             };
         } else {
             self.tabbar = [RootV5VC sharedBaseTabBarViewController];
             self.window.rootViewController = self.tabbar;
             [self.window makeKeyAndVisible];
+            [self judgePastBoardInfo];
         }
         
         NSMutableArray *images = [NSMutableArray new];
@@ -162,6 +164,39 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     
+    [self judgePastBoardInfo];
+        /**
+        NSData *jsonData = [systemBoard.string dataUsingEncoding:NSUTF8StringEncoding];
+
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+        
+        NSString *courseId;
+        NSString *courseType;
+        
+        NSArray<NSDictionary<NSString *, id> *> *items = systemBoard.items;
+        long count = systemBoard.numberOfItems;
+        for(int i=0; i < count; i++){
+            NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
+            if([[item allKeys] containsObject:@"courseId"]){
+                courseId = item[@"courseId"];
+                NSLog(@"要打开的课程ID是 = %@",courseId);
+                break;
+            }
+        }
+        for(int i=0; i < count; i++){
+            NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
+            if([[item allKeys] containsObject:@"courseType"]){
+                courseType = item[@"courseType"];
+                NSLog(@"要打开的课程类型是 = %@",courseType);
+                break;
+            }
+        }
+        NSLog(@"要打开的课程ID是 = %@ ; 要打开的课程类型是 = %@",courseId,courseType);
+        */
+}
+
+// MARK: - 匹配剪切板
+- (void)judgePastBoardInfo {
     //创建系统剪切板
     if ([self checkPastBoard]) {
         UIPasteboard *systemBoard = [UIPasteboard generalPasteboard];
@@ -193,6 +228,8 @@
             NSLog(@"获取课程口令信息 = %@",byteString);
             NSArray *byteStringArray = [byteString componentsSeparatedByString:@"|"];
             if (SWNOTEmptyArr(byteStringArray)) {
+                [[NSUserDefaults standardUserDefaults] setObject:byteStringArray[1] forKey:@"usersharecode"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 if (byteStringArray.count>4) {
                     GroupDetailViewController *vc = [[GroupDetailViewController alloc] init];
                     /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
@@ -211,34 +248,6 @@
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             pasteboard.string = @"";
         }
-        /**
-        NSData *jsonData = [systemBoard.string dataUsingEncoding:NSUTF8StringEncoding];
-
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
-        
-        NSString *courseId;
-        NSString *courseType;
-        
-        NSArray<NSDictionary<NSString *, id> *> *items = systemBoard.items;
-        long count = systemBoard.numberOfItems;
-        for(int i=0; i < count; i++){
-            NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
-            if([[item allKeys] containsObject:@"courseId"]){
-                courseId = item[@"courseId"];
-                NSLog(@"要打开的课程ID是 = %@",courseId);
-                break;
-            }
-        }
-        for(int i=0; i < count; i++){
-            NSDictionary<NSString *, id> *item = [items objectAtIndex:i];
-            if([[item allKeys] containsObject:@"courseType"]){
-                courseType = item[@"courseType"];
-                NSLog(@"要打开的课程类型是 = %@",courseType);
-                break;
-            }
-        }
-        NSLog(@"要打开的课程ID是 = %@ ; 要打开的课程类型是 = %@",courseId,courseType);
-        */
     }
 }
 
