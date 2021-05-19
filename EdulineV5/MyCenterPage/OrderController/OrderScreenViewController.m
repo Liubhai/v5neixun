@@ -29,7 +29,8 @@
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
-    [_dataSource addObjectsFromArray:@[@{@"title":@"一周内",@"type":@"free"},@{@"title":@"1个月内",@"type":@"audition"},@{@"title":@"3个月内",@"type":@"exam"},@{@"title":@"6个月内",@"type":@"vip"},@{@"title":@"今年",@"type":@"event"},@{@"title":@"更早",@"type":@"origin"}]];
+    // 【1week、1month、3month、6month、this_year、earlier】
+    [_dataSource addObjectsFromArray:@[@{@"title":@"一周内",@"type":@"1week"},@{@"title":@"1个月内",@"type":@"1month"},@{@"title":@"3个月内",@"type":@"3month"},@{@"title":@"6个月内",@"type":@"6month"},@{@"title":@"今年",@"type":@"this_year"},@{@"title":@"更早",@"type":@"earlier"}]];
     [self makeSubViews];
     [self makeBottomView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenOrderScreenTypeVC:) name:@"hiddenOrderScreenAll" object:nil];

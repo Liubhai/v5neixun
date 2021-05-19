@@ -32,6 +32,7 @@
     page = 1;
     [self makeTableView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getOrderList) name:@"reloadOrderList" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(relodOrderData:) name:@"relodOrderData" object:nil];
 }
 
 - (void)dealloc {
@@ -272,8 +273,14 @@
 - (void)getOrderList {
     if (SWNOTEmptyStr(_orderType)) {
         page = 1;
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:@(page) forKey:@"page"];
+        [param setObject:@"10" forKey:@"count"];
+        if (SWNOTEmptyStr(_orderTime)) {
+            [param setObject:_orderTime forKey:@"date"];
+        }
         [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path userOrderList:_orderType] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path userOrderList:_orderType] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (_tableView.mj_header.isRefreshing) {
                 [_tableView.mj_header endRefreshing];
             }
@@ -301,7 +308,13 @@
 - (void)getMoreOrderList {
     if (SWNOTEmptyStr(_orderType)) {
         page = page + 1;
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path userOrderList:_orderType] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        [param setObject:@(page) forKey:@"page"];
+        [param setObject:@"10" forKey:@"count"];
+        if (SWNOTEmptyStr(_orderTime)) {
+            [param setObject:_orderTime forKey:@"date"];
+        }
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path userOrderList:_orderType] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (_tableView.mj_footer.isRefreshing) {
                 [_tableView.mj_footer endRefreshing];
             }
@@ -400,6 +413,19 @@
         }];
     } else {
         [self showHudInView:self.view showHint:@"订单号有误"];
+    }
+}
+
+// MARK: - 选择订单时间后的通知
+- (void)relodOrderData:(NSNotification *)notice {
+    NSDictionary *dict = notice.userInfo;
+    if (SWNOTEmptyDictionary(dict)) {
+        NSString *type = [NSString stringWithFormat:@"%@",dict[@"orderType"]];
+        NSString *orderTimee = [NSString stringWithFormat:@"%@",dict[@"orderTime"]];
+        if ([type isEqualToString:_orderType]) {
+            _orderTime = orderTimee;
+            [_tableView.mj_header beginRefreshing];
+        }
     }
 }
 

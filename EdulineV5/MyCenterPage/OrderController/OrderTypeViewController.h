@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OrderTypeViewController : BaseViewController
 
 @property (strong, nonatomic) NSString *orderType;
+@property (strong, nonatomic) NSString *orderTime;// 选择的时间
 
 @end
 
