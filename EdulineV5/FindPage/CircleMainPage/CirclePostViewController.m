@@ -347,4 +347,24 @@
     [_contentTextView becomeFirstResponder];
 }
 
+// MARK: - 发布按钮点击事件
+- (void)postCircle {
+    NSString *getUrl = [Net_Path circlePost];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (_isForward) {
+        getUrl = [Net_Path circleForward];
+        if (SWNOTEmptyStr(_contentTextView.text)) {
+            [param setObject:_contentTextView.text forKey:@"content"];
+        } else {
+            [param setObject:@"转发动态" forKey:@"content"];
+        }
+    } else {
+        if (SWNOTEmptyStr(_contentTextView.text)) {
+            [param setObject:_contentTextView.text forKey:@"content"];
+        } else {
+            [param setObject:@"分享动态" forKey:@"content"];
+        }
+    }
+}
+
 @end
