@@ -19,6 +19,7 @@
     NSInteger eventTime;
     NSTimer *eventTimer;
     NSString *usersharecodeString;
+    BOOL shouldLoad;
 }
 
 @property (strong, nonatomic) UIImageView *topBackImage;
@@ -70,6 +71,14 @@
 @end
 
 @implementation GroupDetailViewController
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (shouldLoad) {
+        [self requestActivityDetailInfo];
+    }
+    shouldLoad = YES;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -548,6 +557,13 @@
             NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"expiry_countdown"]];
             eventTime = [end_countdown integerValue];
             
+            NSString *sponsor_user_id = [NSString stringWithFormat:@"%@",_activityInfo[@"user_id"]];
+            NSString *join_status = [NSString stringWithFormat:@"%@",_activityInfo[@"join_status"]];
+            BOOL isMine = [sponsor_user_id isEqualToString:[V5_UserModel uid]];
+            
+            _doButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:138/255.0 blue:82/255.0 alpha:1.0].CGColor;
+            _doButton.enabled = YES;
+            
             if ([groupStatus isEqualToString:@"1"]) {
                 NSString *totalCount = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"total_num"]];
                 NSString *joinCount = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"join_num"]];
@@ -557,6 +573,11 @@
                 [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.courseActivityGroupColor} range:[final rangeOfString:needCount]];
                 _groupResult.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
                 [_doButton setTitle:@"邀请好友参团" forState:0];
+                
+                if (!isMine && [join_status isEqualToString:@"0"]) {
+                    [_doButton setTitle:@"参与拼团" forState:0];
+                }
+                
                 if (eventTime>0) {
                     [self startTimer];
                 }
@@ -565,6 +586,13 @@
                 _groupResultTip.text = @"恭喜您拼团成功，快去观看课程吧～";
                 [_doButton setTitle:@"查看课程" forState:0];
                 _timeBackView.hidden = YES;
+                if ([join_status isEqualToString:@"0"]) {
+                    _groupResult.text = @"已经拼团成功啦～";
+                    _groupResultTip.text = @"好友已经拼团成功啦～";
+                    [_doButton setTitle:@"参与拼团" forState:0];
+                    _doButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:138/255.0 blue:82/255.0 alpha:0.6].CGColor;
+                    _doButton.enabled = NO;
+                }
             } else if ([groupStatus isEqualToString:@"3"]) {
                 _groupResult.text = @"拼团失败";
                 _groupResultTip.text = @"拼团时间已过，款项将自动退回";
@@ -616,7 +644,15 @@
 - (void)groupDoButtonClick:(UIButton *)sender {
     _doButton.enabled = NO;
     NSString *groupStatus = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"status"]];
+    NSString *sponsor_user_id = [NSString stringWithFormat:@"%@",_activityInfo[@"user_id"]];
+    NSString *join_status = [NSString stringWithFormat:@"%@",_activityInfo[@"join_status"]];
+    BOOL isMine = [sponsor_user_id isEqualToString:[V5_UserModel uid]];
     if ([groupStatus isEqualToString:@"1"]) {
+        if (!isMine && [join_status isEqualToString:@"0"]) {
+            // 参团 (请求参团前接口)
+            [self joinPintuanBeforeNet:[NSString stringWithFormat:@"%@",_activityInfo[@"id"]]];
+            return;
+        }
         // 邀请好友
         SharePosterViewController *vc = [[SharePosterViewController alloc] init];
         vc.type = @"1";
@@ -779,6 +815,26 @@
     }
 }
 
+// MARK: - 参加拼团前的一个请求
+- (void)joinPintuanBeforeNet:(NSString *)tuanId {
+    if (SWNOTEmptyStr(tuanId)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path joinPintuanNet] WithAuthorization:nil paramDic:@{@"tuan_id":tuanId} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    OrderViewController *vc = [[OrderViewController alloc] init];
+                    vc.orderTypeString = @"course";
+                    vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    vc.isTuanGou = YES;
+                    vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
 // MARK: - 开始倒计时
 - (void)startTimer {
     __weak typeof(self) weakself = self;
@@ -791,6 +847,10 @@
 - (void)eventTimerDown {
     eventTime--;
     if (eventTime<=0) {
+        _dayLabel.text = [NSString stringWithFormat:@"%@天",[EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][0]];
+        _hourLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][1];
+        _minuteLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][2];
+        _secondLabel.text = [EdulineV5_Tool timeChangeTimerDayHoursMinuteSeconds:eventTime][3];
         [self kanjiaRequestActivityDetailInfo];
         [eventTimer invalidate];
         eventTimer = nil;
