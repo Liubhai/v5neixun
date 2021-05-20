@@ -46,7 +46,9 @@
 }
 
 - (void)setPromotionUserCellInfo:(NSDictionary *)dict {
-    
+    [_faceImageView sd_setImageWithURL:EdulineUrlString([dict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
+    _nameLabel.text = [NSString stringWithFormat:@"%@",dict[@"nick_name"]];
+    _promotionIncome.text = [NSString stringWithFormat:@"贡献收益：%@%@",IOSMoneyTitle,[dict objectForKey:@"sum"]];
 }
 
 - (void)awakeFromNib {

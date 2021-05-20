@@ -204,6 +204,12 @@ struct NetWorkUrl {
 /** 收入明细 */
 + (NSString *)userIncomeDetail;
 
+/** 收入里面推广用户 */
++ (NSString *)userIncomeUser;
+
+/** 收入里面推广课程 */
++ (NSString *)userIncomeCourse;
+
 /** 积分明细 */
 + (NSString *)userScoreDetail;
 

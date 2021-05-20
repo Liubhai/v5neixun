@@ -902,6 +902,7 @@
         if ([courseSortIdString isEqualToString:@"course"] || [courseSortIdString isEqualToString:@"user"]) {
             if (_tableView) {
                 _tableView.hidden = NO;
+                [_tableView.mj_header beginRefreshing];
             }
         } else {
             _tableView.hidden = YES;
@@ -962,5 +963,75 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+// MARK: - 获取推广列表(用户和课程共用)
+- (void)getFirstData {
+    page = 1;
+    NSString *getUrl = [Net_Path userIncomeUser];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
+    if ([courseSortIdString isEqualToString:@"user"]) {
+        getUrl = [Net_Path userIncomeUser];
+    } else if ([courseSortIdString isEqualToString:@"course"]) {
+        getUrl = [Net_Path userIncomeCourse];
+    }
+    [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
+    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_header.refreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [_dataSource removeAllObjects];
+                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                if (_dataSource.count<10) {
+                    _tableView.mj_footer.hidden = YES;
+                } else {
+                    [_tableView.mj_footer setState:MJRefreshStateIdle];
+                    _tableView.mj_footer.hidden = NO;
+                }
+                [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
+                [_tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        if (_tableView.mj_header.refreshing) {
+            [_tableView.mj_header endRefreshing];
+        }
+    }];
+}
+
+- (void)getMoreDataList {
+    page = page + 1;
+    NSString *getUrl = [Net_Path userIncomeUser];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:@(page) forKey:@"page"];
+    [param setObject:@"10" forKey:@"count"];
+    if ([courseSortIdString isEqualToString:@"user"]) {
+        getUrl = [Net_Path userIncomeUser];
+    } else if ([courseSortIdString isEqualToString:@"course"]) {
+        getUrl = [Net_Path userIncomeCourse];
+    }
+    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
+                if (pass.count<10) {
+                    [_tableView.mj_footer endRefreshingWithNoMoreData];
+                }
+                [_dataSource addObjectsFromArray:pass];
+                [_tableView reloadData];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        page--;
+        if (_tableView.mj_footer.isRefreshing) {
+            [_tableView.mj_footer endRefreshing];
+        }
+    }];
+}
 
 @end

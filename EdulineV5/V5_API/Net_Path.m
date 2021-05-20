@@ -249,6 +249,14 @@
     return [Net_Path fullPath:@"user/income" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userIncomeUser {
+    return [Net_Path fullPath:@"user/income/user" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)userIncomeCourse {
+    return [Net_Path fullPath:@"user/income/course" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userScoreDetail {
     return [Net_Path fullPath:@"user/credit" repalce:@"" byReplece:@""];
 }

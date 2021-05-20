@@ -40,7 +40,7 @@
 }
 
 - (void)setPromotionCourseCellInfo:(NSDictionary *)promotionInfo {
-    [_courseFace sd_setImageWithURL:EdulineUrlString([promotionInfo objectForKey:@"course_cover"]) placeholderImage:DefaultImage];
+    [_courseFace sd_setImageWithURL:EdulineUrlString([promotionInfo objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
     NSString *courseType = [NSString stringWithFormat:@"%@",[promotionInfo objectForKey:@"course_type"]];
     if ([courseType isEqualToString:@"1"]) {
         _courseTypeImage.image = Image(@"dianbo");
@@ -53,7 +53,7 @@
     }
     
     _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
-    _titleL.text = [NSString stringWithFormat:@"%@",[promotionInfo objectForKey:@"course_title"]];
+    _titleL.text = [NSString stringWithFormat:@"%@",[promotionInfo objectForKey:@"title"]];
     _titleL.numberOfLines = 0;
     [_titleL sizeToFit];
     if (_titleL.height > 50) {
@@ -61,6 +61,7 @@
     } else {
         _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, _titleL.height);
     }
+    _promotionIncome.text = [NSString stringWithFormat:@"累计收益：%@%@",IOSMoneyTitle,[promotionInfo objectForKey:@"sum"]];
 }
 
 - (void)awakeFromNib {
