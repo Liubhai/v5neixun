@@ -148,6 +148,8 @@
                         vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                         [self.parentViewController.navigationController pushViewController:vc animated:YES];
                         [self closeButtonClick];
+                    } else {
+                        [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
                     }
                 }
             } enError:^(NSError * _Nonnull error) {
@@ -170,6 +172,8 @@
                     vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [self.parentViewController.navigationController pushViewController:vc animated:YES];
                     [self closeButtonClick];
+                } else {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
                 }
             }
         } enError:^(NSError * _Nonnull error) {

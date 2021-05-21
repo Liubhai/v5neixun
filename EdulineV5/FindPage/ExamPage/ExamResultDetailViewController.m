@@ -881,7 +881,9 @@
                                                     }
                                                 }
                                                 examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
-                                                modelOp.userAnswerValue = detail.answer_data[j];
+                                                if (SWNOTEmptyArr(detail.answer_data) && detail.answer_data.count > j) {
+                                                    modelOp.userAnswerValue = detail.answer_data[j];
+                                                }
                                             } else {
                                                 if (modelOp.is_right) {
                                                     examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
@@ -922,7 +924,9 @@
                                             }
                                         }
                                         examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,gapFillAnswer];
-                                        modelOp.userAnswerValue = pass.answer_data[j];
+                                        if (SWNOTEmptyArr(pass.answer_data) && pass.answer_data.count > j) {
+                                            modelOp.userAnswerValue = pass.answer_data[j];
+                                        }
                                     } else {
                                         if (modelOp.is_right) {
                                             examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
