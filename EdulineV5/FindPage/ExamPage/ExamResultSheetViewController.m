@@ -64,6 +64,41 @@
     [_mainScrollView addSubview:examtttTitle];
     
     if (_isError) {
+        UILabel *examTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, examtttTitle.bottom + 14, 30, 22)];
+        examTitle.font = SYSTEMFONT(13);
+        examTitle.textColor = EdlineV5_Color.textThirdColor;
+        examTitle.text = @"注:";
+        [_mainScrollView addSubview:examTitle];
+        
+        UIView *errorView = [[UIView alloc] initWithFrame:CGRectMake(examTitle.right, 0, 14, 14)];
+        errorView.layer.masksToBounds = YES;
+        errorView.layer.cornerRadius = 2;
+        errorView.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
+        errorView.layer.borderWidth = 1;
+        errorView.centerY = examTitle.centerY;
+        [_mainScrollView addSubview:errorView];
+        
+        UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(errorView.right + 2.5, 0, 32 + 26, 18.5)];
+        errorLabel.text = @"错误";
+        errorLabel.font = SYSTEMFONT(13);
+        errorLabel.textColor = EdlineV5_Color.textFirstColor;
+        errorLabel.centerY = examTitle.centerY;
+        [_mainScrollView addSubview:errorLabel];
+        
+        UIView *subjectivityView = [[UIView alloc] initWithFrame:CGRectMake(errorLabel.right, errorView.top, 14, 14)];
+        subjectivityView.layer.masksToBounds = YES;
+        subjectivityView.layer.cornerRadius = 2;
+        subjectivityView.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+        subjectivityView.layer.borderWidth = 1;
+        subjectivityView.backgroundColor = HEXCOLOR(0xF0F0F2);
+        [_mainScrollView addSubview:subjectivityView];
+        
+        UILabel *subjectivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(subjectivityView.right + 2.5, 0, 32 + 26, 18.5)];
+        subjectivityLabel.text = @"主观题";
+        subjectivityLabel.font = SYSTEMFONT(13);
+        subjectivityLabel.textColor = EdlineV5_Color.textFirstColor;
+        subjectivityLabel.centerY = examTitle.centerY;
+        [_mainScrollView addSubview:subjectivityLabel];
         return;
     }
     
@@ -116,6 +151,21 @@
     unfinishLabel.textColor = EdlineV5_Color.textFirstColor;
     unfinishLabel.centerY = finishView.centerY;
     [_mainScrollView addSubview:unfinishLabel];
+    
+    UIView *subjectivityView = [[UIView alloc] initWithFrame:CGRectMake(unfinishLabel.right, finishView.top, 14, 14)];
+    subjectivityView.layer.masksToBounds = YES;
+    subjectivityView.layer.cornerRadius = 2;
+    subjectivityView.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+    subjectivityView.layer.borderWidth = 1;
+    subjectivityView.backgroundColor = HEXCOLOR(0xF0F0F2);
+    [_mainScrollView addSubview:subjectivityView];
+    
+    UILabel *subjectivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(subjectivityView.right + 2.5, 0, 32 + 26, 18.5)];
+    subjectivityLabel.text = @"主观题";
+    subjectivityLabel.font = SYSTEMFONT(13);
+    subjectivityLabel.textColor = EdlineV5_Color.textFirstColor;
+    subjectivityLabel.centerY = finishView.centerY;
+    [_mainScrollView addSubview:subjectivityLabel];
 }
 
 - (void)makeBottomView {
@@ -177,7 +227,7 @@
 
 - (void)makeExamSheetUI {
     
-    CGFloat hotYY = 15 + 22 + 14 + (_isError ? 0 : (14 + 20));
+    CGFloat hotYY = 15 + 22 + 14 + 14 + 20;//(_isError ? 0 : (14 + 20));
     if (SWNOTEmptyArr(_examArray)) {
         NSInteger order = 1;
         for (int j = 0; j < _examArray.count; j++) {
@@ -226,23 +276,31 @@
 //                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
-                    if (((ExamModel *)childArray[i]).answered) {
-                        if (((ExamModel *)childArray[i]).answer_right) {
-                            btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
-                            btn.layer.borderWidth = 1.0;
-                            btn.backgroundColor = [UIColor whiteColor];
-                            [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
-                        } else {
-                            btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
-                            btn.layer.borderWidth = 1.0;
-                            btn.backgroundColor = [UIColor whiteColor];
-                            [btn setTitleColor:EdlineV5_Color.faildColor forState:0];
-                        }
-                    } else {
+                    /* 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题 **/
+                    if ([((ExamModel *)childArray[i]).question_type isEqualToString:@"8"] || [((ExamModel *)childArray[i]).question_type isEqualToString:@"6"]) {
                         btn.layer.borderColor = HEXCOLOR(0xDCDFE6).CGColor;
                         btn.layer.borderWidth = 1.0;
-                        btn.backgroundColor = [UIColor whiteColor];
-                        [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+                        btn.backgroundColor = HEXCOLOR(0xF0F0F2);
+                        [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
+                    } else {
+                        if (((ExamModel *)childArray[i]).answered) {
+                            if (((ExamModel *)childArray[i]).answer_right) {
+                                btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
+                                btn.layer.borderWidth = 1.0;
+                                btn.backgroundColor = [UIColor whiteColor];
+                                [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
+                            } else {
+                                btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
+                                btn.layer.borderWidth = 1.0;
+                                btn.backgroundColor = [UIColor whiteColor];
+                                [btn setTitleColor:EdlineV5_Color.faildColor forState:0];
+                            }
+                        } else {
+                            btn.layer.borderColor = HEXCOLOR(0xDCDFE6).CGColor;
+                            btn.layer.borderWidth = 1.0;
+                            btn.backgroundColor = [UIColor whiteColor];
+                            [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+                        }
                     }
                     if (_currentIndexpath) {
                         if (j == _currentIndexpath.section && i == _currentIndexpath.row) {

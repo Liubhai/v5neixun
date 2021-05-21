@@ -253,6 +253,21 @@
     unfinishLabel.textColor = EdlineV5_Color.textFirstColor;
     unfinishLabel.centerY = finishView.centerY;
     [_mainScrollView addSubview:unfinishLabel];
+    
+    UIView *subjectivityView = [[UIView alloc] initWithFrame:CGRectMake(unfinishLabel.right, finishView.top, 14, 14)];
+    subjectivityView.layer.masksToBounds = YES;
+    subjectivityView.layer.cornerRadius = 2;
+    subjectivityView.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+    subjectivityView.layer.borderWidth = 1;
+    subjectivityView.backgroundColor = HEXCOLOR(0xF0F0F2);
+    [_mainScrollView addSubview:subjectivityView];
+    
+    UILabel *subjectivityLabel = [[UILabel alloc] initWithFrame:CGRectMake(subjectivityView.right + 2.5, 0, 32 + 26, 18.5)];
+    subjectivityLabel.text = @"主观题";
+    subjectivityLabel.font = SYSTEMFONT(13);
+    subjectivityLabel.textColor = EdlineV5_Color.textFirstColor;
+    subjectivityLabel.centerY = finishView.centerY;
+    [_mainScrollView addSubview:subjectivityLabel];
 }
 
 - (void)makeBottomView {
@@ -305,6 +320,7 @@
 //    }
     ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
+    vc.answer_status = @"2";//_answer_status;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -315,6 +331,7 @@
     ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDictWrong];
     vc.isErrorAnalysis = YES;
+    vc.answer_status = _answer_status;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -378,23 +395,31 @@
 //                    btn.selected = ((ExamModel *)childArray[i]).answer_right;
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
-                    if (((ExamModel *)childArray[i]).answered) {
-                        if (((ExamModel *)childArray[i]).answer_right) {
-                            btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
-                            btn.layer.borderWidth = 1.0;
-                            btn.backgroundColor = [UIColor whiteColor];
-                            [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
-                        } else {
-                            btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
-                            btn.layer.borderWidth = 1.0;
-                            btn.backgroundColor = [UIColor whiteColor];
-                            [btn setTitleColor:EdlineV5_Color.faildColor forState:0];
-                        }
-                    } else {
+                    /* 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题 **/
+                    if ([((ExamModel *)childArray[i]).question_type isEqualToString:@"8"] || [((ExamModel *)childArray[i]).question_type isEqualToString:@"6"]) {
                         btn.layer.borderColor = HEXCOLOR(0xDCDFE6).CGColor;
                         btn.layer.borderWidth = 1.0;
-                        btn.backgroundColor = [UIColor whiteColor];
-                        [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+                        btn.backgroundColor = HEXCOLOR(0xF0F0F2);
+                        [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
+                    } else {
+                        if (((ExamModel *)childArray[i]).answered) {
+                            if (((ExamModel *)childArray[i]).answer_right) {
+                                btn.layer.borderColor = HEXCOLOR(0x67C23A).CGColor;
+                                btn.layer.borderWidth = 1.0;
+                                btn.backgroundColor = [UIColor whiteColor];
+                                [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
+                            } else {
+                                btn.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
+                                btn.layer.borderWidth = 1.0;
+                                btn.backgroundColor = [UIColor whiteColor];
+                                [btn setTitleColor:EdlineV5_Color.faildColor forState:0];
+                            }
+                        } else {
+                            btn.layer.borderColor = HEXCOLOR(0xDCDFE6).CGColor;
+                            btn.layer.borderWidth = 1.0;
+                            btn.backgroundColor = [UIColor whiteColor];
+                            [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+                        }
                     }
                     if (btn.right > (MainScreenWidth - 15)) {
                         XX = 15.0;
@@ -432,6 +457,7 @@
     ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
     vc.currentResultModel = thirdModel;
+    vc.answer_status = _answer_status;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

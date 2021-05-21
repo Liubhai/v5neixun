@@ -401,6 +401,33 @@
         [lable1111 setHeight:lable1111.height];
         [back setHeight:lable1111.height];
         [back addSubview:lable1111];
+        
+        UIImageView *sectionRightOrErrorIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 74, 0, 74, 74)];
+        [back addSubview:sectionRightOrErrorIcon];
+        if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
+            // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
+            ExamDetailModel *modelpass = model.topics[section];
+            sectionRightOrErrorIcon.hidden = NO;
+            if ([modelpass.question_type isEqualToString:@"8"]) {
+                // 如果是阅卷中 显示 如果阅卷了 隐藏 并显示得分
+                if (modelpass.answered) {
+                    // 阅卷中、已阅卷
+//                    exam_grade_icon
+                    if (![_answer_status isEqualToString:@"2"]) {
+                        sectionRightOrErrorIcon.image = Image(@"exam_grade_icon");
+                    } else {
+                        sectionRightOrErrorIcon.hidden = YES;
+                    }
+                } else {
+                    sectionRightOrErrorIcon.image = Image(@"exam_notanswer_icon");
+                }
+            } else {
+                sectionRightOrErrorIcon.image = modelpass.answered ? (modelpass.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon")) : Image(@"exam_notanswer_icon");
+            }
+        } else {
+            sectionRightOrErrorIcon.hidden = YES;
+        }
+        
         return back;
     }
     return nil;
@@ -459,7 +486,18 @@
         UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
         back.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
         
-        UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - (58 + 33) - 15, 20)];
+        UILabel *scoreFinal = [[UILabel alloc] initWithFrame:CGRectMake(15, 12, MainScreenWidth - 30, 33)];
+        scoreFinal.font = SYSTEMFONT(14);
+        scoreFinal.layer.backgroundColor = [UIColor colorWithRed:245/255.0 green:64/255.0 blue:48/255.0 alpha:0.3].CGColor;
+        scoreFinal.textColor = EdlineV5_Color.faildColor;
+        scoreFinal.text = [NSString stringWithFormat:@" 得分:%@",modelxxx.score];
+        [back addSubview:scoreFinal];
+        scoreFinal.hidden = YES;
+        if ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) {
+            scoreFinal.hidden = NO;
+        }
+        
+        UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) ? (12 + 33 + 12) : 12 , MainScreenWidth - (58 + 33) - 15, 20)];
         examPointTitle.textColor = EdlineV5_Color.textFirstColor;
         examPointTitle.font = SYSTEMFONT(14);
         examPointTitle.text = @"考点：";
@@ -477,7 +515,7 @@
             examPointTitle.hidden = YES;
         }
         
-        UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), 12, (58 + 33) - 15, 20)];
+        UIButton *expandButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - (58 + 33), examPointTitle.top, (58 + 33) - 15, 20)];
         [expandButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
         expandButton.titleLabel.font = SYSTEMFONT(14);
         [expandButton setTitle:@"查看解析" forState:0];
@@ -545,9 +583,10 @@
         return 0.001;
     } else {
         ExamDetailModel *modelxxx;
-        
+//        NSString *currentModelType = @"";
         if (SWNOTEmptyArr(_examDetailArray)) {
             ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+//            currentModelType = model.question_type;
             if ([model.question_type isEqualToString:@"7"]) {
                 modelxxx = model;
             } else {
@@ -581,9 +620,9 @@
             analyzeTextView.font = SYSTEMFONT(15);
             [analyzeTextView sizeToFit];
             [analyzeTextView setHeight:analyzeTextView.height];
-            return MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12;
+            return ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) ? (MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12 + 12 + 33) : (MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12);
         } else {
-            return 12 + 20 + 12;
+            return ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) ? (12 + 33 + 12 + 20 + 12) : (12 + 20 + 12);
         }
     }
     return 0.001;
@@ -898,6 +937,7 @@
                                                 }
                                             }
                                         }
+                                        detail.is_right = detail.answer_right;
                                     }
                                     detail.examAnswer = examAnswer;
                                 }
@@ -990,10 +1030,23 @@
         ExamDetailModel *model = (ExamDetailModel *)examModel;
         
         if (model.is_answer && [model.question_type isEqualToString:@"6"]) {
+            
             UIView *footerLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 1)];
             footerLine.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
             [_footerView addSubview:footerLine];
-            UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, MainScreenWidth - 30, 20)];
+            
+            UILabel *scoreFinal = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, MainScreenWidth - 30, 33)];
+            scoreFinal.font = SYSTEMFONT(14);
+            scoreFinal.layer.backgroundColor = [UIColor colorWithRed:245/255.0 green:64/255.0 blue:48/255.0 alpha:0.3].CGColor;
+            scoreFinal.textColor = EdlineV5_Color.faildColor;
+            scoreFinal.text = [NSString stringWithFormat:@" 总得分:%@",model.score];
+            [_footerView addSubview:scoreFinal];
+            scoreFinal.hidden = YES;
+            if ([_answer_status isEqualToString:@"2"]) {
+                scoreFinal.hidden = NO;
+            }
+            
+            UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, [_answer_status isEqualToString:@"2"] ? scoreFinal.bottom + 15 : 20, MainScreenWidth - 30, 20)];
             examPointTitle.numberOfLines = 0;
             examPointTitle.textColor = EdlineV5_Color.textFirstColor;
             examPointTitle.font = SYSTEMFONT(14);
@@ -1016,6 +1069,7 @@
         
         // 是否收藏
         _examCollectBtn.selected = model.collected;
+        _rightOrErrorIcon.hidden = NO;
         _rightOrErrorIcon.image = model.answered ? (model.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon")) : Image(@"exam_notanswer_icon");
         
         if ([model.question_type isEqualToString:@"7"]) {
@@ -1024,7 +1078,7 @@
             _tableView.tableHeaderView = _headerView;
         } else {
             if (SWNOTEmptyArr(model.topics)) {
-
+                _rightOrErrorIcon.hidden = YES;
                 UIImageView *examCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, examThemeLabel.bottom + 2, 14, 16)];
                 examCountIcon.image = Image(@"marker_icon");
                 [_headerView addSubview:examCountIcon];
@@ -1084,6 +1138,15 @@
                 _tableView.tableHeaderView = _headerView;
                 
             } else {
+                if ([model.question_type isEqualToString:@"8"]) {
+                    // 解答题
+                    if ([_answer_status isEqualToString:@"2"]) {
+                        _rightOrErrorIcon.hidden = YES;
+                    } else {
+                        _rightOrErrorIcon.hidden = NO;
+                        _rightOrErrorIcon.image = Image(@"exam_grade_icon");
+                    }
+                }
                 // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
                 [_headerView setHeight:examThemeLabel.bottom];
                 _tableView.tableHeaderView = _headerView;

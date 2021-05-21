@@ -71,7 +71,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"epar_id"] || [property.name isEqualToString:@"epart_id"] || [property.name isEqualToString:@"topic_id"] || [property.name isEqualToString:@"topic_level"] || [property.name isEqualToString:@"unique_code"] || [property.name isEqualToString:@"part_id"]) {
+    if ([property.name isEqualToString:@"epar_id"] || [property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"epart_id"] || [property.name isEqualToString:@"topic_id"] || [property.name isEqualToString:@"topic_level"] || [property.name isEqualToString:@"unique_code"] || [property.name isEqualToString:@"part_id"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
