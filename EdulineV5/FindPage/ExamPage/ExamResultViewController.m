@@ -320,7 +320,7 @@
 //    }
     ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
-    vc.answer_status = @"2";//_answer_status;
+    vc.answer_status = _answer_status;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
