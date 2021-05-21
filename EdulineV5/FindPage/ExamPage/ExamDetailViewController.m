@@ -1305,6 +1305,9 @@
         getUrl = [Net_Path examPointPostAnswerNet];
     } else if ([_examType isEqualToString:@"2"]) {
         getUrl = [Net_Path specialExamPostAnswerNet];
+        if (SWNOTEmptyStr(_examIds)) {
+            [param setObject:_examIds forKey:@"special_id"];
+        }
     }
     [param setObject:topic_id forKey:@"topic_id"];
     [param setObject:@"1" forKey:@"topic_level"];
