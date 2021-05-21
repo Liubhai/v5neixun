@@ -522,7 +522,7 @@
             keyTitle.text = @"解析：";
             [back addSubview:keyTitle];
             
-            UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(keyTitle.right - 15, keyTitle.top - 7, MainScreenWidth - keyTitle.right, 20)];
+            UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(keyTitle.right - 15, keyTitle.top - 7, MainScreenWidth - keyTitle.right - 15, 20)];
             analyzeTextView.showsVerticalScrollIndicator = NO;
             analyzeTextView.showsHorizontalScrollIndicator = NO;
             analyzeTextView.editable = NO;
@@ -566,13 +566,18 @@
         
         if (modelxxx.is_expand) {
             UITextView *rightValueTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 80, 12 + 20 + 16 - 7, MainScreenWidth - 95 - 15, 20)];
-            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.titleMutable];
+            rightValueTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
             rightValueTextView.font = SYSTEMFONT(15);
             [rightValueTextView sizeToFit];
             [rightValueTextView setHeight:rightValueTextView.height];
             
-            UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 54, MAX((12 + 20 + 16 + 20), rightValueTextView.bottom), MainScreenWidth - 69 - 15, 20)];
-            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:[[NSMutableAttributedString alloc] initWithString:SWNOTEmptyStr(modelxxx.examAnswer) ? modelxxx.examAnswer : @""]];
+            UITextView *analyzeTextView = [[UITextView alloc] initWithFrame:CGRectMake(15 + 54, MAX((12 + 20 + 16 + 20), rightValueTextView.bottom), MainScreenWidth - 65 - 15, 20)];
+            analyzeTextView.showsVerticalScrollIndicator = NO;
+            analyzeTextView.showsHorizontalScrollIndicator = NO;
+            analyzeTextView.editable = NO;
+            analyzeTextView.scrollEnabled = NO;
+            analyzeTextView.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;
+            analyzeTextView.attributedText = [[NSAttributedString alloc] initWithAttributedString:modelxxx.analyzeMutable];
             analyzeTextView.font = SYSTEMFONT(15);
             [analyzeTextView sizeToFit];
             [analyzeTextView setHeight:analyzeTextView.height];
