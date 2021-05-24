@@ -618,32 +618,31 @@ static EdulineV5_Tool *_sharedInstance;
         NSTimeInterval  timeInterval = [dt timeIntervalSinceNow];
         timeInterval = -timeInterval;
         long temp = 0;
-        NSString *date;
+        NSString *result;
         if (timeInterval < 60) {
-            
-            date = [NSString stringWithFormat:@"刚刚"];
-            
+            result = [NSString stringWithFormat:@"刚刚"];
         }
         else if((temp = timeInterval/60) <60){
-            
-            date = [NSString stringWithFormat:@"%ld分前",temp];
-            
+            result = [NSString stringWithFormat:@"%d分钟前",(int)temp];
         }
+        
         else if((temp = temp/60) <24){
-            
-            date = [NSString stringWithFormat:@"%ld小时前",temp];
-            
+            result = [NSString stringWithFormat:@"%d小时前",(int)temp];
         }
+        
         else if((temp = temp/24) <30){
-            
-            date = [NSString stringWithFormat:@"%ld天前",temp];
-            
+            result = [NSString stringWithFormat:@"%d天前",(int)temp];
         }
-        else {
-            
-            date = regStr;
+        
+        else if((temp = temp/30) <12){
+            result = [NSString stringWithFormat:@"%d个月前",(int)temp];
         }
-         return regStr;
+        else{
+            temp = temp/12;
+            result = [NSString stringWithFormat:@"%d年前",(int)temp];
+        }
+        
+        return  result;
 
     }
     return nil;
