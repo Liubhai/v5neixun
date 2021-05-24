@@ -106,38 +106,52 @@
 }
 
 - (void)setCircleCellInfo:(NSDictionary *)dict {
+    _userCommentInfo = dict;
+    [_userFace sd_setImageWithURL:EdulineUrlString(dict[@"avatar"]) placeholderImage:DefaultUserImage];
+    
+    _nameLabel.text = [NSString stringWithFormat:@"%@",dict[@"create_time"]];
+    _timeLabel.text = [EdulineV5_Tool formatterDate:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];
+    
+    _contentLabel.text = [NSString stringWithFormat:@"%@",dict[@"content"]];
+    _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 15, MainScreenWidth - _nameLabel.left - 15, 50);
+    _contentLabel.numberOfLines = 0;
+    [_contentLabel sizeToFit];
+    
+    [_contentLabel setHeight:_contentLabel.height];
+    
+    
     _pictureBackView.frame = CGRectMake(_nameLabel.left, _contentLabel.bottom + 15, _contentLabel.width, 0.01);
     [_pictureBackView removeAllSubviews];
-    NSInteger picCount = 5;
+    NSArray *picArray = [NSArray arrayWithArray:[dict objectForKey:@"attach_url"]];
     CGFloat leftSpace = 0;
     CGFloat inSpace = 11;
     CGFloat picWidth = (_contentLabel.width - leftSpace * 2 - inSpace * 2) / 3.0;
     
-    if (picCount) {
+    if (picArray.count) {
         [_pictureBackView setTop:_contentLabel.bottom + 12];
     } else {
         [_pictureBackView setTop:_contentLabel.bottom];
     }
     
-    for (int i = 0; i<picCount; i++) {
+    for (int i = 0; i<picArray.count; i++) {
         // x 余 y 正
         UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace + (picWidth + inSpace) * (i%3), (inSpace + picWidth) * (i/3), picWidth, picWidth)];
         pic.clipsToBounds = YES;
         pic.contentMode = UIViewContentModeScaleAspectFill;
-        pic.image = DefaultImage;
+        [pic sd_setImageWithURL:EdulineUrlString(picArray[i]) placeholderImage:DefaultImage];
         pic.tag = 66 + i;
         pic.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(picTap:)];
         [pic addGestureRecognizer:tap];
         [_pictureBackView addSubview:pic];
-        if (i == (picCount - 1)) {
+        if (i == (picArray.count - 1)) {
             [_pictureBackView setHeight:pic.bottom];
         }
     }
     
-    NSString *commentCount = @"323";
-    NSString *zanCount = @"1314";
-    NSString *shareCount = @"99";
+    NSString *commentCount = [NSString stringWithFormat:@"%@",dict[@"comment_num"]];
+    NSString *zanCount = [NSString stringWithFormat:@"%@",dict[@"like_num"]];
+    NSString *shareCount = [NSString stringWithFormat:@"%@",dict[@"recircle_num"]];
     CGFloat shareWidth = [shareCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
     CGFloat commentWidth = [commentCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
     CGFloat zanWidth = [zanCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;

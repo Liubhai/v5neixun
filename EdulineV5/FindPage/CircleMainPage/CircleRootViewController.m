@@ -43,7 +43,7 @@
     _lineTL.backgroundColor = EdlineV5_Color.layarLineColor;
     
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"推荐",@"type":@"recommend"},@{@"title":@"广场",@"type":@"hot"},@{@"title":@"关注",@"type":@"newest"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"推荐",@"type":@"1"},@{@"title":@"广场",@"type":@"2"},@{@"title":@"关注",@"type":@"3"}]];
     
     [self makeTopView];
     [self makeScrollView];

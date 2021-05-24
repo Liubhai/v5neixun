@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "ScanPhotoViewController.h"
+#import "UploadImageModel.h"
 
 @interface CirclePostViewController ()<UITextFieldDelegate, UITextViewDelegate, TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate,sendPhotoArrDelegate> {
     BOOL isTextField;
@@ -33,6 +34,8 @@
 
 // 储存图片信息
 @property (strong, nonatomic) NSMutableArray *pictureArray;
+@property (strong, nonatomic) NSString *pictureIds;// 图片上传后ID
+@property (strong, nonatomic) NSMutableArray *pictureIdsArray;//存储 UploadImageModel
 
 @end
 
@@ -50,6 +53,8 @@
     _lineTL.backgroundColor = [EdlineV5_Color backColor];
     
     _pictureArray = [NSMutableArray new];
+    _pictureIdsArray = [NSMutableArray new];
+    _pictureIds = @"";
     
     [self makeSubView];
     
@@ -92,21 +97,23 @@
     _pictureBackView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_pictureBackView];
     
-    _forwardBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _contentTextBackView.bottom, _contentTextBackView.width, 40 + 64 + 10)];
-    _forwardBackView.backgroundColor = EdlineV5_Color.backColor;
-    [_mainScrollView addSubview:_forwardBackView];
-    
-    // 40 64 10
-    _forwardContent = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, _forwardBackView.width - 20, 40)];
-    _forwardContent.text = @"@呦ing户：原文内容，文字显示一排图片";
-    _forwardContent.font = SYSTEMFONT(13);
-    [_forwardBackView addSubview:_forwardContent];
-    
-    _forwardPicture = [[UIImageView alloc] initWithFrame:CGRectMake(10, _forwardContent.bottom, 64, 64)];
-    _forwardPicture.clipsToBounds = YES;
-    _forwardPicture.contentMode = UIViewContentModeScaleAspectFill;
-    _forwardPicture.image = DefaultImage;
-    [_forwardBackView addSubview:_forwardPicture];
+    if (_isForward) {
+        _forwardBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _contentTextBackView.bottom, _contentTextBackView.width, 40 + 64 + 10)];
+        _forwardBackView.backgroundColor = EdlineV5_Color.backColor;
+        [_mainScrollView addSubview:_forwardBackView];
+        
+        // 40 64 10
+        _forwardContent = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, _forwardBackView.width - 20, 40)];
+        _forwardContent.text = @"@呦ing户：原文内容，文字显示一排图片";
+        _forwardContent.font = SYSTEMFONT(13);
+        [_forwardBackView addSubview:_forwardContent];
+        
+        _forwardPicture = [[UIImageView alloc] initWithFrame:CGRectMake(10, _forwardContent.bottom, 64, 64)];
+        _forwardPicture.clipsToBounds = YES;
+        _forwardPicture.contentMode = UIViewContentModeScaleAspectFill;
+        _forwardPicture.image = DefaultImage;
+        [_forwardBackView addSubview:_forwardPicture];
+    }
     
     [self dealPictureUI];
     
@@ -347,6 +354,12 @@
     [_contentTextView becomeFirstResponder];
 }
 
+// MARK: - 发布按钮
+- (void)rightButtonClick:(id)sender {
+    _rightButton.enabled = NO;
+    [self uploadImage];
+}
+
 // MARK: - 发布按钮点击事件
 - (void)postCircle {
     NSString *getUrl = [Net_Path circlePost];
@@ -365,6 +378,118 @@
             [param setObject:@"分享动态" forKey:@"content"];
         }
     }
+    if (SWNOTEmptyArr(_pictureIdsArray)) {
+        NSString *postimageids = @"";
+        for (int k = 0; k<_pictureIdsArray.count; k++) {
+            UploadImageModel *modelpass = _pictureIdsArray[k];
+            if (SWNOTEmptyStr(postimageids)) {
+                if (SWNOTEmptyStr(modelpass.imageId)) {
+                    postimageids = [NSString stringWithFormat:@"%@,%@",postimageids,modelpass.imageId];
+                }
+            } else {
+                if (SWNOTEmptyStr(modelpass.imageId)) {
+                    postimageids = [NSString stringWithFormat:@"%@",modelpass.imageId];
+                }
+            }
+        }
+        [param setObject:[NSString stringWithFormat:@"[%@]",postimageids] forKey:@"attach"];
+    }
+    [Net_API requestPOSTWithURLStr:[Net_Path circlePost] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+            }
+        }
+        _rightButton.enabled = YES;
+    } enError:^(NSError * _Nonnull error) {
+        _rightButton.enabled = YES;
+    }];
+}
+
+- (void)uploadImage {
+    if (!SWNOTEmptyArr(_pictureArray)) {
+        [self postCircle];
+        return;
+    }
+    
+    dispatch_queue_t queue = dispatch_queue_create("uploadcircleimage", DISPATCH_QUEUE_CONCURRENT);
+
+    dispatch_async(queue, ^{
+        __weak typeof(self) weakself = self;
+        __block int finishNum = 0;
+        [weakself.pictureIdsArray removeAllObjects];
+        for (int i = 0; i<weakself.pictureArray.count; i++) {
+            UploadImageModel *model = [UploadImageModel new];
+            model.imageId = @"";
+            [weakself.pictureIdsArray addObject:model];
+            
+            [Net_API POST:[Net_Path uploadImageField] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                //上传图片
+                for (int i = 0; i<model.imageArray.count; i++) {
+                    NSData *dataImg=UIImageJPEGRepresentation(model.imageArray[i], 0.5);
+                    [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
+                }
+            } progress:^(NSProgress * _Nonnull uploadProgress) {
+                
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                finishNum ++ ;
+                if ([[responseObject objectForKey:@"code"] integerValue] == 1) {
+                    model.imageId = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
+                    model.imageIndex = [NSString stringWithFormat:@"%@",@(finishNum)];
+                    model.imageArray = [NSMutableArray new];
+                    [model.imageArray addObject:weakself.pictureArray[finishNum]];
+                    if (finishNum == weakself.pictureArray.count) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            // 回到主线程进行UI操作
+                            for (int k = 0; k<weakself.pictureIdsArray.count; k++) {
+                                UploadImageModel *modelpass = weakself.pictureIdsArray[k];
+                                NSLog(@"发布图片第 %@ 张图片的ID = %@",modelpass.imageIndex,modelpass.imageId);
+                            }
+                            [weakself hideHud];
+                            [weakself postCircle];
+                        });
+                    }
+                } else {
+                    [weakself showHudInView:weakself.view showHint:[responseObject objectForKey:@"msg"]];
+                }
+            } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // 回到主线程进行UI操作
+                    _rightButton.enabled = YES;
+                    [weakself hideHud];
+                    [weakself showHudInView:weakself.view showHint:@"上传图片超时,请重试"];
+                });
+            }];
+        }
+    });
+    
+    
+    
+//    [Net_API POST:[Net_Path uploadImageField] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+//        //上传图片
+//        for (int i = 0; i<_pictureArray.count; i++) {
+//            NSData *dataImg=UIImageJPEGRepresentation(_pictureArray[i], 0.5);
+//            [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
+//        }
+//    } progress:^(NSProgress * _Nonnull uploadProgress) {
+//
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+//        [self hideHud];
+//        if ([[responseObject objectForKey:@"code"] integerValue] == 1) {
+//            _pictureIds = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
+//            [_pictureIdsArray removeAllObjects];
+//            [_pictureIdsArray addObject:_pictureIds];
+//            [self postCircle];
+//        } else {
+//            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+//        }
+//    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+//        [self hideHud];
+//        [self showHudInView:self.view showHint:@"上传图片超时,请重试"];
+//    }];
 }
 
 @end

@@ -784,4 +784,9 @@
     return [Net_Path fullPath:@"circle/recircle" repalce:@"" byReplece:@""];
 }
 
+/** 圈子列表 */
++ (NSString *)circleListNet {
+    return [Net_Path fullPath:@"circle/list" repalce:@"" byReplece:@""];
+}
+
 @end

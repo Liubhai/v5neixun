@@ -722,7 +722,7 @@
         }
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         [self hideHud];
-        [self showHudInView:self.view showHint:@"上传头像超时,请重试"];
+        [self showHudInView:self.view showHint:@"上传认证图片超时,请重试"];
     }];
 }
 

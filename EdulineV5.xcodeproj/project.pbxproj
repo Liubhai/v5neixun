@@ -573,6 +573,7 @@
 		78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */; };
 		78D980BB24BDB737000DE0E4 /* NewClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */; };
 		78DC9FBE261312860025C962 /* KanjiaListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DC9FBD261312860025C962 /* KanjiaListCell.m */; };
+		78E5B255265B74D20053F63F /* UploadImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B254265B74D20053F63F /* UploadImageModel.m */; };
 		78EA7F33254A9525004DF369 /* AgoraRtm.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EA7F32254A9524004DF369 /* AgoraRtm.m */; };
 		78ED079425CD3C8A00C30B26 /* ExamDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */; };
 		78ED079725CFC9CE00C30B26 /* ExamIDListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079625CFC9CE00C30B26 /* ExamIDListModel.m */; };
@@ -1717,6 +1718,8 @@
 		78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseCell.m; sourceTree = "<group>"; };
 		78DC9FBC261312860025C962 /* KanjiaListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KanjiaListCell.h; sourceTree = "<group>"; };
 		78DC9FBD261312860025C962 /* KanjiaListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KanjiaListCell.m; sourceTree = "<group>"; };
+		78E5B253265B74D20053F63F /* UploadImageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadImageModel.h; sourceTree = "<group>"; };
+		78E5B254265B74D20053F63F /* UploadImageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadImageModel.m; sourceTree = "<group>"; };
 		78EA7F31254A9524004DF369 /* AgoraRtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		78EA7F32254A9524004DF369 /* AgoraRtm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
 		78ED079225CD3C8A00C30B26 /* ExamDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamDetailViewController.h; sourceTree = "<group>"; };
@@ -2155,6 +2158,8 @@
 				78793A4B264E4D18000554C8 /* CirclePostViewController.m */,
 				78793A47264E26B1000554C8 /* CircleListCell.h */,
 				78793A48264E26B1000554C8 /* CircleListCell.m */,
+				78E5B253265B74D20053F63F /* UploadImageModel.h */,
+				78E5B254265B74D20053F63F /* UploadImageModel.m */,
 			);
 			path = CircleMainPage;
 			sourceTree = "<group>";
@@ -4365,6 +4370,7 @@
 				78C549DF241B674F00A33FC4 /* MBProgressHUD+AlivcHelper.m in Sources */,
 				78C549CA241B674E00A33FC4 /* AlivcAppServer.m in Sources */,
 				78793A4F26522115000554C8 /* OrderScreenViewController.m in Sources */,
+				78E5B255265B74D20053F63F /* UploadImageModel.m in Sources */,
 				782AC43D25BC1DFD009130F9 /* ZhuangXiangModelManager.m in Sources */,
 				78C5497A241B642B00A33FC4 /* AlivcPushBeautyDataManager.m in Sources */,
 				78793A52265252BA000554C8 /* PromotionCourseCell.m in Sources */,

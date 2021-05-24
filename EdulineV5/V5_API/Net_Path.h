@@ -567,6 +567,9 @@ struct NetWorkUrl {
 /** 圈子转发 */
 + (NSString *)circleForward;
 
+/** 圈子列表 */
++ (NSString *)circleListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

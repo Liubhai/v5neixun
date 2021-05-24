@@ -33,7 +33,6 @@
     
     _dataSource = [NSMutableArray new];
     _currentShowPicArray = [NSMutableArray new];
-    [_currentShowPicArray addObjectsFromArray:@[DefaultImage,DefaultImage,DefaultImage,DefaultImage,DefaultImage]];
     page = 1;
     [self makeTableView];
     // Do any additional setup after loading the view.
@@ -47,16 +46,16 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-//    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
-//    _tableView.mj_footer.hidden = YES;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
-//    [_tableView.mj_header beginRefreshing];
+    [_tableView.mj_header beginRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 8;//_dataSource.count;
+    return _dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -65,7 +64,7 @@
     if (!cell) {
         cell = [[CircleListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setCircleCellInfo:@{}];
+    [cell setCircleCellInfo:_dataSource[indexPath.row]];
     cell.delegate = self;
     return cell;
 }
@@ -87,27 +86,26 @@
     [param setObject:@"10" forKey:@"count"];
     // 大类型
     if (SWNOTEmptyStr(_circleType)) {
-        [param setObject:_circleType forKey:@"source_type"];
+        [param setObject:_circleType forKey:@"type"];
     }
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path circleListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
         if (SWNOTEmptyDictionary(responseObject)) {
+            [_dataSource removeAllObjects];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                [_dataSource removeAllObjects];
                 [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-//                [_dataSource addObjectsFromArray:[ShopCarCourseModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                 if (_dataSource.count<10) {
                     _tableView.mj_footer.hidden = YES;
                 } else {
                     _tableView.mj_footer.hidden = NO;
                     [_tableView.mj_footer setState:MJRefreshStateIdle];
                 }
-                [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
-                [_tableView reloadData];
             }
+            [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
+            [_tableView reloadData];
         }
     } enError:^(NSError * _Nonnull error) {
         if (_tableView.mj_header.refreshing) {
@@ -123,16 +121,15 @@
     [param setObject:@"10" forKey:@"count"];
     // 大类型
     if (SWNOTEmptyStr(_circleType)) {
-        [param setObject:_circleType forKey:@"source_type"];
+        [param setObject:_circleType forKey:@"type"];
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path circleListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-//                NSArray *pass = [NSArray arrayWithArray:[ShopCarCourseModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]]];
                 if (pass.count<10) {
                     [_tableView.mj_footer endRefreshingWithNoMoreData];
                 }
@@ -151,6 +148,8 @@
 
 - (void)showCirclePic:(NSDictionary *)dict imagetag:(NSInteger)tag toView:(nonnull UIImageView *)toImageView {
     currentShowPicImageView = toImageView;
+    [_currentShowPicArray removeAllObjects];
+    [_currentShowPicArray addObjectsFromArray:dict[@"attach_url"]];
     ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
     pickerBrowser.delegate = self;
     pickerBrowser.dataSource = self;
