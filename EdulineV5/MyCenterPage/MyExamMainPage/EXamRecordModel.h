@@ -36,7 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *answer_times; // 参考次数
 @property (strong, nonatomic) NSString *unique_code; // 上次作答提交时间
 
-@property (strong, nonatomic) NSString *answer_count;// 总题数
+@property (strong, nonatomic) NSString *answer_count;// 答题数
+@property (strong, nonatomic) NSString *topic_count;// 总题数
 @property (strong, nonatomic) NSString *right_count;// 正确作答题数
 
 @end

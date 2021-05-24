@@ -75,7 +75,7 @@
     _titleLabel.numberOfLines = 0;
     [_titleLabel sizeToFit];
     [_titleLabel setHeight:_titleLabel.height>40 ? 40 : _titleLabel.height];
-    _allCountLabel.text = [NSString stringWithFormat:@"共%@题",model.answer_count];
+    _allCountLabel.text = [NSString stringWithFormat:@"共%@题",model.topic_count];
     if (isPublic) {
         if ([model.answer_status isEqualToString:@"2"]) {
             _allCountLabel.text = [NSString stringWithFormat:@"得分：%@分",model.user_score];
