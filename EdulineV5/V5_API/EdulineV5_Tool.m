@@ -639,7 +639,7 @@ static EdulineV5_Tool *_sharedInstance;
         }
         else{
             temp = temp/12;
-            result = [NSString stringWithFormat:@"%d年前",(int)temp];
+            result = regStr;//[NSString stringWithFormat:@"%d年前",(int)temp];
         }
         
         return  result;
