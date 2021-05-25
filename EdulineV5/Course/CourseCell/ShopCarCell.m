@@ -110,9 +110,9 @@
         [_themeLabel addView:_course_card range:NSMakeRange(0, 0) alignment:TYDrawAlignmentCenter];
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,model.price];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:model.price]];
     if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
-        _priceLabel.text = [NSString stringWithFormat:@"VIP:%@%@",IOSMoneyTitle,model.user_price];
+        _priceLabel.text = [NSString stringWithFormat:@"VIP:%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:model.user_price]];
     }
     if ([model.course_type isEqualToString:@"1"]) {
         _courseTypeImageView.image = Image(@"dianbo");

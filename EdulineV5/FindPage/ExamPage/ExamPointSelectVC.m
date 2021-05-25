@@ -12,6 +12,9 @@
 #import "ExamPointModel.h"
 #import "ExamDetailViewController.h"
 
+#import "AppDelegate.h"
+#import "V5_UserModel.h"
+
 @interface ExamPointSelectVC ()<UIScrollViewDelegate> {
     NSInteger maxSelectCount;
 }
@@ -292,6 +295,13 @@
         [self showHudInView:self.view showHint:@"请选择知识点"];
         return;
     }
+    
+    // 此时需要判断登录
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    
     ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
     vc.examIds = examIds;
     vc.examType = _examTypeId;

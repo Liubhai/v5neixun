@@ -126,7 +126,7 @@
     UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, line2.bottom + 12, 150, 16)];
     timeLabel.font = SYSTEMFONT(12);
     timeLabel.textColor = EdlineV5_Color.textSecendColor;
-    timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool formateTime:_dataSource[section][@"create_time"]]];
+    timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool formateTime:_dataSource[section][@"update_time"]]];
     [view addSubview:timeLabel];
     
     UILabel *truePriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 80, 0, 80, 21)];
@@ -189,7 +189,7 @@
         // 待支付
         [button2 setTitle:@"去支付" forState:0];
         [button1 setTitle:@"取消订单" forState:0];
-    } else if ([orderStatus isEqualToString:@"20"] || [orderStatus isEqualToString:@"80"]) {
+    } else if ([orderStatus isEqualToString:@"20"] || [orderStatus isEqualToString:@"80"] || [orderStatus isEqualToString:@"60"] || [orderStatus isEqualToString:@"50"]) {
         // 已完成
         button2.hidden = YES;
         button1.hidden = YES;
@@ -218,7 +218,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     NSString *orderStatus = [NSString stringWithFormat:@"%@",_dataSource[section][@"status"]];
     // 支付状态:0-已取消 10-未付款 20-已付款 30-已申请退款,待确认 40-退款已确认,退款中 50-已退款 60-交易被关闭  70:已支付,但被管理员移除 80:拼团已支付，未成团
-    if ([orderStatus isEqualToString:@"20"] || [orderStatus isEqualToString:@"80"]) {
+    if ([orderStatus isEqualToString:@"20"] || [orderStatus isEqualToString:@"80"] || [orderStatus isEqualToString:@"60"] || [orderStatus isEqualToString:@"50"]) {
         // 已完成
         return 0.5 + 43 + 8;
     }

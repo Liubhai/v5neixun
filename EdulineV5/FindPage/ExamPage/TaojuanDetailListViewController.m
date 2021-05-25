@@ -126,7 +126,10 @@
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = @"4";
-        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
+        if (SWNOTEmptyArr(pass)) {
+            vc.examIds = [NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]];
+        }
         vc.rollup_id = _rollup_id;
         [self.navigationController pushViewController:vc animated:YES];
     } else {

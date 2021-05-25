@@ -93,10 +93,6 @@
         vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([examTheme isEqualToString:@"1"]) {
-        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
-            [AppDelegate presentLoginNav:self];
-            return;
-        }
         ExamPointSelectVC *vc = [[ExamPointSelectVC alloc] init];
         vc.examTypeString = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
         vc.examTypeId = examTheme;

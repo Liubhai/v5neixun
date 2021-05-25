@@ -104,7 +104,7 @@
     
     _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tipBackImageView.width, 25)];
     _tipLabel.font = SYSTEMFONT(11);
-    _tipLabel.textColor = EdlineV5_Color.themeColor;
+    _tipLabel.textColor = HEXCOLOR(0x5191FF);//EdlineV5_Color.themeColor;
     _tipLabel.textAlignment = NSTextAlignmentCenter;
     _tipLabel.center = CGPointMake(tipBackImageView.width / 2.0, tipBackImageView.height / 2.0);
     [tipBackImageView addSubview:_tipLabel];

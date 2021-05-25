@@ -120,6 +120,9 @@
     [_examCollectBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_examCollectBtn];
     _examCollectBtn.hidden = YES;
+    if ([_examType isEqualToString:@"4"]) {
+        _examCollectBtn.hidden = NO;
+    }
 }
 
 - (void)makeBottomView {
@@ -464,7 +467,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if ([_examType isEqualToString:@"3"]) {
+    if ([_examType isEqualToString:@"3"] || [_examType isEqualToString:@"4"]) {
         return nil;
     } else {
         
@@ -573,7 +576,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if ([_examType isEqualToString:@"3"]) {
+    if ([_examType isEqualToString:@"3"] || [_examType isEqualToString:@"4"]) {
         return 0.001;
     } else {
         ExamDetailModel *modelxxx;

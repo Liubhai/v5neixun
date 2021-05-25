@@ -30,6 +30,7 @@
     _taojuanTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_titleLabel.left, _titleLabel.bottom + 8, _titleLabel.width, 17)];
     _taojuanTitleLabel.textColor = EdlineV5_Color.textThirdColor;
     _taojuanTitleLabel.font = SYSTEMFONT(12);
+    _taojuanTitleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     [self.contentView addSubview:_taojuanTitleLabel];
     _taojuanTitleLabel.hidden = YES;
     
@@ -84,8 +85,8 @@
         }
     } else {
         _taojuanTitleLabel.hidden = NO;
-        _taojuanTitleLabel.text = [NSString stringWithFormat:@"--%@",model.rollup_title];
-        _taojuanTitleLabel.frame = CGRectMake(_titleLabel.left, _titleLabel.bottom + 8, _titleLabel.width, 17);
+        _taojuanTitleLabel.text = [NSString stringWithFormat:@"一《%@》",model.rollup_title];
+        _taojuanTitleLabel.frame = CGRectMake(_titleLabel.left, _titleLabel.bottom + 8, MainScreenWidth - 30, 17);
     }
     _rightCountLabel.text = [NSString stringWithFormat:@"答对%@题",model.right_count];
     CGFloat allCountWidth = [_allCountLabel.text sizeWithFont:_allCountLabel.font].width + 4;

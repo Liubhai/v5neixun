@@ -386,8 +386,8 @@
             
             _courseTitleLabel.text = [NSString stringWithFormat:@"%@",_activityInfo[@"product_title"]];
             
-            NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"price"]];
-            NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
+            NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_activityInfo[@"price"]]]];
+            NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_activityInfo[@"product_price"]]]];
             
             if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]]) {
                 price = @"免费";
@@ -463,8 +463,13 @@
                         if (!isMine) {
                             _groupResult.text = @"砍价已结束";
                             [_kanjiaButton setTitle:@"我也想要" forState:0];
+                            _timeBackView.hidden = YES;
+                        } else {
+                            if (eventTime>0) {
+                                _timeBackView.hidden = NO;
+                                [self startTimer];
+                            }
                         }
-                        _timeBackView.hidden = YES;
                     } else {
                         // 砍价中...
                         if (isMine) {
@@ -504,11 +509,12 @@
                     [self startTimer];
                 }
             }
-            
+            [_kanjiaTableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_kanjiaTableView.frame.size.height];
             [_kanjiaDataSource removeAllObjects];
             if (SWNOTEmptyArr(_activityInfo[@"bargain_data"])) {
                 [_kanjiaDataSource addObjectsFromArray:_activityInfo[@"bargain_data"]];
             }
+            [_kanjiaTableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_kanjiaDataSource.count isLoading:NO tableViewShowHeight:_kanjiaTableView.frame.size.height];
             [_kanjiaTableView reloadData];
         }
     } else {
@@ -529,8 +535,8 @@
             
             _courseTitleLabel.text = [NSString stringWithFormat:@"%@",_activityInfo[@"product_title"]];
             
-            NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"price"]];
-            NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_activityInfo[@"product_price"]];
+            NSString *price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_activityInfo[@"price"]]]];
+            NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_activityInfo[@"product_price"]]]];
             
             if ([price isEqualToString:[NSString stringWithFormat:@"%@0.00",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0.0",IOSMoneyTitle]] || [price isEqualToString:[NSString stringWithFormat:@"%@0",IOSMoneyTitle]]) {
                 price = @"免费";
@@ -694,7 +700,7 @@
                 if (isMine) {
                     // 去支付
                     OrderViewController *vc = [[OrderViewController alloc] init];
-                    vc.orderTypeString = @"course";
+                    vc.orderTypeString = @"courseKanjia";
                     vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
                     [self.navigationController pushViewController:vc animated:YES];
                     _kanjiaButton.enabled = YES;
@@ -720,7 +726,7 @@
                 if (isMine) {
                     // 去支付
                     OrderViewController *vc = [[OrderViewController alloc] init];
-                    vc.orderTypeString = @"course";
+                    vc.orderTypeString = @"courseKanjia";
                     vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
                     [self.navigationController pushViewController:vc animated:YES];
                     _kanjiaButton.enabled = YES;
