@@ -124,6 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL answer_right;
 @property (assign, nonatomic) BOOL has_answered;
 @property (assign, nonatomic) BOOL answered;
+@property (assign, nonatomic) BOOL subjective;
 @property (strong, nonatomic) NSMutableArray<ExamTopicModel *> *topics;
 
 @end

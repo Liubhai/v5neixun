@@ -99,6 +99,7 @@
     ExamResultViewController *vc = [[ExamResultViewController alloc] init];
     EXamRecordModel *model = _dataSource[indexPath.row];
     vc.record_id = [NSString stringWithFormat:@"%@",model.topic_id];
+    vc.answer_status = [NSString stringWithFormat:@"%@",model.answer_status];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -112,9 +112,9 @@
     if (SWNOTEmptyDictionary(_shareContentDict)) {
         [_courseFace sd_setImageWithURL:EdulineUrlString(_shareContentDict[@"cover_url"]) placeholderImage:DefaultImage];
         _courseTitle.text = [NSString stringWithFormat:@"%@",_shareContentDict[@"course_title"]];
-        _coursePricelabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_shareContentDict[@"course_price"]];
+        _coursePricelabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"course_price"]]];
         
-        NSString *tipPrice = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_shareContentDict[@"max_profit"]];
+        NSString *tipPrice = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"max_profit"]]];
         NSString *tipText = [NSString stringWithFormat:@"每成功邀请一名用户预计最多收入 %@",tipPrice];
         NSMutableAttributedString *atr1 = [[NSMutableAttributedString alloc] initWithString:tipText];
         [atr1 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor,NSFontAttributeName:SYSTEMFONT(12)} range:[tipText rangeOfString:tipPrice]];

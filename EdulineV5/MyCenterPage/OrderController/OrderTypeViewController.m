@@ -126,7 +126,7 @@
     UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, line2.bottom + 12, 150, 16)];
     timeLabel.font = SYSTEMFONT(12);
     timeLabel.textColor = EdlineV5_Color.textSecendColor;
-    timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool formateTime:_dataSource[section][@"update_time"]]];
+    timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool formateYYYYMMDDHHMMTime:_dataSource[section][@"update_time"]]];
     [view addSubview:timeLabel];
     
     UILabel *truePriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 80, 0, 80, 21)];

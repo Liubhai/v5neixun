@@ -13,6 +13,7 @@
 #import "V5_UserModel.h"
 #import "OrderViewController.h"
 #import "SharePosterViewController.h"
+#import "CourseMainViewController.h"
 
 @interface GroupDetailViewController ()<UITableViewDelegate, UITableViewDataSource> {
     // 活动倒计时
@@ -75,7 +76,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (shouldLoad) {
-        [self requestActivityDetailInfo];
+        [self kanjiaRequestActivityDetailInfo];
     }
     shouldLoad = YES;
 }
@@ -164,7 +165,6 @@
     _dayLabel.textColor = EdlineV5_Color.courseActivityGroupColor;
     _dayLabel.font = SYSTEMFONT(10);
     _dayLabel.textAlignment = NSTextAlignmentRight;
-    _dayLabel.text = @"100天";
     [_timeBackView addSubview:_dayLabel];
     
     _hourLabel = [[UILabel alloc] initWithFrame:CGRectMake(_dayLabel.right + 6, _dayLabel.top, 17, 18)];
@@ -173,7 +173,6 @@
     _hourLabel.backgroundColor = EdlineV5_Color.courseActivityGroupColor;
     _hourLabel.font = SYSTEMFONT(10);
     _hourLabel.textColor = [UIColor whiteColor];
-    _hourLabel.text = @"12";
     _hourLabel.textAlignment = NSTextAlignmentCenter;
     [_timeBackView addSubview:_hourLabel];
     
@@ -190,7 +189,6 @@
     _minuteLabel.backgroundColor = EdlineV5_Color.courseActivityGroupColor;
     _minuteLabel.font = SYSTEMFONT(10);
     _minuteLabel.textColor = [UIColor whiteColor];
-    _minuteLabel.text = @"33";
     _minuteLabel.textAlignment = NSTextAlignmentCenter;
     [_timeBackView addSubview:_minuteLabel];
     
@@ -207,7 +205,6 @@
     _secondLabel.backgroundColor = EdlineV5_Color.courseActivityGroupColor;
     _secondLabel.font = SYSTEMFONT(10);
     _secondLabel.textColor = [UIColor whiteColor];
-    _secondLabel.text = @"23";
     _secondLabel.textAlignment = NSTextAlignmentCenter;
     [_timeBackView addSubview:_secondLabel];
     
@@ -366,6 +363,7 @@
 }
 
 - (void)setActivityData {
+    [self stopTimer];
     _timeBackView.hidden = NO;
     if ([_activityType isEqualToString:@"3"]) {
         // 砍价
@@ -413,14 +411,14 @@
             NSString *bargain_finished = [NSString stringWithFormat:@"%@",_activityInfo[@"bargain_finished"]];
             // 当前用户是否砍价
             NSString *current_bargain_count = [NSString stringWithFormat:@"%@",_activityInfo[@"current_bargain_count"]];
-            NSString *current_bargain_price = [NSString stringWithFormat:@"%@",_activityInfo[@"current_bargain_price"]];
+            NSString *current_bargain_price = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_activityInfo[@"current_bargain_price"]]]];
             
-            CGFloat kanjiatotal = [[NSString stringWithFormat:@"%@",_activityInfo[@"bargained_total_price"]] floatValue];
-            CGFloat total = [[NSString stringWithFormat:@"%@",_activityInfo[@"bargain_price"]] floatValue];
+            CGFloat kanjiatotal = [[EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_activityInfo[@"bargained_total_price"]]] floatValue];
+            CGFloat total = [[EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_activityInfo[@"bargain_price"]]] floatValue];
             
             _progressCount.frame = CGRectMake(15, _timeBackView.bottom + 35, (_groupBackView.width - 30) * kanjiatotal / total, 14);
             
-            NSString *kanjianCount = [NSString stringWithFormat:@"已砍%@%@",IOSMoneyTitle,_activityInfo[@"bargained_total_price"]];
+            NSString *kanjianCount = [NSString stringWithFormat:@"已砍%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_activityInfo[@"bargained_total_price"]]]];
             _kanjiaCountLabel.text = kanjianCount;
             CGFloat kanjianCountWidth = [_kanjiaCountLabel.text sizeWithFont:_kanjiaCountLabel.font].width + 10;
             _kanjiaCountLabel.frame = CGRectMake(0, _progressCount.bottom + 10, kanjianCountWidth, 18);
@@ -509,12 +507,10 @@
                     [self startTimer];
                 }
             }
-            [_kanjiaTableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_kanjiaTableView.frame.size.height];
             [_kanjiaDataSource removeAllObjects];
             if (SWNOTEmptyArr(_activityInfo[@"bargain_data"])) {
                 [_kanjiaDataSource addObjectsFromArray:_activityInfo[@"bargain_data"]];
             }
-            [_kanjiaTableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_kanjiaDataSource.count isLoading:NO tableViewShowHeight:_kanjiaTableView.frame.size.height];
             [_kanjiaTableView reloadData];
         }
     } else {
@@ -670,9 +666,19 @@
         _doButton.enabled = YES;
     } else if ([groupStatus isEqualToString:@"2"]) {
         // 返回上一级课程详情页面或者跳转到对应课程详情页
-        [self.navigationController popViewControllerAnimated:YES];
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]] isEqualToString:@"2"] ? YES : NO;
+        vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
+        _doButton.enabled = YES;
     } else if ([groupStatus isEqualToString:@"3"]) {
         // 重新开团流程未知
+        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]] isEqualToString:@"2"] ? YES : NO;
+        vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+        [self.navigationController pushViewController:vc animated:YES];
         _doButton.enabled = YES;
     }
 }
@@ -706,6 +712,11 @@
                     _kanjiaButton.enabled = YES;
                 } else {
                     // 我也想要
+                    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+                    vc.ID = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    vc.isLive = [[NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]] isEqualToString:@"2"] ? YES : NO;
+                    vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+                    [self.navigationController pushViewController:vc animated:YES];
                     _kanjiaButton.enabled = YES;
                 }
             } else {
@@ -716,6 +727,11 @@
                     [self.navigationController popViewControllerAnimated:YES];
                 } else {
                     // 我也想要
+                    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+                    vc.ID = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    vc.isLive = [[NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]] isEqualToString:@"2"] ? YES : NO;
+                    vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+                    [self.navigationController pushViewController:vc animated:YES];
                     _kanjiaButton.enabled = YES;
                 }
             }
@@ -732,6 +748,11 @@
                     _kanjiaButton.enabled = YES;
                 } else {
                     // 我也想要
+                    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+                    vc.ID = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    vc.isLive = [[NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]] isEqualToString:@"2"] ? YES : NO;
+                    vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+                    [self.navigationController pushViewController:vc animated:YES];
                     _kanjiaButton.enabled = YES;
                 }
             } else {
@@ -750,6 +771,11 @@
                     if ([current_bargain_count isEqualToString:@"1"]) {
                         // 当前用户已经帮忙砍价了
                         // 我也想要
+                        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+                        vc.ID = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                        vc.isLive = [[NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]] isEqualToString:@"2"] ? YES : NO;
+                        vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+                        [self.navigationController pushViewController:vc animated:YES];
                         _kanjiaButton.enabled = YES;
                     } else {
                         // 帮好友砍价 砍价成功后请求接口刷新页面数据
@@ -838,6 +864,14 @@
         } enError:^(NSError * _Nonnull error) {
             
         }];
+    }
+}
+
+// MARK: - 终止倒计时
+- (void)stopTimer {
+    if (eventTimer) {
+        [eventTimer invalidate];
+        eventTimer = nil;
     }
 }
 

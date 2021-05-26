@@ -31,6 +31,7 @@
 
 @property (strong, nonatomic) UILabel *userTimelabel;
 @property (strong, nonatomic) UILabel *finishlabel;
+@property (strong, nonatomic) UILabel *tipsLabel;// 主观题待阅卷提示
 @property (strong, nonatomic) UILabel *correctlabel;
 
 @property (strong, nonatomic) UIButton *resetButton;// 重新答题
@@ -105,7 +106,6 @@
     _examTitleLabel.font = SYSTEMFONT(18);
     _examTitleLabel.textColor = [UIColor whiteColor];
     _examTitleLabel.textAlignment = NSTextAlignmentCenter;
-    _examTitleLabel.text = @"高一物理期中考试卷";
     [self.view addSubview:_examTitleLabel];
     
     _goodIconImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, 122, 122)];
@@ -157,7 +157,6 @@
     _userTimelabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.right + 10, _useTimeLeftLabel.top, MainScreenWidth - (_useTimeLeftLabel.right + 10), 16)];
     _userTimelabel.font = SYSTEMFONT(12);
     _userTimelabel.textColor = [UIColor whiteColor];
-    _userTimelabel.text = @"00:33:21";
     [self.view addSubview:_userTimelabel];
     
     _finishLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.left, _useTimeLeftLabel.bottom + 8, _useTimeLeftLabel.width, 16)];
@@ -170,8 +169,15 @@
     _finishlabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.right + 10, _finishLeftLabel.top, _userTimelabel.width, 16)];
     _finishlabel.font = SYSTEMFONT(12);
     _finishlabel.textColor = [UIColor whiteColor];
-    _finishlabel.text = @"2021-12-32 12:33";
     [self.view addSubview:_finishlabel];
+    
+    _tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _finishlabel.bottom, MainScreenWidth, 11)];
+    _tipsLabel.text = @"*该试卷含有主观题，请等待阅卷完成";
+    _tipsLabel.font = SYSTEMFONT(10);
+    _tipsLabel.textAlignment = NSTextAlignmentCenter;
+    _tipsLabel.textColor = [UIColor whiteColor];
+    [self.view addSubview:_tipsLabel];
+    _tipsLabel.hidden = YES;
     
 //    _correctLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(_useTimeLeftLabel.left, _finishLeftLabel.bottom + 12, 46 + 5, 21)];
 //    _correctLeftLabel.font = SYSTEMFONT(15);
@@ -396,7 +402,8 @@
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
                     /* 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题 **/
-                    if ([((ExamModel *)childArray[i]).question_type isEqualToString:@"8"] || [((ExamModel *)childArray[i]).question_type isEqualToString:@"6"]) {
+                    /** [((ExamModel *)childArray[i]).question_type isEqualToString:@"8"] || [((ExamModel *)childArray[i]).question_type isEqualToString:@"6"] */
+                    if (((ExamModel *)childArray[i]).subjective) {
                         btn.layer.borderColor = HEXCOLOR(0xDCDFE6).CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = HEXCOLOR(0xF0F0F2);
@@ -507,6 +514,13 @@
         _examTitleLabel.text = [NSString stringWithFormat:@"%@",_resultDict[@"paper_title"]];
         _userTimelabel.text = [EdulineV5_Tool timeChangeTimerWithSeconds:[[NSString stringWithFormat:@"%@",_resultDict[@"time_takes"]] integerValue]];
         _finishlabel.text = [EdulineV5_Tool formateYYYYMMDDHHMMTime:[NSString stringWithFormat:@"%@",_resultDict[@"commit_time"]]];
+        
+        /** 阅卷状态【0：提交答案；1：客观题已阅卷；2：主观题已阅卷，完成阅卷】 */
+        NSString *user_answer_status = [NSString stringWithFormat:@"%@",_resultDict[@"answer_status"]];
+        _answer_status = user_answer_status;
+        if ([user_answer_status isEqualToString:@"1"]) {
+            _tipsLabel.hidden = NO;
+        }
         
         NSString *score = [NSString stringWithFormat:@"%@",_resultDict[@"user_score"]];
         NSString *paperFullScore = [NSString stringWithFormat:@"%@",_resultDict[@"paper_score"]];

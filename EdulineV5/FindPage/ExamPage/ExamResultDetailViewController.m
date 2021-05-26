@@ -490,7 +490,7 @@
         scoreFinal.font = SYSTEMFONT(14);
         scoreFinal.layer.backgroundColor = [UIColor colorWithRed:245/255.0 green:64/255.0 blue:48/255.0 alpha:0.3].CGColor;
         scoreFinal.textColor = EdlineV5_Color.faildColor;
-        scoreFinal.text = [NSString stringWithFormat:@" 得分:%@",modelxxx.score];
+        scoreFinal.text = [NSString stringWithFormat:@" 得分:%@",modelxxx.user_score];
         [back addSubview:scoreFinal];
         scoreFinal.hidden = YES;
         if ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) {
@@ -1039,7 +1039,7 @@
             scoreFinal.font = SYSTEMFONT(14);
             scoreFinal.layer.backgroundColor = [UIColor colorWithRed:245/255.0 green:64/255.0 blue:48/255.0 alpha:0.3].CGColor;
             scoreFinal.textColor = EdlineV5_Color.faildColor;
-            scoreFinal.text = [NSString stringWithFormat:@" 总得分:%@",model.score];
+            scoreFinal.text = [NSString stringWithFormat:@" 总得分:%@",model.user_score];
             [_footerView addSubview:scoreFinal];
             scoreFinal.hidden = YES;
             if ([_answer_status isEqualToString:@"2"]) {

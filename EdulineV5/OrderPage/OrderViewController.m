@@ -52,7 +52,7 @@
     _courseFaceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 130, 72)];
     _courseFaceImageView.layer.masksToBounds = YES;
     _courseFaceImageView.layer.cornerRadius = 2;
-    if (![_orderTypeString isEqualToString:@"course"]) {
+    if (![_orderTypeString isEqualToString:@"course"] && ![_orderTypeString isEqualToString:@"courseKanjia"]) {
         _courseFaceImageView.frame = CGRectMake(15, 15, 32, 16);
     }
     [_topContentView addSubview:_courseFaceImageView];
@@ -76,7 +76,7 @@
     [_topContentView addSubview:_textLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, _courseFaceImageView.bottom - 15, 150, 15)];
-    if (![_orderTypeString isEqualToString:@"course"]) {
+    if (![_orderTypeString isEqualToString:@"course"] && ![_orderTypeString isEqualToString:@"courseKanjia"]) {
         _timeLabel.frame = CGRectMake(MainScreenWidth - 15 - 150, 15 + 72 - 15, 150, 15);
     }
     _timeLabel.font = SYSTEMFONT(11);
@@ -94,7 +94,7 @@
     _courseHourLabel.textAlignment = NSTextAlignmentRight;
     _courseHourLabel.textColor = EdlineV5_Color.textThirdColor;
     [_topContentView addSubview:_courseHourLabel];
-    _courseHourLabel.hidden = ![_orderTypeString isEqualToString:@"course"];
+    _courseHourLabel.hidden = (![_orderTypeString isEqualToString:@"course"] && ![_orderTypeString isEqualToString:@"courseKanjia"]);
     
 //    _orderTypeView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 168)];
 //    _orderTypeView.backgroundColor = [UIColor whiteColor];
@@ -105,7 +105,7 @@
 //    [self makeOrderType1View3];
 //    [_orderTypeView setHeight:_orderTypeView3.bottom];
     
-    if ([_orderTypeString isEqualToString:@"course"]) {
+    if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
         _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 110)];
         _otherView.backgroundColor = [UIColor whiteColor];
         [_mainScrollView addSubview:_otherView];
@@ -270,7 +270,7 @@
     _youhuiLabel.font = SYSTEMFONT(13);
     _youhuiLabel.textColor = EdlineV5_Color.textThirdColor;
     [_bottomView addSubview:_youhuiLabel];
-    _youhuiLabel.hidden = ![_orderTypeString isEqualToString:@"course"];
+    _youhuiLabel.hidden = (![_orderTypeString isEqualToString:@"course"] && ![_orderTypeString isEqualToString:@"courseKanjia"]);
     
     _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 110, 0, 110, 36)];
     [_submitButton setTitle:@"提交订单" forState:0];
@@ -345,7 +345,7 @@
     }
     
     NSString *courseOrderInfoUrl = [Net_Path courseOrderInfo];
-    if ([_orderTypeString isEqualToString:@"course"]) {
+    if ([_orderTypeString isEqualToString:@"course"]  || [_orderTypeString isEqualToString:@"courseKanjia"]) {
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
@@ -360,7 +360,7 @@
     
     NSMutableDictionary *param = [NSMutableDictionary new];
     if (SWNOTEmptyStr(_orderId)) {
-        if ([_orderTypeString isEqualToString:@"course"]) {
+        if ([_orderTypeString isEqualToString:@"course"]  || [_orderTypeString isEqualToString:@"courseKanjia"]) {
             [param setObject:_orderId forKey:@"course_id"];
         } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
             [param setObject:_orderId forKey:@"section_id"];
@@ -397,7 +397,7 @@
         return;
     }
     NSString *courseOrderInfoUrl = [Net_Path courseOrderInfo];
-    if ([_orderTypeString isEqualToString:@"course"]) {
+    if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
         courseOrderInfoUrl = [Net_Path courseOrderInfo];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         courseOrderInfoUrl = [Net_Path courseHourseOrderInfo];
@@ -412,7 +412,7 @@
     }
     
     NSMutableDictionary *pass = [[NSMutableDictionary alloc] init];
-    if ([_orderTypeString isEqualToString:@"course"]) {
+    if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
         [pass setObject:_orderId forKey:@"course_id"];
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         [pass setObject:_orderId forKey:@"section_id"];
@@ -448,7 +448,7 @@
             [_textLabel setHeight:_textLabel.height];
         }
         
-        if ([_orderTypeString isEqualToString:@"course"]) {
+        if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
             _courseTypeImage.hidden = NO;
             [_courseFaceImageView sd_setImageWithURL:EdulineUrlString([[_orderInfo objectForKey:@"data"] objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
             // 1 点播 2 直播 3 面授 4 专辑

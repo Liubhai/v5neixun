@@ -92,6 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *next_record_id;// 错题练习 顺序重练是否有下一题id
 
 @property (strong, nonatomic) NSString *score;// 试题分数
+@property (strong, nonatomic) NSString *user_score;// 用户得分
 @property (strong, nonatomic) NSArray *points;
 @property (strong, nonatomic) NSArray *answer_data;
 @property (strong, nonatomic) NSString *examAnswer;

@@ -277,7 +277,8 @@
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = 4.0;
                     /* 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答题 **/
-                    if ([((ExamModel *)childArray[i]).question_type isEqualToString:@"8"] || [((ExamModel *)childArray[i]).question_type isEqualToString:@"6"]) {
+                    /** [((ExamModel *)childArray[i]).question_type isEqualToString:@"8"] || [((ExamModel *)childArray[i]).question_type isEqualToString:@"6"] */
+                    if (((ExamModel *)childArray[i]).subjective) {
                         btn.layer.borderColor = HEXCOLOR(0xDCDFE6).CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = HEXCOLOR(0xF0F0F2);

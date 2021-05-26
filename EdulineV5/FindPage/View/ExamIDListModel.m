@@ -78,7 +78,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"title"] || [property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"id"] || [property.name isEqualToString:@"analyze"] || [property.name isEqualToString:@"topic_level"] || [property.name isEqualToString:@"next_topic_id"] || [property.name isEqualToString:@"next_topic_id"] || [property.name isEqualToString:@"examAnswer"] || [property.name isEqualToString:@"reference_answer"]) {
+    if ([property.name isEqualToString:@"title"] || [property.name isEqualToString:@"user_score"] || [property.name isEqualToString:@"question_type"] || [property.name isEqualToString:@"id"] || [property.name isEqualToString:@"analyze"] || [property.name isEqualToString:@"topic_level"] || [property.name isEqualToString:@"next_topic_id"] || [property.name isEqualToString:@"next_topic_id"] || [property.name isEqualToString:@"examAnswer"] || [property.name isEqualToString:@"reference_answer"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
