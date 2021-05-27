@@ -410,17 +410,23 @@
             sectionRightOrErrorIcon.hidden = NO;
             if ([modelpass.question_type isEqualToString:@"8"]) {
                 // 如果是阅卷中 显示 如果阅卷了 隐藏 并显示得分
-                if (modelpass.answered) {
-                    // 阅卷中、已阅卷
-//                    exam_grade_icon
-                    if (![_answer_status isEqualToString:@"2"]) {
-                        sectionRightOrErrorIcon.image = Image(@"exam_grade_icon");
-                    } else {
-                        sectionRightOrErrorIcon.hidden = YES;
-                    }
+                // 解答题
+                if ([_answer_status isEqualToString:@"2"]) {
+                    sectionRightOrErrorIcon.hidden = YES;
                 } else {
-                    sectionRightOrErrorIcon.image = Image(@"exam_notanswer_icon");
+                    sectionRightOrErrorIcon.hidden = NO;
+                    sectionRightOrErrorIcon.image = Image(@"exam_grade_icon");
                 }
+//                if (modelpass.answered) {
+//                    // 阅卷中、已阅卷
+//                    if (![_answer_status isEqualToString:@"2"]) {
+//                        sectionRightOrErrorIcon.image = Image(@"exam_grade_icon");
+//                    } else {
+//                        sectionRightOrErrorIcon.hidden = YES;
+//                    }
+//                } else {
+//                    sectionRightOrErrorIcon.image = Image(@"exam_notanswer_icon");
+//                }
             } else {
                 sectionRightOrErrorIcon.image = modelpass.answered ? (modelpass.is_right ? Image(@"exam_correct_icon") : Image(@"exam_fault_icon")) : Image(@"exam_notanswer_icon");
             }
@@ -911,6 +917,11 @@
                                         if (SWNOTEmptyArr(detail.answer_data)) {
                                             op.userAnswerValue = detail.answer_data[0];
                                         }
+                                        if (SWNOTEmptyStr(detail.reference_answer)) {
+                                            detail.examAnswer = [EdulineV5_Tool removeFilterHTML:detail.reference_answer];
+                                        } else {
+                                            detail.examAnswer = @"";
+                                        }
                                     } else {
                                         for (int k = 0; k<detail.options.count; k++) {
                                             ExamDetailOptionsModel *modelOp = detail.options[k];
@@ -938,8 +949,8 @@
                                             }
                                         }
                                         detail.is_right = detail.answer_right;
+                                        detail.examAnswer = examAnswer;
                                     }
-                                    detail.examAnswer = examAnswer;
                                 }
                             }
                         } else {
@@ -950,7 +961,7 @@
                                     op.userAnswerValue = pass.answer_data[0];
                                 }
                                 if (SWNOTEmptyStr(pass.reference_answer)) {
-                                    pass.examAnswer = pass.reference_answer;
+                                    pass.examAnswer = [EdulineV5_Tool removeFilterHTML:pass.reference_answer];
                                 } else {
                                     pass.examAnswer = @"";
                                 }

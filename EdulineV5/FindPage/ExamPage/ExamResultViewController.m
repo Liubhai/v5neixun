@@ -407,7 +407,7 @@
                         btn.layer.borderColor = HEXCOLOR(0xDCDFE6).CGColor;
                         btn.layer.borderWidth = 1.0;
                         btn.backgroundColor = HEXCOLOR(0xF0F0F2);
-                        [btn setTitleColor:HEXCOLOR(0x67C23A) forState:0];
+                        [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
                     } else {
                         if (((ExamModel *)childArray[i]).answered) {
                             if (((ExamModel *)childArray[i]).answer_right) {
