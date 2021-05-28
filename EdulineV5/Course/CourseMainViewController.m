@@ -984,6 +984,10 @@
                     if (SWNOTEmptyDictionary(_dataSource[@"promotion"])) {
                         NSDictionary *promotion = [NSDictionary dictionaryWithDictionary:_dataSource[@"promotion"]];
                         NSString *promotionType = [NSString stringWithFormat:@"%@",promotion[@"type"]];
+                        NSString *running_status = [NSString stringWithFormat:@"%@",promotion[@"running_status"]];
+                        if ([running_status isEqualToString:@"1"]) {
+                            vc.promotion_id = [NSString stringWithFormat:@"%@",promotion[@"id"]];
+                        }
                         /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
                         if ([promotionType isEqualToString:@"1"] || [promotionType isEqualToString:@"2"]) {
 

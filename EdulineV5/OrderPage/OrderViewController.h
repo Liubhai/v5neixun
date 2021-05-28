@@ -70,6 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL isTuanGou;// 是不是团购(团购只需要调用开团拼团前接口就获取到订单信息)
 
+@property (strong, nonatomic) NSString *promotion_id;
+
 @end
 
 NS_ASSUME_NONNULL_END

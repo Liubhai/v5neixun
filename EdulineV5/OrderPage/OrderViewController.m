@@ -362,6 +362,9 @@
     if (SWNOTEmptyStr(_orderId)) {
         if ([_orderTypeString isEqualToString:@"course"]  || [_orderTypeString isEqualToString:@"courseKanjia"]) {
             [param setObject:_orderId forKey:@"course_id"];
+            if (SWNOTEmptyStr(_promotion_id)) {
+                [param setObject:_promotion_id forKey:@"promotion_id"];
+            }
         } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
             [param setObject:_orderId forKey:@"section_id"];
         } else if ([_orderTypeString isEqualToString:@"exam_special"]) {

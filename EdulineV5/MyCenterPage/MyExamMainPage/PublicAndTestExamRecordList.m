@@ -96,11 +96,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ExamResultViewController *vc = [[ExamResultViewController alloc] init];
     EXamRecordModel *model = _dataSource[indexPath.row];
-    vc.record_id = [NSString stringWithFormat:@"%@",model.topic_id];
-    vc.answer_status = [NSString stringWithFormat:@"%@",model.answer_status];
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([model.answer_status isEqualToString:@"2"] || [model.visible_answer isEqualToString:@"1"]) {
+        ExamResultViewController *vc = [[ExamResultViewController alloc] init];
+        vc.record_id = [NSString stringWithFormat:@"%@",model.topic_id];
+        vc.answer_status = [NSString stringWithFormat:@"%@",model.answer_status];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [self showHudInView:self.view showHint:@"正在阅卷，请耐心等待"];
+    }
 }
 
 - (void)getFirstList {

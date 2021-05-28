@@ -112,7 +112,7 @@
 
 // MARK: - 加入团的点击事件 GrouListCellDelegate
 - (void)joinGroupByGroupId:(NSString *)groupID groupInfo:(NSDictionary *)groupInfo {
-    [self joinPintuanBeforeNet:groupID];
+    [self joinPintuanBeforeNet:groupID groupInfo:groupInfo];
 }
 
 - (void)applyPintuan {
@@ -145,6 +145,7 @@
                         vc.orderTypeString = @"course";
                         vc.orderId = _courseId;
                         vc.isTuanGou = YES;
+                        vc.promotion_id = [NSString stringWithFormat:@"%@",_videoDataSource[@"promotion"][@"id"]];
                         vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                         [self.parentViewController.navigationController pushViewController:vc animated:YES];
                         [self closeButtonClick];
@@ -160,7 +161,7 @@
 }
 
 // MARK: - 参加拼团前的一个请求
-- (void)joinPintuanBeforeNet:(NSString *)tuanId {
+- (void)joinPintuanBeforeNet:(NSString *)tuanId groupInfo:(NSDictionary *)groupInfo {
     if (SWNOTEmptyStr(tuanId)) {
         [Net_API requestPOSTWithURLStr:[Net_Path joinPintuanNet] WithAuthorization:nil paramDic:@{@"tuan_id":tuanId} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
@@ -169,6 +170,7 @@
                     vc.orderTypeString = @"course";
                     vc.orderId = _courseId;
                     vc.isTuanGou = YES;
+                    vc.promotion_id = [NSString stringWithFormat:@"%@",groupInfo[@"promotion_id"]];
                     vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [self.parentViewController.navigationController pushViewController:vc animated:YES];
                     [self closeButtonClick];

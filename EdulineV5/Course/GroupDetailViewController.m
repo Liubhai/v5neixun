@@ -727,6 +727,7 @@
                     OrderViewController *vc = [[OrderViewController alloc] init];
                     vc.orderTypeString = @"courseKanjia";
                     vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    vc.promotion_id = _activityId;
                     [self.navigationController pushViewController:vc animated:YES];
                     _kanjiaButton.enabled = YES;
                 } else {
@@ -763,6 +764,7 @@
                     OrderViewController *vc = [[OrderViewController alloc] init];
                     vc.orderTypeString = @"courseKanjia";
                     vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                    vc.promotion_id = _activityId;
                     [self.navigationController pushViewController:vc animated:YES];
                     _kanjiaButton.enabled = YES;
                 } else {
@@ -879,6 +881,7 @@
                     vc.orderTypeString = @"course";
                     vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
                     vc.isTuanGou = YES;
+                    vc.promotion_id = _activityId;
                     vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [self.navigationController pushViewController:vc animated:YES];
                 }

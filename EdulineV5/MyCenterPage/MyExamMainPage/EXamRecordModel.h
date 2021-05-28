@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *user_score;//得分
 @property (strong, nonatomic) NSString *paper_score;//试卷总分
 @property (strong, nonatomic) NSString *answer_status;//阅卷状态【0：提交答案；1：客观题已阅卷；2：主观题已阅卷，完成阅卷】
+@property (strong, nonatomic) NSString *visible_answer;//交卷后是否显示答案【0：否；1：是；】
 @property (strong, nonatomic) NSString *paper_title; // 试题题干
 @property (strong, nonatomic) NSString *rollup_title; // 套卷名称
 @property (strong, nonatomic) NSString *commit_time;// 提交时间
