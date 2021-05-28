@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "KanjiaListCell.h"
 #import "Net_Path.h"
+#import "AppDelegate.h"
 #import "V5_UserModel.h"
 #import "OrderViewController.h"
 #import "SharePosterViewController.h"
@@ -91,7 +92,15 @@
     
     [self makeCourseInfoView];
     [self groupDetailUI];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestActivityDetailInfo) name:@"requestActivityDetailInfo" object:nil];
+//    // 此时需要判断登录
+//    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+//        [AppDelegate presentLoginNav:self];
+//        return;
+//    }
     [self requestActivityDetailInfo];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -644,6 +653,11 @@
 
 // MARK: - 团购底部按钮点击事件
 - (void)groupDoButtonClick:(UIButton *)sender {
+    // 此时需要判断登录
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     _doButton.enabled = NO;
     NSString *groupStatus = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"status"]];
     NSString *sponsor_user_id = [NSString stringWithFormat:@"%@",_activityInfo[@"user_id"]];
@@ -685,6 +699,11 @@
 
 // MARK: - 砍价按钮点击事件
 - (void)kanjiaButtonClick:(UIButton *)sender {
+    // 此时需要判断登录
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     _kanjiaButton.enabled = NO;
     if (!SWNOTEmptyDictionary(_activityInfo)) {
         return;
@@ -813,6 +832,9 @@
         return;
     }
     if (SWNOTEmptyStr(_activityType)) {
+        if (!SWNOTEmptyStr(usersharecodeString)) {
+            usersharecodeString = usersharecode;
+        }
         [[NSUserDefaults standardUserDefaults] setObject:usersharecodeString forKey:@"usersharecode"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         NSMutableDictionary *param = [NSMutableDictionary new];

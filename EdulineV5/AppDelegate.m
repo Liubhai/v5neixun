@@ -298,6 +298,7 @@
 
 - (void)didFinishLogin {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadUserInfo" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"requestActivityDetailInfo" object:nil];
 }
 
 +(AppDelegate *)delegate

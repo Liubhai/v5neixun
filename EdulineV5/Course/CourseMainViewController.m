@@ -1012,6 +1012,10 @@
 
 - (void)kanJiaAndPinTuan:(CourseDownView *)downView {
     // 活动
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if (SWNOTEmptyDictionary(_dataSource[@"promotion"])) {
         NSDictionary *promotion = [NSDictionary dictionaryWithDictionary:_dataSource[@"promotion"]];
         NSString *promotionType = [NSString stringWithFormat:@"%@",promotion[@"type"]];
