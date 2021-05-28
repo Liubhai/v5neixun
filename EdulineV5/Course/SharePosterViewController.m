@@ -83,7 +83,7 @@
     [_posterImageView addSubview:_courseTitle];
     
     _coursePricelabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.left, _courseTitle.bottom + 3, _courseFace.width, 19)];
-    _coursePricelabel.font = SYSTEMFONT(15);
+    _coursePricelabel.font = SYSTEMFONT(11);
     _coursePricelabel.textColor = EdlineV5_Color.faildColor;
     [_posterImageView addSubview:_coursePricelabel];
     
@@ -112,7 +112,17 @@
     if (SWNOTEmptyDictionary(_shareContentDict)) {
         [_courseFace sd_setImageWithURL:EdulineUrlString(_shareContentDict[@"cover_url"]) placeholderImage:DefaultImage];
         _courseTitle.text = [NSString stringWithFormat:@"%@",_shareContentDict[@"course_title"]];
-        _coursePricelabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"course_price"]]];
+        NSString *price = [NSString stringWithFormat:@"%@%@  ",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"course_price"]]];
+        NSString *scribing_price = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"scribing_price"]]];
+        
+        NSString *finalPrice = [NSString stringWithFormat:@"%@%@",price,scribing_price];
+        NSRange rangNow = NSMakeRange(price.length, scribing_price.length);
+        NSRange rangOld = NSMakeRange(0, price.length);
+        NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:finalPrice];
+        [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(15),NSForegroundColorAttributeName: EdlineV5_Color.textPriceColor} range:rangOld];
+        [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangNow];
+        _coursePricelabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+//        _coursePricelabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"course_price"]]];
         
         NSString *tipPrice = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"max_profit"]]];
         NSString *tipText = [NSString stringWithFormat:@"每成功邀请一名用户预计最多收入 %@",tipPrice];
