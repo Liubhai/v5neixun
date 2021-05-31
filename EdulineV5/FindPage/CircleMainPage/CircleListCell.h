@@ -11,9 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class CircleListCell;
+
 @protocol CircleListCellDelegate <NSObject>
 
 - (void)showCirclePic:(NSDictionary *)dict imagetag:(NSInteger)tag toView:(UIImageView *)toImageView;
+
+- (void)likeCircleClick:(CircleListCell *)cell;
 
 @end
 
@@ -33,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) NSDictionary *userCommentInfo;
 
-- (void)setCircleCellInfo:(NSDictionary *)dict;
+- (void)setCircleCellInfo:(NSDictionary *)dict circleType:(NSString *)circleType;
 
 @end
 

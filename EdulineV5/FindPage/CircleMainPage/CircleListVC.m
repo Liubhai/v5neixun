@@ -11,6 +11,9 @@
 #import "CircleListCell.h"
 #import "Net_Path.h"
 
+#import "AppDelegate.h"
+#import "V5_UserModel.h"
+
 @interface CircleListVC ()<UITableViewDelegate, UITableViewDataSource, CircleListCellDelegate, ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource> {
     NSInteger page;
     UIImageView *currentShowPicImageView;
@@ -64,7 +67,7 @@
     if (!cell) {
         cell = [[CircleListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setCircleCellInfo:_dataSource[indexPath.row]];
+    [cell setCircleCellInfo:_dataSource[indexPath.row] circleType:_circleType];
     cell.delegate = self;
     return cell;
 }
@@ -180,14 +183,33 @@
     return photo;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+// MARK: - 点赞按钮点击事件
+- (void)likeCircleClick:(CircleListCell *)cell {
+    // 此时需要判断登录
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    BOOL liked = [[NSString stringWithFormat:@"%@",cell.userCommentInfo[@"liked"]] boolValue];
+    NSString *circleId = [NSString stringWithFormat:@"%@",cell.userCommentInfo[@"id"]];
+    [Net_API requestPOSTWithURLStr:[Net_Path circleLikeNet] WithAuthorization:nil paramDic:@{@"type":_circleType,@"obj_id":circleId,@"status":(liked ? @"0" : @"1")} finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            [self showHudInView:self.view showHint:responseObject[@"msg"]];
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                cell.zanCountButton.selected = !liked;
+                NSIndexPath *cellpath = [self.tableView indexPathForCell:cell];
+                NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellpath.row]];
+                [pass setObject:liked ? @"0" : @"1" forKey:@"liked"];
+                NSString *likeNum = [NSString stringWithFormat:@"%@",pass[@"like_num"]];
+                [pass setObject:liked ? @([likeNum integerValue] - 1) : @([likeNum integerValue] + 1) forKey:@"like_num"];
+                [_dataSource replaceObjectAtIndex:cellpath.row withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                [_tableView reloadRowAtIndexPath:cellpath withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:@"操作失败,请稍后再试"];
+    }];
+    
 }
-*/
 
 @end

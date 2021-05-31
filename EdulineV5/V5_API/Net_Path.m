@@ -789,4 +789,9 @@
     return [Net_Path fullPath:@"circle/list" repalce:@"" byReplece:@""];
 }
 
+/** 圈子点赞 */
++ (NSString *)circleLikeNet {
+    return [Net_Path fullPath:@"circle/like" repalce:@"" byReplece:@""];
+}
+
 @end

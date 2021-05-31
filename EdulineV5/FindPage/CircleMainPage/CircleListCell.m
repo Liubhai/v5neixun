@@ -30,11 +30,9 @@
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 10, _userFace.top, 150, 15)];
     _nameLabel.textColor = EdlineV5_Color.textFirstColor;
     _nameLabel.font = SYSTEMFONT(14);
-    _nameLabel.text = @"卡卡西";
     [self.contentView addSubview:_nameLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom - 13, 100, 13)];
-    _timeLabel.text = @"18:23";
     _timeLabel.font = SYSTEMFONT(12);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     [self.contentView addSubview:_timeLabel];
@@ -44,14 +42,15 @@
     _guanzhuButton.layer.cornerRadius = 2;
     _guanzhuButton.centerY = _userFace.centerY;
     [_guanzhuButton setTitle:@"+ 关注" forState:0];
+    [_guanzhuButton setTitle:@"已关注" forState:UIControlStateSelected];
     [_guanzhuButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [_guanzhuButton setTitleColor:EdlineV5_Color.textThirdColor forState:UIControlStateSelected];
     _guanzhuButton.layer.borderColor = EdlineV5_Color.themeColor.CGColor;
     _guanzhuButton.layer.borderWidth = 1;
     _guanzhuButton.titleLabel.font = SYSTEMFONT(11);
     [self.contentView addSubview:_guanzhuButton];
     
     _contentLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 15, MainScreenWidth - _nameLabel.left - 15, 50)];
-    _contentLabel.text = @"但看待死但那打死爱死打卡上的劳动拉上来的啦啦队啦啦收到啦到啦";
     _contentLabel.textColor = EdlineV5_Color.textFirstColor;
     _contentLabel.font = SYSTEMFONT(14);
     _contentLabel.numberOfLines = 0;
@@ -105,12 +104,19 @@
     [self.contentView addSubview:_lineView];
 }
 
-- (void)setCircleCellInfo:(NSDictionary *)dict {
+- (void)setCircleCellInfo:(NSDictionary *)dict circleType:(nonnull NSString *)circleType {
     _userCommentInfo = dict;
     [_userFace sd_setImageWithURL:EdulineUrlString(dict[@"avatar"]) placeholderImage:DefaultUserImage];
     
-    _nameLabel.text = [NSString stringWithFormat:@"%@",dict[@"create_time"]];
+    _nameLabel.text = [NSString stringWithFormat:@"%@",dict[@"nick_name"]];
     _timeLabel.text = [EdulineV5_Tool formatterDate:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];
+    _guanzhuButton.selected = [[NSString stringWithFormat:@"%@",dict[@"followed"]] boolValue];
+    _guanzhuButton.layer.borderColor = _guanzhuButton.selected ? EdlineV5_Color.textThirdColor.CGColor : EdlineV5_Color.themeColor.CGColor;
+    if ([circleType isEqualToString:@"3"]) {
+        _guanzhuButton.hidden = YES;
+    } else {
+        _guanzhuButton.hidden = NO;
+    }
     
     _contentLabel.text = [NSString stringWithFormat:@"%@",dict[@"content"]];
     _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 15, MainScreenWidth - _nameLabel.left - 15, 50);
@@ -167,13 +173,16 @@
     [self.contentView addSubview:_shareButton];
     
     _zanCountButton.frame = CGRectMake(MainScreenWidth - 15 - zanWidth, _pictureBackView.bottom + 17, zanWidth, 20);
-    [_zanCountButton setImage:Image(@"dianzan_icon") forState:0];
+    [_zanCountButton setImage:Image(@"dianzan_icon_norm") forState:0];
+    [_zanCountButton setImage:Image(@"dianzan_icon") forState:UIControlStateSelected];
     [_zanCountButton setTitle:zanCount forState:0];
     [_zanCountButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    [_zanCountButton setTitleColor:EdlineV5_Color.faildColor forState:UIControlStateSelected];
     _zanCountButton.titleLabel.font = SYSTEMFONT(12);
     _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
     [self.contentView addSubview:_zanCountButton];
+    _zanCountButton.selected = [[NSString stringWithFormat:@"%@",dict[@"liked"]] boolValue];
     
     _commentCountButton.frame = CGRectMake(0, _zanCountButton.top, commentWidth, 20);
     [_commentCountButton setImage:Image(@"comment_icon") forState:0];
@@ -197,9 +206,9 @@
 }
 
 - (void)zanButtonClick:(UIButton *)sender {
-//    if (_delegate && [_delegate respondsToSelector:@selector(zanComment:)]) {
-//        [_delegate zanComment:self];
-//    }
+    if (_delegate && [_delegate respondsToSelector:@selector(likeCircleClick:)]) {
+        [_delegate likeCircleClick:self];
+    }
 }
 
 - (void)shareButtonClick:(UIButton *)sender {

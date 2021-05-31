@@ -570,6 +570,9 @@ struct NetWorkUrl {
 /** 圈子列表 */
 + (NSString *)circleListNet;
 
+/** 圈子点赞 */
++ (NSString *)circleLikeNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
