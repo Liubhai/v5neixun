@@ -104,7 +104,7 @@
     [self.contentView addSubview:_lineView];
 }
 
-- (void)setCircleCellInfo:(NSDictionary *)dict circleType:(nonnull NSString *)circleType {
+- (void)setCircleCellInfo:(NSDictionary *)dict circleType:(nonnull NSString *)circleType isDetail:(BOOL)isDetail {
     _userCommentInfo = dict;
     [_userFace sd_setImageWithURL:EdulineUrlString(dict[@"avatar"]) placeholderImage:DefaultUserImage];
     
@@ -193,6 +193,14 @@
     _commentCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
     _commentCountButton.centerX = _contentLabel.left + _contentLabel.width / 2.0;
     [self.contentView addSubview:_commentCountButton];
+    
+    if (isDetail) {
+        _commentCountButton.hidden = YES;
+        _shareButton.centerX = _contentLabel.left + _contentLabel.width / 2.0;
+    } else {
+        _commentCountButton.hidden = NO;
+        [_shareButton setLeft:_contentLabel.left];
+    }
     
     _lineView.frame = CGRectMake(0, _shareButton.bottom + 10, MainScreenWidth, 1);
     

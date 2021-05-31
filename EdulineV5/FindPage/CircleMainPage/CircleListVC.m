@@ -68,7 +68,7 @@
     if (!cell) {
         cell = [[CircleListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setCircleCellInfo:_dataSource[indexPath.row] circleType:_circleType];
+    [cell setCircleCellInfo:_dataSource[indexPath.row] circleType:_circleType isDetail:NO];
     cell.delegate = self;
     return cell;
 }
@@ -193,7 +193,7 @@
     }
     BOOL liked = [[NSString stringWithFormat:@"%@",cell.userCommentInfo[@"is_like"]] boolValue];
     NSString *circleId = [NSString stringWithFormat:@"%@",cell.userCommentInfo[@"id"]];
-    [Net_API requestPOSTWithURLStr:[Net_Path circleLikeNet] WithAuthorization:nil paramDic:@{@"type":_circleType,@"obj_id":circleId,@"status":(liked ? @"0" : @"1")} finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPOSTWithURLStr:[Net_Path circleLikeNet] WithAuthorization:nil paramDic:@{@"type":@"1",@"obj_id":circleId,@"status":(liked ? @"0" : @"1")} finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:responseObject[@"msg"]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {

@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) NSDictionary *userCommentInfo;
 
-- (void)setCircleCellInfo:(NSDictionary *)dict circleType:(NSString *)circleType;
+- (void)setCircleCellInfo:(NSDictionary *)dict circleType:(NSString *)circleType isDetail:(BOOL)isDetail;
 
 @end
 
