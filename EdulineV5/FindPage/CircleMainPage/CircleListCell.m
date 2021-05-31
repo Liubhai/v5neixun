@@ -182,7 +182,7 @@
     _zanCountButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
     _zanCountButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
     [self.contentView addSubview:_zanCountButton];
-    _zanCountButton.selected = [[NSString stringWithFormat:@"%@",dict[@"liked"]] boolValue];
+    _zanCountButton.selected = [[NSString stringWithFormat:@"%@",dict[@"is_like"]] boolValue];
     
     _commentCountButton.frame = CGRectMake(0, _zanCountButton.top, commentWidth, 20);
     [_commentCountButton setImage:Image(@"comment_icon") forState:0];
@@ -212,9 +212,9 @@
 }
 
 - (void)shareButtonClick:(UIButton *)sender {
-//    if (_delegate && [_delegate respondsToSelector:@selector(editContent:)]) {
-//        [_delegate editContent:self];
-//    }
+    if (_delegate && [_delegate respondsToSelector:@selector(shareCircleClick:)]) {
+        [_delegate shareCircleClick:self];
+    }
 }
 
 - (void)picTap:(UITapGestureRecognizer *)tap {

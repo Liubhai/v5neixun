@@ -56,7 +56,11 @@
     _pictureIdsArray = [NSMutableArray new];
     _pictureIds = @"";
     
-    [self makeSubView];
+    if (_isForward && SWNOTEmptyDictionary(_forwardInfo)) {
+        [self getForwardCircleInfo];
+    } else {
+        [self makeSubView];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -97,25 +101,36 @@
     _pictureBackView.backgroundColor = [UIColor whiteColor];
     [_mainScrollView addSubview:_pictureBackView];
     
-    if (_isForward) {
+    if (_isForward && SWNOTEmptyDictionary(_forwardInfo) && SWNOTEmptyDictionary(_forwardRealInfo)) {
         _forwardBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _contentTextBackView.bottom, _contentTextBackView.width, 40 + 64 + 10)];
         _forwardBackView.backgroundColor = EdlineV5_Color.backColor;
         [_mainScrollView addSubview:_forwardBackView];
         
         // 40 64 10
         _forwardContent = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, _forwardBackView.width - 20, 40)];
-        _forwardContent.text = @"@呦ing户：原文内容，文字显示一排图片";
         _forwardContent.font = SYSTEMFONT(13);
+        _forwardContent.textColor = EdlineV5_Color.textThirdColor;
+        NSString *forwardName = [NSString stringWithFormat:@"@%@：",_forwardRealInfo[@"nick_name"]];
+        NSString *fullForwardString = [NSString stringWithFormat:@"%@%@",forwardName,_forwardRealInfo[@"content"]];
+        NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:fullForwardString];
+        [att addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, forwardName.length)];
+        _forwardContent.attributedText = [[NSAttributedString alloc] initWithAttributedString:att];
         [_forwardBackView addSubview:_forwardContent];
         
-        _forwardPicture = [[UIImageView alloc] initWithFrame:CGRectMake(10, _forwardContent.bottom, 64, 64)];
-        _forwardPicture.clipsToBounds = YES;
-        _forwardPicture.contentMode = UIViewContentModeScaleAspectFill;
-        _forwardPicture.image = DefaultImage;
-        [_forwardBackView addSubview:_forwardPicture];
+        NSArray *picArray = [NSArray arrayWithArray:[_forwardRealInfo objectForKey:@"attach_url"]];
+        if (SWNOTEmptyArr(picArray)) {
+            _forwardPicture = [[UIImageView alloc] initWithFrame:CGRectMake(10, _forwardContent.bottom, 64, 64)];
+            _forwardPicture.clipsToBounds = YES;
+            _forwardPicture.contentMode = UIViewContentModeScaleAspectFill;
+            [_forwardPicture sd_setImageWithURL:EdulineUrlString(picArray[0]) placeholderImage:DefaultImage];
+            [_forwardBackView addSubview:_forwardPicture];
+            [_forwardBackView setHeight:40 + 64 + 10];
+        } else {
+            [_forwardBackView setHeight:40];
+        }
+    } else {
+        [self dealPictureUI];
     }
-    
-    [self dealPictureUI];
     
     [_contentTextView becomeFirstResponder];
     
@@ -371,6 +386,13 @@
         } else {
             [param setObject:@"转发动态" forKey:@"content"];
         }
+        
+        /** 被转发的圈子信息组装 */
+        if (SWNOTEmptyDictionary(_forwardRealInfo)) {
+            [param setObject:[NSString stringWithFormat:@"%@",_forwardRealInfo[@"id"]] forKey:@"orignal_id"];
+            [param setObject:[NSString stringWithFormat:@"%@",_forwardRealInfo[@"user_id"]] forKey:@"owner_id"];
+        }
+        
     } else {
         if (SWNOTEmptyStr(_contentTextView.text)) {
             [param setObject:_contentTextView.text forKey:@"content"];
@@ -490,6 +512,23 @@
 //        [self hideHud];
 //        [self showHudInView:self.view showHint:@"上传图片超时,请重试"];
 //    }];
+}
+
+// MARK: - 请求转发圈子信息
+- (void)getForwardCircleInfo {
+    if (SWNOTEmptyDictionary(_forwardInfo)) {
+        NSString *orignal_id = [NSString stringWithFormat:@"%@",_forwardInfo[@"id"]];
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path circleForward] WithAuthorization:nil paramDic:@{@"orignal_id":orignal_id} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    _forwardRealInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"]];
+                    [self makeSubView];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 @end

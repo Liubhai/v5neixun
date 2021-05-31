@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)showCirclePic:(NSDictionary *)dict imagetag:(NSInteger)tag toView:(UIImageView *)toImageView;
 
 - (void)likeCircleClick:(CircleListCell *)cell;
+- (void)shareCircleClick:(CircleListCell *)cell;
 
 @end
 

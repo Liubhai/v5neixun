@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CirclePostViewController : BaseViewController
 
 @property (assign, nonatomic) BOOL isForward;// 是否是转发
+@property (strong, nonatomic) NSDictionary *forwardInfo;// 圈子列表传递的内容
+@property (strong, nonatomic) NSDictionary *forwardRealInfo;// 转发圈子的渲染内容
 
 @end
 
