@@ -490,10 +490,14 @@
         for (int i = 0; i<weakself.pictureArray.count; i++) {
             UploadImageModel *model = [UploadImageModel new];
             model.imageId = @"";
+            model.imageArray = [NSMutableArray new];
+            [model.imageArray addObject:weakself.pictureArray[i]];
+            model.imageIndex = [NSString stringWithFormat:@"%@",@(i+1)];
             [weakself.pictureIdsArray addObject:model];
             
             [Net_API POST:[Net_Path uploadImageField] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                 //上传图片
+                NSLog(@"发布图片第 %@ 张图片",model.imageIndex);
                 for (int i = 0; i<model.imageArray.count; i++) {
                     NSData *dataImg=UIImageJPEGRepresentation(model.imageArray[i], 0.5);
                     [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
@@ -501,61 +505,67 @@
             } progress:^(NSProgress * _Nonnull uploadProgress) {
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-                finishNum ++ ;
+                model.imageId = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
                 if ([[responseObject objectForKey:@"code"] integerValue] == 1) {
-                    model.imageId = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
-                    model.imageIndex = [NSString stringWithFormat:@"%@",@(finishNum)];
-                    model.imageArray = [NSMutableArray new];
-                    [model.imageArray addObject:weakself.pictureArray[finishNum]];
+                    finishNum ++ ;
                     if (finishNum == weakself.pictureArray.count) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             // 回到主线程进行UI操作
+                            NSString *faildIndex = @"";
                             for (int k = 0; k<weakself.pictureIdsArray.count; k++) {
                                 UploadImageModel *modelpass = weakself.pictureIdsArray[k];
                                 NSLog(@"发布图片第 %@ 张图片的ID = %@",modelpass.imageIndex,modelpass.imageId);
+                                if (!SWNOTEmptyStr(modelpass.imageId)) {
+                                    if (!SWNOTEmptyStr(faildIndex)) {
+                                        faildIndex = [NSString stringWithFormat:@"%@",modelpass.imageIndex];
+                                    } else {
+                                        faildIndex = [NSString stringWithFormat:@"%@、%@",faildIndex,modelpass.imageIndex];
+                                    }
+                                }
                             }
                             [weakself hideHud];
-                            [weakself postCircle];
+                            
+                            if (SWNOTEmptyStr(faildIndex)) {
+                                [weakself showHudInView:weakself.view showHint:[NSString stringWithFormat:@"上传第 %@ 图片超时,请重试",faildIndex]];
+                                _rightButton.enabled = YES;
+                            } else {
+                                [weakself postCircle];
+                            }
                         });
                     }
                 } else {
-                    [weakself showHudInView:weakself.view showHint:[responseObject objectForKey:@"msg"]];
+//                    [weakself showHudInView:weakself.view showHint:[responseObject objectForKey:@"msg"]];
                 }
             } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    // 回到主线程进行UI操作
-                    _rightButton.enabled = YES;
-                    [weakself hideHud];
-                    [weakself showHudInView:weakself.view showHint:@"上传图片超时,请重试"];
-                });
+                finishNum ++ ;
+                if (finishNum == weakself.pictureArray.count) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // 回到主线程进行UI操作
+                        _rightButton.enabled = YES;
+                        NSString *faildIndex = @"";
+                        for (int k = 0; k<weakself.pictureIdsArray.count; k++) {
+                            UploadImageModel *modelpass = weakself.pictureIdsArray[k];
+                            NSLog(@"发布图片第 %@ 张图片的ID = %@",modelpass.imageIndex,modelpass.imageId);
+                            if (!SWNOTEmptyStr(modelpass.imageId)) {
+                                if (!SWNOTEmptyStr(faildIndex)) {
+                                    faildIndex = [NSString stringWithFormat:@"%@",modelpass.imageIndex];
+                                } else {
+                                    faildIndex = [NSString stringWithFormat:@"%@、%@",faildIndex,modelpass.imageIndex];
+                                }
+                            }
+                        }
+                        [weakself hideHud];
+                        
+                        if (SWNOTEmptyStr(faildIndex)) {
+                            [weakself showHudInView:weakself.view showHint:[NSString stringWithFormat:@"上传第 %@ 图片超时,请重试",faildIndex]];
+                        } else {
+                            [weakself postCircle];
+                        }
+                    });
+                }
             }];
         }
     });
-    
-    
-    
-//    [Net_API POST:[Net_Path uploadImageField] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-//        //上传图片
-//        for (int i = 0; i<_pictureArray.count; i++) {
-//            NSData *dataImg=UIImageJPEGRepresentation(_pictureArray[i], 0.5);
-//            [formData appendPartWithFileData:dataImg name:@"file" fileName:[NSString stringWithFormat:@"image%d.jpg",i] mimeType:@"image/jpg"];
-//        }
-//    } progress:^(NSProgress * _Nonnull uploadProgress) {
-//
-//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
-//        [self hideHud];
-//        if ([[responseObject objectForKey:@"code"] integerValue] == 1) {
-//            _pictureIds = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
-//            [_pictureIdsArray removeAllObjects];
-//            [_pictureIdsArray addObject:_pictureIds];
-//            [self postCircle];
-//        } else {
-//            [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
-//        }
-//    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
-//        [self hideHud];
-//        [self showHudInView:self.view showHint:@"上传图片超时,请重试"];
-//    }];
 }
 
 // MARK: - 请求转发圈子信息
