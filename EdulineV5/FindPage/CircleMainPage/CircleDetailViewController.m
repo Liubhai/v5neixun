@@ -376,6 +376,11 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+//MARK: - 删除自己的圈子详情
+- (void)deleteCircleClick:(CircleListCell *)cell {
+    
+}
+
 // MARK: - 底部评论按钮点击事件
 - (void)commentCircleButtonClick:(UIButton *)sender {
     // 此时需要判断登录

@@ -68,6 +68,14 @@
     CGFloat zanWidth = [zanCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
     CGFloat space = 2.0;
     
+    _deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(_contentLabel.left, _pictureBackView.bottom + 17, 30, 20)];
+    [_deleteButton setTitle:@"删除" forState:0];
+    [_deleteButton setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+    _deleteButton.titleLabel.font = SYSTEMFONT(12);
+    [_deleteButton addTarget:self action:@selector(deleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:_deleteButton];
+    _deleteButton.hidden = YES;
+    
     _shareButton = [[UIButton alloc] initWithFrame:CGRectMake(_contentLabel.left, _pictureBackView.bottom + 17, shareWidth, 20)];
     [_shareButton setImage:Image(@"circle_share_icon") forState:0];
     [_shareButton setTitle:shareCount forState:0];
@@ -112,10 +120,16 @@
     _timeLabel.text = [EdulineV5_Tool formatterDate:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];
     _guanzhuButton.selected = [[NSString stringWithFormat:@"%@",dict[@"followed"]] boolValue];
     _guanzhuButton.layer.borderColor = _guanzhuButton.selected ? EdlineV5_Color.textThirdColor.CGColor : EdlineV5_Color.themeColor.CGColor;
+    
+    NSString *user_id = [NSString stringWithFormat:@"%@",dict[@"user_id"]];
     if ([circleType isEqualToString:@"3"]) {
         _guanzhuButton.hidden = YES;
     } else {
-        _guanzhuButton.hidden = NO;
+        if ([user_id isEqualToString:[V5_UserModel uid]]) {
+            _guanzhuButton.hidden = YES;
+        } else {
+            _guanzhuButton.hidden = NO;
+        }
     }
     
     _contentLabel.text = [NSString stringWithFormat:@"%@",dict[@"content"]];
@@ -153,6 +167,17 @@
         if (i == (picArray.count - 1)) {
             [_pictureBackView setHeight:pic.bottom];
         }
+    }
+    
+    _deleteButton.frame = CGRectMake(_contentLabel.left, _pictureBackView.bottom + 17, 30, 20);
+    if (isDetail) {
+        if ([user_id isEqualToString:[V5_UserModel uid]]) {
+            _deleteButton.hidden = NO;
+        } else {
+            _deleteButton.hidden = YES;
+        }
+    } else {
+        _deleteButton.hidden = YES;
     }
     
     NSString *commentCount = [NSString stringWithFormat:@"%@",dict[@"comment_num"]];
@@ -205,6 +230,12 @@
     _lineView.frame = CGRectMake(0, _shareButton.bottom + 10, MainScreenWidth, 1);
     
     [self setHeight:_lineView.bottom];
+}
+
+- (void)deleteButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(deleteCircleClick:)]) {
+        [_delegate deleteCircleClick:self];
+    }
 }
 
 - (void)commentButtonClick:(UIButton *)sender {

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "V5_Constant.h"
+#import "V5_UserModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)likeCircleClick:(CircleListCell *)cell;
 - (void)shareCircleClick:(CircleListCell *)cell;
+- (void)deleteCircleClick:(CircleListCell *)cell;
 
 @end
 
@@ -32,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *guanzhuButton;
 @property (strong, nonatomic) TYAttributedLabel *contentLabel;
 @property (strong, nonatomic) UIView *pictureBackView;
+@property (strong, nonatomic) UIButton *deleteButton;
 @property (strong, nonatomic) UIButton *shareButton;
 @property (strong, nonatomic) UIButton *commentCountButton;
 @property (strong, nonatomic) UIButton *zanCountButton;
