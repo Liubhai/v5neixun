@@ -14,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *circle_id;//圈子ID
 @property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) NSDictionary *detailInfo;
-@property (strong, nonatomic) NSDictionary *commentInfo;
+@property (strong, nonatomic) NSDictionary *detailInfo;// 顶部圈子详情内容
+@property (strong, nonatomic) NSDictionary *commentInfo;// 整个详情接口数据(顶部和评论)
 @property (strong, nonatomic) NSMutableArray *dataSource;
 
 @end

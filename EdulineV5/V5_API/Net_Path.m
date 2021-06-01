@@ -794,4 +794,14 @@
     return [Net_Path fullPath:@"circle/like" repalce:@"" byReplece:@""];
 }
 
+/** 圈子详情 */
++ (NSString *)circleDetailInfoNet {
+    return [Net_Path fullPath:@"circle" repalce:@"" byReplece:@""];
+}
+
+/** 圈子评论或者回复评论 */
++ (NSString *)circleCommentOrReplay {
+    return [Net_Path fullPath:@"circle/comment" repalce:@"" byReplece:@""];
+}
+
 @end

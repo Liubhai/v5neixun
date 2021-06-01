@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "V5_UserModel.h"
 #import "CirclePostViewController.h"
+#import "CircleDetailViewController.h"
 
 @interface CircleListVC ()<UITableViewDelegate, UITableViewDataSource, CircleListCellDelegate, ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource> {
     NSInteger page;
@@ -79,8 +80,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    QuestionDetailListViewController *vc = [[QuestionDetailListViewController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
+    CircleDetailViewController *vc = [[CircleDetailViewController alloc] init];
+    vc.circle_id = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"id"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getFirstList {

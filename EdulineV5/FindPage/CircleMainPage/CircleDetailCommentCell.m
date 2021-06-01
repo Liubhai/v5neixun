@@ -90,7 +90,7 @@
         [_nameLabel setWidth:nameWidth];
         NSString *replayUsername = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user"]]];
         NSString *replayUserId = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user_id"]]];
-        if ([replayUserId isEqualToString:@"0"] || ![info objectForKey:@"reply_user_id"]) {
+        if ([replayUserId isEqualToString:@"0"] || [replayUserId isEqualToString:@"<null>"] || ![info objectForKey:@"reply_user_id"]) {
             _contentLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
             _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
             _contentLabel.numberOfLines = 0;
@@ -158,7 +158,7 @@
         [_deleteButton setLeft:_timeLabel.right];
         [_deleteButton setTop:_timeLabel.top];
         
-        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
             if ([circle_userId isEqualToString:[V5_UserModel uid]]) {
                 _deleteButton.hidden = NO;
             } else {

@@ -573,6 +573,12 @@ struct NetWorkUrl {
 /** 圈子点赞 */
 + (NSString *)circleLikeNet;
 
+/** 圈子详情 */
++ (NSString *)circleDetailInfoNet;
+
+/** 圈子评论或者回复评论 */
++ (NSString *)circleCommentOrReplay;
+
 @end
 
 NS_ASSUME_NONNULL_END

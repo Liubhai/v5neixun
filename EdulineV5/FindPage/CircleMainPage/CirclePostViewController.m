@@ -45,6 +45,16 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _titleLabel.text = @"发布动态";
+    
+    if (_isForward) {
+        _titleLabel.text = @"发布动态";
+    } else {
+        _titleLabel.text = @"转发动态";
+        if (_isComment || _isReplayComment) {
+            _titleLabel.text = @"评论";
+        }
+    }
+    
     _rightButton.hidden = NO;
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"发布" forState:0];
@@ -90,6 +100,14 @@
     
     _contentPlaceL = [[UILabel alloc] initWithFrame:CGRectMake(_contentTextView.left, _contentTextView.top + 1, _contentTextView.width, 30)];
     _contentPlaceL.text = @"发布动态～";
+    if (_isForward) {
+        _contentPlaceL.text = @"发布动态～";
+    } else {
+        _contentPlaceL.text = @"输入内容～";
+        if (_isComment || _isReplayComment) {
+            _contentPlaceL.text = @"评论内容～";
+        }
+    }
     _contentPlaceL.textColor = EdlineV5_Color.textThirdColor;
     _contentPlaceL.font = SYSTEMFONT(14);
     _contentPlaceL.userInteractionEnabled = YES;
@@ -379,6 +397,11 @@
 - (void)postCircle {
     NSString *getUrl = [Net_Path circlePost];
     NSMutableDictionary *param = [NSMutableDictionary new];
+    if (SWNOTEmptyStr(_contentTextView.text)) {
+        [param setObject:_contentTextView.text forKey:@"content"];
+    } else {
+        [param setObject:@"分享动态" forKey:@"content"];
+    }
     if (_isForward) {
         getUrl = [Net_Path circleForward];
         if (SWNOTEmptyStr(_contentTextView.text)) {
@@ -394,10 +417,31 @@
         }
         
     } else {
-        if (SWNOTEmptyStr(_contentTextView.text)) {
-            [param setObject:_contentTextView.text forKey:@"content"];
-        } else {
-            [param setObject:@"分享动态" forKey:@"content"];
+        if (_isComment) {
+            getUrl = [Net_Path circleCommentOrReplay];
+            if (SWNOTEmptyStr(_contentTextView.text)) {
+                [param setObject:_contentTextView.text forKey:@"content"];
+            } else {
+                [param setObject:@"评论动态" forKey:@"content"];
+            }
+            if (SWNOTEmptyDictionary(_commentCircleInfo)) {
+                [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"id"]] forKey:@"circle_id"];
+            }
+        }
+        if (_isReplayComment) {
+            getUrl = [Net_Path circleCommentOrReplay];
+            if (SWNOTEmptyStr(_contentTextView.text)) {
+                [param setObject:_contentTextView.text forKey:@"content"];
+            } else {
+                [param setObject:@"回复评论" forKey:@"content"];
+            }
+            if (SWNOTEmptyDictionary(_commentCircleInfo)) {
+                [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"id"]] forKey:@"circle_id"];
+            }
+            if (SWNOTEmptyDictionary(_replayCommentInfo)) {
+                [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"comment_id"]] forKey:@"comment_id"];
+                [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"user_id"]] forKey:@"reply_user_id"];
+            }
         }
     }
     if (SWNOTEmptyArr(_pictureIdsArray)) {
@@ -416,7 +460,7 @@
         }
         [param setObject:[NSString stringWithFormat:@"[%@]",postimageids] forKey:@"attach"];
     }
-    [Net_API requestPOSTWithURLStr:[Net_Path circlePost] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
