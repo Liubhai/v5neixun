@@ -275,6 +275,7 @@
     [V5_UserModel deleteUserPassport];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usersharecode"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"localSharePost"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [RootV5VC destoryShared];
     if (self.window.rootViewController) {
         [self.window.rootViewController removeFromParentViewController];

@@ -55,7 +55,7 @@
     [_deleteButton setTitle:@"删除" forState:0];
     [_deleteButton setTitleColor:EdlineV5_Color.textSecendColor forState:0];
     _deleteButton.titleLabel.font = SYSTEMFONT(12);
-    [_deleteButton addTarget:self action:@selector(deleteComment:) forControlEvents:UIControlEventTouchUpInside];
+    [_deleteButton addTarget:self action:@selector(deleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_deleteButton];
     
     NSString *zanCount = @"1314";
