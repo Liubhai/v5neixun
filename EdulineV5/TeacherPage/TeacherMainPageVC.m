@@ -355,9 +355,9 @@
 - (void)goToUserCommenListVC:(UIButton *)sender {
     UserCommenListVC *vc = [[UserCommenListVC alloc] init];
     if (sender.tag == 666) {
-        vc.themeString = @"关注";
+        vc.themeString = @"我的关注";
     } else if (sender.tag == 667) {
-        vc.themeString = @"粉丝";
+        vc.themeString = @"我的粉丝";
     } else {
         vc.themeString = @"最近访客";
     }
