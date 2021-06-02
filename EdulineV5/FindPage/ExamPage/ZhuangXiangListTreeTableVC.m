@@ -361,29 +361,39 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 开始答题
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"是否继续上次作答？" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续答题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        if ([cell.treeItem.answered_num isEqualToString:@"0"]) {
             ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
             vc.examIds = cell.treeItem.course_id;
             vc.examType = _examTypeId;
             vc.examTitle = cell.treeItem.title;
             vc.examModuleId = _examModuleId;
             [self.navigationController pushViewController:vc animated:YES];
-            }];
-        [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
-        [alertController addAction:commentAction];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"重新开始" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
-            vc.examIds = cell.treeItem.course_id;
-            vc.examType = _examTypeId;
-            vc.examTitle = cell.treeItem.title;
-            vc.examModuleId = _examModuleId;
-            [self.navigationController pushViewController:vc animated:YES];
-            }];
-        [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
-        [alertController addAction:cancelAction];
-        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:alertController animated:YES completion:nil];
+        } else {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"是否继续上次作答？" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续答题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+                vc.examIds = cell.treeItem.course_id;
+                vc.examType = _examTypeId;
+                vc.examTitle = cell.treeItem.title;
+                vc.examModuleId = _examModuleId;
+                [self.navigationController pushViewController:vc animated:YES];
+                }];
+            [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+            [alertController addAction:commentAction];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"重新开始" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+                vc.examIds = cell.treeItem.course_id;
+                vc.examType = _examTypeId;
+                vc.examTitle = cell.treeItem.title;
+                vc.examModuleId = _examModuleId;
+                [self.navigationController pushViewController:vc animated:YES];
+                }];
+            [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
+            [alertController addAction:cancelAction];
+            alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     }
 }
 
@@ -413,30 +423,40 @@
         vc.orderId = course_id;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        // 开始答题
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"是否继续上次作答？" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续答题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        if ([cell.treeItem.answered_num isEqualToString:@"0"]) {
             ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
             vc.examIds = cell.treeItem.course_id;//course_id;
             vc.examType = _examTypeId;
             vc.examTitle = cell.treeItem.title;
             vc.examModuleId = _examModuleId;
             [self.navigationController pushViewController:vc animated:YES];
-            }];
-        [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
-        [alertController addAction:commentAction];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"重新开始" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
-            vc.examIds = cell.treeItem.course_id;//course_id;
-            vc.examType = _examTypeId;
-            vc.examTitle = cell.treeItem.title;
-            vc.examModuleId = _examModuleId;
-            [self.navigationController pushViewController:vc animated:YES];
-            }];
-        [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
-        [alertController addAction:cancelAction];
-        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:alertController animated:YES completion:nil];
+        } else {
+            // 开始答题
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"是否继续上次作答？" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续答题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+                vc.examIds = cell.treeItem.course_id;//course_id;
+                vc.examType = _examTypeId;
+                vc.examTitle = cell.treeItem.title;
+                vc.examModuleId = _examModuleId;
+                [self.navigationController pushViewController:vc animated:YES];
+                }];
+            [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+            [alertController addAction:commentAction];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"重新开始" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+                vc.examIds = cell.treeItem.course_id;//course_id;
+                vc.examType = _examTypeId;
+                vc.examTitle = cell.treeItem.title;
+                vc.examModuleId = _examModuleId;
+                [self.navigationController pushViewController:vc animated:YES];
+                }];
+            [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
+            [alertController addAction:cancelAction];
+            alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     }
 }
 /*

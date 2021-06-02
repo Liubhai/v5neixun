@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *user_price;
 @property (assign, nonatomic) BOOL has_bought;
 @property (strong, nonatomic) NSString *topic_count;
+@property (strong, nonatomic) NSString *answered_num;
 
 @end
 

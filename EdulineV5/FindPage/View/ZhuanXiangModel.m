@@ -23,7 +23,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"course_id"] || [property.name isEqualToString:@"id"] || [property.name isEqualToString:@"topic_count"]) {
+    if ([property.name isEqualToString:@"course_id"] || [property.name isEqualToString:@"id"] || [property.name isEqualToString:@"topic_count"] || [property.name isEqualToString:@"answered_num"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
