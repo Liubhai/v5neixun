@@ -14,6 +14,8 @@
 #import "ZhuangXiangListCell.h"
 #import "ExamDetailViewController.h"
 #import "OrderViewController.h"
+#import "AppDelegate.h"
+#import "V5_UserModel.h"
 
 @interface ZhuangXiangListTreeTableVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,ZhuangXiangListCellDelegate> {
     NSInteger page;
@@ -346,6 +348,11 @@
 
 // MARK: - 专项列表cell上按钮的一些操作代理
 - (void)userBuyOrExam:(ZhuangXiangListCell *)cell {
+    // 此时需要判断登录
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if ([cell.treeItem.user_price floatValue]>0 && !cell.treeItem.has_bought) {
         // 购买
         OrderViewController *vc = [[OrderViewController alloc] init];
@@ -354,16 +361,38 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 开始答题
-        ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
-        vc.examIds = cell.treeItem.course_id;
-        vc.examType = _examTypeId;
-        vc.examTitle = cell.treeItem.title;
-        vc.examModuleId = _examModuleId;
-        [self.navigationController pushViewController:vc animated:YES];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"是否继续上次作答？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续答题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+            vc.examIds = cell.treeItem.course_id;
+            vc.examType = _examTypeId;
+            vc.examTitle = cell.treeItem.title;
+            vc.examModuleId = _examModuleId;
+            [self.navigationController pushViewController:vc animated:YES];
+            }];
+        [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [alertController addAction:commentAction];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"重新开始" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+            vc.examIds = cell.treeItem.course_id;
+            vc.examType = _examTypeId;
+            vc.examTitle = cell.treeItem.title;
+            vc.examModuleId = _examModuleId;
+            [self.navigationController pushViewController:vc animated:YES];
+            }];
+        [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
+        [alertController addAction:cancelAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
 - (void)userExamBy:(ZhuangXiangListCell *)cell {
+    // 此时需要判断登录
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     // 获取最顶级的 价格和是否购买 去判断
     NSString *courseId = cell.treeItem.user_price;
     NSString *course_id = cell.treeItem.course_id;
@@ -385,12 +414,29 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 开始答题
-        ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
-        vc.examIds = cell.treeItem.course_id;//course_id;
-        vc.examType = _examTypeId;
-        vc.examTitle = cell.treeItem.title;
-        vc.examModuleId = _examModuleId;
-        [self.navigationController pushViewController:vc animated:YES];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"是否继续上次作答？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"继续答题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+            vc.examIds = cell.treeItem.course_id;//course_id;
+            vc.examType = _examTypeId;
+            vc.examTitle = cell.treeItem.title;
+            vc.examModuleId = _examModuleId;
+            [self.navigationController pushViewController:vc animated:YES];
+            }];
+        [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+        [alertController addAction:commentAction];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"重新开始" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+            vc.examIds = cell.treeItem.course_id;//course_id;
+            vc.examType = _examTypeId;
+            vc.examTitle = cell.treeItem.title;
+            vc.examModuleId = _examModuleId;
+            [self.navigationController pushViewController:vc animated:YES];
+            }];
+        [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
+        [alertController addAction:cancelAction];
+        alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 /*

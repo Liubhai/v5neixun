@@ -576,6 +576,7 @@
 		78E5B255265B74D20053F63F /* UploadImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B254265B74D20053F63F /* UploadImageModel.m */; };
 		78E5B2582664B6FA0053F63F /* CircleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B2572664B6FA0053F63F /* CircleDetailViewController.m */; };
 		78E5B25B2664B9E00053F63F /* CircleDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B25A2664B9E00053F63F /* CircleDetailCommentCell.m */; };
+		78E5B25E2667257A0053F63F /* UserCircleListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B25D2667257A0053F63F /* UserCircleListVC.m */; };
 		78EA7F33254A9525004DF369 /* AgoraRtm.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EA7F32254A9524004DF369 /* AgoraRtm.m */; };
 		78ED079425CD3C8A00C30B26 /* ExamDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */; };
 		78ED079725CFC9CE00C30B26 /* ExamIDListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079625CFC9CE00C30B26 /* ExamIDListModel.m */; };
@@ -1726,6 +1727,8 @@
 		78E5B2572664B6FA0053F63F /* CircleDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleDetailViewController.m; sourceTree = "<group>"; };
 		78E5B2592664B9E00053F63F /* CircleDetailCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleDetailCommentCell.h; sourceTree = "<group>"; };
 		78E5B25A2664B9E00053F63F /* CircleDetailCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleDetailCommentCell.m; sourceTree = "<group>"; };
+		78E5B25C2667257A0053F63F /* UserCircleListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCircleListVC.h; sourceTree = "<group>"; };
+		78E5B25D2667257A0053F63F /* UserCircleListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCircleListVC.m; sourceTree = "<group>"; };
 		78EA7F31254A9524004DF369 /* AgoraRtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		78EA7F32254A9524004DF369 /* AgoraRtm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
 		78ED079225CD3C8A00C30B26 /* ExamDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamDetailViewController.h; sourceTree = "<group>"; };
@@ -2160,6 +2163,8 @@
 				78793A42264E1EE8000554C8 /* CircleRootViewController.m */,
 				78793A44264E2368000554C8 /* CircleListVC.h */,
 				78793A45264E2368000554C8 /* CircleListVC.m */,
+				78E5B25C2667257A0053F63F /* UserCircleListVC.h */,
+				78E5B25D2667257A0053F63F /* UserCircleListVC.m */,
 				78E5B2562664B6FA0053F63F /* CircleDetailViewController.h */,
 				78E5B2572664B6FA0053F63F /* CircleDetailViewController.m */,
 				78793A4A264E4D18000554C8 /* CirclePostViewController.h */,
@@ -4733,6 +4738,7 @@
 				78795726240FA3840013F95F /* ZLPhotoRect.m in Sources */,
 				7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */,
 				78795732240FA3840013F95F /* ZLPhotoPickerGroupViewController.m in Sources */,
+				78E5B25E2667257A0053F63F /* UserCircleListVC.m in Sources */,
 				785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */,
 				7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */,
 				78A16C8D2452F7C100391430 /* TICDevice.m in Sources */,
