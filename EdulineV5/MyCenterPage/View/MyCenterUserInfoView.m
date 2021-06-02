@@ -29,7 +29,7 @@
     _leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _leftBtn.frame = CGRectMake(0, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 54, 44);
     [_leftBtn setImage:Image(@"pre_nav_home") forState:0];
-    _leftBtn.hidden = YES;
+    [_leftBtn addTarget:self action:@selector(leftClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_leftBtn];
     
     _rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -111,6 +111,12 @@
 - (void)setBtnClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(goToSetingVC)]) {
         [_delegate goToSetingVC];
+    }
+}
+
+- (void)leftClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(goToUserCircleListVC)]) {
+        [_delegate goToUserCircleListVC];
     }
 }
 

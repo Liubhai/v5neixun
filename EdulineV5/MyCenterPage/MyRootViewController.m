@@ -31,6 +31,9 @@
 #import "MyTeachingRootVC.h"
 #import "RegisterAndForgetPwVC.h"
 
+// 个人圈子主页
+#import "MyCirclePageVC.h"
+
 // 考试
 #import "MyExamPage.h"
 
@@ -82,7 +85,7 @@
     _titleImage.alpha = 0;
     _titleLabel.text = @"个人中心";
     [_leftButton setImage:[Image(@"pre_nav_home") converToOtherColor:EdlineV5_Color.textFirstColor] forState:0];
-    _leftButton.hidden = YES;
+    _leftButton.hidden = NO;
     [_rightButton setImage:Image(@"pre_nav_mes_blue") forState:0];
     _rightButton.hidden = NO;
     
@@ -288,7 +291,13 @@
 }
 
 - (void)leftButtonClick:(id)sender {
-    NSLog(@"返回按钮被点击了");
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    MyCirclePageVC *vc = [[MyCirclePageVC alloc] init];
+    vc.teacherId = [V5_UserModel uid];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)rightButtonClick:(id)sender {
@@ -369,6 +378,10 @@
 }
 
 // MARK: - MyCenterUserInfoViewDelegate(进入个人信息页面)
+- (void)goToUserCircleListVC {
+    [self leftButtonClick:nil];
+}
+
 - (void)goToUserInfoVC {
     if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
         PersonalInformationVC *vc = [[PersonalInformationVC alloc] init];

@@ -579,6 +579,9 @@ struct NetWorkUrl {
 /** 圈子评论或者回复评论 */
 + (NSString *)circleCommentOrReplay;
 
+/** 当前登录的用户的动态列表 */
++ (NSString *)myCircleListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -577,6 +577,7 @@
 		78E5B2582664B6FA0053F63F /* CircleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B2572664B6FA0053F63F /* CircleDetailViewController.m */; };
 		78E5B25B2664B9E00053F63F /* CircleDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B25A2664B9E00053F63F /* CircleDetailCommentCell.m */; };
 		78E5B25E2667257A0053F63F /* UserCircleListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B25D2667257A0053F63F /* UserCircleListVC.m */; };
+		78E5B261266734020053F63F /* MyCirclePageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B260266734020053F63F /* MyCirclePageVC.m */; };
 		78EA7F33254A9525004DF369 /* AgoraRtm.m in Sources */ = {isa = PBXBuildFile; fileRef = 78EA7F32254A9524004DF369 /* AgoraRtm.m */; };
 		78ED079425CD3C8A00C30B26 /* ExamDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079325CD3C8A00C30B26 /* ExamDetailViewController.m */; };
 		78ED079725CFC9CE00C30B26 /* ExamIDListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78ED079625CFC9CE00C30B26 /* ExamIDListModel.m */; };
@@ -1729,6 +1730,8 @@
 		78E5B25A2664B9E00053F63F /* CircleDetailCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleDetailCommentCell.m; sourceTree = "<group>"; };
 		78E5B25C2667257A0053F63F /* UserCircleListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCircleListVC.h; sourceTree = "<group>"; };
 		78E5B25D2667257A0053F63F /* UserCircleListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCircleListVC.m; sourceTree = "<group>"; };
+		78E5B25F266734020053F63F /* MyCirclePageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCirclePageVC.h; sourceTree = "<group>"; };
+		78E5B260266734020053F63F /* MyCirclePageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCirclePageVC.m; sourceTree = "<group>"; };
 		78EA7F31254A9524004DF369 /* AgoraRtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		78EA7F32254A9524004DF369 /* AgoraRtm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
 		78ED079225CD3C8A00C30B26 /* ExamDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamDetailViewController.h; sourceTree = "<group>"; };
@@ -2165,6 +2168,8 @@
 				78793A45264E2368000554C8 /* CircleListVC.m */,
 				78E5B25C2667257A0053F63F /* UserCircleListVC.h */,
 				78E5B25D2667257A0053F63F /* UserCircleListVC.m */,
+				78E5B25F266734020053F63F /* MyCirclePageVC.h */,
+				78E5B260266734020053F63F /* MyCirclePageVC.m */,
 				78E5B2562664B6FA0053F63F /* CircleDetailViewController.h */,
 				78E5B2572664B6FA0053F63F /* CircleDetailViewController.m */,
 				78793A4A264E4D18000554C8 /* CirclePostViewController.h */,
@@ -4476,6 +4481,7 @@
 				78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */,
 				788E95AC253FE24E0089251E /* EnterRoomAllModel.m in Sources */,
 				78AA13822440543D007087F7 /* TAPageControl.m in Sources */,
+				78E5B261266734020053F63F /* MyCirclePageVC.m in Sources */,
 				784E5D0124AC8A9500646916 /* MyRecommendViewController.m in Sources */,
 				788E95A9253FE24E0089251E /* LogManager.m in Sources */,
 				784E5CEA24A9802D00646916 /* HcdGuideView.m in Sources */,

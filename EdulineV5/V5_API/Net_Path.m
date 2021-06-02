@@ -804,4 +804,9 @@
     return [Net_Path fullPath:@"circle/comment" repalce:@"" byReplece:@""];
 }
 
+/** 当前登录的用户的动态列表 */
++ (NSString *)myCircleListNet {
+    return [Net_Path fullPath:@"circle/mine/list" repalce:@"" byReplece:@""];
+}
+
 @end
