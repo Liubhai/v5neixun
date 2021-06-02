@@ -327,6 +327,7 @@
     ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
     vc.answer_status = _answer_status;
+    vc.examType = _examType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -338,6 +339,7 @@
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDictWrong];
     vc.isErrorAnalysis = YES;
     vc.answer_status = _answer_status;
+    vc.examType = _examType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -465,6 +467,7 @@
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
     vc.currentResultModel = thirdModel;
     vc.answer_status = _answer_status;
+    vc.examType = _examType;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

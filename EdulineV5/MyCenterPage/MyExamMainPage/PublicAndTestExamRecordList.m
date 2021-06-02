@@ -101,6 +101,7 @@
         ExamResultViewController *vc = [[ExamResultViewController alloc] init];
         vc.record_id = [NSString stringWithFormat:@"%@",model.topic_id];
         vc.answer_status = [NSString stringWithFormat:@"%@",model.answer_status];
+        vc.examType = _examType;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         [self showHudInView:self.view showHint:@"正在阅卷，请耐心等待"];

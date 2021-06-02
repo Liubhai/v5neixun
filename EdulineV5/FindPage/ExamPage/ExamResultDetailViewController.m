@@ -417,6 +417,9 @@
                     sectionRightOrErrorIcon.hidden = NO;
                     sectionRightOrErrorIcon.image = Image(@"exam_grade_icon");
                 }
+                if ([_examType isEqualToString:@"4"]) {
+                    sectionRightOrErrorIcon.hidden = YES;
+                }
 //                if (modelpass.answered) {
 //                    // 阅卷中、已阅卷
 //                    if (![_answer_status isEqualToString:@"2"]) {
@@ -465,7 +468,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if ([_examType isEqualToString:@"3"]) {
+    if (![_examType isEqualToString:@"3"] && ![_examType isEqualToString:@"4"]) {
         return nil;
     } else {
         
@@ -502,8 +505,14 @@
         if ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) {
             scoreFinal.hidden = NO;
         }
+        if ([_examType isEqualToString:@"4"]) {
+            scoreFinal.hidden = YES;
+        }
         
         UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) ? (12 + 33 + 12) : 12 , MainScreenWidth - (58 + 33) - 15, 20)];
+        if ([_examType isEqualToString:@"4"]) {
+            examPointTitle.frame = CGRectMake(15, 12, MainScreenWidth - (58 + 33) - 15, 20);
+        }
         examPointTitle.textColor = EdlineV5_Color.textFirstColor;
         examPointTitle.font = SYSTEMFONT(14);
         examPointTitle.text = @"考点：";
@@ -585,7 +594,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if ([_examType isEqualToString:@"3"]) {
+    if (![_examType isEqualToString:@"3"] && ![_examType isEqualToString:@"4"]) {
         return 0.001;
     } else {
         ExamDetailModel *modelxxx;
@@ -626,8 +635,14 @@
             analyzeTextView.font = SYSTEMFONT(15);
             [analyzeTextView sizeToFit];
             [analyzeTextView setHeight:analyzeTextView.height];
+            if ([_examType isEqualToString:@"4"]) {
+                return MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12;
+            }
             return ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) ? (MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12 + 12 + 33) : (MAX((MAX((12 + 20 + 16 + 20), rightValueTextView.bottom) + 7 + 20), analyzeTextView.bottom) + 12);
         } else {
+            if ([_examType isEqualToString:@"4"]) {
+                return 12 + 20 + 12;
+            }
             return ([_answer_status isEqualToString:@"2"] && [modelxxx.question_type isEqualToString:@"8"]) ? (12 + 33 + 12 + 20 + 12) : (12 + 20 + 12);
         }
     }
@@ -1056,8 +1071,14 @@
             if ([_answer_status isEqualToString:@"2"]) {
                 scoreFinal.hidden = NO;
             }
+            if ([_examType isEqualToString:@"4"]) {
+                scoreFinal.hidden = YES;
+            }
             
             UILabel *examPointTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, [_answer_status isEqualToString:@"2"] ? scoreFinal.bottom + 15 : 20, MainScreenWidth - 30, 20)];
+            if ([_examType isEqualToString:@"4"]) {
+                examPointTitle.frame = CGRectMake(15, 20, MainScreenWidth - 30, 20);
+            }
             examPointTitle.numberOfLines = 0;
             examPointTitle.textColor = EdlineV5_Color.textFirstColor;
             examPointTitle.font = SYSTEMFONT(14);
@@ -1156,6 +1177,9 @@
                     } else {
                         _rightOrErrorIcon.hidden = NO;
                         _rightOrErrorIcon.image = Image(@"exam_grade_icon");
+                    }
+                    if ([_examType isEqualToString:@"4"]) {
+                        _rightOrErrorIcon.hidden = YES;
                     }
                 }
                 // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
