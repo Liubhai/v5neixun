@@ -438,7 +438,7 @@
             
             NSString *sponsor_user_id = [NSString stringWithFormat:@"%@",_activityInfo[@"sponsor_user_id"]];
             BOOL isMine = [sponsor_user_id isEqualToString:[V5_UserModel uid]];
-            
+            _kanjiaButton.hidden = NO;
             if ([[_activityInfo objectForKey:@"running_status"] integerValue] == 1) {
                 eventTime = [end_countdown integerValue];
                 if (eventTime<=0) {
@@ -453,11 +453,13 @@
                         }
                     } else {
                         // 失败了
-                        _groupResult.text = @"砍价已结束，砍价失败";
+                        _groupResult.text = @"活动已结束";
                         [_kanjiaButton setTitle:@"活动已结束" forState:0];
+                        _kanjiaButton.hidden = YES;
                         if (!isMine) {
-                            _groupResult.text = @"砍价已结束";
+                            _groupResult.text = @"活动已结束";
                             [_kanjiaButton setTitle:@"我也想要" forState:0];
+                            _kanjiaButton.hidden = NO;
                         }
                     }
                     _timeBackView.hidden = YES;
