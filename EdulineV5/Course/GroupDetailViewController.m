@@ -444,20 +444,29 @@
                 if (eventTime<=0) {
                     // 活动已经结束 显示成功或者失败
                     if ([bargain_finished isEqualToString:@"1"]) {
-                        // 活动成功
-                        _groupResult.text = @"恭喜您，砍价成功";
-                        [_kanjiaButton setTitle:@"去支付" forState:0];
+                        // 失败了
+                        _groupResult.text = @"活动已结束";
+                        [_kanjiaButton setTitle:@"活动已结束" forState:0];
+                        _kanjiaButton.hidden = YES;
                         if (!isMine) {
                             _groupResult.text = @"砍价已结束";
                             [_kanjiaButton setTitle:@"我也想要" forState:0];
+                            _kanjiaButton.hidden = NO;
                         }
+//                        // 活动成功
+//                        _groupResult.text = @"恭喜您，砍价成功";
+//                        [_kanjiaButton setTitle:@"去支付" forState:0];
+//                        if (!isMine) {
+//                            _groupResult.text = @"砍价已结束";
+//                            [_kanjiaButton setTitle:@"我也想要" forState:0];
+//                        }
                     } else {
                         // 失败了
                         _groupResult.text = @"活动已结束";
                         [_kanjiaButton setTitle:@"活动已结束" forState:0];
                         _kanjiaButton.hidden = YES;
                         if (!isMine) {
-                            _groupResult.text = @"活动已结束";
+                            _groupResult.text = @"砍价已结束";
                             [_kanjiaButton setTitle:@"我也想要" forState:0];
                             _kanjiaButton.hidden = NO;
                         }
@@ -587,13 +596,23 @@
                 _groupResult.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
                 [_doButton setTitle:@"邀请好友参团" forState:0];
                 
-                if (!isMine && [join_status isEqualToString:@"0"]) {
-                    [_doButton setTitle:@"参与拼团" forState:0];
+                if (eventTime>0) {
+                    if (!isMine && [join_status isEqualToString:@"0"]) {
+                        [_doButton setTitle:@"参与拼团" forState:0];
+                    }
+                    [self startTimer];
+                } else {
+                    _timeBackView.hidden = YES;
+                    _groupResult.text = @"拼团失败";
+                    _groupResultTip.text = @"拼团时间已过，款项将自动退回";
+                    [_doButton setTitle:@"重新开团" forState:0];
+//                    if (!isMine && [join_status isEqualToString:@"0"]) {
+//                        [_doButton setTitle:@"参与拼团" forState:0];
+//                        _doButton.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:138/255.0 blue:82/255.0 alpha:0.6].CGColor;
+//                        _doButton.enabled = NO;
+//                    }
                 }
                 
-                if (eventTime>0) {
-                    [self startTimer];
-                }
             } else if ([groupStatus isEqualToString:@"2"]) {
                 _groupResult.text = @"拼团成功";
                 _groupResultTip.text = @"恭喜您拼团成功，快去观看课程吧～";
@@ -664,21 +683,33 @@
     NSString *groupStatus = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"status"]];
     NSString *sponsor_user_id = [NSString stringWithFormat:@"%@",_activityInfo[@"user_id"]];
     NSString *join_status = [NSString stringWithFormat:@"%@",_activityInfo[@"join_status"]];
+    NSString *end_countdown = [NSString stringWithFormat:@"%@",[_activityInfo objectForKey:@"end_countdown"]];
     BOOL isMine = [sponsor_user_id isEqualToString:[V5_UserModel uid]];
     if ([groupStatus isEqualToString:@"1"]) {
-        if (!isMine && [join_status isEqualToString:@"0"]) {
-            // 参团 (请求参团前接口)
-            [self joinPintuanBeforeNet:[NSString stringWithFormat:@"%@",_activityInfo[@"id"]]];
-            return;
+        if (eventTime>0) {
+            if (!isMine && [join_status isEqualToString:@"0"]) {
+                // 参团 (请求参团前接口)
+                [self joinPintuanBeforeNet:[NSString stringWithFormat:@"%@",_activityInfo[@"id"]]];
+                return;
+            } else {
+                // 邀请好友
+                SharePosterViewController *vc = [[SharePosterViewController alloc] init];
+                vc.type = @"1";
+                vc.sourceId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+                vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+                vc.activityType = _activityType;
+                vc.activityId = _activityId;
+                [self.navigationController pushViewController:vc animated:YES];
+                _doButton.enabled = YES;
+            }
+        } else {
+            CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+            vc.ID = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+            vc.isLive = [[NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]] isEqualToString:@"2"] ? YES : NO;
+            vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
+            [self.navigationController pushViewController:vc animated:YES];
+            _doButton.enabled = YES;
         }
-        // 邀请好友
-        SharePosterViewController *vc = [[SharePosterViewController alloc] init];
-        vc.type = @"1";
-        vc.sourceId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
-        vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
-        vc.activityType = _activityType;
-        vc.activityId = _activityId;
-        [self.navigationController pushViewController:vc animated:YES];
         _doButton.enabled = YES;
     } else if ([groupStatus isEqualToString:@"2"]) {
         // 返回上一级课程详情页面或者跳转到对应课程详情页
@@ -726,12 +757,12 @@
             if ([bargain_finished isEqualToString:@"1"]) {
                 if (isMine) {
                     // 去支付
-                    OrderViewController *vc = [[OrderViewController alloc] init];
-                    vc.orderTypeString = @"courseKanjia";
-                    vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
-                    vc.promotion_id = _activityId;
-                    [self.navigationController pushViewController:vc animated:YES];
-                    _kanjiaButton.enabled = YES;
+//                    OrderViewController *vc = [[OrderViewController alloc] init];
+//                    vc.orderTypeString = @"courseKanjia";
+//                    vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
+//                    vc.promotion_id = _activityId;
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                    _kanjiaButton.enabled = YES;
                 } else {
                     // 我也想要
                     CourseMainViewController *vc = [[CourseMainViewController alloc] init];
@@ -886,6 +917,7 @@
                     vc.promotion_id = _activityId;
                     vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [self.navigationController pushViewController:vc animated:YES];
+                    _doButton.enabled = YES;
                 }
             }
         } enError:^(NSError * _Nonnull error) {
