@@ -672,6 +672,14 @@
                         dispatch_group_enter(group);//group计数+1
                         dispatch_async(dispatch_get_global_queue(0, 0), ^{
                             ExamDetailModel *pass = passArray[i];
+                            if ([_examType isEqualToString:@"2"]) {
+                                ExamIDModel *idModel = [self checkExamIDListModelArray:pass.examDetailId];
+                                if (idModel) {
+                                    pass.is_right = idModel.answer_right;
+                                    pass.is_answer = idModel.has_answered;
+                                    pass.is_expand = idModel.has_answered;
+                                }
+                            }
                             pass.titleMutable = [self changeStringToMutA:pass.title];
                             pass.analyzeMutable = [self changeStringToMutA:pass.analyze];
                             if (SWNOTEmptyArr(pass.topics)) {
@@ -685,6 +693,16 @@
                                         modelOp.mutvalue = [self changeStringToMutA:modelOp.value];
                                         if (modelOp.is_right) {
                                             examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                        }
+                                        // 专项处理已作答的试题选项
+                                        if ([_examType isEqualToString:@"2"]) {
+                                            ExamIDModel *idModel = [self checkExamIDListModelArray:pass.examDetailId];
+                                            for (int k = 0; k< idModel.answer_data.count; k++) {
+                                                ExamZhuangxiangAnswerModel *modelZhuangxiang = idModel.answer_data[k];
+                                                if (modelZhuangxiang) {
+                                                    modelOp.is_selected = [modelZhuangxiang.answer containsObject:modelOp.examDetailOptionId] ? YES : NO;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -707,6 +725,16 @@
                                     } else {
                                         if (modelOp.is_right) {
                                             examAnswer = [NSString stringWithFormat:@"%@%@",examAnswer,modelOp.key];
+                                        }
+                                    }
+                                    // 专项处理已作答的试题选项
+                                    if ([_examType isEqualToString:@"2"]) {
+                                        ExamIDModel *idModel = [self checkExamIDListModelArray:pass.examDetailId];
+                                        if (SWNOTEmptyArr(idModel.answer_data)) {
+                                            ExamZhuangxiangAnswerModel *modelZhuangxiang = idModel.answer_data[0];
+                                            if (modelZhuangxiang) {
+                                                modelOp.is_selected = [modelZhuangxiang.answer containsObject:modelOp.examDetailOptionId] ? YES : NO;
+                                            }
                                         }
                                     }
                                 }
@@ -852,7 +880,7 @@
                 [_tableView reloadData];
                 _previousExamBtn.enabled = YES;
                 _nextExamBtn.enabled = YES;
-                [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:NO];
+                [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:NO examDetail:model];
                 _rightOrErrorIcon.hidden = NO;
                 _rightOrErrorIcon.image = Image(@"exam_fault_icon");
                 // 同步更新答题卡模型数组的已作答
@@ -867,7 +895,7 @@
                 model.is_answer = YES;
                 model.is_expand = YES;
                 model.is_right = YES;
-                [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:YES];
+                [self putExamResult:model.examDetailId examLevel:model.topic_level isRight:YES examDetail:model];
             }
         } else {
             if ([_examType isEqualToString:@"collect"]) {
@@ -1235,6 +1263,28 @@
     }
 }
 
+// MARK: - 检测当前基础信息里面有没有当前试题
+- (ExamIDModel *)checkExamIDListModelArray:(NSString *)examId {
+    if (SWNOTEmptyStr(examId)) {
+        BOOL has = NO;
+        for (int i = 0; i<_examIdListArray.count; i++) {
+            ExamIDListModel *model = _examIdListArray[i];
+            for (int k = 0; k<model.child.count; k++) {
+                ExamIDModel *modelpass = model.child[k];
+                if ([modelpass.topic_id isEqualToString:examId]) {
+                    has = YES;
+                    return modelpass;
+                    break;
+                }
+            }
+        }
+        return nil;
+    } else {
+        return nil;
+    }
+}
+    
+
 // MARK: - 收藏和取消收藏当前试题
 - (void)collectionCurrentExamBy:(ExamDetailModel *)model {
     if (model) {
@@ -1298,19 +1348,63 @@
 }
 
 // MARK: - 做试题-提交答案
-- (void)putExamResult:(NSString *)topic_id examLevel:(NSString *)level isRight:(BOOL)isRight {
+- (void)putExamResult:(NSString *)topic_id examLevel:(NSString *)level isRight:(BOOL)isRight examDetail:(ExamDetailModel *)detail {
     NSString *getUrl = [Net_Path examPointPostAnswerNet];
     NSMutableDictionary *param = [NSMutableDictionary new];
     if ([_examType isEqualToString:@"1"]) {
         getUrl = [Net_Path examPointPostAnswerNet];
+        [param setObject:@"1" forKey:@"topic_level"];
     } else if ([_examType isEqualToString:@"2"]) {
         getUrl = [Net_Path specialExamPostAnswerNet];
         if (SWNOTEmptyStr(_examIds)) {
             [param setObject:_examIds forKey:@"special_id"];
         }
+        // answer
+        // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
+        if ([detail.question_type isEqualToString:@"7"]) {
+            // 完形填空
+            NSMutableArray *passArray = [NSMutableArray new];
+            BOOL has_selected = NO;
+            for (int l = 0; l<detail.topics.count; l++) {
+                NSMutableDictionary *pass = [NSMutableDictionary new];
+                ExamDetailModel *topicDetailModel = detail.topics[l];
+                [pass setObject:topicDetailModel.examDetailId forKey:@"topic_id"];
+                NSMutableArray *topicPassArray = [NSMutableArray new];
+                has_selected = NO;
+                for (int m = 0; m<topicDetailModel.options.count; m++) {
+                    ExamDetailOptionsModel *opModel = topicDetailModel.options[m];
+                    if (opModel.is_selected) {
+                        has_selected = YES;
+                        [topicPassArray addObject:opModel.examDetailOptionId];
+                    }
+                }
+                if (has_selected) {
+                    [pass setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
+                    [passArray addObject:[NSDictionary dictionaryWithDictionary:pass]];
+                }
+            }
+            [param setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
+        } else {
+            NSMutableDictionary *pass = [NSMutableDictionary new];
+            NSMutableArray *passArray = [NSMutableArray new];
+            NSMutableArray *topicPassArray = [NSMutableArray new];
+            BOOL has_selected = NO;
+            for (int l = 0; l<detail.options.count; l++) {
+                ExamDetailOptionsModel *opModel = detail.options[l];
+                if (opModel.is_selected) {
+                    has_selected = YES;
+                    [topicPassArray addObject:opModel.examDetailOptionId];
+                }
+            }
+            if (has_selected) {
+                [pass setObject:[NSArray arrayWithArray:topicPassArray] forKey:@"answer"];
+                [pass setObject:detail.examDetailId forKey:@"topic_id"];
+                [passArray addObject:[NSDictionary dictionaryWithDictionary:pass]];
+            }
+            [param setObject:[NSArray arrayWithArray:passArray] forKey:@"answer"];
+        }
     }
     [param setObject:topic_id forKey:@"topic_id"];
-    [param setObject:@"1" forKey:@"topic_level"];
     [param setObject:isRight ? @"1" : @"0" forKey:@"is_right"];
     [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         NSLog(@"第%@题 答案提交 = %@",topic_id,responseObject[@"msg"]);

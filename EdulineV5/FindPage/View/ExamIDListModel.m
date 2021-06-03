@@ -43,7 +43,7 @@
 
 +(NSDictionary *)mj_objectClassInArray
 {
-    return @{@"sub_topics":@"ExamIDModel"};
+    return @{@"sub_topics":@"ExamIDModel",@"answer_data":@"ExamZhuangxiangAnswerModel"};
 }
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
@@ -55,6 +55,26 @@
             return @"";
         }
     }else if ([property.name isEqualToString:@"sub_topics"]) {
+        if (!NOTNULL(oldValue)){
+            return @[];
+        }
+    }
+    return oldValue;
+}
+
+@end
+
+@implementation ExamZhuangxiangAnswerModel
+
+-(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
+{
+    if ([property.name isEqualToString:@"topic_id"]) {
+        if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
+            return [NSString stringWithFormat:@"%@",oldValue];
+        }else if (!NOTNULL(oldValue)){
+            return @"";
+        }
+    }else if ([property.name isEqualToString:@"answer"]) {
         if (!NOTNULL(oldValue)){
             return @[];
         }

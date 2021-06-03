@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ExamIDListModel, ExamIDModel, ExamDetailModel, ExamDetailOptionsModel, ExamPaperDetailModel, ExamPaperIDListModel;
+@class ExamIDListModel, ExamIDModel, ExamDetailModel, ExamDetailOptionsModel, ExamPaperDetailModel, ExamPaperIDListModel, ExamZhuangxiangAnswerModel;
 
 @interface ExamIDListModel : NSObject
 
@@ -44,8 +44,23 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (strong, nonatomic) NSString *topic_id;
 @property (assign, nonatomic) BOOL has_answered;
+@property (assign, nonatomic) BOOL answer_right;
 @property (strong, nonatomic) NSString *score;
+@property (strong, nonatomic) NSArray *answer_data;
 @property (strong, nonatomic) NSArray *sub_topics;
+
+@end
+
+@interface ExamZhuangxiangAnswerModel : NSObject
+
+/**
+ {
+     "topic_id": 2,
+     "has_answered": 1
+ }
+ */
+@property (strong, nonatomic) NSString *topic_id;
+@property (strong, nonatomic) NSArray *answer;
 
 @end
 
