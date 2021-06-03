@@ -1360,8 +1360,9 @@
         [param setObject:@"1" forKey:@"topic_level"];
     } else if ([_examType isEqualToString:@"2"]) {
         getUrl = [Net_Path specialExamPostAnswerNet];
-        if (SWNOTEmptyStr(_examIds)) {
-            [param setObject:_examIds forKey:@"special_id"];
+        ExamIDModel *ididModel = [self checkExamIDListModelArray:topic_id];
+        if (ididModel) {
+            [param setObject:SWNOTEmptyStr(ididModel.special_id) ? ididModel.special_id : @"" forKey:@"special_id"];
         }
         // answer
         // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
