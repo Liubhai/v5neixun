@@ -625,7 +625,11 @@
                             currentExamIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                             currentExamId = [NSString stringWithFormat:@"%@",passfinalDict.topic_id];
                             currentExamRow = 1;
-                            [self getExamDetailForExamIds:passfinalDict.topic_id];
+                            if ([_examType isEqualToString:@"2"] && SWNOTEmptyStr(_zhuanxiangCurrentTopicId)) {
+                                [self continueZhuanxiangRecordExam:_zhuanxiangCurrentTopicId];
+                            } else {
+                                [self getExamDetailForExamIds:passfinalDict.topic_id];
+                            }
                         }
                     } else {
                         [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_examIdListArray.count isLoading:NO tableViewShowHeight:_tableView.height];
@@ -1411,6 +1415,68 @@
     } enError:^(NSError * _Nonnull error) {
         
     }];
+}
+
+// MARK: - 专项练习继续作答时候处理
+- (void)continueZhuanxiangRecordExam:(NSString *)examId {
+    _previousExamBtn.enabled = NO;
+      _nextExamBtn.enabled = NO;
+      currentExamId = [NSString stringWithFormat:@"%@",examId];
+      NSInteger indexCount = 0;
+    // 获取当前点击的试题的ID 请求接口 刷新页面  处理下标 当前试题的排序号 并且改变底部按钮的状态
+      BOOL is_find = NO;
+      for (int i = 0; i < _examIdListArray.count; i ++) {
+          if (is_find) {
+              break;
+          }
+          ExamIDListModel *idListModel = _examIdListArray[i];
+          for (int j = 0; j<idListModel.child.count; j++) {
+              indexCount = indexCount + 1;
+              if ([((ExamIDModel *)(idListModel.child[j])).topic_id isEqualToString:examId]) {
+                  is_find = YES;
+                  currentExamIndexPath = [NSIndexPath indexPathForRow:j inSection:i];
+                  // 这时候判断 并且更改底部按钮状态
+                  if (currentExamIndexPath.section == 0 && currentExamIndexPath.row == 0) {
+                      _nextExamBtn.hidden = NO;
+                      _previousExamBtn.hidden = YES;
+                      [_nextExamBtn setCenterX:MainScreenWidth / 2.0];
+                      if (examCount == 1) {
+                          [_nextExamBtn setTitle:@"提交" forState:0];
+                          [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                          [_nextExamBtn setImage:nil forState:0];
+                      } else {
+                          [_nextExamBtn setTitle:@"下一题" forState:0];
+                          [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                          [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                      }
+                  } else if (currentExamIndexPath.section == (_examIdListArray.count - 1) && currentExamIndexPath.row == (idListModel.child.count - 1)) {
+                      _nextExamBtn.hidden = NO;
+                      [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                      [_nextExamBtn setTitle:@"提交" forState:0];
+                      [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                      [_nextExamBtn setImage:nil forState:0];
+                      _previousExamBtn.hidden = NO;
+                      [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+                      [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                  } else {
+                      _nextExamBtn.hidden = NO;
+                      [_nextExamBtn setTitle:@"下一题" forState:0];
+                      [_nextExamBtn setImage:[Image(@"exam_next") converToMainColor] forState:0];
+                      [_nextExamBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+                      [_nextExamBtn setCenterX:MainScreenWidth * 3 / 4.0];
+                      _previousExamBtn.hidden = NO;
+                      [_previousExamBtn setCenterX:MainScreenWidth / 4.0];
+                      [_previousExamBtn setImage:Image(@"exam_last") forState:0];
+                      [_previousExamBtn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+                      
+                  }
+                  break;
+              }
+          }
+      }
+      currentExamRow = indexCount;
+      
+      [self getExamDetailForExamIds:examId];
 }
 
 /*

@@ -377,6 +377,7 @@
                 vc.examType = _examTypeId;
                 vc.examTitle = cell.treeItem.title;
                 vc.examModuleId = _examModuleId;
+                vc.zhuanxiangCurrentTopicId = cell.treeItem.last_practice;
                 [self.navigationController pushViewController:vc animated:YES];
                 }];
             [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
@@ -440,6 +441,7 @@
                 vc.examType = _examTypeId;
                 vc.examTitle = cell.treeItem.title;
                 vc.examModuleId = _examModuleId;
+                vc.zhuanxiangCurrentTopicId = cell.treeItem.last_practice;
                 [self.navigationController pushViewController:vc animated:YES];
                 }];
             [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];

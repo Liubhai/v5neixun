@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *module_title;// 考试主页 板块儿名称
 
+@property (strong, nonatomic) NSString *zhuanxiangCurrentTopicId;// 专项继续作答所需试题 id 
+
 @end
 
 NS_ASSUME_NONNULL_END
