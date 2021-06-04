@@ -383,12 +383,20 @@
             [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
             [alertController addAction:commentAction];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"重新开始" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
-                vc.examIds = cell.treeItem.course_id;
-                vc.examType = _examTypeId;
-                vc.examTitle = cell.treeItem.title;
-                vc.examModuleId = _examModuleId;
-                [self.navigationController pushViewController:vc animated:YES];
+                [Net_API requestDeleteWithURLStr:[Net_Path zhuanxiangDeleteRecordNet] paramDic:@{@"special_id":cell.treeItem.course_id} Api_key:nil finish:^(id  _Nonnull responseObject) {
+                    if (SWNOTEmptyDictionary(responseObject)) {
+                        if ([[responseObject objectForKey:@"code"] integerValue]) {
+                            ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+                            vc.examIds = cell.treeItem.course_id;
+                            vc.examType = _examTypeId;
+                            vc.examTitle = cell.treeItem.title;
+                            vc.examModuleId = _examModuleId;
+                            [self.navigationController pushViewController:vc animated:YES];
+                        }
+                    }
+                } enError:^(NSError * _Nonnull error) {
+                    [self showHudInView:self.view showHint:@"清空上次作答记录失败"];
+                }];
                 }];
             [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
             [alertController addAction:cancelAction];
@@ -447,12 +455,20 @@
             [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
             [alertController addAction:commentAction];
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"重新开始" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
-                vc.examIds = cell.treeItem.course_id;//course_id;
-                vc.examType = _examTypeId;
-                vc.examTitle = cell.treeItem.title;
-                vc.examModuleId = _examModuleId;
-                [self.navigationController pushViewController:vc animated:YES];
+                [Net_API requestDeleteWithURLStr:[Net_Path zhuanxiangDeleteRecordNet] paramDic:@{@"special_id":cell.treeItem.course_id} Api_key:nil finish:^(id  _Nonnull responseObject) {
+                    if (SWNOTEmptyDictionary(responseObject)) {
+                        if ([[responseObject objectForKey:@"code"] integerValue]) {
+                            ExamDetailViewController *vc = [[ExamDetailViewController alloc] init];
+                            vc.examIds = cell.treeItem.course_id;//course_id;
+                            vc.examType = _examTypeId;
+                            vc.examTitle = cell.treeItem.title;
+                            vc.examModuleId = _examModuleId;
+                            [self.navigationController pushViewController:vc animated:YES];
+                        }
+                    }
+                } enError:^(NSError * _Nonnull error) {
+                    [self showHudInView:self.view showHint:@"清空上次作答记录失败"];
+                }];
                 }];
             [cancelAction setValue:EdlineV5_Color.textFirstColor forKey:@"_titleTextColor"];
             [alertController addAction:cancelAction];

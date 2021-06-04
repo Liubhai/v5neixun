@@ -465,6 +465,9 @@ struct NetWorkUrl {
 /** 专项练习提交答案接口 post */
 + (NSString *)specialExamPostAnswerNet;
 
+/** 专项练习清空答题记录 */
++ (NSString *)zhuanxiangDeleteRecordNet;
+
 /** 公开考试列表 */
 + (NSString *)openingExamListNet;
 

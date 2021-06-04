@@ -607,6 +607,11 @@
     return [Net_Path fullPath:@"exam/special/topic" repalce:@"" byReplece:@""];
 }
 
+/** 专项练习清空答题记录 */
++ (NSString *)zhuanxiangDeleteRecordNet {
+    return [Net_Path fullPath:@"exam/special/record" repalce:@"" byReplece:@""];
+}
+
 /** 公开考试列表 */
 + (NSString *)openingExamListNet {
     return [Net_Path fullPath:@"exam/paper/list" repalce:@"" byReplece:@""];
