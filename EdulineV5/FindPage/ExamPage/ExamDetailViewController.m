@@ -43,9 +43,7 @@
 
 @property (strong, nonatomic) NSMutableArray *answerManagerArray;// 选择的答案对应的数组 一维数组 遍历一次(添加 修改)
 
-
-
-
+@property (strong, nonatomic) AVPlayer *voicePlayer;
 
 @end
 
@@ -355,6 +353,51 @@
         [lable1111 setHeight:lable1111.height];
         [back setHeight:lable1111.height];
         [back addSubview:lable1111];
+        
+        // 这个时候如果有音视频  需要处理
+        
+        UIView *mediaBackView = [[UIView alloc] initWithFrame:CGRectMake(0, lable1111.bottom + 10, MainScreenWidth, 0.01)];
+        [back addSubview:mediaBackView];
+        for (int i = 0; i<3; i++) {
+            UIButton *voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(15, (40 + 12) * i, 125, 40)];
+            voiceButton.titleLabel.font = SYSTEMFONT(13);
+            voiceButton.layer.masksToBounds = YES;
+            voiceButton.layer.cornerRadius = 20;
+            voiceButton.backgroundColor = EdlineV5_Color.themeColor;
+            [voiceButton setImage:Image(@"exam_pouse_icon") forState:0];
+            [voiceButton setImage:Image(@"exam_play_icon") forState:UIControlStateSelected];
+            [voiceButton setTitle:[NSString stringWithFormat:@"听力文件%@",@(i + 1)] forState:0];
+            voiceButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10/2.0, 0, 10/2.0);
+            voiceButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10/2.0, 0, -10/2.0);
+            voiceButton.tag = 66 + i;
+            [voiceButton addTarget:self action:@selector(voiceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [mediaBackView addSubview:voiceButton];
+            if (i == 2) {
+                [mediaBackView setHeight:voiceButton.bottom];
+            }
+        }
+        // 音频没有的时候 需要重新设定高度和y坐标
+        CGFloat space = 15;
+        CGFloat inSpace = 12;
+        CGFloat YY = mediaBackView.height + 12;
+        CGFloat videoWidth = (MainScreenWidth - 15 * 3) / 2.0;
+        for (int k = 0; k<3; k++) {
+            UIImageView *videoImage = [[UIImageView alloc] initWithFrame:CGRectMake(space + (space + videoWidth)*(k%2), YY + (inSpace + 94)*(k/2), videoWidth, 94)];
+            videoImage.image = DefaultImage;
+            videoImage.clipsToBounds = YES;
+            videoImage.contentMode = UIViewContentModeScaleAspectFill;
+            [mediaBackView addSubview:videoImage];
+            if (k == 2) {
+                [mediaBackView setHeight:videoImage.bottom];
+            }
+            UIButton *videoButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+            videoButton.tag = 100 + k;
+//            [videoButton addTarget:self action:@selector(videoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [videoButton setImage:Image(@"exam_video_icon") forState:0];
+            videoButton.center = videoImage.center;
+            [mediaBackView addSubview:videoButton];
+        }
+        [back setHeight:mediaBackView.bottom];
         return back;
     }
     return nil;
@@ -380,6 +423,8 @@
         lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
         [lable1111 sizeToFit];
         [lable1111 setHeight:lable1111.height];
+        
+        return lable1111.height + 20 + 10 + 3 * (40 + 12) - 12 + 12 + (12 + 94) * 2 - 12;
         return lable1111.height + 20;
     }
     return 0.001;
@@ -794,6 +839,7 @@
             // 当前试题只有一道题 就不需要这个tableheader 设置高度0.01 不能设置成0 不然会自动适配一个35高度的空白 并设置 tableview 的 header
             [_headerView setHeight:examThemeLabel.bottom];
             _tableView.tableHeaderView = _headerView;
+            // 这里如果有音视频  就要处理音视频布局
         } else {
             if (SWNOTEmptyArr(model.topics)) {
 
@@ -1480,6 +1526,38 @@
       [self getExamDetailForExamIds:examId];
 }
 
+// MARK: - 音频播放器
+- (void)voiceButtonClick:(UIButton *)sender {
+    NSURL * url = [NSURL URLWithString:@"https://tv5.51eduline.com/attach/484b5c848466c1728c913689c9d60afe8"];
+    AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
+    if (!_voicePlayer) {
+        _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+    } else {
+        [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+    }
+    [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void *)context {
+
+    if ([keyPath isEqualToString:@"status"]) {
+        switch (_voicePlayer.status) {
+            case AVPlayerStatusUnknown:
+//                BASE_INFO_FUN(@"KVO：未知状态，此时不能播放");
+                break;
+            case AVPlayerStatusReadyToPlay:
+                [_voicePlayer play];
+//                self.status = SUPlayStatusReadyToPlay;
+//                BASE_INFO_FUN(@"KVO：准备完毕，可以播放");
+                break;
+            case AVPlayerStatusFailed:
+//                BASE_INFO_FUN(@"KVO：加载失败，网络或者服务器出现问题");
+                break;
+            default:
+                break;
+        }
+    }
+}
 /*
 #pragma mark - Navigation
 
