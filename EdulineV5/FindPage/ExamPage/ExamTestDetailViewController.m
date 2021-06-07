@@ -655,6 +655,14 @@
                                     if ([detail.question_type isEqualToString:@"8"]) {
                                         ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
                                         detail.options = [NSArray arrayWithObjects:op, nil];
+                                        if (SWNOTEmptyArr(detail.answer_data)) {
+                                            op.userAnswerValue = detail.answer_data[0];
+                                        }
+                                        if (SWNOTEmptyStr(detail.reference_answer)) {
+                                            detail.examAnswer = [EdulineV5_Tool removeFilterHTML:detail.reference_answer];
+                                        } else {
+                                            detail.examAnswer = @"";
+                                        }
                                     } else {
                                         for (int k = 0; k<detail.options.count; k++) {
                                             ExamDetailOptionsModel *modelOp = detail.options[k];
@@ -675,14 +683,19 @@
                                                 }
                                             }
                                         }
+                                        detail.examAnswer = examAnswer;
                                     }
-                                    detail.examAnswer = examAnswer;
                                 }
                             }
                         } else {
                             if ([pass.question_type isEqualToString:@"8"]) {
                                 ExamDetailOptionsModel *op = [ExamDetailOptionsModel new];
                                 pass.options = [NSArray arrayWithObjects:op, nil];
+                                if (SWNOTEmptyStr(pass.reference_answer)) {
+                                    pass.examAnswer = [EdulineV5_Tool removeFilterHTML:pass.reference_answer];
+                                } else {
+                                    pass.examAnswer = @"";
+                                }
                             } else {
                                 NSString *examAnswer = @"";
                                 for (int j = 0; j<pass.options.count; j++) {
