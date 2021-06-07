@@ -16,6 +16,11 @@
 
 #import "AnswerSheetViewController.h"
 
+#import <AVKit/AVKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import "AppDelegate.h"
+
+
 @interface ExamDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
     NSInteger examCount;//整套试卷的总题数
     NSInteger currentExamRow;// 当前答题是第几道题
@@ -44,6 +49,7 @@
 @property (strong, nonatomic) NSMutableArray *answerManagerArray;// 选择的答案对应的数组 一维数组 遍历一次(添加 修改)
 
 @property (strong, nonatomic) AVPlayer *voicePlayer;
+@property (strong, nonatomic) UIButton *currentVoiceButton;
 
 @end
 
@@ -392,7 +398,7 @@
             }
             UIButton *videoButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
             videoButton.tag = 100 + k;
-//            [videoButton addTarget:self action:@selector(videoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [videoButton addTarget:self action:@selector(videoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
             [videoButton setImage:Image(@"exam_video_icon") forState:0];
             videoButton.center = videoImage.center;
             [mediaBackView addSubview:videoButton];
@@ -1528,6 +1534,11 @@
 
 // MARK: - 音频播放器
 - (void)voiceButtonClick:(UIButton *)sender {
+    if (_currentVoiceButton != sender) {
+        _currentVoiceButton.selected = NO;
+    }
+    sender.selected = !sender.selected;
+    _currentVoiceButton = sender;
     NSURL * url = [NSURL URLWithString:@"https://tv5.51eduline.com/attach/484b5c848466c1728c913689c9d60afe8"];
     AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
     if (!_voicePlayer) {
@@ -1558,6 +1569,23 @@
         }
     }
 }
+
+// MARK: - 视频播放
+- (void)videoButtonClick:(UIButton *)sender {
+    if (_voicePlayer) {
+        [_voicePlayer pause];
+        if (_currentVoiceButton) {
+            _currentVoiceButton.selected = !_currentVoiceButton.selected;
+        }
+    }
+    
+    AVPlayerViewController *playerController = [[AVPlayerViewController alloc] init];
+    playerController.showsPlaybackControls = YES; // 关闭视频视图按钮
+    playerController.player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:@"https://tv5.51eduline.com/attach/47e84db226d4c1754692f754860030632"]];
+    [playerController.player play]; // 是否自动播放
+    [self.navigationController presentViewController:playerController animated:YES completion:nil];
+}
+
 /*
 #pragma mark - Navigation
 
