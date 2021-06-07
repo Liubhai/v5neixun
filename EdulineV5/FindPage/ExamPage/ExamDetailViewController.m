@@ -665,7 +665,8 @@
                             currentExamId = [NSString stringWithFormat:@"%@",passfinalDict.topic_id];
                             currentExamRow = 1;
                             if ([_examType isEqualToString:@"2"] && SWNOTEmptyStr(_zhuanxiangCurrentTopicId)) {
-                                [self continueZhuanxiangRecordExam:_zhuanxiangCurrentTopicId];
+                                [self continueZhuanxiangRecordExam:[self checkShouldNextExamID:_zhuanxiangCurrentTopicId]];
+//                                [self continueZhuanxiangRecordExam:_zhuanxiangCurrentTopicId];
                             } else {
                                 [self getExamDetailForExamIds:passfinalDict.topic_id];
                             }
@@ -1520,6 +1521,31 @@
       currentExamRow = indexCount;
       
       [self getExamDetailForExamIds:examId];
+}
+
+// MARK: - 获取上次答题记录的下一题
+- (NSString *)checkShouldNextExamID:(NSString *)examId {
+    if (SWNOTEmptyStr(examId)) {
+        BOOL has = NO;
+        for (int i = 0; i<_examIdListArray.count; i++) {
+            ExamIDListModel *model = _examIdListArray[i];
+            for (int k = 0; k<model.child.count; k++) {
+                ExamIDModel *modelpass = model.child[k];
+                if (has) {
+                    return modelpass.topic_id;
+                }
+                if ([modelpass.topic_id isEqualToString:examId]) {
+                    has = YES;
+                    if (model.child.count > (k+1)) {
+                        return ((ExamIDModel *)model.child[k+1]).topic_id;
+                    }
+                }
+            }
+        }
+        return examId;
+    } else {
+        return examId;
+    }
 }
 
 // MARK: - 音频播放器
