@@ -18,7 +18,6 @@
 
 #import <AVKit/AVKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "AppDelegate.h"
 
 
 @interface ExamDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
@@ -1593,36 +1592,16 @@
     if ([keyPath isEqualToString:@"status"]) {
         switch (_voicePlayer.status) {
             case AVPlayerStatusUnknown:
-//                BASE_INFO_FUN(@"KVO：未知状态，此时不能播放");
                 break;
             case AVPlayerStatusReadyToPlay:
                 [_voicePlayer play];
-//                self.status = SUPlayStatusReadyToPlay;
-//                BASE_INFO_FUN(@"KVO：准备完毕，可以播放");
                 break;
             case AVPlayerStatusFailed:
-//                BASE_INFO_FUN(@"KVO：加载失败，网络或者服务器出现问题");
                 break;
             default:
                 break;
         }
     }
-}
-
-// MARK: - 视频播放
-- (void)videoButtonClick:(UIButton *)sender {
-    if (_voicePlayer) {
-        [_voicePlayer pause];
-        if (_currentVoiceButton) {
-            _currentVoiceButton.selected = !_currentVoiceButton.selected;
-        }
-    }
-    
-    AVPlayerViewController *playerController = [[AVPlayerViewController alloc] init];
-    playerController.showsPlaybackControls = YES; // 关闭视频视图按钮
-    playerController.player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:@"https://tv5.51eduline.com/attach/47e84db226d4c1754692f754860030632"]];
-    [playerController.player play]; // 是否自动播放
-    [self.navigationController presentViewController:playerController animated:YES completion:nil];
 }
 
 // MARK: - 上下题按钮点击后都需要将音频暂停置空

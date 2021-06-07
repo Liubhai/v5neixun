@@ -17,6 +17,9 @@
 #import "ExamCalculateHeight.h"
 #import "ExamResultSheetViewController.h"
 
+#import <AVKit/AVKit.h>
+#import <AVFoundation/AVFoundation.h>
+
 @interface ExamResultDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
     NSInteger examCount;//整套试卷的总题数
     NSInteger currentExamRow;// 当前答题是第几道题
@@ -51,6 +54,9 @@
 
 @property (strong, nonatomic) ExamResultDetailModel *currentExamPaperDetailModel;// 整个试卷
 @property (strong, nonatomic) ExamResultPaperTestDetailModel *currentExamPaperTestDetailModel;// 当前某一道大题
+
+@property (strong, nonatomic) AVPlayer *voicePlayer;
+@property (strong, nonatomic) UIButton *currentVoiceButton;
 
 @end
 
@@ -285,6 +291,8 @@
     
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
+        ExamDetailModel *modelXXX;
+        modelXXX = model;
         
         UIImageView *examCountIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 2, 14, 16)];
         examCountIcon.image = Image(@"marker_icon");
@@ -305,6 +313,7 @@
         // 题目类型 1:单选 2:判断 3:多选 4:不定项 5:填空 6:材料 7:完形填空 8:简答
         if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
             ExamDetailModel *cailiaoModel = model.topics[section];
+            modelXXX = cailiaoModel;
             if ([cailiaoModel.question_type isEqualToString:@"1"]) {
                 examTypeImageView.image = [Image(@"Multiple Choice_icon") converToMainColor];
                 [examTypeImageView setWidth:32];
@@ -402,6 +411,39 @@
         [back setHeight:lable1111.height];
         [back addSubview:lable1111];
         
+        // 这个时候如果有音视频  需要处理
+        
+        UIView *mediaBackView = [[UIView alloc] initWithFrame:CGRectMake(0, lable1111.bottom + 10, MainScreenWidth, 0.01)];
+        [back addSubview:mediaBackView];
+        NSInteger voiceIndex = 0;
+        NSInteger videoIndex = 0;
+        for (int i = 0; i<modelXXX.material.count; i++) {
+            ExamMediaModel *mediaModel = modelXXX.material[i];
+            UIButton *voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(15, (52 + 12) * i, 52, 52)];
+            UILabel *mediaTitle = [[UILabel alloc] initWithFrame:CGRectMake(voiceButton.right + 12, 0, 100, 20)];
+            mediaTitle.centerY = voiceButton.centerY;
+            mediaTitle.font = SYSTEMFONT(14);
+            mediaTitle.textColor = EdlineV5_Color.textFirstColor;
+            if ([mediaModel.type isEqualToString:@"audio"]) {
+                voiceIndex ++;
+                [voiceButton setImage:Image(@"audio_play_icon") forState:0];
+                [voiceButton setImage:Image(@"audio_pause_icon") forState:UIControlStateSelected];
+                mediaTitle.text = [NSString stringWithFormat:@"听力文件%@",@(voiceIndex)];
+            } else {
+                videoIndex++;
+                [voiceButton setImage:Image(@"video_play_icon") forState:0];
+                mediaTitle.text = [NSString stringWithFormat:@"视频文件%@",@(voiceIndex)];
+            }
+            voiceButton.tag = 66 + i;
+            [voiceButton addTarget:self action:@selector(voiceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            [mediaBackView addSubview:voiceButton];
+            [mediaBackView addSubview:mediaTitle];
+            if (i == modelXXX.material.count - 1) {
+                [mediaBackView setHeight:voiceButton.bottom];
+            }
+        }
+        [back setHeight:mediaBackView.bottom];
+        
         UIImageView *sectionRightOrErrorIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 74, 0, 74, 74)];
         [back addSubview:sectionRightOrErrorIcon];
         if (![model.question_type isEqualToString:@"7"] && SWNOTEmptyArr(model.topics)) {
@@ -447,12 +489,14 @@
     NSMutableAttributedString * attrString;
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
-        
+        ExamDetailModel *modelXXX;
+        modelXXX = model;
         if ([model.question_type isEqualToString:@"7"]) {
             attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
         } else {
             if (SWNOTEmptyArr(model.topics)) {
                 ExamDetailModel *modelpass = model.topics[section];
+                modelXXX = modelpass;
                 attrString = [[NSMutableAttributedString alloc] initWithAttributedString:modelpass.titleMutable];
             } else {
                 attrString = [[NSMutableAttributedString alloc] initWithAttributedString:model.titleMutable];
@@ -462,6 +506,9 @@
         lable1111.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
         [lable1111 sizeToFit];
         [lable1111 setHeight:lable1111.height];
+        if (SWNOTEmptyArr(modelXXX.material)) {
+            return lable1111.height + 20 + modelXXX.material.count * (52 + 12) - 12;
+        }
         return lable1111.height + 20;
     }
     return 0.001;
@@ -866,6 +913,7 @@
 }
 
 - (void)getExamDetailForExamIds:(ExamModel *)examIds {
+    [self resetVoicePlayer];
     if (SWNOTEmptyStr(examIds.topic_id)) {
         currentExamId = examIds.topic_id;
         // 首选通过 ID 去获取 获取不到再去请求数据
@@ -1193,6 +1241,7 @@
 
 - (void)bottomButtonClick:(UIButton *)sender {
     if (sender == _nextExamBtn) {
+        [self resetVoicePlayer];
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
         // 这里需要判断是否能够直接进入下一题还是需要展开解析
@@ -1262,6 +1311,7 @@
             _nextExamBtn.enabled = YES;
         }
     } else if (sender == _previousExamBtn) {
+        [self resetVoicePlayer];
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
         if (SWNOTEmptyArr(_examIdListArray)) {
@@ -1709,6 +1759,73 @@
         }
     }
     [_examCellHeightDict setObject:cellHeightArray forKey:[NSString stringWithFormat:@"%@",model.examDetailId]];
+}
+
+// MARK: - 音频播放器
+- (void)voiceButtonClick:(UIButton *)sender {
+    if (SWNOTEmptyStr(currentExamId)) {
+        ExamDetailModel *c_model = [self checkExamDetailArray:currentExamId];
+        if (c_model) {
+            if (SWNOTEmptyArr(c_model.material)) {
+                ExamMediaModel *model = c_model.material[sender.tag - 66];
+                if ([model.type isEqualToString:@"audio"]) {
+                    if (_currentVoiceButton != sender) {
+                        _currentVoiceButton.selected = NO;
+                    }
+                    sender.selected = !sender.selected;
+                    _currentVoiceButton = sender;
+                    NSURL * url = [NSURL URLWithString:model.src];
+                    AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
+                    if (!_voicePlayer) {
+                        _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                    } else {
+                        [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                    }
+                    [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
+                } else {
+                    if (_voicePlayer) {
+                        [_voicePlayer pause];
+                        if (_currentVoiceButton) {
+                            _currentVoiceButton.selected = !_currentVoiceButton.selected;
+                        }
+                    }
+                    
+                    AVPlayerViewController *playerController = [[AVPlayerViewController alloc] init];
+                    playerController.showsPlaybackControls = YES; // 关闭视频视图按钮
+                    playerController.player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:model.src]];
+                    [playerController.player play]; // 是否自动播放
+                    [self.navigationController presentViewController:playerController animated:YES completion:nil];
+                }
+            }
+        }
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void *)context {
+
+    if ([keyPath isEqualToString:@"status"]) {
+        switch (_voicePlayer.status) {
+            case AVPlayerStatusUnknown:
+                break;
+            case AVPlayerStatusReadyToPlay:
+                [_voicePlayer play];
+                break;
+            case AVPlayerStatusFailed:
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+// MARK: - 上下题按钮点击后都需要将音频暂停置空
+- (void)resetVoicePlayer {
+    if (_voicePlayer) {
+        [_voicePlayer pause];
+        if (_currentVoiceButton) {
+            _currentVoiceButton = nil;
+        }
+    }
 }
 
 @end
