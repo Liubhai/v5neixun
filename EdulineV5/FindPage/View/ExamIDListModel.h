@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class ExamIDListModel, ExamIDModel, ExamDetailModel, ExamDetailOptionsModel, ExamPaperDetailModel, ExamPaperIDListModel, ExamZhuangxiangAnswerModel;
+@class ExamIDListModel, ExamIDModel, ExamDetailModel, ExamDetailOptionsModel, ExamPaperDetailModel, ExamPaperIDListModel, ExamZhuangxiangAnswerModel, ExamMediaModel;
 
 @interface ExamIDListModel : NSObject
 
@@ -114,6 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *examAnswer;
 @property (strong, nonatomic) NSString *reference_answer;// 解答题正确答案
 @property (assign, nonatomic) BOOL answered;// 考试试题解析里面某个试题信息(真实情况是否作答)
+@property (strong, nonatomic) NSArray *material;// 音视频数据
 
 @end
 
@@ -206,6 +207,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *paper_id;
 @property (strong, nonatomic) NSString *examPartDescription;
 @property (strong, nonatomic) NSArray *child;
+
+@end
+
+@interface ExamMediaModel : NSObject
+
+@property (strong, nonatomic) NSString *src;
+@property (strong, nonatomic) NSString *type;
 
 @end
 

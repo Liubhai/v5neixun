@@ -364,44 +364,32 @@
         
         UIView *mediaBackView = [[UIView alloc] initWithFrame:CGRectMake(0, lable1111.bottom + 10, MainScreenWidth, 0.01)];
         [back addSubview:mediaBackView];
-        for (int i = 0; i<3; i++) {
-            UIButton *voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(15, (40 + 12) * i, 125, 40)];
-            voiceButton.titleLabel.font = SYSTEMFONT(13);
-            voiceButton.layer.masksToBounds = YES;
-            voiceButton.layer.cornerRadius = 20;
-            voiceButton.backgroundColor = EdlineV5_Color.themeColor;
-            [voiceButton setImage:Image(@"exam_pouse_icon") forState:0];
-            [voiceButton setImage:Image(@"exam_play_icon") forState:UIControlStateSelected];
-            [voiceButton setTitle:[NSString stringWithFormat:@"听力文件%@",@(i + 1)] forState:0];
-            voiceButton.imageEdgeInsets = UIEdgeInsetsMake(0, -10/2.0, 0, 10/2.0);
-            voiceButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10/2.0, 0, -10/2.0);
+        NSInteger voiceIndex = 0;
+        NSInteger videoIndex = 0;
+        for (int i = 0; i<model.material.count; i++) {
+            ExamMediaModel *mediaModel = model.material[i];
+            UIButton *voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(15, (52 + 12) * i, 52, 52)];
+            UILabel *mediaTitle = [[UILabel alloc] initWithFrame:CGRectMake(voiceButton.right + 12, 0, 100, 20)];
+            mediaTitle.centerY = voiceButton.centerY;
+            mediaTitle.font = SYSTEMFONT(14);
+            mediaTitle.textColor = EdlineV5_Color.textFirstColor;
+            if ([mediaModel.type isEqualToString:@"audio"]) {
+                voiceIndex ++;
+                [voiceButton setImage:Image(@"audio_play_icon") forState:0];
+                [voiceButton setImage:Image(@"audio_pause_icon") forState:UIControlStateSelected];
+                mediaTitle.text = [NSString stringWithFormat:@"听力文件%@",@(voiceIndex)];
+            } else {
+                videoIndex++;
+                [voiceButton setImage:Image(@"video_play_icon") forState:0];
+                mediaTitle.text = [NSString stringWithFormat:@"视频文件%@",@(voiceIndex)];
+            }
             voiceButton.tag = 66 + i;
             [voiceButton addTarget:self action:@selector(voiceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
             [mediaBackView addSubview:voiceButton];
-            if (i == 2) {
+            [mediaBackView addSubview:mediaTitle];
+            if (i == model.material.count - 1) {
                 [mediaBackView setHeight:voiceButton.bottom];
             }
-        }
-        // 音频没有的时候 需要重新设定高度和y坐标
-        CGFloat space = 15;
-        CGFloat inSpace = 12;
-        CGFloat YY = mediaBackView.height + 12;
-        CGFloat videoWidth = (MainScreenWidth - 15 * 3) / 2.0;
-        for (int k = 0; k<3; k++) {
-            UIImageView *videoImage = [[UIImageView alloc] initWithFrame:CGRectMake(space + (space + videoWidth)*(k%2), YY + (inSpace + 94)*(k/2), videoWidth, 94)];
-            videoImage.image = DefaultImage;
-            videoImage.clipsToBounds = YES;
-            videoImage.contentMode = UIViewContentModeScaleAspectFill;
-            [mediaBackView addSubview:videoImage];
-            if (k == 2) {
-                [mediaBackView setHeight:videoImage.bottom];
-            }
-            UIButton *videoButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-            videoButton.tag = 100 + k;
-            [videoButton addTarget:self action:@selector(videoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-            [videoButton setImage:Image(@"exam_video_icon") forState:0];
-            videoButton.center = videoImage.center;
-            [mediaBackView addSubview:videoButton];
         }
         [back setHeight:mediaBackView.bottom];
         return back;
@@ -430,7 +418,7 @@
         [lable1111 sizeToFit];
         [lable1111 setHeight:lable1111.height];
         
-        return lable1111.height + 20 + 10 + 3 * (40 + 12) - 12 + 12 + (12 + 94) * 2 - 12;
+        return lable1111.height + 20 + 10 + model.material.count * (52 + 12) - 12;
         return lable1111.height + 20;
     }
     return 0.001;
@@ -914,6 +902,7 @@
 
 - (void)bottomButtonClick:(UIButton *)sender {
     if (sender == _nextExamBtn) {
+        [self resetVoicePlayer];
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
         _rightOrErrorIcon.hidden = YES;
@@ -1029,6 +1018,7 @@
             _nextExamBtn.enabled = YES;
         }
     } else if (sender == _previousExamBtn) {
+        [self resetVoicePlayer];
         _previousExamBtn.enabled = NO;
         _nextExamBtn.enabled = NO;
         _rightOrErrorIcon.hidden = YES;
@@ -1534,19 +1524,42 @@
 
 // MARK: - 音频播放器
 - (void)voiceButtonClick:(UIButton *)sender {
-    if (_currentVoiceButton != sender) {
-        _currentVoiceButton.selected = NO;
+    if (SWNOTEmptyStr(currentExamId)) {
+        ExamDetailModel *c_model = [self checkExamDetailArray:currentExamId];
+        if (c_model) {
+            if (SWNOTEmptyArr(c_model.material)) {
+                ExamMediaModel *model = c_model.material[sender.tag - 66];
+                if ([model.type isEqualToString:@"audio"]) {
+                    if (_currentVoiceButton != sender) {
+                        _currentVoiceButton.selected = NO;
+                    }
+                    sender.selected = !sender.selected;
+                    _currentVoiceButton = sender;
+                    NSURL * url = [NSURL URLWithString:model.src];
+                    AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
+                    if (!_voicePlayer) {
+                        _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                    } else {
+                        [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                    }
+                    [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
+                } else {
+                    if (_voicePlayer) {
+                        [_voicePlayer pause];
+                        if (_currentVoiceButton) {
+                            _currentVoiceButton.selected = !_currentVoiceButton.selected;
+                        }
+                    }
+                    
+                    AVPlayerViewController *playerController = [[AVPlayerViewController alloc] init];
+                    playerController.showsPlaybackControls = YES; // 关闭视频视图按钮
+                    playerController.player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:model.src]];
+                    [playerController.player play]; // 是否自动播放
+                    [self.navigationController presentViewController:playerController animated:YES completion:nil];
+                }
+            }
+        }
     }
-    sender.selected = !sender.selected;
-    _currentVoiceButton = sender;
-    NSURL * url = [NSURL URLWithString:@"https://tv5.51eduline.com/attach/484b5c848466c1728c913689c9d60afe8"];
-    AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
-    if (!_voicePlayer) {
-        _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
-    } else {
-        [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
-    }
-    [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void *)context {
@@ -1584,6 +1597,16 @@
     playerController.player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:@"https://tv5.51eduline.com/attach/47e84db226d4c1754692f754860030632"]];
     [playerController.player play]; // 是否自动播放
     [self.navigationController presentViewController:playerController animated:YES completion:nil];
+}
+
+// MARK: - 上下题按钮点击后都需要将音频暂停置空
+- (void)resetVoicePlayer {
+    if (_voicePlayer) {
+        [_voicePlayer pause];
+        if (_currentVoiceButton) {
+            _currentVoiceButton = nil;
+        }
+    }
 }
 
 /*

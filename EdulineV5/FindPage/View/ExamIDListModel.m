@@ -93,7 +93,7 @@
 
 +(NSDictionary *)mj_objectClassInArray
 {
-    return @{@"topics":@"ExamDetailModel",@"options":@"ExamDetailOptionsModel"};
+    return @{@"topics":@"ExamDetailModel",@"options":@"ExamDetailOptionsModel",@"material":@"ExamMediaModel"};
 }
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
@@ -104,7 +104,7 @@
         }else if (!NOTNULL(oldValue)){
             return @"";
         }
-    } else if ([property.name isEqualToString:@"options"] || [property.name isEqualToString:@"topics"] || [property.name isEqualToString:@"answer_data"]) {
+    } else if ([property.name isEqualToString:@"options"] || [property.name isEqualToString:@"topics"] || [property.name isEqualToString:@"answer_data"] || [property.name isEqualToString:@"material"]) {
         if (!NOTNULL(oldValue)){
             return @[];
         }
@@ -211,6 +211,23 @@
     } else if ([property.name isEqualToString:@"child"] || [property.name isEqualToString:@"value"]) {
         if (!NOTNULL(oldValue)){
             return @[];
+        }
+    }
+    return oldValue;
+}
+
+@end
+
+// MARK: - 试题里面的音视频模型
+@implementation ExamMediaModel
+
+-(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
+{
+    if ([property.name isEqualToString:@"src"] || [property.name isEqualToString:@"type"]) {
+        if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
+            return [NSString stringWithFormat:@"%@",oldValue];
+        }else if (!NOTNULL(oldValue)){
+            return @"";
         }
     }
     return oldValue;
