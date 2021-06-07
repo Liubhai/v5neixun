@@ -161,8 +161,13 @@
     return YES;
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"stopWKVoicePlay" object:nil];
+}
+
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"continueWKVoicePlay" object:nil];
     
     [self judgePastBoardInfo];
         /**

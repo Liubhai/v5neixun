@@ -41,6 +41,8 @@
 //    [_mainScroll addSubview:_introTitleL];
     
     [self getCourseInfo];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoicePaly) name:@"stopWKVoicePlay" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(continueload) name:@"continueWKVoicePlay" object:nil];
 }
 
 - (void)makeClassInfoWebView {
@@ -313,6 +315,16 @@
     } enError:^(NSError * _Nonnull error) {
         NSLog(@"课程详情请求失败 = %@",error);
     }];
+}
+
+- (void)stopVoicePaly {
+    [self.ClassIntroWeb loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
+}
+
+- (void)continueload {
+    NSString *allStr = [NSString stringWithFormat:@"%@",_dataSource[@"info"]];
+
+    [_ClassIntroWeb loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:allStr]]];
 }
 
 - (void)dealloc {
