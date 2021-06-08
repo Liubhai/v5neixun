@@ -185,6 +185,7 @@
     _progressLabel.frame = CGRectMake(_learnProgress.right + 5, 0, 100, 14);
     _progressLabel.text = [NSString stringWithFormat:@"%@/%@",model.answered_num,model.topic_count];
     _progressLabel.centerY = _learnProgress.centerY;
+    _learnProgress.progress = [model.answered_num floatValue] / [model.topic_count floatValue];
     
     [self refreshArrow];
 }
