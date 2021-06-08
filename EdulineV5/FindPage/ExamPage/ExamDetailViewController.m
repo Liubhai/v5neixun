@@ -380,7 +380,7 @@
             } else {
                 videoIndex++;
                 [voiceButton setImage:Image(@"video_play_icon") forState:0];
-                mediaTitle.text = [NSString stringWithFormat:@"视频文件%@",@(voiceIndex)];
+                mediaTitle.text = [NSString stringWithFormat:@"视频文件%@",@(videoIndex)];
             }
             voiceButton.tag = 66 + i;
             [voiceButton addTarget:self action:@selector(voiceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
