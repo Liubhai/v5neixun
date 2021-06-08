@@ -874,7 +874,7 @@
                         [mutable replaceCharactersInRange:NSMakeRange(mutable.length - 1, 1) withString:@""];
                     }
                 }
-                [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, model.titleMutable.length)];
+                [mutable addAttributes:@{NSFontAttributeName:SYSTEMFONT(15)} range:NSMakeRange(0, mutable.length)];
                 
                 UITextView *lable1111 = [[UITextView alloc] initWithFrame:CGRectMake(11, examThemeLabel.bottom + 20, MainScreenWidth - 22, 100)];
                 lable1111.backgroundColor = [UIColor whiteColor];//EdlineV5_Color.backColor;

@@ -504,7 +504,7 @@
         [lable1111 sizeToFit];
         [lable1111 setHeight:lable1111.height];
         if (SWNOTEmptyArr(modelXXX.material)) {
-            return lable1111.height + 20 + modelXXX.material.count * (52 + 12) - 12;
+            return lable1111.height + 20 + 10 + modelXXX.material.count * (52 + 12) - 12;
         }
         return lable1111.height + 20;
     }
