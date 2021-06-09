@@ -417,6 +417,9 @@
     NSMutableDictionary *pass = [[NSMutableDictionary alloc] init];
     if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
         [pass setObject:_orderId forKey:@"course_id"];
+        if (SWNOTEmptyStr(_promotion_id)) {
+            [pass setObject:_promotion_id forKey:@"promotion_id"];
+        }
     } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
         [pass setObject:_orderId forKey:@"section_id"];
     } else if ([_orderTypeString isEqualToString:@"exam_special"]) {
