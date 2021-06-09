@@ -274,6 +274,24 @@
                             obj.parentID = @"";
                             obj.parentItem = nil;
                             [items addObject:obj];
+                            
+                            NSArray *secondArray = obj.child;
+                            [secondArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *secondObj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                secondObj.orderNo = [NSString stringWithFormat:@"%@",@(idx)];
+                                secondObj.parentID = obj.course_id;
+                                secondObj.parentItem = obj;
+                                [items addObject:secondObj];
+                                
+                                NSArray *thirdArray = secondObj.child;
+                                [thirdArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *thirdObj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                    thirdObj.orderNo = [NSString stringWithFormat:@"%@",@(idx)];
+                                    thirdObj.parentID = secondObj.course_id;
+                                    thirdObj.parentItem = secondObj;
+                                    [items addObject:thirdObj];
+                                }];
+                                
+                            }];
+                            
                         }];
                         
                         ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
@@ -326,6 +344,23 @@
                         obj.parentID = @"";
                         obj.parentItem = nil;
                         [items addObject:obj];
+                        
+                        NSArray *secondArray = obj.child;
+                        [secondArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *secondObj, NSUInteger idx, BOOL * _Nonnull stop) {
+                            secondObj.orderNo = [NSString stringWithFormat:@"%@",@(idx)];
+                            secondObj.parentID = obj.course_id;
+                            secondObj.parentItem = obj;
+                            [items addObject:secondObj];
+                            
+                            NSArray *thirdArray = secondObj.child;
+                            [thirdArray enumerateObjectsUsingBlock:^(ZhuanXiangModel *thirdObj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                thirdObj.orderNo = [NSString stringWithFormat:@"%@",@(idx)];
+                                thirdObj.parentID = secondObj.course_id;
+                                thirdObj.parentItem = secondObj;
+                                [items addObject:thirdObj];
+                            }];
+                            
+                        }];
                     }];
                     
                     ZhuangXiangModelManager *manager = [[ZhuangXiangModelManager alloc] initWithItems:items andExpandLevel:0];
