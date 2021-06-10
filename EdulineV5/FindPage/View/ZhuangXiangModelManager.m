@@ -75,13 +75,23 @@
     
     // 顶级节点排序
     self.topItems = [topItems sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
-        return [obj1.orderNo compare:obj2.orderNo];
+        if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+            return NSOrderedDescending;
+        } else {
+            return NSOrderedAscending;
+        }
+//        return [obj1.orderNo compare:obj2.orderNo];
     }].mutableCopy;
     
     // 所有 item 排序
     for (ZhuanXiangModel *item in self.tmpItems) {
         item.child = [item.child sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
-            return [obj1.orderNo compare:obj2.orderNo];
+            if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedAscending;
+            }
+//            return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
     }
 }
@@ -124,7 +134,12 @@
         
         item.isExpand = !(item.level == level);
         item.child = [item.child sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
-            return [obj1.orderNo compare:obj2.orderNo];
+            if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedAscending;
+            }
+//            return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
         for (ZhuanXiangModel *childItem in item.child) {
@@ -185,7 +200,12 @@
     if (item.isExpand) {
         
         item.child = [item.child sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
-            return [obj1.orderNo compare:obj2.orderNo];
+            if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedAscending;
+            }
+//            return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
         for (ZhuanXiangModel *tmpItem in item.child) {
@@ -248,7 +268,12 @@
     if (item.child.count) {
         
         item.child = [item.child sortedArrayUsingComparator:^NSComparisonResult(ZhuanXiangModel *obj1, ZhuanXiangModel *obj2) {
-            return [obj1.orderNo compare:obj2.orderNo];
+            if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedAscending;
+            }
+//            return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
         for (ZhuanXiangModel *childItem in item.child) {

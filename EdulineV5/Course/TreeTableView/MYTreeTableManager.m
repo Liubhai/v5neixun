@@ -79,13 +79,23 @@
     
     // 顶级节点排序
     self.topItems = [topItems sortedArrayUsingComparator:^NSComparisonResult(CourseListModel *obj1, CourseListModel *obj2) {
-        return [obj1.orderNo compare:obj2.orderNo];
+        if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+            return NSOrderedDescending;
+        } else {
+            return NSOrderedAscending;
+        }
+//        return [obj1.orderNo compare:obj2.orderNo];
     }].mutableCopy;
     
     // 所有 item 排序
     for (CourseListModel *item in self.tmpItems) {
         item.childItems = [item.childItems sortedArrayUsingComparator:^NSComparisonResult(CourseListModel *obj1, CourseListModel *obj2) {
-            return [obj1.orderNo compare:obj2.orderNo];
+            if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedAscending;
+            }
+//            return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
     }
 }
@@ -128,7 +138,12 @@
         
         item.isExpand = !(item.level == level);
         item.childItems = [item.childItems sortedArrayUsingComparator:^NSComparisonResult(CourseListModel *obj1, CourseListModel *obj2) {
-            return [obj1.orderNo compare:obj2.orderNo];
+            if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedAscending;
+            }
+//            return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
         for (CourseListModel *childItem in item.childItems) {
@@ -189,7 +204,12 @@
     if (item.isExpand) {
         
         item.childItems = [item.childItems sortedArrayUsingComparator:^NSComparisonResult(CourseListModel *obj1, CourseListModel *obj2) {
-            return [obj1.orderNo compare:obj2.orderNo];
+            if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedAscending;
+            }
+//            return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
         for (CourseListModel *tmpItem in item.childItems) {
@@ -252,7 +272,12 @@
     if (item.childItems.count) {
         
         item.childItems = [item.childItems sortedArrayUsingComparator:^NSComparisonResult(CourseListModel *obj1, CourseListModel *obj2) {
-            return [obj1.orderNo compare:obj2.orderNo];
+            if ([obj1.orderNo integerValue] > [obj2.orderNo integerValue]) {
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedAscending;
+            }
+//            return [obj1.orderNo compare:obj2.orderNo];
         }].mutableCopy;
         
         for (CourseListModel *childItem in item.childItems) {
