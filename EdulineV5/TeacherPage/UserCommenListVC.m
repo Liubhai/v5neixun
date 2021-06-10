@@ -25,7 +25,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _titleLabel.text = _themeString;
+    if ([_themeString isEqualToString:@"1"]) {
+        _titleLabel.text = @"我的粉丝";
+    } else if ([_themeString isEqualToString:@"2"]) {
+        _titleLabel.text = @"我的关注";
+    } else {
+        _titleLabel.text = @"最近访客";
+    }
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _dataSource = [NSMutableArray new];
     page = 1;
@@ -58,7 +64,7 @@
     if (!cell) {
         cell = [[UserListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setUserInfo:_dataSource[indexPath.row] cellIndexPath:indexPath cellType:[_themeString isEqualToString:@"最近访客"] ? NO : YES];
+    [cell setUserInfo:_dataSource[indexPath.row] cellIndexPath:indexPath cellType:_themeString];
     cell.delegate = self;
     return cell;
 }
@@ -75,34 +81,49 @@
 - (void)followAndUnFollow:(UIButton *)sender cellIndexPath:(nonnull NSIndexPath *)cellIndexPath {
     if (SWNOTEmptyDictionary(_dataSource[cellIndexPath.row])) {
         NSString *userId = [NSString stringWithFormat:@"%@",[_dataSource[cellIndexPath.row] objectForKey:@"user_id"]];
-        if ([[_dataSource[cellIndexPath.row] objectForKey:@"is_follow"] boolValue]) {
+        if ([_themeString isEqualToString:@"1"]) {
+            // 粉丝列表 有 is_follow
+            if ([[_dataSource[cellIndexPath.row] objectForKey:@"is_follow"] boolValue]) {
+                        [Net_API requestDeleteWithURLStr:[Net_Path userFollowNet] paramDic:@{@"user_id":userId} Api_key:nil finish:^(id  _Nonnull responseObject) {
+                            if (SWNOTEmptyDictionary(responseObject)) {
+                                if ([[responseObject objectForKey:@"code"] integerValue]) {
+            //                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellIndexPath.row]];
+            //                        [pass setObject:@"0" forKey:@"is_follow"];
+            //                        [_dataSource replaceObjectAtIndex:cellIndexPath.row withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                                    [_tableView.mj_header beginRefreshing];
+                                }
+                            }
+            //                [_tableView reloadData];
+                        } enError:^(NSError * _Nonnull error) {
+                            
+                        }];
+                    } else {
+                        [Net_API requestPOSTWithURLStr:[Net_Path userFollowNet] WithAuthorization:nil paramDic:@{@"user_id":userId} finish:^(id  _Nonnull responseObject) {
+                            if (SWNOTEmptyDictionary(responseObject)) {
+                                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                                    [_tableView.mj_header beginRefreshing];
+            //                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellIndexPath.row]];
+            //                        [pass setObject:@"1" forKey:@"is_follow"];
+            //                        [_dataSource replaceObjectAtIndex:cellIndexPath.row withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                                }
+                            }
+            //                [_tableView reloadData];
+                        } enError:^(NSError * _Nonnull error) {
+                            
+                        }];
+                    }
+        } else {
+            // 关注列表 永远都是取消关注
             [Net_API requestDeleteWithURLStr:[Net_Path userFollowNet] paramDic:@{@"user_id":userId} Api_key:nil finish:^(id  _Nonnull responseObject) {
                 if (SWNOTEmptyDictionary(responseObject)) {
                     if ([[responseObject objectForKey:@"code"] integerValue]) {
-                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellIndexPath.row]];
-                        [pass setObject:@"0" forKey:@"is_follow"];
-                        [_dataSource replaceObjectAtIndex:cellIndexPath.row withObject:[NSDictionary dictionaryWithDictionary:pass]];
+                        [_tableView.mj_header beginRefreshing];
                     }
                 }
-                [_tableView reloadData];
             } enError:^(NSError * _Nonnull error) {
-                
-            }];
-        } else {
-            [Net_API requestPOSTWithURLStr:[Net_Path userFollowNet] WithAuthorization:nil paramDic:@{@"user_id":userId} finish:^(id  _Nonnull responseObject) {
-                if (SWNOTEmptyDictionary(responseObject)) {
-                    if ([[responseObject objectForKey:@"code"] integerValue]) {
-                        NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellIndexPath.row]];
-                        [pass setObject:@"1" forKey:@"is_follow"];
-                        [_dataSource replaceObjectAtIndex:cellIndexPath.row withObject:[NSDictionary dictionaryWithDictionary:pass]];
-                    }
-                }
-                [_tableView reloadData];
-            } enError:^(NSError * _Nonnull error) {
-                
+                    
             }];
         }
-        
     }
 }
 
@@ -115,11 +136,11 @@
         [param setObject:_userId forKey:@"user_id"];
     }
     NSString *netUlr;
-    if ([_themeString isEqualToString:@"我的粉丝"]) {
+    if ([_themeString isEqualToString:@"1"]) {
         netUlr = [Net_Path userFollowListNet];
-    } else if ([_themeString isEqualToString:@"我的关注"]) {
+    } else if ([_themeString isEqualToString:@"2"]) {
         netUlr = [Net_Path userFollowNet];
-    } else if ([_themeString isEqualToString:@"最近访客"]) {
+    } else if ([_themeString isEqualToString:@"3"]) {
         netUlr = [Net_Path userLastVisitorList];
     }
     if (!SWNOTEmptyStr(netUlr)) {
@@ -165,11 +186,11 @@
         [param setObject:_userId forKey:@"user_id"];
     }
     NSString *netUlr;
-    if ([_themeString isEqualToString:@"我的粉丝"]) {
+    if ([_themeString isEqualToString:@"1"]) {
         netUlr = [Net_Path userFollowListNet];
-    } else if ([_themeString isEqualToString:@"我的关注"]) {
+    } else if ([_themeString isEqualToString:@"2"]) {
         netUlr = [Net_Path userFollowNet];
-    } else if ([_themeString isEqualToString:@"最近访客"]) {
+    } else if ([_themeString isEqualToString:@"3"]) {
         netUlr = [Net_Path userLastVisitorList];
     }
     if (!SWNOTEmptyStr(netUlr)) {

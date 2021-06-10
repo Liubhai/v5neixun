@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UserCommenListVC : BaseViewController
 
-@property (strong, nonatomic) NSString *themeString;// 到底是什么类型的用户列表(公用)
+@property (strong, nonatomic) NSString *themeString;// 到底是什么类型的用户列表(公用) 1 fensi 2 guanzhu 3 fangke 
 @property (strong, nonatomic) NSString *userId;// 当前页面是请求谁的关注粉丝访客列表
 
 @end

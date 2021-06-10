@@ -169,11 +169,11 @@
 - (void)goToUserCommenListVC:(UIButton *)sender {
     UserCommenListVC *vc = [[UserCommenListVC alloc] init];
     if (sender.tag == 666) {
-        vc.themeString = @"我的关注";
+        vc.themeString = @"2";
     } else if (sender.tag == 667) {
-        vc.themeString = @"我的粉丝";
+        vc.themeString = @"1";
     } else {
-        vc.themeString = @"最近访客";
+        vc.themeString = @"3";
     }
     vc.userId = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"user_id"]];
     [self.navigationController pushViewController:vc animated:YES];

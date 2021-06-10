@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *followButton;
 @property (strong, nonatomic) NSIndexPath *cellIndex;
 
-- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(NSIndexPath *)cellIndexPath cellType:(BOOL)cellType;
+- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(NSIndexPath *)cellIndexPath cellType:(NSString *)cellType;
 
 @end
 

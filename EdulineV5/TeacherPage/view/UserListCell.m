@@ -57,26 +57,32 @@
     [self.contentView addSubview:_lineView];
 }
 
-- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(nonnull NSIndexPath *)cellIndexPath cellType:(BOOL)cellType {
-    if (cellType) {
+- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(nonnull NSIndexPath *)cellIndexPath cellType:(NSString *)cellType {
+    if ([cellType isEqualToString:@"1"] || [cellType isEqualToString:@"2"]) {
         _cellIndex = cellIndexPath;
         _nameLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"nick_name"]];
         _introLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"signature"]];
         [_faceImageView sd_setImageWithURL:EdulineUrlString([dict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
         _followButton.hidden = NO;
-        if ([[dict objectForKey:@"is_follow"] boolValue] && [[dict objectForKey:@"is_followed"] boolValue]) {
-            [_followButton setTitle:@"互相关注" forState:0];
-            _followButton.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
-            [_followButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-        } else {
+        if ([cellType isEqualToString:@"1"]) {
             if ([[dict objectForKey:@"is_follow"] boolValue]) {
-                [_followButton setTitle:@"已关注" forState:0];
+                [_followButton setTitle:@"互相关注" forState:0];
                 _followButton.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
                 [_followButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
             } else {
                 [_followButton setTitle:@"+关注" forState:0];
                 _followButton.layer.borderColor = EdlineV5_Color.themeColor.CGColor;
                 [_followButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+            }
+        } else {
+            if ([[dict objectForKey:@"has_follow_me"] boolValue]) {
+                [_followButton setTitle:@"互相关注" forState:0];
+                _followButton.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+                [_followButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+            } else {
+                [_followButton setTitle:@"已关注" forState:0];
+                _followButton.layer.borderColor = EdlineV5_Color.layarLineColor.CGColor;
+                [_followButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
             }
         }
     } else {
