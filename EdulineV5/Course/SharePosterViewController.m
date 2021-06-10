@@ -369,7 +369,8 @@
             [param setObject:_sourceId forKey:@"id"];
         } else if ([_type isEqualToString:@"3"] || [_type isEqualToString:@"4"]) {
             [param setObject:[_type isEqualToString:@"3"] ? @"12" : @"11" forKey:@"type"];
-            [param setObject:_activityId forKey:@"id"];
+            [param setObject:_sourceId forKey:@"id"];
+            [param setObject:_activityId forKey:@"promotion"];
         }
         
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path shareContentInfoNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
