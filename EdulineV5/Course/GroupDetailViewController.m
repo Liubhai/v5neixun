@@ -694,7 +694,7 @@
             } else {
                 // 邀请好友
                 SharePosterViewController *vc = [[SharePosterViewController alloc] init];
-                vc.type = @"1";
+                vc.type = _activityType;//@"1";
                 vc.sourceId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
                 vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
                 vc.activityType = _activityType;
@@ -814,7 +814,7 @@
                 if (isMine) {
                     // 邀请好友砍价
                     SharePosterViewController *vc = [[SharePosterViewController alloc] init];
-                    vc.type = @"1";
+                    vc.type = _activityType;//@"1";
                     vc.sourceId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
                     vc.courseType = [NSString stringWithFormat:@"%@",_activityInfo[@"product_type"]];
                     vc.activityType = _activityType;
