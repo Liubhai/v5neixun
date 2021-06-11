@@ -914,7 +914,7 @@
                     vc.orderTypeString = @"course";
                     vc.orderId = [NSString stringWithFormat:@"%@",_activityInfo[@"product_id"]];
                     vc.isTuanGou = YES;
-                    vc.promotion_id = _activityId;
+                    vc.promotion_id = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"positive_promotion"][@"id"]];//_activityId;
                     vc.orderInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                     [self.navigationController pushViewController:vc animated:YES];
                     _doButton.enabled = YES;
