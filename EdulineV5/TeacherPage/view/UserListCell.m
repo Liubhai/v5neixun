@@ -63,7 +63,7 @@
         _nameLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"nick_name"]];
         _introLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"signature"]];
         [_faceImageView sd_setImageWithURL:EdulineUrlString([dict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
-        _followButton.hidden = NO;
+//        _followButton.hidden = NO;
         if ([cellType isEqualToString:@"1"]) {
             if ([[dict objectForKey:@"is_follow"] boolValue]) {
                 [_followButton setTitle:@"互相关注" forState:0];

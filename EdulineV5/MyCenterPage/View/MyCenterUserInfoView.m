@@ -31,6 +31,7 @@
     [_leftBtn setImage:Image(@"pre_nav_home") forState:0];
     [_leftBtn addTarget:self action:@selector(leftClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_leftBtn];
+    _leftBtn.hidden = YES;
     
     _rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _rightBtn.frame = CGRectMake(MainScreenWidth-52, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 53, 44);

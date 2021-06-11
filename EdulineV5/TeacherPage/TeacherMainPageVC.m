@@ -83,7 +83,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     wordMax = 300;
 //    _buttonTypeArray = @[@"介绍",@"动态",@"课程",@"问答"];
-    _buttonTypeArray = @[@"介绍",@"动态",@"课程"];
+//    _buttonTypeArray = @[@"介绍",@"动态",@"课程"];
+    _buttonTypeArray = @[@"介绍",@"课程"];
     _titleImage.hidden = YES;
     [self makeHeaderView];
     [self makeButtonBackView];
@@ -232,7 +233,8 @@
             _introButton = btn;
             _greenline.centerX = btn.centerX;
         } else if (i == 1) {
-            _dynamicButton = btn;
+//            _dynamicButton = btn;
+            _courseButton = btn;
         } else if (i == 2) {
             _courseButton = btn;
         } else if (i == 3) {
@@ -270,16 +272,17 @@
     [_mainScrollView addSubview:_teacherIntroVC.view];
     [self addChildViewController:_teacherIntroVC];
     
-    _userCircleListVC = [[UserCircleListVC alloc] init];
-    _userCircleListVC.tabelHeight = _mainScrollView.height;
-    _userCircleListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, _mainScrollView.height);
-    [_mainScrollView addSubview:_userCircleListVC.view];
-    [self addChildViewController:_userCircleListVC];
+//    _userCircleListVC = [[UserCircleListVC alloc] init];
+//    _userCircleListVC.tabelHeight = _mainScrollView.height;
+//    _userCircleListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, _mainScrollView.height);
+//    [_mainScrollView addSubview:_userCircleListVC.view];
+//    [self addChildViewController:_userCircleListVC];
     
     _teacherCourseVC = [[TeahcerCourseListVC alloc] init];
     _teacherCourseVC.teacherId = _teacherId;
     _teacherCourseVC.tabelHeight = _mainScrollView.height;
-    _teacherCourseVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, _mainScrollView.height);
+//    _teacherCourseVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, _mainScrollView.height);
+    _teacherCourseVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, _mainScrollView.height);
     [_mainScrollView addSubview:_teacherCourseVC.view];
     [self addChildViewController:_teacherCourseVC];
     
@@ -314,7 +317,7 @@
         if (scrollView.contentOffset.x <= 0) {
             self.greenline.centerX = self.introButton.centerX;
             self.introButton.selected = YES;
-            self.dynamicButton.selected = NO;
+//            self.dynamicButton.selected = NO;
             self.courseButton.selected = NO;
 //            self.answerButton.selected = NO;
         }else if (scrollView.contentOffset.x >= MainScreenWidth * 2 && scrollView.contentOffset.x <= MainScreenWidth * 2){
@@ -324,10 +327,12 @@
             self.courseButton.selected = YES;
 //            self.answerButton.selected = NO;
         }else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
-            self.greenline.centerX = self.dynamicButton.centerX;
+            self.greenline.centerX = self.courseButton.centerX;
+//            self.greenline.centerX = self.dynamicButton.centerX;
             self.introButton.selected = NO;
-            self.dynamicButton.selected = YES;
-            self.courseButton.selected = NO;
+            self.courseButton.selected = YES;
+//            self.dynamicButton.selected = YES;
+//            self.courseButton.selected = NO;
 //            self.answerButton.selected = NO;
         }
     }
