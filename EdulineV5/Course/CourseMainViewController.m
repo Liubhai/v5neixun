@@ -998,21 +998,22 @@
                                 }
                             }
                         } else if ([promotionType isEqualToString:@"4"]) {
-                            // 拼团
-                            if ([running_status isEqualToString:@"1"]) {
-                                vc.promotion_id = [NSString stringWithFormat:@"%@",promotion[@"id"]];
-                            }
-                            if (SWNOTEmptyDictionary(_dataSource[@"pintuan_data"])) {
-                                NSString *pintuanStatus = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"status"]];
-
-                                /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功(应该是已经购买了)；3:拼团失败】 */
-                                if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
-                                } else if ([pintuanStatus isEqualToString:@"0"]) {
-                                    vc.ignoreActivity = YES;
-                                } else {
-                                }
-                            } else {
-                            }
+                            // 拼团 (拼团无论什么状态 立即加入都是按照课程价格走)
+                            
+//                            if ([running_status isEqualToString:@"1"]) {
+//                                vc.promotion_id = [NSString stringWithFormat:@"%@",promotion[@"id"]];
+//                            }
+//                            if (SWNOTEmptyDictionary(_dataSource[@"pintuan_data"])) {
+//                                NSString *pintuanStatus = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"status"]];
+//
+//                                /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功(应该是已经购买了)；3:拼团失败】 */
+//                                if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
+//                                } else if ([pintuanStatus isEqualToString:@"0"]) {
+//                                    vc.ignoreActivity = YES;
+//                                } else {
+//                                }
+//                            } else {
+//                            }
                         }
                     }
                 [self.navigationController pushViewController:vc animated:YES];
