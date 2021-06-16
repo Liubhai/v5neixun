@@ -458,7 +458,7 @@
                 }
             }
         }
-        [param setObject:[NSString stringWithFormat:@"[%@]",postimageids] forKey:@"attach"];
+        [param setObject:[NSString stringWithFormat:@"%@",postimageids] forKey:@"attach"];//[%@]
     }
     [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
