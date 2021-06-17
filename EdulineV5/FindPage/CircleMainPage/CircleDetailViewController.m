@@ -390,6 +390,7 @@
 - (void)deleteCircleClick:(CircleListCell *)cell {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确认删除该条动态？" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self deleteCircle:[NSString stringWithFormat:@"%@",cell.userCommentInfo[@"id"]]];
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
@@ -412,6 +413,25 @@
     vc.isComment = YES;
     vc.commentCircleInfo = _detailInfo;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 删除圈子
+- (void)deleteCircle:(NSString *)circleId {
+    if (SWNOTEmptyStr(circleId)) {
+        [Net_API requestDeleteWithURLStr:[Net_Path circlePost] paramDic:@{@"id":circleId} Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 @end
