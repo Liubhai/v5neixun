@@ -85,7 +85,7 @@
     _titleImage.alpha = 0;
     _titleLabel.text = @"个人中心";
     [_leftButton setImage:[Image(@"pre_nav_home") converToOtherColor:EdlineV5_Color.textFirstColor] forState:0];
-    _leftButton.hidden = YES;
+    _leftButton.hidden = NO;
     [_rightButton setImage:Image(@"pre_nav_mes_blue") forState:0];
     _rightButton.hidden = NO;
     

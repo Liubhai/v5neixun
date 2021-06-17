@@ -88,11 +88,13 @@
 - (void)getFirstList {
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
-    NSString *getUrl = [Net_Path myCircleListNet];
+    NSString *getUrl = [Net_Path userCircleListNet];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
-    [param setObject:@"2" forKey:@"type"];
+    if (SWNOTEmptyStr(_user_id)) {
+        [param setObject:_user_id forKey:@"user_id"];
+    }
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
@@ -122,11 +124,13 @@
 - (void)getMoreList {
     page = page + 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
-    NSString *getUrl = [Net_Path myCircleListNet];
+    NSString *getUrl = [Net_Path userCircleListNet];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
-    [param setObject:@"2" forKey:@"type"];
+    if (SWNOTEmptyStr(_user_id)) {
+        [param setObject:_user_id forKey:@"user_id"];
+    }
     [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];

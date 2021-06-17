@@ -585,6 +585,9 @@ struct NetWorkUrl {
 /** 当前登录的用户的动态列表 */
 + (NSString *)myCircleListNet;
 
+/** 用户的动态列表 */
++ (NSString *)userCircleListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

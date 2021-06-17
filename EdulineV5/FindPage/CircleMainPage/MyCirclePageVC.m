@@ -154,6 +154,7 @@
 
 - (void)makeCircleListVC {
     _userCircleListVC = [[UserCircleListVC alloc] init];
+    _userCircleListVC.user_id = [V5_UserModel uid];
     _userCircleListVC.tabelHeight = MainScreenHeight - _topView.bottom;
     _userCircleListVC.view.frame = CGRectMake(0,_topView.bottom, MainScreenWidth, MainScreenHeight - _topView.bottom);
     [self.view addSubview:_userCircleListVC.view];

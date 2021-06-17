@@ -814,4 +814,9 @@
     return [Net_Path fullPath:@"circle/mine/list" repalce:@"" byReplece:@""];
 }
 
+/** 用户的动态列表 */
++ (NSString *)userCircleListNet {
+    return [Net_Path fullPath:@"circle/user/list" repalce:@"" byReplece:@""];
+}
+
 @end
