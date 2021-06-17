@@ -563,6 +563,7 @@
 		78C936CF248FBA2D00D5F1ED /* UserCommenListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936CE248FBA2D00D5F1ED /* UserCommenListVC.m */; };
 		78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936D1248FBC5400D5F1ED /* UserListCell.m */; };
 		78C936D52490DAFF00D5F1ED /* InstitutionCourseMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */; };
+		78C953CE267B43EC00BAACAC /* UserHomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C953CD267B43EB00BAACAC /* UserHomePageViewController.m */; };
 		78D46675251CA02600E94FF4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78D46677251CA02600E94FF4 /* LaunchScreen.storyboard */; };
 		78D97FF124B83C58000DE0E4 /* ClassCourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */; };
 		78D97FF424B83C9D000DE0E4 /* ClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF324B83C9D000DE0E4 /* ClassCourseCell.m */; };
@@ -1702,6 +1703,8 @@
 		78C936D1248FBC5400D5F1ED /* UserListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserListCell.m; sourceTree = "<group>"; };
 		78C936D32490DAFE00D5F1ED /* InstitutionCourseMainVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstitutionCourseMainVC.h; sourceTree = "<group>"; };
 		78C936D42490DAFE00D5F1ED /* InstitutionCourseMainVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstitutionCourseMainVC.m; sourceTree = "<group>"; };
+		78C953CC267B43EB00BAACAC /* UserHomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserHomePageViewController.h; sourceTree = "<group>"; };
+		78C953CD267B43EB00BAACAC /* UserHomePageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserHomePageViewController.m; sourceTree = "<group>"; };
 		78CE20EE25DFBF7800DFDF85 /* Eduline网校.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Eduline网校.entitlements"; sourceTree = "<group>"; };
 		78D46676251CA02600E94FF4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78D97FEF24B83C58000DE0E4 /* ClassCourseListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassCourseListVC.h; sourceTree = "<group>"; };
@@ -2170,6 +2173,8 @@
 				78E5B25D2667257A0053F63F /* UserCircleListVC.m */,
 				78E5B25F266734020053F63F /* MyCirclePageVC.h */,
 				78E5B260266734020053F63F /* MyCirclePageVC.m */,
+				78C953CC267B43EB00BAACAC /* UserHomePageViewController.h */,
+				78C953CD267B43EB00BAACAC /* UserHomePageViewController.m */,
 				78E5B2562664B6FA0053F63F /* CircleDetailViewController.h */,
 				78E5B2572664B6FA0053F63F /* CircleDetailViewController.m */,
 				78793A4A264E4D18000554C8 /* CirclePostViewController.h */,
@@ -4530,6 +4535,7 @@
 				788EB1C2250218B000E30D79 /* OtherTypeLoginBindVC.m in Sources */,
 				7853BE0324342A0900F096EC /* ShopCarManagerFinalVC.m in Sources */,
 				78795758240FAA7A0013F95F /* UIImage+Util.m in Sources */,
+				78C953CE267B43EC00BAACAC /* UserHomePageViewController.m in Sources */,
 				78C5487A2418CC7400A33FC4 /* TYImageStorage.m in Sources */,
 				7853167F24518B4D007E239E /* TICConfig.m in Sources */,
 				78BCF94A24D7BB8C002F691C /* QuestionChatViewController.m in Sources */,

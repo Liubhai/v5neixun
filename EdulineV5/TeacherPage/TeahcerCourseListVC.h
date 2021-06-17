@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (assign, nonatomic) CGFloat tabelHeight;
 @property (strong, nonatomic) NSString *teacherId;
+
+@property (assign, nonatomic) BOOL isUserHomePage;// 是不是用户主页的课程
 @end
 
 NS_ASSUME_NONNULL_END

@@ -154,6 +154,11 @@
         [_collectionView.mj_header endRefreshing];
         return;
     }
+    
+    NSString *getUrl = [Net_Path teacherCourseListInfo:_teacherId];
+    if (_isUserHomePage) {
+        getUrl = [Net_Path userHomeCourseListNet];
+    }
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
@@ -162,8 +167,7 @@
     if (SWNOTEmptyStr(coursetypeIdString)) {
         [param setObject:coursetypeIdString forKey:@"course_type"];
     }
-
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherCourseListInfo:_teacherId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         [_collectionView.mj_header endRefreshing];
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
@@ -183,6 +187,10 @@
 }
 
 - (void)getCourseMainListMoreData {
+    NSString *getUrl = [Net_Path teacherCourseListInfo:_teacherId];
+    if (_isUserHomePage) {
+        getUrl = [Net_Path userHomeCourseListNet];
+    }
     page = page + 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
@@ -191,7 +199,7 @@
     if (SWNOTEmptyStr(coursetypeIdString)) {
         [param setObject:coursetypeIdString forKey:@"course_type"];
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherCourseListInfo:_teacherId] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_collectionView.mj_footer.isRefreshing) {
             [_collectionView.mj_footer endRefreshing];
         }

@@ -588,6 +588,15 @@ struct NetWorkUrl {
 /** 用户的动态列表 */
 + (NSString *)userCircleListNet;
 
+/** 用户的主页信息 */
++ (NSString *)userHomeInfoNet;
+
+/** 用户的主页信息 */
++ (NSString *)userHomeCircleListNet;
+
+/** 用户的主页信息 */
++ (NSString *)userHomeCourseListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

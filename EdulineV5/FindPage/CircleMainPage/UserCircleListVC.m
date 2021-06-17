@@ -16,6 +16,9 @@
 #import "CirclePostViewController.h"
 #import "CircleDetailViewController.h"
 
+#import "MyCirclePageVC.h"
+#import "UserHomePageViewController.h"
+
 @interface UserCircleListVC ()<UITableViewDelegate, UITableViewDataSource, CircleListCellDelegate, ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource> {
     NSInteger page;
     UIImageView *currentShowPicImageView;
@@ -228,6 +231,24 @@
     vc.forwardInfo = cell.userCommentInfo;
     [self.navigationController pushViewController:vc animated:YES];
     
+}
+
+// MARK: - 跳转到用户主页(区分自己和他人)
+- (void)goToUserHomePage:(CircleListCell *)cell {
+    NSString *user_id = [NSString stringWithFormat:@"%@",cell.userCommentInfo[@"user_id"]];
+    if (SWNOTEmptyStr(user_id)) {
+        if ([user_id isEqualToString:[V5_UserModel uid]]) {
+            // 自己
+            MyCirclePageVC *vc = [[MyCirclePageVC alloc] init];
+            vc.teacherId = user_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            // 他人
+            UserHomePageViewController *vc = [[UserHomePageViewController alloc] init];
+            vc.teacherId = user_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
 }
 
 @end

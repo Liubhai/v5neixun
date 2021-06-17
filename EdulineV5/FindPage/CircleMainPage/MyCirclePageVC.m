@@ -76,27 +76,16 @@
     _faceImageView.image = DefaultImage;
     [_topView addSubview:_faceImageView];
     
-    _InstitutionLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top, MainScreenWidth - (_faceImageView.right + 10), 23)];
+    _InstitutionLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top + 5, MainScreenWidth - (_faceImageView.right + 10), 23)];
     _InstitutionLabel.font = SYSTEMFONT(16);
     _InstitutionLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_InstitutionLabel];
     
-    _levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, 0, 52, 23)];
-    _levelLabel.layer.masksToBounds = YES;
-    _levelLabel.layer.cornerRadius = 2;
-    _levelLabel.layer.borderColor = [UIColor whiteColor].CGColor;
-    _levelLabel.layer.borderWidth = 1;
-    _levelLabel.font = SYSTEMFONT(11);
+    _levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.bottom - 20, 52, 20)];
+    _levelLabel.font = SYSTEMFONT(13);
     _levelLabel.textColor = [UIColor whiteColor];
-    _levelLabel.textAlignment = NSTextAlignmentCenter;
-    _levelLabel.centerY = _faceImageView.centerY;
     [_topView addSubview:_levelLabel];
     
-    _introLabelBtn = [[UIButton alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.bottom - 20, MainScreenWidth - (_faceImageView.right + 10), 18)];
-    _introLabelBtn.titleLabel.font = SYSTEMFONT(13);
-    [_introLabelBtn setTitleColor:[UIColor whiteColor] forState:0];
-    [_introLabelBtn addTarget:self action:@selector(jumpToInstitution:) forControlEvents:UIControlEventTouchUpInside];
-    [_topView addSubview:_introLabelBtn];
     //9*9
     NSString *secondTitle = @"编辑资料";
     CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(11)].width + 4 + 9 + 10;
@@ -176,7 +165,7 @@
     } else {
         vc.themeString = @"3";
     }
-    vc.userId = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"user_id"]];
+    vc.userId = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"id"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -193,11 +182,12 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+// MARK: - 用户主页信息
 - (void)getTeacherInfo {
     if (!SWNOTEmptyStr(_teacherId)) {
         return;
     }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path teacherMainInfo:_teacherId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userHomeInfoNet] WithAuthorization:nil paramDic:@{@"user_id":_teacherId} finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _teacherInfoDict = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
@@ -212,34 +202,15 @@
 - (void)setTeacherInfoData {
     if (SWNOTEmptyDictionary(_teacherInfoDict)) {
         [_faceImageView sd_setImageWithURL:EdulineUrlString([_teacherInfoDict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
-        _InstitutionLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"title"]];
-        _levelLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"level_text"]];
-        if ([_levelLabel.text isEqualToString:@"<null>"] || [_levelLabel.text isEqualToString:@"null"] || !SWNOTEmptyStr(_levelLabel.text)) {
-            _levelLabel.hidden = YES;
-        }
-        CGFloat levelWidth = [_levelLabel.text sizeWithFont:_levelLabel.font].width + 4;
-        [_levelLabel setWidth:levelWidth];
-        NSString *schoolName = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"school_name"]];
-        NSString *mhm_id = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"mhm_id"]];
-        CGFloat secondBtnWidth = [schoolName sizeWithFont:_introLabelBtn.titleLabel.font].width + 4 + 12;
-        [_introLabelBtn setWidth:secondBtnWidth];
-        [_introLabelBtn setImage:Image(@"jigou_") forState:0];
-        [_introLabelBtn setTitle:schoolName forState:0];
-        [_introLabelBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -_introLabelBtn.currentImage.size.width, 0, _introLabelBtn.currentImage.size.width)];
-        [_introLabelBtn setImageEdgeInsets:UIEdgeInsetsMake(0, secondBtnWidth-12, 0, -(secondBtnWidth - 12))];
-        if (SWNOTEmptyStr(mhm_id)) {
-            if ([mhm_id isEqualToString:@"1"]) {
-                schoolName = @"";
-            }
-        } else {
-            schoolName = @"";
-        }
-        if ([schoolName isEqualToString:@"<null>"] || [schoolName isEqualToString:@"null"] || !SWNOTEmptyStr(schoolName)) {
-            _introLabelBtn.hidden = YES;
-        }
-        _guanzhuCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"follow"]];
-        _fensiCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"follower"]];
-        _visitorsCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"recent_visitors"]];
+        _InstitutionLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"nick_name"]];
+        
+        NSString *schoolName = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"signature"]];
+        CGFloat secondBtnWidth = [schoolName sizeWithFont:_levelLabel.font].width + 4;
+        _levelLabel.text = schoolName;
+        [_levelLabel setWidth:secondBtnWidth];
+        _guanzhuCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"following_num"]];
+        _fensiCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"fans_num"]];
+        _visitorsCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"recent_visitor_num"]];
     }
 }
 

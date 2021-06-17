@@ -819,4 +819,19 @@
     return [Net_Path fullPath:@"circle/user/list" repalce:@"" byReplece:@""];
 }
 
+/** 用户的主页信息 */
++ (NSString *)userHomeInfoNet {
+    return [Net_Path fullPath:@"user/home/base" repalce:@"" byReplece:@""];
+}
+
+/** 用户的主页信息 */
++ (NSString *)userHomeCircleListNet {
+    return [Net_Path fullPath:@"user/home/circle" repalce:@"" byReplece:@""];
+}
+
+/** 用户的主页信息 */
++ (NSString *)userHomeCourseListNet {
+    return [Net_Path fullPath:@"user/home/course" repalce:@"" byReplece:@""];
+}
+
 @end

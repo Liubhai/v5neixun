@@ -16,11 +16,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol CircleListCellDelegate <NSObject>
 
+@optional
 - (void)showCirclePic:(NSDictionary *)dict imagetag:(NSInteger)tag toView:(UIImageView *)toImageView;
 
 - (void)likeCircleClick:(CircleListCell *)cell;
 - (void)shareCircleClick:(CircleListCell *)cell;
 - (void)deleteCircleClick:(CircleListCell *)cell;
+
+- (void)goToUserHomePage:(CircleListCell *)cell;
 
 @end
 

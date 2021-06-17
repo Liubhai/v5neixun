@@ -15,6 +15,9 @@
 #import "CircleDetailCommentCell.h"
 #import "CirclePostViewController.h"
 
+#import "MyCirclePageVC.h"
+#import "UserHomePageViewController.h"
+
 @interface CircleDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CircleListCellDelegate,CircleDetailCommentCellDelegate> {
     NSInteger page;
     NSString *replayUserId;
@@ -449,6 +452,24 @@
         } enError:^(NSError * _Nonnull error) {
             
         }];
+    }
+}
+
+// MARK: - 跳转到用户主页(区分自己和他人)
+- (void)goToUserHomePage:(CircleListCell *)cell {
+    NSString *user_id = [NSString stringWithFormat:@"%@",cell.userCommentInfo[@"user_id"]];
+    if (SWNOTEmptyStr(user_id)) {
+        if ([user_id isEqualToString:[V5_UserModel uid]]) {
+            // 自己
+            MyCirclePageVC *vc = [[MyCirclePageVC alloc] init];
+            vc.teacherId = user_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            // 他人
+            UserHomePageViewController *vc = [[UserHomePageViewController alloc] init];
+            vc.teacherId = user_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 

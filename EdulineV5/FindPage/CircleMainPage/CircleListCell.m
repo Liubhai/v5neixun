@@ -25,11 +25,17 @@
     _userFace.layer.cornerRadius = _userFace.height / 2.0;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;
     _userFace.backgroundColor = EdlineV5_Color.faildColor;
+    _userFace.userInteractionEnabled = YES;
+    UITapGestureRecognizer *facetap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(faceAndNametap:)];
+    [_userFace addGestureRecognizer:facetap];
     [self.contentView addSubview:_userFace];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 10, _userFace.top, 150, 15)];
     _nameLabel.textColor = EdlineV5_Color.textFirstColor;
     _nameLabel.font = SYSTEMFONT(14);
+    _nameLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *nametap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(faceAndNametap:)];
+    [_nameLabel addGestureRecognizer:nametap];
     [self.contentView addSubview:_nameLabel];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom - 13, 100, 13)];
@@ -259,6 +265,12 @@
 - (void)picTap:(UITapGestureRecognizer *)tap {
     if (_delegate && [_delegate respondsToSelector:@selector(showCirclePic:imagetag:toView:)]) {
         [_delegate showCirclePic:_userCommentInfo imagetag:tap.view.tag - 66 toView:tap.view];
+    }
+}
+
+- (void)faceAndNametap:(UITapGestureRecognizer *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(goToUserHomePage:)]) {
+        [_delegate goToUserHomePage:self];
     }
 }
 
