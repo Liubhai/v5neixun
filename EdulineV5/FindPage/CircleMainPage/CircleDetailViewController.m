@@ -327,6 +327,7 @@
 - (void)deleteComment:(CircleDetailCommentCell *)cell {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"确认删除该条评论？" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self deleteCircleComment:[NSString stringWithFormat:@"%@",cell.userCommentInfo[@"id"]]];
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
@@ -426,6 +427,23 @@
                         [self.navigationController popViewControllerAnimated:YES];
                     });
 
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+// MARK: - 删除圈子评论或者回复
+- (void)deleteCircleComment:(NSString *)circleCommentId {
+    if (SWNOTEmptyStr(circleCommentId)) {
+        [Net_API requestDeleteWithURLStr:[Net_Path circleCommentOrReplay] paramDic:@{@"id":circleCommentId} Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    // 请求接口刷新数据 就不手动处理数据源了
+                    [self.tableView.mj_header beginRefreshing];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
