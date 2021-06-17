@@ -242,6 +242,8 @@
                     vc.activityId = [NSString stringWithFormat:@"%@",byteStringArray[5]];
                     [self.tabbar.selectedViewController pushViewController:vc animated:YES];
                 } else {
+                    [[NSUserDefaults standardUserDefaults] setObject:byteStringArray[3] forKey:@"usersharecodeCourseID"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
                     CourseMainViewController *vc = [[CourseMainViewController alloc] init];
                     vc.ID = [NSString stringWithFormat:@"%@",byteStringArray[3]];
                     vc.isLive = [[NSString stringWithFormat:@"%@",byteStringArray[2]] isEqualToString:@"2"] ? YES : NO;

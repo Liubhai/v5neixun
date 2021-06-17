@@ -1277,6 +1277,20 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         [eventTimer invalidate];
         eventTimer = nil;
+        
+        if ([usersharecodecourseid isEqualToString:@"0"]) {
+            
+        } else {
+            if ([usersharecode isEqualToString:@"0"]) {
+                
+            } else {
+                if ([usersharecodecourseid isEqualToString:_ID]) {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"usersharecode"];
+                    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"usersharecodeCourseID"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+            }
+        }
     }
 }
 

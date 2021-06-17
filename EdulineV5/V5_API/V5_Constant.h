@@ -53,6 +53,9 @@
 
 #define usersharecode [[NSUserDefaults standardUserDefaults] objectForKey:@"usersharecode"] == nil ? @"0" : [[NSUserDefaults standardUserDefaults] objectForKey:@"usersharecode"]
 
+#define usersharecodecourseid [[NSUserDefaults standardUserDefaults] objectForKey:@"usersharecodeCourseID"] == nil ? @"0" : [[NSUserDefaults standardUserDefaults] objectForKey:@"usersharecodeCourseID"]
+
+
 #define Show_Config [[NSUserDefaults standardUserDefaults] objectForKey:@"show_config"] == nil ? @"0" : [[NSUserDefaults standardUserDefaults] objectForKey:@"show_config"]
 
 #define TXSDKID [[NSUserDefaults standardUserDefaults] objectForKey:@"sdk_appid"]
