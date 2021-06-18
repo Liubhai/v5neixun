@@ -53,6 +53,7 @@
     [self makeHeaderView];
     [self makeCircleListVC];
     [self getTeacherInfo];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyInfo) name:@"reloadMyCircleHomePageInfo" object:nil];
 }
 
 - (void)makeHeaderView {
@@ -211,6 +212,18 @@
         _guanzhuCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"following_num"]];
         _fensiCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"fans_num"]];
         _visitorsCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"recent_visitor_num"]];
+    }
+}
+
+// MARK: - 更新了个人信息后通知本页面刷新数据
+- (void)reloadMyInfo {
+    [self getTeacherInfo];
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
 

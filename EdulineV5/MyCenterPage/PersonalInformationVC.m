@@ -469,6 +469,8 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                // 个人主页(动态主页)点击编辑跳转过来的时候需要发个通知去更新
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMyCircleHomePageInfo" object:nil];
                 [self.navigationController popViewControllerAnimated:YES];
             }
         }
