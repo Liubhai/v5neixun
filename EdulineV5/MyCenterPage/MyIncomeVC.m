@@ -900,12 +900,14 @@
         [EdulineV5_Tool dealButtonImageAndTitleUI:_headerButton];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
         if ([courseSortIdString isEqualToString:@"course"] || [courseSortIdString isEqualToString:@"user"]) {
+            _rightButton.hidden = YES;
             if (_tableView) {
                 _tableView.hidden = NO;
                 [_tableView.mj_header beginRefreshing];
             }
         } else {
             _tableView.hidden = YES;
+            _rightButton.hidden = NO;
         }
     }
 }
