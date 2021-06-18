@@ -11,6 +11,15 @@
 
 @implementation PromotionCourseCell
 
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        [self makeSubView];
+    }
+    return self;
+}
+
 - (void)makeSubView {
     _courseFace = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 153, 86)];
     
