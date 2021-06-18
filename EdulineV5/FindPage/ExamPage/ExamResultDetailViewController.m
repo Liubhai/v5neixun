@@ -1807,24 +1807,32 @@
             if (SWNOTEmptyArr(c_model.material)) {
                 ExamMediaModel *model = c_model.material[sender.tag - 66];
                 if ([model.type isEqualToString:@"audio"]) {
-                    if (_currentVoiceButton != sender) {
-                        _currentVoiceButton.selected = NO;
-                    }
-                    sender.selected = !sender.selected;
-                    _currentVoiceButton = sender;
-                    NSURL * url = [NSURL URLWithString:model.src];
-                    AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
-                    if (!_voicePlayer) {
-                        _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                    if (sender.selected) {
+                        if (_voicePlayer) {
+                            [_voicePlayer pause];
+                            sender.selected = NO;
+                            _currentVoiceButton.selected = NO;
+                        }
                     } else {
-                        [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                        if (_currentVoiceButton != sender) {
+                            _currentVoiceButton.selected = NO;
+                        }
+                        sender.selected = YES;
+                        _currentVoiceButton = sender;
+                        NSURL * url = [NSURL URLWithString:model.src];
+                        AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
+                        if (!_voicePlayer) {
+                            _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                        } else {
+                            [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                        }
+                        [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
                     }
-                    [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
                 } else {
                     if (_voicePlayer) {
                         [_voicePlayer pause];
                         if (_currentVoiceButton) {
-                            _currentVoiceButton.selected = !_currentVoiceButton.selected;
+                            _currentVoiceButton.selected = NO;
                         }
                     }
                     
@@ -1847,24 +1855,32 @@
             if (SWNOTEmptyArr(c_model.material)) {
                 ExamMediaModel *model = c_model.material[sender.tag - 66];
                 if ([model.type isEqualToString:@"audio"]) {
-                    if (_currentVoiceButton != sender) {
-                        _currentVoiceButton.selected = NO;
-                    }
-                    sender.selected = !sender.selected;
-                    _currentVoiceButton = sender;
-                    NSURL * url = [NSURL URLWithString:model.src];
-                    AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
-                    if (!_voicePlayer) {
-                        _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                    if (sender.selected) {
+                        if (_voicePlayer) {
+                            [_voicePlayer pause];
+                            sender.selected = NO;
+                            _currentVoiceButton.selected = NO;
+                        }
                     } else {
-                        [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                        if (_currentVoiceButton != sender) {
+                            _currentVoiceButton.selected = NO;
+                        }
+                        sender.selected = YES;
+                        _currentVoiceButton = sender;
+                        NSURL * url = [NSURL URLWithString:model.src];
+                        AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
+                        if (!_voicePlayer) {
+                            _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                        } else {
+                            [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                        }
+                        [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
                     }
-                    [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
                 } else {
                     if (_voicePlayer) {
                         [_voicePlayer pause];
                         if (_currentVoiceButton) {
-                            _currentVoiceButton.selected = !_currentVoiceButton.selected;
+                            _currentVoiceButton.selected = NO;
                         }
                     }
                     

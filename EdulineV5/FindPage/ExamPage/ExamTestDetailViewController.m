@@ -354,6 +354,7 @@
         // 这个时候如果有音视频  需要处理
         
         UIView *mediaBackView = [[UIView alloc] initWithFrame:CGRectMake(0, lable1111.bottom + 10, MainScreenWidth, 0.01)];
+        mediaBackView.tag = 100 + section;
         [back addSubview:mediaBackView];
         NSInteger voiceIndex = 0;
         NSInteger videoIndex = 0;
@@ -1373,24 +1374,32 @@
             if (SWNOTEmptyArr(c_model.material)) {
                 ExamMediaModel *model = c_model.material[sender.tag - 66];
                 if ([model.type isEqualToString:@"audio"]) {
-                    if (_currentVoiceButton != sender) {
-                        _currentVoiceButton.selected = NO;
-                    }
-                    sender.selected = !sender.selected;
-                    _currentVoiceButton = sender;
-                    NSURL * url = [NSURL URLWithString:model.src];
-                    AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
-                    if (!_voicePlayer) {
-                        _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                    if (sender.selected) {
+                        if (_voicePlayer) {
+                            [_voicePlayer pause];
+                            sender.selected = NO;
+                            _currentVoiceButton.selected = NO;
+                        }
                     } else {
-                        [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                        if (_currentVoiceButton != sender) {
+                            _currentVoiceButton.selected = NO;
+                        }
+                        sender.selected = YES;
+                        _currentVoiceButton = sender;
+                        NSURL * url = [NSURL URLWithString:model.src];
+                        AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
+                        if (!_voicePlayer) {
+                            _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                        } else {
+                            [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                        }
+                        [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
                     }
-                    [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
                 } else {
                     if (_voicePlayer) {
                         [_voicePlayer pause];
                         if (_currentVoiceButton) {
-                            _currentVoiceButton.selected = !_currentVoiceButton.selected;
+                            _currentVoiceButton.selected = NO;
                         }
                     }
                     
@@ -1413,24 +1422,32 @@
             if (SWNOTEmptyArr(c_model.material)) {
                 ExamMediaModel *model = c_model.material[sender.tag - 66];
                 if ([model.type isEqualToString:@"audio"]) {
-                    if (_currentVoiceButton != sender) {
-                        _currentVoiceButton.selected = NO;
-                    }
-                    sender.selected = !sender.selected;
-                    _currentVoiceButton = sender;
-                    NSURL * url = [NSURL URLWithString:model.src];
-                    AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
-                    if (!_voicePlayer) {
-                        _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                    if (sender.selected) {
+                        if (_voicePlayer) {
+                            [_voicePlayer pause];
+                            sender.selected = NO;
+                            _currentVoiceButton.selected = NO;
+                        }
                     } else {
-                        [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                        if (_currentVoiceButton != sender) {
+                            _currentVoiceButton.selected = NO;
+                        }
+                        sender.selected = YES;
+                        _currentVoiceButton = sender;
+                        NSURL * url = [NSURL URLWithString:model.src];
+                        AVPlayerItem * songItem = [[AVPlayerItem alloc]initWithURL:url];
+                        if (!_voicePlayer) {
+                            _voicePlayer = [[AVPlayer alloc] initWithPlayerItem:songItem];
+                        } else {
+                            [_voicePlayer replaceCurrentItemWithPlayerItem:songItem];
+                        }
+                        [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
                     }
-                    [songItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
                 } else {
                     if (_voicePlayer) {
                         [_voicePlayer pause];
                         if (_currentVoiceButton) {
-                            _currentVoiceButton.selected = !_currentVoiceButton.selected;
+                            _currentVoiceButton.selected = NO;
                         }
                     }
                     
