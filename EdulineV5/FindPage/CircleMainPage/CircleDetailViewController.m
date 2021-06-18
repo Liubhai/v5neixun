@@ -473,4 +473,58 @@
     }
 }
 
+// MARK: - 关注按钮点击事件
+- (void)followUser:(CircleListCell *)cell {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    NSString *userId = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"user_id"]];
+    if ([[cell.userCommentInfo objectForKey:@"is_follow"] boolValue]) {
+        [Net_API requestDeleteWithURLStr:[Net_Path userFollowNet] paramDic:@{@"user_id":userId} Api_key:nil finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    // 更新数据源
+                    NSIndexPath *cellpath = [self.tableView indexPathForCell:cell];
+                    
+                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_detailInfo];
+                    [pass setObject:@"0" forKey:@"is_follow"];
+                    _detailInfo = [NSDictionary dictionaryWithDictionary:pass];
+                    
+                    NSMutableDictionary *passComment = [NSMutableDictionary dictionaryWithDictionary:_commentInfo];
+                    [passComment setObject:[NSDictionary dictionaryWithDictionary:_detailInfo] forKey:@"detail"];
+                    _commentInfo = [NSDictionary dictionaryWithDictionary:passComment];
+                    
+                    [_tableView reloadRowAtIndexPath:cellpath withRowAnimation:UITableViewRowAnimationNone];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    } else {
+        [Net_API requestPOSTWithURLStr:[Net_Path userFollowNet] WithAuthorization:nil paramDic:@{@"user_id":userId} finish:^(id  _Nonnull responseObject) {
+            if (SWNOTEmptyDictionary(responseObject)) {
+                [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    // 更新数据源
+                    NSIndexPath *cellpath = [self.tableView indexPathForCell:cell];
+                    
+                    NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_detailInfo];
+                    [pass setObject:@"1" forKey:@"is_follow"];
+                    _detailInfo = [NSDictionary dictionaryWithDictionary:pass];
+                    
+                    NSMutableDictionary *passComment = [NSMutableDictionary dictionaryWithDictionary:_commentInfo];
+                    [passComment setObject:[NSDictionary dictionaryWithDictionary:_detailInfo] forKey:@"detail"];
+                    _commentInfo = [NSDictionary dictionaryWithDictionary:passComment];
+                    
+                    [_tableView reloadRowAtIndexPath:cellpath withRowAnimation:UITableViewRowAnimationNone];
+                }
+            }
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
 @end

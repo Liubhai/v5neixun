@@ -54,6 +54,7 @@
     _guanzhuButton.layer.borderColor = EdlineV5_Color.themeColor.CGColor;
     _guanzhuButton.layer.borderWidth = 1;
     _guanzhuButton.titleLabel.font = SYSTEMFONT(11);
+    [_guanzhuButton addTarget:self action:@selector(guanzhuButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_guanzhuButton];
     
     _contentLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_nameLabel.left, _userFace.bottom + 15, MainScreenWidth - _nameLabel.left - 15, 50)];
@@ -259,6 +260,12 @@
 - (void)shareButtonClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(shareCircleClick:)]) {
         [_delegate shareCircleClick:self];
+    }
+}
+
+- (void)guanzhuButtonClick:(UIButton *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(followUser:)]) {
+        [_delegate followUser:self];
     }
 }
 
