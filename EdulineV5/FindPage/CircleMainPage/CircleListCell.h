@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteCircleClick:(CircleListCell *)cell;
 
 - (void)goToUserHomePage:(CircleListCell *)cell;
+- (void)jumpToForwarOriginCircleDetailVC:(CircleListCell *)cell;
 
 @end
 
@@ -38,6 +39,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIButton *guanzhuButton;
 @property (strong, nonatomic) TYAttributedLabel *contentLabel;
 @property (strong, nonatomic) UIView *pictureBackView;
+
+// 转发信息板块儿视图(产品说的是整个板块儿点击 跳转到原动态详情页)
+@property (strong, nonatomic) UIView *forwardBackView;
+@property (strong, nonatomic) TYAttributedLabel *forwardContentLabel;
+@property (strong, nonatomic) UIView *forwardPictureBackView;
+
 @property (strong, nonatomic) UIButton *deleteButton;
 @property (strong, nonatomic) UIButton *shareButton;
 @property (strong, nonatomic) UIButton *commentCountButton;

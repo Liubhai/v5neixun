@@ -67,6 +67,25 @@
     _pictureBackView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left, _contentLabel.bottom + 15, _contentLabel.width, 0.01)];
     [self.contentView addSubview:_pictureBackView];
     
+    // 转发
+    _forwardBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _contentLabel.bottom, MainScreenWidth - 30, 0.01)];
+    _forwardBackView.backgroundColor = EdlineV5_Color.backColor;
+    _forwardBackView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *forwardTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(forwardBackViewtap:)];
+    [_forwardBackView addGestureRecognizer:forwardTap];
+    [self.contentView addSubview:_forwardBackView];
+    
+    _forwardContentLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_nameLabel.left - 15, 15, _contentLabel.width, 50)];
+    _forwardContentLabel.backgroundColor = EdlineV5_Color.backColor;
+    _forwardContentLabel.textColor = EdlineV5_Color.textFirstColor;
+    _forwardContentLabel.font = SYSTEMFONT(14);
+    _forwardContentLabel.numberOfLines = 0;
+    _forwardContentLabel.delegate = self;
+    [_forwardBackView addSubview:_forwardContentLabel];
+    
+    _forwardPictureBackView = [[UIView alloc] initWithFrame:CGRectMake(_nameLabel.left - 15, _forwardContentLabel.bottom + 15, _forwardContentLabel.width, 0.01)];
+    [_forwardBackView addSubview:_forwardPictureBackView];
+    
     NSString *commentCount = @"323";
     NSString *zanCount = @"1314";
     NSString *shareCount = @"99";
@@ -146,37 +165,110 @@
     
     [_contentLabel setHeight:_contentLabel.height];
     
+    CGFloat bottomToolTop = 0;
+    NSString *orignal_id = [NSString stringWithFormat:@"%@",dict[@"orignal_id"]];
     
     _pictureBackView.frame = CGRectMake(_nameLabel.left, _contentLabel.bottom + 15, _contentLabel.width, 0.01);
+    _pictureBackView.hidden = NO;
     [_pictureBackView removeAllSubviews];
-    NSArray *picArray = [NSArray arrayWithArray:[dict objectForKey:@"attach_url"]];
-    CGFloat leftSpace = 0;
-    CGFloat inSpace = 11;
-    CGFloat picWidth = (_contentLabel.width - leftSpace * 2 - inSpace * 2) / 3.0;
     
-    if (picArray.count) {
-        [_pictureBackView setTop:_contentLabel.bottom + 12];
-    } else {
-        [_pictureBackView setTop:_contentLabel.bottom];
-    }
+    _forwardBackView.frame = CGRectMake(15, _contentLabel.bottom, MainScreenWidth - 30, 0.01);
+    _forwardBackView.hidden = NO;
     
-    for (int i = 0; i<picArray.count; i++) {
-        // x 余 y 正
-        UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace + (picWidth + inSpace) * (i%3), (inSpace + picWidth) * (i/3), picWidth, picWidth)];
-        pic.clipsToBounds = YES;
-        pic.contentMode = UIViewContentModeScaleAspectFill;
-        [pic sd_setImageWithURL:EdulineUrlString(picArray[i]) placeholderImage:DefaultImage];
-        pic.tag = 66 + i;
-        pic.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(picTap:)];
-        [pic addGestureRecognizer:tap];
-        [_pictureBackView addSubview:pic];
-        if (i == (picArray.count - 1)) {
-            [_pictureBackView setHeight:pic.bottom];
+    if (!SWNOTEmptyStr(orignal_id) || [orignal_id isEqualToString:@"0"] || [orignal_id isEqualToString:@"<null>"] || [orignal_id isEqualToString:@"null"]) {
+        // 不是转发
+        
+        //处理转发视图 隐藏 高度
+        _forwardBackView.hidden = YES;
+        [_forwardContentLabel setHeight:0.01];
+        _forwardContentLabel.hidden = YES;
+        [_forwardPictureBackView removeAllSubviews];
+        [_forwardPictureBackView setHeight:0.01];
+        _forwardPictureBackView.hidden = YES;
+        
+        NSArray *picArray = [NSArray arrayWithArray:[dict objectForKey:@"attach_url"]];
+        CGFloat leftSpace = 0;
+        CGFloat inSpace = 11;
+        CGFloat picWidth = (_contentLabel.width - leftSpace * 2 - inSpace * 2) / 3.0;
+        
+        if (picArray.count) {
+            [_pictureBackView setTop:_contentLabel.bottom + 12];
+        } else {
+            [_pictureBackView setTop:_contentLabel.bottom];
         }
+        
+        for (int i = 0; i<picArray.count; i++) {
+            // x 余 y 正
+            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace + (picWidth + inSpace) * (i%3), (inSpace + picWidth) * (i/3), picWidth, picWidth)];
+            pic.clipsToBounds = YES;
+            pic.contentMode = UIViewContentModeScaleAspectFill;
+            [pic sd_setImageWithURL:EdulineUrlString(picArray[i]) placeholderImage:DefaultImage];
+            pic.tag = 66 + i;
+            pic.userInteractionEnabled = YES;
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(picTap:)];
+            [pic addGestureRecognizer:tap];
+            [_pictureBackView addSubview:pic];
+            if (i == (picArray.count - 1)) {
+                [_pictureBackView setHeight:pic.bottom];
+            }
+        }
+        bottomToolTop = _pictureBackView.bottom + 17;
+    } else {
+        // 是动态转发
+        
+        // 处理 _pictureBackView 视图高度 隐藏
+        [_pictureBackView setHeight:0.01];
+        _pictureBackView.hidden = YES;
+        
+        _forwardBackView.frame = CGRectMake(15, _contentLabel.bottom, MainScreenWidth - 30, 0.01);
+        
+        // 处理 转发板块儿的视图
+        // 文本
+        _forwardContentLabel.frame = CGRectMake(_nameLabel.left - 15, 15, _contentLabel.width, 50);
+        _forwardContentLabel.hidden = NO;
+        _forwardContentLabel.numberOfLines = 0;
+        NSString *orignal_user = [NSString stringWithFormat:@"@%@",dict[@"orignal_user"]];
+        NSString *orignal_content = [NSString stringWithFormat:@"%@",dict[@"orignal_content"]];
+        _forwardContentLabel.text = [NSString stringWithFormat:@"%@：%@",orignal_user,orignal_content];
+        [_forwardContentLabel addLinkWithLinkData:@{@"orignal_user":orignal_user} linkColor:EdlineV5_Color.themeColor underLineStyle:kCTUnderlineStyleNone range:NSMakeRange(0, orignal_user.length)];
+        [_forwardContentLabel sizeToFit];
+        
+        [_forwardContentLabel setHeight:_forwardContentLabel.height];
+        
+        // 图片
+        _forwardPictureBackView.frame = CGRectMake(_nameLabel.left - 15, _forwardContentLabel.bottom + 15, _forwardContentLabel.width, 0.01);
+        _forwardPictureBackView.hidden = NO;
+        NSArray *picArray = [NSArray arrayWithArray:[dict objectForKey:@"orignal_attach"]];
+        CGFloat leftSpace = 0;
+        CGFloat inSpace = 11;
+        CGFloat picWidth = (_forwardContentLabel.width - leftSpace * 2 - inSpace * 2) / 3.0;
+        
+        if (picArray.count) {
+            [_forwardPictureBackView setTop:_forwardContentLabel.bottom + 12];
+        } else {
+            [_forwardPictureBackView setTop:_forwardContentLabel.bottom];
+        }
+        
+        for (int i = 0; i<picArray.count; i++) {
+            // x 余 y 正
+            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace + (picWidth + inSpace) * (i%3), (inSpace + picWidth) * (i/3), picWidth, picWidth)];
+            pic.clipsToBounds = YES;
+            pic.contentMode = UIViewContentModeScaleAspectFill;
+            [pic sd_setImageWithURL:EdulineUrlString(picArray[i]) placeholderImage:DefaultImage];
+//            pic.tag = 66 + i;
+//            pic.userInteractionEnabled = YES;
+//            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(picTap:)];
+//            [pic addGestureRecognizer:tap];
+            [_forwardPictureBackView addSubview:pic];
+            if (i == (picArray.count - 1)) {
+                [_forwardPictureBackView setHeight:pic.bottom];
+            }
+        }
+        [_forwardBackView setHeight:_forwardPictureBackView.bottom + 15];
+        bottomToolTop = _forwardBackView.bottom + 17;
     }
     
-    _deleteButton.frame = CGRectMake(_contentLabel.left, _pictureBackView.bottom + 17, 30, 20);
+    _deleteButton.frame = CGRectMake(_contentLabel.left, bottomToolTop, 30, 20);
     if (isDetail) {
         if ([user_id isEqualToString:[V5_UserModel uid]]) {
             _deleteButton.hidden = NO;
@@ -195,7 +287,7 @@
     CGFloat zanWidth = [zanCount sizeWithFont:SYSTEMFONT(12)].width + 4 + 20;
     CGFloat space = 2.0;
     
-    _shareButton.frame = CGRectMake(_contentLabel.left, _pictureBackView.bottom + 17, shareWidth, 20);
+    _shareButton.frame = CGRectMake(_contentLabel.left, bottomToolTop, shareWidth, 20);
     [_shareButton setImage:Image(@"circle_share_icon") forState:0];
     [_shareButton setTitle:shareCount forState:0];
     [_shareButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
@@ -204,7 +296,7 @@
     _shareButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
     [self.contentView addSubview:_shareButton];
     
-    _zanCountButton.frame = CGRectMake(MainScreenWidth - 15 - zanWidth, _pictureBackView.bottom + 17, zanWidth, 20);
+    _zanCountButton.frame = CGRectMake(MainScreenWidth - 15 - zanWidth, bottomToolTop, zanWidth, 20);
     [_zanCountButton setImage:Image(@"dianzan_icon_norm") forState:0];
     [_zanCountButton setImage:Image(@"dianzan_icon") forState:UIControlStateSelected];
     [_zanCountButton setTitle:zanCount forState:0];
@@ -278,6 +370,12 @@
 - (void)faceAndNametap:(UITapGestureRecognizer *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(goToUserHomePage:)]) {
         [_delegate goToUserHomePage:self];
+    }
+}
+
+- (void)forwardBackViewtap:(UITapGestureRecognizer *)sender {
+    if (_delegate && [_delegate respondsToSelector:@selector(jumpToForwarOriginCircleDetailVC:)]) {
+        [_delegate jumpToForwarOriginCircleDetailVC:self];
     }
 }
 

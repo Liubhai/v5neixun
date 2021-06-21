@@ -291,4 +291,11 @@
     }
 }
 
+// MARK: - 转发动态试图点击跳转到原动态详情页
+- (void)jumpToForwarOriginCircleDetailVC:(CircleListCell *)cell {
+    CircleDetailViewController *vc = [[CircleDetailViewController alloc] init];
+    vc.circle_id = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"orignal_id"]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 @end
