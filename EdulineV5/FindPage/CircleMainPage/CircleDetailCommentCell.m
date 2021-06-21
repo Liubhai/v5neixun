@@ -81,8 +81,8 @@
     _deleteButton.hidden = YES;
     if (SWNOTEmptyDictionary(info)) {
         _nameLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"nick_name"]];
-        if (SWNOTEmptyStr([info objectForKey:@"avatar"])) {
-            [_userFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"avatar"]) placeholderImage:DefaultUserImage];
+        if (SWNOTEmptyStr([info objectForKey:@"avatar_url"])) {
+            [_userFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
         } else {
             _userFace.image = DefaultUserImage;
         }
