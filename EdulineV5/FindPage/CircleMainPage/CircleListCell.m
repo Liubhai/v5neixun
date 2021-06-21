@@ -237,6 +237,7 @@
         
         // 图片
         _forwardPictureBackView.frame = CGRectMake(_nameLabel.left - 15, _forwardContentLabel.bottom + 15, _forwardContentLabel.width, 0.01);
+        [_forwardPictureBackView removeAllSubviews];
         _forwardPictureBackView.hidden = NO;
         NSArray *picArray = [NSArray arrayWithArray:[dict objectForKey:@"orignal_attach"]];
         CGFloat leftSpace = 0;
