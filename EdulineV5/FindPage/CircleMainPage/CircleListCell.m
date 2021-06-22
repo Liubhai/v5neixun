@@ -30,7 +30,7 @@
     [_userFace addGestureRecognizer:facetap];
     [self.contentView addSubview:_userFace];
     
-    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 10, _userFace.top, 150, 15)];
+    _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 10, _userFace.top, MainScreenWidth - (_userFace.right + 10) - 15 - 50, 15)];
     _nameLabel.textColor = EdlineV5_Color.textFirstColor;
     _nameLabel.font = SYSTEMFONT(14);
     _nameLabel.userInteractionEnabled = YES;
