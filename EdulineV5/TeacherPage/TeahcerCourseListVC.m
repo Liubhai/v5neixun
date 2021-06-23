@@ -35,6 +35,10 @@
     page = 1;
     coursetypeIdString = @"0";
     _typeArray = @[@{@"title":@"推荐",@"id":@"0"},@{@"title":@"点播",@"id":@"1"},@{@"title":@"直播",@"id":@"2"},@{@"title":@"面授",@"id":@"3"}];
+    if (_isUserHomePage) {
+        coursetypeIdString = @"1";
+        _typeArray = @[@{@"title":@"点播",@"id":@"1"},@{@"title":@"直播",@"id":@"2"},@{@"title":@"班级",@"id":@"4"},@{@"title":@"面授",@"id":@"3"}];
+    }
     _dataSource = [NSMutableArray new];
     _titleImage.hidden = YES;
     [self addHeaderView];
@@ -163,10 +167,20 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(coursetypeIdString)) {
-        [param setObject:coursetypeIdString forKey:@"course_type"];
+    
+    if (_isUserHomePage) {
+        [param setObject:_teacherId forKey:@"user_id"];
+        // 大类型
+        if (SWNOTEmptyStr(coursetypeIdString)) {
+            [param setObject:coursetypeIdString forKey:@"type"];
+        }
+    } else {
+        // 大类型
+        if (SWNOTEmptyStr(coursetypeIdString)) {
+            [param setObject:coursetypeIdString forKey:@"course_type"];
+        }
     }
+    
     [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         [_collectionView.mj_header endRefreshing];
         if (SWNOTEmptyDictionary(responseObject)) {
@@ -195,9 +209,17 @@
     NSMutableDictionary *param = [NSMutableDictionary new];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(coursetypeIdString)) {
-        [param setObject:coursetypeIdString forKey:@"course_type"];
+    if (_isUserHomePage) {
+        [param setObject:_teacherId forKey:@"user_id"];
+        // 大类型
+        if (SWNOTEmptyStr(coursetypeIdString)) {
+            [param setObject:coursetypeIdString forKey:@"type"];
+        }
+    } else {
+        // 大类型
+        if (SWNOTEmptyStr(coursetypeIdString)) {
+            [param setObject:coursetypeIdString forKey:@"course_type"];
+        }
     }
     [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_collectionView.mj_footer.isRefreshing) {

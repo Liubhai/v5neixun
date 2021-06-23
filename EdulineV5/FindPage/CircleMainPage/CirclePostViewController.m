@@ -439,7 +439,7 @@
                 [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"id"]] forKey:@"circle_id"];
             }
             if (SWNOTEmptyDictionary(_replayCommentInfo)) {
-                [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"comment_id"]] forKey:@"comment_id"];
+                [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"id"]] forKey:@"comment_id"];
                 [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"user_id"]] forKey:@"reply_user_id"];
             }
         }
@@ -464,6 +464,9 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                if (_isComment || _isReplayComment) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"commentActionReloadData" object:nil];
+                }
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.navigationController popViewControllerAnimated:YES];
                 });

@@ -26,11 +26,11 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     if ([_themeString isEqualToString:@"1"]) {
-        _titleLabel.text = @"我的粉丝";
+        _titleLabel.text = @"粉丝";
     } else if ([_themeString isEqualToString:@"2"]) {
-        _titleLabel.text = @"我的关注";
+        _titleLabel.text = @"关注";
     } else {
-        _titleLabel.text = @"最近访客";
+        _titleLabel.text = @"访客";
     }
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _dataSource = [NSMutableArray new];

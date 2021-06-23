@@ -140,7 +140,7 @@
 
 - (void)setCircleCellInfo:(NSDictionary *)dict circleType:(nonnull NSString *)circleType isDetail:(BOOL)isDetail {
     _userCommentInfo = dict;
-    [_userFace sd_setImageWithURL:EdulineUrlString(dict[@"avatar"]) placeholderImage:DefaultUserImage];
+    [_userFace sd_setImageWithURL:EdulineUrlString(dict[@"avatar_url"]) placeholderImage:DefaultUserImage];
     
     _nameLabel.text = [NSString stringWithFormat:@"%@",dict[@"nick_name"]];
     _timeLabel.text = [EdulineV5_Tool formatterDate:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];

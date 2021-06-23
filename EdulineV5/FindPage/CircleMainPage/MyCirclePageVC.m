@@ -54,6 +54,7 @@
     [self makeCircleListVC];
     [self getTeacherInfo];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyInfo) name:@"reloadMyCircleHomePageInfo" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyCircleData) name:@"reloadMyCircleData" object:nil];
 }
 
 - (void)makeHeaderView {
@@ -77,12 +78,12 @@
     _faceImageView.image = DefaultImage;
     [_topView addSubview:_faceImageView];
     
-    _InstitutionLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top + 5, MainScreenWidth - (_faceImageView.right + 10), 23)];
+    _InstitutionLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top + 10, MainScreenWidth - (_faceImageView.right + 10), 23)];
     _InstitutionLabel.font = SYSTEMFONT(16);
     _InstitutionLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_InstitutionLabel];
     
-    _levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.bottom - 20, 52, 20)];
+    _levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.bottom - 18 - 13, 52, 18)];
     _levelLabel.font = SYSTEMFONT(13);
     _levelLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_levelLabel];
@@ -90,6 +91,10 @@
     //9*9
     NSString *secondTitle = @"编辑资料";
     CGFloat secondBtnWidth = [secondTitle sizeWithFont:SYSTEMFONT(11)].width + 4 + 9 + 10;
+    
+    [_levelLabel setWidth:MainScreenWidth - (_faceImageView.right + 10) - 15 - secondBtnWidth - 15];
+    [_InstitutionLabel setWidth:_levelLabel.width];
+    
     CGFloat space = 3.0;
     _questionButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - secondBtnWidth, 0, secondBtnWidth, 21)];
     [_questionButton setImage:Image(@"homepage_qua_icon") forState:0];
@@ -206,9 +211,7 @@
         _InstitutionLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"nick_name"]];
         
         NSString *schoolName = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"signature"]];
-        CGFloat secondBtnWidth = [schoolName sizeWithFont:_levelLabel.font].width + 4;
         _levelLabel.text = schoolName;
-        [_levelLabel setWidth:secondBtnWidth];
         _guanzhuCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"following_num"]];
         _fensiCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"fans_num"]];
         _visitorsCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"recent_visitor_num"]];
@@ -218,6 +221,13 @@
 // MARK: - 更新了个人信息后通知本页面刷新数据
 - (void)reloadMyInfo {
     [self getTeacherInfo];
+}
+
+// MARK: - 删除自己动态后 主页要刷新数据
+- (void)reloadMyCircleData {
+    if (_userCircleListVC) {
+        [_userCircleListVC.tableView.mj_header beginRefreshing];
+    }
 }
 
 - (void)didMoveToParentViewController:(UIViewController*)parent{

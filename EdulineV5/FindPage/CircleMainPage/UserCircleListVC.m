@@ -25,7 +25,6 @@
 }
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
-@property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *currentShowPicArray;
 
@@ -72,7 +71,7 @@
     if (!cell) {
         cell = [[CircleListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setCircleCellInfo:_dataSource[indexPath.row] circleType:@"2" isDetail:NO];
+    [cell setCircleCellInfo:_dataSource[indexPath.row] circleType:@"3" isDetail:NO];
     cell.delegate = self;
     return cell;
 }
@@ -258,7 +257,7 @@
         return;
     }
     NSString *userId = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"user_id"]];
-    if ([[cell.userCommentInfo objectForKey:@"is_follow"] boolValue]) {
+    if ([[cell.userCommentInfo objectForKey:@"followed"] boolValue]) {
         [Net_API requestDeleteWithURLStr:[Net_Path userFollowNet] paramDic:@{@"user_id":userId} Api_key:nil finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:responseObject[@"msg"]];
@@ -266,9 +265,11 @@
                     // 更新数据源
                     NSIndexPath *cellpath = [self.tableView indexPathForCell:cell];
                     NSMutableDictionary *passDict = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellpath.row]];
-                    [passDict setObject:@"0" forKey:@"is_follow"];
+                    [passDict setObject:@"0" forKey:@"followed"];
                     [_dataSource replaceObjectAtIndex:cellpath.row withObject:[NSDictionary dictionaryWithDictionary:passDict]];
                     [_tableView reloadRowAtIndexPath:cellpath withRowAnimation:UITableViewRowAnimationNone];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"followActionReloadData" object:nil];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
@@ -282,9 +283,11 @@
                     // 更新数据源
                     NSIndexPath *cellpath = [self.tableView indexPathForCell:cell];
                     NSMutableDictionary *passDict = [NSMutableDictionary dictionaryWithDictionary:_dataSource[cellpath.row]];
-                    [passDict setObject:@"1" forKey:@"is_follow"];
+                    [passDict setObject:@"1" forKey:@"followed"];
                     [_dataSource replaceObjectAtIndex:cellpath.row withObject:[NSDictionary dictionaryWithDictionary:passDict]];
                     [_tableView reloadRowAtIndexPath:cellpath withRowAnimation:UITableViewRowAnimationNone];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"followActionReloadData" object:nil];
                 }
             }
         } enError:^(NSError * _Nonnull error) {

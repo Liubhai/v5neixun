@@ -116,12 +116,12 @@
     _faceImageView.image = DefaultImage;
     [_topView addSubview:_faceImageView];
     
-    _InstitutionLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top + 5, MainScreenWidth - (_faceImageView.right + 10), 23)];
+    _InstitutionLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top + 10, MainScreenWidth - (_faceImageView.right + 10), 23)];
     _InstitutionLabel.font = SYSTEMFONT(16);
     _InstitutionLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_InstitutionLabel];
     
-    _levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.bottom - 20, 52, 20)];
+    _levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.bottom - 18 - 13, 52, 18)];
     _levelLabel.font = SYSTEMFONT(13);
     _levelLabel.textColor = [UIColor whiteColor];
     [_topView addSubview:_levelLabel];
@@ -146,6 +146,11 @@
     [_topView addSubview:_questionButton];
     
     _likeButton = [[UIButton alloc] initWithFrame:CGRectMake(_questionButton.left - 10 - 50, 0, 50, 21)];
+    
+    // 限制签名的长度
+    [_levelLabel setWidth:_likeButton.left - _levelLabel.left - 15];
+    [_InstitutionLabel setWidth:_levelLabel.width];
+    
     _likeButton.backgroundColor = [UIColor whiteColor];
     [_likeButton setTitle:@"+关注" forState:0];
     [_likeButton setTitle:@"已关注" forState:UIControlStateSelected];
@@ -350,15 +355,17 @@
 - (void)followUserAction {
     if (SWNOTEmptyDictionary(_teacherInfoDict)) {
         NSString *userId = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"id"]];
-        if ([[_teacherInfoDict objectForKey:@"is_follow"] boolValue]) {
+        if ([[_teacherInfoDict objectForKey:@"followed"] boolValue]) {
             [Net_API requestDeleteWithURLStr:[Net_Path userFollowNet] paramDic:@{@"user_id":userId} Api_key:nil finish:^(id  _Nonnull responseObject) {
                 [self getTeacherInfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"followActionReloadData" object:nil];
             } enError:^(NSError * _Nonnull error) {
                 
             }];
         } else {
             [Net_API requestPOSTWithURLStr:[Net_Path userFollowNet] WithAuthorization:nil paramDic:@{@"user_id":userId} finish:^(id  _Nonnull responseObject) {
                 [self getTeacherInfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"followActionReloadData" object:nil];
             } enError:^(NSError * _Nonnull error) {
                 
             }];
@@ -389,9 +396,9 @@
         _InstitutionLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"nick_name"]];
         [_likeButton setTitle:[[_teacherInfoDict objectForKey:@"followed"] boolValue] ? @"已关注" : @"+关注" forState:0];
         NSString *schoolName = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"signature"]];
-        CGFloat secondBtnWidth = [schoolName sizeWithFont:_levelLabel.font].width + 4;
+//        CGFloat secondBtnWidth = [schoolName sizeWithFont:_levelLabel.font].width + 4;
         _levelLabel.text = schoolName;
-        [_levelLabel setWidth:secondBtnWidth];
+//        [_levelLabel setWidth:secondBtnWidth];
         _guanzhuCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"following_num"]];
         _fensiCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"fans_num"]];
         _visitorsCountLabel.text = [NSString stringWithFormat:@"%@",[_teacherInfoDict objectForKey:@"recent_visitor_num"]];

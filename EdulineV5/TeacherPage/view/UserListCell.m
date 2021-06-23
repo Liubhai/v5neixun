@@ -49,7 +49,7 @@
     [_followButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     [_followButton setTitle:@"+ 关注" forState:0];
     [_followButton addTarget:self action:@selector(followButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    _followButton.hidden = YES;
+    _followButton.hidden = NO;
     [self.contentView addSubview:_followButton];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 97 - 1, MainScreenWidth, 1)];

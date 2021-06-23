@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *user_id;// 圈子所属用户 ID
 @property (assign, nonatomic) CGFloat tabelHeight;
 
+@property (strong, nonatomic) UITableView *tableView;
+
 @end
 
 NS_ASSUME_NONNULL_END

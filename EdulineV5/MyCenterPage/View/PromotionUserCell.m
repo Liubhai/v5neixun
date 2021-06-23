@@ -21,7 +21,7 @@
 }
 
 - (void)makeSubView {
-    _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 57, 57)];
+    _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 40, 40)];
     _faceImageView.layer.masksToBounds = YES;
     _faceImageView.layer.cornerRadius = _faceImageView.height / 2.0;
     _faceImageView.clipsToBounds = YES;
@@ -38,6 +38,7 @@
     _promotionIncome = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _nameLabel.top, 200, 22)];
     _promotionIncome.font = SYSTEMFONT(15);
     _promotionIncome.textColor = EdlineV5_Color.faildColor;
+    _promotionIncome.textAlignment = NSTextAlignmentRight;
     [self.contentView addSubview:_promotionIncome];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 72 - 1, MainScreenWidth, 1)];

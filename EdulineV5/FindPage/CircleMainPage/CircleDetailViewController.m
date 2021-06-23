@@ -87,6 +87,7 @@
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCommentReplayList) name:@"commentActionReloadData" object:nil];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -290,7 +291,7 @@
     }
     // 圈子评论回复
     [param setObject:@"2" forKey:@"type"];
-    [param setObject:[NSString stringWithFormat:@"%@",cell.userCommentInfo[@"comment_id"]] forKey:@"obj_id"];
+    [param setObject:[NSString stringWithFormat:@"%@",cell.userCommentInfo[@"id"]] forKey:@"obj_id"];
     [Net_API requestPOSTWithURLStr:[Net_Path circleLikeNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (SWNOTEmptyDictionary(responseObject)) {
             [self showHudInView:self.view showHint:responseObject[@"msg"]];
@@ -413,6 +414,7 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:[NSString stringWithFormat:@"%@",responseObject[@"msg"]]];
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadMyCircleData" object:nil];
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [self.navigationController popViewControllerAnimated:YES];
                     });
@@ -467,7 +469,7 @@
         return;
     }
     NSString *userId = [NSString stringWithFormat:@"%@",[cell.userCommentInfo objectForKey:@"user_id"]];
-    if ([[cell.userCommentInfo objectForKey:@"is_follow"] boolValue]) {
+    if ([[cell.userCommentInfo objectForKey:@"followed"] boolValue]) {
         [Net_API requestDeleteWithURLStr:[Net_Path userFollowNet] paramDic:@{@"user_id":userId} Api_key:nil finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:responseObject[@"msg"]];
@@ -476,7 +478,7 @@
                     NSIndexPath *cellpath = [self.tableView indexPathForCell:cell];
                     
                     NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_detailInfo];
-                    [pass setObject:@"0" forKey:@"is_follow"];
+                    [pass setObject:@"0" forKey:@"followed"];
                     _detailInfo = [NSDictionary dictionaryWithDictionary:pass];
                     
                     NSMutableDictionary *passComment = [NSMutableDictionary dictionaryWithDictionary:_commentInfo];
@@ -484,6 +486,8 @@
                     _commentInfo = [NSDictionary dictionaryWithDictionary:passComment];
                     
                     [_tableView reloadRowAtIndexPath:cellpath withRowAnimation:UITableViewRowAnimationNone];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"followActionReloadData" object:nil];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
@@ -498,7 +502,7 @@
                     NSIndexPath *cellpath = [self.tableView indexPathForCell:cell];
                     
                     NSMutableDictionary *pass = [NSMutableDictionary dictionaryWithDictionary:_detailInfo];
-                    [pass setObject:@"1" forKey:@"is_follow"];
+                    [pass setObject:@"1" forKey:@"followed"];
                     _detailInfo = [NSDictionary dictionaryWithDictionary:pass];
                     
                     NSMutableDictionary *passComment = [NSMutableDictionary dictionaryWithDictionary:_commentInfo];
