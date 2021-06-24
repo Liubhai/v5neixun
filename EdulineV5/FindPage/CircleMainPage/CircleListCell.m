@@ -230,7 +230,7 @@
         NSString *orignal_user = [NSString stringWithFormat:@"@%@",dict[@"orignal_user"]];
         NSString *orignal_content = [NSString stringWithFormat:@"%@",dict[@"orignal_content"]];
         _forwardContentLabel.text = [NSString stringWithFormat:@"%@：%@",orignal_user,orignal_content];
-        [_forwardContentLabel addLinkWithLinkData:@{@"orignal_user":orignal_user} linkColor:EdlineV5_Color.themeColor underLineStyle:kCTUnderlineStyleNone range:NSMakeRange(0, orignal_user.length)];
+        [_forwardContentLabel addLinkWithLinkData:@{@"orignal_user":orignal_user} linkColor:HEXCOLOR(0x5191FF) underLineStyle:kCTUnderlineStyleNone range:NSMakeRange(0, orignal_user.length)];
         [_forwardContentLabel sizeToFit];
         
         [_forwardContentLabel setHeight:_forwardContentLabel.height];
