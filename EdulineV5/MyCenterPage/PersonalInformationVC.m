@@ -543,6 +543,27 @@
         if (![[_userInfo objectForKey:@"rest_times"] integerValue]) {
             _accountTextField.textColor = HEXCOLOR(0xB7BAC1);
         }
+        [_userFace sd_setImageWithURL:EdulineUrlString(_userInfo[@"avatar_url"]) placeholderImage:DefaultUserImage];
+        _accountTextField.text = [NSString stringWithFormat:@"%@",_userInfo[@"user_name"]];
+        _nameTextField.text = [NSString stringWithFormat:@"%@",_userInfo[@"nick_name"]];
+        _phoneTextField.text = [NSString stringWithFormat:@"%@",_userInfo[@"phone"]];
+        
+        gender = [NSString stringWithFormat:@"%@",_userInfo[@"gender"]];// 0 保密 1 男 2 女
+        if ([gender isEqualToString:@"0"]) {
+            [self sexButtonClick:_secrecyBtn];
+        } else if ([gender isEqualToString:@"1"]) {
+            [self sexButtonClick:_maleBtn];
+        } else {
+            [self sexButtonClick:_feMaleBtn];
+        }
+        NSString *intro = [NSString stringWithFormat:@"%@",_userInfo[@"signature"]];
+        if (SWNOTEmptyStr(intro)) {
+            _introTextViewPlaceholder.hidden = YES;
+            _introTextView.text = [NSString stringWithFormat:@"%@",intro];
+        } else {
+            _introTextViewPlaceholder.hidden = NO;
+            _introTextView.text = @"";
+        }
     }
 }
 

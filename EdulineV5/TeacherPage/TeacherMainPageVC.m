@@ -273,7 +273,7 @@
     [self addChildViewController:_teacherIntroVC];
     
     _userCircleListVC = [[UserCircleListVC alloc] init];
-    _userCircleListVC.user_id = _teacherId;
+    _userCircleListVC.user_id = SWNOTEmptyDictionary(_teacherInfoDict) ? [NSString stringWithFormat:@"%@",_teacherInfoDict[@"user_id"]] : @"";
     _userCircleListVC.tabelHeight = _mainScrollView.height;
     _userCircleListVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, _mainScrollView.height);
     [_mainScrollView addSubview:_userCircleListVC.view];
@@ -434,6 +434,10 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _teacherInfoDict = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
                 [self setTeacherInfoData];
+                if (_userCircleListVC) {
+                    _userCircleListVC.user_id = SWNOTEmptyDictionary(_teacherInfoDict) ? [NSString stringWithFormat:@"%@",_teacherInfoDict[@"user_id"]] : @"";
+                    [_userCircleListVC.tableView.mj_header beginRefreshing];
+                }
             }
         }
     } enError:^(NSError * _Nonnull error) {

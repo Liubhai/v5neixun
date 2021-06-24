@@ -47,9 +47,9 @@
     _titleLabel.text = @"发布动态";
     
     if (_isForward) {
-        _titleLabel.text = @"发布动态";
-    } else {
         _titleLabel.text = @"转发动态";
+    } else {
+        _titleLabel.text = @"发布动态";
         if (_isComment || _isReplayComment) {
             _titleLabel.text = @"评论";
         }
@@ -390,6 +390,17 @@
 // MARK: - 发布按钮
 - (void)rightButtonClick:(id)sender {
     _rightButton.enabled = NO;
+
+    if (_isForward) {
+        
+    } else {
+        if (!SWNOTEmptyStr(_contentTextView.text) && !SWNOTEmptyArr(_pictureArray)) {
+            [self showHudInView:self.view showHint:@"请输入内容"];
+            _rightButton.enabled = YES;
+            return;
+        }
+    }
+    
     [self uploadImage];
 }
 
@@ -400,7 +411,7 @@
     if (SWNOTEmptyStr(_contentTextView.text)) {
         [param setObject:_contentTextView.text forKey:@"content"];
     } else {
-        [param setObject:@"分享动态" forKey:@"content"];
+        [param setObject:@"分享图片" forKey:@"content"];
     }
     if (_isForward) {
         getUrl = [Net_Path circleForward];
@@ -466,6 +477,8 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 if (_isComment || _isReplayComment) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"commentActionReloadData" object:nil];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"postActionReloadData" object:nil];
                 }
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.navigationController popViewControllerAnimated:YES];

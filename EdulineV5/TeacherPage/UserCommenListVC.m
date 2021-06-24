@@ -10,9 +10,13 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "UserListCell.h"
+#import "UserHomePageViewController.h"
+#import "MyCirclePageVC.h"
+#import "V5_UserModel.h"
 
 @interface UserCommenListVC ()<UITableViewDelegate, UITableViewDataSource,UserListCellDelegate> {
     NSInteger page;
+    BOOL isMine;// 是不是自己主页
 }
 
 @property (strong, nonatomic) NSMutableArray *dataSource;
@@ -35,6 +39,11 @@
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _dataSource = [NSMutableArray new];
     page = 1;
+    if (SWNOTEmptyStr(_userId) && SWNOTEmptyStr([V5_UserModel uid])) {
+        if ([_userId isEqualToString:[V5_UserModel uid]]) {
+            isMine = YES;
+        }
+    }
     [self makeTableView];
 }
 
@@ -64,7 +73,7 @@
     if (!cell) {
         cell = [[UserListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setUserInfo:_dataSource[indexPath.row] cellIndexPath:indexPath cellType:_themeString];
+    [cell setUserInfo:_dataSource[indexPath.row] cellIndexPath:indexPath cellType:_themeString isMine:isMine];
     cell.delegate = self;
     return cell;
 }
@@ -231,6 +240,24 @@
             [_tableView.mj_footer endRefreshing];
         }
     }];
+}
+
+// MARK: - 跳转到用户主页(区分自己和他人)
+- (void)goToUserHomePageVC:(UserListCell *)cell {
+    NSString *user_id = [NSString stringWithFormat:@"%@",cell.userInfoDict[@"user_id"]];
+    if (SWNOTEmptyStr(user_id)) {
+        if ([user_id isEqualToString:[V5_UserModel uid]]) {
+            // 自己
+            MyCirclePageVC *vc = [[MyCirclePageVC alloc] init];
+            vc.teacherId = user_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            // 他人
+            UserHomePageViewController *vc = [[UserHomePageViewController alloc] init];
+            vc.teacherId = user_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
 }
 
 /*

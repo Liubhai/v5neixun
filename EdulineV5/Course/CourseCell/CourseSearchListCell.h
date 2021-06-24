@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL cellType;
 @property (nonatomic, strong) NSIndexPath *cellIndex;
 
-- (void)setCourseListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex cellType:(BOOL)cellType;
+- (void)setCourseListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex cellType:(BOOL)cellType isHomePageList:(BOOL)isHomePageList;
 
 @end
 

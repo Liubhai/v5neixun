@@ -59,10 +59,11 @@
     [self.contentView addSubview:_courseActivityIcon];
 }
 
-- (void)setCourseListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex cellType:(BOOL)cellType {
+- (void)setCourseListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex cellType:(BOOL)cellType isHomePageList:(BOOL)isHomePageList {
     _cellType = cellType;
     [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
     // 1 点播 2 直播 3 面授 4 专辑
+    _courseTypeImage.hidden = NO;
     NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
     if ([courseType isEqualToString:@"1"]) {
         _courseTypeImage.image = Image(@"dianbo");
@@ -147,6 +148,10 @@
         _courseActivityIcon.hidden = NO;
         _courseActivityIcon.image = Image(@"discount_icon");
         _courseActivityIcon.frame = CGRectMake(_courseFace.right - 52, _courseFace.bottom - 17, 52, 17);
+    }
+    if (isHomePageList) {
+        _courseTypeImage.hidden = YES;
+        _learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",[info objectForKey:@"student_count"]];
     }
 }
 

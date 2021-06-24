@@ -226,7 +226,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CourseSearchListCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CourseSearchListCell" forIndexPath:indexPath];
-    [cell setCourseListInfo:_dataSource[indexPath.row] cellIndex:indexPath cellType:_cellType];
+    [cell setCourseListInfo:_dataSource[indexPath.row] cellIndex:indexPath cellType:_cellType isHomePageList:NO];
     return cell;
 }
 

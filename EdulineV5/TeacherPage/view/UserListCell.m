@@ -27,6 +27,9 @@
     _faceImageView.clipsToBounds = YES;
     _faceImageView.contentMode = UIViewContentModeScaleAspectFill;
     _faceImageView.image = DefaultUserImage;
+    _faceImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *faceTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(faceIamgeTap)];
+    [_faceImageView addGestureRecognizer:faceTap];
     [self.contentView addSubview:_faceImageView];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 15, _faceImageView.top + 5, MainScreenWidth - 15 - 55 - (_faceImageView.right + 15), 22)];
@@ -57,13 +60,13 @@
     [self.contentView addSubview:_lineView];
 }
 
-- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(nonnull NSIndexPath *)cellIndexPath cellType:(NSString *)cellType {
+- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(nonnull NSIndexPath *)cellIndexPath cellType:(NSString *)cellType isMine:(BOOL)isMine {
+    _userInfoDict = dict;
     if ([cellType isEqualToString:@"1"] || [cellType isEqualToString:@"2"]) {
         _cellIndex = cellIndexPath;
         _nameLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"nick_name"]];
         _introLabel.text = [NSString stringWithFormat:@"%@",[dict objectForKey:@"signature"]];
         [_faceImageView sd_setImageWithURL:EdulineUrlString([dict objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
-//        _followButton.hidden = NO;
         if ([cellType isEqualToString:@"1"]) {
             if ([[dict objectForKey:@"is_follow"] boolValue]) {
                 [_followButton setTitle:@"互相关注" forState:0];
@@ -92,11 +95,18 @@
         [_faceImageView sd_setImageWithURL:EdulineUrlString([dict[@"visitor_info"] objectForKey:@"avatar_url"]) placeholderImage:DefaultUserImage];
         _followButton.hidden = YES;
     }
+    _followButton.hidden = !isMine || [cellType isEqualToString:@"3"];
 }
 
 - (void)followButtonClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(followAndUnFollow:cellIndexPath:)]) {
         [_delegate followAndUnFollow:sender cellIndexPath:_cellIndex];
+    }
+}
+
+- (void)faceIamgeTap {
+    if (_delegate && [_delegate respondsToSelector:@selector(goToUserHomePageVC:)]) {
+        [_delegate goToUserHomePageVC:self];
     }
 }
 

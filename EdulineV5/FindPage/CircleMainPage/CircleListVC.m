@@ -44,6 +44,8 @@
     page = 1;
     [self makeTableView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFirstList) name:@"followActionReloadData" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFirstList) name:@"deleteActionReloadData" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFirstList) name:@"postActionReloadData" object:nil];
     // Do any additional setup after loading the view.
 }
 

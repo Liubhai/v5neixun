@@ -10,10 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class UserListCell;
+
 @protocol UserListCellDelegate <NSObject>
 
 @optional
 - (void)followAndUnFollow:(UIButton *)sender cellIndexPath:(NSIndexPath *)cellIndexPath;
+- (void)goToUserHomePageVC:(UserListCell *)cell;
 
 @end
 
@@ -27,8 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) UIButton *followButton;
 @property (strong, nonatomic) NSIndexPath *cellIndex;
+@property (strong, nonatomic) NSDictionary *userInfoDict;
 
-- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(NSIndexPath *)cellIndexPath cellType:(NSString *)cellType;
+- (void)setUserInfo:(NSDictionary *)dict cellIndexPath:(NSIndexPath *)cellIndexPath cellType:(NSString *)cellType isMine:(BOOL)isMine;
 
 @end
 
