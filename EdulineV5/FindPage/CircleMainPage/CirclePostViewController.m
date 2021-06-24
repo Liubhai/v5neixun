@@ -99,13 +99,20 @@
     [_contentTextBackView addSubview:_contentTextView];
     
     _contentPlaceL = [[UILabel alloc] initWithFrame:CGRectMake(_contentTextView.left, _contentTextView.top + 1, _contentTextView.width, 30)];
-    _contentPlaceL.text = @"发布动态～";
+    _contentPlaceL.text = @" 发布动态～";
     if (_isForward) {
-        _contentPlaceL.text = @"发布动态～";
+        _contentPlaceL.text = @" 转发动态～";
     } else {
-        _contentPlaceL.text = @"输入内容～";
-        if (_isComment || _isReplayComment) {
-            _contentPlaceL.text = @"评论内容～";
+        _contentPlaceL.text = @" 发布动态～";
+        if (_isComment) {
+            _contentPlaceL.text = @" 评论内容～";
+        }
+        if (_isReplayComment) {
+            _contentPlaceL.text = @" 回复评论～";
+            if (SWNOTEmptyDictionary(_replayCommentInfo)) {
+                NSString *replayUsername = [NSString stringWithFormat:@"%@",[_replayCommentInfo objectForKey:@"nick_name"]];
+                _contentPlaceL.text = [NSString stringWithFormat:@" 回复:@%@",replayUsername];
+            }
         }
     }
     _contentPlaceL.textColor = EdlineV5_Color.textThirdColor;
@@ -332,7 +339,7 @@
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    _contentPlaceL.hidden = YES;
+    _contentPlaceL.hidden = SWNOTEmptyStr(_contentTextView.text) ? YES : NO;
     isTextField = NO;
     [_mainScrollView setContentOffset:CGPointMake(0, 0)];
     return YES;
@@ -390,7 +397,7 @@
 // MARK: - 发布按钮
 - (void)rightButtonClick:(id)sender {
     _rightButton.enabled = NO;
-
+    [self.view endEditing:YES];
     if (_isForward) {
         
     } else {
@@ -450,8 +457,8 @@
                 [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"id"]] forKey:@"circle_id"];
             }
             if (SWNOTEmptyDictionary(_replayCommentInfo)) {
-                [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"id"]] forKey:@"comment_id"];
-                [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"user_id"]] forKey:@"reply_user_id"];
+                [param setObject:[NSString stringWithFormat:@"%@",_replayCommentInfo[@"id"]] forKey:@"comment_id"];
+                [param setObject:[NSString stringWithFormat:@"%@",_replayCommentInfo[@"user_id"]] forKey:@"reply_user_id"];
             }
         }
     }

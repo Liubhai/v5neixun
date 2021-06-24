@@ -50,7 +50,7 @@
     
     _dataSource = [NSMutableArray new];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - CommenViewHeight - MACRO_UI_SAFEAREA)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - CommenViewHeight - MACRO_UI_SAFEAREA) style:UITableViewStyleGrouped];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -143,7 +143,7 @@
             _replayCountLabel.font = SYSTEMFONT(16);
         }
         
-        _replayCountLabel.text = [NSString stringWithFormat:@"共%@条回复",SWNOTEmptyDictionary(_commentInfo) ? [[_commentInfo objectForKey:@"comment"] objectForKey:@"total"] : @"0"];
+        _replayCountLabel.text = [NSString stringWithFormat:@"共%@条回复",SWNOTEmptyDictionary(_commentInfo) ? [[_commentInfo objectForKey:@"detail"] objectForKey:@"comment_num"] : @"0"];
         [headerSetion addSubview:_replayCountLabel];
         return headerSetion;
     }

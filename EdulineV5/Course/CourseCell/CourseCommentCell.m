@@ -196,7 +196,7 @@
                 _contentLabel.textContainer.linesSpacing = 4;
                 attStringCreater.font = SYSTEMFONT(13);
                 attStringCreater.textAlignment = kCTTextAlignmentLeft;
-                attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
+                attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(_contentLabel.frame)];
                 [_contentLabel setHeight:_contentLabel.textContainer.textHeight];
                 [attStringCreater addTextStorageArray:@[textStorage]];
             }

@@ -88,8 +88,8 @@
         }
         CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;
         [_nameLabel setWidth:nameWidth];
-        NSString *replayUsername = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user"]]];
-        NSString *replayUserId = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user_id"]]];
+        NSString *replayUsername = [NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user_name"]];
+        NSString *replayUserId = [NSString stringWithFormat:@"%@",[info objectForKey:@"reply_user_id"]];
         if ([replayUserId isEqualToString:@"0"] || [replayUserId isEqualToString:@"<null>"] || ![info objectForKey:@"reply_user_id"]) {
             _contentLabel.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"content"]];
             _contentLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom + 3, MainScreenWidth - _nameLabel.left - 15, 50);
@@ -117,7 +117,7 @@
             _contentLabel.textContainer.linesSpacing = 4;
             attStringCreater.font = SYSTEMFONT(13);
             attStringCreater.textAlignment = kCTTextAlignmentLeft;
-            attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
+            attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(_contentLabel.frame)];
             [_contentLabel setHeight:_contentLabel.textContainer.textHeight];
             [attStringCreater addTextStorageArray:@[textStorage]];
         }
