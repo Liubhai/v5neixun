@@ -18,9 +18,10 @@
 #import "MyCirclePageVC.h"
 #import "UserHomePageViewController.h"
 
-@interface CircleDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CircleListCellDelegate,CircleDetailCommentCellDelegate> {
+@interface CircleDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,CircleListCellDelegate,CircleDetailCommentCellDelegate,ZLPhotoPickerBrowserViewControllerDelegate,ZLPhotoPickerBrowserViewControllerDataSource> {
     NSInteger page;
     NSString *replayUserId;
+    UIImageView *currentShowPicImageView;
 }
 
 @property (strong, nonatomic) UILabel *replayCountLabel;
@@ -28,6 +29,8 @@
 @property (strong, nonatomic) UIView *commentBackView;
 @property (strong, nonatomic) UILabel *commentPlaceLabel;
 @property (strong, nonatomic) UIButton *commentButton;
+
+@property (strong, nonatomic) NSMutableArray *currentShowPicArray;
 
 @end
 
@@ -49,6 +52,7 @@
     _lineTL.backgroundColor = EdlineV5_Color.layarLineColor;
     
     _dataSource = [NSMutableArray new];
+    _currentShowPicArray = [NSMutableArray new];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - CommenViewHeight - MACRO_UI_SAFEAREA) style:UITableViewStyleGrouped];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -268,6 +272,30 @@
             [_tableView.mj_footer endRefreshing];
         }
     }];
+}
+
+- (void)showCirclePic:(NSDictionary *)dict imagetag:(NSInteger)tag toView:(nonnull UIImageView *)toImageView {
+    currentShowPicImageView = toImageView;
+    [_currentShowPicArray removeAllObjects];
+    [_currentShowPicArray addObjectsFromArray:dict[@"attach_url"]];
+    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
+    pickerBrowser.delegate = self;
+    pickerBrowser.dataSource = self;
+    pickerBrowser.editing = NO;
+    pickerBrowser.currentIndexPath = [NSIndexPath indexPathForRow:tag inSection:0];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        [pickerBrowser showPickerVc:window.rootViewController];
+    });
+}
+
+- (NSInteger)photoBrowser:(ZLPhotoPickerBrowserViewController *)photoBrowser numberOfItemsInSection:(NSUInteger)section{
+    return _currentShowPicArray.count;
+}
+
+- (ZLPhotoPickerBrowserPhoto *)photoBrowser:(ZLPhotoPickerBrowserViewController *)pickerBrowser photoAtIndexPath:(NSIndexPath *)indexPath{
+    ZLPhotoPickerBrowserPhoto *photo = [ZLPhotoPickerBrowserPhoto photoAnyImageObjWith:_currentShowPicArray[indexPath.row]];
+    return photo;
 }
 
 // MARK: - 点赞代理(评论点赞)
