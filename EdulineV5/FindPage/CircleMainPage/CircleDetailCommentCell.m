@@ -26,6 +26,9 @@
     _userFace.layer.cornerRadius = _userFace.height / 2.0;
     _userFace.contentMode = UIViewContentModeScaleAspectFill;
     _userFace.backgroundColor = EdlineV5_Color.faildColor;
+    _userFace.userInteractionEnabled = YES;
+    UITapGestureRecognizer *faceTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userfaceTap)];
+    [_userFace addGestureRecognizer:faceTap];
     [self.contentView addSubview:_userFace];
     
     _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userFace.right + 10, 0, 50, 20)];
@@ -204,6 +207,12 @@
 - (void)deleteButtonClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(deleteComment:)]) {
         [_delegate deleteComment:self];
+    }
+}
+
+- (void)userfaceTap {
+    if (_delegate && [_delegate respondsToSelector:@selector(circleDetailCommentUserFaceTapjump:)]) {
+        [_delegate circleDetailCommentUserFaceTapjump:self];
     }
 }
 

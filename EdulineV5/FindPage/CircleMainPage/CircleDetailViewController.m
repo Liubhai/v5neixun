@@ -509,6 +509,24 @@
     }
 }
 
+// MARK: - 评论列表的头像点击事件
+- (void)circleDetailCommentUserFaceTapjump:(CircleDetailCommentCell *)cell {
+    NSString *user_id = [NSString stringWithFormat:@"%@",cell.userCommentInfo[@"user_id"]];
+    if (SWNOTEmptyStr(user_id)) {
+        if ([user_id isEqualToString:[V5_UserModel uid]]) {
+            // 自己
+            MyCirclePageVC *vc = [[MyCirclePageVC alloc] init];
+            vc.teacherId = user_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            // 他人
+            UserHomePageViewController *vc = [[UserHomePageViewController alloc] init];
+            vc.teacherId = user_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+}
+
 // MARK: - 关注按钮点击事件
 - (void)followUser:(CircleListCell *)cell {
     if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {

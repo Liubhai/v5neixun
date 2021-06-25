@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)showCircleDetailCommentPic:(NSDictionary *)dict imagetag:(NSInteger)tag toView:(UIImageView *)toImageView;
 
+- (void)circleDetailCommentUserFaceTapjump:(CircleDetailCommentCell *)cell;
+
 @end
 
 @interface CircleDetailCommentCell : UITableViewCell<TYAttributedLabelDelegate>
