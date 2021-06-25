@@ -274,7 +274,24 @@
     }];
 }
 
+// MARK: - 动态里面图片点击事件
 - (void)showCirclePic:(NSDictionary *)dict imagetag:(NSInteger)tag toView:(nonnull UIImageView *)toImageView {
+    currentShowPicImageView = toImageView;
+    [_currentShowPicArray removeAllObjects];
+    [_currentShowPicArray addObjectsFromArray:dict[@"attach_url"]];
+    ZLPhotoPickerBrowserViewController *pickerBrowser = [[ZLPhotoPickerBrowserViewController alloc] init];
+    pickerBrowser.delegate = self;
+    pickerBrowser.dataSource = self;
+    pickerBrowser.editing = NO;
+    pickerBrowser.currentIndexPath = [NSIndexPath indexPathForRow:tag inSection:0];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        [pickerBrowser showPickerVc:window.rootViewController];
+    });
+}
+
+// MARK: - 评论里面的图片点击事件
+- (void)showCircleDetailCommentPic:(NSDictionary *)dict imagetag:(NSInteger)tag toView:(UIImageView *)toImageView {
     currentShowPicImageView = toImageView;
     [_currentShowPicArray removeAllObjects];
     [_currentShowPicArray addObjectsFromArray:dict[@"attach_url"]];
