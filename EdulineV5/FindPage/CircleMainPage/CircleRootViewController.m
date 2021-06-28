@@ -60,14 +60,14 @@
     for (int i = 0; i<_typeArray.count; i++) {
         UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*WW, 0, WW, _topView.height)];
         [btn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
-        [btn setTitleColor:EdlineV5_Color.baseColor forState:UIControlStateSelected];
-        btn.titleLabel.font = SYSTEMFONT(18);
+        btn.titleLabel.font = SYSTEMFONT(16);
         btn.tag = 66 + i;
         [btn setTitle:[_typeArray[i] objectForKey:@"title"] forState:0];
         [btn addTarget:self action:@selector(cateButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         if (i == 0) {
             _lineView.centerX = btn.centerX;
             btn.selected = YES;
+            btn.titleLabel.font = SYSTEMFONT(18);
             _recommendButton = btn;
         } else if (i == 1) {
             _hotButton = btn;
@@ -104,8 +104,10 @@
         if ([object isKindOfClass:[UIButton class]]) {
             if (object.tag == sender.tag) {
                 object.selected = YES;
+                object.titleLabel.font = SYSTEMFONT(18);
             } else {
                 object.selected = NO;
+                object.titleLabel.font = SYSTEMFONT(16);
             }
         }
     }

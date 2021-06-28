@@ -74,8 +74,8 @@
     [self.view addSubview:_commentBackView];
     
     _commentPlaceLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 7, MainScreenWidth - 30, 36)];
-    _commentPlaceLabel.text = @"  评论";
-    _commentPlaceLabel.textColor = EdlineV5_Color.textFirstColor;
+    _commentPlaceLabel.text = @"  发布评论～";
+    _commentPlaceLabel.textColor = EdlineV5_Color.textThirdColor;
     _commentPlaceLabel.font = SYSTEMFONT(15);
     _commentPlaceLabel.backgroundColor = HEXCOLOR(0xF7F7F7);
     _commentPlaceLabel.layer.masksToBounds = YES;
