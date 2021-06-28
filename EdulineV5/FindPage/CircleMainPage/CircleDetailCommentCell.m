@@ -106,7 +106,7 @@
             NSString *insertString = [NSString stringWithFormat:@"@%@",replayUsername];
             NSString *final = [NSString stringWithFormat:@"回复%@:%@",insertString,[NSString stringWithFormat:@"%@",[info objectForKey:@"content"]]];
             TYLinkTextStorage *textStorage = [[TYLinkTextStorage alloc]init];
-            textStorage.textColor = EdlineV5_Color.themeColor;
+            textStorage.textColor = HEXCOLOR(0x5191FF);
             textStorage.font = SYSTEMFONT(14);
             textStorage.linkData = @{@"type":@"user",@"userId":replayUserId};
             textStorage.underLineStyle = kCTUnderlineStyleNone;

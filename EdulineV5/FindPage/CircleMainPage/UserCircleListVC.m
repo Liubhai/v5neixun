@@ -90,7 +90,7 @@
 - (void)getFirstList {
     page = 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
-    NSString *getUrl = [Net_Path userCircleListNet];
+    NSString *getUrl = [Net_Path userHomeCircleListNet];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
@@ -126,7 +126,7 @@
 - (void)getMoreList {
     page = page + 1;
     NSMutableDictionary *param = [NSMutableDictionary new];
-    NSString *getUrl = [Net_Path userCircleListNet];
+    NSString *getUrl = [Net_Path userHomeCircleListNet];
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     // 大类型
