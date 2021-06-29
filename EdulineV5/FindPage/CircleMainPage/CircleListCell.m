@@ -240,39 +240,46 @@
         [_forwardPictureBackView removeAllSubviews];
         _forwardPictureBackView.hidden = NO;
         
-        NSArray *picArray;
-        if (SWNOTEmptyArr([dict objectForKey:@"orignal_attach"])) {
-            picArray = [NSArray arrayWithArray:[dict objectForKey:@"orignal_attach"]];
+        // 转发被删除
+        if (!SWNOTEmptyStr(dict[@"orignal_user"]) || [dict[@"orignal_user"] isEqualToString:@"<null>"] || [dict[@"orignal_user"] isEqualToString:@"null"]) {
+            [_forwardBackView setHeight:53];
+            _forwardContentLabel.frame = CGRectMake(_nameLabel.left - 15, 0, _contentLabel.width, 53);
+            _forwardContentLabel.text = @"该内容已被删除，无法查看。";
+            [_forwardContentLabel sizeToFit];
+            [_forwardContentLabel setCenterY:_forwardBackView.height / 2.0];
+            _forwardPictureBackView.hidden = YES;
+            bottomToolTop = _forwardBackView.bottom + 17;
         } else {
-            picArray = [NSArray new];
-        }
-        CGFloat leftSpace = 0;
-        CGFloat inSpace = 11;
-        CGFloat picWidth = (_forwardContentLabel.width - leftSpace * 2 - inSpace * 2) / 3.0;
-        
-        if (picArray.count) {
-            [_forwardPictureBackView setTop:_forwardContentLabel.bottom + 12];
-        } else {
-            [_forwardPictureBackView setTop:_forwardContentLabel.bottom];
-        }
-        
-        for (int i = 0; i<picArray.count; i++) {
-            // x 余 y 正
-            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace + (picWidth + inSpace) * (i%3), (inSpace + picWidth) * (i/3), picWidth, picWidth)];
-            pic.clipsToBounds = YES;
-            pic.contentMode = UIViewContentModeScaleAspectFill;
-            [pic sd_setImageWithURL:EdulineUrlString(picArray[i]) placeholderImage:DefaultImage];
-//            pic.tag = 66 + i;
-//            pic.userInteractionEnabled = YES;
-//            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(picTap:)];
-//            [pic addGestureRecognizer:tap];
-            [_forwardPictureBackView addSubview:pic];
-            if (i == (picArray.count - 1)) {
-                [_forwardPictureBackView setHeight:pic.bottom];
+            NSArray *picArray;
+            if (SWNOTEmptyArr([dict objectForKey:@"orignal_attach"])) {
+                picArray = [NSArray arrayWithArray:[dict objectForKey:@"orignal_attach"]];
+            } else {
+                picArray = [NSArray new];
             }
+            CGFloat leftSpace = 0;
+            CGFloat inSpace = 11;
+            CGFloat picWidth = (_forwardContentLabel.width - leftSpace * 2 - inSpace * 2) / 3.0;
+            
+            if (picArray.count) {
+                [_forwardPictureBackView setTop:_forwardContentLabel.bottom + 12];
+            } else {
+                [_forwardPictureBackView setTop:_forwardContentLabel.bottom];
+            }
+            
+            for (int i = 0; i<picArray.count; i++) {
+                // x 余 y 正
+                UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(leftSpace + (picWidth + inSpace) * (i%3), (inSpace + picWidth) * (i/3), picWidth, picWidth)];
+                pic.clipsToBounds = YES;
+                pic.contentMode = UIViewContentModeScaleAspectFill;
+                [pic sd_setImageWithURL:EdulineUrlString(picArray[i]) placeholderImage:DefaultImage];
+                [_forwardPictureBackView addSubview:pic];
+                if (i == (picArray.count - 1)) {
+                    [_forwardPictureBackView setHeight:pic.bottom];
+                }
+            }
+            [_forwardBackView setHeight:_forwardPictureBackView.bottom + 15];
+            bottomToolTop = _forwardBackView.bottom + 17;
         }
-        [_forwardBackView setHeight:_forwardPictureBackView.bottom + 15];
-        bottomToolTop = _forwardBackView.bottom + 17;
     }
     
     _deleteButton.frame = CGRectMake(_contentLabel.left, bottomToolTop, 30, 20);
