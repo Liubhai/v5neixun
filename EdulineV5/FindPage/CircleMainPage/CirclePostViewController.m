@@ -440,7 +440,7 @@
             if (SWNOTEmptyStr(_contentTextView.text)) {
                 [param setObject:_contentTextView.text forKey:@"content"];
             } else {
-                [param setObject:@"" forKey:@"content"];
+                [param setObject:@"图片评论" forKey:@"content"];
             }
             if (SWNOTEmptyDictionary(_commentCircleInfo)) {
                 [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"id"]] forKey:@"circle_id"];
@@ -451,7 +451,7 @@
             if (SWNOTEmptyStr(_contentTextView.text)) {
                 [param setObject:_contentTextView.text forKey:@"content"];
             } else {
-                [param setObject:@"" forKey:@"content"];
+                [param setObject:@"图片评论" forKey:@"content"];
             }
             if (SWNOTEmptyDictionary(_commentCircleInfo)) {
                 [param setObject:[NSString stringWithFormat:@"%@",_commentCircleInfo[@"id"]] forKey:@"circle_id"];
