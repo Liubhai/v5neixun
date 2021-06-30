@@ -17,11 +17,11 @@ PODS:
   - AgoraRtcEngine_iOS (2.9.0.102)
   - AgoraRtm_iOS (1.2.2.1)
   - AlipaySDK-iOS (15.7.9)
-  - AliyunOSSiOS (2.10.8)
-  - Bugly (2.5.71)
-  - CocoaLumberjack (3.7.0):
-    - CocoaLumberjack/Core (= 3.7.0)
-  - CocoaLumberjack/Core (3.7.0)
+  - AliyunOSSiOS (2.10.9)
+  - Bugly (2.5.90)
+  - CocoaLumberjack (3.7.2):
+    - CocoaLumberjack/Core (= 3.7.2)
+  - CocoaLumberjack/Core (3.7.2)
   - dsBridge (3.0.6)
   - FMDB (2.7):
     - FMDB/standard (= 2.7)
@@ -175,9 +175,9 @@ SPEC CHECKSUMS:
   AgoraRtcEngine_iOS: 9755a9dcd45ab1d177ece9fe15dea23124d63d50
   AgoraRtm_iOS: 8cccab7a000beefedb737d5e822b9d4a73f925fb
   AlipaySDK-iOS: 94ff4c0e17c5e7d126b8207596d5033006534c25
-  AliyunOSSiOS: 8db92936545593b9e5c66d680ef2ac0738946651
-  Bugly: fd066c75c4a0eca1440f9b6a84bd37d51bfc85ac
-  CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
+  AliyunOSSiOS: 13173e9eaf05d3816315319876025de3028ea31d
+  Bugly: 88bc32c0acc6fef7b74d610f0319ee7560d6b9fe
+  CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   FMDB: 115114e988a7c92a5191f1334c46c99b0a477700
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
