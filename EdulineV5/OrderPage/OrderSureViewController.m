@@ -205,6 +205,28 @@
         [_orderTypeView3 setHeight:0];
         _orderTypeView3.hidden = YES;
     } else {
+        
+        BOOL hasAp = NO;
+        if (SWNOTEmptyArr(_typeArray)) {
+            if ([_typeArray containsObject:@"applepay"]) {
+                hasAp = YES;
+            } else {
+                hasAp = NO;
+            }
+        } else {
+            hasAp = NO;
+        }
+        
+        if (hasAp) {
+            [_orderTypeView1 setHeight:0];
+            _orderTypeView1.hidden = YES;
+            
+            _orderTypeView2.frame = CGRectMake(0, _orderTypeView1.bottom, MainScreenWidth, 0);
+            _orderTypeView2.hidden = YES;
+
+            _orderTypeView3.frame = CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56);
+        }
+        
 //        [_orderTypeView1 setHeight:0];
 //        _orderTypeView1.hidden = YES;
 //
