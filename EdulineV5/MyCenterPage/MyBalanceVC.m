@@ -1050,7 +1050,11 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _balanceInfo = [NSDictionary dictionaryWithDictionary:responseObject];
                 if (SWNOTEmptyDictionary(_balanceInfo[@"data"])) {
-                    _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
+                    NSString *moneyTitle = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
+                    NSString *final = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[_balanceInfo[@"data"] objectForKey:@"balance"]];
+                    NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:final];
+                    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:NSMakeRange(0, moneyTitle.length)];
+                    _userPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:att];
                     [_typeArray removeAllObjects];
                     [_typeArray addObjectsFromArray:[_balanceInfo[@"data"] objectForKey:@"payway"]];
                     

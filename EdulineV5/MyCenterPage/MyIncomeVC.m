@@ -694,8 +694,11 @@
                     }
                     
                     [self makeUserAccountUI];
-                    
-                    _userPriceLabel.text = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"income"]];
+                    NSString *moneyTitle = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
+                    NSString *final = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[_balanceInfo[@"data"] objectForKey:@"income"]];
+                    NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:final];
+                    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:NSMakeRange(0, moneyTitle.length)];
+                    _userPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:att];
                     
                     if (![ShowAudit isEqualToString:@"1"]) {
                         [self makeMoneyView];
