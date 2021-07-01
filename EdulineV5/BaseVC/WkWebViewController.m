@@ -52,6 +52,7 @@
                 if (SWNOTEmptyDictionary(responseObject)) {
                     if ([[responseObject objectForKey:@"code"] integerValue]) {
                         [_wkwebView loadRequest:[NSURLRequest requestWithURL:EdulineUrlString(responseObject[@"data"][@"content"])]];
+                        _titleLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"title"]];
                     }
                 }
             } enError:^(NSError * _Nonnull error) {
