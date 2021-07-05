@@ -314,7 +314,7 @@
         NSString *atr = [NSString stringWithFormat:@"%@vip权益说明",appName];
         WkWebViewController *vc = [[WkWebViewController alloc] init];
         vc.titleString = atr;
-        vc.agreementKey = @"vip";
+        vc.agreementKey = @"mobileVip";
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

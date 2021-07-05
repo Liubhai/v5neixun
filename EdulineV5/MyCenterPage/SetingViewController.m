@@ -212,7 +212,7 @@
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"about"]) {
         WkWebViewController *vc = [[WkWebViewController alloc] init];
         vc.titleString = @"关于我们";
-        vc.agreementKey = @"about_us";
+        vc.agreementKey = @"aboutUs";
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"institution"]) {
         InstitutionsChooseVC *vc = [[InstitutionsChooseVC alloc] init];

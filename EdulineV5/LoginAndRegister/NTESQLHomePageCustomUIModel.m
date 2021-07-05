@@ -71,7 +71,7 @@
     qqButton.backgroundColor = [UIColor redColor];
 
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@服务协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@注册协议》",appName];
     NSString *netName = @"《中国移动认证服务条款》";
     NSString *fullString = [NSString stringWithFormat:@"登录即同意《默认》和%@并使用本机号码登录",atr];
     

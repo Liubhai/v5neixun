@@ -253,7 +253,7 @@
     }
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@用户服务协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@支付协议》",appName];
     NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
     NSRange atrRange = [fullString rangeOfString:atr];
     
@@ -382,7 +382,7 @@
 - (void)subMitButtonClick:(UIButton *)sender {
     _submitButton.enabled = NO;
     if (!_seleteBtn.selected) {
-        [self showHudInView:self.view showHint:@"请勾选并确认阅读用户服务协议"];
+        [self showHudInView:self.view showHint:@"请勾选并确认阅读支付协议"];
         _submitButton.enabled = YES;
         return;
     }
@@ -537,10 +537,10 @@
         }
     }
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"%@用户服务协议",appName];
+    NSString *atr = [NSString stringWithFormat:@"%@支付协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
-    vc.agreementKey = @"proService";
+    vc.agreementKey = @"payment";
     [self.navigationController pushViewController:vc animated:YES];
 }
 

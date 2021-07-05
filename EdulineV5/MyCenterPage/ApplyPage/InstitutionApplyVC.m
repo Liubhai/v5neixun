@@ -1396,7 +1396,7 @@
     NSString *atr = [NSString stringWithFormat:@"%@机构用户服务协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
-    vc.agreementKey = @"school_service";
+    vc.agreementKey = @"schoolUser";
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -1007,7 +1007,7 @@
     NSString *atr = [NSString stringWithFormat:@"%@讲师用户服务协议",appName];
     WkWebViewController *vc = [[WkWebViewController alloc] init];
     vc.titleString = atr;
-    vc.agreementKey = @"teacher_service";
+    vc.agreementKey = @"teacherUser";
     [self.navigationController pushViewController:vc animated:YES];
 }
 

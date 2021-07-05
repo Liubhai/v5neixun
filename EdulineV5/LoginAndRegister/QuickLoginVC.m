@@ -81,7 +81,7 @@
     [self.view addSubview:_otherBtn];
     
     NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-    NSString *atr = [NSString stringWithFormat:@"《%@服务协议》",appName];
+    NSString *atr = [NSString stringWithFormat:@"《%@用户注册协议》",appName];
     NSString *netName = @"《中国移动认证服务条款》";
     NSString *fullString = [NSString stringWithFormat:@"   使用手机号码一键登录即代表您已同意%@和%@并使用本机号码登录",atr,netName];
     NSRange atrRange = [fullString rangeOfString:atr];
