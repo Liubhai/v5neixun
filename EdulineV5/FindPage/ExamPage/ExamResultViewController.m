@@ -525,7 +525,7 @@
             _tipsLabel.hidden = NO;
         }
         
-        NSString *score = [NSString stringWithFormat:@"%@",_resultDict[@"user_score"]];
+        NSString *score = [EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",_resultDict[@"user_score"]]];
         NSString *paperFullScore = [NSString stringWithFormat:@"%@",_resultDict[@"paper_score"]];
         
         _circleView.progress = [score floatValue] * 100 / [paperFullScore floatValue];
