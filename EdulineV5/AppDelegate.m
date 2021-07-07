@@ -132,6 +132,7 @@
                 self.window.rootViewController = self.tabbar;
                 [self.window makeKeyAndVisible];
                 [self judgePastBoardInfo];
+                [AppDelegate reloadLoginConfigInfo];
             };
         } else {
             self.tabbar = [RootV5VC sharedBaseTabBarViewController];
@@ -999,6 +1000,20 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     } enError:^(NSError * _Nonnull error) {
+    }];
+}
+
+// MARK: -
++ (void)reloadLoginConfigInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path appLoginTypeConfigNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"register_agre"] forKey:@"register_agre"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
     }];
 }
 

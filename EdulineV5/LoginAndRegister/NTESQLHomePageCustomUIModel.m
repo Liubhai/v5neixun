@@ -22,7 +22,7 @@
     model.navBarHidden = NO;
 //    model.navTextFont = [UIFont systemFontOfSize:18];
 //    model.navTextColor = [UIColor redColor];
-    model.navTextHidden = YES;
+    model.navTextHidden = NO;
     model.navReturnImgLeftMargin = 6;
     model.navBgColor = [UIColor whiteColor];
 //    model.navText = @"一键登录";
@@ -77,12 +77,17 @@
     
     model.appPrivacyText = fullString;//@"登录即同意《默认》和《用户隐私协议》";
     model.appFPrivacyText = atr;//@"《用户隐私协议》";
+    
     model.appFPrivacyURL = QuickLoginUrl;//@"http://www.baidu.com";
-    model.appSPrivacyText = @"《用户服务条款》";
+    
+    model.appSPrivacyText = @"《用户注册协议》";
+    
     model.appSPrivacyURL = QuickLoginUrl;//@"http://www.baidu.com";
-    model.appFPrivacyTitleText = @"hhahha";
+    
+    model.appFPrivacyTitleText = [NSString stringWithFormat:@"%@注册协议",appName];
     model.appPrivacyTitleText = @"认证服务协议";
-    model.appSPrivacyTitleText = atr;
+    model.appSPrivacyTitleText = [NSString stringWithFormat:@"%@注册协议",appName];
+    
 //    model.privacyColor = EdlineV5_Color.themeColor;
     model.protocolColor = EdlineV5_Color.themeColor;
  

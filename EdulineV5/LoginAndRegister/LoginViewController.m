@@ -375,6 +375,7 @@
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [[NSUserDefaults standardUserDefaults] setObject:[responseObject objectForKey:@"data"] forKey:@"login_config"];
+                [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"register_agre"] forKey:@"register_agre"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 _loginTypeDict = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
                 if (SWNOTEmptyDictionary(_loginTypeDict)) {

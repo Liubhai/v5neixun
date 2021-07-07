@@ -36,6 +36,8 @@ typedef void (^configTXSDK)(NSString *success);
 
 +(void)presentLoginNav:(UIViewController *)currentViewController;
 
++ (void)reloadLoginConfigInfo;// 切换机构后重新请求登录配置信息
+
 /** 初始化TXSDK */
 - (void)intTXSDK;
 

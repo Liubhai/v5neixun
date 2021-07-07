@@ -223,6 +223,7 @@
             AppDelegate *app = [AppDelegate delegate];
             app.window.rootViewController = tabbar;
             [app.window makeKeyAndVisible];
+            [AppDelegate reloadLoginConfigInfo];
         };
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"third"]) {

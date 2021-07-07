@@ -105,6 +105,7 @@
     AppDelegate *app = [AppDelegate delegate];
     app.window.rootViewController = tabbar;
     [app.window makeKeyAndVisible];
+    [AppDelegate reloadLoginConfigInfo];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
