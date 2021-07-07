@@ -80,7 +80,7 @@
     [self addSubview:_iconView];
     
     _tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(_iconView.right + 5, _line2.bottom + 8, MainScreenWidth - 30 * WidthRatio - (_iconView.right + 5), 40)];
-    _tipLabel.text = @"密码长度为6~20个字符，密码只能包含字母、数字以及标点符号（除空格）";
+    _tipLabel.text = @"密码长度为6~20个字符，区分大小写";//@"密码长度为6~20个字符，密码只能包含字母、数字以及标点符号（除空格）";
     _tipLabel.font = SYSTEMFONT(13);
     _tipLabel.textColor = EdlineV5_Color.textThirdColor;
     _tipLabel.numberOfLines = 0;
