@@ -40,19 +40,19 @@
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.imageView.layer.masksToBounds = true;
     self.imageView.layer.cornerRadius = 2;
-    [self addSubview:self.imageView];
+    [self.contentView addSubview:self.imageView];
     
     _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.left, _imageView.top, 33, 20)];
     _courseTypeImage.layer.masksToBounds = YES;
     _courseTypeImage.layer.cornerRadius = 2;
-    [self addSubview:_courseTypeImage];
+    [self.contentView addSubview:_courseTypeImage];
     
     self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, imageViewHeight, self.bounds.size.width, labelHeight)];
     self.textLabel.font = SYSTEMFONT(15);
     self.textLabel.textColor = EdlineV5_Color.textFirstColor;
     self.textLabel.textAlignment = NSTextAlignmentCenter;
 //    self.textLabel.adjustsFontSizeToFitWidth = true;
-    [self addSubview:self.textLabel];
+    [self.contentView addSubview:self.textLabel];
 }
 
 - (void)setModel:(XLCardModel *)model {
