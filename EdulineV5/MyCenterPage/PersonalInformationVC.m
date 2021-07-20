@@ -49,6 +49,8 @@
 @property (strong, nonatomic) UITextView *introTextView;
 @property (strong, nonatomic) UILabel *introTextViewPlaceholder;
 
+@property (strong, nonatomic) UIButton *saveButton;
+
 @property (strong, nonatomic) NSDictionary *userInfo;
 
 @end
@@ -64,7 +66,7 @@
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"保存" forState:0];
     [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
-    _rightButton.hidden = NO;
+    _rightButton.hidden = YES;
     [self makeSubView];
     
     if (SWNOTEmptyDictionary(_userCenterInfo)) {
@@ -260,6 +262,17 @@
         _introTextViewPlaceholder.hidden = YES;
         _introTextView.text = [NSString stringWithFormat:@"%@",[V5_UserModel intro]];
     }
+    
+    _saveButton = [[UIButton alloc] initWithFrame:CGRectMake(17.5, MainScreenHeight - MACRO_UI_SAFEAREA - 51, MainScreenWidth - 17.5 * 2, 40)];
+    _saveButton.layer.masksToBounds = YES;
+    _saveButton.layer.cornerRadius = 4;
+    _saveButton.backgroundColor = EdlineV5_Color.themeColor;
+    [_saveButton setTitle:@"保存" forState:0];
+    [_saveButton setTitleColor:[UIColor whiteColor] forState:0];
+    _saveButton.titleLabel.font = SYSTEMFONT(15);
+    [_saveButton addTarget:self action:@selector(rightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_saveButton];
+    
 }
 
 - (void)changeUserFaceTap:(UITapGestureRecognizer *)sender {
