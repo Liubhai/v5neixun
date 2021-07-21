@@ -155,7 +155,7 @@
     
     // 所属机构
     _institutionLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _line2.bottom, 100, 50)];
-    _institutionLeftLabel.text = @"所属机构";
+    _institutionLeftLabel.text = @"机构名称";
     _institutionLeftLabel.font = SYSTEMFONT(15);
     _institutionLeftLabel.textColor = EdlineV5_Color.textFirstColor;
     [_mainScrollView addSubview:_institutionLeftLabel];
@@ -166,7 +166,7 @@
     _institutionTextField.textColor = EdlineV5_Color.textSecendColor;
     _institutionTextField.font = SYSTEMFONT(15);
     _institutionTextField.textAlignment = NSTextAlignmentRight;
-    _institutionTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写机构名称" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
+    _institutionTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
     [_mainScrollView addSubview:_institutionTextField];
     
     _line3 = [[UIView alloc] initWithFrame:CGRectMake(15, _institutionLeftLabel.bottom, MainScreenWidth - 15, 1)];
@@ -181,7 +181,7 @@
     [_mainScrollView addSubview:_industryLeftLabel];
     
     _industryRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30 - 200, _line3.bottom, 200, 50)];
-    _industryRightLabel.text = @"请选择所属行业";
+    _industryRightLabel.text = @"请选择";
     _industryRightLabel.font = SYSTEMFONT(15);
     _industryRightLabel.textColor = EdlineV5_Color.textThirdColor;
     _industryRightLabel.textAlignment = NSTextAlignmentRight;
@@ -264,7 +264,7 @@
     _phoneTextField.textColor = EdlineV5_Color.textSecendColor;
     _phoneTextField.font = SYSTEMFONT(15);
     _phoneTextField.textAlignment = NSTextAlignmentRight;
-    _phoneTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写联系电话" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
+    _phoneTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请填写" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:EdlineV5_Color.textSecendColor}];
     [_nextBackView addSubview:_phoneTextField];
     
     _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, _phoneLabel.bottom, MainScreenWidth, 76)];
@@ -1160,7 +1160,7 @@
         if (_teacherCategoryArray.count) {
             _industryRightLabel.text = [NSString stringWithFormat:@"全部%@个",@(_teacherCategoryArray.count)];
         } else {
-            _industryRightLabel.text = @"请选择所属行业";
+            _industryRightLabel.text = @"请选择";
         }
         
         [self setTeacherCategoryUI];
@@ -1212,7 +1212,7 @@
     if (_teacherCategoryArray.count) {
         _industryRightLabel.text = [NSString stringWithFormat:@"全部%@个",@(_teacherCategoryArray.count)];
     } else {
-        _industryRightLabel.text = @"请选择所属行业";
+        _industryRightLabel.text = @"请选择";
     }
     // 布局所属行业分类UI
     [self setTeacherCategoryUI];
