@@ -1636,10 +1636,10 @@
                                     if ([model.model.classHourId isEqualToString:currentCourseFinalModel.model.classHourId]) {
                                         model.isPlaying = YES;
                                         [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model];
-                                        [_courseListVC.tableView reloadData];
                                         break;
                                     }
                                 }
+                                [_courseListVC.tableView reloadData];
                             }
                              // 目前生成了继续学习数据的 是可以直接看的音视频 不存在处理试看情况(错的)
                             if (model.audition > 0 && !model.is_buy) {

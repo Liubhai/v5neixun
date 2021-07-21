@@ -216,6 +216,7 @@
                 _learnIcon.hidden = YES;
                 _learnTimeLabel.hidden = YES;
                 _isLearningIcon.hidden = NO;
+                _titleLabel.textColor = EdlineV5_Color.themeColor;
                 [self setAnimation:_isLearningIcon];
             } else {
                 _learnIcon.hidden = NO;

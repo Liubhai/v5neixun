@@ -285,6 +285,9 @@
 }
 
 - (void)setListInfo:(CourseListModelFinal *)model {
+    
+    _titleLabel.textColor = EdlineV5_Color.textSecendColor;
+    
     _courseRightBtn.selected = NO;
     _listFinalModel = model;
     _listModel = model.model;
@@ -336,6 +339,7 @@
                 _learnIcon.hidden = YES;
                 _learnTimeLabel.hidden = YES;
                 _isLearningIcon.hidden = NO;
+                _titleLabel.textColor = EdlineV5_Color.themeColor;
                 [self setAnimation:_isLearningIcon];
             } else {
                 _learnIcon.hidden = NO;
@@ -414,6 +418,7 @@
                     _learnIcon.hidden = YES;
                     _learnTimeLabel.hidden = YES;
                     _isLearningIcon.hidden = NO;
+                    _titleLabel.textColor = EdlineV5_Color.themeColor;
                     [self setAnimation:_isLearningIcon];
                 } else {
                     _learnIcon.hidden = NO;
@@ -519,6 +524,7 @@
                     _learnIcon.hidden = YES;
                     _learnTimeLabel.hidden = YES;
                     _isLearningIcon.hidden = NO;
+                    _titleLabel.textColor = EdlineV5_Color.themeColor;
                     [self setAnimation:_isLearningIcon];
                 } else {
                     _learnIcon.hidden = NO;
