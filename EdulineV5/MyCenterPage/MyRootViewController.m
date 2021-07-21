@@ -422,11 +422,12 @@
     }
     OrderRootVC *vc = [[OrderRootVC alloc] init];
     if (sender.tag == 0) {
-       vc.currentType = @"waiting";
-    } else if (sender.tag == 1) {
-        vc.currentType = @"cancel";
-    } else if (sender.tag == 2) {
         vc.currentType = @"finish";
+       
+    } else if (sender.tag == 1) {
+        vc.currentType = @"waiting";
+    } else if (sender.tag == 2) {
+        vc.currentType = @"cancel";
     } else if (sender.tag == 3) {
         vc.currentType = @"shouhou";
     } else {
