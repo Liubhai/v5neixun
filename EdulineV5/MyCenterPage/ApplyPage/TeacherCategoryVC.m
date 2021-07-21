@@ -61,6 +61,10 @@
         _rightButton.hidden = YES;
     }
     
+    if (_isApply) {
+        _rightButton.hidden = NO;
+    }
+    
     if (_isDownExpend) {
         _titleImage.hidden = YES;
         self.view.hidden = YES;

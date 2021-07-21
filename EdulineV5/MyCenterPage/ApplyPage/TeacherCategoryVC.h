@@ -42,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL isInstitutionApply;// 是不是机构认证请求所属行业
 
+@property (assign, nonatomic) BOOL isApply;// 是不是认证请求所属行业
+
 @end
 
 NS_ASSUME_NONNULL_END

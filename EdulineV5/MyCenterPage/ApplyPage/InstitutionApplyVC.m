@@ -979,6 +979,7 @@
         TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
         vc.typeString = @"2";
         vc.isInstitutionApply = YES;
+        vc.isApply = YES;
         vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
