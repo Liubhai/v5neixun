@@ -125,6 +125,9 @@
 // 声网直播
 @property (nonatomic, strong) BaseEducationManager *educationManager;
 
+// 图文播放时候切换全屏或者半屏按钮
+@property (strong, nonatomic) UIButton *tuwenFullButton;
+
 @end
 
 @implementation CourseDetailPlayVC
@@ -323,6 +326,11 @@
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fakeTapGestureHandler:)];
         [tapGestureRecognizer setDelegate:self];
         [_wkWebView.scrollView addGestureRecognizer:tapGestureRecognizer];
+        
+        _tuwenFullButton = [[UIButton alloc] initWithFrame:CGRectMake(_wkWebView.width - 51 - 10, _wkWebView.height - 51 - 10, 51, 51)];
+        [_tuwenFullButton setImage:Image(@"shu") forState:0];
+        [_tuwenFullButton addTarget:self action:@selector(tuwenFullButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_wkWebView addSubview:_tuwenFullButton];
     }
 }
 
@@ -339,6 +347,28 @@
     } else {
         [UIView animateWithDuration:0.25 animations:^{
             wekself.wkWebView.frame = self.playerView.frame;
+            [wekself.headerView addSubview:wekself.wkWebView];
+            wekself.navigationController.navigationBar.hidden = YES;
+        }];
+    }
+}
+
+// MARK: - 图文时候半屏和全屏按钮点击事件
+- (void)tuwenFullButtonClick:(UIButton *)sender {
+    __weak CourseDetailPlayVC *wekself = self;
+    isWebViewBig = !isWebViewBig;
+    if (isWebViewBig == YES) {
+        [UIView animateWithDuration:0.25 animations:^{
+            wekself.wkWebView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+            _tuwenFullButton.frame = CGRectMake(wekself.wkWebView.width - 51 - 10, wekself.wkWebView.height - 51 - 10, 51, 51);
+            [wekself.view addSubview:wekself.wkWebView];
+            //方法 隐藏导航栏
+            wekself.navigationController.navigationBar.hidden = YES;
+        }];
+    } else {
+        [UIView animateWithDuration:0.25 animations:^{
+            wekself.wkWebView.frame = self.playerView.frame;
+            _tuwenFullButton.frame = CGRectMake(wekself.wkWebView.width - 51 - 10, wekself.wkWebView.height - 51 - 10, 51, 51);
             [wekself.headerView addSubview:wekself.wkWebView];
             wekself.navigationController.navigationBar.hidden = YES;
         }];
