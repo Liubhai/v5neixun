@@ -165,7 +165,7 @@
     [_mainScrollView addSubview:_industryLeftLabel];
     
     _industryRightLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30 - 200, _line2.bottom, 200, 50)];
-    _industryRightLabel.text = @"请选择所属行业";
+    _industryRightLabel.text = @"请选择";
     _industryRightLabel.font = SYSTEMFONT(15);
     _industryRightLabel.textColor = EdlineV5_Color.textThirdColor;
     _industryRightLabel.textAlignment = NSTextAlignmentRight;
@@ -930,7 +930,7 @@
         if (_teacherCategoryArray.count) {
             _industryRightLabel.text = [NSString stringWithFormat:@"全部%@个",@(_teacherCategoryArray.count)];
         } else {
-            _industryRightLabel.text = @"请选择所属行业";
+            _industryRightLabel.text = @"请选择";
         }
         
         [self setTeacherCategoryUI];
@@ -982,7 +982,7 @@
     if (_teacherCategoryArray.count) {
         _industryRightLabel.text = [NSString stringWithFormat:@"全部%@个",@(_teacherCategoryArray.count)];
     } else {
-        _industryRightLabel.text = @"请选择所属行业";
+        _industryRightLabel.text = @"请选择";
     }
     // 布局所属行业分类UI
     [self setTeacherCategoryUI];
