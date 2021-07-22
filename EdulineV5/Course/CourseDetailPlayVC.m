@@ -340,6 +340,7 @@
     if (isWebViewBig == YES) {
         [UIView animateWithDuration:0.25 animations:^{
             wekself.wkWebView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+            _tuwenFullButton.frame = CGRectMake(wekself.wkWebView.width - 51 - 10, wekself.wkWebView.height - 51 - 10, 51, 51);
             [wekself.view addSubview:wekself.wkWebView];
             //方法 隐藏导航栏
             wekself.navigationController.navigationBar.hidden = YES;
@@ -347,6 +348,7 @@
     } else {
         [UIView animateWithDuration:0.25 animations:^{
             wekself.wkWebView.frame = self.playerView.frame;
+            _tuwenFullButton.frame = CGRectMake(wekself.wkWebView.width - 51 - 10, wekself.wkWebView.height - 51 - 10, 51, 51);
             [wekself.headerView addSubview:wekself.wkWebView];
             wekself.navigationController.navigationBar.hidden = YES;
         }];
