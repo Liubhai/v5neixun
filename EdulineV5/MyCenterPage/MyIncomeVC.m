@@ -560,7 +560,9 @@
         return;
     }
     
-    if ([_scoreInputText.text floatValue] > [_userPriceLabel.text floatValue]) {
+    NSString *income = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"income"]];
+    
+    if ([_scoreInputText.text floatValue] > [income floatValue]) {
         [self showHudInView:self.view showHint:@"余额不足"];
         _submitButton.enabled = YES;
         return;
