@@ -38,7 +38,7 @@
     [_leftButton setImage:Image(@"close") forState:0];
     [_rightButton setTitle:@"确定" forState:0];
     [_rightButton setImage:nil forState:0];
-    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     _rightButton.hidden = NO;
     
     if ([_typeString isEqualToString:@"0"]) {
@@ -269,11 +269,13 @@
                 [passdict setObject:allDict forKey:@"all"];
                 [pass replaceObjectAtIndex:i withObject:[NSDictionary dictionaryWithDictionary:passdict]];
             }
-            NSMutableDictionary *passdict = [NSMutableDictionary new];
-            [passdict setObject:@"全部" forKey:@"title"];
-            [passdict setObject:@"0" forKey:@"id"];
-            [passdict setObject:@{@"title":@"全部",@"id":@"0"} forKey:@"all"];
-            [pass insertObject:passdict atIndex:0];
+            if (!_isApply) {
+                NSMutableDictionary *passdict = [NSMutableDictionary new];
+                [passdict setObject:@"全部" forKey:@"title"];
+                [passdict setObject:@"0" forKey:@"id"];
+                [passdict setObject:@{@"title":@"全部",@"id":@"0"} forKey:@"all"];
+                [pass insertObject:passdict atIndex:0];
+            }
             [_firstArray addObjectsFromArray:[NSArray arrayWithArray:[TeacherCategoryModel mj_objectArrayWithKeyValuesArray:[NSArray arrayWithArray:pass]]]];
             [_tableView reloadData];
             if (SWNOTEmptyArr(_firstArray)) {

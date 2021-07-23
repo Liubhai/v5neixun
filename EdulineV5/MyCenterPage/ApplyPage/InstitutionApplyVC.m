@@ -61,7 +61,7 @@
     
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"上一步" forState:0];
-    [_rightButton setTitleColor:HEXCOLOR(0x5191FF) forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     
     whichPic = @"";
     idCardIDFont = @"";

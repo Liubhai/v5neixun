@@ -49,7 +49,7 @@
     
 //    [_timeTypeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all",@"timeType":@"",@"timeTitle":@""},@{@"title":@"待支付",@"type":@"waiting",@"timeType":@"",@"timeTitle":@""},@{@"title":@"已取消",@"type":@"cancel",@"timeType":@"",@"timeTitle":@""},@{@"title":@"已完成",@"type":@"finish",@"timeType":@"",@"timeTitle":@""}]];
     
-    [_typeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all"},@{@"title":@"待支付",@"type":@"waiting"},@{@"title":@"已取消",@"type":@"cancel"},@{@"title":@"已完成",@"type":@"finish"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"all"},@{@"title":@"已支付",@"type":@"finish"},@{@"title":@"待支付",@"type":@"waiting"},@{@"title":@"已取消",@"type":@"cancel"}]];
     
     [self makeTopView];
     [self makeScrollView];
