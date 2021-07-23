@@ -1420,7 +1420,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
                     if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
-                        [_courseListVC.tableView reloadData];
+                        [_courseTreeListVC.tableView reloadData];
                         [self showHudInView:wekself.view showHint:@"该课时内容无效"];
                         return;
                     } else {
@@ -1634,7 +1634,11 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
                     if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
-                        [_courseListVC.tableView reloadData];
+                        if (_courseListVC) {
+                            [_courseListVC.tableView reloadData];
+                        } else if (_courseTreeListVC) {
+                            [_courseTreeListVC.tableView reloadData];
+                        }
                         [self showHudInView:wekself.view showHint:@"该课时内容无效"];
                         return;
                     } else {
@@ -1642,7 +1646,11 @@
                         _playerView.hidden = YES;
                         [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
                         [_tableView setContentOffset:CGPointZero animated:YES];
-                        [_courseTreeListVC.tableView reloadData];
+                        if (_courseListVC) {
+                            [_courseListVC.tableView reloadData];
+                        } else if (_courseTreeListVC) {
+                            [_courseTreeListVC.tableView reloadData];
+                        }
                         return;
                     }
                 } else {
@@ -1673,6 +1681,15 @@
                                 }
                                 [_courseListVC.tableView reloadData];
                             }
+//                            else if (_courseTreeListVC) {
+//                                for (int i = 0; i<_courseTreeListVC.manager.showItems.count; i++) {
+//                                    if ([currentCourseFinalModel.model.classHourId isEqualToString:_courseTreeListVC.manager.showItems[i].classHourId]) {
+//                                        [_courseTreeListVC.manager.showItems replaceObjectAtIndex:i withObject:newClassCurrentModel];
+//                                        break;
+//                                    }
+//                                }
+//                                [_courseTreeListVC.tableView reloadData];
+//                            }
                              // 目前生成了继续学习数据的 是可以直接看的音视频 不存在处理试看情况(错的)
                             if (model.audition > 0 && !model.is_buy) {
                                 freeLook = YES;
@@ -1699,7 +1716,11 @@
                             wekself.playerView.userInteractionEnabled = YES;
                             [AppDelegate delegate]._allowRotation = YES;
                         } else {
-                            [_courseTreeListVC.tableView reloadData];
+                            if (_courseListVC) {
+                                [_courseListVC.tableView reloadData];
+                            } else if (_courseTreeListVC) {
+                                [_courseTreeListVC.tableView reloadData];
+                            }
                             [self showHudInView:wekself.view showHint:@"该课时内容无效"];
                             return;
                         }
