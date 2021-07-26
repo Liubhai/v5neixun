@@ -50,6 +50,9 @@
 
 #import "SharePosterViewController.h"
 
+// pdf
+#import <PDFKit/PDFKit.h>
+
 #define FacePlayImageHeight 207
 
 //清晰度【FD(流畅)，LD(标清)，SD(高清)，HD(超清)，OD(原画)，2K(2K)，4K(4K)。】
@@ -120,6 +123,7 @@
 @property (strong, nonatomic) UIButton *buyhourseButton;
 
 @property (strong, nonatomic) WKWebIntroview *wkWebView;
+@property (strong, nonatomic) PDFView *pdfV;
 @property (strong, nonatomic) NSTimer *recordTimer;
 
 // 声网直播
@@ -327,6 +331,11 @@
         [tapGestureRecognizer setDelegate:self];
         [_wkWebView.scrollView addGestureRecognizer:tapGestureRecognizer];
         
+        _pdfV = [[PDFView alloc] initWithFrame:_wkWebView.frame];
+        _pdfV.autoScales = YES;
+        [_wkWebView addSubview:_pdfV];
+        _pdfV.hidden = YES;
+        
         _tuwenFullButton = [[UIButton alloc] initWithFrame:CGRectMake(_wkWebView.width - 51 - 10, _wkWebView.height - 51 - 10, 51, 51)];
         [_tuwenFullButton setImage:Image(@"shu") forState:0];
         [_tuwenFullButton addTarget:self action:@selector(tuwenFullButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -340,6 +349,7 @@
     if (isWebViewBig == YES) {
         [UIView animateWithDuration:0.25 animations:^{
             wekself.wkWebView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+            wekself.pdfV.frame = wekself.wkWebView.frame;
             _tuwenFullButton.frame = CGRectMake(wekself.wkWebView.width - 51 - 10, wekself.wkWebView.height - 51 - 10, 51, 51);
             [wekself.view addSubview:wekself.wkWebView];
             //方法 隐藏导航栏
@@ -348,6 +358,7 @@
     } else {
         [UIView animateWithDuration:0.25 animations:^{
             wekself.wkWebView.frame = self.playerView.frame;
+            wekself.pdfV.frame = wekself.wkWebView.frame;
             _tuwenFullButton.frame = CGRectMake(wekself.wkWebView.width - 51 - 10, wekself.wkWebView.height - 51 - 10, 51, 51);
             [wekself.headerView addSubview:wekself.wkWebView];
             wekself.navigationController.navigationBar.hidden = YES;
@@ -362,6 +373,7 @@
     if (isWebViewBig == YES) {
         [UIView animateWithDuration:0.25 animations:^{
             wekself.wkWebView.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+            wekself.pdfV.frame = wekself.wkWebView.frame;
             _tuwenFullButton.frame = CGRectMake(wekself.wkWebView.width - 51 - 10, wekself.wkWebView.height - 51 - 10, 51, 51);
             [wekself.view addSubview:wekself.wkWebView];
             //方法 隐藏导航栏
@@ -370,6 +382,7 @@
     } else {
         [UIView animateWithDuration:0.25 animations:^{
             wekself.wkWebView.frame = self.playerView.frame;
+            wekself.pdfV.frame = wekself.wkWebView.frame;
             _tuwenFullButton.frame = CGRectMake(wekself.wkWebView.width - 51 - 10, wekself.wkWebView.height - 51 - 10, 51, 51);
             [wekself.headerView addSubview:wekself.wkWebView];
             wekself.navigationController.navigationBar.hidden = YES;
@@ -1167,7 +1180,15 @@
                     } else {
                         _wkWebView.hidden = NO;
                         _playerView.hidden = YES;
-                        [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
+                        if ([model.model.section_data.data_type isEqualToString:@"3"]) {
+                            _pdfV.hidden = YES;
+                            _wkWebView.scrollView.hidden = NO;
+                            [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
+                        } else {
+                            _wkWebView.scrollView.hidden = YES;
+                            _pdfV.hidden = NO;
+                            _pdfV.document = [[PDFDocument alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]];
+                        }
                         [_tableView setContentOffset:CGPointZero animated:YES];
                         [_courseListVC.tableView reloadData];
                         
@@ -1426,7 +1447,15 @@
                     } else {
                         _wkWebView.hidden = NO;
                         _playerView.hidden = YES;
-                        [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
+                        if ([model.section_data.data_type isEqualToString:@"3"]) {
+                            _pdfV.hidden = YES;
+                            _wkWebView.scrollView.hidden = NO;
+                            [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
+                        } else {
+                            _wkWebView.scrollView.hidden = YES;
+                            _pdfV.hidden = NO;
+                            _pdfV.document = [[PDFDocument alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]];
+                        }
                         [_tableView setContentOffset:CGPointZero animated:YES];
                         [_courseTreeListVC.tableView reloadData];
                         
@@ -1644,7 +1673,15 @@
                     } else {
                         _wkWebView.hidden = NO;
                         _playerView.hidden = YES;
-                        [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
+                        if ([model.section_data.data_type isEqualToString:@"3"]) {
+                            _pdfV.hidden = YES;
+                            _wkWebView.scrollView.hidden = NO;
+                            [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
+                        } else {
+                            _wkWebView.scrollView.hidden = YES;
+                            _pdfV.hidden = NO;
+                            _pdfV.document = [[PDFDocument alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]];
+                        }
                         [_tableView setContentOffset:CGPointZero animated:YES];
                         if (_courseListVC) {
                             [_courseListVC.tableView reloadData];
