@@ -11,7 +11,7 @@
 
 #pragma mark --- 基本配置
 
-#define HeaderUrl_V5 @"https://tv5.51eduline.com"//@"https://v5.51eduline.com"//@"https://api.51eduline.com"//
+#define HeaderUrl_V5 @"https://tv5.51eduline.com"//@"https://api.51eduline.com"//@"https://saas-api.51eduline.com"//
 
 // 用户相关
 #define User_Create @"user/account/create"
