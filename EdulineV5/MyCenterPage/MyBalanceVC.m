@@ -671,6 +671,7 @@
         _submitButton.enabled = NO;
         _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     }
+    _otherMoneyText.text = @"";
 }
 
 - (void)cardButtonClick:(UIButton *)sender {
