@@ -205,4 +205,12 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)leftButtonClick:(id)sender {
+    if (_registerOrForget) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 @end
