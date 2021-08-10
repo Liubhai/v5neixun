@@ -503,7 +503,11 @@
 }
 
 - (void)popVcToWhich {
-    if ([_orderTypeString isEqualToString:@"course"]) {
+    if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
+        
+        // 如果是返回课程播放页面 需要刷新数据
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCourseDetailData" object:nil];
+        
         [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:NO];
     } else if ([_orderTypeString isEqualToString:@"shopcar"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
         [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 4] animated:NO];

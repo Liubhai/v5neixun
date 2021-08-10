@@ -65,6 +65,7 @@
     BOOL     isWebViewBig;//文档 是否放大
     BOOL freeLook;
     BOOL isFullS;//当前是否全屏
+    BOOL shouldLoad;
 }
 
 @property (strong, nonatomic) UIButton *zanButton;
@@ -145,6 +146,11 @@
     AppDelegate *app = [AppDelegate delegate];
     app._allowRotation = NO;
     [super viewWillAppear:animated];
+    
+//    if (shouldLoad) {
+//        [self getCourseInfo];
+//    }
+//    shouldLoad = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -280,6 +286,7 @@
             name:UIApplicationWillResignActiveNotification
           object:nil];
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCourseInfo) name:@"reloadCourseDetailData" object:nil];
 //    [self dealPlayWordBook];
 }
 
@@ -571,10 +578,18 @@
                 [weakself.mainScroll addSubview:weakself.courseTreeListVC.view];
                 [weakself addChildViewController:weakself.courseTreeListVC];
             } else {
-                _courseTreeListVC.videoInfoDict = _dataSource;
-                _courseTreeListVC.cellTabelCanScroll = YES;//weakself.canScrollAfterVideoPlay;
+                _courseTreeListVC.courseId = weakself.ID;
+                _courseTreeListVC.courselayer = weakself.courselayer;
+                _courseTreeListVC.isMainPage = NO;
+                _courseTreeListVC.sid = weakself.sid;
+                _courseTreeListVC.tabelHeight = sectionHeight - 47;
+                _courseTreeListVC.detailVC = weakself;
+                _courseTreeListVC.delegate = weakself;
+                _courseTreeListVC.cellTabelCanScroll = YES;
+                _courseTreeListVC.videoInfoDict = weakself.dataSource;
                 _courseTreeListVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
                 _courseTreeListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                [_courseTreeListVC getClassCourseList];
             }
         } else {
             if (_courseListVC == nil) {
@@ -593,10 +608,19 @@
                 [weakself.mainScroll addSubview:weakself.courseListVC.view];
                 [weakself addChildViewController:weakself.courseListVC];
             } else {
-                _courseListVC.videoInfoDict = _dataSource;
-                _courseListVC.cellTabelCanScroll = YES;//weakself.canScrollAfterVideoPlay;
+                _courseListVC.courseId = weakself.ID;
+                _courseListVC.courselayer = weakself.courselayer;
+                _courseListVC.isMainPage = NO;
+                _courseListVC.isClassCourse = weakself.isClassNew;
+                _courseListVC.sid = weakself.sid;
+                _courseListVC.tabelHeight = sectionHeight - 47;
+                _courseListVC.detailVC = weakself;
+                _courseListVC.delegate = weakself;
+                _courseListVC.cellTabelCanScroll = YES;
+                _courseListVC.videoInfoDict = weakself.dataSource;
                 _courseListVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 47);
                 _courseListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                [_courseListVC getCourseListData];
             }
         }
         
