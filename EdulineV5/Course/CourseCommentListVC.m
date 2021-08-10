@@ -38,7 +38,7 @@
     _headerView.backgroundColor = [UIColor whiteColor];
     _headerView.delegate = self;
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _tabelHeight)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _tabelHeight) style:UITableViewStylePlain];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -46,6 +46,7 @@
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
+    _tableView.mj_footer.hidden = YES;
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     if (_cellType) {
@@ -69,22 +70,29 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *reuse = @"CourseCommentCell";
-    CourseCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-    if (!cell) {
-        cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
-    }
-    cell.delegate = self;
     if (_cellType) {
+        static NSString *reuse = @"CourseCommentCell";
+        CourseCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
+        }
+        cell.delegate = self;
         [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:NO];
+        return cell;
     } else {
+        static NSString *reuse = @"CourseCommentRecordCell";
+        CourseCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[CourseCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse cellType:_cellType];
+        }
+        cell.delegate = self;
         if (_headerView.showOwnButton.selected) {
             [cell setCommentInfo:_my_dataSource[indexPath.row] showAllContent:NO];
         } else {
             [cell setCommentInfo:_dataSource[indexPath.row] showAllContent:NO];
         }
+        return cell;
     }
-    return cell;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
