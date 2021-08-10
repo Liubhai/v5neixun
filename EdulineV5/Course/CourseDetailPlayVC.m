@@ -957,6 +957,9 @@
                             section_rate_model *rateModel = [[section_rate_model alloc] init];
                             rateModel.current_time = [[NSString stringWithFormat:@"%@",_recent_learn_Source[@"current_time"]] integerValue];
                             current_model.section_rate = rateModel;
+                            if (!SWNOTEmptyStr(current_model.course_type)) {
+                                current_model.course_type = _isLive ? @"2" : @"";
+                            }
                             [self recordLearnContinuePlay:current_model];
                         }
                     } else {

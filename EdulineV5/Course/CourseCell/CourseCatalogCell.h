@@ -41,13 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImageView *typeIcon;
 @property (strong, nonatomic) UIImageView *lockIcon;
 @property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) UIImageView *freeImageView;
-@property (strong, nonatomic) UILabel *priceLabel;
-@property (strong, nonatomic) UIButton *courseRightBtn;
-@property (strong, nonatomic) UIButton *coverButton;
-@property (strong, nonatomic) UIImageView *learnIcon;
-@property (strong, nonatomic) UILabel *learnTimeLabel;
-@property (strong, nonatomic) playAnimationView *isLearningIcon;
+@property (strong, nonatomic) UIImageView *freeImageView;// 免费图标
+@property (strong, nonatomic) UILabel *priceLabel;// 价格
+@property (strong, nonatomic) UIButton *courseRightBtn;// 展开收起按钮
+@property (strong, nonatomic) UIButton *coverButton;//整个cell点击按钮
+@property (strong, nonatomic) UIImageView *learnIcon;// 已完成学习的图标
+@property (strong, nonatomic) UILabel *learnTimeLabel;// 学习记录时长
+@property (strong, nonatomic) playAnimationView *isLearningIcon;// 正在学习的动画
 
 
 

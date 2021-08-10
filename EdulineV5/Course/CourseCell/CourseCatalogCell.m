@@ -627,6 +627,131 @@
             [self setAnimation:_isLearningIcon];
         }
     }
+    
+    CGFloat titleLabelFinalWith = 150;
+    if (_isMainPage) {
+        if ([model.model.course_type isEqualToString:@"2"]) {
+            // 直播
+            if (!_isLearningIcon.hidden) {
+                if (!_priceLabel.hidden && !_freeImageView.hidden) {
+                    titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _freeImageView.width - 3 - _priceLabel.width;
+                } else {
+                    if (!_priceLabel.hidden) {
+                        titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _priceLabel.width;
+                    } else {
+                        if (!_freeImageView.hidden) {
+                            titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _freeImageView.width;
+                        } else {
+                            titleLabelFinalWith = _isLearningIcon.left - 15  - _titleLabel.left;
+                        }
+                    }
+                }
+            } else {
+                if (!_priceLabel.hidden && !_freeImageView.hidden) {
+                    titleLabelFinalWith = _learnTimeLabel.left - 15 - _titleLabel.left - 3 - _freeImageView.width - 3 - _priceLabel.width;
+                } else {
+                    if (!_priceLabel.hidden) {
+                        titleLabelFinalWith = _learnTimeLabel.left - 15 - _titleLabel.left - 3 - _priceLabel.width;
+                    } else {
+                        if (!_freeImageView.hidden) {
+                            titleLabelFinalWith = _learnTimeLabel.left - 15 - _titleLabel.left - 3 - _freeImageView.width;
+                        } else {
+                            titleLabelFinalWith = _learnTimeLabel.left - 15  - _titleLabel.left;
+                        }
+                    }
+                }
+            }
+            
+        } else {
+            if (!_priceLabel.hidden && !_freeImageView.hidden) {
+                titleLabelFinalWith = MainScreenWidth - 15 - _titleLabel.left - 3 - _freeImageView.width - 3 - _priceLabel.width;
+            } else {
+                if (!_priceLabel.hidden) {
+                    titleLabelFinalWith = MainScreenWidth - 15 - _titleLabel.left - 3 - _priceLabel.width;
+                } else {
+                    if (!_freeImageView.hidden) {
+                        titleLabelFinalWith = MainScreenWidth - 15 - _titleLabel.left - 3 - _freeImageView.width;
+                    } else {
+                        titleLabelFinalWith = MainScreenWidth - 15  - _titleLabel.left;
+                    }
+                }
+            }
+        }
+    } else {
+        
+        if ([model.model.course_type isEqualToString:@"2"]) {
+            // 直播
+            if (!_isLearningIcon.hidden) {
+                if (!_priceLabel.hidden && !_freeImageView.hidden) {
+                    titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _freeImageView.width - 3 - _priceLabel.width;
+                } else {
+                    if (!_priceLabel.hidden) {
+                        titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _priceLabel.width;
+                    } else {
+                        if (!_freeImageView.hidden) {
+                            titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _freeImageView.width;
+                        } else {
+                            titleLabelFinalWith = _isLearningIcon.left - 15  - _titleLabel.left;
+                        }
+                    }
+                }
+            } else {
+                if (!_priceLabel.hidden && !_freeImageView.hidden) {
+                    titleLabelFinalWith = _learnTimeLabel.left - 15 - _titleLabel.left - 3 - _freeImageView.width - 3 - _priceLabel.width;
+                } else {
+                    if (!_priceLabel.hidden) {
+                        titleLabelFinalWith = _learnTimeLabel.left - 15 - _titleLabel.left - 3 - _priceLabel.width;
+                    } else {
+                        if (!_freeImageView.hidden) {
+                            titleLabelFinalWith = _learnTimeLabel.left - 15 - _titleLabel.left - 3 - _freeImageView.width;
+                        } else {
+                            titleLabelFinalWith = _learnTimeLabel.left - 15  - _titleLabel.left;
+                        }
+                    }
+                }
+            }
+            
+        } else {
+            if (!_isLearningIcon.hidden) {
+                if (!_priceLabel.hidden && !_freeImageView.hidden) {
+                    titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _freeImageView.width - 3 - _priceLabel.width;
+                } else {
+                    if (!_priceLabel.hidden) {
+                        titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _priceLabel.width;
+                    } else {
+                        if (!_freeImageView.hidden) {
+                            titleLabelFinalWith = _isLearningIcon.left - 15 - _titleLabel.left - 3 - _freeImageView.width;
+                        } else {
+                            titleLabelFinalWith = _isLearningIcon.left - 15  - _titleLabel.left;
+                        }
+                    }
+                }
+            } else {
+                if (!_learnTimeLabel.hidden) {
+                    if (!_priceLabel.hidden && !_freeImageView.hidden) {
+                        titleLabelFinalWith = _learnIcon.left - 15 - _titleLabel.left - 3 - _freeImageView.width - 3 - _priceLabel.width;
+                    } else {
+                        if (!_priceLabel.hidden) {
+                            titleLabelFinalWith = _learnIcon.left - 15 - _titleLabel.left - 3 - _priceLabel.width;
+                        } else {
+                            if (!_freeImageView.hidden) {
+                                titleLabelFinalWith = _learnIcon.left - 15 - _titleLabel.left - 3 - _freeImageView.width;
+                            } else {
+                                titleLabelFinalWith = _learnIcon.left - 15  - _titleLabel.left;
+                            }
+                        }
+                    }
+                } else {
+                    titleLabelFinalWith = MainScreenWidth - 15  - _titleLabel.left;
+                }
+            }
+        }
+    }
+    
+    [_titleLabel setWidth:titleLabelFinalWith>([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4) ? ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4) : titleLabelFinalWith];
+    [_freeImageView setLeft:_titleLabel.right + 3];
+    [_priceLabel setLeft:(_freeImageView.hidden ? _titleLabel.right : _freeImageView.right) + 3];
+    
     [_cellTableView reloadData];
 }
 
