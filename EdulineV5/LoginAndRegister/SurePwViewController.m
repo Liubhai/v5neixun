@@ -47,7 +47,7 @@
     [self.view addSubview:_passWordView];
     [_passWordView setHeight:_passWordView.height];
     
-    _sureButton = [[UIButton alloc] initWithFrame:CGRectMake(15 * WidthRatio, _passWordView.bottom + 40, MainScreenWidth - 30 * WidthRatio, 40)];
+    _sureButton = [[UIButton alloc] initWithFrame:CGRectMake(15, _passWordView.bottom + 40, MainScreenWidth - 30, 40)];
     _sureButton.layer.masksToBounds = YES;
     _sureButton.layer.cornerRadius = 5;
     if (_registerOrForget) {
@@ -73,7 +73,7 @@
         NSString *fullString = [NSString stringWithFormat:@"   注册即表示阅读并同意%@",atr];
         NSRange atrRange = [fullString rangeOfString:atr];
         
-        _agreementTyLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(15 * WidthRatio, _sureButton.bottom + 15, MainScreenWidth - 30 * WidthRatio, 20)];
+        _agreementTyLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(15, _sureButton.bottom + 15, MainScreenWidth - 30, 20)];
         _agreementTyLabel.font = SYSTEMFONT(13);
         _agreementTyLabel.textAlignment = kCTTextAlignmentCenter;
         _agreementTyLabel.textColor = EdlineV5_Color.textSecendColor;
@@ -95,7 +95,7 @@
         _agreementTyLabel.textContainer.linesSpacing = 4;
         attStringCreater.font = SYSTEMFONT(13);
         attStringCreater.textAlignment = kCTTextAlignmentCenter;
-        attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30 * WidthRatio, 1))];
+        attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
         [_agreementTyLabel setHeight:_agreementTyLabel.textContainer.textHeight];
         [_agreementTyLabel setTop:_sureButton.bottom + 15];
         [attStringCreater addTextStorageArray:@[textStorage]];

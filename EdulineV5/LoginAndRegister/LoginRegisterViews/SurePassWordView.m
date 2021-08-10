@@ -87,6 +87,7 @@
     [self addSubview:_tipLabel];
     [_tipLabel sizeToFit];
     _tipLabel.frame = CGRectMake(_iconView.right + 5, _line2.bottom + 8, _tipLabel.width, _tipLabel.height);
+    _iconView.centerY = _tipLabel.centerY;
     [self setHeight:_tipLabel.bottom];
 }
 
