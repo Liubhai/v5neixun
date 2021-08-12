@@ -14,6 +14,7 @@
 #import "ZiXunListVC.h"
 #import "ExamMainViewController.h"
 #import "CircleRootViewController.h"
+#import "ShopMainViewController.h"
 
 // test
 #import "QuestionRootViewController.h"
@@ -114,8 +115,10 @@
         ExamMainViewController *vc = [[ExamMainViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([keyType isEqualToString:@"friend"]) {
-        CircleRootViewController *vc = [[CircleRootViewController alloc] init];
+        ShopMainViewController *vc = [[ShopMainViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+//        CircleRootViewController *vc = [[CircleRootViewController alloc] init];
+//        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

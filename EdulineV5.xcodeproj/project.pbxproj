@@ -115,6 +115,7 @@
 		786CD55625EF64DF00172B88 /* EXamRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55525EF64DF00172B88 /* EXamRecordModel.m */; };
 		786CD55925EF6F5200172B88 /* ExamRecordManagerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55825EF6F5200172B88 /* ExamRecordManagerVC.m */; };
 		786CD55C25EF6F7B00172B88 /* ExamRecordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55B25EF6F7B00172B88 /* ExamRecordList.m */; };
+		786E736026C50297006864DE /* ShopMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 786E735F26C50297006864DE /* ShopMainViewController.m */; };
 		7876572324347DB2008F475D /* FindListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572224347DB2008F475D /* FindListCell.m */; };
 		787657282435C79E008F475D /* StudyRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787657272435C79E008F475D /* StudyRootVC.m */; };
 		7876572B2435D53A008F475D /* CourseSearchHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876572A2435D53A008F475D /* CourseSearchHistoryVC.m */; };
@@ -195,6 +196,7 @@
 		787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19B3245685E100E2E016 /* OrderTypeViewController.m */; };
 		787ED6F5255A341E00906846 /* BCLiveRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787ED6F4255A341E00906846 /* BCLiveRoomViewController.m */; };
 		787ED6F8255A62C000906846 /* OneToOneLiveRoomVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787ED6F7255A62C000906846 /* OneToOneLiveRoomVC.m */; };
+		787EF0AA26C520DF0049E8CB /* ShopMainListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787EF0A926C520DF0049E8CB /* ShopMainListCell.m */; };
 		787F1E65247381A400108F7B /* AlivcVideoPlayerListsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E00247381A300108F7B /* AlivcVideoPlayerListsTableViewCell.m */; };
 		787F1E66247381A400108F7B /* AVCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E01247381A300108F7B /* AVCSlider.m */; };
 		787F1E67247381A400108F7B /* AVCSelectSharpnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E02247381A300108F7B /* AVCSelectSharpnessView.m */; };
@@ -832,6 +834,8 @@
 		786CD55825EF6F5200172B88 /* ExamRecordManagerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamRecordManagerVC.m; sourceTree = "<group>"; };
 		786CD55A25EF6F7B00172B88 /* ExamRecordList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamRecordList.h; sourceTree = "<group>"; };
 		786CD55B25EF6F7B00172B88 /* ExamRecordList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamRecordList.m; sourceTree = "<group>"; };
+		786E735E26C50297006864DE /* ShopMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopMainViewController.h; sourceTree = "<group>"; };
+		786E735F26C50297006864DE /* ShopMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopMainViewController.m; sourceTree = "<group>"; };
 		7876572124347DB2008F475D /* FindListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindListCell.h; sourceTree = "<group>"; };
 		7876572224347DB2008F475D /* FindListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindListCell.m; sourceTree = "<group>"; };
 		787657262435C79E008F475D /* StudyRootVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyRootVC.h; sourceTree = "<group>"; };
@@ -997,6 +1001,8 @@
 		787ED6F4255A341E00906846 /* BCLiveRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BCLiveRoomViewController.m; sourceTree = "<group>"; };
 		787ED6F6255A62C000906846 /* OneToOneLiveRoomVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneToOneLiveRoomVC.h; sourceTree = "<group>"; };
 		787ED6F7255A62C000906846 /* OneToOneLiveRoomVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneToOneLiveRoomVC.m; sourceTree = "<group>"; };
+		787EF0A826C520DF0049E8CB /* ShopMainListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopMainListCell.h; sourceTree = "<group>"; };
+		787EF0A926C520DF0049E8CB /* ShopMainListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopMainListCell.m; sourceTree = "<group>"; };
 		787F1DFA247381A300108F7B /* AVCLogView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCLogView.h; sourceTree = "<group>"; };
 		787F1DFB247381A300108F7B /* AlivcVideoPlayThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcVideoPlayThumbnailView.h; sourceTree = "<group>"; };
 		787F1DFE247381A300108F7B /* AlivcPlayListsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcPlayListsView.h; sourceTree = "<group>"; };
@@ -2100,6 +2106,16 @@
 			path = MyExamMainPage;
 			sourceTree = "<group>";
 		};
+		786E735C26C5024D006864DE /* ShopMainPage */ = {
+			isa = PBXGroup;
+			children = (
+				786E735E26C50297006864DE /* ShopMainViewController.h */,
+				786E735F26C50297006864DE /* ShopMainViewController.m */,
+				787EF0A626C520AD0049E8CB /* ShopViews */,
+			);
+			path = ShopMainPage;
+			sourceTree = "<group>";
+		};
 		7876571F24347D9F008F475D /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -2333,6 +2349,7 @@
 		7879565A240E5FC80013F95F /* FindPage */ = {
 			isa = PBXGroup;
 			children = (
+				786E735C26C5024D006864DE /* ShopMainPage */,
 				78793A3F264E1D68000554C8 /* CircleMainPage */,
 				78BBB38A2620222B009F5D10 /* QuestionMainPage */,
 				78060FA5255E831D00009171 /* ExamPage */,
@@ -2750,6 +2767,15 @@
 				78793A4E26522115000554C8 /* OrderScreenViewController.m */,
 			);
 			path = OrderController;
+			sourceTree = "<group>";
+		};
+		787EF0A626C520AD0049E8CB /* ShopViews */ = {
+			isa = PBXGroup;
+			children = (
+				787EF0A826C520DF0049E8CB /* ShopMainListCell.h */,
+				787EF0A926C520DF0049E8CB /* ShopMainListCell.m */,
+			);
+			path = ShopViews;
 			sourceTree = "<group>";
 		};
 		787F1DF7247381A300108F7B /* AlivcVideoPlay */ = {
@@ -4424,6 +4450,7 @@
 				7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */,
 				78795752240FAA7A0013F95F /* UIViewController+HUD.m in Sources */,
 				787F1E6B247381A400108F7B /* AlivcPlayListsView.m in Sources */,
+				787EF0AA26C520DF0049E8CB /* ShopMainListCell.m in Sources */,
 				788E95BD253FE24F0089251E /* SignalManager.m in Sources */,
 				78A16C842452F7C100391430 /* TICReport.m in Sources */,
 				78C936C6248F64AF00D5F1ED /* TeacherMainPageVC.m in Sources */,
@@ -4882,6 +4909,7 @@
 				7879573A240FA3840013F95F /* ZLPhotoPickerGroupTableViewCell.m in Sources */,
 				78C5496E241B642B00A33FC4 /* AlivcLiveUser.m in Sources */,
 				788E959D253FE24E0089251E /* SignalUserModel.m in Sources */,
+				786E736026C50297006864DE /* ShopMainViewController.m in Sources */,
 				788E956B253FE24E0089251E /* EEMessageViewCell.m in Sources */,
 				788E9582253FE24E0089251E /* UIColor+Addition.m in Sources */,
 				78A16C852452F7C100391430 /* NSDate+NetworkClock.m in Sources */,
