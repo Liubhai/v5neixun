@@ -531,7 +531,7 @@
     [bottomView addSubview:label1];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(label1.right + 3, 0, 100, 49)];
-    _priceLabel.text = @"¥0.00";
+    _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
     _priceLabel.font = SYSTEMFONT(16);
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     [bottomView addSubview:_priceLabel];
@@ -571,7 +571,7 @@
         _orderRightBtn3.selected = NO;
         if ([typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
-            _priceLabel.text = @"¥0.00";
+            _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
             [self selectFirstButton];
         }
         typeString = @"alipay";
@@ -581,7 +581,7 @@
         _orderRightBtn3.selected = NO;
         if ([typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
-            _priceLabel.text = @"¥0.00";
+            _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
             [self selectFirstButton];
         }
         typeString = @"wxpay";
@@ -591,7 +591,7 @@
         _orderRightBtn2.selected = NO;
         if (![typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
-            _priceLabel.text = @"¥0.00";
+            _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
             [self selectFirstButton];
         }
         typeString = @"applepay";
@@ -605,7 +605,7 @@
         _orderRightBtn3.selected = NO;
         if ([typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
-            _priceLabel.text = @"¥0.00";
+            _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
             [self selectFirstButton];
         }
         typeString = @"alipay";
@@ -615,7 +615,7 @@
         _orderRightBtn3.selected = NO;
         if ([typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
-            _priceLabel.text = @"¥0.00";
+            _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
             [self selectFirstButton];
         }
         typeString = @"wxpay";
@@ -625,7 +625,7 @@
         _orderRightBtn2.selected = NO;
         if (![typeString isEqualToString:@"applepay"]) {
             [self makeMoneyView];
-            _priceLabel.text = @"¥0.00";
+            _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
             [self selectFirstButton];
         }
         typeString = @"applepay";
@@ -660,9 +660,9 @@
         }
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"¥%@",[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"price"]];
     if ([typeString isEqualToString:@"applepay"]) {
-        _productID = [NSString stringWithFormat:@"¥%@",[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"product_id"]];
+        _productID = [NSString stringWithFormat:@"%@",[[_netWorkBalanceArray objectAtIndex:button.tag] objectForKey:@"product_id"]];
     }
     if (_seleteBtn.selected) {
         _submitButton.enabled = YES;
@@ -719,7 +719,7 @@
         if (textfield.text.length>5) {
             textfield.text = [textfield.text substringToIndex:5];
         }
-        _priceLabel.text = [NSString stringWithFormat:@"¥%.2f",[textfield.text floatValue] * [ratio_string floatValue] / 100.00];
+        _priceLabel.text = [NSString stringWithFormat:@"%@%.2f",IOSMoneyTitle,[textfield.text floatValue] * [ratio_string floatValue] / 100.00];
         if (_seleteBtn.selected) {
             _submitButton.enabled = YES;
             _submitButton.backgroundColor = EdlineV5_Color.themeColor;
@@ -728,7 +728,7 @@
             _submitButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
         }
     } else {
-        _priceLabel.text = @"¥0.00";
+        _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
         if (_seleteBtn.selected && moneySeleButton.selected) {
             _submitButton.enabled = YES;
             _submitButton.backgroundColor = EdlineV5_Color.themeColor;
@@ -772,14 +772,16 @@
             NSString *pass_balance = [NSString stringWithFormat:@"%@",pass[@"balance"]];
             NSString *pass_chargeId = [NSString stringWithFormat:@"%@",pass[@"id"]];
             [param setObject:pass_balance forKey:@"balance"];//@([pass_balance floatValue])
-            NSString *price = [_priceLabel.text substringFromIndex:1];
+            NSString *moneyString = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
+            NSString *price = [_priceLabel.text substringFromIndex:moneyString.length];
             [param setObject:price forKey:@"payment"];//@([price floatValue])
             [param setObject:pass_chargeId forKey:@"recharge_id"];
             [param setObject:@"ios" forKey:@"from"];
         } else {
             if (SWNOTEmptyStr(_otherMoneyText.text)) {
                 [param setObject:_otherMoneyText.text forKey:@"balance"];//@([_otherMoneyText.text floatValue])
-                NSString *price = [_priceLabel.text substringFromIndex:1];
+                NSString *moneyString = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
+                NSString *price = [_priceLabel.text substringFromIndex:moneyString.length];
                 [param setObject:price forKey:@"payment"];//@([price floatValue])
                 [param setObject:@"0" forKey:@"recharge_id"];
                 [param setObject:@"ios" forKey:@"from"];
@@ -792,7 +794,8 @@
     } else {
         if (SWNOTEmptyStr(_otherMoneyText.text)) {
             [param setObject:_otherMoneyText.text forKey:@"balance"];//@([_otherMoneyText.text floatValue])
-            NSString *price = [_priceLabel.text substringFromIndex:1];
+            NSString *moneyString = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
+            NSString *price = [_priceLabel.text substringFromIndex:moneyString.length];
             [param setObject:price forKey:@"payment"];//
             [param setObject:@"0" forKey:@"recharge_id"];
             [param setObject:@"ios" forKey:@"from"];
@@ -1101,7 +1104,7 @@
                     
                     [self makeAgreeView];
                     
-                    _priceLabel.text = @"¥0.00";
+                    _priceLabel.text = [NSString stringWithFormat:@"%@0.00",IOSMoneyTitle];
                     [self selectFirstButton];
                 }
             }
