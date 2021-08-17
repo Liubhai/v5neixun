@@ -60,7 +60,7 @@
 
 #define TXSDKID [[NSUserDefaults standardUserDefaults] objectForKey:@"sdk_appid"]
 
-#define PROFILELAYOUT [[NSUserDefaults standardUserDefaults] objectForKey:@"profile"]
+#define PROFILELAYOUT [[NSUserDefaults standardUserDefaults] objectForKey:@"profile"] == nil ? @"1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"profile"]
 #define COURSELAYOUT [[NSUserDefaults standardUserDefaults] objectForKey:@"course"]
 
 #define LoginInvalid_TXT @"账号已在另一台设备登录,\n请重新登录。"

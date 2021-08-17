@@ -390,7 +390,6 @@
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"follow"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"schoolID"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Video_Face"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hasAlipay"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"user_phone"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"need_set_password"];
     

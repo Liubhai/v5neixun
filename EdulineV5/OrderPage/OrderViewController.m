@@ -105,41 +105,45 @@
 //    [self makeOrderType1View3];
 //    [_orderTypeView setHeight:_orderTypeView3.bottom];
     
-    if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
-        _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 110)];
-        _otherView.backgroundColor = [UIColor whiteColor];
-        [_mainScrollView addSubview:_otherView];
-        NSArray *titleArray = @[@"卡券"];
-        for (int i = 0; i < titleArray.count; i++) {
-            UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
-            youhui.text = titleArray[i];
-            youhui.textColor = EdlineV5_Color.textSecendColor;
-            youhui.font = SYSTEMFONT(15);
-            [_otherView addSubview:youhui];
-            
-            UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
-            themelabel.font = SYSTEMFONT(14);
-            themelabel.textAlignment = NSTextAlignmentRight;
-            [_otherView addSubview:themelabel];
-            if (i==0) {
-                _kaquanLabel = themelabel;
-                _kaquanLabel.text = @"未使用卡券";
-                _kaquanLabel.textColor = EdlineV5_Color.youhuijuanColor;
-            } else if (i == 1) {
-                _shitikaLabel = themelabel;
-            }
-            UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
-            icon.image = Image(@"list_more");
-            icon.centerY = themelabel.centerY;
-            [_otherView addSubview:icon];
-            
-            UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
-            clearBtn.backgroundColor = [UIColor clearColor];
-            clearBtn.tag = 10 + i;
-            [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-            [_otherView addSubview:clearBtn];
-            if (i == titleArray.count - 1) {
-                [_otherView setHeight:clearBtn.bottom];
+    if ([ShowAudit isEqualToString:@"1"]) {
+        
+    } else {
+        if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
+            _otherView = [[UIView alloc] initWithFrame:CGRectMake(0, _topContentView.bottom + 10, MainScreenWidth, 110)];
+            _otherView.backgroundColor = [UIColor whiteColor];
+            [_mainScrollView addSubview:_otherView];
+            NSArray *titleArray = @[@"卡券"];
+            for (int i = 0; i < titleArray.count; i++) {
+                UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
+                youhui.text = titleArray[i];
+                youhui.textColor = EdlineV5_Color.textSecendColor;
+                youhui.font = SYSTEMFONT(15);
+                [_otherView addSubview:youhui];
+                
+                UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
+                themelabel.font = SYSTEMFONT(14);
+                themelabel.textAlignment = NSTextAlignmentRight;
+                [_otherView addSubview:themelabel];
+                if (i==0) {
+                    _kaquanLabel = themelabel;
+                    _kaquanLabel.text = @"未使用卡券";
+                    _kaquanLabel.textColor = EdlineV5_Color.youhuijuanColor;
+                } else if (i == 1) {
+                    _shitikaLabel = themelabel;
+                }
+                UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
+                icon.image = Image(@"list_more");
+                icon.centerY = themelabel.centerY;
+                [_otherView addSubview:icon];
+                
+                UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
+                clearBtn.backgroundColor = [UIColor clearColor];
+                clearBtn.tag = 10 + i;
+                [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+                [_otherView addSubview:clearBtn];
+                if (i == titleArray.count - 1) {
+                    [_otherView setHeight:clearBtn.bottom];
+                }
             }
         }
     }

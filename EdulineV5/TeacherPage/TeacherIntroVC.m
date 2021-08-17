@@ -105,16 +105,6 @@
     }];
 }
 
-#pragma mark - UIWebViewDelegate
-/**将要开始加载调用,这里应该返回YES以进行加载,通过导航类型参数UIWebViewNavigationType可以得到请求发起的原因
- UIWebViewNavigationTypeLinkClicked -- 点击链接
- UIWebViewNavigationTypeFormSubmitted -- 提交表单
- UIWebViewNavigationTypeBackForward -- 前进后退
- UIWebViewNavigationTypeReload, -- 重新加载
- UIWebViewNavigationTypeFormResubmitted -- 重新提交表单
- UIWebViewNavigationTypeOther -- 其他
- */
-
 //开始加载调用
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
     NSLog(@"开始加载");
@@ -124,18 +114,6 @@
     NSLog(@"完成加载");
     
 #pragma mark --- 解析图片标签
-//    NSString *botySise=[[NSString alloc] initWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%d%%'",100];
-//    [webView evaluateJavaScript:[NSString stringWithFormat:@"var script = document.createElement('script');"
-//                                 "script.type = 'text/javascript';"
-//                                 "script.text = \"function ResizeImages() { "
-//                                 "var myimg,oldwidth,newheight;"
-//                                 "var maxwidth=%f;" //缩放系数
-//                                 "for(i=0;i <document.images.length;i++){"
-//                                 "myimg = document.images[i];"
-//                                 "myimg.setAttribute('style','max-width:%fpx;height:auto')"
-//                                 "}"
-//                                 "}\";"
-//                                 "document.getElementsByTagName('head')[0].appendChild(script);",MainScreenWidth,MainScreenWidth] completionHandler:nil];
     [webView evaluateJavaScript:@"document.body.style.backgroundColor='#f9f9f9';" completionHandler:nil];//设置背景颜色
     [webView evaluateJavaScript:@"document.body.style.zoom=1.0" completionHandler:nil];
     [webView evaluateJavaScript:@"document.body.style.backgroundColor='#f9f9f9';" completionHandler:nil];
