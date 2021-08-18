@@ -36,9 +36,15 @@
     currentSelectRow = 0;
     _titleLabel.text = @"选择所属行业";
     [_leftButton setImage:Image(@"close") forState:0];
+    
+    _rightButton.frame = CGRectMake(MainScreenWidth - 15 - 50, 0, 50, 28);
+    _rightButton.layer.masksToBounds = YES;
+    _rightButton.layer.cornerRadius = 3;
+    _rightButton.centerY = _titleLabel.centerY;
     [_rightButton setTitle:@"确定" forState:0];
     [_rightButton setImage:nil forState:0];
-    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+    [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
+    _rightButton.backgroundColor = EdlineV5_Color.themeColor;
     _rightButton.hidden = NO;
     
     if ([_typeString isEqualToString:@"0"]) {
