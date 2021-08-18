@@ -37,15 +37,21 @@
 //    [self.view addGestureRecognizer:viewTap];
     wordMax = _isComment ? 100 : 400;
     _titleImage.backgroundColor = [UIColor whiteColor];
-    _titleLabel.text = _isComment ? @"点评" : @"笔记";
+    _titleLabel.text = _isComment ? @"点评" : @"记笔记";
     _titleLabel.textColor = EdlineV5_Color.textFirstColor;
     [_leftButton setImage:Image(@"nav_back_grey") forState:0];
+    
+    _rightButton.frame = CGRectMake(MainScreenWidth - 15 - 50, 0, 50, 28);
+    _rightButton.centerY = _titleLabel.centerY;
     [_rightButton setImage:nil forState:0];
-    [_rightButton setTitle:@"提交" forState:0];
-    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
-    [_rightButton setTitleColor:EdlineV5_Color.textThirdColor forState:UIControlStateDisabled];
+    [_rightButton setTitle:_isComment ? @"提交" : @"发布" forState:0];
+    [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
+    _rightButton.layer.masksToBounds = YES;
+    _rightButton.layer.cornerRadius = 3;
     _rightButton.hidden = NO;
     _rightButton.enabled = NO;
+    _rightButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+    
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     [self makeSubView];
@@ -162,9 +168,11 @@
     if (textView.text.length<=0) {
         _placeLabel.hidden = NO;
         _rightButton.enabled = NO;
+        _rightButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     } else {
         _placeLabel.hidden = YES;
         _rightButton.enabled = YES;
+        _rightButton.backgroundColor = EdlineV5_Color.themeColor;
     }
     _textCountLabel.text = [NSString stringWithFormat:@"%@/%@",@(textView.text.length),@(wordMax)];
     if (textView.text.length>wordMax) {
