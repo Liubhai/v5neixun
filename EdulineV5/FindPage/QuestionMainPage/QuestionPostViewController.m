@@ -175,6 +175,7 @@
         
         UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"相册里选" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:PostImageMaxCount - _pictureArray.count delegate:self];
+            imagePickerVc.allowCameraLocation = NO;
             [self presentViewController:imagePickerVc animated:YES completion:nil];
         }];
         UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相机拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

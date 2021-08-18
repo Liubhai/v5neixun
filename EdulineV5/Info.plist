@@ -130,10 +130,6 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>App会在使用修改用户头像、保存图片到本地功能时,访问您的相机权限</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<true/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App需要您的同意,才能在使用期间访问位置</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>App会在直播间连麦的功能时,访问您的麦克风权限</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -143,9 +139,7 @@
 	<key>Privacy - Local Network Usage Description</key>
 	<string>APP不会连接到您所用网络上的设备,只会检测与您本地网关的连通性</string>
 	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-	</array>
+	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

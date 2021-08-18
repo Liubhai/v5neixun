@@ -288,6 +288,7 @@
 //            return;
 //        }
         TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 delegate:self];//[[TZImagePickerController alloc] initWithMaxImagesCount:0 delegate:self singleChoose:NO];
+        imagePickerVc.allowCameraLocation = NO;
         [self presentViewController:imagePickerVc animated:YES completion:nil];
     }else if (buttonIndex == 1){//相机拍照
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
