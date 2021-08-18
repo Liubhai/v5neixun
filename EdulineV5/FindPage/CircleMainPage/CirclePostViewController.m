@@ -54,11 +54,22 @@
             _titleLabel.text = @"评论";
         }
     }
-    
+    _rightButton.frame = CGRectMake(MainScreenWidth - 15 - 50, 0, 50, 28);
+    _rightButton.centerY = _titleLabel.centerY;
     _rightButton.hidden = NO;
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"发布" forState:0];
-    [_rightButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+    [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
+    _rightButton.layer.masksToBounds = YES;
+    _rightButton.layer.cornerRadius = 3;
+    if (_isForward) {
+        _rightButton.backgroundColor = EdlineV5_Color.themeColor;
+        _rightButton.enabled = YES;
+    } else {
+        _rightButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        _rightButton.enabled = NO;
+    }
+    
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = [EdlineV5_Color backColor];
     
@@ -202,6 +213,13 @@
 
 // MARK: - 根据图片数据布置界面
 - (void)dealPictureUI {
+    if (_pictureArray.count>0 || _contentTextView.text.length>0) {
+        _rightButton.backgroundColor = EdlineV5_Color.themeColor;
+        _rightButton.enabled = YES;
+    } else {
+        _rightButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        _rightButton.enabled = NO;
+    }
     [_pictureBackView removeAllSubviews];
     CGFloat xx = 15.0;
     CGFloat yy = 10.0;
@@ -331,6 +349,15 @@
         _contentPlaceL.hidden = NO;
     } else {
         _contentPlaceL.hidden = YES;
+    }
+    if (!_isForward) {
+        if (_pictureArray.count>0 || textView.text.length>0) {
+            _rightButton.backgroundColor = EdlineV5_Color.themeColor;
+            _rightButton.enabled = YES;
+        } else {
+            _rightButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+            _rightButton.enabled = NO;
+        }
     }
 }
 
