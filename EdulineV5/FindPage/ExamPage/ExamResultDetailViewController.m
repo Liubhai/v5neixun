@@ -96,14 +96,14 @@
 }
 
 - (void)makeTopView {
-    _submitBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 52, 0, 52, 25)];
+    _submitBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 50, 0, 50, 28)];
     _submitBtn.layer.masksToBounds = YES;
-    _submitBtn.layer.cornerRadius = _submitBtn.height / 2.0;
+    _submitBtn.layer.cornerRadius = 3;//_submitBtn.height / 2.0;
     _submitBtn.centerY = _titleLabel.centerY;
     _submitBtn.backgroundColor = EdlineV5_Color.themeColor;
     [_submitBtn setTitle:@"交卷" forState:0];
     [_submitBtn setTitleColor:[UIColor whiteColor] forState:0];
-    _submitBtn.titleLabel.font = SYSTEMFONT(14);
+    _submitBtn.titleLabel.font = SYSTEMFONT(15);
     [_submitBtn addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_submitBtn];
     _submitBtn.hidden = YES;
