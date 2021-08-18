@@ -11,8 +11,8 @@
 
 #pragma mark --- 基本配置
 
-//#define HeaderUrl_V5 @"https://tv5.51eduline.com"// 测试站
-#define HeaderUrl_V5 @"https://api.51eduline.com"// 单机构
+#define HeaderUrl_V5 @"https://tv5.51eduline.com"// 测试站
+//#define HeaderUrl_V5 @"https://api.51eduline.com"// 单机构
 //#define HeaderUrl_V5 @"https://saas-api.51eduline.com"//saas版本
 
 

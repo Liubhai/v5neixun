@@ -324,14 +324,14 @@
     [_orderTypeView addSubview:_orderTypeView1];
     
     _orderLeftIcon1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
-    _orderLeftIcon1.image = Image(@"order_zhifubao_icon");
+    _orderLeftIcon1.image = Image(@"order_wechat_icon");
     _orderLeftIcon1.centerY = 56 / 2.0;
     [_orderTypeView1 addSubview:_orderLeftIcon1];
     
     _orderTitle1 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon1.right + 12, 0, 100, 56)];
     _orderTitle1.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle1.font = SYSTEMFONT(15);
-    _orderTitle1.text = @"支付宝";
+    _orderTitle1.text = @"微信";
     [_orderTypeView1 addSubview:_orderTitle1];
     
     _orderRightBtn1 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -343,7 +343,7 @@
     BOOL hasMoubao = NO;
     
     if (SWNOTEmptyArr(_typeArray)) {
-        if ([_typeArray containsObject:@"alipay"]) {
+        if ([_typeArray containsObject:@"wxpay"]) {
             hasMoubao = YES;
         } else {
             hasMoubao = NO;
@@ -369,14 +369,14 @@
     [_orderTypeView2 addGestureRecognizer:selectTap];
     
     _orderLeftIcon2 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
-    _orderLeftIcon2.image = Image(@"order_wechat_icon");
+    _orderLeftIcon2.image = Image(@"order_zhifubao_icon");
     _orderLeftIcon2.centerY = 56 / 2.0;
     [_orderTypeView2 addSubview:_orderLeftIcon2];
     
     _orderTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon2.right + 12, 0, 100, 56)];
     _orderTitle2.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle2.font = SYSTEMFONT(15);
-    _orderTitle2.text = @"微信";
+    _orderTitle2.text = @"支付宝";
     [_orderTypeView2 addSubview:_orderTitle2];
     
     _orderRightBtn2 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -388,7 +388,7 @@
     BOOL hasW = NO;
     
     if (SWNOTEmptyArr(_typeArray)) {
-        if ([_typeArray containsObject:@"wxpay"]) {
+        if ([_typeArray containsObject:@"alipay"]) {
             hasW = YES;
         } else {
             hasW = NO;
@@ -574,7 +574,7 @@
             _priceLabel.text = @"¥0.00";
             [self selectFirstButton];
         }
-        typeString = @"alipay";
+        typeString = @"wxpay";
     } else if (sender == _orderRightBtn2) {
         _orderRightBtn2.selected = YES;
         _orderRightBtn1.selected = NO;
@@ -584,7 +584,7 @@
             _priceLabel.text = @"¥0.00";
             [self selectFirstButton];
         }
-        typeString = @"wxpay";
+        typeString = @"alipay";
     } else if (sender == _orderRightBtn3) {
         _orderRightBtn3.selected = YES;
         _orderRightBtn1.selected = NO;
@@ -608,7 +608,7 @@
             _priceLabel.text = @"¥0.00";
             [self selectFirstButton];
         }
-        typeString = @"alipay";
+        typeString = @"wxpay";
     } else if (tap.view == _orderTypeView2) {
         _orderRightBtn2.selected = YES;
         _orderRightBtn1.selected = NO;
@@ -618,7 +618,7 @@
             _priceLabel.text = @"¥0.00";
             [self selectFirstButton];
         }
-        typeString = @"wxpay";
+        typeString = @"alipay";
     } else if (tap.view == _orderTypeView3) {
         _orderRightBtn3.selected = YES;
         _orderRightBtn1.selected = NO;
