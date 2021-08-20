@@ -138,8 +138,6 @@
 	<string>App会在使用修改用户头像、保存图片到本地功能时,访问您的相机权限</string>
 	<key>Privacy - Local Network Usage Description</key>
 	<string>APP不会连接到您所用网络上的设备,只会检测与您本地网关的连通性</string>
-	<key>UIBackgroundModes</key>
-	<array/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
