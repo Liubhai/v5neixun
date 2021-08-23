@@ -50,6 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *kaquanLabel;
 @property (strong, nonatomic) UILabel *shitikaLabel;
 
+@property (strong, nonatomic) UIView *scoreOtherView;
+@property (strong, nonatomic) UILabel *scoreLabel;
+
 @property (strong, nonatomic) UIView *agreeBackView;
 @property (strong, nonatomic) TYAttributedLabel *agreementTyLabel;
 @property (strong, nonatomic) UIButton *seleteBtn;

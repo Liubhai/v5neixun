@@ -51,6 +51,9 @@
 		78447C5226351C5E00CCC6D2 /* ExamResultDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78447C5126351C5E00CCC6D2 /* ExamResultDetailViewController.m */; };
 		78447C5526355E8900CCC6D2 /* ExamResultSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78447C5426355E8900CCC6D2 /* ExamResultSheetViewController.m */; };
 		78447C58263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78447C57263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m */; };
+		784D648526D353A500461A21 /* ScoreListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784D648426D353A500461A21 /* ScoreListViewController.m */; };
+		784D648826D38CDF00461A21 /* ScoreListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784D648726D38CDF00461A21 /* ScoreListCell.m */; };
+		784D648B26D399FB00461A21 /* ScoreListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 784D648A26D399FB00461A21 /* ScoreListModel.m */; };
 		784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD324A8288200646916 /* ZiXunListCell.m */; };
 		784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD624A8340A00646916 /* ZiXunListVC.m */; };
 		784E5CDA24A8450700646916 /* ZiXunDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD924A8450700646916 /* ZiXunDetailVC.m */; };
@@ -716,6 +719,12 @@
 		78447C5426355E8900CCC6D2 /* ExamResultSheetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamResultSheetViewController.m; sourceTree = "<group>"; };
 		78447C56263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamPaperErrorTestAgainVC.h; sourceTree = "<group>"; };
 		78447C57263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamPaperErrorTestAgainVC.m; sourceTree = "<group>"; };
+		784D648326D353A500461A21 /* ScoreListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoreListViewController.h; sourceTree = "<group>"; };
+		784D648426D353A500461A21 /* ScoreListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreListViewController.m; sourceTree = "<group>"; };
+		784D648626D38CDF00461A21 /* ScoreListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoreListCell.h; sourceTree = "<group>"; };
+		784D648726D38CDF00461A21 /* ScoreListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreListCell.m; sourceTree = "<group>"; };
+		784D648926D399FB00461A21 /* ScoreListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoreListModel.h; sourceTree = "<group>"; };
+		784D648A26D399FB00461A21 /* ScoreListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreListModel.m; sourceTree = "<group>"; };
 		784E5CD224A8288200646916 /* ZiXunListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListCell.h; sourceTree = "<group>"; };
 		784E5CD324A8288200646916 /* ZiXunListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunListCell.m; sourceTree = "<group>"; };
 		784E5CD524A8340A00646916 /* ZiXunListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListVC.h; sourceTree = "<group>"; };
@@ -2044,6 +2053,12 @@
 				787E19A52455379A00E2E016 /* OrderSureViewController.m */,
 				7853BDFE2433352D00F096EC /* LingquanViewController.h */,
 				7853BDFF2433352D00F096EC /* LingquanViewController.m */,
+				784D648326D353A500461A21 /* ScoreListViewController.h */,
+				784D648426D353A500461A21 /* ScoreListViewController.m */,
+				784D648626D38CDF00461A21 /* ScoreListCell.h */,
+				784D648726D38CDF00461A21 /* ScoreListCell.m */,
+				784D648926D399FB00461A21 /* ScoreListModel.h */,
+				784D648A26D399FB00461A21 /* ScoreListModel.m */,
 			);
 			path = OrderPage;
 			sourceTree = "<group>";
@@ -4411,6 +4426,7 @@
 				788E9581253FE24E0089251E /* JsonParseUtil.m in Sources */,
 				78795729240FA3840013F95F /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */,
 				787E19AE24566F0300E2E016 /* OrderRootVC.m in Sources */,
+				784D648826D38CDF00461A21 /* ScoreListCell.m in Sources */,
 				78C5497D241B642B00A33FC4 /* AlivcLiveBeautifySettingsViewController.m in Sources */,
 				787F1E69247381A400108F7B /* AVCLogView.m in Sources */,
 				788E9588253FE24E0089251E /* zip.c in Sources */,
@@ -4662,6 +4678,7 @@
 				788E95BA253FE24E0089251E /* BaseEducationManager.m in Sources */,
 				7853BDFD2432028E00F096EC /* NTESQLHomePageCustomUIModel.m in Sources */,
 				788E95A7253FE24E0089251E /* BigEducationManager.m in Sources */,
+				784D648526D353A500461A21 /* ScoreListViewController.m in Sources */,
 				78793A4C264E4D18000554C8 /* CirclePostViewController.m in Sources */,
 				78AA137F2440543D007087F7 /* UIView+SDExtension.m in Sources */,
 				788E9578253FE24E0089251E /* EEChatTextFiled.m in Sources */,
@@ -4677,6 +4694,7 @@
 				788E956F253FE24E0089251E /* EEColorViewCell.m in Sources */,
 				785A3E1A2498757200298054 /* ScanPhotoViewController.m in Sources */,
 				78795666240E605A0013F95F /* FindRootViewController.m in Sources */,
+				784D648B26D399FB00461A21 /* ScoreListModel.m in Sources */,
 				787E19A62455379A00E2E016 /* OrderSureViewController.m in Sources */,
 				789DB01524593041001302B4 /* CouponModel.m in Sources */,
 				78795724240FA3840013F95F /* ZLCameraView.m in Sources */,

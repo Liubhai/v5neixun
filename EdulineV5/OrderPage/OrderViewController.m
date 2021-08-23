@@ -12,9 +12,10 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "LingquanViewController.h"
+#import "ScoreListViewController.h"
 #import "V5_UserModel.h"
 
-@interface OrderViewController ()<LingquanViewControllerDelegate>
+@interface OrderViewController ()<LingquanViewControllerDelegate,ScoreListViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *couponsArray;
 
@@ -146,52 +147,43 @@
                 }
             }
         }
+        if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
+            _scoreOtherView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom + 1, MainScreenWidth, 110)];
+            _scoreOtherView.backgroundColor = [UIColor whiteColor];
+            [_mainScrollView addSubview:_scoreOtherView];
+            NSArray *titleArray = @[@"积分抵扣"];
+            for (int i = 0; i < titleArray.count; i++) {
+                UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
+                youhui.text = titleArray[i];
+                youhui.textColor = EdlineV5_Color.textSecendColor;
+                youhui.font = SYSTEMFONT(15);
+                [_scoreOtherView addSubview:youhui];
+                
+                UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
+                themelabel.font = SYSTEMFONT(14);
+                themelabel.textAlignment = NSTextAlignmentRight;
+                [_scoreOtherView addSubview:themelabel];
+                if (i==0) {
+                    _scoreLabel = themelabel;
+                    _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,@"0"];
+                    _scoreLabel.textColor = EdlineV5_Color.textThirdColor;
+                }
+                UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
+                icon.image = Image(@"list_more");
+                icon.centerY = themelabel.centerY;
+                [_scoreOtherView addSubview:icon];
+                
+                UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
+                clearBtn.backgroundColor = [UIColor clearColor];
+                clearBtn.tag = 20 + i;
+                [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+                [_scoreOtherView addSubview:clearBtn];
+                if (i == titleArray.count - 1) {
+                    [_scoreOtherView setHeight:clearBtn.bottom];
+                }
+            }
+        }
     }
-    
-//    _agreeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom +10, MainScreenWidth, 60)];
-//    _agreeBackView.backgroundColor = [UIColor whiteColor];
-//    [_mainScrollView addSubview:_agreeBackView];
-//
-//    NSString *appName = [[[NSBundle mainBundle] infoDictionary]objectForKey:@"CFBundleName"];
-//    NSString *atr = [NSString stringWithFormat:@"《%@购买协议》",appName];
-//    NSString *fullString = [NSString stringWithFormat:@"   我已阅读并同意%@",atr];
-//    NSRange atrRange = [fullString rangeOfString:atr];
-//
-//    _agreementTyLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 30, 20)];
-//    _agreementTyLabel.centerY = 60 / 2.0;
-//    _agreementTyLabel.font = SYSTEMFONT(13);
-//    _agreementTyLabel.textAlignment = kCTTextAlignmentLeft;
-//    _agreementTyLabel.textColor = EdlineV5_Color.textSecendColor;
-//    _agreementTyLabel.delegate = self;
-//    _agreementTyLabel.numberOfLines = 0;
-//
-//    TYLinkTextStorage *textStorage = [[TYLinkTextStorage alloc]init];
-//    textStorage.textColor = EdlineV5_Color.themeColor;
-//    textStorage.font = SYSTEMFONT(13);
-//    textStorage.linkData = @{@"type":@"service"};
-//    textStorage.underLineStyle = kCTUnderlineStyleNone;
-//    textStorage.range = atrRange;
-//    textStorage.text = atr;
-//
-//    // 属性文本生成器
-//    TYTextContainer *attStringCreater = [[TYTextContainer alloc]init];
-//    attStringCreater.text = fullString;
-//    _agreementTyLabel.textContainer = attStringCreater;
-//    _agreementTyLabel.textContainer.linesSpacing = 4;
-//    attStringCreater.font = SYSTEMFONT(13);
-//    attStringCreater.textAlignment = kCTTextAlignmentLeft;
-//    attStringCreater = [attStringCreater createTextContainerWithTextWidth:CGRectGetWidth(CGRectMake(20.0, 25.0, MainScreenWidth - 30, 1))];
-//    [_agreementTyLabel setHeight:_agreementTyLabel.textContainer.textHeight];
-//    _agreementTyLabel.centerY = 60 / 2.0;
-//    [attStringCreater addTextStorageArray:@[textStorage]];
-//    [_agreeBackView addSubview:_agreementTyLabel];
-//
-//    _seleteBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
-//    [_seleteBtn setImage:Image(@"checkbox_nor") forState:0];
-//    [_seleteBtn setImage:[Image(@"checkbox_sel1") converToMainColor] forState:UIControlStateSelected];
-//    [_seleteBtn addTarget:self action:@selector(seleteAgreementButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [_agreementTyLabel addView:_seleteBtn range:NSMakeRange(0, 2) alignment:TYDrawAlignmentCenter];
-    
     
 }
 
@@ -302,6 +294,12 @@
     if (sender.tag == 11) {
         ShitikaViewController *vc = [[ShitikaViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if (sender.tag == 20) {
+        ScoreListViewController *vc = [[ScoreListViewController alloc] init];
+        vc.delegate = self;
+        vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
     } else {
         LingquanViewController *vc = [[LingquanViewController alloc] init];
         vc.courseId = _orderId;
@@ -583,6 +581,15 @@
     NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
     [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
     _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+}
+
+// MARK: - 选择积分抵扣后代理
+- (void)scoreChooseModel:(ScoreListModel *)model {
+    if (model) {
+        _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,model.moneyCount];
+    }
+    // 要处理优惠价格和实付价格
+    // to do...
 }
 
 // MARK: - 课程卡的时候直接兑换课程 不需要生成订单
