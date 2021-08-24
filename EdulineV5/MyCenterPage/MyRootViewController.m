@@ -19,6 +19,7 @@
 #import "OrderRootVC.h"
 #import "MyBalanceVC.h"
 #import "MyScoreVC.h"
+#import "MyScoreNewVC.h"
 #import "MyIncomeVC.h"
 #import "MycouponsRootVC.h"
 #import "LearnRecordVC.h"
@@ -446,7 +447,7 @@
         MyBalanceVC *vc = [[MyBalanceVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (sender.tag == 2) {
-        MyScoreVC *vc = [[MyScoreVC alloc] init];
+        MyScoreNewVC *vc = [[MyScoreNewVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (sender.tag == 1) {
         MyIncomeVC *vc = [[MyIncomeVC alloc] init];

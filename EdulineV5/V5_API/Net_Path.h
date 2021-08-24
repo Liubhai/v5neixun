@@ -213,6 +213,12 @@ struct NetWorkUrl {
 /** 积分明细 */
 + (NSString *)userScoreDetail;
 
+/** 改版后的几把积分明细 */
++ (NSString *)userScoreDetailNewNet;
+
+/** 积分签到 */
++ (NSString *)userScoreSign;
+
 /** 余额明细 */
 + (NSString *)userBalanceDetailInfo;
 

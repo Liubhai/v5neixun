@@ -261,6 +261,14 @@
     return [Net_Path fullPath:@"user/credit" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)userScoreDetailNewNet {
+    return [Net_Path fullPath:@"user/credit/base" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)userScoreSign {
+    return [Net_Path fullPath:@"user/credit/signIn" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)userBalanceDetailInfo {
     return [Net_Path fullPath:@"user/balance/flow" repalce:@"" byReplece:@""];
 }

@@ -54,6 +54,8 @@
 		784D648526D353A500461A21 /* ScoreListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 784D648426D353A500461A21 /* ScoreListViewController.m */; };
 		784D648826D38CDF00461A21 /* ScoreListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784D648726D38CDF00461A21 /* ScoreListCell.m */; };
 		784D648B26D399FB00461A21 /* ScoreListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 784D648A26D399FB00461A21 /* ScoreListModel.m */; };
+		784D648E26D490A400461A21 /* MyScoreNewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784D648D26D490A400461A21 /* MyScoreNewVC.m */; };
+		784D649126D4C4FB00461A21 /* ScoreNewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784D649026D4C4FB00461A21 /* ScoreNewCell.m */; };
 		784E5CD424A8288200646916 /* ZiXunListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD324A8288200646916 /* ZiXunListCell.m */; };
 		784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD624A8340A00646916 /* ZiXunListVC.m */; };
 		784E5CDA24A8450700646916 /* ZiXunDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 784E5CD924A8450700646916 /* ZiXunDetailVC.m */; };
@@ -725,6 +727,10 @@
 		784D648726D38CDF00461A21 /* ScoreListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreListCell.m; sourceTree = "<group>"; };
 		784D648926D399FB00461A21 /* ScoreListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoreListModel.h; sourceTree = "<group>"; };
 		784D648A26D399FB00461A21 /* ScoreListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreListModel.m; sourceTree = "<group>"; };
+		784D648C26D490A400461A21 /* MyScoreNewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyScoreNewVC.h; sourceTree = "<group>"; };
+		784D648D26D490A400461A21 /* MyScoreNewVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyScoreNewVC.m; sourceTree = "<group>"; };
+		784D648F26D4C4FB00461A21 /* ScoreNewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScoreNewCell.h; sourceTree = "<group>"; };
+		784D649026D4C4FB00461A21 /* ScoreNewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScoreNewCell.m; sourceTree = "<group>"; };
 		784E5CD224A8288200646916 /* ZiXunListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListCell.h; sourceTree = "<group>"; };
 		784E5CD324A8288200646916 /* ZiXunListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZiXunListCell.m; sourceTree = "<group>"; };
 		784E5CD524A8340A00646916 /* ZiXunListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZiXunListVC.h; sourceTree = "<group>"; };
@@ -2406,6 +2412,8 @@
 				789DB01A24654571001302B4 /* MyBalanceVC.m */,
 				789DB01C2465785C001302B4 /* MyScoreVC.h */,
 				789DB01D2465785C001302B4 /* MyScoreVC.m */,
+				784D648C26D490A400461A21 /* MyScoreNewVC.h */,
+				784D648D26D490A400461A21 /* MyScoreNewVC.m */,
 				789DB02224663EC9001302B4 /* MyIncomeVC.h */,
 				789DB02324663ECA001302B4 /* MyIncomeVC.m */,
 				784E5CFC24AC693000646916 /* MoubaoBindViewController.h */,
@@ -3798,6 +3806,8 @@
 				789DB0292466B3D6001302B4 /* BalanceDetailCell.m */,
 				789DB04E246BC68C001302B4 /* ScoreCell.h */,
 				789DB04F246BC68C001302B4 /* ScoreCell.m */,
+				784D648F26D4C4FB00461A21 /* ScoreNewCell.h */,
+				784D649026D4C4FB00461A21 /* ScoreNewCell.m */,
 				789DB048246AC624001302B4 /* LearnRecordCell.h */,
 				789DB049246AC624001302B4 /* LearnRecordCell.m */,
 				789DB060246CF042001302B4 /* CourseCollectionManagerCell.h */,
@@ -4689,6 +4699,7 @@
 				78BBB391262024A0009F5D10 /* QuestionListViewController.m in Sources */,
 				7839C9A0242313F6002F6595 /* CourseIntroductionVC.m in Sources */,
 				78AA13AC24470EB2007087F7 /* SetingCell.m in Sources */,
+				784D649126D4C4FB00461A21 /* ScoreNewCell.m in Sources */,
 				78795663240E60470013F95F /* CourseRootViewController.m in Sources */,
 				78BBB39726242D0E009F5D10 /* QuestionAnswerCell.m in Sources */,
 				788E956F253FE24E0089251E /* EEColorViewCell.m in Sources */,
@@ -4844,6 +4855,7 @@
 				78A16C882452F7C100391430 /* NetworkClock.m in Sources */,
 				78C54975241B642B00A33FC4 /* AlivcPushBeautyParams.m in Sources */,
 				78ED079725CFC9CE00C30B26 /* ExamIDListModel.m in Sources */,
+				784D648E26D490A400461A21 /* MyScoreNewVC.m in Sources */,
 				787F1E66247381A400108F7B /* AVCSlider.m in Sources */,
 				782AC44925C3E7BD009130F9 /* ExamSheetModel.m in Sources */,
 				78795721240FA3840013F95F /* ZLCameraViewController.m in Sources */,
