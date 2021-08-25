@@ -11,13 +11,16 @@
 #import "ShitikaViewController.h"
 #import "ShopCarCell.h"
 #import "LingquanViewController.h"
+#import "ScoreListViewController.h"
 #import "OrderSureViewController.h"
 #import "Net_Path.h"
+#import "ScoreListModel.h"
 
-@interface ShopCarManagerFinalVC ()<UITableViewDelegate,UITableViewDataSource,LingquanViewControllerDelegate>
+@interface ShopCarManagerFinalVC ()<UITableViewDelegate,UITableViewDataSource,LingquanViewControllerDelegate,ScoreListViewControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSourse;
+@property (strong, nonatomic) ScoreListModel *currentScoreModel;
 
 @end
 
@@ -28,7 +31,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSourse = [NSMutableArray new];
     _titleLabel.text = @"购物车";
-//    [self makeTableFooterView];
+    [self makeScoreFooterView];
     [self makeTableView];
     [self makeDownView];
     [self getOrderShopcarInfo];
@@ -39,10 +42,52 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.backgroundColor = EdlineV5_Color.backColor;//[UIColor whiteColor];
     _tableView.showsVerticalScrollIndicator = NO;
-//    _tableView.tableFooterView = _footerView;
+    _tableView.tableFooterView = _scoreOtherView;
     [self.view addSubview:_tableView];
+}
+
+// MARK: - 积分抵扣footer
+- (void)makeScoreFooterView {
+    _scoreOtherView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 120)];
+    _scoreOtherView.backgroundColor = [UIColor whiteColor];
+    UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+    lineview.backgroundColor = EdlineV5_Color.backColor;
+    [_scoreOtherView addSubview:lineview];
+//    _scoreOtherView.hidden = YES;
+    NSArray *titleArray = @[@"积分抵扣"];
+    for (int i = 0; i < titleArray.count; i++) {
+        UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i + 10, 100, 55)];
+        youhui.text = titleArray[i];
+        youhui.textColor = EdlineV5_Color.textSecendColor;
+        youhui.font = SYSTEMFONT(15);
+        [_scoreOtherView addSubview:youhui];
+        
+        UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
+        themelabel.font = SYSTEMFONT(14);
+        themelabel.textAlignment = NSTextAlignmentRight;
+        [_scoreOtherView addSubview:themelabel];
+        if (i==0) {
+            _scoreLabel = themelabel;
+            _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,@"0"];
+            _scoreLabel.textColor = EdlineV5_Color.textThirdColor;
+        }
+        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
+        icon.image = Image(@"list_more");
+        icon.centerY = themelabel.centerY;
+        [_scoreOtherView addSubview:icon];
+        
+        UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
+        clearBtn.backgroundColor = [UIColor clearColor];
+        clearBtn.tag = 20 + i;
+        [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_scoreOtherView addSubview:clearBtn];
+        if (i == titleArray.count - 1) {
+            [_scoreOtherView setHeight:clearBtn.bottom];
+        }
+    }
+
 }
 
 - (void)makeTableFooterView {
@@ -71,7 +116,7 @@
         }
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
         icon.image = Image(@"list_more");
-        icon.centerY = themelabel.centerY;;
+        icon.centerY = themelabel.centerY;
         [_otherView addSubview:icon];
         
         UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
@@ -239,6 +284,13 @@
     if (sender.tag == 10) {
         ShitikaViewController *vc = [[ShitikaViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if (sender.tag == 20) {
+        ScoreListViewController *vc = [[ScoreListViewController alloc] init];
+        vc.delegate = self;
+//        vc.dataSource = [NSMutableArray arrayWithArray:[ScoreListModel mj_objectArrayWithKeyValuesArray:_orderInfo[@"data"][@"credit_arr"]]];
+        vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
     }
 }
 
@@ -527,6 +579,18 @@
     NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
     [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
     _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+}
+
+// MARK: - 选择积分抵扣后代理
+- (void)scoreChooseModel:(ScoreListModel *)model {
+    if (model) {
+        _currentScoreModel = model;
+        _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,model.num];
+    } else {
+        _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,@"0"];
+    }
+    // 要处理优惠价格和实付价格
+    // to do...
 }
 
 @end

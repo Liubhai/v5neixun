@@ -15,8 +15,6 @@
 @interface ScoreListViewController ()<UITableViewDelegate,UITableViewDataSource,scoreListCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *dataSource;
-@property (strong, nonatomic) NSMutableArray *changeStatusArray;
 
 @property (strong, nonatomic) UIView *whiteView;
 @property (strong, nonatomic) UILabel *themeLabel;
@@ -27,6 +25,8 @@
 
 @property (strong, nonatomic) UIView *bottomBackView;
 @property (strong, nonatomic) UIButton *suerButton;
+
+@property (strong, nonatomic) ScoreListModel *topScoreModel;
 
 @end
 
@@ -45,12 +45,33 @@
     
     _dataSource = [NSMutableArray new];
     _changeStatusArray = [NSMutableArray new];
+    
+    _topScoreModel = [ScoreListModel new];
+    _topScoreModel.is_default = YES;
+    
+    if (_currentSelectModel) {
+        if (_currentSelectModel.is_default) {
+            _topScoreModel.is_selected = YES;
+        } else {
+            _topScoreModel.is_selected = NO;
+            // 检索数据源
+            for (int i = 0; i < _dataSource.count; i++) {
+                ScoreListModel *model = _dataSource[i];
+                if ([model.credit isEqualToString:_currentSelectModel.credit]) {
+                    model.is_selected = YES;
+                }
+                [_dataSource replaceObjectAtIndex:i withObject:model];
+            }
+        }
+    } else {
+        _topScoreModel.is_selected = YES;
+    }
+    
     _titleImage.hidden = YES;
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
     [self makeTopView];
     [self makeTableView];
     [self makeBottomView];
-//    [self getcouponsList];
 }
 
 - (void)makeTopView {
@@ -78,7 +99,7 @@
     [_dfScoreChooseButton setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
     [_dfScoreChooseButton addTarget:self action:@selector(dfScoreSeleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_whiteView addSubview:_dfScoreChooseButton];
-    _dfScoreChooseButton.selected = YES;
+    _dfScoreChooseButton.selected = _topScoreModel.is_selected;
     
     _dfScoreIntro = [[UILabel alloc] initWithFrame:CGRectMake(_dfScoreChooseButton.left - 150, _themeLabel.bottom, 150, 50)];
     _dfScoreIntro.font = SYSTEMFONT(13);
@@ -128,25 +149,53 @@
     if (!cell) {
         cell = [[ScoreListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-//    [cell setCouponInfo:model1 cellIndexPath:indexPath isMyCouponsList:NO];
+    [cell setScoreCellInfo:_dataSource[indexPath.row] cellIndexPath:indexPath];
     cell.delegate = self;
     return cell;
 }
 
 - (void)sureButtonClicked:(UIButton *)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"getCouponsReload" object:nil];
+    
+    ScoreListModel *current_model;
+    for (int i = 0; i < _dataSource.count; i++) {
+        ScoreListModel *model = _dataSource[i];
+        if (model.is_selected) {
+            current_model = model;
+            break;
+        }
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(scoreChooseModel:)]) {
+        [_delegate scoreChooseModel:current_model];
+    }
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
 }
 
 // MARK: - 顶部默认积分选择按钮点击事件
 - (void)dfScoreSeleteButtonClick:(UIButton *)sender {
-    
+    sender.selected = !sender.selected;
+    _topScoreModel.is_selected = sender.selected;
+    if (sender.selected) {
+        for (int i = 0; i < _dataSource.count; i++) {
+            ScoreListModel *model = _dataSource[i];
+            model.is_selected = NO;
+            [_dataSource replaceObjectAtIndex:i withObject:model];
+        }
+        [_tableView reloadData];
+    }
 }
 
 // MARK: - cell代理
 - (void)scoreChoose:(ScoreListCell *)scoreCell {
-    
+    for (int i = 0; i < _dataSource.count; i++) {
+        ScoreListModel *model = _dataSource[i];
+        if (i == scoreCell.cellIndexpath.row) {
+            model.is_selected = !model.is_selected;
+            [_dataSource replaceObjectAtIndex:i withObject:model];
+            break;
+        }
+    }
+    [_tableView reloadData];
 }
 
 @end

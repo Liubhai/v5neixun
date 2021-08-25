@@ -12,9 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ScoreListModel : NSObject
 
-@property (strong, nonatomic) NSString *scoreCount;
-@property (strong, nonatomic) NSString *moneyCount;
+@property (strong, nonatomic) NSString *credit;
+@property (strong, nonatomic) NSString *num;
 @property (assign, nonatomic) BOOL is_selected;
+@property (assign, nonatomic) BOOL is_default;
 
 @end
 

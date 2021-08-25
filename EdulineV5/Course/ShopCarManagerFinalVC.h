@@ -47,6 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *finalPriceLabel;
 @property (strong, nonatomic) UIButton *submitButton;
 
+@property (strong, nonatomic) UIView *scoreOtherView;
+@property (strong, nonatomic) UILabel *scoreLabel;
+
 @end
 
 NS_ASSUME_NONNULL_END

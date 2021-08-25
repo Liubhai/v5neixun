@@ -14,10 +14,12 @@
 #import "LingquanViewController.h"
 #import "ScoreListViewController.h"
 #import "V5_UserModel.h"
+#import "ScoreListModel.h"
 
 @interface OrderViewController ()<LingquanViewControllerDelegate,ScoreListViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *couponsArray;
+@property (strong, nonatomic) ScoreListModel *currentScoreModel;
 
 @end
 
@@ -150,6 +152,7 @@
         if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
             _scoreOtherView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom + 1, MainScreenWidth, 110)];
             _scoreOtherView.backgroundColor = [UIColor whiteColor];
+            _scoreOtherView.hidden = YES;
             [_mainScrollView addSubview:_scoreOtherView];
             NSArray *titleArray = @[@"积分抵扣"];
             for (int i = 0; i < titleArray.count; i++) {
@@ -297,6 +300,7 @@
     } else if (sender.tag == 20) {
         ScoreListViewController *vc = [[ScoreListViewController alloc] init];
         vc.delegate = self;
+        vc.dataSource = [NSMutableArray arrayWithArray:[ScoreListModel mj_objectArrayWithKeyValuesArray:_orderInfo[@"data"][@"credit_arr"]]];
         vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
         [self.view addSubview:vc.view];
         [self addChildViewController:vc];
@@ -537,6 +541,12 @@
         } else {
             _timeLabel.text = [NSString stringWithFormat:@"有效期至%@",[EdulineV5_Tool timeForYYYYMMDD:timeLine]];
         }
+        NSString *credit_redeem = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"credit_redeem"]];
+        if ([credit_redeem boolValue]) {
+            _scoreOtherView.hidden = NO;
+        } else {
+            _scoreOtherView.hidden = YES;
+        }
     }
 }
 
@@ -586,7 +596,10 @@
 // MARK: - 选择积分抵扣后代理
 - (void)scoreChooseModel:(ScoreListModel *)model {
     if (model) {
-        _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,model.moneyCount];
+        _currentScoreModel = model;
+        _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,model.num];
+    } else {
+        _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,@"0"];
     }
     // 要处理优惠价格和实付价格
     // to do...

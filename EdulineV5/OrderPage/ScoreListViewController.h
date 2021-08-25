@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ScoreListViewController : BaseViewController
 
 @property (weak, nonatomic) id<ScoreListViewControllerDelegate> delegate;
+@property (strong, nonatomic) NSMutableArray *dataSource;
+@property (strong, nonatomic) NSMutableArray *changeStatusArray;
+@property (strong, nonatomic) ScoreListModel *currentSelectModel;// 当前已经选择的model
 
 @end
 

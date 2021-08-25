@@ -13,7 +13,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"scoreCount"] || [property.name isEqualToString:@"moneyCount"]) {
+    if ([property.name isEqualToString:@"credit"] || [property.name isEqualToString:@"num"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){
