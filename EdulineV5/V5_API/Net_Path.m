@@ -196,6 +196,11 @@
     return [Net_Path fullPath:@"order/course/one" repalce:@"" byReplece:@""];
 }
 
+/** 单课程 */
++ (NSString *)courseOrderScoreListNet {
+    return [Net_Path fullPath:@"order/course/credit" repalce:@"" byReplece:@""];
+}
+
 /** 免费课程加入学习 */
 + (NSString *)joinFreeCourseNet {
     return [Net_Path fullPath:@"course/student/join" repalce:@"" byReplece:@""];
