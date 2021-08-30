@@ -44,7 +44,11 @@
     _currentScoreModel = scoreModel;
     _cellIndexpath = cellIndexPath;
     
-    _scoreTitle.text = [NSString stringWithFormat:@"%@积分",scoreModel.credit];
+    if (cellIndexPath.row == 0) {
+        _scoreTitle.text = [NSString stringWithFormat:@"可使用积分%@",scoreModel.credit];
+    } else {
+        _scoreTitle.text = [NSString stringWithFormat:@"%@积分",scoreModel.credit];
+    }
     _scoreIntro.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,scoreModel.num];
     _scoreChooseButton.selected = scoreModel.is_selected;
 }

@@ -70,7 +70,7 @@
         NSString *balance = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"balance"]];
         NSString *income = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"income"]];
         NSString *credit = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"credit"]];
-        _balanceLabel.text = [NSString stringWithFormat:@"%@%.2f",IOSMoneyTitle,[balance floatValue]];
+        _balanceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:balance]];
         _incomeLabel.text = [NSString stringWithFormat:@"%@%.2f",IOSMoneyTitle,[income floatValue]];
         _scoreLabel.text = [NSString stringWithFormat:@"%.f",[credit floatValue]];
     }

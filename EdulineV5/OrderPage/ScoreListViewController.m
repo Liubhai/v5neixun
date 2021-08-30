@@ -19,14 +19,14 @@
 @property (strong, nonatomic) UIView *whiteView;
 @property (strong, nonatomic) UILabel *themeLabel;
 
-@property (strong, nonatomic) UILabel *dfScoreTitle;
-@property (strong, nonatomic) UILabel *dfScoreIntro;
-@property (strong, nonatomic) UIButton *dfScoreChooseButton;
+//@property (strong, nonatomic) UILabel *dfScoreTitle;
+//@property (strong, nonatomic) UILabel *dfScoreIntro;
+//@property (strong, nonatomic) UIButton *dfScoreChooseButton;
 
 @property (strong, nonatomic) UIView *bottomBackView;
 @property (strong, nonatomic) UIButton *suerButton;
 
-@property (strong, nonatomic) ScoreListModel *topScoreModel;
+//@property (strong, nonatomic) ScoreListModel *topScoreModel;
 
 @end
 
@@ -43,28 +43,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _dataSource = [NSMutableArray new];
+//    _dataSource = [NSMutableArray new];
     _changeStatusArray = [NSMutableArray new];
     
-    _topScoreModel = [ScoreListModel new];
-    _topScoreModel.is_default = YES;
+//    _topScoreModel = [ScoreListModel new];
+//    _topScoreModel.is_default = YES;
     
     if (_currentSelectModel) {
-        if (_currentSelectModel.is_default) {
-            _topScoreModel.is_selected = YES;
-        } else {
-            _topScoreModel.is_selected = NO;
-            // 检索数据源
-            for (int i = 0; i < _dataSource.count; i++) {
-                ScoreListModel *model = _dataSource[i];
-                if ([model.credit isEqualToString:_currentSelectModel.credit]) {
-                    model.is_selected = YES;
-                }
-                [_dataSource replaceObjectAtIndex:i withObject:model];
+        // 检索数据源
+        for (int i = 0; i < _dataSource.count; i++) {
+            ScoreListModel *model = _dataSource[i];
+            if ([model.credit isEqualToString:_currentSelectModel.credit]) {
+                model.is_selected = YES;
             }
+            [_dataSource replaceObjectAtIndex:i withObject:model];
         }
-    } else {
-        _topScoreModel.is_selected = YES;
     }
     
     _titleImage.hidden = YES;
@@ -89,27 +82,31 @@
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;
     [_whiteView addSubview:_themeLabel];
     
-    _dfScoreTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, _themeLabel.bottom, 150, 50)];
-    _dfScoreTitle.font = SYSTEMFONT(15);
-    _dfScoreTitle.textColor = EdlineV5_Color.textFirstColor;
-    [_whiteView addSubview:_dfScoreTitle];
-    
-    _dfScoreChooseButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 5 - 40, _themeLabel.bottom + 5, 40, 40)];
-    [_dfScoreChooseButton setImage:Image(@"checkbox_def") forState:0];
-    [_dfScoreChooseButton setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
-    [_dfScoreChooseButton addTarget:self action:@selector(dfScoreSeleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_whiteView addSubview:_dfScoreChooseButton];
-    _dfScoreChooseButton.selected = _topScoreModel.is_selected;
-    
-    _dfScoreIntro = [[UILabel alloc] initWithFrame:CGRectMake(_dfScoreChooseButton.left - 150, _themeLabel.bottom, 150, 50)];
-    _dfScoreIntro.font = SYSTEMFONT(13);
-    _dfScoreIntro.textColor = EdlineV5_Color.textThirdColor;
-    _dfScoreIntro.textAlignment = NSTextAlignmentRight;
-    [_whiteView addSubview:_dfScoreIntro];
+//    _dfScoreTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, _themeLabel.bottom, 150, 50)];
+//    _dfScoreTitle.font = SYSTEMFONT(15);
+//    _dfScoreTitle.textColor = EdlineV5_Color.textFirstColor;
+//    ScoreListModel *dfS = _dataSource[0];
+//
+//    _dfScoreTitle.text = [NSString stringWithFormat:@"可使用积分%@",dfS.credit];
+//    [_whiteView addSubview:_dfScoreTitle];
+//
+//    _dfScoreChooseButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 5 - 40, _themeLabel.bottom + 5, 40, 40)];
+//    [_dfScoreChooseButton setImage:Image(@"checkbox_def") forState:0];
+//    [_dfScoreChooseButton setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
+//    [_dfScoreChooseButton addTarget:self action:@selector(dfScoreSeleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [_whiteView addSubview:_dfScoreChooseButton];
+//    _dfScoreChooseButton.selected = _topScoreModel.is_selected;
+//
+//    _dfScoreIntro = [[UILabel alloc] initWithFrame:CGRectMake(_dfScoreChooseButton.left - 150, _themeLabel.bottom, 150, 50)];
+//    _dfScoreIntro.font = SYSTEMFONT(13);
+//    _dfScoreIntro.textColor = EdlineV5_Color.textThirdColor;
+//    _dfScoreIntro.textAlignment = NSTextAlignmentRight;
+//    _dfScoreIntro.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,dfS.credit];
+//    [_whiteView addSubview:_dfScoreIntro];
 }
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _whiteView.top + 108.5, MainScreenWidth, MainScreenHeight - (_whiteView.top + 108.5) - MACRO_UI_TABBAR_HEIGHT)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _whiteView.top + 58.5, MainScreenWidth, MainScreenHeight - (_whiteView.top + 58.5) - MACRO_UI_TABBAR_HEIGHT)];
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -174,7 +171,7 @@
 // MARK: - 顶部默认积分选择按钮点击事件
 - (void)dfScoreSeleteButtonClick:(UIButton *)sender {
     sender.selected = !sender.selected;
-    _topScoreModel.is_selected = sender.selected;
+//    _topScoreModel.is_selected = sender.selected;
     if (sender.selected) {
         for (int i = 0; i < _dataSource.count; i++) {
             ScoreListModel *model = _dataSource[i];
@@ -191,9 +188,10 @@
         ScoreListModel *model = _dataSource[i];
         if (i == scoreCell.cellIndexpath.row) {
             model.is_selected = !model.is_selected;
-            [_dataSource replaceObjectAtIndex:i withObject:model];
-            break;
+        } else {
+            model.is_selected = NO;
         }
+        [_dataSource replaceObjectAtIndex:i withObject:model];
     }
     [_tableView reloadData];
 }
