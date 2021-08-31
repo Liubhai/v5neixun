@@ -314,6 +314,16 @@
     return [Net_Path fullPath:@"order/course/cart" repalce:@"" byReplece:@""];
 }
 
+/** 新版积分抵扣购物车订单信息 */
++ (NSString *)shopCarOrderNewInfo {
+    return [Net_Path fullPath:@"order/cart" repalce:@"" byReplece:@""];
+}
+
+/** 购物车选择卡券后积分抵扣列表 */
++ (NSString *)shopCarScoreListNet {
+    return [Net_Path fullPath:@"order/cart/credit" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)addCourseIntoShopcar {
     return [Net_Path fullPath:@"course/payment/cart" repalce:@"" byReplece:@""];
 }

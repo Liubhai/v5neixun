@@ -58,12 +58,14 @@
 //"rel_type": "course", //积分操作类型
 //"rel_type_text": "购买课程" //积分操作类型名称
 
+//【1:充值;2:冻结;3:解冻;4:网页操作增加;5:兑换收入扣除;6:兑换商品扣除;】
+
 - (void)setScoreInfo:(NSDictionary *)dict {
     
     _scoreTitle.text = [NSString stringWithFormat:@"%@",dict[@"note"]];
     _timeLabel.text = [EdulineV5_Tool formateYYYYMMDDHHMMTime:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];
     NSString *typeS = [NSString stringWithFormat:@"%@",dict[@"type"]];
-    if ([typeS isEqualToString:@"2"] || [typeS isEqualToString:@"5"] || [typeS isEqualToString:@"6"]) {
+    if ([typeS isEqualToString:@"2"] || [typeS isEqualToString:@"5"] || [typeS isEqualToString:@"6"] || [typeS isEqualToString:@"7"]) {
         _scoreCountLabel.text = [NSString stringWithFormat:@"-%@",[dict objectForKey:@"num"]];
         _scoreCountLabel.textColor = EdlineV5_Color.textFirstColor;
     } else {

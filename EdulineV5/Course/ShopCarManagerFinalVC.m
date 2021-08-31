@@ -21,6 +21,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *dataSourse;
 @property (strong, nonatomic) ScoreListModel *currentScoreModel;
+@property (strong, nonatomic) NSMutableArray *scoresArray;
 
 @end
 
@@ -30,6 +31,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     _dataSourse = [NSMutableArray new];
+    _scoresArray = [NSMutableArray new];
     _titleLabel.text = @"购物车";
     [self makeScoreFooterView];
     [self makeTableView];
@@ -55,7 +57,7 @@
     UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
     lineview.backgroundColor = EdlineV5_Color.backColor;
     [_scoreOtherView addSubview:lineview];
-//    _scoreOtherView.hidden = YES;
+    _scoreOtherView.hidden = YES;
     NSArray *titleArray = @[@"积分抵扣"];
     for (int i = 0; i < titleArray.count; i++) {
         UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i + 10, 100, 55)];
@@ -286,8 +288,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if (sender.tag == 20) {
         ScoreListViewController *vc = [[ScoreListViewController alloc] init];
+        vc.currentSelectModel = _currentScoreModel;
+        vc.dataSource = [NSMutableArray arrayWithArray:_scoresArray];//[ScoreListModel mj_objectArrayWithKeyValuesArray:_orderInfo[@"data"][@"credit_arr"]]
         vc.delegate = self;
-//        vc.dataSource = [NSMutableArray arrayWithArray:[ScoreListModel mj_objectArrayWithKeyValuesArray:_orderInfo[@"data"][@"credit_arr"]]];
         vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
         [self.view addSubview:vc.view];
         [self addChildViewController:vc];
@@ -328,6 +331,7 @@
 }
 
 - (void)submitButtonClick:(UIButton *)sender {
+    NSMutableDictionary *pass = [NSMutableDictionary new];
     NSMutableArray *paramArray = [NSMutableArray new];
     NSString *passString = @"";
     if (SWNOTEmptyArr(_dataSourse)) {
@@ -353,8 +357,21 @@
             [paramArray addObject:[NSDictionary dictionaryWithDictionary:param]];
         }
     }
+    
+    if (_currentScoreModel) {
+        if ([_currentScoreModel.credit floatValue] > 0) {
+            NSMutableDictionary *passss = [NSMutableDictionary new];
+            [passss setObject:_currentScoreModel.credit forKey:@"credit"];
+            [passss setObject:_currentScoreModel.num forKey:@"num"];
+            NSError*parseError =nil;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:passss options:NSJSONWritingPrettyPrinted error:&parseError];
+            [pass setObject:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] forKey:@"credit"];
+        }
+    }
+    
     if (SWNOTEmptyArr(paramArray)) {
-        [Net_API requestPOSTWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course":paramArray} finish:^(id  _Nonnull responseObject) {
+        [pass setObject:paramArray forKey:@"course"];
+        [Net_API requestPOSTWithURLStr:[Net_Path shopCarOrderNewInfo] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     OrderSureViewController *vc = [[OrderSureViewController alloc] init];
@@ -504,11 +521,12 @@
 - (void)getOrderShopcarInfo {
     if (SWNOTEmptyStr(_course_ids)) {
         [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path shopcarOrderInfo] WithAuthorization:nil paramDic:@{@"course_ids":_course_ids} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path shopCarOrderNewInfo] WithAuthorization:nil paramDic:@{@"course_ids":_course_ids} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     [_dataSourse removeAllObjects];
-                    [_dataSourse addObjectsFromArray:[ShopCarModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"]]];
+                    [_dataSourse addObjectsFromArray:[ShopCarModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"][@"cart"]]];
+                    _scoresArray = [NSMutableArray arrayWithArray:[ScoreListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"credit"]]];
                     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSourse.count isLoading:NO tableViewShowHeight:_tableView.height];
                     [_tableView reloadData];
                 }
@@ -535,11 +553,17 @@
         }
         [_dataSourse replaceObjectAtIndex:shopCarFinalIndexPath.section withObject:carModel];
         [_tableView reloadData];
-        [self setBottomViewData];
+//        [self setBottomViewData];
+        [self chooseCouponDealScoreList];
+        [self getScoreListNet];
     }
 }
 
-- (void)setBottomViewData {
+- (void)chooseCouponDealScoreList {
+    _currentScoreModel = nil;
+    _scoreOtherView.hidden = YES;
+    _scoreLabel.text = [NSString stringWithFormat:@"可抵%@0.00",IOSMoneyTitle];
+    [_scoresArray removeAllObjects];
     if (SWNOTEmptyArr(_dataSourse)) {
         float youhui = 0.00;
         float totalPrice = 0.00;
@@ -573,8 +597,81 @@
         _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,totalPrice];
     } else {
         _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
-        
         _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
+    }
+    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+    _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+}
+
+- (void)setBottomViewData {
+    
+    if (SWNOTEmptyArr(_scoresArray)) {
+        _scoreOtherView.hidden = NO;
+    } else {
+        _scoreOtherView.hidden = YES;
+    }
+    
+    _currentScoreModel = nil;
+    if (SWNOTEmptyArr(_scoresArray)) {
+        _scoreOtherView.hidden = NO;
+        // 处理积分默认
+        if (SWNOTEmptyArr(_scoresArray)) {
+            _scoreOtherView.hidden = NO;
+            _currentScoreModel = _scoresArray[0];
+            _currentScoreModel.is_default = YES;
+            _currentScoreModel.is_selected = YES;
+            _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,_currentScoreModel.num];
+        } else {
+            _scoreOtherView.hidden = YES;
+        }
+    }
+//    [self scoreChooseModel:_currentScoreModel];
+    
+    if (SWNOTEmptyArr(_dataSourse)) {
+        float youhui = 0.00;
+        float totalPrice = 0.00;
+        for (int i = 0; i<_dataSourse.count; i++) {
+            ShopCarModel *carModel = _dataSourse[i];
+            CouponModel *model = carModel.best_coupon;
+            
+            if (model.couponId) {
+                if ([model.coupon_type isEqualToString:@"1"]) {
+                    float max_price = carModel.total_price;
+                    if (max_price>=[model.maxprice floatValue]) {
+                        youhui = youhui + model.price.floatValue;
+                        totalPrice = totalPrice + (carModel.total_price - [model.price floatValue]);
+                    } else {
+                        youhui = youhui;
+                        totalPrice = totalPrice + carModel.total_price;
+                    }
+                } else if ([model.coupon_type isEqualToString:@"2"]) {
+                    float discount1 = [model.discount floatValue];
+                    totalPrice = totalPrice + carModel.total_price * discount1 / 10;
+                    youhui = youhui + (carModel.total_price - carModel.total_price * discount1 / 10);
+                } else if ([model.coupon_type isEqualToString:@"3"]) {
+                    // 机构没有课程卡
+                }
+            } else {
+                youhui = youhui;
+                totalPrice = totalPrice + carModel.total_price;
+            }
+        }
+        if (_currentScoreModel) {
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui + [_currentScoreModel.num floatValue]];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,totalPrice - [_currentScoreModel.num floatValue]];
+        } else {
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,totalPrice];
+        }
+    } else {
+        if (_currentScoreModel) {
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,_currentScoreModel.num];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
+        } else {
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
+        }
     }
     NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
     [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
@@ -587,10 +684,108 @@
         _currentScoreModel = model;
         _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,model.num];
     } else {
+        _currentScoreModel = model;
         _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,@"0"];
     }
-    // 要处理优惠价格和实付价格
-    // to do...
+    if (SWNOTEmptyArr(_dataSourse)) {
+        float youhui = 0.00;
+        float totalPrice = 0.00;
+        for (int i = 0; i<_dataSourse.count; i++) {
+            ShopCarModel *carModel = _dataSourse[i];
+            CouponModel *model = carModel.best_coupon;
+            
+            if (model.couponId) {
+                if ([model.coupon_type isEqualToString:@"1"]) {
+                    float max_price = carModel.total_price;
+                    if (max_price>=[model.maxprice floatValue]) {
+                        youhui = youhui + model.price.floatValue;
+                        totalPrice = totalPrice + (carModel.total_price - [model.price floatValue]);
+                    } else {
+                        youhui = youhui;
+                        totalPrice = totalPrice + carModel.total_price;
+                    }
+                } else if ([model.coupon_type isEqualToString:@"2"]) {
+                    float discount1 = [model.discount floatValue];
+                    totalPrice = totalPrice + carModel.total_price * discount1 / 10;
+                    youhui = youhui + (carModel.total_price - carModel.total_price * discount1 / 10);
+                } else if ([model.coupon_type isEqualToString:@"3"]) {
+                    // 机构没有课程卡
+                }
+            } else {
+                youhui = youhui;
+                totalPrice = totalPrice + carModel.total_price;
+            }
+        }
+        if (_currentScoreModel) {
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui + [_currentScoreModel.num floatValue]];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,totalPrice - [_currentScoreModel.num floatValue]];
+        } else {
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,totalPrice];
+        }
+    } else {
+        if (_currentScoreModel) {
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,_currentScoreModel.num];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
+        } else {
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
+            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
+        }
+    }
+    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+    _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+}
+
+// MARK: - 选择或者取消选择卡券后请求积分列表
+- (void)getScoreListNet {
+    if (!SWNOTEmptyStr(_course_ids)) {
+        return;
+    }
+    NSString *courseOrderInfoUrl = [Net_Path shopCarScoreListNet];
+    NSMutableDictionary *pass = [[NSMutableDictionary alloc] init];
+    NSString *passString = @"";
+    for (int i = 0; i<_dataSourse.count; i++) {
+        ShopCarModel *carmodel = _dataSourse[i];
+        if (carmodel.best_coupon.couponId) {
+            if (SWNOTEmptyStr(passString)) {
+                passString = [NSString stringWithFormat:@"%@,%@",passString,carmodel.best_coupon.couponId];
+            } else {
+                passString = [NSString stringWithFormat:@"%@",carmodel.best_coupon.couponId];
+            }
+        }
+    }
+    
+    if (SWNOTEmptyStr(passString)) {
+        [pass setObject:passString forKey:@"coupon"];
+    }
+    
+    [pass setObject:_course_ids forKey:@"course"];
+    
+    [Net_API requestGETSuperAPIWithURLStr:courseOrderInfoUrl WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                _scoresArray = [NSMutableArray arrayWithArray:[ScoreListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
+                _currentScoreModel = nil;
+                if (SWNOTEmptyArr(_scoresArray)) {
+                    _scoreOtherView.hidden = NO;
+                    // 处理积分默认
+                    if (SWNOTEmptyArr(_scoresArray)) {
+                        _scoreOtherView.hidden = NO;
+                        _currentScoreModel = _scoresArray[0];
+                        _currentScoreModel.is_default = YES;
+                        _currentScoreModel.is_selected = YES;
+                        _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,_currentScoreModel.num];
+                    } else {
+                        _scoreOtherView.hidden = YES;
+                    }
+                }
+                [self scoreChooseModel:_currentScoreModel];
+            }
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 @end

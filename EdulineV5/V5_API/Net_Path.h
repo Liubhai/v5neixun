@@ -254,6 +254,12 @@ struct NetWorkUrl {
  */
 + (NSString *)shopcarOrderInfo;
 
+/** 新版积分抵扣购物车订单信息 */
++ (NSString *)shopCarOrderNewInfo;
+
+/** 购物车选择卡券后积分抵扣列表 */
++ (NSString *)shopCarScoreListNet;
+
 /** 添加课程到购物车 */
 + (NSString *)addCourseIntoShopcar;
 

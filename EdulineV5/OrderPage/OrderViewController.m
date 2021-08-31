@@ -151,43 +151,49 @@
                 }
             }
         }
-        if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
-            _scoreOtherView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom + 1, MainScreenWidth, 110)];
-            _scoreOtherView.backgroundColor = [UIColor whiteColor];
-            _scoreOtherView.hidden = YES;
-            [_mainScrollView addSubview:_scoreOtherView];
-            NSArray *titleArray = @[@"积分抵扣"];
-            for (int i = 0; i < titleArray.count; i++) {
-                UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
-                youhui.text = titleArray[i];
-                youhui.textColor = EdlineV5_Color.textSecendColor;
-                youhui.font = SYSTEMFONT(15);
-                [_scoreOtherView addSubview:youhui];
-                
-                UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
-                themelabel.font = SYSTEMFONT(14);
-                themelabel.textAlignment = NSTextAlignmentRight;
-                [_scoreOtherView addSubview:themelabel];
-                if (i==0) {
-                    _scoreLabel = themelabel;
-                    _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,@"0"];
-                    _scoreLabel.textColor = EdlineV5_Color.textThirdColor;
-                }
-                UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
-                icon.image = Image(@"list_more");
-                icon.centerY = themelabel.centerY;
-                [_scoreOtherView addSubview:icon];
-                
-                UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
-                clearBtn.backgroundColor = [UIColor clearColor];
-                clearBtn.tag = 20 + i;
-                [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-                [_scoreOtherView addSubview:clearBtn];
-                if (i == titleArray.count - 1) {
-                    [_scoreOtherView setHeight:clearBtn.bottom];
-                }
+        _scoreOtherView = [[UIView alloc] initWithFrame:CGRectMake(0, _otherView.bottom + 1, MainScreenWidth, 110)];
+        if (_otherView && _otherView.hidden == NO) {
+            
+        } else {
+            [_scoreOtherView setTop:_topContentView.bottom + 10];
+        }
+        _scoreOtherView.backgroundColor = [UIColor whiteColor];
+        _scoreOtherView.hidden = YES;
+        [_mainScrollView addSubview:_scoreOtherView];
+        NSArray *titleArray = @[@"积分抵扣"];
+        for (int i = 0; i < titleArray.count; i++) {
+            UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 55 * i, 100, 55)];
+            youhui.text = titleArray[i];
+            youhui.textColor = EdlineV5_Color.textSecendColor;
+            youhui.font = SYSTEMFONT(15);
+            [_scoreOtherView addSubview:youhui];
+            
+            UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 32 - 200, youhui.top, 200, youhui.height)];
+            themelabel.font = SYSTEMFONT(14);
+            themelabel.textAlignment = NSTextAlignmentRight;
+            [_scoreOtherView addSubview:themelabel];
+            if (i==0) {
+                _scoreLabel = themelabel;
+                _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,@"0"];
+                _scoreLabel.textColor = EdlineV5_Color.textThirdColor;
+            }
+            UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 7, 0, 7, 13.5)];
+            icon.image = Image(@"list_more");
+            icon.centerY = themelabel.centerY;
+            [_scoreOtherView addSubview:icon];
+            
+            UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, youhui.top, MainScreenWidth, youhui.height)];
+            clearBtn.backgroundColor = [UIColor clearColor];
+            clearBtn.tag = 20 + i;
+            [clearBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+            [_scoreOtherView addSubview:clearBtn];
+            if (i == titleArray.count - 1) {
+                [_scoreOtherView setHeight:clearBtn.bottom];
             }
         }
+//        if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
+//
+//        }
     }
     
 }
@@ -282,7 +288,7 @@
     _submitButton.centerY = _youhuiLabel.centerY;
     [_submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_submitButton];
-    
+    // nisongwodefengjing pianrujinghongyu shuiyipinyiyu siwenli ziyanran shishulihaojieyoujixu qingchenyouleni nyuanshuisanyanlianyu liaobole jinghongyimian shuishidiuadnshidenahdhsiaodnaisd wojinshenheqiuweinidenghuolanshanchu tingdejianfeibuhuitaojian qianbaidu chogmanxinxi wobuyaodaizhejinglianhhua qioqiaoou j429jfejp odbaudhuahenhyu shouhujemh uouxieai xiangdijiejubeiyushouxnhdis manhengyansha syiufengerxia h=zhian
     _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
     _finalPriceLabel.textColor = EdlineV5_Color.faildColor;
     _finalPriceLabel.font = SYSTEMFONT(15);
@@ -374,16 +380,6 @@
             if (SWNOTEmptyStr(_promotion_id)) {
                 [param setObject:_promotion_id forKey:@"promotion_id"];
             }
-            if (_currentScoreModel) {
-                if ([_currentScoreModel.credit floatValue] > 0) {
-                    NSMutableDictionary *passss = [NSMutableDictionary new];
-                    [passss setObject:_currentScoreModel.credit forKey:@"credit"];
-                    [passss setObject:_currentScoreModel.num forKey:@"num"];
-                    NSError*parseError =nil;
-                    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:passss options:NSJSONWritingPrettyPrinted error:&parseError];
-                    [param setObject:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] forKey:@"credit"];
-                }
-            }
         } else if ([_orderTypeString isEqualToString:@"courseHourse"] || [_orderTypeString isEqualToString:@"liveHourse"]) {
             [param setObject:_orderId forKey:@"section_id"];
         } else if ([_orderTypeString isEqualToString:@"exam_special"]) {
@@ -396,6 +392,16 @@
     }
     if (_couponModel) {
         [param setObject:_couponModel.couponId forKey:@"coupon_id"];
+    }
+    if (_currentScoreModel) {
+        if ([_currentScoreModel.credit floatValue] > 0) {
+            NSMutableDictionary *passss = [NSMutableDictionary new];
+            [passss setObject:_currentScoreModel.credit forKey:@"credit"];
+            [passss setObject:_currentScoreModel.num forKey:@"num"];
+            NSError*parseError =nil;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:passss options:NSJSONWritingPrettyPrinted error:&parseError];
+            [param setObject:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] forKey:@"credit"];
+        }
     }
     [param setObject:@"ios" forKey:@"from"];
     [Net_API requestPOSTWithURLStr:courseOrderInfoUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
@@ -529,9 +535,9 @@
             _courseFaceImageView.image = Image(@"contents_icon_test");
         }
         
-        NSString *credit_redeem = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"credit_redeem"]];
+//        NSString *credit_redeem = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"credit_redeem"]];
         _scoresArray = [NSMutableArray arrayWithArray:[ScoreListModel mj_objectArrayWithKeyValuesArray:_orderInfo[@"data"][@"credit_arr"]]];
-        if ([credit_redeem boolValue] && SWNOTEmptyArr(_scoresArray)) {
+        if (SWNOTEmptyArr(_scoresArray)) {//[credit_redeem boolValue] &&
             _scoreOtherView.hidden = NO;
             // 处理积分默认
             if (SWNOTEmptyArr(_scoresArray)) {
@@ -544,7 +550,11 @@
             _scoreOtherView.hidden = YES;
         }
         
-        [_scoreOtherView setTop:_otherView.hidden ? _otherView.top : (_otherView.bottom + 1)];
+        if (_otherView) {
+            [_scoreOtherView setTop:_otherView.hidden ? _otherView.top : (_otherView.bottom + 1)];
+        } else {
+            [_scoreOtherView setTop:_topContentView.bottom + 10];
+        }
         
         _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]]];
         if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
@@ -649,6 +659,9 @@
 
 // MARK: - 选择积分抵扣后代理
 - (void)scoreChooseModel:(ScoreListModel *)model {
+    // 有没有卡券
+    // 有没有活动
+    // 有没有积分抵扣
     if (model) {
         _currentScoreModel = model;
         _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,model.num];
