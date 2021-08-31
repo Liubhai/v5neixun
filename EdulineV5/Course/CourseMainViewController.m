@@ -1162,28 +1162,32 @@
         }
         
         __weak typeof(self) weakself = self;
-        
-        if (SWNOTEmptyDictionary(_dataSource[@"promotion"])) {
-            _courseActivityView.hidden = NO;
-            [_courseActivityView setActivityInfo:weakself.dataSource];
-            
-            NSString *end_countdown = [NSString stringWithFormat:@"%@",[weakself.dataSource[@"promotion"] objectForKey:@"end_countdown"]];
-            NSString *start_countdown = [NSString stringWithFormat:@"%@",[weakself.dataSource[@"promotion"] objectForKey:@"start_countdown"]];
-            
-            if ([[_dataSource[@"promotion"] objectForKey:@"running_status"] integerValue] == 1) {
-                eventTime = [end_countdown integerValue];
-                _courseActivityView.groupTimeTipLabel.text = @"距结束仅剩";
-                [weakself.courseActivityView setDateInfo:eventTime];
-            } else {
-                eventTime = [start_countdown integerValue];
-                _courseActivityView.groupTimeTipLabel.text = @"距开始还有";
-                [_courseActivityView setDateInfo:eventTime];
-            }
-            if (eventTime>0) {
-                [self startTimer];
-            }
-        } else {
+        NSString *isBuy = [NSString stringWithFormat:@"%@",_dataSource[@"is_buy"]];
+        if ([isBuy isEqualToString:@"1"]) {
             _courseActivityView.hidden = YES;
+        } else {
+            if (SWNOTEmptyDictionary(_dataSource[@"promotion"])) {
+                _courseActivityView.hidden = NO;
+                [_courseActivityView setActivityInfo:weakself.dataSource];
+                
+                NSString *end_countdown = [NSString stringWithFormat:@"%@",[weakself.dataSource[@"promotion"] objectForKey:@"end_countdown"]];
+                NSString *start_countdown = [NSString stringWithFormat:@"%@",[weakself.dataSource[@"promotion"] objectForKey:@"start_countdown"]];
+                
+                if ([[_dataSource[@"promotion"] objectForKey:@"running_status"] integerValue] == 1) {
+                    eventTime = [end_countdown integerValue];
+                    _courseActivityView.groupTimeTipLabel.text = @"距结束仅剩";
+                    [weakself.courseActivityView setDateInfo:eventTime];
+                } else {
+                    eventTime = [start_countdown integerValue];
+                    _courseActivityView.groupTimeTipLabel.text = @"距开始还有";
+                    [_courseActivityView setDateInfo:eventTime];
+                }
+                if (eventTime>0) {
+                    [self startTimer];
+                }
+            } else {
+                _courseActivityView.hidden = YES;
+            }
         }
         
         if ([[NSString stringWithFormat:@"%@",_dataSource[@"collected"]] boolValue]) {
