@@ -26,6 +26,7 @@
     _scoreTitle = [[UILabel alloc] initWithFrame:CGRectMake(22, 12, 150, 21)];
     _scoreTitle.font = SYSTEMFONT(16);
     _scoreTitle.textColor = EdlineV5_Color.textFirstColor;
+    _scoreTitle.numberOfLines = 0;
     [self.contentView addSubview:_scoreTitle];
     
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(22, _scoreTitle.bottom + 5, 150, 19)];
@@ -59,7 +60,7 @@
 
 - (void)setScoreInfo:(NSDictionary *)dict {
     
-    _scoreTitle.text = [NSString stringWithFormat:@"%@",dict[@"rel_type_text"]];
+    _scoreTitle.text = [NSString stringWithFormat:@"%@",dict[@"note"]];
     _timeLabel.text = [EdulineV5_Tool formateYYYYMMDDHHMMTime:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];
     NSString *typeS = [NSString stringWithFormat:@"%@",dict[@"type"]];
     if ([typeS isEqualToString:@"2"] || [typeS isEqualToString:@"5"] || [typeS isEqualToString:@"6"]) {
@@ -69,6 +70,17 @@
         _scoreCountLabel.text = [NSString stringWithFormat:@"+%@",[dict objectForKey:@"num"]];
         _scoreCountLabel.textColor = HEXCOLOR(0xFF8A52);
     }
+    CGFloat scoreCountWidth = [_scoreCountLabel.text sizeWithFont:_scoreCountLabel.font].width + 4;
+    _scoreCountLabel.frame = CGRectMake(_iconImageView.left - 3 - scoreCountWidth, 0, scoreCountWidth, 30);
+    [_scoreTitle setWidth:_scoreCountLabel.left - 5 - 22];
+    [_scoreTitle sizeToFit];
+    _scoreTitle.frame = CGRectMake(22, 12, _scoreCountLabel.left - 5 - 22, _scoreTitle.height);
+    _timeLabel.frame = CGRectMake(22, _scoreTitle.bottom + 5, 150, 19);
+    
+    _lineView.frame = CGRectMake(22, _timeLabel.bottom + 12, scoreCellWith - 22 - 15, 1);
+    _scoreCountLabel.centerY = _lineView.bottom / 2.0;
+    _iconImageView.centerY = _lineView.bottom / 2.0;
+    [self setHeight:_lineView.bottom];
 }
 
 - (void)awakeFromNib {

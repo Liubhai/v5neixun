@@ -169,7 +169,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 70.0;
+    return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
 }
 
 - (void)getFirstData {
