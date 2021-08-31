@@ -675,15 +675,45 @@
                 _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
                 _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]]];
             }
+            NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+            [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+            _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
         } else {
+            
+            if (_currentScoreModel) {
+                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,[[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]] floatValue] - [_currentScoreModel.num floatValue]];
+                NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+                [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+                _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+                
+                if ((SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"])) && !_ignoreActivity) {
+                    if ([[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"running_status"] integerValue]) {
+                        _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]]];
+                        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,[[EdulineV5_Tool reviseString:[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]] floatValue] - [_currentScoreModel.num floatValue]];
+                        NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+                        [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+                        _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+                    }
+                }
+                _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,_currentScoreModel.num];
+            } else {
+                _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]]];
+                NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+                [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+                _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+                _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
+                if ((SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"])) && !_ignoreActivity) {
+                    if ([[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"running_status"] integerValue]) {
+                        _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]]];
+                        _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]]];
+                        NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+                        [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+                        _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+                    }
+                }
+            }
             _kaquanLabel.text = @"未使用卡券";
-            _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,[[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]] floatValue] - [model.num floatValue]];
-            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,model.num];
         }
-        NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
-        [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
-        _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
-        
     } else {
         _currentScoreModel = model;
         _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,@"0"];
@@ -709,14 +739,27 @@
                 _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
                 _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]]];
             }
+            NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+            [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+            _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
         } else {
-            _kaquanLabel.text = @"未使用卡券";
             _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]]];
+            NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+            [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+            _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
             _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
+            
+            if ((SWNOTEmptyDictionary(_orderInfo[@"data"][@"positive_promotion"])) && !_ignoreActivity) {
+                if ([[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"running_status"] integerValue]) {
+                    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]]];
+                    _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderInfo[@"data"][@"positive_promotion"] objectForKey:@"price"]]];
+                    NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
+                    [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
+                    _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
+                }
+            }
+            _kaquanLabel.text = @"未使用卡券";
         }
-        NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
-        [pass addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.textFirstColor} range:NSMakeRange(0, 3)];
-        _finalPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
     }
 }
 
