@@ -374,6 +374,13 @@
         [Net_API requestPOSTWithURLStr:[Net_Path shopCarOrderNewInfo] WithAuthorization:nil paramDic:pass finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
+                    if ([[responseObject objectForKey:@"data"] objectForKey:@"need_pay"]) {
+                        NSString *need_pay = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"need_pay"]];
+                        if ([need_pay isEqualToString:@"0"]) {
+                            [self.navigationController popToViewController:self.navigationController.childViewControllers[self.navigationController.childViewControllers.count - 3] animated:YES];
+                            return;
+                        }
+                    }
                     OrderSureViewController *vc = [[OrderSureViewController alloc] init];
                     vc.orderSureInfo = responseObject;
                     vc.orderTypeString = @"shopcar";
