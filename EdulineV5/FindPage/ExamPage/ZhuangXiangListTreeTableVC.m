@@ -48,7 +48,7 @@
     page = 1;
     [self makeTableView];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFirstList) name:@"reloadExamList" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getZhuanXiangListData) name:@"reloadExamList" object:nil];
 }
 
 - (void)makeTopSearch {
