@@ -658,7 +658,7 @@
             }
         }
         if (_currentScoreModel) {
-            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui + [_currentScoreModel.num floatValue]];
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui];
             _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,totalPrice - [_currentScoreModel.num floatValue]];
         } else {
             _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui];
@@ -666,7 +666,7 @@
         }
     } else {
         if (_currentScoreModel) {
-            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,_currentScoreModel.num];
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,@"0.00"];
             _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
         } else {
             _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
@@ -717,7 +717,7 @@
             }
         }
         if (_currentScoreModel) {
-            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui + [_currentScoreModel.num floatValue]];
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui];
             _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@%.2f",IOSMoneyTitle,totalPrice - [_currentScoreModel.num floatValue]];
         } else {
             _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%.2f",IOSMoneyTitle,youhui];
@@ -725,7 +725,7 @@
         }
     } else {
         if (_currentScoreModel) {
-            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,_currentScoreModel.num];
+            _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@%@",IOSMoneyTitle,@"0.00"];
             _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
         } else {
             _youhuiLabel.text = [NSString stringWithFormat:@"优惠：%@0.00",IOSMoneyTitle];
