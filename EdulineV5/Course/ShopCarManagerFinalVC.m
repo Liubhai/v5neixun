@@ -343,8 +343,12 @@
             ShopCarModel *carmodel = _dataSourse[i];
             NSString *courseIdString = @"";
             NSMutableDictionary *param = [NSMutableDictionary new];
-            if (carmodel.best_coupon.couponId) {
-                [param setObject:carmodel.best_coupon.couponId forKey:@"coupon"];
+            if ([ShowAudit isEqualToString:@"1"]) {
+                
+            } else {
+                if (carmodel.best_coupon.couponId) {
+                    [param setObject:carmodel.best_coupon.couponId forKey:@"coupon"];
+                }
             }
             for (int j = 0; j<carmodel.course_list.count; j++) {
                 ShopCarCourseModel *model = carmodel.course_list[j];
