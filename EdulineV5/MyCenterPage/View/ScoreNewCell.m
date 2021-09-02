@@ -9,7 +9,7 @@
 #import "ScoreNewCell.h"
 #import "V5_Constant.h"
 
-#define scoreCellWith MainScreenWidth - 30
+#define scoreCellWith MainScreenWidth
 
 @implementation ScoreNewCell
 

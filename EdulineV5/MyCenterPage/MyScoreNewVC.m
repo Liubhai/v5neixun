@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (strong, nonatomic) NSDictionary *scoreInfo;
 
+@property (strong, nonatomic) UIView *headerView;
+
 @property (strong, nonatomic) UIImageView *topBackImageView;
 @property (strong, nonatomic) UIButton *leftPopButton;
 @property (strong, nonatomic) UILabel *titleShowLabel;
@@ -50,41 +52,44 @@
     
     _titleImage.hidden = YES;
     
+    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 100)];
+    [self.view addSubview:_headerView];
+    
     _topBackImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 230 + MACRO_UI_STATUSBAR_ADD_HEIGHT)];
     _topBackImageView.image = Image(@"integral_top_bg");
-    [self.view addSubview:_topBackImageView];
+    [_headerView addSubview:_topBackImageView];
     
     _leftPopButton = [[UIButton alloc] initWithFrame:_leftButton.frame];
     [_leftPopButton setImage:Image(@"nav_back_white") forState:0];
     [_leftPopButton addTarget:self action:@selector(leftPopButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_leftPopButton];
+    [_headerView addSubview:_leftPopButton];
     
     _titleShowLabel = [[UILabel alloc] initWithFrame:_titleLabel.frame];
     _titleShowLabel.font = _titleLabel.font;
     _titleShowLabel.textColor = [UIColor whiteColor];
     _titleShowLabel.text = @"我的积分";
     _titleShowLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:_titleShowLabel];
+    [_headerView addSubview:_titleShowLabel];
     
     _scoreCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(38, 75 + MACRO_UI_STATUSBAR_ADD_HEIGHT, 100, 47)];
     _scoreCountLabel.font = SYSTEMFONT(40);
     _scoreCountLabel.textColor = [UIColor whiteColor];
-    [self.view addSubview:_scoreCountLabel];
+    [_headerView addSubview:_scoreCountLabel];
     
     _scoreBigIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_scoreCountLabel.right + 4, 0, 35, 35)];
     _scoreBigIcon.image = Image(@"integral_big_icon");
     _scoreBigIcon.centerY = _scoreCountLabel.centerY;
-    [self.view addSubview:_scoreBigIcon];
+    [_headerView addSubview:_scoreBigIcon];
     
     _signButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 115 - 8, 0, 115, 55)];
     _signButton.centerY = _scoreCountLabel.centerY;
     [_signButton addTarget:self action:@selector(signButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_signButton];
+    [_headerView addSubview:_signButton];
     
     _methodBackImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _signButton.bottom + 24, MainScreenWidth - 30, 280)];
     _methodBackImageView.image = Image(@"integral_center_bg");
     _methodBackImageView.userInteractionEnabled = YES;
-    [self.view addSubview:_methodBackImageView];
+    [_headerView addSubview:_methodBackImageView];
     
     _methodTipLabel = [[UILabel alloc] initWithFrame:CGRectMake(23, 12, 150, 22)];
     _methodTipLabel.font = SYSTEMFONT(16);
@@ -122,18 +127,19 @@
         [_methodWhiteBackView addSubview:doButton];
     }
     
-    _tableBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _methodBackImageView.bottom + 12, MainScreenWidth - 30, MainScreenHeight - (_methodBackImageView.bottom + 12) + 20)];
-    _tableBackView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
-    _tableBackView.layer.cornerRadius = 15;
-    _tableBackView.layer.shadowColor = [UIColor colorWithRed:107/255.0 green:107/255.0 blue:107/255.0 alpha:0.05].CGColor;
-    _tableBackView.layer.shadowOffset = CGSizeMake(0,1);
-    _tableBackView.layer.shadowOpacity = 1;
-    _tableBackView.layer.shadowRadius = 8;
-    [self.view addSubview:_tableBackView];
+    _tableBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _methodBackImageView.bottom + 12, MainScreenWidth, 43)];//MainScreenHeight - (_methodBackImageView.bottom + 12) + 20)
+//    _tableBackView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+//    _tableBackView.layer.cornerRadius = 15;
+//    _tableBackView.layer.shadowColor = [UIColor colorWithRed:107/255.0 green:107/255.0 blue:107/255.0 alpha:0.05].CGColor;
+//    _tableBackView.layer.shadowOffset = CGSizeMake(0,1);
+//    _tableBackView.layer.shadowOpacity = 1;
+//    _tableBackView.layer.shadowRadius = 8;
+    [_headerView addSubview:_tableBackView];
+    [_headerView setHeight:_tableBackView.bottom];
     
     UILabel *scoreDetailTitle = [[UILabel alloc] initWithFrame:CGRectMake(22, 12, 150, 22)];
     scoreDetailTitle.font = SYSTEMFONT(16);
-    scoreDetailTitle.textColor = HEXCOLOR(0x755211);
+    scoreDetailTitle.textColor = EdlineV5_Color.textFirstColor;
     scoreDetailTitle.text = @"积分明细";
     [_tableBackView addSubview:scoreDetailTitle];
     
@@ -141,15 +147,16 @@
     lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_tableBackView addSubview:lineView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 43, _tableBackView.width, MainScreenHeight - (_methodBackImageView.bottom + 12) - 43)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.tableHeaderView = _headerView;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstData)];
     _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
     _tableView.mj_footer.hidden = YES;
-    [_tableBackView addSubview:_tableView];
+    [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     [_tableView.mj_header beginRefreshing];
 }
