@@ -54,6 +54,10 @@
 - (void)makeScoreFooterView {
     _scoreOtherView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 120)];
     _scoreOtherView.backgroundColor = [UIColor whiteColor];
+    if ([ShowAudit isEqualToString:@"1"]) {
+        [_scoreOtherView setHeight:10];
+        return;
+    }
     UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
     lineview.backgroundColor = EdlineV5_Color.backColor;
     [_scoreOtherView addSubview:lineview];
@@ -423,7 +427,9 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    
+    if ([ShowAudit isEqualToString:@"1"]) {
+        return nil;
+    }
     UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 80)];
     footer.backgroundColor = [UIColor whiteColor];
     UILabel *youhui = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 40)];
@@ -506,6 +512,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if ([ShowAudit isEqualToString:@"1"]) {
+        return 0.001;
+    }
     return 80.0;
 }
 
@@ -534,6 +543,9 @@
                     [_dataSourse removeAllObjects];
                     [_dataSourse addObjectsFromArray:[ShopCarModel mj_objectArrayWithKeyValuesArray:[responseObject objectForKey:@"data"][@"cart"]]];
                     _scoresArray = [NSMutableArray arrayWithArray:[ScoreListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"credit"]]];
+                    if ([ShowAudit isEqualToString:@"1"]) {
+                        [_scoresArray removeAllObjects];
+                    }
                     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSourse.count isLoading:NO tableViewShowHeight:_tableView.height];
                     [_tableView reloadData];
                 }
@@ -641,27 +653,31 @@
         for (int i = 0; i<_dataSourse.count; i++) {
             ShopCarModel *carModel = _dataSourse[i];
             CouponModel *model = carModel.best_coupon;
-            
-            if (model.couponId) {
-                if ([model.coupon_type isEqualToString:@"1"]) {
-                    float max_price = carModel.total_price;
-                    if (max_price>=[model.maxprice floatValue]) {
-                        youhui = youhui + model.price.floatValue;
-                        totalPrice = totalPrice + (carModel.total_price - [model.price floatValue]);
-                    } else {
-                        youhui = youhui;
-                        totalPrice = totalPrice + carModel.total_price;
-                    }
-                } else if ([model.coupon_type isEqualToString:@"2"]) {
-                    float discount1 = [model.discount floatValue];
-                    totalPrice = totalPrice + carModel.total_price * discount1 / 10;
-                    youhui = youhui + (carModel.total_price - carModel.total_price * discount1 / 10);
-                } else if ([model.coupon_type isEqualToString:@"3"]) {
-                    // 机构没有课程卡
-                }
-            } else {
+            if ([ShowAudit isEqualToString:@"1"]) {
                 youhui = youhui;
                 totalPrice = totalPrice + carModel.total_price;
+            } else {
+                if (model.couponId) {
+                    if ([model.coupon_type isEqualToString:@"1"]) {
+                        float max_price = carModel.total_price;
+                        if (max_price>=[model.maxprice floatValue]) {
+                            youhui = youhui + model.price.floatValue;
+                            totalPrice = totalPrice + (carModel.total_price - [model.price floatValue]);
+                        } else {
+                            youhui = youhui;
+                            totalPrice = totalPrice + carModel.total_price;
+                        }
+                    } else if ([model.coupon_type isEqualToString:@"2"]) {
+                        float discount1 = [model.discount floatValue];
+                        totalPrice = totalPrice + carModel.total_price * discount1 / 10;
+                        youhui = youhui + (carModel.total_price - carModel.total_price * discount1 / 10);
+                    } else if ([model.coupon_type isEqualToString:@"3"]) {
+                        // 机构没有课程卡
+                    }
+                } else {
+                    youhui = youhui;
+                    totalPrice = totalPrice + carModel.total_price;
+                }
             }
         }
         if (_currentScoreModel) {

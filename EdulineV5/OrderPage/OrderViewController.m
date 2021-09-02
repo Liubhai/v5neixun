@@ -563,6 +563,11 @@
             [_scoreOtherView setTop:_topContentView.bottom + 10];
         }
         
+        if ([ShowAudit isEqualToString:@"1"]) {
+            _currentScoreModel = nil;
+            [_scoresArray removeAllObjects];
+        }
+        
         _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]]];
         if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
             _priceLabel.text = [NSString stringWithFormat:@"VIP:%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[[_orderInfo objectForKey:@"data"] objectForKey:@"user_price"]]];

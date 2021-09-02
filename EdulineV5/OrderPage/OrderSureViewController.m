@@ -177,7 +177,7 @@
     _orderLeftIcon3.centerY = 56 / 2.0;
     [_orderTypeView3 addSubview:_orderLeftIcon3];
     
-    _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, 150, 56)];
+    _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, MainScreenWidth - 15 - 56 - (_orderLeftIcon3.right + 12), 56)];
     _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle3.font = SYSTEMFONT(15);
     _orderTitle3.text = [NSString stringWithFormat:@"余额(%@0.00)",IOSMoneyTitle];
