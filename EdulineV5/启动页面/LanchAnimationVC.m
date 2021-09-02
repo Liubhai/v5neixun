@@ -67,7 +67,7 @@
     [self.view addSubview:_timerbutton];
     _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerCount) userInfo:nil repeats:YES];
     [self getHomeindexConfig];
-    [self getTypeInfo];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{

@@ -92,6 +92,7 @@
     
     // 预加载首页数据
     [self getHomePageInfo];
+//    [self getTypeInfo];
     
 //    self.tabbar = [RootV5VC sharedBaseTabBarViewController];
 //    self.window.rootViewController = self.tabbar;
@@ -110,7 +111,6 @@
     [self getShengwangConfigInfo];
     [self appConfigInfo];
     [self layoutConfig];
-    [self getTypeInfo];
     
     _noticeLogoutAlert = [[UIAlertView alloc]initWithTitle:LoginInvalid_TXT message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     _noticeLogoutAlert.tag = 101;
@@ -866,11 +866,48 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"login_config"] forKey:@"login_config"];
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"register_agre"] forKey:@"register_agre"];
                 [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject objectForKey:@"data"] objectForKey:@"ios_bconf"] objectForKey:@"title"] forKey:@"ios_bconf_title"];
+                
+                // 接口新加字段
+                if (SWNOTEmptyDictionary(responseObject[@"data"])) {
+                    NSArray *typeArray = [NSArray arrayWithArray:[responseObject[@"data"] objectForKey:@"payway_config"]];
+
+                    BOOL hasW = NO;
+
+                    if (SWNOTEmptyArr(typeArray)) {
+                        if ([typeArray containsObject:@"applepay"]) {
+                            hasW = YES;
+                        } else {
+                            hasW = NO;
+                        }
+                    } else {
+                        hasW = NO;
+                    }
+
+                    if (hasW) {
+                        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    } else {
+                        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowAudit"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                } else {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+                
+                
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            } else {
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     } enError:^(NSError * _Nonnull error) {
-        
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }];
 }
 
