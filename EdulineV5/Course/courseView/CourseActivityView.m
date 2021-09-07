@@ -106,7 +106,7 @@
                 _backIconImage.image = Image(@"detials_pintuan_bg");
             }
             
-            NSString *sellPrice = [NSString stringWithFormat:@"%@",promotion[@"price"]];
+            NSString *sellPrice = [EdulineV5_Tool reviseString:[NSString stringWithFormat:@"%@",promotion[@"price"]]];
             NSString *moneyIcon = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
             NSString *fullSellPrice = [NSString stringWithFormat:@"%@%@",moneyIcon,sellPrice];
             NSRange rangNow = NSMakeRange(moneyIcon.length, sellPrice.length);

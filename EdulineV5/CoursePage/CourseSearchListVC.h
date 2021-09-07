@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *cateIdStr;// 首页各种分类跳转过来的时候会传递参数
 @property (strong, nonatomic) NSString *cateStr;// 首页各种分类跳转过来的时候会传递参数
 
+@property (strong, nonatomic) NSString *screenTypeStr;// 首页各种分类跳转过来的时候会传递参数
+
 @property (nonatomic, assign) BOOL cellType;// 一排两个还是一排一个
 
 @end

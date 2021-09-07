@@ -22,6 +22,7 @@
 #import "HomePageCourseTypeOneCell.h"
 #import "HomePageCourseTypeTwoCell.h"
 #import "HomePageHotRecommendedCell.h"
+#import "HomePageDiscountCell.h"
 
 // 直播测试
 //#import "LiveRoomViewController.h"
@@ -44,7 +45,7 @@
 #import "CourseTreeListViewController.h"
 #import "InstitutionsChooseVC.h"
 
-@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate> {
+@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate,HomePageDiscountCellDelegate> {
     BOOL isWeek;// 显示周榜还是月榜
 }
 
@@ -171,7 +172,7 @@
         _imageBannerBackView = [[UIView alloc] initWithFrame:CGRectMake(0, SWNOTEmptyArr(_bannerImageArray) ? 15 : 0, MainScreenWidth, 0)];
         _imageBannerBackView.backgroundColor = [UIColor whiteColor];
     }
-    _imageBannerBackView.frame = CGRectMake(0, 0, MainScreenWidth, SWNOTEmptyArr(_bannerImageArray) ? (2 * MainScreenWidth / 5 + 20) : 0);
+    _imageBannerBackView.frame = CGRectMake(0, 0, MainScreenWidth, 2 * MainScreenWidth / 5 + 20);//SWNOTEmptyArr(_bannerImageArray) ? (2 * MainScreenWidth / 5 + 20) : 0
     [_imageBannerBackView removeAllSubviews];
     
     if (SWNOTEmptyArr(_bannerImageSourceArray)) {
@@ -258,6 +259,39 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if (!SWNOTEmptyArr(pass)) {
+            return nil;
+        }
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        BOOL showWeek = NO;
+        for (NSDictionary *dict in _sortArray[section][@"list"]) {
+            if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
+                NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                if (SWNOTEmptyArr(pass)) {
+                    showWeek = YES;
+                }
+            }
+        }
+        for (NSDictionary *dict in _sortArray[section][@"list"]) {
+            if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
+                NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                if (SWNOTEmptyArr(pass)) {
+                    showWeek = YES;
+                }
+            }
+        }
+        if (!showWeek) {
+            return nil;
+        }
+    }
+    NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+    if (!SWNOTEmptyArr(pass)) {
+        return nil;
+    }
+    
     UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
     sectionHead.backgroundColor = [UIColor whiteColor];
     
@@ -328,7 +362,41 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"])) {
+    
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if (!SWNOTEmptyArr(pass)) {
+            return nil;
+        }
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        BOOL showWeek = NO;
+        for (NSDictionary *dict in _sortArray[section][@"list"]) {
+            if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
+                NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                if (SWNOTEmptyArr(pass)) {
+                    showWeek = YES;
+                }
+            }
+        }
+        for (NSDictionary *dict in _sortArray[section][@"list"]) {
+            if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
+                NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                if (SWNOTEmptyArr(pass)) {
+                    showWeek = YES;
+                }
+            }
+        }
+        if (!showWeek) {
+            return nil;
+        }
+    }
+    NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+    if (!SWNOTEmptyArr(pass)) {
+        return nil;
+    }
+
+    
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"]) || ([_sortArray[section][@"key"] isEqualToString:@"flashSaleCourse"])) {
         NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
         if ([pass count]) {
             UIView *footerBack = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 30)];
@@ -394,11 +462,75 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if (!SWNOTEmptyArr(pass)) {
+            return 0.001;
+        }
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        BOOL showWeek = NO;
+        for (NSDictionary *dict in _sortArray[section][@"list"]) {
+            if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
+                NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                if (SWNOTEmptyArr(pass)) {
+                    showWeek = YES;
+                }
+            }
+        }
+        for (NSDictionary *dict in _sortArray[section][@"list"]) {
+            if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
+                NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                if (SWNOTEmptyArr(pass)) {
+                    showWeek = YES;
+                }
+            }
+        }
+        if (!showWeek) {
+            return 0.001;
+        }
+    }
+    NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+    if (!SWNOTEmptyArr(pass)) {
+        return 0.001;
+    }
+
     return 56;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"])) {
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if (!SWNOTEmptyArr(pass)) {
+            return 0.001;
+        }
+    } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
+        BOOL showWeek = NO;
+        for (NSDictionary *dict in _sortArray[section][@"list"]) {
+            if ([[dict objectForKey:@"key"] isEqualToString:@"week"]) {
+                NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                if (SWNOTEmptyArr(pass)) {
+                    showWeek = YES;
+                }
+            }
+        }
+        for (NSDictionary *dict in _sortArray[section][@"list"]) {
+            if ([[dict objectForKey:@"key"] isEqualToString:@"month"]) {
+                NSArray *pass = [NSArray arrayWithArray:[dict objectForKey:@"list"]];
+                if (SWNOTEmptyArr(pass)) {
+                    showWeek = YES;
+                }
+            }
+        }
+        if (!showWeek) {
+            return 0.001;
+        }
+    }
+    NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+    if (!SWNOTEmptyArr(pass)) {
+        return 0.001;
+    }
+
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"]) || ([_sortArray[section][@"key"] isEqualToString:@"flashSaleCourse"])) {
         NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
         if ([pass count]) {
             return 30;
@@ -505,6 +637,15 @@
         [cell setHomePageCourseTypeTwoCellInfo:_sortArray[indexPath.section][@"list"]];
         cell.delegate = self;
         return cell;
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"flashSaleCourse"]) {
+        static NSString *reuse = @"HomePageDiscountCell";
+        HomePageDiscountCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[HomePageDiscountCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setDiscountArrayInfo:_sortArray[indexPath.section][@"list"]];
+        cell.delegate = self;
+        return cell;
     } else {
         static NSString *reuse = @"homeCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
@@ -526,7 +667,7 @@
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"]) {
         NSArray *pass = [NSArray arrayWithArray:_sortArray[indexPath.section][@"list"]];
         return [pass count] > 0 ? 106 : 0;
-    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"]) {
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"flashSaleCourse"]) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"categoryCourse"]) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
@@ -667,6 +808,13 @@
         vc.cateStr = [NSString stringWithFormat:@"%@",_sortArray[sender.tag][@"title"]];
         vc.cateIdStr = [NSString stringWithFormat:@"%@",_sortArray[sender.tag][@"category_id"]];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"flashSaleCourse"]) {
+        CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
+        vc.isSearch = YES;
+        vc.hiddenNavDisappear = YES;
+        vc.notHiddenNav = NO;
+        vc.screenTypeStr = @"event";
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -720,6 +868,15 @@
         _monthBtn.selected = YES;
     }
     [_tableView reloadData];
+}
+
+// MARK: - 点击限时打折课程跳转
+- (void)goToDiscountCourseMainPage:(NSDictionary *)courseInfo {
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"product_id"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"product_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"product_type"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 // MARK: - 首页请求数据

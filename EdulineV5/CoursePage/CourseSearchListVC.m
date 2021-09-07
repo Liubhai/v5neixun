@@ -101,6 +101,10 @@
         courseSortIdString = _sortIdStr;
     }
     
+    if (SWNOTEmptyStr(_screenTypeStr)) {
+        screenType = _screenTypeStr;
+    }
+    
     _shopCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_rightButton.centerX, _rightButton.top + 3, 18, 12)];
     _shopCountLabel.layer.masksToBounds = YES;
     _shopCountLabel.layer.cornerRadius = 6;
