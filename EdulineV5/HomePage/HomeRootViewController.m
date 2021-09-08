@@ -261,10 +261,10 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
-        if (!SWNOTEmptyArr(pass)) {
-            return nil;
-        }
+//        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+//        if (!SWNOTEmptyArr(pass)) {
+//            return nil;
+//        }
     } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
         BOOL showWeek = NO;
         for (NSDictionary *dict in _sortArray[section][@"list"]) {
@@ -286,10 +286,11 @@
         if (!showWeek) {
             return nil;
         }
-    }
-    NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
-    if (!SWNOTEmptyArr(pass)) {
-        return nil;
+    } else {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if (!SWNOTEmptyArr(pass)) {
+            return nil;
+        }
     }
     
     UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
@@ -364,10 +365,10 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     
     if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
-        if (!SWNOTEmptyArr(pass)) {
-            return nil;
-        }
+//        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+//        if (!SWNOTEmptyArr(pass)) {
+//            return nil;
+//        }
     } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
         BOOL showWeek = NO;
         for (NSDictionary *dict in _sortArray[section][@"list"]) {
@@ -389,10 +390,11 @@
         if (!showWeek) {
             return nil;
         }
-    }
-    NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
-    if (!SWNOTEmptyArr(pass)) {
-        return nil;
+    } else {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if (!SWNOTEmptyArr(pass)) {
+            return nil;
+        }
     }
 
     
@@ -463,10 +465,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
-        if (!SWNOTEmptyArr(pass)) {
-            return 0.001;
-        }
+//        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+//        if (!SWNOTEmptyArr(pass)) {
+//            return 0.001;
+//        }
     } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
         BOOL showWeek = NO;
         for (NSDictionary *dict in _sortArray[section][@"list"]) {
@@ -488,10 +490,11 @@
         if (!showWeek) {
             return 0.001;
         }
-    }
-    NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
-    if (!SWNOTEmptyArr(pass)) {
-        return 0.001;
+    } else {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if (!SWNOTEmptyArr(pass)) {
+            return 0.001;
+        }
     }
 
     return 56;
@@ -499,10 +502,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
-        if (!SWNOTEmptyArr(pass)) {
-            return 0.001;
-        }
+//        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+//        if (!SWNOTEmptyArr(pass)) {
+//            return 0.001;
+//        }
     } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
         BOOL showWeek = NO;
         for (NSDictionary *dict in _sortArray[section][@"list"]) {
@@ -524,10 +527,11 @@
         if (!showWeek) {
             return 0.001;
         }
-    }
-    NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
-    if (!SWNOTEmptyArr(pass)) {
-        return 0.001;
+    } else {
+        NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
+        if (!SWNOTEmptyArr(pass)) {
+            return 0.001;
+        }
     }
 
     if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || ([_sortArray[section][@"key"] isEqualToString:@"recommendTeacher"]) || ([_sortArray[section][@"key"] isEqualToString:@"flashSaleCourse"])) {
