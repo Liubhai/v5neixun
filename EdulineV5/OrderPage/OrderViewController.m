@@ -830,18 +830,19 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 _scoresArray = [NSMutableArray arrayWithArray:[ScoreListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]]];
                 _currentScoreModel = nil;
+//                if (SWNOTEmptyArr(_scoresArray)) {
+//                    _scoreOtherView.hidden = NO;
+//
+//                }
+                // 处理积分默认
                 if (SWNOTEmptyArr(_scoresArray)) {
                     _scoreOtherView.hidden = NO;
-                    // 处理积分默认
-                    if (SWNOTEmptyArr(_scoresArray)) {
-                        _scoreOtherView.hidden = NO;
-                        _currentScoreModel = _scoresArray[0];
-                        _currentScoreModel.is_default = YES;
-                        _currentScoreModel.is_selected = YES;
-                        _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,_currentScoreModel.num];
-                    } else {
-                        _scoreOtherView.hidden = YES;
-                    }
+                    _currentScoreModel = _scoresArray[0];
+                    _currentScoreModel.is_default = YES;
+                    _currentScoreModel.is_selected = YES;
+                    _scoreLabel.text = [NSString stringWithFormat:@"可抵%@%@",IOSMoneyTitle,_currentScoreModel.num];
+                } else {
+                    _scoreOtherView.hidden = YES;
                 }
                 [self scoreChooseModel:_currentScoreModel];
             }
