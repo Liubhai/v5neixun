@@ -55,6 +55,8 @@
             ScoreListModel *model = _dataSource[i];
             if ([model.credit isEqualToString:_currentSelectModel.credit]) {
                 model.is_selected = YES;
+            } else {
+                model.is_selected = NO;
             }
             [_dataSource replaceObjectAtIndex:i withObject:model];
         }
@@ -62,6 +64,8 @@
     
     _titleImage.hidden = YES;
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenSelfVC)];
+    [self.view addGestureRecognizer:tap];
     [self makeTopView];
     [self makeTableView];
     [self makeBottomView];
@@ -164,6 +168,11 @@
     if (_delegate && [_delegate respondsToSelector:@selector(scoreChooseModel:)]) {
         [_delegate scoreChooseModel:current_model];
     }
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
+}
+
+- (void)hiddenSelfVC {
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
 }

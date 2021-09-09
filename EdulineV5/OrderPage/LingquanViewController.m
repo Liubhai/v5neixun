@@ -42,6 +42,8 @@
     _changeStatusArray = [NSMutableArray new];
     _titleImage.hidden = YES;
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenSelfVC)];
+    [self.view addGestureRecognizer:tap];
     [self makeTopView];
     [self makeTableView];
 //    if (_getOrUse) {
@@ -162,6 +164,11 @@
     if (_getOrUse) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"getCouponsReload" object:nil];
     }
+    [self.view removeFromSuperview];
+    [self removeFromParentViewController];
+}
+
+- (void)hiddenSelfVC {
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
 }
