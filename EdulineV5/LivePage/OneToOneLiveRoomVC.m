@@ -503,7 +503,7 @@
 }
 
 - (void)makeBottomView {
-    _chatCommentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:@[@"live_dashang",@"live_store"] placeHolderTitle:nil sendButtonTitle:nil];
+    _chatCommentView = [[CommentBaseView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - CommenViewHeight - MACRO_UI_SAFEAREA, MainScreenWidth, CommenViewHeight + MACRO_UI_SAFEAREA) leftButtonImageArray:@[@"live_store"] placeHolderTitle:nil sendButtonTitle:nil];//@"live_dashang"
     _chatCommentView.delegate = self;
     _chatCommentView.placeHoderLab.hidden = YES;
     _chatCommentView.hidden = YES;
@@ -743,6 +743,15 @@
             [self addChildViewController:vc];
             vc.delegate = self;
         }
+    } else {
+        // 带货
+        WEAK(self);
+        LiveCourseListVC *vc = [[LiveCourseListVC alloc] init];
+        vc.sectionId = weakself.classId;
+        vc.view.frame = CGRectMake(0, 0, MainScreenWidth, MainScreenHeight);
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
+        vc.delegate = self;
     }
 }
 
