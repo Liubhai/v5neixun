@@ -44,6 +44,10 @@
 
 #define ShowAudit [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowAudit"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowAudit"]
 
+#define ShowCourseComment [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowCourseComment"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowCourseComment"]
+
+#define ShowCourseNote [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowCourseNote"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowCourseNote"]
+
 #define WebTitleContenDistance 10
 #define WebDistanceLeft 15//内容和左右的边距
 

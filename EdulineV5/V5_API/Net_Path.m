@@ -28,6 +28,10 @@
     return [Net_Path fullPath:@"config/init" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)appSwitchConfig {
+    return [Net_Path fullPath:@"config/switch" repalce:@"" byReplece:@""];
+}
+
 + (NSString *)touristLoginNet {
     return [Net_Path fullPath:@"ioslogin" repalce:@"" byReplece:@""];
 }

@@ -203,8 +203,21 @@
     
     if (_isLive) {
         _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"点评"]];
+        if ([ShowCourseComment isEqualToString:@"0"]) {
+            _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录"]];
+        }
     } else {
         _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"笔记",@"点评"]];
+        if ([ShowCourseComment isEqualToString:@"0"] && [ShowCourseNote isEqualToString:@"0"]) {
+            _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录"]];
+        } else {
+            if ([ShowCourseComment isEqualToString:@"0"]) {
+                _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"笔记"]];
+            }
+            if ([ShowCourseNote isEqualToString:@"0"]) {
+                _tabClassArray = [NSMutableArray arrayWithArray:@[@"目录",@"点评"]];
+            }
+        }
     }
 
     _titleLabel.text = @"课程详情";
@@ -443,6 +456,9 @@
 //    }
     [_headerView setHeight:_courseContentView.bottom];
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - _headerView.height;
+    if ([ShowCourseNote isEqualToString:@"0"]) {
+        sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - _headerView.height;
+    }
 }
 
 // MARK: - 底部视图(咨询、加入购物车、加入学习)
@@ -450,6 +466,11 @@
     _courseDownView = [[CourseDownView alloc] initWithFrame:CGRectMake(0, MainScreenHeight - MACRO_UI_TABBAR_HEIGHT, MainScreenWidth, MACRO_UI_TABBAR_HEIGHT) isRecord:YES];
     _courseDownView.delegate = self;
     [self.view addSubview:_courseDownView];
+    if ([ShowCourseNote isEqualToString:@"0"]) {
+        _courseDownView.hidden = YES;
+    } else {
+        _courseDownView.hidden = NO;
+    }
 }
 
 // MARK - UITableViewDataSource
@@ -624,38 +645,100 @@
             }
         }
         
-        if (_recordVC == nil) {
-            _recordVC = [[CourseCommentListVC alloc] init];
-            _recordVC.courseId = _ID;
-            _recordVC.tabelHeight = sectionHeight - 47;
-            _recordVC.detailVC = weakself;
-            _recordVC.cellType = YES;
-            _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
-            _recordVC.view.frame = CGRectMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
-            [self.mainScroll addSubview:_recordVC.view];
-            [self addChildViewController:_recordVC];
+        if (_isLive) {
+            if ([ShowCourseComment isEqualToString:@"1"]) {
+                if (_commentVC == nil) {
+                    _commentVC = [[CourseCommentListVC alloc] init];
+                    _commentVC.courseId = _ID;
+                    _commentVC.tabelHeight = sectionHeight - 47;
+                    _commentVC.detailVC = weakself;
+                    _commentVC.cellType = NO;
+                    _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                    _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
+                    [self.mainScroll addSubview:_commentVC.view];
+                    [self addChildViewController:_commentVC];
+                } else {
+                    _commentVC.courseId = _ID;
+                    _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                    _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
+                    _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                }
+            } else {
+                
+            }
         } else {
-            _recordVC.courseId = _ID;
-            _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
-            _recordVC.view.frame = CGRectMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
-            _recordVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
-        }
+            if ([ShowCourseComment isEqualToString:@"1"] && [ShowCourseNote isEqualToString:@"1"]) {
+                if (_recordVC == nil) {
+                    _recordVC = [[CourseCommentListVC alloc] init];
+                    _recordVC.courseId = _ID;
+                    _recordVC.tabelHeight = sectionHeight - 47;
+                    _recordVC.detailVC = weakself;
+                    _recordVC.cellType = YES;
+                    _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                    _recordVC.view.frame = CGRectMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                    [self.mainScroll addSubview:_recordVC.view];
+                    [self addChildViewController:_recordVC];
+                } else {
+                    _recordVC.courseId = _ID;
+                    _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                    _recordVC.view.frame = CGRectMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                    _recordVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                }
 
-        if (_commentVC == nil) {
-            _commentVC = [[CourseCommentListVC alloc] init];
-            _commentVC.courseId = _ID;
-            _commentVC.tabelHeight = sectionHeight - 47;
-            _commentVC.detailVC = weakself;
-            _commentVC.cellType = NO;
-            _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
-            _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
-            [self.mainScroll addSubview:_commentVC.view];
-            [self addChildViewController:_commentVC];
-        } else {
-            _commentVC.courseId = _ID;
-            _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
-            _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
-            _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                if (_commentVC == nil) {
+                    _commentVC = [[CourseCommentListVC alloc] init];
+                    _commentVC.courseId = _ID;
+                    _commentVC.tabelHeight = sectionHeight - 47;
+                    _commentVC.detailVC = weakself;
+                    _commentVC.cellType = NO;
+                    _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                    _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
+                    [self.mainScroll addSubview:_commentVC.view];
+                    [self addChildViewController:_commentVC];
+                } else {
+                    _commentVC.courseId = _ID;
+                    _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                    _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth * 2,0, MainScreenWidth, sectionHeight - 47);
+                    _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                }
+            } else {
+                if ([ShowCourseNote isEqualToString:@"1"]) {
+                    if (_recordVC == nil) {
+                        _recordVC = [[CourseCommentListVC alloc] init];
+                        _recordVC.courseId = _ID;
+                        _recordVC.tabelHeight = sectionHeight - 47;
+                        _recordVC.detailVC = weakself;
+                        _recordVC.cellType = YES;
+                        _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                        _recordVC.view.frame = CGRectMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                        [self.mainScroll addSubview:_recordVC.view];
+                        [self addChildViewController:_recordVC];
+                    } else {
+                        _recordVC.courseId = _ID;
+                        _recordVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                        _recordVC.view.frame = CGRectMake(_isLive ? MainScreenWidth * 2 : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                        _recordVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                    }
+                }
+                if ([ShowCourseComment isEqualToString:@"1"]) {
+                    if (_commentVC == nil) {
+                        _commentVC = [[CourseCommentListVC alloc] init];
+                        _commentVC.courseId = _ID;
+                        _commentVC.tabelHeight = sectionHeight - 47;
+                        _commentVC.detailVC = weakself;
+                        _commentVC.cellType = NO;
+                        _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                        _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                        [self.mainScroll addSubview:_commentVC.view];
+                        [self addChildViewController:_commentVC];
+                    } else {
+                        _commentVC.courseId = _ID;
+                        _commentVC.cellTabelCanScroll = YES;//!_canScrollAfterVideoPlay;
+                        _commentVC.view.frame = CGRectMake(_isLive ? MainScreenWidth : MainScreenWidth,0, MainScreenWidth, sectionHeight - 47);
+                        _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                    }
+                }
+            }
         }
     }
     if (SWNOTEmptyDictionary(self.dataSource)) {
@@ -760,9 +843,16 @@
                     if (self.courseButton.selected) {
                         if ([vc isKindOfClass:[CourseCommentListVC class]]) {
                             CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
-                            if (vccomment.cellType) {
-                                // 笔记
-                                vccomment.cellTabelCanScroll = YES;
+                            if ([ShowCourseNote isEqualToString:@"1"]) {
+                                if (vccomment.cellType) {
+                                    // 笔记
+                                    vccomment.cellTabelCanScroll = YES;
+                                }
+                            } else {
+                                if (!vccomment.cellType) {
+                                    // 评论
+                                    vccomment.cellTabelCanScroll = YES;
+                                }
                             }
                         }
                     }
@@ -800,6 +890,9 @@
     }
     [_headerView setHeight:_teachersHeaderBackView.bottom];
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - _headerView.height;
+    if ([ShowCourseNote isEqualToString:@"0"]) {
+        sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT;
+    }
     _tableView.tableHeaderView = _headerView;
     [_tableView reloadData];
 }
@@ -1017,6 +1110,9 @@
         if ([[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"]) {
             [_headerView setHeight:_courseContentView.bottom];
             sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - _headerView.height;
+            if ([ShowCourseNote isEqualToString:@"0"]) {
+                sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT;
+            }
         }
         _tableView.tableHeaderView = _headerView;
         [self.tableView reloadData];
@@ -1358,6 +1454,13 @@
         if (_courseDownView) {
             _courseDownView.hidden = NO;
         }
+        if ([ShowCourseNote isEqualToString:@"0"]) {
+            _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_LIUHAI_HEIGHT);
+            sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - _headerView.height;
+            if (_courseDownView) {
+                _courseDownView.hidden = YES;
+            }
+        }
     }
     [_tableView reloadData];
     
@@ -1645,6 +1748,15 @@
         if (_courseDownView) {
             _courseDownView.hidden = NO;
         }
+        
+        if ([ShowCourseNote isEqualToString:@"0"]) {
+            _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_LIUHAI_HEIGHT);
+            sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - _headerView.height;
+            if (_courseDownView) {
+                _courseDownView.hidden = YES;
+            }
+        }
+        
     }
     [_tableView reloadData];
     freeLook = NO;
@@ -2069,6 +2181,9 @@
     _canScroll = NO;
     _canScrollAfterVideoPlay = NO;
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - MACRO_UI_UPHEIGHT;
+    if ([ShowCourseNote isEqualToString:@"0"]) {
+        sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT;
+    }
     [_tableView reloadData];
 }
 
@@ -2076,6 +2191,9 @@
     _canScroll = YES;
     _canScrollAfterVideoPlay = YES;
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - MACRO_UI_UPHEIGHT;
+    if ([ShowCourseNote isEqualToString:@"0"]) {
+        sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT;
+    }
     [_tableView reloadData];
 }
 
@@ -2083,6 +2201,9 @@
     _canScroll = NO;
     _canScrollAfterVideoPlay = NO;
     sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - MACRO_UI_UPHEIGHT;
+    if ([ShowCourseNote isEqualToString:@"0"]) {
+        sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT;
+    }
     _tableView.scrollEnabled = NO;
     for (UIViewController *vc in self.childViewControllers) {
         if ([vc isKindOfClass:[CourseListVC class]]) {

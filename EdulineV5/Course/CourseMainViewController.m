@@ -141,8 +141,14 @@
     self.canScrollAfterVideoPlay = YES;
     
     _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评"]];
+    if ([ShowCourseComment isEqualToString:@"0"]) {
+        _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录"]];
+    }
     if ([_courseType isEqualToString:@"4"]) {
         _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评",@"学员"]];
+        if ([ShowCourseComment isEqualToString:@"0"]) {
+            _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"学员"]];
+        }
     }
     
     self.canScroll = YES;
@@ -438,44 +444,92 @@
                 [_courseListVC getCourseListData];
             }
         }
-
-        if (_commentVC == nil) {
-            _commentVC = [[CourseCommentListVC alloc] init];
-            _commentVC.courseId = weakself.ID;
-            _commentVC.tabelHeight = sectionHeight - 47;
-            _commentVC.vc = weakself;
-            _commentVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-            _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
-            [weakself.mainScroll addSubview:weakself.commentVC.view];
-            [weakself addChildViewController:weakself.commentVC];
-        } else {
-            _commentVC.courseId = weakself.ID;
-            _commentVC.tabelHeight = sectionHeight - 47;
-            _commentVC.vc = weakself;
-            _commentVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-            _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
-            _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
-            [_commentVC getCourseCommentList];
-        }
-
+        
         if ([_courseType isEqualToString:@"4"]) {
-            if (_courseStudentListVC == nil) {
-                _courseStudentListVC = [[CourseStudentListViewController alloc] init];
-                _courseStudentListVC.courseId = weakself.ID;
-                _courseStudentListVC.tabelHeight = sectionHeight - 47;
-                _courseStudentListVC.vc = weakself;
-                _courseStudentListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-                _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
-                [weakself.mainScroll addSubview:weakself.courseStudentListVC.view];
-                [weakself addChildViewController:weakself.courseStudentListVC];
+            if ([ShowCourseComment isEqualToString:@"0"]) {
+                if ([_courseType isEqualToString:@"4"]) {
+                    if (_courseStudentListVC == nil) {
+                        _courseStudentListVC = [[CourseStudentListViewController alloc] init];
+                        _courseStudentListVC.courseId = weakself.ID;
+                        _courseStudentListVC.tabelHeight = sectionHeight - 47;
+                        _courseStudentListVC.vc = weakself;
+                        _courseStudentListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+                        [weakself.mainScroll addSubview:weakself.courseStudentListVC.view];
+                        [weakself addChildViewController:weakself.courseStudentListVC];
+                    } else {
+                        _courseStudentListVC.courseId = weakself.ID;
+                        _courseStudentListVC.tabelHeight = sectionHeight - 47;
+                        _courseStudentListVC.vc = weakself;
+                        _courseStudentListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+                        _courseStudentListVC.collectionView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                        [_courseStudentListVC getStudentListInfo];
+                    }
+                }
             } else {
-                _courseStudentListVC.courseId = weakself.ID;
-                _courseStudentListVC.tabelHeight = sectionHeight - 47;
-                _courseStudentListVC.vc = weakself;
-                _courseStudentListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-                _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
-                _courseStudentListVC.collectionView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
-                [_courseStudentListVC getStudentListInfo];
+                if (_commentVC == nil) {
+                    _commentVC = [[CourseCommentListVC alloc] init];
+                    _commentVC.courseId = weakself.ID;
+                    _commentVC.tabelHeight = sectionHeight - 47;
+                    _commentVC.vc = weakself;
+                    _commentVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                    _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+                    [weakself.mainScroll addSubview:weakself.commentVC.view];
+                    [weakself addChildViewController:weakself.commentVC];
+                } else {
+                    _commentVC.courseId = weakself.ID;
+                    _commentVC.tabelHeight = sectionHeight - 47;
+                    _commentVC.vc = weakself;
+                    _commentVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                    _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+                    _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                    [_commentVC getCourseCommentList];
+                }
+
+                if ([_courseType isEqualToString:@"4"]) {
+                    if (_courseStudentListVC == nil) {
+                        _courseStudentListVC = [[CourseStudentListViewController alloc] init];
+                        _courseStudentListVC.courseId = weakself.ID;
+                        _courseStudentListVC.tabelHeight = sectionHeight - 47;
+                        _courseStudentListVC.vc = weakself;
+                        _courseStudentListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
+                        [weakself.mainScroll addSubview:weakself.courseStudentListVC.view];
+                        [weakself addChildViewController:weakself.courseStudentListVC];
+                    } else {
+                        _courseStudentListVC.courseId = weakself.ID;
+                        _courseStudentListVC.tabelHeight = sectionHeight - 47;
+                        _courseStudentListVC.vc = weakself;
+                        _courseStudentListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseStudentListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
+                        _courseStudentListVC.collectionView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                        [_courseStudentListVC getStudentListInfo];
+                    }
+                }
+            }
+        } else {
+            if ([ShowCourseComment isEqualToString:@"0"]) {
+                
+            } else {
+                if (_commentVC == nil) {
+                    _commentVC = [[CourseCommentListVC alloc] init];
+                    _commentVC.courseId = weakself.ID;
+                    _commentVC.tabelHeight = sectionHeight - 47;
+                    _commentVC.vc = weakself;
+                    _commentVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                    _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+                    [weakself.mainScroll addSubview:weakself.commentVC.view];
+                    [weakself addChildViewController:weakself.commentVC];
+                } else {
+                    _commentVC.courseId = weakself.ID;
+                    _commentVC.tabelHeight = sectionHeight - 47;
+                    _commentVC.vc = weakself;
+                    _commentVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                    _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+                    _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                    [_commentVC getCourseCommentList];
+                }
             }
         }
     }

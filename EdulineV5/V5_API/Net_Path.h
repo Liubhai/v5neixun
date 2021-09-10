@@ -26,6 +26,9 @@ struct NetWorkUrl {
 /** app初始化信息 */
 + (NSString *)appConfig;
 
+/** 评论和笔记开关 */
++ (NSString *)appSwitchConfig;
+
 // MARK: - 登录配置
 + (NSString *)appLoginTypeConfigNet;
 

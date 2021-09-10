@@ -111,6 +111,7 @@
     [self getShengwangConfigInfo];
     [self appConfigInfo];
     [self layoutConfig];
+    [self appSwitchConfig];
     
     _noticeLogoutAlert = [[UIAlertView alloc]initWithTitle:LoginInvalid_TXT message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     _noticeLogoutAlert.tag = 101;
@@ -907,6 +908,43 @@
         }
     } enError:^(NSError * _Nonnull error) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }];
+}
+
+// MARK: - 初始化信息
+- (void)appSwitchConfig {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path appSwitchConfig] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                "comment": 1, //课程评论开关【0：未开启；1：开启；】
+//                "note": 0, //课程笔记开关【0：未开启；1：开启；】
+                NSString *comment = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"comment"]];
+                NSString *note = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"note"]];
+                if ([comment isEqualToString:@"1"]) {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
+                } else {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowCourseComment"];
+                }
+                if ([note isEqualToString:@"1"]) {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
+                } else {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowCourseNote"];
+                }
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            } else {
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    } enError:^(NSError * _Nonnull error) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
 }
