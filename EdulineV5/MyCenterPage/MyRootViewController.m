@@ -447,8 +447,13 @@
         MyBalanceVC *vc = [[MyBalanceVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (sender.tag == 2) {
-        MyScoreNewVC *vc = [[MyScoreNewVC alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([ShowAudit isEqualToString:@"1"]) {
+            MyScoreVC *vc = [[MyScoreVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            MyScoreNewVC *vc = [[MyScoreNewVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     } else if (sender.tag == 1) {
         MyIncomeVC *vc = [[MyIncomeVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
