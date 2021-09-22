@@ -58,12 +58,13 @@
                 _priceLabel.textColor = EdlineV5_Color.textFirstColor;
             }
         } else {
-            if ([alter_type isEqualToString:@"2"] || [alter_type isEqualToString:@"4"] || [alter_type isEqualToString:@"8"]) {
-                _priceLabel.text = [NSString stringWithFormat:@"-%@%@",IOSMoneyTitle,[infoData objectForKey:@"num"]];
-                _priceLabel.textColor = EdlineV5_Color.textFirstColor;
-            } else {
+            if ([alter_type boolValue]) {
+//                [alter_type isEqualToStrceing:@"2"] || [alter_type isEqualToString:@"4"] || [alter_type isEqualToString:@"8"]
                 _priceLabel.text = [NSString stringWithFormat:@"+%@%@",IOSMoneyTitle,[infoData objectForKey:@"num"]];
                 _priceLabel.textColor = EdlineV5_Color.faildColor;
+            } else {
+                _priceLabel.text = [NSString stringWithFormat:@"-%@%@",IOSMoneyTitle,[infoData objectForKey:@"num"]];
+                _priceLabel.textColor = EdlineV5_Color.textFirstColor;
             }
         }
         _timeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeForBalanceYYMMDDHHMM:[infoData objectForKey:@"create_time"]]];

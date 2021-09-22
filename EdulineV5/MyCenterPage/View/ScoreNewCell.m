@@ -64,13 +64,13 @@
     
     _scoreTitle.text = [NSString stringWithFormat:@"%@",dict[@"note"]];
     _timeLabel.text = [EdulineV5_Tool formateYYYYMMDDHHMMTime:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];
-    NSString *typeS = [NSString stringWithFormat:@"%@",dict[@"type"]];
-    if ([typeS isEqualToString:@"2"] || [typeS isEqualToString:@"5"] || [typeS isEqualToString:@"6"] || [typeS isEqualToString:@"7"]) {
-        _scoreCountLabel.text = [NSString stringWithFormat:@"-%@",[dict objectForKey:@"num"]];
-        _scoreCountLabel.textColor = EdlineV5_Color.textFirstColor;
-    } else {
+    NSString *typeS = [NSString stringWithFormat:@"%@",dict[@"alter_type"]];
+    if ([typeS boolValue]) {
         _scoreCountLabel.text = [NSString stringWithFormat:@"+%@",[dict objectForKey:@"num"]];
         _scoreCountLabel.textColor = HEXCOLOR(0xFF8A52);
+    } else {
+        _scoreCountLabel.text = [NSString stringWithFormat:@"-%@",[dict objectForKey:@"num"]];
+        _scoreCountLabel.textColor = EdlineV5_Color.textFirstColor;
     }
     CGFloat scoreCountWidth = [_scoreCountLabel.text sizeWithFont:_scoreCountLabel.font].width + 4;
     _scoreCountLabel.frame = CGRectMake(_iconImageView.left - 3 - scoreCountWidth, 0, scoreCountWidth, 30);
