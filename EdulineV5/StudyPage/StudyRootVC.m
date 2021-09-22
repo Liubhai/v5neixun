@@ -20,12 +20,19 @@
 #import "CourseMainViewController.h"
 #import "CourseDetailPlayVC.h"
 
+#import "NewStudyTimeView.h"
+
 @interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource,StudyLatestCellDelegate> {
     NSInteger currentCourseType;
     NSString *dataType;// add加入的优先 learn学习优先
     BOOL emptyData;
     BOOL shouldLoad;
 }
+
+@property (strong, nonatomic) NewStudyTimeView *studyTimeView;
+@property (strong, nonatomic) UIView *studyLatestView;
+@property (strong, nonatomic) NSMutableArray *userLearnCourseArray;
+@property (strong, nonatomic) UIView *headerView;
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSDictionary *studyInfo;
@@ -83,8 +90,10 @@
     _classArray = [NSMutableArray new];
     _offlineArray = [NSMutableArray new];
     
-    _titleImage.hidden = YES;
+    _userLearnCourseArray = [NSMutableArray new];
     
+    _titleImage.hidden = YES;
+    [self makeHeaderView];
     [self makeTableView];
     [self makeNotLoginView];
     if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
@@ -185,226 +194,428 @@
     _changeTypeBackView.hidden = !_changeTypeBackView.hidden;
 }
 
+- (void)makeHeaderView {
+    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 150 + 40 + 110 + 10)];
+    _headerView.backgroundColor = EdlineV5_Color.backColor;//[UIColor whiteColor];
+    
+    _studyTimeView = [[NewStudyTimeView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 150)];
+    [_headerView addSubview:_studyTimeView];
+    
+    _studyLatestView = [[UIView alloc] initWithFrame:CGRectMake(0, _studyTimeView.bottom, MainScreenWidth, 40)];
+    _studyLatestView.backgroundColor = [UIColor whiteColor];
+    [_headerView addSubview:_studyLatestView];
+}
+
+// MARK: - 处理整个头部的数据
+- (void)setStudyInfoData {
+    if (SWNOTEmptyDictionary(_studyInfo)) {
+        [_studyTimeView newStudyPageTimeInfo:_studyInfo];
+        [self setStudyLatestViewInfo];
+    } else {
+        [self setStudyLatestViewInfo];
+    }
+    [_headerView setHeight:_studyLatestView.bottom + 10];
+}
+
+// MARK: - 赋值最近在学
+- (void)setStudyLatestViewInfo {
+    [_userLearnCourseArray removeAllObjects];
+    [_userLearnCourseArray addObjectsFromArray:[[_studyInfo objectForKey:@"data"] objectForKey:@"latest"]];
+    
+    [_studyLatestView removeAllSubviews];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 40)];
+    view.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 40)];
+    theme.text = @"最近在学";
+    theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];
+    theme.textColor = EdlineV5_Color.textFirstColor;
+    [view addSubview:theme];
+    
+    UIButton *moreButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, 0, 30, 40)];
+    [moreButton setTitle:@"更多" forState:0];
+    [moreButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+    moreButton.titleLabel.font = SYSTEMFONT(14);
+    [moreButton addTarget:self action:@selector(jumpLearnRecord:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:moreButton];
+    
+    [_studyLatestView addSubview:view];
+    
+    UIScrollView *studyScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, view.bottom, MainScreenWidth, 20)];
+    studyScrollView.backgroundColor = [UIColor whiteColor];
+    studyScrollView.showsHorizontalScrollIndicator = NO;
+    studyScrollView.showsVerticalScrollIndicator = NO;
+    [_studyLatestView addSubview:studyScrollView];
+    
+    CGFloat maxHeight = 0;
+    CGFloat maxWidth = 0;
+    for (int i = 0; i<_userLearnCourseArray.count; i ++) {
+        UIImageView *face = [[UIImageView alloc] initWithFrame:CGRectMake(15 + (125 + 8) * i, 10, 125, 70)];
+        [face sd_setImageWithURL:EdulineUrlString([_userLearnCourseArray[i] objectForKey:@"course_cover"]) placeholderImage:DefaultImage];
+        face.layer.masksToBounds = YES;
+        face.layer.cornerRadius = 2;
+        [studyScrollView addSubview:face];
+        
+        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(face.left, face.top, 33, 20)];
+        NSString *courseType = [NSString stringWithFormat:@"%@",[_userLearnCourseArray[i] objectForKey:@"course_type"]];
+        if ([courseType isEqualToString:@"1"]) {
+            icon.image = Image(@"dianbo");
+        } else if ([courseType isEqualToString:@"2"]) {
+            icon.image = Image(@"live");
+        } else if ([courseType isEqualToString:@"3"]) {
+            icon.image = Image(@"mianshou");
+        } else if ([courseType isEqualToString:@"4"]) {
+            icon.image = Image(@"class_icon");
+        }
+        [studyScrollView addSubview:icon];
+        
+        UILabel *learnTime = [[UILabel alloc] initWithFrame:CGRectMake(face.left, face.bottom - 16, face.width, 16)];
+        learnTime.layer.backgroundColor = [UIColor colorWithRed:48/255.0 green:49/255.0 blue:51/255.0 alpha:0.5].CGColor;
+        learnTime.textColor = [UIColor whiteColor];
+        learnTime.font = SYSTEMFONT(10);
+        learnTime.text = [NSString stringWithFormat:@" 学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:[[_userLearnCourseArray[i] objectForKey:@"current_time"] integerValue]]];
+        [studyScrollView addSubview:learnTime];
+        
+        CGFloat radius = 4; // 圆角大小
+        UIRectCorner corner = UIRectCornerBottomLeft | UIRectCornerBottomRight; // 圆角位置
+        UIBezierPath * path = [UIBezierPath bezierPathWithRoundedRect:learnTime.bounds byRoundingCorners:corner cornerRadii:CGSizeMake(radius, radius)];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = learnTime.bounds;
+        maskLayer.path = path.CGPath;
+        learnTime.layer.mask = maskLayer;
+        
+        UILabel *thmeLabel = [[UILabel alloc] initWithFrame:CGRectMake(face.left, face.bottom + 10, face.width, 20)];
+        thmeLabel.font = SYSTEMFONT(13);
+        thmeLabel.textColor = EdlineV5_Color.textFirstColor;
+        thmeLabel.text = [NSString stringWithFormat:@"%@",[_userLearnCourseArray[i] objectForKey:@"section_title"]];
+        
+        maxHeight = MAX(thmeLabel.bottom + 20, maxHeight);
+        maxWidth = MAX(face.right, maxWidth);
+        [studyScrollView addSubview:thmeLabel];
+        
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(face.left, face.top, face.width, thmeLabel.bottom - face.top)];
+        btn.backgroundColor = [UIColor clearColor];
+        btn.tag = i;
+//        [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [studyScrollView addSubview:btn];
+    }
+    studyScrollView.contentSize = CGSizeMake(maxWidth + 10, 0);
+    [studyScrollView setHeight:maxHeight];
+    
+    [_studyLatestView setHeight:studyScrollView.bottom];
+}
+
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_LIUHAI_HEIGHT - MACRO_UI_TABBAR_HEIGHT) style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_LIUHAI_HEIGHT - MACRO_UI_TABBAR_HEIGHT) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
+    _tableView.tableHeaderView = _headerView;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getStudyInfo)];
     [self.view addSubview:_tableView];
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 2) {
-        if (currentCourseType == 0) {
-            emptyData = SWNOTEmptyArr(_courseArray) ? NO : YES;
-            return SWNOTEmptyArr(_courseArray) ? _courseArray.count : 1;
-        } else if (currentCourseType == 1) {
-            emptyData = SWNOTEmptyArr(_liveArray) ? NO : YES;
-            return SWNOTEmptyArr(_liveArray) ? _liveArray.count : 1;
-        } else if (currentCourseType == 2) {
-            emptyData = SWNOTEmptyArr(_classArray) ? NO : YES;
-            return SWNOTEmptyArr(_classArray) ? _classArray.count : 1;
-        } else {
-            emptyData = SWNOTEmptyArr(_offlineArray) ? NO : YES;
-            return SWNOTEmptyArr(_offlineArray) ? _offlineArray.count : 1;
-        }
-    } else if (section == 1) {
-        if (SWNOTEmptyDictionary(_studyInfo)) {
-            if ([[[_studyInfo objectForKey:@"data"] allKeys] count]) {
-                return 1;
-            } else {
-                return 0;
-            }
-        } else {
-            return 0;
-        }
+//    if (section == 2) {
+//        if (currentCourseType == 0) {
+//            emptyData = SWNOTEmptyArr(_courseArray) ? NO : YES;
+//            return SWNOTEmptyArr(_courseArray) ? _courseArray.count : 1;
+//        } else if (currentCourseType == 1) {
+//            emptyData = SWNOTEmptyArr(_liveArray) ? NO : YES;
+//            return SWNOTEmptyArr(_liveArray) ? _liveArray.count : 1;
+//        } else if (currentCourseType == 2) {
+//            emptyData = SWNOTEmptyArr(_classArray) ? NO : YES;
+//            return SWNOTEmptyArr(_classArray) ? _classArray.count : 1;
+//        } else {
+//            emptyData = SWNOTEmptyArr(_offlineArray) ? NO : YES;
+//            return SWNOTEmptyArr(_offlineArray) ? _offlineArray.count : 1;
+//        }
+//    } else if (section == 1) {
+//        if (SWNOTEmptyDictionary(_studyInfo)) {
+//            if ([[[_studyInfo objectForKey:@"data"] allKeys] count]) {
+//                return 1;
+//            } else {
+//                return 0;
+//            }
+//        } else {
+//            return 0;
+//        }
+//    }
+    if (currentCourseType == 0) {
+        emptyData = SWNOTEmptyArr(_courseArray) ? NO : YES;
+        return SWNOTEmptyArr(_courseArray) ? _courseArray.count : 1;
+    } else if (currentCourseType == 1) {
+        emptyData = SWNOTEmptyArr(_liveArray) ? NO : YES;
+        return SWNOTEmptyArr(_liveArray) ? _liveArray.count : 1;
+    } else if (currentCourseType == 2) {
+        emptyData = SWNOTEmptyArr(_classArray) ? NO : YES;
+        return SWNOTEmptyArr(_classArray) ? _classArray.count : 1;
+    } else {
+        emptyData = SWNOTEmptyArr(_offlineArray) ? NO : YES;
+        return SWNOTEmptyArr(_offlineArray) ? _offlineArray.count : 1;
     }
     return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        static NSString *reuse = @"StudyTimeCell";
-        StudyTimeCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//    if (indexPath.section == 0) {
+//        static NSString *reuse = @"StudyTimeCell";
+//        StudyTimeCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//        if (!cell) {
+//            cell = [[StudyTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+//        }
+//        [cell studyPageTimeInfo:_studyInfo];
+//        return cell;
+//    } else if (indexPath.section == 1) {
+//        static NSString *reuse = @"StudyLatestCell";
+//        StudyLatestCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//        if (!cell) {
+//            cell = [[StudyLatestCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+//        }
+//        [cell setLatestLearnInfo:[[_studyInfo objectForKey:@"data"] objectForKey:@"latest"]];
+//        cell.delegate = self;
+//        return cell;
+//    } else {
+//        if (emptyData) {
+//            static NSString *reuse = @"EmptyCell";
+//            EmptyCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//            if (!cell) {
+//                cell = [[EmptyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+//            }
+//            return cell;
+//        } else {
+//            static NSString *reuse = @"StudyCourseCell";
+//            StudyCourseCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//            if (!cell) {
+//                cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+//            }
+//            if (currentCourseType == 0) {
+//                [cell setStudyCourseInfo:_courseArray[indexPath.row]];
+//            } else if (currentCourseType == 1) {
+//                [cell setStudyCourseInfo:_liveArray[indexPath.row]];
+//            } else if (currentCourseType == 2) {
+//                [cell setStudyCourseInfo:_classArray[indexPath.row]];
+//            } else {
+//                [cell setStudyCourseInfo:_offlineArray[indexPath.row]];
+//            }
+//            return cell;
+//        }
+//    }
+    if (emptyData) {
+        static NSString *reuse = @"EmptyCell";
+        EmptyCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
-            cell = [[StudyTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            cell = [[EmptyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell studyPageTimeInfo:_studyInfo];
-        return cell;
-    } else if (indexPath.section == 1) {
-        static NSString *reuse = @"StudyLatestCell";
-        StudyLatestCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-        if (!cell) {
-            cell = [[StudyLatestCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-        }
-        [cell setLatestLearnInfo:[[_studyInfo objectForKey:@"data"] objectForKey:@"latest"]];
-        cell.delegate = self;
         return cell;
     } else {
-        if (emptyData) {
-            static NSString *reuse = @"EmptyCell";
-            EmptyCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-            if (!cell) {
-                cell = [[EmptyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-            }
-            return cell;
-        } else {
-            static NSString *reuse = @"StudyCourseCell";
-            StudyCourseCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-            if (!cell) {
-                cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-            }
-            if (currentCourseType == 0) {
-                [cell setStudyCourseInfo:_courseArray[indexPath.row]];
-            } else if (currentCourseType == 1) {
-                [cell setStudyCourseInfo:_liveArray[indexPath.row]];
-            } else if (currentCourseType == 2) {
-                [cell setStudyCourseInfo:_classArray[indexPath.row]];
-            } else {
-                [cell setStudyCourseInfo:_offlineArray[indexPath.row]];
-            }
-            return cell;
+        static NSString *reuse = @"StudyCourseCell";
+        StudyCourseCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
+        if (currentCourseType == 0) {
+            [cell setStudyCourseInfo:_courseArray[indexPath.row]];
+        } else if (currentCourseType == 1) {
+            [cell setStudyCourseInfo:_liveArray[indexPath.row]];
+        } else if (currentCourseType == 2) {
+            [cell setStudyCourseInfo:_classArray[indexPath.row]];
+        } else {
+            [cell setStudyCourseInfo:_offlineArray[indexPath.row]];
+        }
+        return cell;
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return nil;
-    } else if (section == 1) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 40)];
-        view.backgroundColor = [UIColor whiteColor];
-        
-        UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 40)];
-        theme.text = @"最近在学";
-        theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];//SYSTEMFONT(16);
-        theme.textColor = EdlineV5_Color.textFirstColor;
-        [view addSubview:theme];
-        
-        UIButton *moreButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, 0, 30, 40)];
-        [moreButton setTitle:@"更多" forState:0];
-        [moreButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-        moreButton.titleLabel.font = SYSTEMFONT(14);
-        [moreButton addTarget:self action:@selector(jumpLearnRecord:) forControlEvents:UIControlEventTouchUpInside];
-        [view addSubview:moreButton];
-        
-        return view;
-    } else {
-        //study_shaixuan
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10 + 28 + 13 + 22 + 20)];
-        view.backgroundColor = [UIColor whiteColor];
-        // 10 28 13 22 20 // 16
-        
-        UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 100, 22)];
-        theme.text = @"加入的课程";
-        theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];//SYSTEMFONT(16);
-        theme.textColor = EdlineV5_Color.textFirstColor;
-        [view addSubview:theme];
-        
-        if (!_changeTypeBtn) {
-            _changeTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 5 - 30, 0, 30, 30)];
-            _changeTypeBtn.centerY = theme.centerY;
-            [_changeTypeBtn setImage:Image(@"study_shaixuan") forState:0];
-            [_changeTypeBtn addTarget:self action:@selector(makeChangeTypeBackView) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [view addSubview:_changeTypeBtn];
-        
-        NSArray *courseTypeArray = @[@"点播",@"直播",@"班级",@"面授"];
-        for (int i = 0; i < courseTypeArray.count; i++) {
-            UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(15 + 77 * i, theme.bottom + 13, 65, 28)];
-            btn.layer.masksToBounds = YES;
-            btn.layer.cornerRadius = 14;
-            [btn setTitle:courseTypeArray[i] forState:0];
-            [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-            [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
-            btn.titleLabel.font = SYSTEMFONT(14);
-            [btn setBackgroundColor:EdlineV5_Color.fengeLineColor];
-            [btn addTarget:self action:@selector(typeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-            [view addSubview:btn];
-            if (i == currentCourseType) {
-                btn.selected = YES;
-                btn.backgroundColor = EdlineV5_Color.themeColor;
-            } else {
-                btn.selected = NO;
-                [btn setBackgroundColor:EdlineV5_Color.fengeLineColor];
-            }
-            if (i == 0) {
-                _courseBtn = btn;
-            } else if (i == 1) {
-                _liveBtn = btn;
-            } else if (i == 2) {
-                _classBtn = btn;
-            } else if (i == 3) {
-                _offlineBtn = btn;
-            }
-        }
-        return view;
+    //study_shaixuan
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10 + 28 + 13 + 22 + 20)];
+    view.backgroundColor = [UIColor whiteColor];
+    // 10 28 13 22 20 // 16
+    
+    UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 100, 22)];
+    theme.text = @"加入的课程";
+    theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];//SYSTEMFONT(16);
+    theme.textColor = EdlineV5_Color.textFirstColor;
+    [view addSubview:theme];
+    
+    if (!_changeTypeBtn) {
+        _changeTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 5 - 30, 0, 30, 30)];
+        _changeTypeBtn.centerY = theme.centerY;
+        [_changeTypeBtn setImage:Image(@"study_shaixuan") forState:0];
+        [_changeTypeBtn addTarget:self action:@selector(makeChangeTypeBackView) forControlEvents:UIControlEventTouchUpInside];
     }
+    [view addSubview:_changeTypeBtn];
+    
+    NSArray *courseTypeArray = @[@"点播",@"直播",@"班级",@"面授"];
+    for (int i = 0; i < courseTypeArray.count; i++) {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(15 + 77 * i, theme.bottom + 13, 65, 28)];
+        btn.layer.masksToBounds = YES;
+        btn.layer.cornerRadius = 14;
+        [btn setTitle:courseTypeArray[i] forState:0];
+        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+        [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+        btn.titleLabel.font = SYSTEMFONT(14);
+        [btn setBackgroundColor:EdlineV5_Color.fengeLineColor];
+        [btn addTarget:self action:@selector(typeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:btn];
+        if (i == currentCourseType) {
+            btn.selected = YES;
+            btn.backgroundColor = EdlineV5_Color.themeColor;
+        } else {
+            btn.selected = NO;
+            [btn setBackgroundColor:EdlineV5_Color.fengeLineColor];
+        }
+        if (i == 0) {
+            _courseBtn = btn;
+        } else if (i == 1) {
+            _liveBtn = btn;
+        } else if (i == 2) {
+            _classBtn = btn;
+        } else if (i == 3) {
+            _offlineBtn = btn;
+        }
+    }
+    return view;
+//    if (section == 0) {
+//        return nil;
+//    } else if (section == 1) {
+//        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 40)];
+//        view.backgroundColor = [UIColor whiteColor];
+//
+//        UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 100, 40)];
+//        theme.text = @"最近在学";
+//        theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];//SYSTEMFONT(16);
+//        theme.textColor = EdlineV5_Color.textFirstColor;
+//        [view addSubview:theme];
+//
+//        UIButton *moreButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 30, 0, 30, 40)];
+//        [moreButton setTitle:@"更多" forState:0];
+//        [moreButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+//        moreButton.titleLabel.font = SYSTEMFONT(14);
+//        [moreButton addTarget:self action:@selector(jumpLearnRecord:) forControlEvents:UIControlEventTouchUpInside];
+//        [view addSubview:moreButton];
+//
+//        return view;
+//    } else {
+//        //study_shaixuan
+//        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10 + 28 + 13 + 22 + 20)];
+//        view.backgroundColor = [UIColor whiteColor];
+//        // 10 28 13 22 20 // 16
+//
+//        UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 100, 22)];
+//        theme.text = @"加入的课程";
+//        theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];//SYSTEMFONT(16);
+//        theme.textColor = EdlineV5_Color.textFirstColor;
+//        [view addSubview:theme];
+//
+//        if (!_changeTypeBtn) {
+//            _changeTypeBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 5 - 30, 0, 30, 30)];
+//            _changeTypeBtn.centerY = theme.centerY;
+//            [_changeTypeBtn setImage:Image(@"study_shaixuan") forState:0];
+//            [_changeTypeBtn addTarget:self action:@selector(makeChangeTypeBackView) forControlEvents:UIControlEventTouchUpInside];
+//        }
+//        [view addSubview:_changeTypeBtn];
+//
+//        NSArray *courseTypeArray = @[@"点播",@"直播",@"班级",@"面授"];
+//        for (int i = 0; i < courseTypeArray.count; i++) {
+//            UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(15 + 77 * i, theme.bottom + 13, 65, 28)];
+//            btn.layer.masksToBounds = YES;
+//            btn.layer.cornerRadius = 14;
+//            [btn setTitle:courseTypeArray[i] forState:0];
+//            [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+//            [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+//            btn.titleLabel.font = SYSTEMFONT(14);
+//            [btn setBackgroundColor:EdlineV5_Color.fengeLineColor];
+//            [btn addTarget:self action:@selector(typeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+//            [view addSubview:btn];
+//            if (i == currentCourseType) {
+//                btn.selected = YES;
+//                btn.backgroundColor = EdlineV5_Color.themeColor;
+//            } else {
+//                btn.selected = NO;
+//                [btn setBackgroundColor:EdlineV5_Color.fengeLineColor];
+//            }
+//            if (i == 0) {
+//                _courseBtn = btn;
+//            } else if (i == 1) {
+//                _liveBtn = btn;
+//            } else if (i == 2) {
+//                _classBtn = btn;
+//            } else if (i == 3) {
+//                _offlineBtn = btn;
+//            }
+//        }
+//        return view;
+//    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section == 0) {
-        return nil;
-    } else if (section == 1) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
-        view.backgroundColor = EdlineV5_Color.fengeLineColor;
-        return view;
-    } else {
-        if (currentCourseType == 0) {
-            if (_courseArray.count < 4) {
-                return nil;
-            }
-        } else if (currentCourseType == 1) {
-            if (_liveArray.count < 4) {
-                return nil;
-            }
-        } else if (currentCourseType == 2) {
-            if (_classArray.count < 4) {
-                return nil;
-            }
-        } else {
-            if (_offlineArray.count < 4) {
-                return nil;
-            }
-        }
-        
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 18 * 3)];
-        view.backgroundColor = [UIColor whiteColor];
-        
-        UIButton *moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 17, 80, 20)];
-        [moreBtn setImage:[Image(@"study_more") converToMainColor] forState:0];
-        [moreBtn setTitle:@"查看更多" forState:0];
-        moreBtn.titleLabel.font = SYSTEMFONT(13);
-        [moreBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
-        [EdulineV5_Tool dealButtonImageAndTitleUI:moreBtn];
-        moreBtn.centerX = MainScreenWidth / 2.0;
-        [moreBtn addTarget:self action:@selector(moreJoinCourseButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [view addSubview:moreBtn];
-        
-        return view;
-    }
+    return nil;
+//    if (section == 0) {
+//        return nil;
+//    } else if (section == 1) {
+//        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 10)];
+//        view.backgroundColor = EdlineV5_Color.fengeLineColor;
+//        return view;
+//    } else {
+//        if (currentCourseType == 0) {
+//            if (_courseArray.count < 4) {
+//                return nil;
+//            }
+//        } else if (currentCourseType == 1) {
+//            if (_liveArray.count < 4) {
+//                return nil;
+//            }
+//        } else if (currentCourseType == 2) {
+//            if (_classArray.count < 4) {
+//                return nil;
+//            }
+//        } else {
+//            if (_offlineArray.count < 4) {
+//                return nil;
+//            }
+//        }
+//
+//        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 18 * 3)];
+//        view.backgroundColor = [UIColor whiteColor];
+//
+//        UIButton *moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 17, 80, 20)];
+//        [moreBtn setImage:[Image(@"study_more") converToMainColor] forState:0];
+//        [moreBtn setTitle:@"查看更多" forState:0];
+//        moreBtn.titleLabel.font = SYSTEMFONT(13);
+//        [moreBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+//        [EdulineV5_Tool dealButtonImageAndTitleUI:moreBtn];
+//        moreBtn.centerX = MainScreenWidth / 2.0;
+//        [moreBtn addTarget:self action:@selector(moreJoinCourseButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [view addSubview:moreBtn];
+//
+//        return view;
+//    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return 0.001;
-    } else if (section == 1) {
-        return 40;
-    } else {
-        return 10 + 28 + 13 + 22 + 20;
-    }
+    return 10 + 28 + 13 + 22 + 20;
+//    if (section == 0) {
+//        return 0.001;
+//    } else if (section == 1) {
+//        return 40;
+//    } else {
+//        return 10 + 28 + 13 + 22 + 20;
+//    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.001;
     if (section == 0) {
         return 0.001;
     } else if (section == 1) {
@@ -432,47 +643,68 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    if (emptyData) {
         return 150;
-    } else if (indexPath.section == 1) {
-        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
-    } else {
-        if (emptyData) {
-            return 150;
-        }
-        return 106;
     }
+    return 106;
+//    if (indexPath.section == 0) {
+//        return 150;
+//    } else if (indexPath.section == 1) {
+//        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
+//    } else {
+//        if (emptyData) {
+//            return 150;
+//        }
+//        return 106;
+//    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 2) {
-        if (emptyData) {
-            return;
-        }
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        NSDictionary *info;
-        if (currentCourseType == 0) {
-            info = _courseArray[indexPath.row];
-        } else if (currentCourseType == 1) {
-            info = _liveArray[indexPath.row];
-        } else if (currentCourseType == 2) {
-            info = _classArray[indexPath.row];
-        } else {
-            info = _offlineArray[indexPath.row];
-        }
-        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
-        vc.ID = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_id"]];
-        vc.courselayer = [NSString stringWithFormat:@"%@",[info objectForKey:@"section_level"]];
-        vc.isLive = [[NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
-        vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
-        [self.navigationController pushViewController:vc animated:YES];
+    if (emptyData) {
+        return;
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSDictionary *info;
+    if (currentCourseType == 0) {
+        info = _courseArray[indexPath.row];
+    } else if (currentCourseType == 1) {
+        info = _liveArray[indexPath.row];
+    } else if (currentCourseType == 2) {
+        info = _classArray[indexPath.row];
+    } else {
+        info = _offlineArray[indexPath.row];
+    }
+    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_id"]];
+    vc.courselayer = [NSString stringWithFormat:@"%@",[info objectForKey:@"section_level"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+    vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+    [self.navigationController pushViewController:vc animated:YES];
+//    if (indexPath.section == 2) {
+//        if (emptyData) {
+//            return;
+//        }
+//        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//        NSDictionary *info;
+//        if (currentCourseType == 0) {
+//            info = _courseArray[indexPath.row];
+//        } else if (currentCourseType == 1) {
+//            info = _liveArray[indexPath.row];
+//        } else if (currentCourseType == 2) {
+//            info = _classArray[indexPath.row];
+//        } else {
+//            info = _offlineArray[indexPath.row];
+//        }
+//        CourseMainViewController *vc = [[CourseMainViewController alloc] init];
+//        vc.ID = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_id"]];
+//        vc.courselayer = [NSString stringWithFormat:@"%@",[info objectForKey:@"section_level"]];
+//        vc.isLive = [[NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
+//        vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    CGRect btn111 = [self.tableView rectForHeaderInSection:2];
-//    CGPoint btnPoint = CGPointMake(btn111.origin.x + MainScreenWidth - 15 - 123, btn111.origin.y + 16 + 30 + 5 - scrollView.contentOffset.y);
-//    _changeTypeBackView.frame = CGRectMake(btnPoint.x, btnPoint.y, 123, 77);
     if (_changeTypeBackView) {
         _changeTypeBackView.hidden = YES;
     }
@@ -597,6 +829,7 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _studyInfo = [NSDictionary dictionaryWithDictionary:responseObject];
+                    [self setStudyInfoData];
                     [_courseArray removeAllObjects];
                     [_liveArray removeAllObjects];
                     [_offlineArray removeAllObjects];
@@ -605,6 +838,7 @@
                     [_liveArray addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"course"] objectForKey:@"live"]];
                     [_offlineArray addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"course"] objectForKey:@"offline"]];
                     [_classArray addObjectsFromArray:[[[responseObject objectForKey:@"data"] objectForKey:@"course"] objectForKey:@"classes"]];
+                    _tableView.tableHeaderView = _headerView;
                     [_tableView reloadData];
                 }
             }
