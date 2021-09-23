@@ -61,7 +61,7 @@
     if (!cell) {
         cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setStudyCourseInfo:_dataSource[indexPath.row]];
+//    [cell setStudyCourseInfo:_dataSource[indexPath.row]];
     return cell;
 }
 

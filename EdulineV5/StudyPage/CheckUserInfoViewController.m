@@ -263,15 +263,15 @@
             if (!cell) {
                 cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
             }
-            if (currentCourseType == 0) {
-                [cell setStudyCourseInfo:_courseArray[indexPath.row]];
-            } else if (currentCourseType == 1) {
-                [cell setStudyCourseInfo:_liveArray[indexPath.row]];
-            } else if (currentCourseType == 2) {
-                [cell setStudyCourseInfo:_classArray[indexPath.row]];
-            } else {
-                [cell setStudyCourseInfo:_offlineArray[indexPath.row]];
-            }
+//            if (currentCourseType == 0) {
+//                [cell setStudyCourseInfo:_courseArray[indexPath.row]];
+//            } else if (currentCourseType == 1) {
+//                [cell setStudyCourseInfo:_liveArray[indexPath.row]];
+//            } else if (currentCourseType == 2) {
+//                [cell setStudyCourseInfo:_classArray[indexPath.row]];
+//            } else {
+//                [cell setStudyCourseInfo:_offlineArray[indexPath.row]];
+//            }
             return cell;
         }
     }
