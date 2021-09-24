@@ -237,7 +237,7 @@
     [_navZanButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_faceImageView addSubview:_navZanButton];
     
-    _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4)];
+    _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4 + 18)];
     [_headerView addSubview:_courseContentView];
     
     /**优惠卷*/
@@ -1010,8 +1010,11 @@
             vc.courseType = _courseType;
             if ([_dataSource objectForKey:@"recent_learn"]) {
                 if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
-                    vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
-                    vc.shouldContinueLearn = YES;
+                    NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+                    if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+                        vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
+                        vc.shouldContinueLearn = YES;
+                    }
                 }
             }
             [self.navigationController pushViewController:vc animated:YES];

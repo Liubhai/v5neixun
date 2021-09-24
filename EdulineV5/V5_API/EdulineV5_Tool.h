@@ -57,6 +57,7 @@
 + (NSString *)timeFormatterYYYYMMDD:(NSString *)time;
 + (NSString *)formatterDate:(NSString *)time;
 + (NSString *)timeForYYYY:(NSString *)time;
++ (NSString *)timeForYYYYMMDDNianYueRI:(NSString *)time;
 + (NSString *)timeForMMDD:(NSString *)time;
 + (NSString *)timeForBalanceYYMMDDHHMM:(NSString *)time;
 

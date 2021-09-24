@@ -26,7 +26,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     page = 1;
-    outdateIndex = 3;
+    outdateIndex = 0;
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
     [self addTableView];
@@ -89,7 +89,8 @@
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row >= outdateIndex) {
-        return;;
+        [self showHudInView:self.view showHint:@"课程已过期"];
+        return;
     }
     NSDictionary *info = _dataSource[indexPath.row];
     CourseMainViewController *vc = [[CourseMainViewController alloc] init];
@@ -99,6 +100,7 @@
     vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
+// zhuileshangqu diaudbidtinanvguidanxinleqilai zizhaodaowmei udnau nfoasofaosnfuwnasofnasofa sofaisfian aomialingshengqi ians woamfoasnf nausfn iaisnfusnfa mosfnas nuansifans 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (!self.cellTabelCanScroll) {
@@ -131,6 +133,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
                 [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"normal"]];
+                outdateIndex = _dataSource.count;
                 [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"expired"]];
 //                if (_dataSource.count<10) {
 //                    _tableView.mj_footer.hidden = YES;

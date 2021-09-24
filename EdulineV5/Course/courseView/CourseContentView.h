@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) StarEvaluator *courseStar;
 @property (strong, nonatomic) UILabel *courseLearn;
 @property (strong, nonatomic) UILabel *coursePrice;
+@property (strong, nonatomic) UILabel *dateTimeLabel;
 @property (strong, nonatomic) UIView *lineView1;
 @property (strong, nonatomic) UIButton *detailButton;
 @property (strong, nonatomic) NSDictionary *courseInfo;

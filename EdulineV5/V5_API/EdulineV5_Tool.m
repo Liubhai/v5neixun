@@ -606,6 +606,25 @@ static EdulineV5_Tool *_sharedInstance;
     return theDay;
 }
 
++ (NSString *)timeForYYYYMMDDNianYueRI:(NSString *)time {
+    if (!time) {
+        return @"";
+    }
+    NSTimeInterval secondsPer = 24*60*60;
+    NSDate *today = [[NSDate alloc]init];
+    NSDate *yesterday = [today dateByAddingTimeInterval:-secondsPer];
+    NSString *yesterdayString = [[yesterday description]substringToIndex:10];
+    NSString *todayString = [[today description]substringToIndex:10];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:time.integerValue];
+    NSString *dateString = [[date description]substringToIndex:10];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
+    NSDate *nowDate = [NSDate dateWithTimeIntervalSince1970:time.integerValue];
+    NSString *theDay = [dateFormatter stringFromDate:nowDate];//日期的年月日
+    return theDay;
+}
+
 + (NSString *)formatterDate:(NSString *)time {
     if ([time isEqual:[NSNull null]]) {
         

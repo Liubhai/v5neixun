@@ -1106,7 +1106,8 @@
             [_zanButton setImage:Image(@"course_collect_nor") forState:0];
         }
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:YES];
-        [_couponContentView setHeight:[[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"] ? (86-35+4) : (86 + 4)];
+        [_courseContentView setHeight:[[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"] ? (86-35+4) : (86 + 4)];
+        [_headerView setHeight:_courseContentView.bottom];
         if ([[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"]) {
             [_headerView setHeight:_courseContentView.bottom];
             sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - (_isLive ? 0 : 50) - _headerView.height;

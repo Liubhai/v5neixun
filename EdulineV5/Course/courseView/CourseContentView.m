@@ -56,7 +56,12 @@
     _coursePrice.font = SYSTEMFONT(13);
     [self addSubview:_coursePrice];
     
-    _lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4)];
+    _dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _courseScore.bottom, 200, 18)];
+    _dateTimeLabel.font = SYSTEMFONT(13);
+    _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+    [self addSubview:_dateTimeLabel];
+    
+    _lineView1 = [[UIView alloc] initWithFrame:CGRectMake(0, _dateTimeLabel.bottom + 10, MainScreenWidth, 4)];
     _lineView1.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self addSubview:_lineView1];
     [self setHeight:_lineView1.bottom];
@@ -174,6 +179,22 @@
             }
         }
     }
+    
+    // 有效期处理
+    NSString *term_time = [NSString stringWithFormat:@"%@",contentInfo[@"term_time"]];
+    if ([term_time isEqualToString:@"0"]) {
+        _dateTimeLabel.text = @"永久有效";
+        _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+    } else if (term_time.length>4) {
+        _dateTimeLabel.text = [NSString stringWithFormat:@"%@前有效",[EdulineV5_Tool timeForYYYYMMDDNianYueRI:term_time]];
+        _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+    } else {
+        _dateTimeLabel.text = [NSString stringWithFormat:@"购买之日起%@天内有效",term_time];
+        NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_dateTimeLabel.text];
+        [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(5, term_time.length)];
+        _dateTimeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+    }
+    
     if (showTitleOnly) {
         _courseTitleLabel.frame = CGRectMake(15, 0, MainScreenWidth - 15 - (_detailButton.width + 15), 86 - 35);
         _lianzaiIcon.hidden = YES;
@@ -181,6 +202,7 @@
         _coursePrice.hidden = YES;
         _courseScore.hidden = YES;
         _courseLearn.hidden = YES;
+        _dateTimeLabel.hidden = YES;
         
         _sectionCountLabel.hidden = NO;
         _detailButton.hidden = NO;
@@ -200,7 +222,14 @@
             _circleView.progress = 100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
             _circleView.hidden = NO;
             _percentlabel.hidden = NO;
-            _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
+            if ([sectionCount isEqualToString:@"0"]) {
+                _percentlabel.text = @"0%";
+            } else {
+                _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
+            }
+            _dateTimeLabel.hidden = YES;
+            _lineView1.frame = CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4);
+            [self setHeight:_lineView1.bottom];
         }
     }
 }
