@@ -1257,6 +1257,9 @@
         
         [_courseDownView setCOurseInfoData:_dataSource];
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:NO];
+//        NSString *is_buy = [NSString stringWithFormat:@"%@",_dataSource[@"is_buy"]];
+//        [_courseContentView setHeight:[is_buy isEqualToString:@"1"] ? (86 + 4 + 18) : (86 + 4)];
+//        [_couponContentView setTop:_courseContentView.bottom];
         NSArray *coupon_Array = [NSArray arrayWithArray:_dataSource[@"recommend_coupon"]];
         NSString *coupon_count = [NSString stringWithFormat:@"%@",_dataSource[@"coupon_count"]];
         if ([ShowAudit isEqualToString:@"1"]) {

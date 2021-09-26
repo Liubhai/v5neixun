@@ -180,21 +180,6 @@
         }
     }
     
-    // 有效期处理
-    NSString *term_time = [NSString stringWithFormat:@"%@",contentInfo[@"term_time"]];
-    if ([term_time isEqualToString:@"0"]) {
-        _dateTimeLabel.text = @"永久有效";
-        _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
-    } else if (term_time.length>4) {
-        _dateTimeLabel.text = [NSString stringWithFormat:@"%@前有效",[EdulineV5_Tool timeForYYYYMMDDNianYueRI:term_time]];
-        _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
-    } else {
-        _dateTimeLabel.text = [NSString stringWithFormat:@"购买之日起%@天内有效",term_time];
-        NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_dateTimeLabel.text];
-        [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(5, term_time.length)];
-        _dateTimeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
-    }
-    
     if (showTitleOnly) {
         _courseTitleLabel.frame = CGRectMake(15, 0, MainScreenWidth - 15 - (_detailButton.width + 15), 86 - 35);
         _lianzaiIcon.hidden = YES;
@@ -231,6 +216,36 @@
             _lineView1.frame = CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4);
             [self setHeight:_lineView1.bottom];
         }
+    } else {
+        NSString *is_buy = [NSString stringWithFormat:@"%@",_courseInfo[@"is_buy"]];
+        
+        if ([is_buy isEqualToString:@"1"]) {
+            // 有效期处理
+            NSString *term_time = [NSString stringWithFormat:@"%@",contentInfo[@"term_rest"]];
+            if ([term_time isEqualToString:@"-1"]) {
+                _dateTimeLabel.text = @"永久有效";
+                _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+            } else {
+                _dateTimeLabel.text = [NSString stringWithFormat:@"%@前有效",[EdulineV5_Tool currentdateIntervalAddDurationTime:term_time]];
+                _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+            }
+        } else {
+            // 有效期处理
+            NSString *term_time = [NSString stringWithFormat:@"%@",contentInfo[@"term_time"]];
+            if ([term_time isEqualToString:@"0"]) {
+                _dateTimeLabel.text = @"永久有效";
+                _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+            } else if (term_time.length>4) {
+                _dateTimeLabel.text = [NSString stringWithFormat:@"%@前有效",[EdulineV5_Tool timeForYYYYMMDDNianYueRI:term_time]];
+                _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+            } else {
+                _dateTimeLabel.text = [NSString stringWithFormat:@"购买之日起%@天内有效",term_time];
+                NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_dateTimeLabel.text];
+                [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(5, term_time.length)];
+                _dateTimeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+            }
+        }
+        [self setHeight:_lineView1.bottom];
     }
 }
 
