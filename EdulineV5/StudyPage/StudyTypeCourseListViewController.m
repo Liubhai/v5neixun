@@ -100,7 +100,6 @@
     vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
-// zhuileshangqu diaudbidtinanvguidanxinleqilai zizhaodaowmei udnau nfoasofaosnfuwnasofnasofa sofaisfian aomialingshengqi ians woamfoasnf nausfn iaisnfusnfa mosfnas nuansifans 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (!self.cellTabelCanScroll) {

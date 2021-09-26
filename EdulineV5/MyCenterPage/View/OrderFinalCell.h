@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *countLabel;
 
 
-- (void)setOrderFinalInfo:(NSDictionary *)OrderFinalInfo;
+- (void)setOrderFinalInfo:(NSDictionary *)OrderFinalInfo orderStatus:(NSString *)orderStatus;
 
 @end
 

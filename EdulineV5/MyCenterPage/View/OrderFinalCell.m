@@ -44,7 +44,7 @@
     _dateLine = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _theme.bottom + 5, _theme.width, 15)];
     _dateLine.font = SYSTEMFONT(11);
     _dateLine.textColor = EdlineV5_Color.textThirdColor;
-    _dateLine.hidden = YES;
+//    _dateLine.hidden = YES;
     [self.contentView addSubview:_dateLine];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 12 - 100, _faceImageView.top, 100, 24)];
@@ -66,7 +66,7 @@
     [self.contentView addSubview:_countLabel];
 }
 
-- (void)setOrderFinalInfo:(NSDictionary *)OrderFinalInfo {
+- (void)setOrderFinalInfo:(NSDictionary *)OrderFinalInfo orderStatus:(NSString *)orderStatus {
     // 1 点播 2 直播 3 面授 4 专辑
     //_courseFaceImageView.frame = CGRectMake(15, 15, 32, 16);
     NSString *courseType = [NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"type_id"]];
@@ -113,8 +113,6 @@
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     _priceLabel.frame = CGRectMake(MainScreenWidth - 12 - priceWidth, _faceImageView.top, priceWidth, 24);
     
-    
-    
     _scribing_price.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:[OrderFinalInfo objectForKey:@"scribing_price"]]];
     NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_scribing_price.text];
     [mut addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:NSMakeRange(0, _scribing_price.text.length)];
@@ -143,6 +141,22 @@
     
     _dateLine.frame = CGRectMake(_faceImageView.right + 10, _theme.bottom + 5, _theme.width, 15);
     
+    if ([orderStatus isEqualToString:@"20"]) {
+        _dateLine.hidden = NO;
+        NSString *timeLine = [NSString stringWithFormat:@"%@",OrderFinalInfo[@"expire_rest"]];
+        if ([timeLine isEqualToString:@"-1"]) {
+            _dateLine.text = @"永久有效";
+            _dateLine.textColor = EdlineV5_Color.textThirdColor;
+        } else {
+            _dateLine.text = [NSString stringWithFormat:@"距离课程到期还有%@天",timeLine];
+            NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_dateLine.text];
+            [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(8, timeLine.length)];
+            _dateLine.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+        }
+    } else {
+        _dateLine.hidden = YES;
+    }
+    
     
 //    _priceLabel.frame = CGRectMake(MainScreenWidth - 12 - 100, _faceImageView.top, 100, 24);
     
@@ -152,12 +166,11 @@
     
     _countLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _dateLine.top, 100, 15);
     
-    
-    if ([[NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"expire_time"]] isEqualToString:@"0"] || !SWNOTEmptyStr([OrderFinalInfo objectForKey:@"expire_time"])) {
-        _dateLine.text = @"永久有效";
-    } else {
-        _dateLine.text = [NSString stringWithFormat:@"有效期至%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"expire_time"]]]];
-    }
+//    if ([[NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"expire_time"]] isEqualToString:@"0"] || !SWNOTEmptyStr([OrderFinalInfo objectForKey:@"expire_time"])) {
+//        _dateLine.text = @"永久有效";
+//    } else {
+//        _dateLine.text = [NSString stringWithFormat:@"有效期至%@",[EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",[OrderFinalInfo objectForKey:@"expire_time"]]]];
+//    }
     
     if ([courseType isEqualToString:@"1"]) {
         [self setHeight:_faceImageView.bottom + 7.5];

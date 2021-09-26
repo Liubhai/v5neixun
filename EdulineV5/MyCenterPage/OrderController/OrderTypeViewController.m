@@ -69,8 +69,8 @@
     if (!cell) {
         cell = [[OrderFinalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    
-    [cell setOrderFinalInfo:_dataSource[indexPath.section][@"products"][indexPath.row]];
+    NSString *statusString = [NSString stringWithFormat:@"%@",_dataSource[indexPath.section][@"status"]];
+    [cell setOrderFinalInfo:_dataSource[indexPath.section][@"products"][indexPath.row] orderStatus:statusString];
     return cell;
 }
 

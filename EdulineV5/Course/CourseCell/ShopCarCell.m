@@ -52,7 +52,7 @@
     _course_card.image = Image(@"lessoncard_icon");
     _course_card.hidden = YES;
     
-    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, _courseFaceImageView.bottom - 15, 150, 15)];
+    _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 200, _courseFaceImageView.bottom - 15, 200, 15)];
     _timeLabel.font = SYSTEMFONT(11);
     _timeLabel.textColor = EdlineV5_Color.textThirdColor;
     _timeLabel.textAlignment = NSTextAlignmentRight;
@@ -80,7 +80,7 @@
         _hasCourseCardImageView.hidden = NO;
     } else {
         _selectedIconBtn.hidden = YES;
-        _timeLabel.hidden = YES;
+        _timeLabel.hidden = NO;
         _courseHourLabel.hidden = NO;
         _hasCourseCardImageView.hidden = YES;
     }
@@ -124,6 +124,21 @@
         _courseTypeImageView.image = Image(@"class_icon");
     }
     _courseHourLabel.text = [NSString stringWithFormat:@"%@课时",model.section_count];
+    
+    NSString *timeLine = [NSString stringWithFormat:@"%@",model.term_time];
+    if ([timeLine isEqualToString:@"0"]) {
+        _timeLabel.text = @"永久有效";
+        _timeLabel.textColor = EdlineV5_Color.textThirdColor;
+    } else if (timeLine.length>4) {
+        _timeLabel.text = [NSString stringWithFormat:@"%@前有效",[EdulineV5_Tool timeForYYYYMMDDNianYueRI:timeLine]];
+        _timeLabel.textColor = EdlineV5_Color.textThirdColor;
+    } else {
+        _timeLabel.text = [NSString stringWithFormat:@"购买之日起%@天内有效",timeLine];
+        NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_timeLabel.text];
+        [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(5, timeLine.length)];
+        _timeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+    }
+    
 }
 
 - (void)selectedBtnClick:(UIButton *)sender {
