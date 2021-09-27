@@ -12,6 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CourseTestListCell : UITableViewCell
 
+@property (strong, nonatomic) UIImageView *iconView;
+@property (strong, nonatomic) UILabel *testTitle;
+@property (strong, nonatomic) UIView *lineView;
+
+- (void)setCourseTestCellInfoData:(NSDictionary *)dict;
+
 @end
 
 NS_ASSUME_NONNULL_END

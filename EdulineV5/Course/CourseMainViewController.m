@@ -41,6 +41,7 @@
 #import "CourseActivityView.h"
 #import "GroupListPopViewController.h"
 #import "GroupDetailViewController.h"
+#import "CourseTestListVC.h"//课程详情页考试列表
 
 #define FaceImageHeight 207
 
@@ -52,6 +53,8 @@
     // 活动倒计时
     NSInteger eventTime;
     NSTimer *eventTimer;
+    
+    BOOL hasTest;//是否有考试
 }
 
 /**三大子页面*/
@@ -60,6 +63,7 @@
 @property (strong, nonatomic) CourseTreeListViewController *courseTreeListVC;
 @property (strong, nonatomic) CourseCommentListVC *commentVC;
 @property (strong, nonatomic) CourseStudentListViewController *courseStudentListVC;
+@property (strong, nonatomic) CourseTestListVC *courseTestListVC;
 
 /**封面*/
 @property (strong, nonatomic) UIImageView *faceImageView;
@@ -80,6 +84,8 @@
 
 /**子视图个数*/
 @property (strong, nonatomic) NSMutableArray *tabClassArray;
+
+@property (strong, nonatomic) NSMutableArray *courseTestLietArray;
 
 ///新增内容
 @property (strong, nonatomic) LBHTableView *tableView;
@@ -135,19 +141,35 @@
         self.navigationController.viewControllers = [NSArray arrayWithArray:vcArray];
     }
     
+    hasTest = YES;
+    
     _isClassNew = YES;
     /// 新增内容
     self.canScroll = YES;
     self.canScrollAfterVideoPlay = YES;
     
+    _courseTestLietArray = [NSMutableArray new];
+    
     _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评"]];
+    if (hasTest) {
+        _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评",@"考试"]];
+    }
     if ([ShowCourseComment isEqualToString:@"0"]) {
         _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录"]];
+        if (hasTest) {
+            _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"考试"]];
+        }
     }
     if ([_courseType isEqualToString:@"4"]) {
         _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评",@"学员"]];
+        if (hasTest) {
+            _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"点评",@"学员",@"考试"]];
+        }
         if ([ShowCourseComment isEqualToString:@"0"]) {
             _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"学员"]];
+            if (hasTest) {
+                _tabClassArray = [NSMutableArray arrayWithArray:@[@"简介",@"目录",@"学员",@"考试"]];
+            }
         }
     }
     
@@ -318,6 +340,8 @@
                     self.commentButton = btn;
                 } else if (i == 3) {
                     self.recordButton = btn;
+                } else if (i == 4) {
+                    self.questionButton = btn;
                 }
                 [weakself.bg addSubview:btn];
             }
@@ -467,6 +491,27 @@
                         [_courseStudentListVC getStudentListInfo];
                     }
                 }
+                if (hasTest) {
+                    if (_courseTestListVC == nil) {
+                        _courseTestListVC = [[CourseTestListVC alloc] init];
+                        _courseTestListVC.courseId = weakself.ID;
+                        _courseTestListVC.tabelHeight = sectionHeight - 47;
+                        _courseTestListVC.vc = weakself;
+                        _courseTestListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseTestListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
+                        [weakself.mainScroll addSubview:weakself.courseTestListVC.view];
+                        [weakself addChildViewController:weakself.courseTestListVC];
+                        [_courseTestListVC getCourseTestListInfo:_dataSource];
+                    } else {
+                        _courseTestListVC.courseId = weakself.ID;
+                        _courseTestListVC.tabelHeight = sectionHeight - 47;
+                        _courseTestListVC.vc = weakself;
+                        _courseTestListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseTestListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
+                        _courseTestListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                        [_courseTestListVC getCourseTestListInfo:_dataSource];
+                    }
+                }
             } else {
                 if (_commentVC == nil) {
                     _commentVC = [[CourseCommentListVC alloc] init];
@@ -486,7 +531,7 @@
                     _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
                     [_commentVC getCourseCommentList];
                 }
-
+                
                 if ([_courseType isEqualToString:@"4"]) {
                     if (_courseStudentListVC == nil) {
                         _courseStudentListVC = [[CourseStudentListViewController alloc] init];
@@ -507,10 +552,52 @@
                         [_courseStudentListVC getStudentListInfo];
                     }
                 }
+                
+                if (hasTest) {
+                    if (_courseTestListVC == nil) {
+                        _courseTestListVC = [[CourseTestListVC alloc] init];
+                        _courseTestListVC.courseId = weakself.ID;
+                        _courseTestListVC.tabelHeight = sectionHeight - 47;
+                        _courseTestListVC.vc = weakself;
+                        _courseTestListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseTestListVC.view.frame = CGRectMake(MainScreenWidth*4,0, MainScreenWidth, sectionHeight - 47);
+                        [weakself.mainScroll addSubview:weakself.courseTestListVC.view];
+                        [weakself addChildViewController:weakself.courseTestListVC];
+                        [_courseTestListVC getCourseTestListInfo:_dataSource];
+                    } else {
+                        _courseTestListVC.courseId = weakself.ID;
+                        _courseTestListVC.tabelHeight = sectionHeight - 47;
+                        _courseTestListVC.vc = weakself;
+                        _courseTestListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseTestListVC.view.frame = CGRectMake(MainScreenWidth*4,0, MainScreenWidth, sectionHeight - 47);
+                        _courseTestListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                        [_courseTestListVC getCourseTestListInfo:_dataSource];
+                    }
+                }
             }
         } else {
             if ([ShowCourseComment isEqualToString:@"0"]) {
-                
+                if (hasTest) {
+                    if (_courseTestListVC == nil) {
+                        _courseTestListVC = [[CourseTestListVC alloc] init];
+                        _courseTestListVC.courseId = weakself.ID;
+                        _courseTestListVC.tabelHeight = sectionHeight - 47;
+                        _courseTestListVC.vc = weakself;
+                        _courseTestListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseTestListVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+                        [weakself.mainScroll addSubview:weakself.courseTestListVC.view];
+                        [weakself addChildViewController:weakself.courseTestListVC];
+                        [_courseTestListVC getCourseTestListInfo:_dataSource];
+                    } else {
+                        _courseTestListVC.courseId = weakself.ID;
+                        _courseTestListVC.tabelHeight = sectionHeight - 47;
+                        _courseTestListVC.vc = weakself;
+                        _courseTestListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseTestListVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
+                        _courseTestListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                        [_courseTestListVC getCourseTestListInfo:_dataSource];
+                    }
+                }
             } else {
                 if (_commentVC == nil) {
                     _commentVC = [[CourseCommentListVC alloc] init];
@@ -529,6 +616,27 @@
                     _commentVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 47);
                     _commentVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
                     [_commentVC getCourseCommentList];
+                }
+                if (hasTest) {
+                    if (_courseTestListVC == nil) {
+                        _courseTestListVC = [[CourseTestListVC alloc] init];
+                        _courseTestListVC.courseId = weakself.ID;
+                        _courseTestListVC.tabelHeight = sectionHeight - 47;
+                        _courseTestListVC.vc = weakself;
+                        _courseTestListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseTestListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
+                        [weakself.mainScroll addSubview:weakself.courseTestListVC.view];
+                        [weakself addChildViewController:weakself.courseTestListVC];
+                        [_courseTestListVC getCourseTestListInfo:_dataSource];
+                    } else {
+                        _courseTestListVC.courseId = weakself.ID;
+                        _courseTestListVC.tabelHeight = sectionHeight - 47;
+                        _courseTestListVC.vc = weakself;
+                        _courseTestListVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+                        _courseTestListVC.view.frame = CGRectMake(MainScreenWidth*3,0, MainScreenWidth, sectionHeight - 47);
+                        _courseTestListVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 47);
+                        [_courseTestListVC getCourseTestListInfo:_dataSource];
+                    }
                 }
             }
         }
@@ -642,24 +750,66 @@
                             vccomment.cellTabelCanScroll = YES;
                         }
                     }
+                    
                     if (self.commentButton.selected) {
-                        if ([vc isKindOfClass:[CourseCommentListVC class]]) {
-                            CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
-                            vccomment.cellTabelCanScroll = YES;
+                        if ([ShowCourseComment isEqualToString:@"1"]) {
+                            if ([vc isKindOfClass:[CourseCommentListVC class]]) {
+                                CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
+                                vccomment.cellTabelCanScroll = YES;
+                            }
+                        } else {
+                            if ([_courseType isEqualToString:@"4"]) {
+                                if ([vc isKindOfClass:[CourseStudentListViewController class]]) {
+                                    CourseStudentListViewController *vccomment = (CourseStudentListViewController *)vc;
+                                    vccomment.cellTabelCanScroll = YES;
+                                }
+                            } else {
+                                if (hasTest) {
+                                    if ([vc isKindOfClass:[CourseTestListVC class]]) {
+                                        CourseTestListVC *vccomment = (CourseTestListVC *)vc;
+                                        vccomment.cellTabelCanScroll = YES;
+                                    }
+                                }
+                            }
                         }
                     }
                     if (self.recordButton.selected) {
-                        if ([vc isKindOfClass:[CourseStudentListViewController class]]) {
-                            CourseStudentListViewController *vccomment = (CourseStudentListViewController *)vc;
-                            vccomment.cellTabelCanScroll = YES;
+                        // 这里只有两种情况 班级课 有点评 学员 ; 班级课 没点评 有学员和考试; 其他课程 有点评和考试
+                        if ([_courseType isEqualToString:@"4"]) {
+                            if ([ShowCourseComment isEqualToString:@"1"]) {
+                                if ([vc isKindOfClass:[CourseStudentListViewController class]]) {
+                                    CourseStudentListViewController *vccomment = (CourseStudentListViewController *)vc;
+                                    vccomment.cellTabelCanScroll = YES;
+                                }
+                            } else {
+                                if (hasTest) {
+                                    if ([vc isKindOfClass:[CourseTestListVC class]]) {
+                                        CourseTestListVC *vccomment = (CourseTestListVC *)vc;
+                                        vccomment.cellTabelCanScroll = YES;
+                                    }
+                                }
+                            }
+                        } else {
+                            if (hasTest) {
+                                if ([vc isKindOfClass:[CourseTestListVC class]]) {
+                                    CourseTestListVC *vccomment = (CourseTestListVC *)vc;
+                                    vccomment.cellTabelCanScroll = YES;
+                                }
+                            }
                         }
-                    }
-//                    if (self.questionButton.selected) {
-//                        if ([vc isKindOfClass:[Good_ClassAskQuestionsViewController class]]) {
-//                            Good_ClassAskQuestionsViewController *vccomment = (Good_ClassAskQuestionsViewController *)vc;
+//                        if ([vc isKindOfClass:[CourseStudentListViewController class]]) {
+//                            CourseStudentListViewController *vccomment = (CourseStudentListViewController *)vc;
 //                            vccomment.cellTabelCanScroll = YES;
 //                        }
-//                    }
+                    }
+                    if (self.questionButton.selected) {
+                        if (hasTest) {
+                            if ([vc isKindOfClass:[CourseTestListVC class]]) {
+                                CourseTestListVC *vccomment = (CourseTestListVC *)vc;
+                                vccomment.cellTabelCanScroll = YES;
+                            }
+                        }
+                    }
                 }
             }
         }else{
@@ -1196,6 +1346,8 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
                     _courselayer = [NSString stringWithFormat:@"%@",_dataSource[@"section_level"]];
+                    [_courseTestLietArray removeAllObjects];
+                    [_courseTestLietArray addObjectsFromArray:_dataSource[@"exam"]];
                     [self setCourseInfoData];
                 } else {
                     [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];

@@ -226,8 +226,10 @@
                 _dateTimeLabel.text = @"永久有效";
                 _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
             } else {
-                _dateTimeLabel.text = [NSString stringWithFormat:@"%@前有效",[EdulineV5_Tool currentdateIntervalAddDurationTime:term_time]];
-                _dateTimeLabel.textColor = EdlineV5_Color.textThirdColor;
+                _dateTimeLabel.text = [NSString stringWithFormat:@"距离课程到期还有%@天",[EdulineV5_Tool dateDuritionCurrentTime:term_time]];
+                NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_dateTimeLabel.text];
+                [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(8, [EdulineV5_Tool dateDuritionCurrentTime:term_time].length)];
+                _dateTimeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
             }
         } else {
             // 有效期处理

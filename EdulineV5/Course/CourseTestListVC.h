@@ -7,10 +7,23 @@
 //
 
 #import "BaseViewController.h"
+#import "CourseMainViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CourseTestListVC : BaseViewController
+@interface CourseTestListVC : BaseViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+
+@property (strong, nonatomic) NSString *courseId;
+@property (assign, nonatomic) CGFloat tabelHeight;
+
+@property (weak, nonatomic) CourseMainViewController *vc;
+@property (assign, nonatomic) BOOL cellTabelCanScroll;
+@property (assign, nonatomic) BOOL canPlayRecordVideo;
+
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *dataSource;
+
+- (void)getCourseTestListInfo:(NSDictionary *)courseInfo;
 
 @end
 
