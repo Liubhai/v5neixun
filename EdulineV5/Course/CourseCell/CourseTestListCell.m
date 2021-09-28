@@ -37,11 +37,10 @@
     [self.contentView addSubview:_lineView];
 }
 
-- (void)setCourseTestCellInfoData:(NSDictionary *)dict {
+- (void)setCourseTestCellInfoData:(NSDictionary *)dict course_can_exam:(BOOL)courseCanExam {
     _testTitle.text = [NSString stringWithFormat:@"%@",dict[@"paper_title"]];
-    NSString *exam_number = [NSString stringWithFormat:@"%@",dict[@"exam_number"]];
     NSString *can_exam = [NSString stringWithFormat:@"%@",dict[@"can_exam"]];
-    if ([exam_number integerValue] && [can_exam integerValue]) {
+    if ([can_exam integerValue] && courseCanExam) {
         _testTitle.textColor = EdlineV5_Color.textSecendColor;
     } else {
         _testTitle.textColor = EdlineV5_Color.textThirdColor;

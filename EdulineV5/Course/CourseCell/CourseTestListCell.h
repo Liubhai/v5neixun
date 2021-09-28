@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *testTitle;
 @property (strong, nonatomic) UIView *lineView;
 
-- (void)setCourseTestCellInfoData:(NSDictionary *)dict;
+- (void)setCourseTestCellInfoData:(NSDictionary *)dict course_can_exam:(BOOL)courseCanExam;
 
 @end
 

@@ -14,6 +14,7 @@
 
 @interface CourseTestListVC () {
     NSInteger page;
+    BOOL course_can_exam;// 整个课程能不能可考
 }
 
 @end
@@ -55,7 +56,7 @@
     if (!cell) {
         cell = [[CourseTestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setCourseTestCellInfoData:_dataSource[indexPath.row]];
+    [cell setCourseTestCellInfoData:_dataSource[indexPath.row] course_can_exam:course_can_exam];
     return cell;
 }
 
@@ -65,20 +66,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSString *exam_number = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"exam_number"]];
     NSString *can_exam = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"can_exam"]];
-    if ([exam_number integerValue] && [can_exam integerValue]) {
+    if ([can_exam integerValue] && course_can_exam) {
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = @"3";
         vc.examIds = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]];
         vc.courseId = _courseId;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        if (![can_exam integerValue]) {
+        if (!course_can_exam) {
             [self showHudInView:self.vc.view showHint:@"不符合参加考试的条件"];
-        }
-        if (![exam_number integerValue]) {
-            [self showHudInView:self.vc.view showHint:@"考试次数已经用完"];
+        } else {
+            if (![can_exam integerValue]) {
+                [self showHudInView:self.vc.view showHint:@"考试次数已经用完"];
+            }
         }
     }
 }
@@ -100,6 +101,7 @@
 
 - (void)getCourseTestListInfo:(NSDictionary *)courseInfo {
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
+    course_can_exam = [[NSString stringWithFormat:@"%@",courseInfo[@"can_exam"]] boolValue];
     [_dataSource removeAllObjects];
     [_dataSource addObjectsFromArray:[courseInfo objectForKey:@"exam"]];
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
