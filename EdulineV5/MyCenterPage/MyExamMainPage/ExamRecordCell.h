@@ -32,8 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView *lineView;
 @property (nonatomic, strong) NSIndexPath *cellIndex;
 @property (strong, nonatomic) EXamRecordModel *courseModel;
+@property (strong, nonatomic) UIImageView *courseRecordResult;
 
-- (void)setExamRecordRootManagerModel:(EXamRecordModel *)model indexpath:(NSIndexPath *)indexpath isPublic:(BOOL)isPublic;
+- (void)setExamRecordRootManagerModel:(EXamRecordModel *)model indexpath:(NSIndexPath *)indexpath isPublic:(BOOL)isPublic isCourse:(BOOL)isCourse;
 
 @end
 

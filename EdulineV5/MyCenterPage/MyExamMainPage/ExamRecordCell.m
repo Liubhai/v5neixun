@@ -65,12 +65,17 @@
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(_titleLabel.left, _timeLabel.bottom + 12, MainScreenWidth - _titleLabel.left, 1)];
     _lineView.backgroundColor = EdlineV5_Color.layarLineColor;
     [self.contentView addSubview:_lineView];
+    
+    _courseRecordResult = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 8 - 74, 8, 74, 74)];
+    [self.contentView addSubview:_courseRecordResult];
+    _courseRecordResult.hidden = YES;
 }
 
-- (void)setExamRecordRootManagerModel:(EXamRecordModel *)model indexpath:(NSIndexPath *)indexpath isPublic:(BOOL)isPublic {
+- (void)setExamRecordRootManagerModel:(EXamRecordModel *)model indexpath:(NSIndexPath *)indexpath isPublic:(BOOL)isPublic isCourse:(BOOL)isCourse {
     _courseModel = model;
     _cellIndex= indexpath;
     _taojuanTitleLabel.hidden = YES;
+    _courseRecordResult.hidden = YES;
     _titleLabel.frame = CGRectMake(15, 12, MainScreenWidth - 30, 20);
     _titleLabel.text = [NSString stringWithFormat:@"%@",model.paper_title];
     _titleLabel.numberOfLines = 0;
@@ -83,6 +88,17 @@
         } else {
             _allCountLabel.text = @"正在阅卷";
         }
+        if (isCourse) {
+            _taojuanTitleLabel.hidden = NO;
+            _courseRecordResult.hidden = NO;
+            _taojuanTitleLabel.text = [NSString stringWithFormat:@"一《%@》",model.course_title];
+            _taojuanTitleLabel.frame = CGRectMake(_titleLabel.left, _titleLabel.bottom + 8, MainScreenWidth - 30, 17);
+            if ([model.pass isEqualToString:@"1"]) {
+                _courseRecordResult.image = Image(@"exam_qualified_icon");
+            } else {
+                _courseRecordResult.image = Image(@"exam_unqualified_icon");
+            }
+        }
     } else {
         _taojuanTitleLabel.hidden = NO;
         _taojuanTitleLabel.text = [NSString stringWithFormat:@"一《%@》",model.rollup_title];
@@ -92,7 +108,11 @@
     CGFloat allCountWidth = [_allCountLabel.text sizeWithFont:_allCountLabel.font].width + 4;
     CGFloat rightCountWidth = [_rightCountLabel.text sizeWithFont:_rightCountLabel.font].width + 4;
     
-    _allCountLabel.frame = CGRectMake(15, isPublic ? (_titleLabel.bottom + 14) : (_taojuanTitleLabel.bottom + 16), allCountWidth, 17);
+    if (isPublic) {
+        _allCountLabel.frame = CGRectMake(15, isCourse ? (_taojuanTitleLabel.bottom + 16) : (_titleLabel.bottom + 14), allCountWidth, 17);
+    } else {
+        _allCountLabel.frame = CGRectMake(15, _taojuanTitleLabel.bottom + 16, allCountWidth, 17);
+    }
     [_fenggeLineView setLeft:_allCountLabel.right + 4];
     _fenggeLineView.centerY = _allCountLabel.centerY;
     _rightCountLabel.frame = CGRectMake(_fenggeLineView.right + 8, _allCountLabel.top, rightCountWidth, 17);

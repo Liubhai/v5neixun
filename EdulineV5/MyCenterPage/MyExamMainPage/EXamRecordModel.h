@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *visible_answer;//交卷后是否显示答案【0：否；1：是；】
 @property (strong, nonatomic) NSString *paper_title; // 试题题干
 @property (strong, nonatomic) NSString *rollup_title; // 套卷名称
+@property (strong, nonatomic) NSString *course_title; // 课程名称
+@property (strong, nonatomic) NSString *pass;//课程考试是否合格【0：否；1：是；】
 @property (strong, nonatomic) NSString *commit_time;// 提交时间
 @property (strong, nonatomic) NSString *time_takes;// 考试用时/秒
 @property (strong, nonatomic) NSString *answer_times; // 参考次数
