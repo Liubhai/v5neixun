@@ -644,6 +644,13 @@
 // MARK: - StudyLatestCellDelegate(最近在学课程点击跳转)
 - (void)jumpToCourseDetailVC:(NSDictionary *)info {
     
+    // 判断是不是过期了
+    NSString *timeOut = [NSString stringWithFormat:@"%@",info[@"expire_rest"]];
+    if ([timeOut isEqualToString:@"0"]) {
+        [self showHudInView:self.view showHint:@"课程已过期"];
+        return;
+    }
+    
     CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
     vc.ID = [NSString stringWithFormat:@"%@",info[@"course_id"]];
     vc.currentHourseId = [NSString stringWithFormat:@"%@",info[@"section_id"]];

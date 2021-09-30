@@ -62,6 +62,10 @@
 + (NSString *)timeForBalanceYYMMDDHHMM:(NSString *)time;
 
 + (NSString *)currentdateInterval;
+
+
++ (NSString *)currentdateIntervalAddDurationTime:(NSString *)durationTime;
+
 + (NSString *)getRandomString;
 
 + (NSString *)sortedDictionary:(NSDictionary *)dict;
@@ -94,6 +98,9 @@
 
 //MARK: - 考试列表时间
 + (NSString *)examEvaluateStarTime:(NSString *)starTime endTime:(NSString *)eTime;
+
+//MARK: - 时间差值多少天
++ (NSString *)dateDuritionCurrentTime:(NSString *)date;
 
 /** 移除普通标签 */
 + (NSString *)removeFilterHTML:(NSString *)html;

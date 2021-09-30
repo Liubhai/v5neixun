@@ -133,6 +133,10 @@
             getUrl = [Net_Path volumePaperSubmitAnswerNet];
         }
         
+        if (SWNOTEmptyStr(_courseId)) {
+            [passDict setObject:_courseId forKey:@"course_id"];
+        }
+        
         [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 [self showHudInView:self.view showHint:responseObject[@"msg"]];

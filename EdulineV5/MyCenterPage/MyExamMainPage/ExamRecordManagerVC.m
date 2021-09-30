@@ -33,7 +33,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"公开考试",@"type":@"3"},@{@"title":@"套卷练习",@"type":@"4"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"公开考试",@"type":@"3"},@{@"title":@"套卷练习",@"type":@"4"},@{@"title":@"课程考试",@"type":@"5"}]];
     
     [self makeTopView];
     [self makeScrollView];

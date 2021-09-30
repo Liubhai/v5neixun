@@ -76,7 +76,16 @@
             cell = [[ExamRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         cell.delegate = self;
-        [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath isPublic:YES];
+        [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath isPublic:YES isCourse:NO];
+        return cell;
+    } else if ([_examType isEqualToString:@"5"]) {
+        static NSString *reuse = @"ExamRecordCellCourse";
+        ExamRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[ExamRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        cell.delegate = self;
+        [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath isPublic:YES isCourse:YES];
         return cell;
     } else {
         static NSString *reuse = @"ExamRecordCellTest";
@@ -85,7 +94,7 @@
             cell = [[ExamRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         cell.delegate = self;
-        [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath isPublic:NO];
+        [cell setExamRecordRootManagerModel:_dataSource[indexPath.row] indexpath:indexPath isPublic:NO isCourse:NO];
         return cell;
     }
 }

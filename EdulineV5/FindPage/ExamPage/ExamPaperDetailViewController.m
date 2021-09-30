@@ -1279,6 +1279,7 @@
         vc.answerManagerArray = [NSMutableArray arrayWithArray:_answerManagerArray];
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
         vc.currentIndexpath = currentExamIndexPath;
+        vc.courseId = _courseId;
         vc.chooseOtherExam = ^(NSString * _Nonnull examId) {
             _previousExamBtn.enabled = NO;
             _nextExamBtn.enabled = NO;
@@ -1726,6 +1727,10 @@
         if ([_examType isEqualToString:@"4"]) {
             [passDict setObject:_rollup_id forKey:@"rollup_id"];
             getUrl = [Net_Path volumePaperSubmitAnswerNet];
+        }
+        
+        if (SWNOTEmptyStr(_courseId)) {
+            [passDict setObject:_courseId forKey:@"course_id"];
         }
         
         [Net_API requestPOSTWithURLStr:getUrl WithAuthorization:nil paramDic:passDict finish:^(id  _Nonnull responseObject) {

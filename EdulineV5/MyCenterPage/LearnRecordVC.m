@@ -137,6 +137,12 @@
 //    vc.courseType = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]];
 //    [self.navigationController pushViewController:vc animated:YES];
     
+    // 判断是不是过期了
+    NSString *timeOut = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"expire_rest"]];
+    if ([timeOut isEqualToString:@"0"]) {
+        [self showHudInView:self.view showHint:@"课程已过期"];
+        return;
+    }
     
     CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
     vc.ID = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];

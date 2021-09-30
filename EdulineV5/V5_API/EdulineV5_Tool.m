@@ -673,6 +673,25 @@ static EdulineV5_Tool *_sharedInstance;
     return timeSp;
 }
 
++ (NSString *)currentdateIntervalAddDurationTime:(NSString *)durationTime {
+    NSDate *datenow = [NSDate date];
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)([datenow timeIntervalSince1970])];
+    
+    long long aTime = [timeSp longLongValue] + [durationTime longLongValue];
+    
+    NSString *finalTime = [NSString stringWithFormat:@"%lld",aTime];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat:@"yyyy年MM月dd日"];
+    NSDate *nowDate = [NSDate dateWithTimeIntervalSince1970:finalTime.integerValue];
+    NSString *theDay = [dateFormatter stringFromDate:nowDate];//日期的年月日
+    return theDay;
+    
+    
+    return timeSp;
+}
+
 + (NSString *)getRandomString {
     //3.随机字符串kRandomLength位
     static const NSString *kRandomAlphabet = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -941,6 +960,23 @@ static EdulineV5_Tool *_sharedInstance;
     }
 }
 
++ (NSString *)dateDuritionCurrentTime:(NSString *)date {
+    
+    NSInteger seconds = [date integerValue];
+    
+    NSInteger temp1 = seconds/60;
+    NSInteger pom1 = seconds % 60;
+    NSInteger temp2 = temp1/ 60;
+    NSInteger pom2 = temp1 % 60;
+    NSInteger d = temp2 / 24;
+    NSInteger temp3 = temp2 % 24;
+    NSString *day = d < 9 ? [NSString stringWithFormat:@"%ld",(long)d] : [NSString stringWithFormat:@"%ld",(long)d];
+    if (temp3 > 0 || pom1>0 || pom2>0) {
+        day = [NSString stringWithFormat:@"%ld",(long)(d+1)];
+        return day;
+    }
+    return day;
+}
 
 + (NSString *)removeFilterHTML:(NSString *)html {
     NSScanner * scanner = [NSScanner scannerWithString:html];

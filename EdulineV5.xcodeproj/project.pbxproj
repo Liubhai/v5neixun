@@ -576,6 +576,8 @@
 		78D4EC3D26FB054D002E9493 /* NewStudyTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D4EC3C26FB054C002E9493 /* NewStudyTimeView.m */; };
 		78D4EC4026FB06A6002E9493 /* NewStudyRecentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D4EC3F26FB06A6002E9493 /* NewStudyRecentView.m */; };
 		78D4EC4326FC2463002E9493 /* StudyTypeCourseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D4EC4226FC2463002E9493 /* StudyTypeCourseListViewController.m */; };
+		78D4EC46270053DF002E9493 /* CourseTestListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D4EC45270053DE002E9493 /* CourseTestListVC.m */; };
+		78D4EC4927005407002E9493 /* CourseTestListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D4EC4827005407002E9493 /* CourseTestListCell.m */; };
 		78D97FF124B83C58000DE0E4 /* ClassCourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */; };
 		78D97FF424B83C9D000DE0E4 /* ClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF324B83C9D000DE0E4 /* ClassCourseCell.m */; };
 		78D97FF724B8458B000DE0E4 /* StudentManageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D97FF624B8458B000DE0E4 /* StudentManageVC.m */; };
@@ -1740,6 +1742,10 @@
 		78D4EC3F26FB06A6002E9493 /* NewStudyRecentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewStudyRecentView.m; sourceTree = "<group>"; };
 		78D4EC4126FC2463002E9493 /* StudyTypeCourseListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StudyTypeCourseListViewController.h; sourceTree = "<group>"; };
 		78D4EC4226FC2463002E9493 /* StudyTypeCourseListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StudyTypeCourseListViewController.m; sourceTree = "<group>"; };
+		78D4EC44270053DE002E9493 /* CourseTestListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseTestListVC.h; sourceTree = "<group>"; };
+		78D4EC45270053DE002E9493 /* CourseTestListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTestListVC.m; sourceTree = "<group>"; };
+		78D4EC4727005407002E9493 /* CourseTestListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseTestListCell.h; sourceTree = "<group>"; };
+		78D4EC4827005407002E9493 /* CourseTestListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTestListCell.m; sourceTree = "<group>"; };
 		78D97FEF24B83C58000DE0E4 /* ClassCourseListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassCourseListVC.h; sourceTree = "<group>"; };
 		78D97FF024B83C58000DE0E4 /* ClassCourseListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClassCourseListVC.m; sourceTree = "<group>"; };
 		78D97FF224B83C9D000DE0E4 /* ClassCourseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClassCourseCell.h; sourceTree = "<group>"; };
@@ -1888,6 +1894,8 @@
 				7839C9A22423655A002F6595 /* CourseListVC.m */,
 				7859FE4124CED497006C7D4E /* CourseStudentListViewController.h */,
 				7859FE4224CED497006C7D4E /* CourseStudentListViewController.m */,
+				78D4EC44270053DE002E9493 /* CourseTestListVC.h */,
+				78D4EC45270053DE002E9493 /* CourseTestListVC.m */,
 				7853BDCE242D8F4300F096EC /* ShitikaViewController.h */,
 				7853BDCF242D8F4300F096EC /* ShitikaViewController.m */,
 				7853BDDA2431A1AE00F096EC /* ShopCarManagerVC.h */,
@@ -1954,6 +1962,8 @@
 				7853BDD8242DF82800F096EC /* ShopCarCell.m */,
 				7859FE3E24CED174006C7D4E /* CourseStudentsCollectionCell.h */,
 				7859FE3F24CED174006C7D4E /* CourseStudentsCollectionCell.m */,
+				78D4EC4727005407002E9493 /* CourseTestListCell.h */,
+				78D4EC4827005407002E9493 /* CourseTestListCell.m */,
 			);
 			path = CourseCell;
 			sourceTree = "<group>";
@@ -4748,6 +4758,7 @@
 				78793A43264E1EE8000554C8 /* CircleRootViewController.m in Sources */,
 				789DB03E24698EE8001302B4 /* JoinCourseTypeVC.m in Sources */,
 				78AA135F243C254B007087F7 /* CourseCommonCell.m in Sources */,
+				78D4EC4927005407002E9493 /* CourseTestListCell.m in Sources */,
 				788E95CF25466F8C0089251E /* LiveMenberCell.m in Sources */,
 				789DB02A2466B3D6001302B4 /* BalanceDetailCell.m in Sources */,
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
@@ -4797,6 +4808,7 @@
 				788D4EAE2590907C00D024AC /* ModifyMoneyPwVC.m in Sources */,
 				78795655240E5B1C0013F95F /* RootV5VC.m in Sources */,
 				787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */,
+				78D4EC46270053DF002E9493 /* CourseTestListVC.m in Sources */,
 				787F1E7B247381A400108F7B /* AliyunPlayerViewProgressView.m in Sources */,
 				78C549C7241B674E00A33FC4 /* AlivcLiveUserCountTool.m in Sources */,
 				78AAFEFB25F774EE002CD197 /* ExamCollectCell.m in Sources */,

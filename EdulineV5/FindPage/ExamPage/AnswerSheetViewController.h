@@ -34,6 +34,8 @@ typedef void(^chooseOtherExam)(NSString *examId);
 @property (strong, nonatomic) ExamPaperDetailModel *currentExamPaperDetailModel;
 @property (strong, nonatomic) NSMutableArray *answerManagerArray;
 
+@property (strong, nonatomic) NSString *courseId;
+
 @end
 
 NS_ASSUME_NONNULL_END

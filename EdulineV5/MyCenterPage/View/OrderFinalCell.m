@@ -139,7 +139,7 @@
     }
     
     
-    _dateLine.frame = CGRectMake(_faceImageView.right + 10, _theme.bottom + 5, _theme.width, 15);
+    _dateLine.frame = CGRectMake(_theme.left, _theme.bottom + 5, _theme.width, 15);
     
     if ([orderStatus isEqualToString:@"20"]) {
         _dateLine.hidden = NO;
