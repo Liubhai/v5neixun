@@ -479,6 +479,14 @@
 		78BCF95024D7C287002F691C /* QuestionChatRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF94F24D7C287002F691C /* QuestionChatRightCell.m */; };
 		78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */; };
 		78BCF95624D7C2B7002F691C /* QuestionChatTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCF95524D7C2B7002F691C /* QuestionChatTimeCell.m */; };
+		78BF928E2710324900D9A75D /* bitstream.c in Sources */ = {isa = PBXBuildFile; fileRef = 78BF92802710324900D9A75D /* bitstream.c */; };
+		78BF928F2710324900D9A75D /* qrencode.c in Sources */ = {isa = PBXBuildFile; fileRef = 78BF92812710324900D9A75D /* qrencode.c */; };
+		78BF92902710324900D9A75D /* split.c in Sources */ = {isa = PBXBuildFile; fileRef = 78BF92832710324900D9A75D /* split.c */; };
+		78BF92912710324900D9A75D /* QRCodeGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BF92852710324900D9A75D /* QRCodeGenerator.m */; };
+		78BF92922710324900D9A75D /* qrinput.c in Sources */ = {isa = PBXBuildFile; fileRef = 78BF92862710324900D9A75D /* qrinput.c */; };
+		78BF92932710324900D9A75D /* mask.c in Sources */ = {isa = PBXBuildFile; fileRef = 78BF92882710324900D9A75D /* mask.c */; };
+		78BF92942710324900D9A75D /* qrspec.c in Sources */ = {isa = PBXBuildFile; fileRef = 78BF92892710324900D9A75D /* qrspec.c */; };
+		78BF92952710324900D9A75D /* rscode.c in Sources */ = {isa = PBXBuildFile; fileRef = 78BF928D2710324900D9A75D /* rscode.c */; };
 		78C548272411F34100A33FC4 /* LoginMsgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548262411F34100A33FC4 /* LoginMsgView.m */; };
 		78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C548292412229900A33FC4 /* AreaNumListVC.m */; };
 		78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C5482C2412259C00A33FC4 /* EdlineV5_Color.m */; };
@@ -1567,6 +1575,22 @@
 		78BCF95224D7C2A1002F691C /* QuestionChatLeftCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatLeftCell.m; sourceTree = "<group>"; };
 		78BCF95424D7C2B7002F691C /* QuestionChatTimeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionChatTimeCell.h; sourceTree = "<group>"; };
 		78BCF95524D7C2B7002F691C /* QuestionChatTimeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionChatTimeCell.m; sourceTree = "<group>"; };
+		78BF927E2710324900D9A75D /* mask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mask.h; sourceTree = "<group>"; };
+		78BF927F2710324900D9A75D /* qrinput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qrinput.h; sourceTree = "<group>"; };
+		78BF92802710324900D9A75D /* bitstream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bitstream.c; sourceTree = "<group>"; };
+		78BF92812710324900D9A75D /* qrencode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = qrencode.c; sourceTree = "<group>"; };
+		78BF92822710324900D9A75D /* qrspec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qrspec.h; sourceTree = "<group>"; };
+		78BF92832710324900D9A75D /* split.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = split.c; sourceTree = "<group>"; };
+		78BF92842710324900D9A75D /* rscode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rscode.h; sourceTree = "<group>"; };
+		78BF92852710324900D9A75D /* QRCodeGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeGenerator.m; sourceTree = "<group>"; };
+		78BF92862710324900D9A75D /* qrinput.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = qrinput.c; sourceTree = "<group>"; };
+		78BF92872710324900D9A75D /* bitstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitstream.h; sourceTree = "<group>"; };
+		78BF92882710324900D9A75D /* mask.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mask.c; sourceTree = "<group>"; };
+		78BF92892710324900D9A75D /* qrspec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = qrspec.c; sourceTree = "<group>"; };
+		78BF928A2710324900D9A75D /* qrencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qrencode.h; sourceTree = "<group>"; };
+		78BF928B2710324900D9A75D /* QRCodeGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeGenerator.h; sourceTree = "<group>"; };
+		78BF928C2710324900D9A75D /* split.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = split.h; sourceTree = "<group>"; };
+		78BF928D2710324900D9A75D /* rscode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rscode.c; sourceTree = "<group>"; };
 		78C548252411F34100A33FC4 /* LoginMsgView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginMsgView.h; sourceTree = "<group>"; };
 		78C548262411F34100A33FC4 /* LoginMsgView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginMsgView.m; sourceTree = "<group>"; };
 		78C548282412229900A33FC4 /* AreaNumListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaNumListVC.h; sourceTree = "<group>"; };
@@ -2531,6 +2555,7 @@
 		7879566E240F929A0013F95F /* EdulineToolLib */ = {
 			isa = PBXGroup;
 			children = (
+				78BF927D2710324900D9A75D /* libqrencode */,
 				78F7C5C724EFC2AD0010F1E9 /* XLCardSwitch */,
 				78C936BD248DE41900D5F1ED /* HomeScrollThird */,
 				78AA136E2440543C007087F7 /* SDCycleScrollView */,
@@ -3885,6 +3910,29 @@
 			path = QuestionMainPage;
 			sourceTree = "<group>";
 		};
+		78BF927D2710324900D9A75D /* libqrencode */ = {
+			isa = PBXGroup;
+			children = (
+				78BF927E2710324900D9A75D /* mask.h */,
+				78BF927F2710324900D9A75D /* qrinput.h */,
+				78BF92802710324900D9A75D /* bitstream.c */,
+				78BF92812710324900D9A75D /* qrencode.c */,
+				78BF92822710324900D9A75D /* qrspec.h */,
+				78BF92832710324900D9A75D /* split.c */,
+				78BF92842710324900D9A75D /* rscode.h */,
+				78BF92852710324900D9A75D /* QRCodeGenerator.m */,
+				78BF92862710324900D9A75D /* qrinput.c */,
+				78BF92872710324900D9A75D /* bitstream.h */,
+				78BF92882710324900D9A75D /* mask.c */,
+				78BF92892710324900D9A75D /* qrspec.c */,
+				78BF928A2710324900D9A75D /* qrencode.h */,
+				78BF928B2710324900D9A75D /* QRCodeGenerator.h */,
+				78BF928C2710324900D9A75D /* split.h */,
+				78BF928D2710324900D9A75D /* rscode.c */,
+			);
+			path = libqrencode;
+			sourceTree = "<group>";
+		};
 		78C5482E2412469200A33FC4 /* AreaCodeListPlist */ = {
 			isa = PBXGroup;
 			children = (
@@ -4491,6 +4539,7 @@
 				78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */,
 				78D4EC3A26E7471D002E9493 /* HomePageDiscountCell.m in Sources */,
 				788E959F253FE24E0089251E /* ReplayManagerModel.m in Sources */,
+				78BF92932710324900D9A75D /* mask.c in Sources */,
 				7887451224E13B1300257029 /* FeedBackViewController.m in Sources */,
 				78795660240E60320013F95F /* HomeRootViewController.m in Sources */,
 				788E9583253FE24E0089251E /* UIView+Toast.m in Sources */,
@@ -4542,6 +4591,7 @@
 				7887452224E3CE2600257029 /* UICollectionView+EmptyData.m in Sources */,
 				78795736240FA3840013F95F /* ZLPhotoPickerCollectionView.m in Sources */,
 				78C549E1241B674F00A33FC4 /* UIColor+AlivcHelper.m in Sources */,
+				78BF92902710324900D9A75D /* split.c in Sources */,
 				78795669240E606F0013F95F /* MyRootViewController.m in Sources */,
 				78A16C812452F7C100391430 /* TICManager.m in Sources */,
 				788E95B2253FE24E0089251E /* ConfigModel.m in Sources */,
@@ -4641,11 +4691,13 @@
 				78793A49264E26B1000554C8 /* CircleListCell.m in Sources */,
 				787657282435C79E008F475D /* StudyRootVC.m in Sources */,
 				785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */,
+				78BF92922710324900D9A75D /* qrinput.c in Sources */,
 				780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */,
 				787F1E88247381A400108F7B /* AVC_VP_PlaySettingVC.m in Sources */,
 				782333BE2599CA2C0076DD85 /* ExamPointSelectVC.m in Sources */,
 				78C549D2241B674E00A33FC4 /* AlivcUIConfig.m in Sources */,
 				78AA138C2440710B007087F7 /* HomePageCourseTypeOneCell.m in Sources */,
+				78BF92912710324900D9A75D /* QRCodeGenerator.m in Sources */,
 				78AA1353243C211B007087F7 /* CourseTypeVC.m in Sources */,
 				78C54978241B642B00A33FC4 /* AlivcLiveTransitionController.m in Sources */,
 				788E95AD253FE24E0089251E /* ReplayModel.m in Sources */,
@@ -4655,9 +4707,11 @@
 				78795623240DE7AE0013F95F /* main.m in Sources */,
 				789DB062246CF042001302B4 /* CourseCollectionManagerCell.m in Sources */,
 				78AAFF0125F8781D002CD197 /* PublicAndTestExamRecordList.m in Sources */,
+				78BF92952710324900D9A75D /* rscode.c in Sources */,
 				782333BB2595B99E0076DD85 /* SpecialExamListCell.m in Sources */,
 				78C549D5241B674F00A33FC4 /* AlivcKeyboardManageViewController.m in Sources */,
 				7879572F240FA3840013F95F /* ZLPhotoPickerDatas.m in Sources */,
+				78BF928E2710324900D9A75D /* bitstream.c in Sources */,
 				78060FAC255E8B8100009171 /* ExamMainListCell.m in Sources */,
 				788E9587253FE24E0089251E /* unzip.c in Sources */,
 				78C5497E241B642B00A33FC4 /* _AlivcLiveBeautifyNavigationView.m in Sources */,
@@ -4879,6 +4933,7 @@
 				78C549CD241B674E00A33FC4 /* AlivcAlertView.m in Sources */,
 				784FC8EE24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m in Sources */,
 				788E95B0253FE24E0089251E /* UserModel.m in Sources */,
+				78BF928F2710324900D9A75D /* qrencode.c in Sources */,
 				78AA139D2445AE58007087F7 /* MyCenterUserInfoView.m in Sources */,
 				7853BDB92428957600F096EC /* CourseListModel.m in Sources */,
 				789DB044246A4499001302B4 /* MycouponsListVC.m in Sources */,
@@ -4890,6 +4945,7 @@
 				78A16C882452F7C100391430 /* NetworkClock.m in Sources */,
 				78C54975241B642B00A33FC4 /* AlivcPushBeautyParams.m in Sources */,
 				78ED079725CFC9CE00C30B26 /* ExamIDListModel.m in Sources */,
+				78BF92942710324900D9A75D /* qrspec.c in Sources */,
 				784D648E26D490A400461A21 /* MyScoreNewVC.m in Sources */,
 				787F1E66247381A400108F7B /* AVCSlider.m in Sources */,
 				782AC44925C3E7BD009130F9 /* ExamSheetModel.m in Sources */,
