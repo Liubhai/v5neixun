@@ -388,12 +388,21 @@
     }
     if ([typeString isEqualToString:@"lcnpay"] && SWNOTEmptyStr([V5_UserModel userPhone])) {
         if ([V5_UserModel userPhone].length >= 11) {
+            NSString *paymentCount = [EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+            NSString *userMoney = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
+            if ([paymentCount floatValue] > [userMoney floatValue]) {
+                [self showHudInView:self.view showHint:@"余额不足，请先充值"];
+                _submitButton.enabled = YES;
+                return;
+            }
+            
             MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
             vc.delegate = self;
             [self.view addSubview:vc];
             _submitButton.enabled = YES;
         } else {
             [self getMoneyPasWordString:@""];
+            //
         }
     } else {
         [self getMoneyPasWordString:@""];
