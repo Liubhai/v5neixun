@@ -193,29 +193,43 @@
         _detailButton.hidden = NO;
         _detailButton.centerY = _courseTitleLabel.centerY;
         
-        if ([[NSString stringWithFormat:@"%@",_courseInfo[@"course_type"]] isEqualToString:@"4"]) {
-            _sectionCountLabel.hidden = YES;
-//            _courseTitleLabel.centerY = self.bounds.size.height / 2.0;
-//            _detailButton.centerY = _courseTitleLabel.centerY;
-//            _sectionCountLabel.text = [NSString stringWithFormat:@"共%@课时",_courseInfo[@"section_count"]];
-            _lineView1.frame = CGRectMake(0, _courseTitleLabel.bottom, MainScreenWidth, 4);
-            [self setHeight:_lineView1.bottom];
+        _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
+        NSString *sectionCount = [NSString stringWithFormat:@"%@",_courseInfo[@"section_count"]];
+        NSString *finishCount = [NSString stringWithFormat:@"%@",_courseInfo[@"finished_num"]];
+        _circleView.progress = 100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
+        _circleView.hidden = NO;
+        _percentlabel.hidden = NO;
+        if ([sectionCount isEqualToString:@"0"]) {
+            _percentlabel.text = @"0%";
         } else {
-            _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
-            NSString *sectionCount = [NSString stringWithFormat:@"%@",_courseInfo[@"section_count"]];
-            NSString *finishCount = [NSString stringWithFormat:@"%@",_courseInfo[@"finished_num"]];
-            _circleView.progress = 100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
-            _circleView.hidden = NO;
-            _percentlabel.hidden = NO;
-            if ([sectionCount isEqualToString:@"0"]) {
-                _percentlabel.text = @"0%";
-            } else {
-                _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
-            }
-            _dateTimeLabel.hidden = YES;
-            _lineView1.frame = CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4);
-            [self setHeight:_lineView1.bottom];
+            _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
         }
+        _dateTimeLabel.hidden = YES;
+        _lineView1.frame = CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4);
+        [self setHeight:_lineView1.bottom];
+//        if ([[NSString stringWithFormat:@"%@",_courseInfo[@"course_type"]] isEqualToString:@"4"]) {
+//            _sectionCountLabel.hidden = YES;
+////            _courseTitleLabel.centerY = self.bounds.size.height / 2.0;
+////            _detailButton.centerY = _courseTitleLabel.centerY;
+////            _sectionCountLabel.text = [NSString stringWithFormat:@"共%@课时",_courseInfo[@"section_count"]];
+//            _lineView1.frame = CGRectMake(0, _courseTitleLabel.bottom, MainScreenWidth, 4);
+//            [self setHeight:_lineView1.bottom];
+//        } else {
+//            _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
+//            NSString *sectionCount = [NSString stringWithFormat:@"%@",_courseInfo[@"section_count"]];
+//            NSString *finishCount = [NSString stringWithFormat:@"%@",_courseInfo[@"finished_num"]];
+//            _circleView.progress = 100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
+//            _circleView.hidden = NO;
+//            _percentlabel.hidden = NO;
+//            if ([sectionCount isEqualToString:@"0"]) {
+//                _percentlabel.text = @"0%";
+//            } else {
+//                _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
+//            }
+//            _dateTimeLabel.hidden = YES;
+//            _lineView1.frame = CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4);
+//            [self setHeight:_lineView1.bottom];
+//        }
     } else {
         NSString *is_buy = [NSString stringWithFormat:@"%@",_courseInfo[@"is_buy"]];
         

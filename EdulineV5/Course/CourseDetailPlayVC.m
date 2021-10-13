@@ -437,7 +437,7 @@
     _faceImageView.image = DefaultImage;
     [_headerView addSubview:_faceImageView];
     
-    _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, [_courseType isEqualToString:@"4"] ? (86- 35 + 4) : (86 + 4))];
+    _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4)];//[_courseType isEqualToString:@"4"] ? (86- 35 + 4) : (86 + 4)
     _courseContentView.delegate = self;
     [_headerView addSubview:_courseContentView];
     
@@ -1106,7 +1106,7 @@
             [_zanButton setImage:Image(@"course_collect_nor") forState:0];
         }
         [_courseContentView setCourseContentInfo:_dataSource showTitleOnly:YES];
-        [_courseContentView setHeight:[[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"] ? (86-35+4) : (86 + 4)];
+        [_courseContentView setHeight:86 + 4];//[[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"] ? (86-35+4) : (86 + 4)
         [_headerView setHeight:_courseContentView.bottom];
         if ([[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"]) {
             [_headerView setHeight:_courseContentView.bottom];
@@ -1296,6 +1296,8 @@
         
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"]];
+                NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"]];
                 if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
                     if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
                         [_courseListVC.tableView reloadData];
@@ -1801,6 +1803,8 @@
         
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"]];
+                NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"]];
                 if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
                     if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
                         if (_courseListVC) {
