@@ -102,7 +102,7 @@
     currentCourseType = 0;
     dataType = @"add";
     
-    _tabClassArray = [NSMutableArray arrayWithArray:@[@"点播",@"直播",@"班级",@"面授"]];
+    _tabClassArray = [NSMutableArray arrayWithArray:@[@"点播",@"直播",@"班级"]];//@[@"点播",@"直播",@"班级",@"面授"]
     
     _courseArray = [NSMutableArray new];
     _liveArray = [NSMutableArray new];

@@ -36,7 +36,7 @@
     _lineTL.hidden = NO;
     
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"video"},@{@"title":@"直播",@"type":@"live"},@{@"title":@"面授",@"type":@"offline"}]];//@{@"title":@"班级",@"type":@"calss"}
+    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"video"},@{@"title":@"直播",@"type":@"live"}]];//@{@"title":@"面授",@"type":@"offline"}@{@"title":@"班级",@"type":@"calss"}
     
     [self makeTopView];
     [self makeScrollView];

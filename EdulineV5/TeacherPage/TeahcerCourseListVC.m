@@ -34,10 +34,10 @@
     self.view.backgroundColor = [UIColor whiteColor];
     page = 1;
     coursetypeIdString = @"0";
-    _typeArray = @[@{@"title":@"推荐",@"id":@"0"},@{@"title":@"点播",@"id":@"1"},@{@"title":@"直播",@"id":@"2"},@{@"title":@"面授",@"id":@"3"}];
+    _typeArray = @[@{@"title":@"推荐",@"id":@"0"},@{@"title":@"点播",@"id":@"1"},@{@"title":@"直播",@"id":@"2"}];//@{@"title":@"面授",@"id":@"3"}
     if (_isUserHomePage) {
         coursetypeIdString = @"1";
-        _typeArray = @[@{@"title":@"点播",@"id":@"1"},@{@"title":@"直播",@"id":@"2"},@{@"title":@"班级",@"id":@"4"},@{@"title":@"面授",@"id":@"3"}];
+        _typeArray = @[@{@"title":@"点播",@"id":@"1"},@{@"title":@"直播",@"id":@"2"},@{@"title":@"班级",@"id":@"4"}];//@{@"title":@"面授",@"id":@"3"}
     }
     _dataSource = [NSMutableArray new];
     _titleImage.hidden = YES;

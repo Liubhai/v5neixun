@@ -40,7 +40,7 @@
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"1"},@{@"title":@"直播",@"type":@"2"},@{@"title":@"班级",@"type":@"4"},@{@"title":@"面授",@"type":@"3"}]];
+    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"1"},@{@"title":@"直播",@"type":@"2"},@{@"title":@"班级",@"type":@"4"}]];//@{@"title":@"面授",@"type":@"3"}
     
     [self makeTopView];
     [self makeScrollView];

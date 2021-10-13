@@ -318,7 +318,7 @@
         }
         [view addSubview:_changeTypeBtn];
         
-        NSArray *courseTypeArray = @[@"点播",@"直播",@"班级",@"面授"];
+        NSArray *courseTypeArray = @[@"点播",@"直播",@"班级"];//@"面授"
         for (int i = 0; i < courseTypeArray.count; i++) {
             UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(15 + 77 * i, theme.bottom + 13, 65, 28)];
             btn.layer.masksToBounds = YES;
