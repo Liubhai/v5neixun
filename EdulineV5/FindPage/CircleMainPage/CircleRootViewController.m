@@ -33,7 +33,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _titleLabel.text = @"圈子";
+    _titleLabel.text = @"学友圈";
     _rightButton.hidden = NO;
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"发布" forState:0];
