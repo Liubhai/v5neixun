@@ -508,7 +508,7 @@
         [_popTextBackView addSubview:_popTextView];
         
         _popTextPlaceholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(_popTextView.left, _popTextView.top + 1, _popTextView.width, 30)];
-        _popTextPlaceholderLabel.text = @"输入提问内容";
+        _popTextPlaceholderLabel.text = @" 输入提问内容";
         _popTextPlaceholderLabel.textColor = EdlineV5_Color.textThirdColor;
         _popTextPlaceholderLabel.font = SYSTEMFONT(14);
         _popTextPlaceholderLabel.userInteractionEnabled = YES;

@@ -21,6 +21,7 @@
     NSString *typeString;
     BOOL shouldPop;// 是否需要返回到课程详情页面
     BOOL showReload;// 在余额不足跳转到充值页面后  充值成功后 是否需要刷新余额数据
+    BOOL balpwd_setus;// 是否设置了密码
 }
 
 @property (strong, nonatomic) NSDictionary *balanceInfo;
@@ -369,6 +370,7 @@
                     [_orderTypeView setHeight:_orderTypeView3.bottom];
                     
                     _orderTitle3.text = [NSString stringWithFormat:@"余额(%@%@)",IOSMoneyTitle,[_balanceInfo[@"data"] objectForKey:@"balance"]];
+                    balpwd_setus = [[NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balpwd_setus"]] boolValue];
                     
                     [self makeAgreeView];
                 }
@@ -388,14 +390,25 @@
     }
     if ([typeString isEqualToString:@"lcnpay"] && SWNOTEmptyStr([V5_UserModel userPhone])) {
         if ([V5_UserModel userPhone].length >= 11) {
-            NSString *paymentCount = [EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]];
             NSString *userMoney = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
-            if ([paymentCount floatValue] > [userMoney floatValue]) {
+            if ([_payment floatValue] > [userMoney floatValue]) {
                 [self showHudInView:self.view showHint:@"余额不足，请先充值"];
                 _submitButton.enabled = YES;
                 return;
             }
             
+            if (!balpwd_setus) {
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未设置支付密码" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [self jumpSetPwPage];
+                    }];
+                [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+                [alertController addAction:commentAction];
+                alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+                [self presentViewController:alertController animated:YES completion:nil];
+                _submitButton.enabled = YES;
+                return;
+            }
             MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
             vc.delegate = self;
             [self.view addSubview:vc];
