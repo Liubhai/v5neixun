@@ -381,7 +381,7 @@
 - (void)button2Click:(UIButton *)sender {
     OrderSureViewController *vc = [[OrderSureViewController alloc] init];
     vc.order_no = [NSString stringWithFormat:@"%@",_dataSource[sender.tag][@"order_no"]];
-    vc.payment = [NSString stringWithFormat:@"%@",_dataSource[sender.tag][@"payment"]];
+    vc.payment = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_dataSource[sender.tag][@"payment"]];
     vc.orderTypeString = @"orderList";
     [self.navigationController pushViewController:vc animated:YES];
 }

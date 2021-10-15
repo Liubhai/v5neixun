@@ -390,12 +390,6 @@
     }
     if ([typeString isEqualToString:@"lcnpay"] && SWNOTEmptyStr([V5_UserModel userPhone])) {
         if ([V5_UserModel userPhone].length >= 11) {
-            NSString *userMoney = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
-            if ([_payment floatValue] > [userMoney floatValue]) {
-                [self showHudInView:self.view showHint:@"余额不足，请先充值"];
-                _submitButton.enabled = YES;
-                return;
-            }
             
             if (!balpwd_setus) {
                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未设置支付密码" preferredStyle:UIAlertControllerStyleAlert];
@@ -409,6 +403,26 @@
                 _submitButton.enabled = YES;
                 return;
             }
+            
+            NSString *paymentString = @"";
+            if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
+                paymentString = [EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+            } else {
+                NSString *monyType = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
+                if ([_payment containsString:@"VIP"]) {
+                    paymentString = [_payment substringFromIndex:[monyType length] + 4];
+                } else {
+                    paymentString = [_payment substringFromIndex:[monyType length]];
+                }
+            }
+            
+            NSString *userMoney = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
+            if ([paymentString floatValue] > [userMoney floatValue]) {
+                [self showHudInView:self.view showHint:@"余额不足，请先充值"];
+                _submitButton.enabled = YES;
+                return;
+            }
+            
             MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
             vc.delegate = self;
             [self.view addSubview:vc];
