@@ -22,6 +22,7 @@
     BOOL shouldPop;// 是否需要返回到课程详情页面
     BOOL showReload;// 在余额不足跳转到充值页面后  充值成功后 是否需要刷新余额数据
     BOOL balpwd_setus;// 是否设置了密码
+    NSString *currentTypeString;// 记录跳转页面之前点击的方式
 }
 
 @property (strong, nonatomic) NSDictionary *balanceInfo;
@@ -38,9 +39,14 @@
         [self popVcToWhich];
     }
     if (showReload) {
-        showReload = NO;
         [self getUserPayInfo];
     }
+    showReload = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    currentTypeString = typeString;
 }
 
 - (void)viewDidLoad {
@@ -369,6 +375,16 @@
                     [self makeOrderType1View3];
                     [_orderTypeView setHeight:_orderTypeView3.bottom];
                     
+                    if (showReload) {
+                        if ([currentTypeString isEqualToString:@"wxpay"]) {
+                            [self seleteButtonClick:_orderRightBtn1];
+                        } else if ([currentTypeString isEqualToString:@"alipay"]) {
+                            [self seleteButtonClick:_orderRightBtn2];
+                        } else if ([currentTypeString isEqualToString:@"lcnpay"]) {
+                            [self seleteButtonClick:_orderRightBtn3];
+                        }
+                    }
+                    
                     _orderTitle3.text = [NSString stringWithFormat:@"余额(%@%@)",IOSMoneyTitle,[_balanceInfo[@"data"] objectForKey:@"balance"]];
                     balpwd_setus = [[NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balpwd_setus"]] boolValue];
                     
@@ -499,7 +515,7 @@
 
 // MARK: - 设置密码
 - (void)jumpSetPwPage {
-    if ([V5_UserModel need_set_paypwd]) {
+    if (!balpwd_setus) {
         SetMoneyPwFirstVC *vc = [[SetMoneyPwFirstVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
