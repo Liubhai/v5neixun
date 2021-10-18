@@ -14,6 +14,7 @@
 #import "Net_Path.h"
 #import "V5_UserModel.h"
 #import "AppDelegate.h"
+#import "CourseMakeNoteVC.h"
 
 @interface CourseCommentListVC ()<UITableViewDelegate,UITableViewDataSource,CourseCommentCellDelegate,CourseCommentTopViewDelegate,UIScrollViewDelegate> {
     NSInteger page;
@@ -150,11 +151,23 @@
         }
     }
     if (isMine) {
-        CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-        vc.isComment = !_cellType;
-        vc.courseId = _courseId;
-        vc.originCommentInfo = pass;
-        [self.navigationController pushViewController:vc animated:YES];
+        if (!_cellType) {
+            CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+            vc.isComment = !_cellType;
+            vc.courseId = _courseId;
+            vc.originCommentInfo = pass;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            _detailVC.originCommentInfo = pass;
+            [_detailVC makePopView];
+//            CourseMakeNoteVC *vc = [[CourseMakeNoteVC alloc] init];
+//            vc.notHiddenNav = NO;
+//            vc.hiddenNavDisappear = YES;
+//            vc.courseId = _courseId;
+//            vc.originCommentInfo = pass;
+//            [self.detailVC.view addSubview:vc.view];
+//            [self.detailVC addChildViewController:vc];
+        }
     } else {
         CourseCommentDetailVC *vc = [[CourseCommentDetailVC alloc] init];
         vc.cellType = _cellType;
@@ -238,12 +251,25 @@
     
     NSString *isBuy = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"is_buy"]];
     if ([isBuy isEqualToString:@"1"]) {
-        CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-        vc.isComment = !_cellType;
-        vc.courseId = _courseId;
-        vc.courseType = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"course_type"]];
-        vc.courseHourseId = [NSString stringWithFormat:@"%@",_detailVC.currentHourseId];
-        [self.navigationController pushViewController:vc animated:YES];
+        if (!_cellType) {
+            CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+            vc.isComment = !_cellType;
+            vc.courseId = _courseId;
+            vc.courseType = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"course_type"]];
+            vc.courseHourseId = [NSString stringWithFormat:@"%@",_detailVC.currentHourseId];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            _detailVC.originCommentInfo = [NSDictionary new];
+            [_detailVC makePopView];
+//            CourseMakeNoteVC *vc = [[CourseMakeNoteVC alloc] init];
+//            vc.notHiddenNav = NO;
+//            vc.hiddenNavDisappear = YES;
+//            vc.courseId = _courseId;
+//            vc.courseType = [NSString stringWithFormat:@"%@",[(_detailVC ? _detailVC.dataSource : _vc.dataSource) objectForKey:@"course_type"]];
+//            vc.courseHourseId = [NSString stringWithFormat:@"%@",_detailVC.currentHourseId];
+//            [self.detailVC.view addSubview:vc.view];
+//            [self.detailVC addChildViewController:vc];
+        }
     } else {
         if (_detailVC) {
             [_detailVC showHudInView:_detailVC.view showHint:@"购买后才能点评课程"];
@@ -260,11 +286,23 @@
         [AppDelegate presentLoginNav:_detailVC ? _detailVC : _vc];
         return;
     }
-    CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-    vc.isComment = !_cellType;
-    vc.courseId = _courseId;
-    vc.originCommentInfo = cell.userCommentInfo;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (!_cellType) {
+        CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
+        vc.isComment = !_cellType;
+        vc.courseId = _courseId;
+        vc.originCommentInfo = cell.userCommentInfo;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        _detailVC.originCommentInfo = cell.userCommentInfo;
+        [_detailVC makePopView];
+//        CourseMakeNoteVC *vc = [[CourseMakeNoteVC alloc] init];
+//        vc.notHiddenNav = NO;
+//        vc.hiddenNavDisappear = YES;
+//        vc.courseId = _courseId;
+//        vc.originCommentInfo = cell.userCommentInfo;
+//        [self.detailVC.view addSubview:vc.view];
+//        [self.detailVC addChildViewController:vc];
+    }
 }
 
 - (void)zanComment:(CourseCommentCell *)cell {

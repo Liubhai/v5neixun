@@ -53,6 +53,9 @@
 // pdf
 #import <PDFKit/PDFKit.h>
 
+// 新版记笔记
+#import "CourseMakeNoteVC.h"
+
 #define FacePlayImageHeight 207
 
 //清晰度【FD(流畅)，LD(标清)，SD(高清)，HD(超清)，OD(原画)，2K(2K)，4K(4K)。】
@@ -66,6 +69,9 @@
     BOOL freeLook;
     BOOL isFullS;//当前是否全屏
     BOOL shouldLoad;
+    
+    NSInteger wordMax;
+    CGFloat keyHeight;
 }
 
 @property (strong, nonatomic) UIButton *zanButton;
@@ -133,6 +139,16 @@
 // 图文播放时候切换全屏或者半屏按钮
 @property (strong, nonatomic) UIButton *tuwenFullButton;
 
+// 记笔记弹框
+@property (strong, nonatomic) UIView *popWhiteView;
+@property (strong, nonatomic) UIButton *popCancelButton;
+//@property (strong, nonatomic) UIView *popTextBackView;
+@property (strong, nonatomic) UITextView *popTextView;
+@property (strong, nonatomic) UILabel *popTextPlaceholderLabel;
+@property (strong, nonatomic) UILabel *popTextMaxCountView;
+@property (strong, nonatomic) UIButton *openButton;
+@property (strong, nonatomic) UIButton *popSureButton;
+
 @end
 
 @implementation CourseDetailPlayVC
@@ -190,6 +206,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    wordMax = 400;
     freeLook = NO;
     isWebViewBig = NO;
     shouldStopRecordTimer = YES;
@@ -301,6 +318,9 @@
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getCourseInfo) name:@"reloadCourseDetailData" object:nil];
 //    [self dealPlayWordBook];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (AliyunVodPlayerView *__nullable)playerView{
@@ -1041,12 +1061,16 @@
     }
     NSString *isBuy = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"is_buy"]];
     if ([isBuy isEqualToString:@"1"] || currentCourseFinalModel.model.is_buy) {
-        CourseCommentViewController *vc = [[CourseCommentViewController alloc] init];
-        vc.isComment = NO;
-        vc.courseId = _ID;
-        vc.courseHourseId = _currentHourseId;
-        vc.courseType = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"course_type"]];
-        [self.navigationController pushViewController:vc animated:YES];
+        _originCommentInfo = nil;
+        [self makePopView];
+//        CourseMakeNoteVC *vc = [[CourseMakeNoteVC alloc] init];
+//        vc.notHiddenNav = NO;
+//        vc.hiddenNavDisappear = YES;
+//        vc.courseId = _ID;
+//        vc.courseHourseId = _currentHourseId;
+//        vc.courseType = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"course_type"]];
+//        [self.view addSubview:vc.view];
+//        [self addChildViewController:vc];
     } else {
         [self showHudInView:self.view showHint:@"购买后才能记笔记"];
         return;
@@ -1803,7 +1827,39 @@
         
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"]];
+//                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"]];
+//                if (current_position.count == 1) {
+//
+//                } else if (current_position.count == 2) {
+//                    // 列表要请求接口下一次
+//                    CourseCatalogCell * cell = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//                    [cell courseRightButtonClick:cell.coverButton];
+//
+//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                        CourseCatalogCell * cellNew = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//
+//                        [cellNew tableView:cellNew.cellTableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+////                        [cellfinal courseRightButtonClick:cellfinal.coverButton];
+//                    });
+//
+//                } else if (current_position.count == 3) {
+//                    // 列表要请求接口下一次
+//                    CourseCatalogCell * cell = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//                    [cell courseRightButtonClick:cell.coverButton];
+//
+//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                        CourseCatalogCell * cellNew = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//                        CourseCatalogCell *cellfinal = [cellNew.cellTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//
+//                        [cellfinal courseRightButtonClick:cellfinal.coverButton];
+//                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                            CourseCatalogCell * cellNew1 = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//                            CourseCatalogCell * cell222 = [cellNew1.cellTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//                            [cell222 tableView:cell222.cellTableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+//                        });
+//                    });
+//                }
+                
                 NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"]];
                 if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
                     if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
@@ -2675,6 +2731,209 @@
             }
         }];
     }];
+}
+
+// MARK: - 记笔记弹框系列流程
+- (void)makePopView {
+    if (_popWhiteView == nil) {
+        _popWhiteView = [[UIView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 180)];
+        _popWhiteView.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:_popWhiteView];
+        
+        _popCancelButton = [[UIButton alloc] initWithFrame:CGRectMake(_popWhiteView.width - 15 - 36, 0, 36, 36)];
+        [_popCancelButton setImage:Image(@"pay_close") forState:0];
+        [_popCancelButton addTarget:self action:@selector(popButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_popWhiteView addSubview:_popCancelButton];
+        
+        _popTextView = [[UITextView alloc] initWithFrame:CGRectMake(15, 36, _popWhiteView.width - 30, 100)];
+        _popTextView.font = SYSTEMFONT(14);
+        _popTextView.layer.masksToBounds = YES;
+        _popTextView.layer.cornerRadius = 5;
+        _popTextView.backgroundColor = HEXCOLOR(0xE4E7ED);
+        _popTextView.textColor = EdlineV5_Color.textFirstColor;
+        _popTextView.delegate = self;
+        _popTextView.returnKeyType = UIReturnKeyDone;
+        [_popWhiteView addSubview:_popTextView];
+        
+        _popTextPlaceholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(_popTextView.left, _popTextView.top + 1, _popTextView.width, 30)];
+        _popTextPlaceholderLabel.text = @" 输入笔记内容";
+        _popTextPlaceholderLabel.textColor = EdlineV5_Color.textThirdColor;
+        _popTextPlaceholderLabel.font = SYSTEMFONT(14);
+        _popTextPlaceholderLabel.userInteractionEnabled = YES;
+        UITapGestureRecognizer *placeTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(placeLabelTap:)];
+        [_popTextPlaceholderLabel addGestureRecognizer:placeTap];
+        [_popWhiteView addSubview:_popTextPlaceholderLabel];
+        
+        _popTextMaxCountView = [[UILabel alloc] initWithFrame:CGRectMake(_popTextView.right - 4 - 100, _popTextView.bottom - 20, 100, 16)];
+        _popTextMaxCountView.font = SYSTEMFONT(12);
+        _popTextMaxCountView.textColor = EdlineV5_Color.textThirdColor;
+        _popTextMaxCountView.text = [NSString stringWithFormat:@"0/%@",@(wordMax)];
+        _popTextMaxCountView.textAlignment = NSTextAlignmentRight;
+        [_popWhiteView addSubview:_popTextMaxCountView];
+        
+        NSString *openText = @"公开";
+        CGFloat openWidth = [openText sizeWithFont:SYSTEMFONT(14)].width + 4 + 20;
+        CGFloat space = 2.0;
+        
+        _openButton = [[UIButton alloc] initWithFrame:CGRectMake(_popTextView.left - 3.5, _popWhiteView.height - 14 - 20, openWidth, 20)];
+        [_openButton setImage:[Image(@"checkbox_sel1") converToMainColor] forState:UIControlStateSelected];
+        [_openButton setImage:Image(@"checkbox_nor") forState:0];
+        [_openButton setTitle:openText forState:0];
+        [_openButton setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+        _openButton.titleLabel.font = SYSTEMFONT(14);
+        _openButton.imageEdgeInsets = UIEdgeInsetsMake(0, -space/2.0, 0, space/2.0);
+        _openButton.titleEdgeInsets = UIEdgeInsetsMake(0, space/2.0, 0, -space/2.0);
+        [_openButton addTarget:self action:@selector(openButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_popWhiteView addSubview:_openButton];
+        
+        _popSureButton = [[UIButton alloc] initWithFrame:CGRectMake(_popWhiteView.width - 15 - 33, _popWhiteView.height - 14 - 20, 33, 20)];
+        [_popSureButton setTitle:@"发布" forState:0];
+        [_popSureButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+        _popSureButton.titleLabel.font = SYSTEMFONT(16);
+        [_popSureButton addTarget:self action:@selector(popButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_popWhiteView addSubview:_popSureButton];
+    }
+    [_popTextView becomeFirstResponder];
+    _popWhiteView.hidden = NO;
+    if (SWNOTEmptyDictionary(_originCommentInfo)) {
+        _popTextView.text = [NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"content"]];
+        _popTextPlaceholderLabel.hidden = YES;
+        _popTextMaxCountView.text = [NSString stringWithFormat:@"%@/%@",@(_popTextView.text.length),@(wordMax)];
+        _openButton.selected = [[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"open_status"]] boolValue];
+        if (_popTextView.text.length>wordMax) {
+            NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_popTextMaxCountView.text];
+            [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor} range:NSMakeRange(0, _popTextMaxCountView.text.length - 4)];
+            _popTextMaxCountView.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+        }
+    } else {
+        _popTextView.text = @"";
+        _popTextPlaceholderLabel.hidden = NO;
+        _popTextMaxCountView.text = [NSString stringWithFormat:@"0/%@",@(wordMax)];
+        _openButton.selected = NO;
+    }
+}
+
+- (void)textViewValueDidChanged:(NSNotification *)notice {
+    UITextView *textView = (UITextView *)notice.object;
+    if (textView.text.length<=0) {
+        _popTextPlaceholderLabel.hidden = NO;
+    } else {
+        _popTextPlaceholderLabel.hidden = YES;
+    }
+    _popTextMaxCountView.text = [NSString stringWithFormat:@"%@/%@",@(textView.text.length),@(wordMax)];
+    if (textView.text.length>wordMax) {
+        NSMutableAttributedString *mut = [[NSMutableAttributedString alloc] initWithString:_popTextMaxCountView.text];
+        [mut addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor} range:NSMakeRange(0, _popTextMaxCountView.text.length - 4)];
+        _popTextMaxCountView.attributedText = [[NSAttributedString alloc] initWithAttributedString:mut];
+    } else {
+    }
+}
+
+- (void)placeLabelTap:(UIGestureRecognizer *)tap {
+    _popTextPlaceholderLabel.hidden = YES;
+    [_popTextView becomeFirstResponder];
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    _popTextPlaceholderLabel.hidden = YES;
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [_popTextView resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)openButtonClick:(UIButton *)sender {
+    sender.selected = !sender.selected;
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification{
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification{
+    NSValue * endValue   = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    keyHeight = [endValue CGRectValue].size.height;
+    if (IS_IPHONEX) {
+        keyHeight = keyHeight - 34;
+    }
+    
+    _popWhiteView.frame = CGRectMake(0, _faceImageView.height, MainScreenWidth, MainScreenHeight - keyHeight - _faceImageView.height);
+    _popCancelButton.frame = CGRectMake(_popWhiteView.width - 15 - 36, 0, 36, 36);
+    
+    _popTextView.frame = CGRectMake(15, 36, _popWhiteView.width - 30, _popWhiteView.height - 36 - 14 - 20 - 10);
+    _popTextView.layer.masksToBounds = YES;
+    _popTextView.layer.cornerRadius = 5;
+    
+    _popTextPlaceholderLabel.frame = CGRectMake(_popTextView.left, _popTextView.top + 1, _popTextView.width, 30);
+    
+    _popTextMaxCountView.frame = CGRectMake(_popTextView.right - 4 - 100, _popTextView.bottom - 20, 100, 16);
+    
+    [_openButton setTop:_popWhiteView.height - 14 - 20];
+    [_popSureButton setTop:_popWhiteView.height - 14 - 20];
+}
+
+- (void)popButtonClick:(UIButton *)sender {
+    [_popTextView resignFirstResponder];
+    if (sender == _popCancelButton) {
+        _popTextView.text = @"";
+        _popTextPlaceholderLabel.hidden = NO;
+        _popTextMaxCountView.text = [NSString stringWithFormat:@"0/%@",@(wordMax)];
+        _popWhiteView.hidden = YES;
+    } else if (sender == _popSureButton) {
+        if (!SWNOTEmptyStr(_popTextView.text)) {
+            [self showHudInView:self.view showHint:@"内容不能为空"];
+            return;
+        }
+        if (_popTextView.text.length>wordMax) {
+            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"内容不能超过%@字",@(wordMax)]];
+            return;
+        }
+        NSMutableDictionary *param = [NSMutableDictionary new];
+        if (SWNOTEmptyDictionary(_originCommentInfo)) {
+            [param setObject:_popTextView.text forKey:@"content"];
+            [param setObject:_openButton.selected ? @"1" : @"0"  forKey:@"open_status"];
+            [Net_API requestPUTWithURLStr:[Net_Path modificationCourseNote:[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"id"]]] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        _popTextView.text = @"";
+                        _popTextPlaceholderLabel.hidden = NO;
+                        _popTextMaxCountView.text = [NSString stringWithFormat:@"0/%@",@(wordMax)];
+                        _popWhiteView.hidden = YES;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+
+            }];
+        } else {
+            [param setObject:_popTextView.text forKey:@"content"];
+            [param setObject:_ID forKey:@"course_id"];
+            if (SWNOTEmptyStr(_currentHourseId)) {
+                [param setObject:_currentHourseId forKey:@"section_id"];
+            }
+            [param setObject:[NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"course_type"]] forKey:@"course_type"];
+            [param setObject:_openButton.selected ? @"1" : @"0"  forKey:@"open_status"];
+            [Net_API requestPOSTWithURLStr:(SWNOTEmptyDictionary(_originCommentInfo) ? [Net_Path modificationCourseNote:[NSString stringWithFormat:@"%@",[_originCommentInfo objectForKey:@"id"]]] : [Net_Path addCourseHourseNote]) WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        _popTextView.text = @"";
+                        _popTextPlaceholderLabel.hidden = NO;
+                        _popTextMaxCountView.text = [NSString stringWithFormat:@"0/%@",@(wordMax)];
+                        _popWhiteView.hidden = YES;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+
+            }];
+        }
+    }
 }
 
 @end

@@ -48,6 +48,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *courselayer; // 1 一层 2 二层 3 三层(涉及到目录布局)
 @property (strong, nonatomic) NSString *courseType;
 
+
+@property (strong, nonatomic) NSDictionary *originCommentInfo;
+
+/** 记笔记弹框 */
+- (void)makePopView;
+
 @end
 
 NS_ASSUME_NONNULL_END
