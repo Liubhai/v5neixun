@@ -72,6 +72,10 @@
     
     NSInteger wordMax;
     CGFloat keyHeight;
+    
+    // 图文电子书观看时长 计时
+    NSInteger eventTime;
+    NSTimer *eventTimer;
 }
 
 @property (strong, nonatomic) UIButton *zanButton;
@@ -190,7 +194,14 @@
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     [self destroyPlayVideo];
-
+    if (eventTimer) {
+        if (eventTime>0 && eventTime<10) {
+            [self tuwenRequestCurrentSecond];
+            eventTime = 0;
+        }
+        [eventTimer invalidate];
+        eventTimer = nil;
+    }
 }
 
 - (void)destroyPlayVideo{
@@ -1216,6 +1227,7 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
+    _previousHourseId = _currentHourseId;
     _currentHourseId = model.model.classHourId;
     __weak CourseDetailPlayVC *wekself = self;
     
@@ -1227,6 +1239,7 @@
     freeLook = NO;
     if ([_courseType isEqualToString:@"2"]) {
         [wekself stopRecordTimer];
+        [wekself stopTuwenTimer];
         [wekself destroyPlayVideo];
         [AppDelegate delegate]._allowRotation = NO;
         _titleImage.hidden = NO;
@@ -1280,6 +1293,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
     
     [wekself stopRecordTimer];
+    [wekself stopTuwenTimer];
     [wekself destroyPlayVideo];
     [AppDelegate delegate]._allowRotation = NO;
     _titleImage.hidden = NO;
@@ -1377,12 +1391,12 @@
                                 }
                             }
                         }
-                        
-                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
-                            NSLog(@"%@",responseObject);
-                        } enError:^(NSError * _Nonnull error) {
-                            
-                        }];
+                        [self tuwenStartTimer];
+//                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
+//                            NSLog(@"%@",responseObject);
+//                        } enError:^(NSError * _Nonnull error) {
+//
+//                        }];
                         
                         return;
                     }
@@ -1491,6 +1505,7 @@
     }
     [_tableView reloadData];
     
+    _previousHourseId = _currentHourseId;
     _currentHourseId = model.classHourId;
     __weak CourseDetailPlayVC *wekself = self;
     freeLook = NO;
@@ -1504,6 +1519,7 @@
     //[_courseType isEqualToString:@"2"]
     if ([model.course_type isEqualToString:@"2"]) {
         [wekself stopRecordTimer];
+        [wekself stopTuwenTimer];
         [wekself destroyPlayVideo];
         [AppDelegate delegate]._allowRotation = NO;
         _titleImage.hidden = NO;
@@ -1557,6 +1573,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
 
     [wekself stopRecordTimer];
+    [wekself stopTuwenTimer];
     [wekself destroyPlayVideo];
     [AppDelegate delegate]._allowRotation = NO;
     _titleImage.hidden = NO;
@@ -1625,12 +1642,13 @@
                         curent.model = newClassCurrentModel;
                         currentCourseFinalModel = curent;
                         
-                        // 请求一次添加学习记录
-                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":courseId,@"section_id":model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
-                            NSLog(@"%@",responseObject);
-                        } enError:^(NSError * _Nonnull error) {
-                            
-                        }];
+                        [self tuwenStartTimer];
+//                        // 请求一次添加学习记录
+//                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":courseId,@"section_id":model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
+//                            NSLog(@"%@",responseObject);
+//                        } enError:^(NSError * _Nonnull error) {
+//
+//                        }];
                         
                         return;
                     }
@@ -1792,7 +1810,7 @@
 //        [self getShengwangLiveInfo:model.classHourId courselistModel:model];
         return;
     }
-    
+    _previousHourseId = _currentHourseId;
     _currentHourseId = model.classHourId;
     
     for (UIViewController *vc in self.childViewControllers) {
@@ -1809,6 +1827,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
+    [wekself stopTuwenTimer];
     [wekself destroyPlayVideo];
     [AppDelegate delegate]._allowRotation = NO;
     _titleImage.hidden = NO;
@@ -1882,6 +1901,7 @@
                             _pdfV.hidden = NO;
                             _pdfV.document = [[PDFDocument alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]];
                         }
+                        [self tuwenStartTimer];
                         [_tableView setContentOffset:CGPointZero animated:YES];
                         if (_courseListVC) {
                             [_courseListVC.tableView reloadData];
@@ -2054,6 +2074,7 @@
         } else if (event == AVPEventCompletion) {
             __weak CourseDetailPlayVC *wekself = self;
             [wekself stopRecordTimer];
+            [wekself stopTuwenTimer];
         }
     }
 }
@@ -2064,6 +2085,7 @@
     } else {
         __weak CourseDetailPlayVC *wekself = self;
         [wekself stopRecordTimer];
+        [wekself stopTuwenTimer];
     }
 }
 
@@ -2074,6 +2096,7 @@
     } else {
         __weak CourseDetailPlayVC *wekself = self;
         [wekself stopRecordTimer];
+        [wekself stopTuwenTimer];
     }
 }
 
@@ -2096,6 +2119,7 @@
         _titleImage.hidden = NO;
         [wekself.playerView setUIStatusToReplay];
         [wekself stopRecordTimer];
+        [wekself stopTuwenTimer];
         [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
             NSLog(@"%@",responseObject);
         } enError:^(NSError * _Nonnull error) {
@@ -2127,6 +2151,7 @@
         long duration = (long) (wekself.playerView.controlView.duration/1000);
         if (currentTime * 100 / duration >= currentCourseFinalModel.model.audition) {
             [wekself stopRecordTimer];
+            [wekself stopTuwenTimer];
             [wekself.playerView stop];
             if ([wekself.freeLookView superview]) {
                 [wekself.headerView bringSubviewToFront:wekself.freeLookView];
@@ -2297,6 +2322,7 @@
 - (void)starRecordTimer {
     __weak CourseDetailPlayVC *wekself = self;
     [wekself stopRecordTimer];
+    [wekself stopTuwenTimer];
     [wekself performSelector:@selector(startTimer) afterDelay:10];
 //    if (currentCourseFinalModel) {
 //        if (currentCourseFinalModel.model.is_buy) {
@@ -2933,6 +2959,72 @@
 
             }];
         }
+    }
+}
+
+// MARK: - 图文电子书观看时长相关处理
+- (void)tuwenStartTimer {
+    __weak typeof(self) weakself = self;
+    [NSObject cancelPreviousPerformRequestsWithTarget:weakself];
+    [NSObject cancelPreviousPerformRequestsWithTarget:weakself selector:@selector(tuwenStartTimer) object:nil];
+    eventTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(tuwenEventTimerDown) userInfo:nil repeats:YES];
+}
+
+// MARK: - 图文电子书 计时
+- (void)tuwenEventTimerDown {
+    eventTime++;
+    if (eventTime>0 && (eventTime%10 == 0)) {
+        [self requestTuwenRecord];
+    } else {
+        
+    }
+}
+
+- (void)stopTuwenTimer {
+    if (eventTimer) {
+        if (eventTime>0 && eventTime<10) {
+            [self tuwenRequestCurrentSecond];
+            eventTime = 0;
+        }
+        eventTime = 0;
+        [eventTimer invalidate];
+        eventTimer = nil;
+    }
+}
+
+- (void)requestTuwenRecord {
+    WEAK(self);
+    if (SWNOTEmptyStr(_currentHourseId)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":weakself.ID,@"section_id":_currentHourseId,@"current_time":@"10"} finish:^(id  _Nonnull responseObject) {
+            
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        if (eventTime>0 && eventTime<10) {
+            [self tuwenRequestCurrentSecond];
+            eventTime = 0;
+        }
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [eventTimer invalidate];
+        eventTimer = nil;
+    }
+}
+
+// MARK: - 不足10秒传具体秒数
+- (void)tuwenRequestCurrentSecond {
+    WEAK(self);
+    if (SWNOTEmptyStr(_currentHourseId) || SWNOTEmptyStr(_previousHourseId)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":weakself.ID,@"section_id":(SWNOTEmptyStr(_previousHourseId) ? _previousHourseId : _currentHourseId),@"current_time":@(eventTime)} finish:^(id  _Nonnull responseObject) {
+            
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
     }
 }
 

@@ -318,6 +318,24 @@ static EdulineV5_Tool *_sharedInstance;
     return [NSString stringWithFormat:@"%@:%@:%@",hour,minite,second];
 }
 
++ (NSString*)tuwenTimeChangeWithSecondsFormat:(NSInteger)seconds {
+    NSInteger temp1 = seconds/60;
+    NSInteger temp2 = temp1/ 60;
+    NSInteger m = temp1 % 60;
+    NSInteger s = seconds %60;
+    NSString *minite = [NSString stringWithFormat:@"%ld",(long)m];
+    NSString *second = [NSString stringWithFormat:@"%ld",(long)s];
+    if (temp2>0) {
+        return [NSString stringWithFormat:@"%@小时%@分钟%@秒",@(temp2),minite,second];
+    } else {
+        if (m>0) {
+            return [NSString stringWithFormat:@"%@分钟%@秒",minite,second];
+        } else {
+            return [NSString stringWithFormat:@"%@秒",second];
+        }
+    }
+}
+
 -(CGFloat)tsShowWindowsWidth{
     
     if (_tsShowWindowsWidth == 0) {

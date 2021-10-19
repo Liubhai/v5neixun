@@ -49,6 +49,7 @@
 // isMinite 是否从分钟数开始 还是秒数开始
 + (NSAttributedString*)attributionTimeChangeWithSeconds:(NSInteger)seconds isMinite:(BOOL)isMinite;
 + (NSString*)timeChangeWithSecondsFormat:(NSInteger)seconds;
++ (NSString*)tuwenTimeChangeWithSecondsFormat:(NSInteger)seconds;//课时图文观看时长显示格式
 + (NSString *)getLocalTime;
 + (NSString *)formateTime:(NSString *)time;
 + (NSString *)formateYYYYMMDDHHMMTime:(NSString *)time;

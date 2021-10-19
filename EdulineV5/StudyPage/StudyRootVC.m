@@ -279,6 +279,7 @@
         
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(face.left, face.top, 33, 20)];
         NSString *courseType = [NSString stringWithFormat:@"%@",[_userLearnCourseArray[i] objectForKey:@"course_type"]];
+        NSString *section_data_type = [NSString stringWithFormat:@"%@",[_userLearnCourseArray[i] objectForKey:@"section_data_type"]];
         if ([courseType isEqualToString:@"1"]) {
             icon.image = Image(@"dianbo");
         } else if ([courseType isEqualToString:@"2"]) {
@@ -294,7 +295,11 @@
         learnTime.layer.backgroundColor = [UIColor colorWithRed:48/255.0 green:49/255.0 blue:51/255.0 alpha:0.5].CGColor;
         learnTime.textColor = [UIColor whiteColor];
         learnTime.font = SYSTEMFONT(10);
-        learnTime.text = [NSString stringWithFormat:@" 学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:[[_userLearnCourseArray[i] objectForKey:@"current_time"] integerValue]]];
+        if ([section_data_type isEqualToString:@"3"] || [section_data_type isEqualToString:@"4"]) {
+            learnTime.text = [NSString stringWithFormat:@"总学时:%@",[EdulineV5_Tool tuwenTimeChangeWithSecondsFormat:[[_userLearnCourseArray[i] objectForKey:@"total_time"] integerValue]]];
+        } else {
+            learnTime.text = [NSString stringWithFormat:@" 学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:[[_userLearnCourseArray[i] objectForKey:@"current_time"] integerValue]]];
+        }
         [studyScrollView addSubview:learnTime];
         
         CGFloat radius = 4; // 圆角大小

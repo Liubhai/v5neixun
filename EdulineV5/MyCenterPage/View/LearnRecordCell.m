@@ -70,8 +70,12 @@
     _courseTitle.text = [NSString stringWithFormat:@"%@",[recordInfo objectForKey:@"course_title"]];
     
     _courseHourseTitle.text = [NSString stringWithFormat:@"%@",[recordInfo objectForKey:@"section_title"]];
-    
-    _learnTime.text = [NSString stringWithFormat:@" 学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:[[recordInfo objectForKey:@"current_time"] integerValue]]];
+    NSString *section_data_type = [NSString stringWithFormat:@"%@",[recordInfo objectForKey:@"section_data_type"]];
+    if ([section_data_type isEqualToString:@"3"] || [section_data_type isEqualToString:@"4"]) {
+        _learnTime.text = [NSString stringWithFormat:@"总学时:%@",[EdulineV5_Tool tuwenTimeChangeWithSecondsFormat:[[recordInfo objectForKey:@"total_time"] integerValue]]];
+    } else {
+        _learnTime.text = [NSString stringWithFormat:@" 学习至%@",[EdulineV5_Tool timeChangeWithSecondsFormat:[[recordInfo objectForKey:@"current_time"] integerValue]]];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

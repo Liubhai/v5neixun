@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL isFromLearnRecord; // 是不是从学习记录跳转进播放页
 @property (strong ,nonatomic)NSString         *ID;
 @property (strong ,nonatomic)NSString         *currentHourseId;
+@property (strong ,nonatomic)NSString         *previousHourseId;
 /** 是不是活动(由列表传入) */
 @property (assign, nonatomic) BOOL isEvent;
 /// 学习记录里面传过来的课时id
