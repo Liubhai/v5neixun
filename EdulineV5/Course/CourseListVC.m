@@ -210,7 +210,8 @@
                         CourseListModelFinal *model = [CourseListModelFinal canculateHeight:object cellIndex:nil courselayer:cellCouserlayar allLayar:_courselayer isMainPage:_isMainPage];
                         [_courseListArray addObject:model];
                     }
-                    [_tableView reloadData];
+                    [self justReloadListStatus];
+//                    [_tableView reloadData];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
@@ -229,7 +230,8 @@
                 [modelpass1.child replaceObjectAtIndex:model.cellIndex.row withObject:modelpass2];
                 [_courseListArray replaceObjectAtIndex:panrentModel.cellIndex.row withObject:modelpass1];
             }
-            [_tableView reloadData];
+//            [_tableView reloadData];
+            [self justReloadListStatus];
         } else {
             if (model.child) {
                 if (SWNOTEmptyArr(_courseListArray)) {
@@ -239,7 +241,8 @@
                     [modelpass1.child replaceObjectAtIndex:model.cellIndex.row withObject:modelpass2];
                     [_courseListArray replaceObjectAtIndex:panrentModel.cellIndex.row withObject:modelpass1];
                 }
-                [_tableView reloadData];
+//                [_tableView reloadData];
+                [self justReloadListStatus];
                 return;
             }
             if (SWNOTEmptyStr(_courseId) && SWNOTEmptyStr(model.model.classHourId)) {
@@ -262,7 +265,8 @@
                                 [modelpass1.child replaceObjectAtIndex:model.cellIndex.row withObject:modelpass2];
                                 [_courseListArray replaceObjectAtIndex:panrentModel.cellIndex.row withObject:modelpass1];
                             }
-                            [_tableView reloadData];
+//                            [_tableView reloadData];
+                            [self justReloadListStatus];
                         }
                     }
                 } enError:^(NSError * _Nonnull error) {
@@ -277,7 +281,8 @@
                 modelpass.isExpanded = NO;
                 [_courseListArray replaceObjectAtIndex:model.cellIndex.row withObject:modelpass];
             }
-            [_tableView reloadData];
+//            [_tableView reloadData];
+            [self justReloadListStatus];
         } else {
             if (model.child) {
                 if (SWNOTEmptyArr(_courseListArray)) {
@@ -285,7 +290,8 @@
                     modelpass.isExpanded = YES;
                     [_courseListArray replaceObjectAtIndex:model.cellIndex.row withObject:modelpass];
                 }
-                [_tableView reloadData];
+//                [_tableView reloadData];
+                [self justReloadListStatus];
                 return;
             }
             if (SWNOTEmptyStr(_courseId) && SWNOTEmptyStr(model.model.classHourId)) {
@@ -306,7 +312,8 @@
                                 modelpass.child = [NSMutableArray arrayWithArray:passOrigin];
                                 [_courseListArray replaceObjectAtIndex:model.cellIndex.row withObject:modelpass];
                             }
-                            [_tableView reloadData];
+//                            [_tableView reloadData];
+                            [self justReloadListStatus];
                         }
                     }
                 } enError:^(NSError * _Nonnull error) {
@@ -322,6 +329,48 @@
         [_delegate playVideo:model cellIndex:cellIndex panrentCellIndex:panrentCellIndex superCellIndex:superIndex currentCell:cell];
     }
 }
+
+// MARK: - 刷新正在观看的课时、章、节等cell的状态
+- (void)justReloadListStatus {
+    if (SWNOTEmptyDictionary(_current_position)) {
+        NSMutableArray *current_position = [NSMutableArray arrayWithArray:_current_position[@"position"]];
+        
+        for (int i = 0; i<_courseListArray.count; i++) {
+            CourseListModelFinal *model1 = _courseListArray[i];
+            for (int j = 0; j<model1.child.count; j++) {
+                CourseListModelFinal *model2 = model1.child[j];
+                for (int k = 0; k<model2.child.count; k++) {
+                    CourseListModelFinal *model3 = model2.child[k];
+                    model3.isPlaying = NO;
+                    if (current_position.count == 3) {
+                        if ([model3.model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[2]]]) {
+                            model3.isPlaying = YES;
+                        }
+                    }
+                    [model2.child replaceObjectAtIndex:k withObject:model3];
+                }
+                model2.isPlaying = NO;
+                
+                if (current_position.count >= 2) {
+                    if ([model2.model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[1]]]) {
+                        model2.isPlaying = YES;
+                    }
+                }
+                [model1.child replaceObjectAtIndex:j withObject:model2];
+            }
+            model1.isPlaying = NO;
+            if (current_position.count >= 1) {
+                if ([model1.model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[0]]]) {
+                    model1.isPlaying = YES;
+                }
+            }
+            [_courseListArray replaceObjectAtIndex:i withObject:model1];
+        }
+    }
+    [_tableView reloadData];
+}
+
+
 
 - (void)dealloc {
     NSLog(@"1111111111111");

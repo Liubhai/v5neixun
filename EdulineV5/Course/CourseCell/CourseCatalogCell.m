@@ -409,6 +409,11 @@
                 _cellTableView.hidden = YES;
             }
             _cellTableViewSpace.frame = CGRectMake(_titleLabel.left, 49, MainScreenWidth - _titleLabel.left, 1);
+            if (!_isMainPage) {
+                if (_listFinalModel.isPlaying) {
+                    _titleLabel.textColor = EdlineV5_Color.themeColor;
+                }
+            }
         } else if ([_courselayer isEqualToString:@"3"]) {
             [self setHeight:50];
             _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
@@ -501,6 +506,11 @@
                 _cellTableView.hidden = YES;
             }
             _cellTableViewSpace.frame = CGRectMake(_blueView.left, 49, MainScreenWidth - _blueView.left, 1);
+            if (!_isMainPage) {
+                if (_listFinalModel.isPlaying) {
+                    _titleLabel.textColor = EdlineV5_Color.themeColor;
+                }
+            }
         } else if ([_courselayer isEqualToString:@"2"]) {
             _priceLabel.hidden = YES;
             _courseRightBtn.selected = model.isExpanded;
@@ -514,6 +524,11 @@
                 _cellTableView.hidden = YES;
             }
             _cellTableViewSpace.frame = CGRectMake(_titleLabel.left, 49, MainScreenWidth - _titleLabel.left, 1);
+            if (!_isMainPage) {
+                if (_listFinalModel.isPlaying) {
+                    _titleLabel.textColor = EdlineV5_Color.themeColor;
+                }
+            }
         } else if ([_courselayer isEqualToString:@"3"]) {
             [self setHeight:50];
             [_cellTableView setHeight:0];

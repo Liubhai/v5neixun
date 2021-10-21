@@ -196,7 +196,7 @@
     [self destroyPlayVideo];
     if (eventTimer) {
         if (eventTime>0 && eventTime<10) {
-            [self tuwenRequestCurrentSecond];
+            [self tuwenRequestCurrentSecond:_currentHourseId];
             eventTime = 0;
         }
         [eventTimer invalidate];
@@ -1227,6 +1227,9 @@
 }
 
 - (void)playVideo:(CourseListModelFinal *)model cellIndex:(NSIndexPath *)cellIndex panrentCellIndex:(NSIndexPath *)panrentCellIndex superCellIndex:(NSIndexPath *)superIndex currentCell:(nonnull CourseCatalogCell *)cell {
+    if (_courseListVC) {
+        _courseListVC.next_position = nil;
+    }
     _previousHourseId = _currentHourseId;
     _currentHourseId = model.model.classHourId;
     __weak CourseDetailPlayVC *wekself = self;
@@ -1330,12 +1333,22 @@
     
     [_playFileUrlArray removeAllObjects];
     
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:_ID pid:cell.listFinalModel.model.classHourId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:_ID pid:cell.listFinalModel.model.classHourId] WithAuthorization:[_courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"]];
-                NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"]];
+                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"][@"position"]];
+                NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"][@"position"]];
+                if (_courseListVC) {
+                    _courseListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
+                    _courseListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
+                    [_courseListVC justReloadListStatus];
+                }
+                if (_courseTreeListVC) {
+                    _courseTreeListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
+                    _courseTreeListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
+                    [_courseTreeListVC justReloadListStatus];
+                }
                 if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
                     if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
                         [_courseListVC.tableView reloadData];
@@ -1482,7 +1495,9 @@
 }
 
 - (void)newClassCourseCellDidSelected:(CourseListModel *)model indexpath:(nonnull NSIndexPath *)indexpath {
-    
+    if (_courseTreeListVC) {
+        _courseTreeListVC.next_position = nil;
+    }
     if ([model.course_type isEqualToString:@"2"]) {
         _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_LIUHAI_HEIGHT);
         sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - _headerView.height;
@@ -1503,7 +1518,6 @@
             }
         }
     }
-    [_tableView reloadData];
     
     _previousHourseId = _currentHourseId;
     _currentHourseId = model.classHourId;
@@ -1609,10 +1623,15 @@
         pmodel = pmodel.parentItem;
     }
     
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:courseId pid:model.classHourId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:courseId pid:model.classHourId] WithAuthorization:nil paramDic:[_courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil finish:^(id  _Nonnull responseObject) {
         
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
+                if (_courseTreeListVC) {
+                    _courseTreeListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
+                    _courseTreeListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
+                    [_courseTreeListVC justReloadListStatus];
+                }
                 if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
                     if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
                         [_courseTreeListVC.tableView reloadData];
@@ -1635,20 +1654,12 @@
                         
                         CourseListModel *newClassCurrentModel = model;
                         newClassCurrentModel.isPlaying = YES;
-                        [_courseTreeListVC.manager.showItems replaceObjectAtIndex:indexpath.row withObject:newClassCurrentModel];
-                        [_courseTreeListVC.tableView reloadData];
                         
                         CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
                         curent.model = newClassCurrentModel;
                         currentCourseFinalModel = curent;
                         
                         [self tuwenStartTimer];
-//                        // 请求一次添加学习记录
-//                        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":courseId,@"section_id":model.classHourId,@"current_time":@"0"} finish:^(id  _Nonnull responseObject) {
-//                            NSLog(@"%@",responseObject);
-//                        } enError:^(NSError * _Nonnull error) {
-//
-//                        }];
                         
                         return;
                     }
@@ -1664,8 +1675,6 @@
                             
                             CourseListModel *newClassCurrentModel = model;
                             newClassCurrentModel.isPlaying = YES;
-                            [_courseTreeListVC.manager.showItems replaceObjectAtIndex:indexpath.row withObject:newClassCurrentModel];
-                            [_courseTreeListVC.tableView reloadData];
                             
                             CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
                             curent.model = newClassCurrentModel;
@@ -1777,7 +1786,9 @@
 
 // MARK: - 有学习记录时候第一次播放逻辑
 - (void)recordLearnContinuePlay:(CourseListModel *)model {
-    
+    if (_courseListVC) {
+        _courseListVC.next_position = nil;
+    }
     CourseListModelFinal *curentt = [[CourseListModelFinal alloc] init];
     curentt.model = model;
     currentCourseFinalModel = curentt;
@@ -1842,44 +1853,22 @@
         pmodel = pmodel.parentItem;
     }
     
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:courseId pid:model.classHourId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:courseId pid:model.classHourId] WithAuthorization:nil paramDic:[_courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil finish:^(id  _Nonnull responseObject) {
         
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-//                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"]];
-//                if (current_position.count == 1) {
-//
-//                } else if (current_position.count == 2) {
-//                    // 列表要请求接口下一次
-//                    CourseCatalogCell * cell = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//                    [cell courseRightButtonClick:cell.coverButton];
-//
-//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                        CourseCatalogCell * cellNew = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//
-//                        [cellNew tableView:cellNew.cellTableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-////                        [cellfinal courseRightButtonClick:cellfinal.coverButton];
-//                    });
-//
-//                } else if (current_position.count == 3) {
-//                    // 列表要请求接口下一次
-//                    CourseCatalogCell * cell = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//                    [cell courseRightButtonClick:cell.coverButton];
-//
-//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                        CourseCatalogCell * cellNew = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//                        CourseCatalogCell *cellfinal = [cellNew.cellTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//
-//                        [cellfinal courseRightButtonClick:cellfinal.coverButton];
-//                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                            CourseCatalogCell * cellNew1 = [_courseListVC.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//                            CourseCatalogCell * cell222 = [cellNew1.cellTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//                            [cell222 tableView:cell222.cellTableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//                        });
-//                    });
-//                }
-                
-                NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"]];
+                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"][@"position"]];
+                NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"][@"position"]];
+                if (_courseListVC) {
+                    _courseListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
+                    _courseListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
+                    [_courseListVC justReloadListStatus];
+                }
+                if (_courseTreeListVC) {
+                    _courseTreeListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
+                    _courseTreeListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
+                    [_courseTreeListVC justReloadListStatus];
+                }
                 if ([model.section_data.data_type isEqualToString:@"3"] || [model.section_data.data_type isEqualToString:@"4"]) {
                     if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
                         if (_courseListVC) {
@@ -1930,7 +1919,8 @@
                             if (_courseListVC) {
                                 for (int i = 0; i<_courseListVC.courseListArray.count; i++) {
                                     CourseListModelFinal *model = (CourseListModelFinal *)_courseListVC.courseListArray[i];
-                                    if ([model.model.classHourId isEqualToString:currentCourseFinalModel.model.classHourId]) {
+                                    // currentCourseFinalModel.model.classHourId
+                                    if ([model.model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[0]]]) {
                                         model.isPlaying = YES;
                                         [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model];
                                         break;
@@ -1938,15 +1928,6 @@
                                 }
                                 [_courseListVC.tableView reloadData];
                             }
-//                            else if (_courseTreeListVC) {
-//                                for (int i = 0; i<_courseTreeListVC.manager.showItems.count; i++) {
-//                                    if ([currentCourseFinalModel.model.classHourId isEqualToString:_courseTreeListVC.manager.showItems[i].classHourId]) {
-//                                        [_courseTreeListVC.manager.showItems replaceObjectAtIndex:i withObject:newClassCurrentModel];
-//                                        break;
-//                                    }
-//                                }
-//                                [_courseTreeListVC.tableView reloadData];
-//                            }
                              // 目前生成了继续学习数据的 是可以直接看的音视频 不存在处理试看情况(错的)
                             if (model.audition > 0 && !model.is_buy) {
                                 freeLook = YES;
@@ -2125,6 +2106,22 @@
         } enError:^(NSError * _Nonnull error) {
             
         }];
+        if (_courseListVC) {
+            if (SWNOTEmptyDictionary(_courseListVC.next_position)) {
+                CourseListModel *model = [CourseListModel mj_objectWithKeyValues:_courseListVC.next_position];
+                CourseListModelFinal *finalModel = [[CourseListModelFinal alloc] init];
+                finalModel.model = model;
+                [self autoPlayNextCourseHourse:finalModel];
+            }
+        }
+        if (_courseTreeListVC) {
+            if (SWNOTEmptyDictionary(_courseTreeListVC.next_position)) {
+                CourseListModel *model = [CourseListModel mj_objectWithKeyValues:_courseTreeListVC.next_position];
+                CourseListModelFinal *finalModel = [[CourseListModelFinal alloc] init];
+                finalModel.model = model;
+                [self autoPlayNextCourseHourse:finalModel];
+            }
+        }
     }
 }
 
@@ -2983,7 +2980,7 @@
 - (void)stopTuwenTimer {
     if (eventTimer) {
         if (eventTime>0 && eventTime<10) {
-            [self tuwenRequestCurrentSecond];
+            [self tuwenRequestCurrentSecond:@""];
             eventTime = 0;
         }
         eventTime = 0;
@@ -3007,7 +3004,7 @@
     [super didMoveToParentViewController:parent];
     if (!parent) {
         if (eventTime>0 && eventTime<10) {
-            [self tuwenRequestCurrentSecond];
+            [self tuwenRequestCurrentSecond:_currentHourseId];
             eventTime = 0;
         }
         [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -3017,15 +3014,236 @@
 }
 
 // MARK: - 不足10秒传具体秒数
-- (void)tuwenRequestCurrentSecond {
+- (void)tuwenRequestCurrentSecond:(NSString *)courseHourse_id {
     WEAK(self);
-    if (SWNOTEmptyStr(_currentHourseId) || SWNOTEmptyStr(_previousHourseId)) {
-        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":weakself.ID,@"section_id":(SWNOTEmptyStr(_previousHourseId) ? _previousHourseId : _currentHourseId),@"current_time":@(eventTime)} finish:^(id  _Nonnull responseObject) {
+    // 区分两种情况 当前没有切换课时播放; 切换课时播放(切换时候停止传上一个课时ID 切换后退出页面传当前课时ID);
+    if (SWNOTEmptyStr(courseHourse_id)) {
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":weakself.ID,@"section_id":courseHourse_id,@"current_time":@(eventTime)} finish:^(id  _Nonnull responseObject) {
             
         } enError:^(NSError * _Nonnull error) {
             
         }];
+    } else {
+        if (SWNOTEmptyStr(_currentHourseId) || SWNOTEmptyStr(_previousHourseId)) {
+            [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":weakself.ID,@"section_id":(SWNOTEmptyStr(_previousHourseId) ? _previousHourseId : _currentHourseId),@"current_time":@(eventTime)} finish:^(id  _Nonnull responseObject) {
+                
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        }
     }
+}
+
+- (void)autoPlayNextCourseHourse:(CourseListModelFinal *)model {
+    
+    if (_courseListVC) {
+        _courseListVC.next_position = nil;
+    }
+    if (_courseTreeListVC) {
+        _courseTreeListVC.next_position = nil;
+    }
+    
+    _previousHourseId = _currentHourseId;
+    _currentHourseId = model.model.classHourId;
+    __weak CourseDetailPlayVC *wekself = self;
+    
+    CourseListModelFinal *currentt = model;
+    currentCourseFinalModel = currentt;
+    
+    wekself.freeLookView.hidden = YES;
+    
+    freeLook = NO;
+//    if ([_courseType isEqualToString:@"2"]) {
+//        [wekself stopRecordTimer];
+//        [wekself stopTuwenTimer];
+//        [wekself destroyPlayVideo];
+//        [AppDelegate delegate]._allowRotation = NO;
+//        _titleImage.hidden = NO;
+//        if (model.model.audition <= 0 && !model.model.is_buy) {
+//            if ([model.model.price floatValue] > 0) {
+//                OrderViewController *vc = [[OrderViewController alloc] init];
+//                vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
+//                vc.orderId = model.model.classHourId;
+//                [self.navigationController pushViewController:vc animated:YES];
+//                [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
+//            } else {
+//                [self showHudInView:self.view showHint:@"需解锁该课程"];
+//            }
+//            return;
+//        }
+//        //        学习状态【957：未开始；999：直播中；992：已结束；】
+//        if (model.model.live_rate.status == 999) {
+//            [self getShengwangLiveInfo:model.model.classHourId courselistModel:model.model];
+//        } else if (model.model.live_rate.status == 957) {
+//            [self showHudInView:self.view showHint:model.model.live_rate.status_text];
+//        } else if (model.model.live_rate.status == 992) {
+//            if (SWNOTEmptyArr(model.model.live_rate.callback_url)) {
+//                // 用播放器播放回放视频
+//                [wekself.headerView addSubview:wekself.playerView];
+//                _wkWebView.hidden = YES;
+//                _playerView.hidden = NO;
+//                _titleImage.hidden = NO;
+//                [wekself.headerView bringSubviewToFront:wekself.titleImage];
+//                [wekself.playerView setTitle:model.model.title];
+//                wekself.playerView.trackInfoArray = [NSArray arrayWithArray:model.model.live_rate.callback_url];
+//                [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.model.live_rate.callback_url[0][@"play_url"])];
+//                wekself.playerView.userInteractionEnabled = YES;
+//                [AppDelegate delegate]._allowRotation = YES;
+//            }
+//        }
+//        return;
+//    }
+    
+    
+    for (UIViewController *vc in self.childViewControllers) {
+        if ([vc isKindOfClass:[CourseCommentListVC class]]) {
+            CourseCommentListVC *vccomment = (CourseCommentListVC *)vc;
+            if (vccomment.cellType) {
+                // 笔记
+                vccomment.detailVC = self;
+                break;
+            }
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
+    
+    [wekself stopRecordTimer];
+    [wekself stopTuwenTimer];
+    [wekself destroyPlayVideo];
+    [AppDelegate delegate]._allowRotation = NO;
+    _titleImage.hidden = NO;
+    //首先全部重置为没有再播放
+    for (int i = 0; i<_courseListVC.courseListArray.count; i++) {
+        CourseListModelFinal *model1 = _courseListVC.courseListArray[i];
+        for (int j = 0; j<model1.child.count; j++) {
+            CourseListModelFinal *model2 = model1.child[j];
+            for (int k = 0; k<model2.child.count; k++) {
+                CourseListModelFinal *model3 = model2.child[k];
+                model3.isPlaying = NO;
+                [model2.child replaceObjectAtIndex:k withObject:model3];
+            }
+            model2.isPlaying = NO;
+            [model1.child replaceObjectAtIndex:j withObject:model2];
+        }
+        model1.isPlaying = NO;
+        [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model1];
+    }
+    
+//    if (model.model.audition <= 0 && !model.model.is_buy) {
+//        if ([model.model.price floatValue] > 0) {
+//            OrderViewController *vc = [[OrderViewController alloc] init];
+//            vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
+//            vc.orderId = model.model.classHourId;
+//            [self.navigationController pushViewController:vc animated:YES];
+//            [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
+//        } else {
+//            [self showHudInView:self.view showHint:@"需解锁该课程"];
+//        }
+//        [_courseListVC.tableView reloadData];
+//        return;
+//    }
+    
+    [_playFileUrlArray removeAllObjects];
+    
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:model.model.course_id pid:model.model.classHourId] WithAuthorization:nil paramDic:[_courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil finish:^(id  _Nonnull responseObject) {
+        
+        if (SWNOTEmptyDictionary(responseObject)) {
+            if ([[responseObject objectForKey:@"code"] integerValue]) {
+                NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"][@"position"]];
+                NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"][@"position"]];
+                if (_courseListVC) {
+                    _courseListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
+                    _courseListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
+                    [_courseListVC justReloadListStatus];
+                }
+                if (_courseTreeListVC) {
+                    _courseTreeListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
+                    _courseTreeListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
+                    [_courseTreeListVC justReloadListStatus];
+                }
+                if ([model.model.section_data.data_type isEqualToString:@"3"] || [model.model.section_data.data_type isEqualToString:@"4"]) {
+                    if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
+                        if (_courseListVC) {
+                            [_courseListVC.tableView reloadData];
+                        }
+                        if (_courseTreeListVC) {
+                            [_courseTreeListVC.tableView reloadData];
+                        }
+                        [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+                        return;
+                    } else {
+                        _wkWebView.hidden = NO;
+                        _playerView.hidden = YES;
+                        if ([model.model.section_data.data_type isEqualToString:@"3"]) {
+                            _pdfV.hidden = YES;
+                            _wkWebView.scrollView.hidden = NO;
+                            [_wkWebView loadRequest:[[NSURLRequest alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]]];
+                        } else {
+                            _wkWebView.scrollView.hidden = YES;
+                            _pdfV.hidden = NO;
+                            _pdfV.document = [[PDFDocument alloc] initWithURL:[NSURL URLWithString:responseObject[@"data"][@"fileurl_string"]]];
+                        }
+                        [_tableView setContentOffset:CGPointZero animated:YES];
+                        if (_courseListVC) {
+                            [_courseListVC.tableView reloadData];
+                        }
+                        if (_courseTreeListVC) {
+                            [_courseTreeListVC.tableView reloadData];
+                        }
+                        
+                        [self tuwenStartTimer];
+                        return;
+                    }
+                } else {
+                    [_playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                    if (!SWNOTEmptyArr(_playFileUrlArray)) {
+                        [_courseListVC.tableView reloadData];
+                        [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+                        return;
+                    } else {
+                        NSDictionary *firstFileUrlInfo = [NSDictionary dictionaryWithDictionary:_playFileUrlArray[0]];
+                        if (SWNOTEmptyStr(firstFileUrlInfo[@"play_url"])) {
+//                            if (currentCourseFinalModel.model.audition > 0 && !currentCourseFinalModel.model.is_buy) {
+//                                freeLook = YES;
+//                            }
+                            [wekself.headerView addSubview:wekself.playerView];
+                            _wkWebView.hidden = YES;
+                            _playerView.hidden = NO;
+                            _titleImage.hidden = NO;
+                            [wekself.headerView bringSubviewToFront:wekself.titleImage];
+                            NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover_url"]];
+                            if ([faceUrlString containsString:@"http"]) {
+                                wekself.playerView.coverUrl = EdulineUrlString([_dataSource objectForKey:@"cover_url"]);
+                            }
+                            if ([model.model.section_data.data_type isEqualToString:@"2"]) {
+                                wekself.playerView.unHiddenCoverImage = YES;
+                            } else {
+                                wekself.playerView.unHiddenCoverImage = NO;
+                            }
+                            [wekself.playerView setTitle:currentCourseFinalModel.model.title];
+                            wekself.playerView.trackInfoArray = [NSArray arrayWithArray:_playFileUrlArray];
+                            [wekself.playerView playViewPrepareWithURL:EdulineUrlString(firstFileUrlInfo[@"play_url"])];
+                            wekself.playerView.userInteractionEnabled = YES;
+                            [AppDelegate delegate]._allowRotation = YES;
+                        } else {
+                            if (_courseListVC) {
+                                [_courseListVC.tableView reloadData];
+                            }
+                            if (_courseTreeListVC) {
+                                [_courseTreeListVC.tableView reloadData];
+                            }
+                            [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        
+    } enError:^(NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:@"课时信息请求失败"];
+    }];
 }
 
 @end
