@@ -142,7 +142,8 @@
     } else {
 //        [tableView deleteRowsAtIndexPaths:editIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         // 上面 delete 方法有弊端  暂不清楚原因 这里直接 table 刷新
-        [_tableView reloadData];
+//        [_tableView reloadData];
+        [self justReloadListStatus];
     }
     
     for (NSIndexPath *indexPath in updateIndexPaths) {
@@ -231,7 +232,7 @@
                     MYTreeTableManager *manager = [[MYTreeTableManager alloc] initWithItems:items andExpandLevel:0];
                     _manager = manager;
                     
-                    [_tableView reloadData];
+                    [self justReloadListStatus];
                 }
             }
         } enError:^(NSError * _Nonnull error) {
@@ -304,7 +305,7 @@
 //                        [newArray addObject:object];
 //                    }
 //                    model.childItems = newArray;
-                    [_tableView reloadData];
+                    [self justReloadListStatus];
                     canSelect = YES;
                 }
             }
@@ -314,14 +315,64 @@
     }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+// MARK: - 刷新正在观看的课时、章、节等cell的状态
+- (void)justReloadListStatus {
+    if (SWNOTEmptyDictionary(_current_position)) {
+        NSMutableArray *current_position = [NSMutableArray arrayWithArray:_current_position[@"position"]];
+        NSString *course_id = [NSString stringWithFormat:@"%@",_current_position[@"course_id"]];
+        [current_position insertObject:course_id atIndex:0];
+        for (int i = 0; i<_manager.showItems.count; i++) {
+            CourseListModel *model = _manager.showItems[i];
+            model.isPlaying = NO;
+            
+            if (current_position.count == 4) {
+                if ([model.type isEqualToString:@"课程"]) {
+                    if ([model.course_id isEqualToString:[NSString stringWithFormat:@"%@",current_position[0]]]) {
+                        model.isPlaying = YES;
+                    }
+                } else if ([model.type isEqualToString:@"章"]) {
+                    if ([model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[1]]]) {
+                        model.isPlaying = YES;
+                    }
+                } else if ([model.type isEqualToString:@"节"]) {
+                    if ([model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[2]]]) {
+                        model.isPlaying = YES;
+                    }
+                } else if ([model.type isEqualToString:@"课时"]) {
+                    if ([model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[3]]]) {
+                        model.isPlaying = YES;
+                    }
+                }
+            } else if (current_position.count == 3) {
+                if ([model.type isEqualToString:@"课程"]) {
+                    if ([model.course_id isEqualToString:[NSString stringWithFormat:@"%@",current_position[0]]]) {
+                        model.isPlaying = YES;
+                    }
+                } else if ([model.type isEqualToString:@"节"]) {
+                    if ([model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[1]]]) {
+                        model.isPlaying = YES;
+                    }
+                } else if ([model.type isEqualToString:@"课时"]) {
+                    if ([model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[2]]]) {
+                        model.isPlaying = YES;
+                    }
+                }
+            } else if (current_position.count == 2) {
+                if ([model.type isEqualToString:@"课程"]) {
+                    if ([model.course_id isEqualToString:[NSString stringWithFormat:@"%@",current_position[0]]]) {
+                        model.isPlaying = YES;
+                    }
+                } else if ([model.type isEqualToString:@"课时"]) {
+                    if ([model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[1]]]) {
+                        model.isPlaying = YES;
+                    }
+                }
+            }
+            [_manager.showItems replaceObjectAtIndex:i withObject:model];
+        }
+    }
+    [_tableView reloadData];
 }
-*/
+
 
 @end

@@ -11,6 +11,7 @@
 		780487E92510A433001118F3 /* EmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 780487E82510A433001118F3 /* EmptyCell.m */; };
 		78060FA9255E836900009171 /* ExamMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78060FA8255E836900009171 /* ExamMainViewController.m */; };
 		78060FAC255E8B8100009171 /* ExamMainListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78060FAB255E8B8100009171 /* ExamMainListCell.m */; };
+		780B8B462716AD5B0022B63A /* CourseMakeNoteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 780B8B452716AD5B0022B63A /* CourseMakeNoteVC.m */; };
 		780F9577254FDD810070EB1F /* LiveTeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F9576254FDD810070EB1F /* LiveTeacherView.m */; };
 		780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BA25551FEC0070EB1F /* LivePageControlView.m */; };
 		780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BD255520190070EB1F /* LiveBoardToolView.m */; };
@@ -654,6 +655,8 @@
 		78060FA8255E836900009171 /* ExamMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamMainViewController.m; sourceTree = "<group>"; };
 		78060FAA255E8B8100009171 /* ExamMainListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamMainListCell.h; sourceTree = "<group>"; };
 		78060FAB255E8B8100009171 /* ExamMainListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamMainListCell.m; sourceTree = "<group>"; };
+		780B8B442716AD5B0022B63A /* CourseMakeNoteVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMakeNoteVC.h; sourceTree = "<group>"; };
+		780B8B452716AD5B0022B63A /* CourseMakeNoteVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMakeNoteVC.m; sourceTree = "<group>"; };
 		780F9575254FDD810070EB1F /* LiveTeacherView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveTeacherView.h; sourceTree = "<group>"; };
 		780F9576254FDD810070EB1F /* LiveTeacherView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveTeacherView.m; sourceTree = "<group>"; };
 		780F95B925551FEC0070EB1F /* LivePageControlView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivePageControlView.h; sourceTree = "<group>"; };
@@ -1912,6 +1915,8 @@
 				7839C9902420DEC9002F6595 /* CourseCommentListVC.m */,
 				7839C9922421B996002F6595 /* CourseCommentDetailVC.h */,
 				7839C9932421B996002F6595 /* CourseCommentDetailVC.m */,
+				780B8B442716AD5B0022B63A /* CourseMakeNoteVC.h */,
+				780B8B452716AD5B0022B63A /* CourseMakeNoteVC.m */,
 				7839C99E242313F6002F6595 /* CourseIntroductionVC.h */,
 				7839C99F242313F6002F6595 /* CourseIntroductionVC.m */,
 				7839C9A12423655A002F6595 /* CourseListVC.h */,
@@ -4903,6 +4908,7 @@
 				7859FE3D24C97B8A006C7D4E /* MYTreeItem.m in Sources */,
 				782AC44C25CA7063009130F9 /* ExamResultViewController.m in Sources */,
 				788E95A8253FE24E0089251E /* OneToOneEducationManager.m in Sources */,
+				780B8B462716AD5B0022B63A /* CourseMakeNoteVC.m in Sources */,
 				780F95C4255912050070EB1F /* LiveStudentView.m in Sources */,
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,
 				78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */,

@@ -44,6 +44,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *courselayer; // 1 一层 2 二层 3 三层(涉及到目录布局)
 @property (assign, nonatomic) BOOL isMainPage; // yes 详情页面目录 no 播放页面目录
 
+// 自动续播定位
+@property (strong, nonatomic) NSDictionary *current_position;
+@property (strong, nonatomic) NSDictionary *next_position;
+
+// 刷新一下正在观看的课时的父级的状态
+- (void)justReloadListStatus;
+
 - (void)getClassCourseList;
 
 @end

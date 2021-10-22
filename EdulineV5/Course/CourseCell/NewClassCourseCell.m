@@ -96,7 +96,7 @@
 - (void)setCourseInfo:(CourseListModel *)model isMainPage:(BOOL)isMainPage {
     _treeItem = model;
     _titleLabel.text = model.title;
-    
+    _titleLabel.textColor = EdlineV5_Color.textSecendColor;
     /**
      @property (strong, nonatomic) UIImageView *CourseTypeIcon;
      @property (strong, nonatomic) UIView *blueView;
@@ -129,6 +129,11 @@
         } else if ([model.course_type isEqualToString:@"2"]) {
             _CourseTypeIcon.image = Image(@"zj_live");
         }
+        if (!isMainPage) {
+            if (model.isPlaying) {
+                _titleLabel.textColor = EdlineV5_Color.themeColor;
+            }
+        }
         _cellTableViewSpace.frame = CGRectMake(_CourseTypeIcon.left, 49, MainScreenWidth - _CourseTypeIcon.left, 1);
     } else if ([model.type isEqualToString:@"章"]) {
         _CourseTypeIcon.hidden = YES;
@@ -143,6 +148,11 @@
         _titleLabel.frame = CGRectMake(_blueView.right + 5, 0, 150, 50);
         _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:15];
         _cellTableViewSpace.frame = CGRectMake(_blueView.left, 49, MainScreenWidth - _blueView.left, 1);
+        if (!isMainPage) {
+            if (model.isPlaying) {
+                _titleLabel.textColor = EdlineV5_Color.themeColor;
+            }
+        }
     } else if ([model.type isEqualToString:@"节"]) {
         _CourseTypeIcon.hidden = YES;
         _blueView.hidden = YES;
@@ -156,6 +166,11 @@
         _titleLabel.frame = CGRectMake(_blueView.right + 5, 0, 150, 50);
         _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:14];
         _cellTableViewSpace.frame = CGRectMake(_titleLabel.left, 49, MainScreenWidth - _titleLabel.left, 1);
+        if (!isMainPage) {
+            if (model.isPlaying) {
+                _titleLabel.textColor = EdlineV5_Color.themeColor;
+            }
+        }
     } else if ([model.type isEqualToString:@"课时"]) {
         _cellTableViewSpace.frame = CGRectMake(_typeIcon.left, 49, MainScreenWidth - _typeIcon.left, 1);
         _CourseTypeIcon.hidden = YES;
