@@ -1088,6 +1088,7 @@
     }
 }
 
+// MARK: - 获取课程详情信息
 - (void)getCourseInfo {
     if (SWNOTEmptyStr(_ID)) {
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseInfo:_ID] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {

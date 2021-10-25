@@ -10,7 +10,7 @@
 #import "Net_Path.h"
 #import "EmptyCell.h"
 #import "StudyCourseCell.h"
-#import "CourseMainViewController.h"
+#import "CourseDetailPlayVC.h"
 
 @interface StudyTypeCourseListViewController () {
     NSInteger page;
@@ -93,12 +93,28 @@
         return;
     }
     NSDictionary *info = _dataSource[indexPath.row];
-    CourseMainViewController *vc = [[CourseMainViewController alloc] init];
-    vc.ID = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_id"]];
-    vc.courselayer = [NSString stringWithFormat:@"%@",[info objectForKey:@"section_level"]];
-    vc.isLive = [[NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
-    vc.courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
+    
+    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+    vc.ID = [NSString stringWithFormat:@"%@",info[@"course_id"]];
+    vc.currentHourseId = [NSString stringWithFormat:@"%@",info[@"section_id"]];
+    vc.isLive = [[NSString stringWithFormat:@"%@",info[@"course_type"]] isEqualToString:@"2"];
+    vc.courseType = [NSString stringWithFormat:@"%@",info[@"course_type"]];
+    vc.shouldContinueLearn = YES;
+    
+//    CourseListModel *model = [[CourseListModel alloc] init];
+//    section_data_model *sectionModel = [[section_data_model alloc] init];
+//    section_rate_model *sectionRateModel = [[section_rate_model alloc] init];
+//    sectionRateModel.current_time = [[NSString stringWithFormat:@"%@",info[@"current_time"]] unsignedIntValue];
+//    sectionModel.data_type = [NSString stringWithFormat:@"%@",info[@"section_data_type"]];
+//    model.title = [NSString stringWithFormat:@"%@",info[@"section_title"]];
+//    model.section_data = sectionModel;
+//    model.section_rate = sectionRateModel;
+//    model.course_id = [NSString stringWithFormat:@"%@",info[@"course_id"]];
+//    model.classHourId = [NSString stringWithFormat:@"%@",info[@"section_id"]];
+//    vc.currentPlayModel = model;
+    
     [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
