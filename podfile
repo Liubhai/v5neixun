@@ -56,5 +56,8 @@ target 'EdulineV5' do
     
     pod 'CocoaLumberjack'
     pod 'AliyunOSSiOS'
+    
+    #cc直播
+    pod 'CCLivePlaySDK', '~> 3.17.2'
 
 end

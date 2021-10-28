@@ -22,6 +22,24 @@
 #import "AlertViewUtil.h"
 #import "LogManager.h"
 
+// cc直播
+#import "UIButton+Extension.h"
+#import "UIColor+RCColor.h"
+#import "Masonry.h"
+#import "CCcommonDefine.h"
+#import "UIBarButtonItem+Extension.h"
+#import "UIImageView+WebCache.h"
+#import "NSString+CCSwitchTime.h"
+#import "CCAlertView.h"
+#import "CCPublicChatModel.h"//公聊数据模型
+#import <HDBaseUtils/HDBaseUtils.h>
+//添加全局分类
+#import "UILabel+Extension.h"
+#import "UIImage+Extension.h"
+#import "UIView+Extension.h"
+#import "ObjectExtension.h"
+//
+
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define WEAK(object) __weak typeof(object) weak##object = object
