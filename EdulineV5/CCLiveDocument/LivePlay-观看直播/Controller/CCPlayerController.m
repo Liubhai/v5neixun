@@ -197,14 +197,14 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
 - (void)integrationSDK {
     UIView *docView = _isSmallDocView ? self.playerView.smallVideoView : self.contentView.docView;
     PlayParameter *parameter = [[PlayParameter alloc] init];
-    parameter.userId = @"56761A7379431808";
-    parameter.roomId = @"BBC10038C0C26ECD9C33DC5901307461";
-    parameter.viewerName = @"普通人";//观看者昵称
-    parameter.token = @"524550";//登陆密码
-//    parameter.userId = GetFromUserDefaults(WATCH_USERID);//userId
-//    parameter.roomId = GetFromUserDefaults(WATCH_ROOMID);//roomId
-//    parameter.viewerName = GetFromUserDefaults(WATCH_USERNAME);//用户名
-//    parameter.token = GetFromUserDefaults(WATCH_PASSWORD);//密码
+//    parameter.userId = @"56761A7379431808";
+//    parameter.roomId = @"BBC10038C0C26ECD9C33DC5901307461";
+//    parameter.viewerName = @"普通人";//观看者昵称
+//    parameter.token = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];//@"524550";//登陆密码
+    parameter.userId = GetFromUserDefaults(WATCH_USERID);//userId
+    parameter.roomId = GetFromUserDefaults(WATCH_ROOMID);//roomId
+    parameter.viewerName = GetFromUserDefaults(WATCH_USERNAME);//用户名
+    parameter.token = GetFromUserDefaults(WATCH_PASSWORD);//密码
     // 1.默认视频小窗
     parameter.playerParent = docView;
     parameter.playerFrame = CGRectMake(0,0,docView.frame.size.width, docView.frame.size.height);//文档位置,ps:起始位置为文档视图坐标

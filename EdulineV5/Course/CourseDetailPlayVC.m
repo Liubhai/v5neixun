@@ -3263,15 +3263,27 @@
  */
 -(void)integrationSDK{
     PlayParameter *parameter = [[PlayParameter alloc] init];
-    parameter.userId = @"56761A7379431808";
-    parameter.roomId = @"BBC10038C0C26ECD9C33DC5901307461";
-    parameter.viewerName = @"普通人";//观看者昵称
-    parameter.token = @"524550";//登陆密码
+    parameter.userId = currentCourseFinalModel.model.section_live.cc_userid;//@"56761A7379431808";//
+    parameter.roomId = currentCourseFinalModel.model.section_live.cc_room_id;//@"BBC10038C0C26ECD9C33DC5901307461";//
+    parameter.viewerName = [V5_UserModel uname];//@"普通人";//
+    parameter.token = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];//@"524550";//登陆密码
     parameter.security = YES;//是否使用https (已弃用)
-    parameter.viewerCustomua = @"viewercustomua";//自定义参数
+    parameter.viewerCustomua = @"";//自定义参数
     parameter.tpl = 20;
     RequestData *requestData = [[RequestData alloc] initLoginWithParameter:parameter];
     requestData.delegate = self;
+//    if (currentCourseFinalModel) {
+//        PlayParameter *parameter = [[PlayParameter alloc] init];
+//        parameter.userId = @"56761A7379431808";//currentCourseFinalModel.model.section_live.cc_userid;//
+//        parameter.roomId = @"BBC10038C0C26ECD9C33DC5901307461";//currentCourseFinalModel.model.section_live.cc_room_id;//
+//        parameter.viewerName = @"普通人";//[V5_UserModel uname];//
+////        parameter.token = @"524550";//登陆密码
+//        parameter.security = YES;//是否使用https (已弃用)
+//        parameter.viewerCustomua = @"";//自定义参数
+//        parameter.tpl = 20;
+//        RequestData *requestData = [[RequestData alloc] initLoginWithParameter:parameter];
+//        requestData.delegate = self;
+//    }
 }
 
 #pragma mark- 必须实现的代理方法RequestDataDelegate
@@ -3280,10 +3292,19 @@
  *    @brief    请求成功
  */
 -(void)loginSucceedPlay {
-    SaveToUserDefaults(WATCH_USERID,@"56761A7379431808");
-    SaveToUserDefaults(WATCH_ROOMID,@"BBC10038C0C26ECD9C33DC5901307461");
-    SaveToUserDefaults(WATCH_USERNAME,@"普通人");
-    SaveToUserDefaults(WATCH_PASSWORD,@"524550");
+    
+    SaveToUserDefaults(WATCH_USERID,currentCourseFinalModel.model.section_live.cc_userid);
+    SaveToUserDefaults(WATCH_ROOMID,currentCourseFinalModel.model.section_live.cc_room_id);
+    SaveToUserDefaults(WATCH_USERNAME,[V5_UserModel uname]);
+    NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+    SaveToUserDefaults(WATCH_PASSWORD,ak);
+//    SaveToUserDefaults(WATCH_PASSWORD,@"524550");
+    
+//    SaveToUserDefaults(WATCH_USERID,@"56761A7379431808");
+//    SaveToUserDefaults(WATCH_ROOMID,@"BBC10038C0C26ECD9C33DC5901307461");
+//    SaveToUserDefaults(WATCH_USERNAME,@"普通人");
+//    NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+//    SaveToUserDefaults(WATCH_PASSWORD,ak);
 //    [_loadingView removeFromSuperview];
 //    _loadingView = nil;
     [UIApplication sharedApplication].idleTimerDisabled=YES;
@@ -3304,7 +3325,7 @@
         message = reason;
     }
     
-    NSLog(@"%@CC直播登陆请求失败原因 = %@",message);
+    NSLog(@"CC直播登陆请求失败原因 = %@",message);
 }
 /**
  *    @brief  获取房间信息

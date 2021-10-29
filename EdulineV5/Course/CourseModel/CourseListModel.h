@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class CourseListModel,section_data_model,section_rate_model,live_rate_model;
+@class CourseListModel,section_data_model,section_rate_model,live_rate_model,section_CCLive;
 
 @interface CourseListModel : NSObject
 
@@ -57,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) section_data_model *section_data;
 @property (strong, nonatomic) section_rate_model *section_rate;
 @property (strong, nonatomic) live_rate_model *live_rate;
+@property (strong, nonatomic) section_CCLive *section_live;
 
 @property (nonatomic, weak)   CourseListModel *parentItem;
 @property (nonatomic, strong) NSMutableArray<CourseListModel *> *childItems;
@@ -115,6 +116,39 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSArray *callback_url;//评论数量
 @property (strong, nonatomic) NSString *status_text;//评论数量
 @property (assign, nonatomic) unsigned int status;//评论数量
+
+@end
+
+/** CC直播 */
+@interface section_CCLive : NSObject
+
+/**
+ "room_no": 24, //课时ID，声网房间ID
+ "course_id": 4, //课程ID
+ "live_type": 2, //直播方类型【1：声网；2：CC；】
+ "cc_userid": "56761A7379431808", //CC账户ID
+ "cc_room_id": "774F73163829E5D29C33DC5901307461", //直播间ID
+ "authtype": 0, //验证方式【0：接口验证；1：密码验证；2：免密码验证】
+ "attach_id": null,
+ "cc_replay": "", //CC回放
+ "create_time": 1607689317,
+ "close_time": null,
+ "update_time": 1607689317,
+ "data_type": 1
+ */
+
+@property (strong, nonatomic) NSString *room_no;//课时ID，声网房间ID
+@property (strong, nonatomic) NSString *course_id;//课程ID
+@property (strong, nonatomic) NSString *live_type;//直播方类型【1：声网；2：CC；】
+@property (strong, nonatomic) NSString *cc_userid;//CC账户ID
+@property (strong, nonatomic) NSString *cc_room_id;//直播间ID
+@property (strong, nonatomic) NSString *authtype;//验证方式【0：接口验证；1：密码验证；2：免密码验证】
+@property (strong, nonatomic) NSString *attach_id;//
+@property (strong, nonatomic) NSString *cc_replay;//CC回放
+@property (strong, nonatomic) NSString *create_time;//
+@property (strong, nonatomic) NSString *close_time;//
+@property (strong, nonatomic) NSString *update_time;//
+@property (strong, nonatomic) NSString *data_type;//CC回放
 
 @end
 
