@@ -80,7 +80,7 @@
 
 -(id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property
 {
-    if ([property.name isEqualToString:@"room_no"] || [property.name isEqualToString:@"course_id"] || [property.name isEqualToString:@"live_type"] || [property.name isEqualToString:@"cc_userid"] || [property.name isEqualToString:@"cc_room_id"] || [property.name isEqualToString:@"authtype"] || [property.name isEqualToString:@"attach_id"] || [property.name isEqualToString:@"cc_replay"] || [property.name isEqualToString:@"create_time"] || [property.name isEqualToString:@"close_time"] || [property.name isEqualToString:@"update_time"] || [property.name isEqualToString:@"data_type"]) {
+    if ([property.name isEqualToString:@"room_no"] || [property.name isEqualToString:@"course_id"] || [property.name isEqualToString:@"live_type"] || [property.name isEqualToString:@"cc_userid"] || [property.name isEqualToString:@"cc_room_id"] || [property.name isEqualToString:@"authtype"] || [property.name isEqualToString:@"attach_id"] || [property.name isEqualToString:@"cc_replay"] || [property.name isEqualToString:@"create_time"] || [property.name isEqualToString:@"close_time"] || [property.name isEqualToString:@"update_time"] || [property.name isEqualToString:@"data_type"] || [property.name isEqualToString:@"cc_replay_id"]) {
         if (NOTNULL(oldValue)&&![oldValue isKindOfClass:[NSString class]]) {
             return [NSString stringWithFormat:@"%@",oldValue];
         }else if (!NOTNULL(oldValue)){

@@ -60,12 +60,14 @@
 #import "CCPlayerController.h"
 #import "CCSDK/CCLiveUtil.h"
 #import "CCSDK/RequestData.h"
+#import "CCPlayBackController.h"
+#import "CCSDK/RequestDataPlayBack.h"
 
 #define FacePlayImageHeight 207
 
 //清晰度【FD(流畅)，LD(标清)，SD(高清)，HD(超清)，OD(原画)，2K(2K)，4K(4K)。】
 
-@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseContentViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,WKUIDelegate,WKNavigationDelegate,RequestDataDelegate> {
+@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseContentViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,WKUIDelegate,WKNavigationDelegate,RequestDataDelegate,RequestDataPlayBackDelegate> {
     // 新增内容
     CGFloat sectionHeight;
     BOOL shouldStopRecordTimer;//阻止记录定时器方法执行
@@ -161,6 +163,7 @@
 
 /** 直播房间名字 */
 @property (nonatomic, copy) NSString *roomName;//房间名
+@property (nonatomic,strong)RequestDataPlayBack         *requestDataPlayBack;
 
 @end
 
@@ -1269,22 +1272,30 @@
         }
         //        学习状态【957：未开始；999：直播中；992：已结束；】
         if (cell.listFinalModel.model.live_rate.status == 999) {
-            [self getShengwangLiveInfo:model.model.classHourId courselistModel:model.model];
+            if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"2"]) {
+                [self integrationSDK];
+            } else {
+                [self getShengwangLiveInfo:model.model.classHourId courselistModel:model.model];
+            }
         } else if (cell.listFinalModel.model.live_rate.status == 957) {
             [self showHudInView:self.view showHint:cell.listFinalModel.model.live_rate.status_text];
         } else if (cell.listFinalModel.model.live_rate.status == 992) {
-            if (SWNOTEmptyArr(cell.listFinalModel.model.live_rate.callback_url)) {
-                // 用播放器播放回放视频
-                [wekself.headerView addSubview:wekself.playerView];
-                _wkWebView.hidden = YES;
-                _playerView.hidden = NO;
-                _titleImage.hidden = NO;
-                [wekself.headerView bringSubviewToFront:wekself.titleImage];
-                [wekself.playerView setTitle:cell.listFinalModel.model.title];
-                wekself.playerView.trackInfoArray = [NSArray arrayWithArray:cell.listFinalModel.model.live_rate.callback_url];
-                [wekself.playerView playViewPrepareWithURL:EdulineUrlString(cell.listFinalModel.model.live_rate.callback_url[0][@"play_url"])];
-                wekself.playerView.userInteractionEnabled = YES;
-                [AppDelegate delegate]._allowRotation = YES;
+            if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"2"]) {
+                [self integrationPlayBackSDK];
+            } else {
+                if (SWNOTEmptyArr(cell.listFinalModel.model.live_rate.callback_url)) {
+                    // 用播放器播放回放视频
+                    [wekself.headerView addSubview:wekself.playerView];
+                    _wkWebView.hidden = YES;
+                    _playerView.hidden = NO;
+                    _titleImage.hidden = NO;
+                    [wekself.headerView bringSubviewToFront:wekself.titleImage];
+                    [wekself.playerView setTitle:cell.listFinalModel.model.title];
+                    wekself.playerView.trackInfoArray = [NSArray arrayWithArray:cell.listFinalModel.model.live_rate.callback_url];
+                    [wekself.playerView playViewPrepareWithURL:EdulineUrlString(cell.listFinalModel.model.live_rate.callback_url[0][@"play_url"])];
+                    wekself.playerView.userInteractionEnabled = YES;
+                    [AppDelegate delegate]._allowRotation = YES;
+                }
             }
         }
         return;
@@ -1560,23 +1571,31 @@
         }
         //        学习状态【957：未开始；999：直播中；992：已结束；】
         if (model.live_rate.status == 999) {
-            [self getShengwangLiveInfo:model.classHourId courselistModel:model];
+            if ([model.section_live.live_type isEqualToString:@"2"]) {
+                [self integrationSDK];
+            } else {
+                [self getShengwangLiveInfo:model.classHourId courselistModel:model];
+            }
         } else if (model.live_rate.status == 957) {
             [self showHudInView:self.view showHint:model.live_rate.status_text];
         } else if (model.live_rate.status == 992) {
-            if (SWNOTEmptyArr(model.live_rate.callback_url)) {
-                // 用播放器播放回放视频
-                [wekself.headerView addSubview:wekself.playerView];
-                _wkWebView.hidden = YES;
-                _playerView.hidden = NO;
-                _titleImage.hidden = NO;
-                [wekself.headerView bringSubviewToFront:wekself.titleImage];
-                wekself.playerView.controlView.topView.backButton.hidden = YES;
-                [wekself.playerView setTitle:model.title];
-                wekself.playerView.trackInfoArray = [NSArray arrayWithArray:model.live_rate.callback_url];
-                [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.live_rate.callback_url[0][@"play_url"])];
-                wekself.playerView.userInteractionEnabled = YES;
-                [AppDelegate delegate]._allowRotation = YES;
+            if ([model.section_live.live_type isEqualToString:@"2"]) {
+                [self integrationPlayBackSDK];
+            } else {
+                if (SWNOTEmptyArr(model.live_rate.callback_url)) {
+                    // 用播放器播放回放视频
+                    [wekself.headerView addSubview:wekself.playerView];
+                    _wkWebView.hidden = YES;
+                    _playerView.hidden = NO;
+                    _titleImage.hidden = NO;
+                    [wekself.headerView bringSubviewToFront:wekself.titleImage];
+                    wekself.playerView.controlView.topView.backButton.hidden = YES;
+                    [wekself.playerView setTitle:model.title];
+                    wekself.playerView.trackInfoArray = [NSArray arrayWithArray:model.live_rate.callback_url];
+                    [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.live_rate.callback_url[0][@"play_url"])];
+                    wekself.playerView.userInteractionEnabled = YES;
+                    [AppDelegate delegate]._allowRotation = YES;
+                }
             }
         }
         return;
@@ -2663,8 +2682,6 @@
 
 // MARK: - 点赞按钮点击事件
 - (void)zanButtonClick:(UIButton *)sender {
-    [self integrationSDK];
-    return;;
     if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;
@@ -3272,18 +3289,6 @@
     parameter.tpl = 20;
     RequestData *requestData = [[RequestData alloc] initLoginWithParameter:parameter];
     requestData.delegate = self;
-//    if (currentCourseFinalModel) {
-//        PlayParameter *parameter = [[PlayParameter alloc] init];
-//        parameter.userId = @"56761A7379431808";//currentCourseFinalModel.model.section_live.cc_userid;//
-//        parameter.roomId = @"BBC10038C0C26ECD9C33DC5901307461";//currentCourseFinalModel.model.section_live.cc_room_id;//
-//        parameter.viewerName = @"普通人";//[V5_UserModel uname];//
-////        parameter.token = @"524550";//登陆密码
-//        parameter.security = YES;//是否使用https (已弃用)
-//        parameter.viewerCustomua = @"";//自定义参数
-//        parameter.tpl = 20;
-//        RequestData *requestData = [[RequestData alloc] initLoginWithParameter:parameter];
-//        requestData.delegate = self;
-//    }
 }
 
 #pragma mark- 必须实现的代理方法RequestDataDelegate
@@ -3298,21 +3303,15 @@
     SaveToUserDefaults(WATCH_USERNAME,[V5_UserModel uname]);
     NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
     SaveToUserDefaults(WATCH_PASSWORD,ak);
-//    SaveToUserDefaults(WATCH_PASSWORD,@"524550");
     
-//    SaveToUserDefaults(WATCH_USERID,@"56761A7379431808");
-//    SaveToUserDefaults(WATCH_ROOMID,@"BBC10038C0C26ECD9C33DC5901307461");
-//    SaveToUserDefaults(WATCH_USERNAME,@"普通人");
-//    NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
-//    SaveToUserDefaults(WATCH_PASSWORD,ak);
-//    [_loadingView removeFromSuperview];
-//    _loadingView = nil;
+    // 请求一次学习记录
+    [self requestOnceStudyRecord:currentCourseFinalModel.model.classHourId];
+    
     [UIApplication sharedApplication].idleTimerDisabled=YES;
     CCPlayerController *playForPCVC = [[CCPlayerController alloc] initWithRoomName:self.roomName];
     playForPCVC.modalPresentationStyle = 0;
     [self presentViewController:playForPCVC animated:YES completion:^{
     }];
-//    [self.navigationController pushViewController:playForPCVC animated:YES];
 }
 /**
  *    @brief    登录请求失败
@@ -3333,6 +3332,45 @@
  */
 -(void)roomInfo:(NSDictionary *)dic {
     _roomName = dic[@"name"];
+}
+
+// MARK: - CC直播回放
+
+/**
+ 配置SDK
+ */
+-(void)integrationPlayBackSDK{
+    
+    PlayParameter *parameter = [[PlayParameter alloc] init];
+    parameter.userId = currentCourseFinalModel.model.section_live.cc_userid;
+    parameter.roomId = currentCourseFinalModel.model.section_live.cc_room_id;
+    parameter.recordId = currentCourseFinalModel.model.section_live.cc_replay_id;
+    parameter.viewerName = [V5_UserModel uname];
+    parameter.token = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+    parameter.security = NO;
+    
+    self.requestDataPlayBack = [[RequestDataPlayBack alloc] initLoginWithParameter:parameter];
+    self.requestDataPlayBack.delegate = self;
+}
+
+#pragma mark- 必须实现的代理方法RequestDataPlayBackDelegate
+/**
+ *    @brief    请求成功
+ */
+-(void)loginSucceedPlayBack {
+    
+    SaveToUserDefaults(PLAYBACK_USERID,currentCourseFinalModel.model.section_live.cc_userid);
+    SaveToUserDefaults(PLAYBACK_ROOMID,currentCourseFinalModel.model.section_live.cc_room_id);
+    SaveToUserDefaults(PLAYBACK_RECORDID,currentCourseFinalModel.model.section_live.cc_replay_id);
+    SaveToUserDefaults(PLAYBACK_USERNAME,[V5_UserModel uname]);
+    NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+    SaveToUserDefaults(PLAYBACK_PASSWORD,ak);
+    [UIApplication sharedApplication].idleTimerDisabled=YES;
+    CCPlayBackController *playBackVC = [[CCPlayBackController alloc] init];
+    playBackVC.modalPresentationStyle = 0;
+    [self presentViewController:playBackVC animated:YES completion:^{
+        _requestDataPlayBack = nil;
+    }];
 }
 
 @end

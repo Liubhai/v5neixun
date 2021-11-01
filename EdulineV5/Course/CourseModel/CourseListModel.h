@@ -149,6 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *close_time;//
 @property (strong, nonatomic) NSString *update_time;//
 @property (strong, nonatomic) NSString *data_type;//CC回放
+@property (strong, nonatomic) NSString *cc_replay_id;//CC回放ID
 
 @end
 

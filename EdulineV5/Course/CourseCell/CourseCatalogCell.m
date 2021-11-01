@@ -624,7 +624,7 @@
         [_isLearningIcon stopAnimating];
 //        【957：未开始；999：学习中；992：已完成；】
         if (model.model.live_rate.status == 992) {
-            if (SWNOTEmptyArr(model.model.live_rate.callback_url)) {
+            if (SWNOTEmptyArr(model.model.live_rate.callback_url) || SWNOTEmptyStr(model.model.section_live.cc_replay_id)) {
                 _learnTimeLabel.text = @"观看回放";
                 _learnTimeLabel.textColor = EdlineV5_Color.textThirdColor;
             }
