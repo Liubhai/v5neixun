@@ -29,9 +29,9 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
 - (void)showHudInView:(UIView *)view hint:(NSString *)hint{
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:view];
     HUD.removeFromSuperViewOnHide = YES;
-    HUD.labelText = hint;
+    HUD.label.text = hint;
     [view addSubview:HUD];
-    [HUD show:YES];
+    [HUD showAnimated:YES];
     [self setHUD:HUD];
 }
 
@@ -40,15 +40,15 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     hud.userInteractionEnabled = NO;
     // Configure for text only and offset down
     hud.mode = MBProgressHUDModeText;
-    hud.labelText = hint;
+    hud.label.text = hint;
     hud.margin = 10.f;
-    hud.yOffset = 100.f;
+    [hud setOffset:CGPointMake(0, 100.f)];
     hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:1];
+    [hud hideAnimated:YES afterDelay:1];
 }
 
 - (void)hideHud{
-    [[self HUD] hide:YES];
+    [[self HUD] hideAnimated:YES];
 }
 
 @end
