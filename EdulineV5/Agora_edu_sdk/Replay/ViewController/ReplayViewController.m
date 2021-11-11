@@ -14,7 +14,7 @@
 #import "ReplayControlView.h"
 #import "HttpManager.h"
 #import "EduButton.h"
-#import "LoadingView.h"
+#import "AgoraLoadingView.h"
 
 #import "UIView+Toast.h"
 #import "ReplayModel.h"
@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, RecordState) {
 @property (weak, nonatomic) IBOutlet EduButton *backButton;
 @property (weak, nonatomic) IBOutlet UIView *playBackgroundView;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
-@property (weak, nonatomic) IBOutlet LoadingView *loadingView;
+@property (weak, nonatomic) IBOutlet AgoraLoadingView *loadingView;
 @property (weak, nonatomic) IBOutlet UIView *teacherView;
 @property (weak, nonatomic) IBOutlet UIImageView *defaultTeacherImage;
 

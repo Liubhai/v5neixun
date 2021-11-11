@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -50,9 +51,9 @@
                                 <action selector="onPlayClick:" destination="-1" eventType="touchUpInside" id="3mj-WG-xcP"/>
                             </connections>
                         </button>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e84-YP-Tqr" customClass="LoadingView">
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e84-YP-Tqr" userLabel="AgoraLoadingView" customClass="AgoraLoadingView">
                             <rect key="frame" x="231" y="145" width="124" height="124"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="124" id="auy-5w-vNp"/>
                                 <constraint firstAttribute="width" constant="124" id="t9c-Ou-Yv0"/>
@@ -121,6 +122,7 @@
                     </constraints>
                 </imageView>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="jzw-Yu-DnS" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="10" id="0MA-dc-uAO"/>
@@ -138,14 +140,16 @@
                 <constraint firstItem="FNl-TS-YFc" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="eIX-JR-GJW"/>
                 <constraint firstAttribute="bottom" secondItem="FNl-TS-YFc" secondAttribute="bottom" id="vzo-Db-d1l"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="138.61607142857142" y="91.304347826086968"/>
         </view>
     </objects>
     <resources>
-        <image name="back" width="17.5" height="17.5"/>
+        <image name="back" width="32" height="32"/>
         <image name="big_play" width="40" height="40"/>
-        <image name="message" width="65" height="65"/>
+        <image name="message" width="42" height="42"/>
         <image name="replay_teacher" width="48" height="48"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

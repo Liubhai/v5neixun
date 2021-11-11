@@ -6,9 +6,9 @@
 //  Copyright © 2019 Agora. All rights reserved.
 //
 
-#import "LoadingView.h"
+#import "AgoraLoadingView.h"
 
-@interface LoadingView()
+@interface AgoraLoadingView()
 
 @property (strong, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
@@ -17,7 +17,7 @@
 @end
 
 
-@implementation LoadingView
+@implementation AgoraLoadingView
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
