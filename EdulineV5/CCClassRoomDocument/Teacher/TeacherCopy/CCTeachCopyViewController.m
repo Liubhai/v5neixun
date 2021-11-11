@@ -2323,7 +2323,7 @@
     imagePickerVc.allowPickingImage = YES;
     imagePickerVc.allowPickingOriginalPhoto = YES;
     imagePickerVc.sortAscendingByModificationDate = YES;
-    imagePickerVc.allowEdited = NO;
+//    imagePickerVc.allowEdited = NO;
     WS(ws);
     __weak typeof(TZImagePickerController *) weakPicker = imagePickerVc;
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {

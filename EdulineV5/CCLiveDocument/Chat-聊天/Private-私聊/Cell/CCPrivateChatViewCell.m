@@ -7,11 +7,11 @@
 //
 
 #import "CCPrivateChatViewCell.h"
-#import "CCImageView.h"
+#import "CCLiveImageView.h"
 #import "Utility.h"//
 #import "CCChatViewDataSourceManager.h"
 @interface CCPrivateChatViewCell ()
-@property (nonatomic, strong) CCImageView    *photoView;//图片视图
+@property (nonatomic, strong) CCLiveImageView    *photoView;//图片视图
 @property (nonatomic, strong) UIButton       *bgButton;//气泡背景
 @property (nonatomic, strong) UIImageView    *head;//头像
 @property (nonatomic, strong) UIImageView    *imageid;//头像标识
@@ -55,7 +55,7 @@
     
     
     //添加imageView
-    self.photoView = [[CCImageView alloc] init];
+    self.photoView = [[CCLiveImageView alloc] init];
     [self addSubview:self.photoView];
     self.photoView.hidden = YES;
 }

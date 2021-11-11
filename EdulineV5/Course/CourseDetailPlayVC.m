@@ -63,11 +63,32 @@
 #import "CCPlayBackController.h"
 #import "CCSDK/RequestDataPlayBack.h"
 
+/** CC云课堂 */
+#import <HSRoomUI/HSRoomUI.h>
+#import "CCScanViewController.h"
+#import <AVFoundation/AVFoundation.h>
+#import "CCLoginViewController.h"
+#import "CCLoginDirectionViewController.h"
+#import <CCClassRoomBasic/CCClassRoomBasic.h>
+#import <HSRoomUI/HSRoomUI.h>
+#import "CCTicketVoteView.h"
+#import "CCTickeResultView.h"
+#import "CCBrainView.h"
+#import "CCClassCodeView.h"
+#import "CCUrlLoginView.h"
+#import "CCRoomDecModel.h"
+#import "CCPlayViewController.h"
+#import "CCPushViewController.h"
+#import "YUNLanguage.h"
+
+// test
+#import "CCLoginScanViewController.h"
+
 #define FacePlayImageHeight 207
 
 //清晰度【FD(流畅)，LD(标清)，SD(高清)，HD(超清)，OD(原画)，2K(2K)，4K(4K)。】
 
-@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseContentViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,WKUIDelegate,WKNavigationDelegate,RequestDataDelegate,RequestDataPlayBackDelegate> {
+@interface CourseDetailPlayVC ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseContentViewDelegate,AliyunVodPlayerViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,WKUIDelegate,WKNavigationDelegate,RequestDataDelegate,RequestDataPlayBackDelegate, CCClassCodeViewDelegate> {
     // 新增内容
     CGFloat sectionHeight;
     BOOL shouldStopRecordTimer;//阻止记录定时器方法执行
@@ -164,6 +185,24 @@
 /** 直播房间名字 */
 @property (nonatomic, copy) NSString *roomName;//房间名
 @property (nonatomic,strong)RequestDataPlayBack         *requestDataPlayBack;
+
+
+/** 云课堂 */
+@property(nonatomic, strong)CCClassCodeView *classCodeView;
+@property(nonatomic, strong)CCUrlLoginView *urlLoginView;
+@property(nonatomic, strong)CCRoomDecModel *descModel;
+@property(nonatomic, assign)BOOL isUrlLogin;
+@property(nonatomic, strong) CCPlayViewController *playVC;
+@property(nonatomic, strong) CCPushViewController *pushVC;
+@property(nonatomic,strong)LoadingView          *loadingView;
+
+@property(nonatomic,strong)HSLiveViewController *liveVC;
+@property (assign, nonatomic) CCRole role;//角色
+@property(nonatomic, assign)BOOL needPassword;
+@property(nonatomic, copy)NSString *sessionID;
+@property(nonatomic, strong)id loginInfo;
+@property(nonatomic, assign)BOOL isLandSpace;
+@property(nonatomic, assign)BOOL isLoading;
 
 @end
 
@@ -344,6 +383,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ScanSuccess:) name:@"ScanSuccess" object:nil];
 }
 
 - (AliyunVodPlayerView *__nullable)playerView{
@@ -1274,6 +1314,8 @@
         if (cell.listFinalModel.model.live_rate.status == 999) {
             if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationSDK];
+            } else if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"3"]) {
+                [self getRoomIdAndDesc:@""];
             } else {
                 [self getShengwangLiveInfo:model.model.classHourId courselistModel:model.model];
             }
@@ -1282,6 +1324,8 @@
         } else if (cell.listFinalModel.model.live_rate.status == 992) {
             if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationPlayBackSDK];
+            } else if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"3"]) {
+//                [self integrationPlayBackSDK];
             } else {
                 if (SWNOTEmptyArr(cell.listFinalModel.model.live_rate.callback_url)) {
                     // 用播放器播放回放视频
@@ -1573,6 +1617,8 @@
         if (model.live_rate.status == 999) {
             if ([model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationSDK];
+            } else if ([model.section_live.live_type isEqualToString:@"3"]) {
+                [self getRoomIdAndDesc:@""];
             } else {
                 [self getShengwangLiveInfo:model.classHourId courselistModel:model];
             }
@@ -1581,6 +1627,8 @@
         } else if (model.live_rate.status == 992) {
             if ([model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationPlayBackSDK];
+            } else if ([model.section_live.live_type isEqualToString:@"3"]) {
+//                [self integrationPlayBackSDK];
             } else {
                 if (SWNOTEmptyArr(model.live_rate.callback_url)) {
                     // 用播放器播放回放视频
@@ -3371,6 +3419,435 @@
     [self presentViewController:playBackVC animated:YES completion:^{
         _requestDataPlayBack = nil;
     }];
+}
+
+// MARK: - CC云课堂
+
+// MARK: - 课堂链接方式
+-(void)parseCodeStr:(NSString *)result {
+    NSRange rangeRoomId = [result rangeOfString:@"roomid="];
+    NSRange rangeUserId = [result rangeOfString:@"userid="];
+    WS(ws)
+    if (!StrNotEmpty(result) || rangeRoomId.location == NSNotFound || rangeUserId.location == NSNotFound)
+    {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:HDClassLocalizeString(@"解析错误错误") message:HDClassLocalizeString(@"课堂链接错误") preferredStyle:(UIAlertControllerStyleAlert)];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:HDClassLocalizeString(@"好") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [alertController addAction:okAction];
+        [ws presentViewController:alertController animated:YES completion:nil];
+    } else {
+        NSString *resultNew = [result stringByReplacingOccurrencesOfString:@"#" withString:@"index"];
+
+        NSDictionary *roomInfo = [HDSTool parseURLParam:resultNew];
+        NSString *roomId = roomInfo[@"roomid"];
+        NSString *userId = roomInfo[@"userid"];
+        NSInteger mode = [roomInfo[@"template"]integerValue];
+
+        HDSTool *tool = [HDSTool sharedTool];
+        tool.rid = roomId;
+        tool.uid = userId;
+        tool.roomMode = mode;
+
+        if (!roomId || !userId) {
+            return;
+        }
+        resultNew = [HDSTool getUrlStringWithString:resultNew];
+        NSURL *url = [NSURL URLWithString:resultNew];
+        NSString *path = [[url path]lastPathComponent];
+        NSString *role = path;
+
+        SaveToUserDefaults(LIVE_USERID,userId);
+        SaveToUserDefaults(LIVE_ROOMID,roomId);
+
+        NSString *urlDealed = [[CCScanViewController new]dealURLClassToCCAPI:result];
+        [[CCStreamerBasic sharedStreamer]setServerDomain:urlDealed area:nil];
+        
+        __weak typeof(self) weakSelf = self;
+        userId = [userId stringByReplacingOccurrencesOfString:@" " withString:@""];
+        
+        [self getRoomDescWithRoomID:roomId classNo:nil completion:^(BOOL result, NSError *error, id info) {
+            CCRoomDecModel *model = (CCRoomDecModel *)info;
+            if (result)
+            {
+                if ([model.result isEqualToString:@"OK"])
+                {
+                    HDSTool *tool = [HDSTool sharedTool];
+                    tool.roomSubMode = model.data.layout_mode;
+
+                    SaveToUserDefaults(LIVE_ROOMNAME, model.data.name);
+                    SaveToUserDefaults(LIVE_ROOMDESC, model.data.desc);
+                    NSInteger authKey = [CCRoomDecModel authTypeKeyForRole:role model:model.data];
+                    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+                    userInfo[@"userID"] = userId;
+                    userInfo[@"roomID"] = roomId;
+                    userInfo[@"role"] = role;
+                    userInfo[@"authtype"] = @(authKey);
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ScanSuccess" object:nil userInfo:userInfo];
+                }
+                else
+                {
+                    [CCTool showMessage:model.errorMsg];
+                }
+            }
+            else
+            {
+            }
+        }];
+    }
+}
+
+- (void)ScanSuccess:(NSNotification *)noti
+{
+    NSString *userId = noti.userInfo[@"userID"];
+    NSString *roomId = noti.userInfo[@"roomID"];
+    NSString *role = noti.userInfo[@"role"];
+    NSInteger authtype = [noti.userInfo[@"authtype"] integerValue];
+    BOOL needPassword = authtype == 2 ? NO : YES;
+    NSInteger role1 = [CCTool roleFromRoleString:role];
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    CCLoginDirectionViewController *directionVC = (CCLoginDirectionViewController *)[mainStory instantiateViewControllerWithIdentifier:@"Direction"];
+    if (role1 == CCRole_Teacher || role1 == CCRole_Assistant)
+    {
+        directionVC.needPassword = YES;
+    }
+    else
+    {
+        if (role1 == CCRole_Teacher)
+        {
+            directionVC.needPassword = YES;
+        }
+        else
+        {
+            directionVC.needPassword = needPassword;
+        }
+    }
+    directionVC.role = role1;
+    SaveToUserDefaults(LIVE_ROLE, @(directionVC.role));
+    SaveToUserDefaults(LIVE_ROOMID, roomId);
+    directionVC.userID = userId;
+    directionVC.roomID = roomId;
+    main_async_safe(^{
+        [self.navigationController pushViewController:directionVC animated:YES];
+    });
+}
+
+// MARK: - 获取直播间房间信息
+- (void)getRoomIdAndDesc:(NSString *)classNo {
+    // 100621591
+    classNo = @"100621591";
+    if (classNo.length == 0) {
+        [CCTool showMessage:@"参课码错误"];
+        return;
+    }
+    if (classNo.length != 9) {
+        [CCTool showMessage:@"参课码错误"];
+        return;
+    }
+    WeakSelf(weakSelf);
+    [self getRoomDescWithRoomID:nil classNo:classNo completion:^(BOOL result, NSError *error, id info) {
+        weakSelf.descModel = (CCRoomDecModel *)info;
+        if (result)
+        {
+            if ([weakSelf.descModel.result isEqualToString:@"OK"])
+            {
+                weakSelf.descModel.data.classNo = classNo;
+                HDSTool *tool = [HDSTool sharedTool];
+                tool.roomSubMode = weakSelf.descModel.data.layout_mode;
+                tool.rid = weakSelf.descModel.data.live_roomid;
+                tool.uid = weakSelf.descModel.data.userid;
+                tool.roomMode = weakSelf.descModel.data.templatetype;
+                if (tool.roomMode != 32) {
+                    [tool updateLocalPushResolution];
+                    [tool resetSDKPushResolution];
+                }
+                if ([classNo hasSuffix:@"4"]) {
+                    if (tool.roomMode != 32) {
+                        [CCTool showMessage:HDClassLocalizeString(@"暂不支持助教") ];
+                        return;
+                    } else {
+                        if (tool.roomSubMode > 0) {
+                            [CCTool showMessage:HDClassLocalizeString(@"暂不支持助教") ];
+                            return;
+                        }
+                    }
+                }
+
+                SaveToUserDefaults(LIVE_ROOMNAME, weakSelf.descModel.data.name);
+                SaveToUserDefaults(LIVE_ROOMDESC, weakSelf.descModel.data.desc);
+                //todo...
+                // 进入云课堂
+                [self loginCCClassRoomActionJoin];
+            }
+            else
+            {
+                [CCTool showMessage:weakSelf.descModel.errorMsg];
+            }
+        }
+        else
+        {
+            NSString *errMessage = error.domain;
+            if (!errMessage) {
+                errMessage = HDClassLocalizeString(@"网络不稳定,请重试!") ;
+            }
+            NSInteger errCode = error.code;
+            
+            NSString *message = [NSString stringWithFormat:@"%@<%d>",errMessage,errCode];
+            [HDSTool showAlertTitle:@"" msg:message completion:^(BOOL cancelled, NSInteger buttonIndex) {
+                
+            }];
+        }
+    }];
+}
+
+// MARK: - 获取房间信息回调
+- (void)getRoomDescWithRoomID:(NSString *)roomId classNo:(NSString *)classNo completion:(CCComletionBlock)completion {
+    [CCRoomDecModel getRoomDescWithRoomID:roomId classCode:classNo completion:^(BOOL result, NSError *error, id info) {
+        completion(result, error, info);
+    }];
+}
+
+-(void)loginCCClassRoomActionJoin
+{
+    NSString *classCodeString = @"100621591";
+    if ([classCodeString hasSuffix:@"0"]) {///老师 助教
+        ///需要密码
+        self.role = CCRole_Teacher;
+        self.needPassword = YES;
+    }else if ([classCodeString hasSuffix:@"1"]) {///学生
+        self.role = CCRole_Student;
+        self.needPassword = self.descModel.data.talker_authtype == 2 ? NO : YES;
+    }else if ([classCodeString hasSuffix:@"7"]) {///麦下观众
+        self.role = CCRole_au_low;
+        self.needPassword = self.descModel.data.talker_authtype == 2 ? NO : YES;
+    }else if ([classCodeString hasSuffix:@"3"]) {///隐身者
+        if (self.descModel.data.templatetype == 32) {
+            [CCTool showMessage:HDClassLocalizeString(@"暂不支持隐身者") ];
+            return;
+        }
+        self.role = CCRole_Inspector;
+        self.needPassword = self.descModel.data.inspector_authtype == 2 ? NO : YES;
+    } else if ([self.classCodeView.classCodeTF.text hasSuffix:@"4"]) {
+        self.role = CCRole_Assistant;
+        self.needPassword = YES;
+    }
+    NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+    SaveToUserDefaults(SET_USER_NAME, [V5_UserModel uname]);
+    SaveToUserDefaults(SET_USER_PWD, ak);//@"671309"
+    SaveToUserDefaults(LIVE_USERID, self.descModel.data.userid);
+    SaveToUserDefaults(LIVE_ROOMID, self.descModel.data.live_roomid);
+
+    NSString *isp = GetFromUserDefaults(SERVER_AREA_NAME);
+
+    NSString *uname = [V5_UserModel uname];
+
+
+    NSString *upwd = ak;//@"671309";
+
+    __weak typeof(self) weakSelf = self;
+    __block NSString *sessionStr = nil;
+    [[CCStreamerBasic sharedStreamer] authWithRoomId:self.descModel.data.live_roomid accountId:self.descModel.data.userid role:self.role password:upwd nickName:uname completion:^(BOOL result, NSError *error, id info) {
+        if (!result)
+        {
+            [CCTool showMessageError:error];
+            return;
+        }
+        NSDictionary *dic = (NSDictionary *)info;
+        NSString *res = dic[@"result"];
+        NSString *errmsg = @"";
+        if ([res isEqualToString:@"FAIL"])
+        {
+            errmsg  = dic[@"errorMsg"];
+            [CCTool showMessage:errmsg];
+            return ;
+        }
+        NSDictionary *dataDic = dic[@"data"];
+        sessionStr = [dataDic objectForKey:@"sessionid"];
+        SaveToUserDefaults(Login_UID, [dataDic objectForKey:@"userid"]);
+        {
+            weakSelf.sessionID = sessionStr;
+            CCEncodeConfig *config = [[CCEncodeConfig alloc] init];
+            config.reslution = CCResolution_240;
+            [weakSelf initVC];
+
+            NSString *accountid = self.descModel.data.userid;
+            NSString *sessionid = self.sessionID;
+            [[CCStreamerBasic sharedStreamer] joinWithAccountID:accountid sessionID:sessionid roomId:weakSelf.descModel.data.live_roomid config:config areaCode:isp events:@[] updateRtmpLayout:NO completion:^(BOOL result, NSError *error, id info) {
+                BOOL modeGravity = [HDSDocManager sharedDoc].isPreviewGravityFollow;
+                [[CCStreamerBasic sharedStreamer]setPreviewGravityFollow:modeGravity];
+
+                HDSTool *tool = [HDSTool sharedTool];
+                if (tool.roomMode != 32) {
+                    [tool updateLocalPushResolution];
+                    [tool resetSDKPushResolution];
+                }
+
+                if (result) {
+                    weakSelf.loginInfo = info;
+                    NSLog(HDClassLocalizeString(@"登录获取的info：%@") ,info);
+                    if ([NSThread isMainThread]) {
+                        if ([[weakSelf.navigationController.viewControllers lastObject] isKindOfClass:weakSelf.class]) {
+
+                            [weakSelf streamLoginSuccess:weakSelf.loginInfo];
+                        }
+                    }else {
+                        main_async_safe(^{
+                            if ([[weakSelf.navigationController.viewControllers lastObject] isKindOfClass:weakSelf.class]) {
+
+                                [weakSelf streamLoginSuccess:weakSelf.loginInfo];
+                            }
+                        });
+                    }
+
+                }else{
+                    if (error.code == 22002) {
+
+                        int version_check = [info[@"version_check"] intValue];
+                        if (version_check == 1) {
+                            return;
+                        }
+                    }
+                }
+            }];
+        }
+    }];
+}
+
+// MARK: - 初始化云课堂控制器
+- (void)initVC {
+    HDSTool *tool = [HDSTool sharedTool];
+    if (tool.roomMode == 32) {
+        if (tool.roomSubMode == 1) {
+            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_1V1_16_9];
+        }else if (tool.roomSubMode == 2) {
+            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_1V1_4_3];
+        } else {
+            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_saas];
+        }
+        self.liveVC.allowTakePhotoInLibrary = YES;
+        
+        HSRoomConfig *roomInfo = [[HSRoomConfig alloc]init];
+        roomInfo.bleLicense = @"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiID8+CjxsaWNlbnNlIHZlcnNpb249InYxLjAiIGlkPSI2MDU5YTE3Y2I1YmE3ZDhmMjExZmUyODAiPgogICAgPG93bmVyPuWIm+ebm+inhuiBlOaVsOeggeenkeaKgO+8iOWMl+S6rO+8ieaciemZkOWFrOWPuDwvb3duZXI+CiAgICA8dXNlcj5jaGVuZnk8L3VzZXI+CiAgICA8ZW1haWw+Y2hlbmZ5QGJva2VjYy5jb208L2VtYWlsPgogICAgPGJ1bmRsZUlkPmNvbS5jbGFzcy5yb29tPC9idW5kbGVJZD4KICAgIDxhcHBOYW1lPmNjPC9hcHBOYW1lPgogICAgPGRyaXZlclR5cGVzPgogICAgICAgIDxkcml2ZXJUeXBlPklPUzwvZHJpdmVyVHlwZT4KICAgIDwvZHJpdmVyVHlwZXM+CiAgICA8cGVuVHlwZXM+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iQURQXzEwMSIgSUQ9IjUiIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iRU5fQURQXzYwMSIgSUQ9IjYiIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iRU5fQVBEXzYxMSIgSUQ9IjciIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iVEVfMzAxIiBJRD0iOCIgLz4KICAgICAgICA8cGVuVHlwZSBwZW5OYW1lPSJURV8zMDIiIElEPSI5IiAvPgogICAgICAgIDxwZW5UeXBlIHBlbk5hbWU9IlREXzEwMiIgSUQ9IjEwIiAvPgogICAgPC9wZW5UeXBlcz4KICAgIDxsaWNlbnNlZERhdGU+MTk3MDAxMDE8L2xpY2Vuc2VkRGF0ZT4KICAgIDxleHBpcmVkRGF0ZT45OTk5MTIzMTwvZXhwaXJlZERhdGU+CiAgICA8YXV0aElkPjYwNTk5YzQwYjViYTdkOGYyMTFmZTI3ZjwvYXV0aElkPgogICAgPHNlY3JldD5jU0VoY3kxQU1pTTRmaVFvY0g1ZU1USjJlVzEwWkNseUl6RnlJemN4TWw0PTwvc2VjcmV0PgogICAgPHBhZ2VBZGRyZXNzIHN0YXJ0PSI3MC4wLjE3LjAiIGVuZD0iNzAuMC4xNy4xOSIgcGFnZUNvdW50PSIyMCIgLz4KICAgIDxhdXRob3JpemVyIGNvbXBhbnk9IuWMl+S6rOaLk+aAneW+t+enkeaKgOaciemZkOWFrOWPuCIgd2Vic2l0ZT0iaHR0cDovL3d3dy50c3R1ZHkuY29tLmNuIiAvPgo8L2xpY2Vuc2U+Cg==";
+        roomInfo.bleSignature = @"57E8A02D4FB158106F27FD1ECE5063753FAC2E096E49CB8A53B48B58DDA03A6CC9901865D0BC6DB313AE3AE8CEEFDCC426313ED5FDE8904DB5BACA83658A3F6AC6B360BF676D1EE7C47E9D6471540D8ECF4948680D30C54DC9766960516A7DE2F64594A25A0CF6C74A4872C765E7FC57ED076B8376EAE16682C5A94A432612EA";
+        [ self.liveVC setLiveRoomConfig:roomInfo];
+
+        return;
+    }
+    if (self.role == CCRole_Teacher)
+    {
+        if (self.pushVC) {
+            [self.pushVC removeObserver];
+        }
+        self.pushVC = [[CCPushViewController alloc] initWithLandspace:self.isLandSpace];
+        self.pushVC.isQuick = YES;
+    }
+    else if (self.role == CCRole_Student)
+    {
+        if (self.playVC) {
+            [self.playVC removeObserver];
+        }
+        self.playVC = [[CCPlayViewController alloc] initWithLandspace:self.isLandSpace];
+        self.playVC.roleType = CCRole_Student;
+        self.playVC.isQuick = YES;
+    }
+    else if (self.role == CCRole_Inspector)
+    {
+        if (self.playVC) {
+            [self.playVC removeObserver];
+        }
+        self.playVC = [[CCPlayViewController alloc] initWithLandspace:self.isLandSpace];
+        self.playVC.roleType = CCRole_Inspector;
+        self.playVC.isQuick = YES;
+    }
+}
+
+// MARK: - 推流成功
+- (void)streamLoginSuccess:(NSDictionary *)info {
+    HDSTool *tool = [HDSTool sharedTool];
+    if (tool.roomMode == 32) {
+//        [self landscapeRight:YES];
+        self.liveVC.version_info = info;
+        self.liveVC.openUrl = @"itms-apps://itunes.apple.com/app/id1239642978";
+        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:self.class]) {
+            [self.navigationController pushViewController:self.liveVC animated:YES];
+        }
+        return;
+    }
+    //存储用户名、密码
+    NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+    NSString *userName = [V5_UserModel uname];
+    NSString *userpwd = ak;//@"671309";
+    SaveToUserDefaults(@"kkuserName", userName);
+    SaveToUserDefaults(@"kkuserpwd", userpwd);
+    NSString *userID =  self.descModel.data.userid;
+    SaveToUserDefaults(LIVE_USERNAME, userName);
+    if (self.role == CCRole_Teacher || self.role == CCRole_Assistant)
+    {
+        [CCDrawMenuView teacherResetDefaultColor];
+    }
+    else
+    {
+        [CCDrawMenuView resetDefaultColor];
+    }
+    if (self.role == CCRole_Teacher)
+    {
+        self.pushVC.sessionId =  self.sessionID;
+        self.pushVC.viewerId = userID;
+        self.pushVC.isLandSpace = self.isLandSpace;
+        self.pushVC.roomID = self.descModel.data.live_roomid;
+        self.pushVC.videoOriMode = self.isLandSpace ? CCVideoLandscape : CCVideoPortrait;
+        self.pushVC.videoOriMode = CCVideoChangeByInterface;
+//        if ([self isControllerPresented:[CCPushViewController class]]) {
+//            return;
+//        }
+        [self.navigationController presentViewController:self.pushVC animated:YES completion:^{
+            
+        }];
+//        [self.navigationController pushViewController:self.pushVC animated:YES];
+    }
+    else if (self.role == CCRole_Student)
+    {
+        self.playVC.sessionId =  self.sessionID;
+        self.playVC.viewerId = userID;
+//        self.playVC.videoAndAudioNoti = self.videoAndAudioNoti;
+//        self.videoAndAudioNoti = nil;
+        self.playVC.isLandSpace = self.isLandSpace;
+        
+        self.playVC.isNeedPWD = self.needPassword;
+        self.playVC.roleType = CCRole_Student;
+        self.playVC.talker_audio = [[CCStreamerBasic sharedStreamer]getRoomInfo].room_talker_audio;
+        [self.navigationController presentViewController:self.playVC animated:YES completion:^{
+            
+        }];
+//        [self.navigationController pushViewController:self.playVC animated:YES];
+    }
+    else if (self.role == CCRole_Inspector)
+    {
+        self.playVC.loginInfo = info;
+        self.playVC.viewerId = userID;
+        self.playVC.sessionId =  self.sessionID;
+//        self.playVC.videoAndAudioNoti = self.videoAndAudioNoti;
+//        self.videoAndAudioNoti = nil;
+        self.playVC.isLandSpace = self.isLandSpace;
+        self.playVC.roleType = CCRole_Inspector;
+        self.playVC.talker_audio = [[CCStreamerBasic sharedStreamer]getRoomInfo].room_talker_audio;
+        [self.navigationController presentViewController:self.playVC animated:YES completion:^{
+            
+        }];
+//        [self.navigationController pushViewController:self.playVC animated:YES];
+//        if ([self isControllerPresented:[CCPlayViewController class]]) {
+//            return;
+//        }
+//        [self.navigationController pushViewController:self.playVC animated:YES];
+    }
+}
+
+- (BOOL)isControllerPresented:(Class)class {
+    UIViewController *vc = [HDSTool currentViewController];
+    if ([vc isKindOfClass:class]) {
+        NSLog(@"UIViewController---ERROR!---:%@",class);
+        return YES;
+    }
+    return NO;
 }
 
 @end

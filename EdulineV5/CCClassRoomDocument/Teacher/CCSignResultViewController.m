@@ -8,7 +8,6 @@
 
 #import "CCSignResultViewController.h"
 #import "ZZCircleProgress.h"
-#import "DefinePrefixHeader.pch"
 #import "CCSignManger.h"
 #import "CCSignViewController.h"
 #import "AppDelegate.h"

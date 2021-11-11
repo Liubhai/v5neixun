@@ -103,12 +103,12 @@
     {
         return;
     }
-    UIWindow *kWindow = [[UIApplication sharedApplication]keyWindow];
-    UIView *guView = [kWindow viewWithTag:KGuide_TAG];
+    UIWindow *kwindow = [[UIApplication sharedApplication]keyWindow];
+    UIView *guView = [kwindow viewWithTag:KGuide_TAG];
     if (guView) {
         [guView removeFromSuperview];
     }
-    [kWindow addSubview:self];
+    [kwindow addSubview:self];
 }
 
 

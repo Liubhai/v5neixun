@@ -679,7 +679,7 @@
     imagePickerVc.allowPickingImage = YES;
     imagePickerVc.allowPickingOriginalPhoto = YES;
     imagePickerVc.sortAscendingByModificationDate = YES;
-    imagePickerVc.allowEdited = YES;
+//    imagePickerVc.allowEdited = YES;
     __weak typeof(self) weakSelf = self;
     
     __weak typeof(TZImagePickerController *) weakPicker = imagePickerVc;

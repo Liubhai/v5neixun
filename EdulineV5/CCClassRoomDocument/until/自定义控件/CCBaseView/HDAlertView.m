@@ -98,7 +98,9 @@ static const CGFloat AlertViewLineLayerWidth = 0.5;
             self.alertWindow.windowLevel = UIWindowLevelAlert;
             self.alertWindow.backgroundColor = [UIColor clearColor];
         }
-        self.alertWindow.rootViewController = self;
+        
+//        self.alertWindow.rootViewController = self;
+        [self.alertWindow.rootViewController presentViewController:self animated:YES completion:nil];
         
         CGRect frame = [self frameForOrientation:self.interfaceOrientation];
         self.view.frame = frame;
@@ -231,11 +233,12 @@ static const CGFloat AlertViewLineLayerWidth = 0.5;
         [UIView animateWithDuration:(animated ? 0.2 : 0) animations:^{
             self.backgroundView.alpha = 0;
         } completion:^(BOOL finished) {
-            [self.alertWindow setHidden:YES];
-            [self.alertWindow removeFromSuperview];
-            self.alertWindow.rootViewController = nil;
-            self.alertWindow = nil;
-            [self.mainWindow makeKeyAndVisible];
+//            [self.alertWindow setHidden:YES];
+//            [self.alertWindow removeFromSuperview];
+//            self.alertWindow.rootViewController = nil;
+//            self.alertWindow = nil;
+//            [self.mainWindow makeKeyAndVisible];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }];
     }
     

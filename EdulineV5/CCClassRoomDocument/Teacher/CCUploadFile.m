@@ -221,7 +221,7 @@
     imagePickerVc.allowPickingImage = YES;
     imagePickerVc.allowPickingOriginalPhoto = YES;
     imagePickerVc.sortAscendingByModificationDate = YES;
-    imagePickerVc.allowEdited = NO;
+//    imagePickerVc.allowEdited = NO;
     __weak typeof(self) weakSelf = self;
     __weak typeof(TZImagePickerController *) weakPicker = imagePickerVc;
     
@@ -281,7 +281,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [manager POST:urlString parameters:par headers:@{} progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:urlString parameters:par progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         NSDictionary *dicRes = responseObject;

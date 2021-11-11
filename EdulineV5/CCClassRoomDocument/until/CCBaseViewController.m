@@ -7,6 +7,7 @@
 //
 
 #import "CCBaseViewController.h"
+#import "AppDelegate.h"
 
 @interface CCBaseViewController ()
 
@@ -32,6 +33,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    AppDelegate *app = [AppDelegate delegate];
+    if (app.window.rootViewController) {
+        if ([app.window.rootViewController isKindOfClass:[RootV5VC class]]) {
+            RootV5VC * nv = (RootV5VC *)app.window.rootViewController;
+            [nv isHiddenCustomTabBarByBoolean:!_notHiddenNav];
+        }
+    }
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    self.navigationController.navigationBar.hidden = YES;
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     self.navigationController.interactivePopGestureRecognizer.delegate = (id)self;
@@ -41,15 +53,19 @@
 {
     self.navigationItem.leftBarButtonItem.enabled = NO;
     UIViewController *vc = [self.navigationController.viewControllers firstObject];
-    if (![vc isKindOfClass:NSClassFromString(@"CCLoginScanViewController")]) {
-//        [self.navigationController popViewControllerAnimated:YES];
-        [self dismissViewControllerAnimated:YES completion:^{
-            
-        }];
-    }else {
+    [self dismissViewControllerAnimated:YES completion:^{
         
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+    }];
+//    [self.navigationController popViewControllerAnimated:YES];
+//    if (![vc isKindOfClass:NSClassFromString(@"CCLoginScanViewController")]) {
+////        [self.navigationController popViewControllerAnimated:YES];
+//        [self dismissViewControllerAnimated:YES completion:^{
+//
+//        }];
+//    }else {
+//
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
     
 }
 
@@ -57,6 +73,19 @@
 {
     [super viewDidDisappear:animated];
     self.navigationItem.leftBarButtonItem.enabled = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    AppDelegate *app = [AppDelegate delegate];
+    if (app.window.rootViewController) {
+        if ([app.window.rootViewController isKindOfClass:[RootV5VC class]]) {
+            RootV5VC * nv = (RootV5VC *)app.window.rootViewController;
+            [nv isHiddenCustomTabBarByBoolean:_hiddenNavDisappear];
+        }
+    }
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning

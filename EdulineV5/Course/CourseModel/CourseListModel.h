@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *room_no;//课时ID，声网房间ID
 @property (strong, nonatomic) NSString *course_id;//课程ID
-@property (strong, nonatomic) NSString *live_type;//直播方类型【1：声网；2：CC；】
+@property (strong, nonatomic) NSString *live_type;//直播方类型【1：声网；2：CC；3:CC云课堂】
 @property (strong, nonatomic) NSString *cc_userid;//CC账户ID
 @property (strong, nonatomic) NSString *cc_room_id;//直播间ID
 @property (strong, nonatomic) NSString *authtype;//验证方式【0：接口验证；1：密码验证；2：免密码验证】

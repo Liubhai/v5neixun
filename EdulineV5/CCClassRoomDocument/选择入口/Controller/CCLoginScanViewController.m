@@ -74,15 +74,16 @@
     self.versionLabel.userInteractionEnabled = YES;
     
     WS(ws);
-    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(ws.versionLabel);
-    }];
+//    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.mas_equalTo(ws.versionLabel);
+//    }];
     
     [self.view addSubview:self.loginBtn];
+    //make.bottom.equalTo(self.versionLabel.mas_top).offset(-20);
     [self.loginBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(ws.view).with.offset(15);
         make.right.mas_equalTo(ws.view).with.offset(-15);
-        make.bottom.equalTo(self.versionLabel.mas_top).offset(-20);
+        make.bottom.mas_equalTo(ws.view).height.offset(-70);
         make.height.mas_equalTo(50);
     }];
     self.loginBtn.enabled = NO;

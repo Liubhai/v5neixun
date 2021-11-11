@@ -159,7 +159,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logout) name:@"logout" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFinishLogin) name:@"LOGINFINISH" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeRotate:) name:@"HSChangeRotate" object:nil];
     return YES;
 }
 
@@ -478,6 +478,27 @@
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }
     return UIInterfaceOrientationMaskPortrait;
+}
+
+//- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window
+//{
+//    if (self.shouldNeedLandscape)
+//    {
+//        return UIInterfaceOrientationMaskLandscapeRight;
+//    }
+//    else
+//    {
+//        return UIInterfaceOrientationMaskPortrait;
+//    }
+//}
+
+- (void)changeRotate:(NSNotification *)not {
+    
+    if ([not.object isEqualToString:@"1"]) {
+        __allowRotation = NO;
+    }else {
+        __allowRotation = YES;
+    }
 }
 
 //使用第三方登录需要重写下面两个方法

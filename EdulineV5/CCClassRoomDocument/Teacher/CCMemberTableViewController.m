@@ -7,7 +7,6 @@
 //
 
 #import "CCMemberTableViewController.h"
-#import "DefinePrefixHeader.pch"
 #import "CCStudentActionManager.h"
 #import "SULogger.h"
 #import "LoadingView.h"
@@ -1152,7 +1151,7 @@ typedef NS_ENUM(NSInteger,HRewardType) {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    [manager POST:urlString parameters:par headers:@{} progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:urlString parameters:par progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         if (!responseObject)

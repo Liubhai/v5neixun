@@ -75,7 +75,7 @@
     _contentLabel.userInteractionEnabled = NO;
     [_bgBtn addSubview:_contentLabel];
 
-    _smallImageView = [[CCImageView alloc] init];
+    _smallImageView = [[CCLiveImageView alloc] init];
     [_bgBtn addSubview:_smallImageView];
 }
 

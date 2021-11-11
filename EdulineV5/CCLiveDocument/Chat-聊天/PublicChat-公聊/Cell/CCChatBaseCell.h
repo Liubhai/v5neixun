@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CCImageView.h"
+#import "CCLiveImageView.h"
 #import "CCPublicChatModel.h"//公聊数据模型
 
 NS_ASSUME_NONNULL_BEGIN
@@ -18,7 +18,7 @@ typedef void(^HeadBtnClickBlock)(UIButton *btn);//头像点击回调
 
 @property (nonatomic, copy) HeadBtnClickBlock headBtnClick;
 #pragma mark - 图片消息
-//@property (nonatomic, strong) CCImageView *smallImageView;//图片视图
+//@property (nonatomic, strong) CCLiveImageView *smallImageView;//图片视图
 
 /**
  加载广播cell

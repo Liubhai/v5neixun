@@ -307,7 +307,7 @@ static HDSTool *_tool = nil;
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
 
-    [manager POST:urlString parameters:par headers:@{} progress:^(NSProgress * _Nonnull uploadProgress) {
+    [manager POST:urlString parameters:par progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         if (!responseObject) {

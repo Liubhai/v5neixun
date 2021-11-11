@@ -26,6 +26,8 @@ typedef void (^configTXSDK)(NSString *success);
 @property (assign, nonatomic) BOOL hasPhoneLoginType;//后台是否开启一键登录权限
 @property (weak, nonatomic) UIViewController *currentViewController;
 
+@property (assign, nonatomic) BOOL shouldNeedLandscape;//是否需要横屏
+
 +(AppDelegate *)delegate;
 
 - (RootV5VC *)rootVC;

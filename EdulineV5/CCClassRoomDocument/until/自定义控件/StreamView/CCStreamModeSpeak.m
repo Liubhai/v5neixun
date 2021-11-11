@@ -13,7 +13,7 @@
 #import "CCPushViewController.h"
 #import "CCTeachCopyViewController.h"
 #import "CCStreamerView.h"
-#import <SDCycleScrollView.h>
+#import "SDCycleScrollView.h"
 #import "CCDocListViewController.h"
 #import "CCDocSkipViewController.h"
 #import "CCCollectionViewCellSpeak.h"

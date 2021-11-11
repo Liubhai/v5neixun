@@ -12,7 +12,7 @@
 #import "AppDelegate.h"
 #import "CCPushViewController.h"
 #import "CCTeachCopyViewController.h"
-#import <SDCycleScrollView.h>
+#import "SDCycleScrollView.h"
 #import "CCDocListViewController.h"
 #import "CCDocSkipViewController.h"
 #import "CCCollectionViewCellSpeak.h"

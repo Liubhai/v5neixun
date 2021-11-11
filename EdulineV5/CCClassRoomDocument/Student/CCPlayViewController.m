@@ -2939,7 +2939,7 @@ typedef void(^CCRejoinBlock)(BOOL result);
         imagePickerVc.allowPickingImage = YES;
         imagePickerVc.allowPickingOriginalPhoto = YES;
         imagePickerVc.sortAscendingByModificationDate = YES;
-        imagePickerVc.allowEdited = NO;
+//        imagePickerVc.allowEdited = NO;
         
         __weak typeof(TZImagePickerController *) weakPicker = imagePickerVc;
         [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
@@ -3443,12 +3443,15 @@ typedef void(^CCRejoinBlock)(BOOL result);
 - (void)popToScanVC
 {
     [HDSTool sharedTool].mirrorType = 0;
-    if (_isQuick) {
-        [HDSTool popToController:NSClassFromString(@"CCLoginScanViewController") navigation:self.navigationController landscape:self.isLandSpace];
-    }else {
+    [self dismissViewControllerAnimated:YES completion:^{
         
-        [HDSTool popToController:[CCLoginViewController class] navigation:self.navigationController landscape:self.isLandSpace];
-    }
+    }];
+//    if (_isQuick) {
+//        [HDSTool popToController:NSClassFromString(@"CCLoginScanViewController") navigation:self.navigationController landscape:self.isLandSpace];
+//    }else {
+//
+//        [HDSTool popToController:[CCLoginViewController class] navigation:self.navigationController landscape:self.isLandSpace];
+//    }
 }
 
 - (void)showWarmPlayVideo

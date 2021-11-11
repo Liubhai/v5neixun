@@ -8,7 +8,6 @@
 
 #import "CCLiveSettingViewController.h"
 #import "CCLiveVideoAndAudioViewController.h"
-#import "DefinePrefixHeader.pch"
 #import "CCSettingOneTableViewCell.h"
 #import "CCSettingTwoTableViewCell.h"
 #import "CCRoomMaxNumCountEditViewController.h"

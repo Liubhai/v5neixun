@@ -7,7 +7,6 @@
 //
 
 #import "CCCollectionViewCellSingle.h"
-#import "DefinePrefixHeader.pch"
 #import "CCManagerTool.h"
 #import "CCUser+CCSound.h"
 

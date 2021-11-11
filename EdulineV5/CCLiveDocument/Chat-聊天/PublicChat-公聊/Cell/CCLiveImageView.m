@@ -1,20 +1,20 @@
 //
-//  CCImageView.m
+//  CCLiveImageView.m
 //  CCLiveCloud
 //
 //  Created by 何龙 on 2018/12/12.
 //  Copyright © 2018 MacBook Pro. All rights reserved.
 //
 
-#import "CCImageView.h"
+#import "CCLiveImageView.h"
 #import "CCPhotoBrowser.h"
 #import "UIView+GetVC.h"
 
-@interface CCImageView ()
+@interface CCLiveImageView ()
 @property (nonatomic, strong) CCPhotoBrowser *photoView;
 @end
 
-@implementation CCImageView
+@implementation CCLiveImageView
 
 
 -(instancetype)init{

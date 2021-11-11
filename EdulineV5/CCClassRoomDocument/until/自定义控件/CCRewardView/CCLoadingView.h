@@ -29,4 +29,9 @@
 - (void)startLoading;
 //停止加载
 - (void)stopLoading;
+
+@property(nonatomic,strong)UILabel                  *label;
+
+-(instancetype)initWithLabel:(NSString *)str centerY:(BOOL)centerY ;
+
 @end

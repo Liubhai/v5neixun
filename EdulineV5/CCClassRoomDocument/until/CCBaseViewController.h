@@ -13,4 +13,6 @@
 @interface CCBaseViewController : UIViewController
 - (void)onSelectVC;
 - (UIImage*)createImageWithColor: (UIColor*) color;
+@property (nonatomic, assign) BOOL notHiddenNav;
+@property (nonatomic, assign) BOOL hiddenNavDisappear;
 @end

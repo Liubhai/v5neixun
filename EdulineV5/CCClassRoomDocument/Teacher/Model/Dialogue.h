@@ -44,6 +44,7 @@ typedef void(^CalculateSizeBlock)(void);
 @property(nonatomic,copy)NSString                           *useravatar;
 
 @property(nonatomic,copy)NSString                           *encryptId;
+@property(nonatomic,assign)NSContentType                    dataType;
 @property(nonatomic,assign)DialogueType                      type;
 @property(nonatomic,strong)NSDictionary                      *picInfo;
 
@@ -55,6 +56,7 @@ typedef void(^CalculateSizeBlock)(void);
 
 @property(nonatomic, copy) NSString                    *chatId;
 @property(nonatomic, copy) NSString                    *status;
+@property(nonatomic, assign)CGFloat                     cellHeight;
 
 @property(nonatomic, copy) CalculateSizeBlock block;
 
