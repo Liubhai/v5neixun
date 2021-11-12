@@ -3443,8 +3443,9 @@ typedef void(^CCRejoinBlock)(BOOL result);
 - (void)popToScanVC
 {
     [HDSTool sharedTool].mirrorType = 0;
-    [self dismissViewControllerAnimated:YES completion:^{
-        
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        [self removeFromParentViewController];
+        [self.navigationController removeFromParentViewController];
     }];
 //    if (_isQuick) {
 //        [HDSTool popToController:NSClassFromString(@"CCLoginScanViewController") navigation:self.navigationController landscape:self.isLandSpace];

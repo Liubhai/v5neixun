@@ -17,6 +17,7 @@
 		780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BD255520190070EB1F /* LiveBoardToolView.m */; };
 		780F95C12558D9740070EB1F /* LiveColorSelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95C02558D9740070EB1F /* LiveColorSelectedView.m */; };
 		780F95C4255912050070EB1F /* LiveStudentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95C3255912050070EB1F /* LiveStudentView.m */; };
+		781A9C89273E116A00131E17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 781A9C88273E116900131E17 /* Main.storyboard */; };
 		782333B82595B5570076DD85 /* SpecialProjectExamList.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333B72595B5570076DD85 /* SpecialProjectExamList.m */; };
 		782333BB2595B99E0076DD85 /* SpecialExamListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BA2595B99E0076DD85 /* SpecialExamListCell.m */; };
 		782333BE2599CA2C0076DD85 /* ExamPointSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */; };
@@ -812,7 +813,6 @@
 		78B119792733BBE800A3B8CB /* AgoraLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78B119782733BBE700A3B8CB /* AgoraLoadingView.xib */; };
 		78B1197C2734DD1900A3B8CB /* Dialogue.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B1197B2734DD1900A3B8CB /* Dialogue.m */; };
 		78B1197F2734FDA800A3B8CB /* GCPrePermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B1197E2734FDA800A3B8CB /* GCPrePermissions.m */; };
-		78B119812735099D00A3B8CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78B119802735099D00A3B8CB /* Main.storyboard */; };
 		78B11983273509A600A3B8CB /* CCMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78B11982273509A600A3B8CB /* CCMenuView.xib */; };
 		78BBB38E26202252009F5D10 /* QuestionRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB38D26202252009F5D10 /* QuestionRootViewController.m */; };
 		78BBB391262024A0009F5D10 /* QuestionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BBB390262024A0009F5D10 /* QuestionListViewController.m */; };
@@ -1012,6 +1012,7 @@
 		780F95C02558D9740070EB1F /* LiveColorSelectedView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveColorSelectedView.m; sourceTree = "<group>"; };
 		780F95C2255912050070EB1F /* LiveStudentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveStudentView.h; sourceTree = "<group>"; };
 		780F95C3255912050070EB1F /* LiveStudentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveStudentView.m; sourceTree = "<group>"; };
+		781A9C88273E116900131E17 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		782333B62595B5570076DD85 /* SpecialProjectExamList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialProjectExamList.h; sourceTree = "<group>"; };
 		782333B72595B5570076DD85 /* SpecialProjectExamList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialProjectExamList.m; sourceTree = "<group>"; };
 		782333B92595B99E0076DD85 /* SpecialExamListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialExamListCell.h; sourceTree = "<group>"; };
@@ -2629,7 +2630,6 @@
 		78B1197B2734DD1900A3B8CB /* Dialogue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dialogue.m; sourceTree = "<group>"; };
 		78B1197D2734FDA700A3B8CB /* GCPrePermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCPrePermissions.h; sourceTree = "<group>"; };
 		78B1197E2734FDA800A3B8CB /* GCPrePermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCPrePermissions.m; sourceTree = "<group>"; };
-		78B119802735099D00A3B8CB /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		78B11982273509A600A3B8CB /* CCMenuView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCMenuView.xib; sourceTree = "<group>"; };
 		78BBB38C26202252009F5D10 /* QuestionRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuestionRootViewController.h; sourceTree = "<group>"; };
 		78BBB38D26202252009F5D10 /* QuestionRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuestionRootViewController.m; sourceTree = "<group>"; };
@@ -3407,7 +3407,7 @@
 				78795611240DE7A50013F95F /* AppDelegate.m */,
 				78795616240DE7A50013F95F /* ViewController.h */,
 				78795617240DE7A50013F95F /* ViewController.m */,
-				78B119802735099D00A3B8CB /* Main.storyboard */,
+				781A9C88273E116900131E17 /* Main.storyboard */,
 				78B11982273509A600A3B8CB /* CCMenuView.xib */,
 				78D46677251CA02600E94FF4 /* LaunchScreen.storyboard */,
 				7879561C240DE7AE0013F95F /* Assets.xcassets */,
@@ -6735,7 +6735,6 @@
 				78B119282733881D00A3B8CB /* handsup_touch@3x.png in Resources */,
 				78B119182733881D00A3B8CB /* set@3x.png in Resources */,
 				787F1E89247381A400108F7B /* readMe_videoPlay.txt in Resources */,
-				78B119812735099D00A3B8CB /* Main.storyboard in Resources */,
 				78B1160D272A439900A3B8CB /* Emotion.bundle in Resources */,
 				78B1190C2733881C00A3B8CB /* document@2x.png in Resources */,
 				78C549C5241B674E00A33FC4 /* readMe_Helpers.txt in Resources */,
@@ -6756,6 +6755,7 @@
 				78C54970241B642B00A33FC4 /* AlivcAbstraction.txt in Resources */,
 				78B1191D2733881D00A3B8CB /* set_touch@2x.png in Resources */,
 				78C549CF241B674E00A33FC4 /* readMe_Utilites.txt in Resources */,
+				781A9C89273E116A00131E17 /* Main.storyboard in Resources */,
 				78B119102733881C00A3B8CB /* start_touch@3x.png in Resources */,
 				78B119322733881D00A3B8CB /* teacher@3x.png in Resources */,
 				788E9574253FE24E0089251E /* EEWhiteboardTool.xib in Resources */,

@@ -198,6 +198,7 @@
 
 @property(nonatomic,strong)HSLiveViewController *liveVC;
 @property (assign, nonatomic) CCRole role;//角色
+@property (assign, nonatomic) NSInteger ccClassRoomrole;//角色
 @property(nonatomic, assign)BOOL needPassword;
 @property(nonatomic, copy)NSString *sessionID;
 @property(nonatomic, strong)id loginInfo;
@@ -1315,7 +1316,7 @@
             if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationSDK];
             } else if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"3"]) {
-                [self getRoomIdAndDesc:@""];
+                [self parseCodeStr:@""];
             } else {
                 [self getShengwangLiveInfo:model.model.classHourId courselistModel:model.model];
             }
@@ -1618,7 +1619,7 @@
             if ([model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationSDK];
             } else if ([model.section_live.live_type isEqualToString:@"3"]) {
-                [self getRoomIdAndDesc:@""];
+                [self parseCodeStr:@""];
             } else {
                 [self getShengwangLiveInfo:model.classHourId courselistModel:model];
             }
@@ -3425,6 +3426,10 @@
 
 // MARK: - 课堂链接方式
 -(void)parseCodeStr:(NSString *)result {
+    
+//https://class.csslcloud.net/index/talker/?roomid=FC3548C1133061D09C33DC5901307461&userid=E9607DAFB705A798&username=XXX&password=XXX&autoLogin=true
+    NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+    result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/talker/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",currentCourseFinalModel.model.section_live.cc_room_id,currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
     NSRange rangeRoomId = [result rangeOfString:@"roomid="];
     NSRange rangeUserId = [result rangeOfString:@"userid="];
     WS(ws)
@@ -3503,32 +3508,107 @@
     NSString *role = noti.userInfo[@"role"];
     NSInteger authtype = [noti.userInfo[@"authtype"] integerValue];
     BOOL needPassword = authtype == 2 ? NO : YES;
+    BOOL liveVCNeedPassword;
     NSInteger role1 = [CCTool roleFromRoleString:role];
-    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    CCLoginDirectionViewController *directionVC = (CCLoginDirectionViewController *)[mainStory instantiateViewControllerWithIdentifier:@"Direction"];
+    self.ccClassRoomrole = role1;
+    self.role = role1;
+    
     if (role1 == CCRole_Teacher || role1 == CCRole_Assistant)
     {
-        directionVC.needPassword = YES;
+        liveVCNeedPassword = YES;
     }
     else
     {
         if (role1 == CCRole_Teacher)
         {
-            directionVC.needPassword = YES;
+            liveVCNeedPassword = YES;
         }
         else
         {
-            directionVC.needPassword = needPassword;
+            liveVCNeedPassword = needPassword;
         }
     }
-    directionVC.role = role1;
-    SaveToUserDefaults(LIVE_ROLE, @(directionVC.role));
+    
+    NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+    SaveToUserDefaults(SET_USER_NAME, [V5_UserModel uname]);
+    SaveToUserDefaults(SET_USER_PWD, ak);//@"671309"
+    SaveToUserDefaults(LIVE_USERID, userId);
     SaveToUserDefaults(LIVE_ROOMID, roomId);
-    directionVC.userID = userId;
-    directionVC.roomID = roomId;
-    main_async_safe(^{
-        [self.navigationController pushViewController:directionVC animated:YES];
-    });
+
+    NSString *isp = GetFromUserDefaults(SERVER_AREA_NAME);
+
+    NSString *uname = [V5_UserModel uname];
+    
+    NSString *upwd = ak;//@"671309"//(liveVCNeedPassword ? ak : @"");;
+
+    __weak typeof(self) weakSelf = self;
+    __block NSString *sessionStr = nil;
+    [[CCStreamerBasic sharedStreamer] authWithRoomId:roomId accountId:userId role:self.ccClassRoomrole password:upwd nickName:uname completion:^(BOOL result, NSError *error, id info) {
+        if (!result)
+        {
+            [CCTool showMessageError:error];
+            return;
+        }
+        NSDictionary *dic = (NSDictionary *)info;
+        NSString *res = dic[@"result"];
+        NSString *errmsg = @"";
+        if ([res isEqualToString:@"FAIL"])
+        {
+            errmsg  = dic[@"errorMsg"];
+            [CCTool showMessage:errmsg];
+            return ;
+        }
+        NSDictionary *dataDic = dic[@"data"];
+        sessionStr = [dataDic objectForKey:@"sessionid"];
+        SaveToUserDefaults(Login_UID, [dataDic objectForKey:@"userid"]);
+        {
+            weakSelf.sessionID = sessionStr;
+            CCEncodeConfig *config = [[CCEncodeConfig alloc] init];
+            config.reslution = CCResolution_240;
+            [weakSelf initVC];
+
+            NSString *accountid = userId;
+            NSString *sessionid = self.sessionID;
+            [[CCStreamerBasic sharedStreamer] joinWithAccountID:accountid sessionID:sessionid roomId:roomId config:config areaCode:isp events:@[] updateRtmpLayout:NO completion:^(BOOL result, NSError *error, id info) {
+                BOOL modeGravity = [HDSDocManager sharedDoc].isPreviewGravityFollow;
+                [[CCStreamerBasic sharedStreamer]setPreviewGravityFollow:modeGravity];
+
+                HDSTool *tool = [HDSTool sharedTool];
+                if (tool.roomMode != 32) {
+                    [tool updateLocalPushResolution];
+                    [tool resetSDKPushResolution];
+                }
+
+                if (result) {
+                    weakSelf.loginInfo = info;
+                    NSLog(HDClassLocalizeString(@"登录获取的info：%@") ,info);
+                    if ([NSThread isMainThread]) {
+                        if ([[weakSelf.navigationController.viewControllers lastObject] isKindOfClass:weakSelf.class]) {
+
+                            [weakSelf streamLoginSuccess:weakSelf.loginInfo];
+                        }
+                    }else {
+                        main_async_safe(^{
+                            if ([[weakSelf.navigationController.viewControllers lastObject] isKindOfClass:weakSelf.class]) {
+
+                                [weakSelf streamLoginSuccess:weakSelf.loginInfo];
+                            }
+                        });
+                    }
+
+                }else{
+                    if (error.code == 22002) {
+
+                        int version_check = [info[@"version_check"] intValue];
+                        if (version_check == 1) {
+                            return;
+                        }
+                    }
+                }
+            }];
+        }
+    }];
+    
 }
 
 // MARK: - 获取直播间房间信息
@@ -3758,6 +3838,13 @@
         self.playVC.roleType = CCRole_Inspector;
         self.playVC.isQuick = YES;
     }
+//    else if (self.role == CCRole_Assistant)
+//    {
+//        if (self.teacherCopyVC) {
+//            [self.teacherCopyVC removeObserver];
+//        }
+//        self.teacherCopyVC = [[CCTeachCopyViewController alloc]initWithLandspace:self.isLandSpace];
+//    }
 }
 
 // MARK: - 推流成功
@@ -3799,7 +3886,9 @@
 //        if ([self isControllerPresented:[CCPushViewController class]]) {
 //            return;
 //        }
-        [self.navigationController presentViewController:self.pushVC animated:YES completion:^{
+        UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:self.pushVC];
+        Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.navigationController presentViewController:Nav animated:YES completion:^{
             
         }];
 //        [self.navigationController pushViewController:self.pushVC animated:YES];
@@ -3815,7 +3904,9 @@
         self.playVC.isNeedPWD = self.needPassword;
         self.playVC.roleType = CCRole_Student;
         self.playVC.talker_audio = [[CCStreamerBasic sharedStreamer]getRoomInfo].room_talker_audio;
-        [self.navigationController presentViewController:self.playVC animated:YES completion:^{
+        UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:self.playVC];
+        Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.navigationController presentViewController:Nav animated:YES completion:^{
             
         }];
 //        [self.navigationController pushViewController:self.playVC animated:YES];
@@ -3830,7 +3921,9 @@
         self.playVC.isLandSpace = self.isLandSpace;
         self.playVC.roleType = CCRole_Inspector;
         self.playVC.talker_audio = [[CCStreamerBasic sharedStreamer]getRoomInfo].room_talker_audio;
-        [self.navigationController presentViewController:self.playVC animated:YES completion:^{
+        UINavigationController *Nav = [[UINavigationController alloc] initWithRootViewController:self.playVC];
+        Nav.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.navigationController presentViewController:Nav animated:YES completion:^{
             
         }];
 //        [self.navigationController pushViewController:self.playVC animated:YES];
