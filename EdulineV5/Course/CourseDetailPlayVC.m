@@ -3427,9 +3427,27 @@
 // MARK: - 课堂链接方式
 -(void)parseCodeStr:(NSString *)result {
     
-//https://class.csslcloud.net/index/talker/?roomid=FC3548C1133061D09C33DC5901307461&userid=E9607DAFB705A798&username=XXX&password=XXX&autoLogin=true
+    /**
+     讲师：http://cloudclass.csslcloud.net/index/presenter/?roomid=856D003D0C44B80D9C33DC5901307461&userid=56761A7379431808
+     助教：http://cloudclass.csslcloud.net/index/assistant/?roomid=856D003D0C44B80D9C33DC5901307461&userid=56761A7379431808
+     学员：http://cloudclass.csslcloud.net/index/talker/?roomid=856D003D0C44B80D9C33DC5901307461&userid=56761A7379431808
+     隐身者：http://cloudclass.csslcloud.net/index/inspector/?roomid=856D003D0C44B80D9C33DC5901307461&userid=56761A7379431808
+     旁听:https://view.csslcloud.net/api/view/index?roomid=856D003D0C44B80D9C33DC5901307461&userid=56761A7379431808
+     */
     NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
-    result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/talker/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",currentCourseFinalModel.model.section_live.cc_room_id,currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
+    
+    if ([currentCourseFinalModel.model.section_live.identify isEqualToString:@"presenter"]) {
+        result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/presenter/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",currentCourseFinalModel.model.section_live.cc_room_id,currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
+    } else if ([currentCourseFinalModel.model.section_live.identify isEqualToString:@"assistant"]) {
+        result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/assistant/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",currentCourseFinalModel.model.section_live.cc_room_id,currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
+    } else if ([currentCourseFinalModel.model.section_live.identify isEqualToString:@"talker"]) {
+        result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/talker/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",currentCourseFinalModel.model.section_live.cc_room_id,currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
+    } else if ([currentCourseFinalModel.model.section_live.identify isEqualToString:@"inspector"]) {
+        result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/inspector/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",currentCourseFinalModel.model.section_live.cc_room_id,currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
+    } else if ([currentCourseFinalModel.model.section_live.identify isEqualToString:@"view"]) {
+        result = [NSString stringWithFormat:@"https://view.csslcloud.net/api/view/index?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",currentCourseFinalModel.model.section_live.cc_room_id,currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
+    }
+    
     NSRange rangeRoomId = [result rangeOfString:@"roomid="];
     NSRange rangeUserId = [result rangeOfString:@"userid="];
     WS(ws)

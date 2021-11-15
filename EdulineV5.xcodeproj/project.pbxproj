@@ -18,6 +18,7 @@
 		780F95C12558D9740070EB1F /* LiveColorSelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95C02558D9740070EB1F /* LiveColorSelectedView.m */; };
 		780F95C4255912050070EB1F /* LiveStudentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95C3255912050070EB1F /* LiveStudentView.m */; };
 		781A9C89273E116A00131E17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 781A9C88273E116900131E17 /* Main.storyboard */; };
+		781A9C93274230B200131E17 /* DocUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 781A9C92274230B200131E17 /* DocUI.bundle */; };
 		782333B82595B5570076DD85 /* SpecialProjectExamList.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333B72595B5570076DD85 /* SpecialProjectExamList.m */; };
 		782333BB2595B99E0076DD85 /* SpecialExamListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BA2595B99E0076DD85 /* SpecialExamListCell.m */; };
 		782333BE2599CA2C0076DD85 /* ExamPointSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 782333BD2599CA2C0076DD85 /* ExamPointSelectVC.m */; };
@@ -1013,6 +1014,7 @@
 		780F95C2255912050070EB1F /* LiveStudentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveStudentView.h; sourceTree = "<group>"; };
 		780F95C3255912050070EB1F /* LiveStudentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveStudentView.m; sourceTree = "<group>"; };
 		781A9C88273E116900131E17 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		781A9C92274230B200131E17 /* DocUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DocUI.bundle; sourceTree = "<group>"; };
 		782333B62595B5570076DD85 /* SpecialProjectExamList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialProjectExamList.h; sourceTree = "<group>"; };
 		782333B72595B5570076DD85 /* SpecialProjectExamList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpecialProjectExamList.m; sourceTree = "<group>"; };
 		782333B92595B99E0076DD85 /* SpecialExamListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpecialExamListCell.h; sourceTree = "<group>"; };
@@ -5633,6 +5635,7 @@
 		78B116952733881900A3B8CB /* CCClassRoomDocument */ = {
 			isa = PBXGroup;
 			children = (
+				781A9C92274230B200131E17 /* DocUI.bundle */,
 				78B116962733881900A3B8CB /* until */,
 				78B1175D2733881A00A3B8CB /* Source */,
 				78B1184E2733881B00A3B8CB /* Student */,
@@ -6816,6 +6819,7 @@
 				78B119302733881D00A3B8CB /* handsup@2x.png in Resources */,
 				7853BDFA2431E48300F096EC /* sdk_oauth.bundle in Resources */,
 				78C54831241246E400A33FC4 /* AreaNumCode.plist in Resources */,
+				781A9C93274230B200131E17 /* DocUI.bundle in Resources */,
 				78B11694273387DD00A3B8CB /* handclap.mp3 in Resources */,
 				78B119792733BBE800A3B8CB /* AgoraLoadingView.xib in Resources */,
 				78B1190A2733881C00A3B8CB /* hands_touch@3x.png in Resources */,

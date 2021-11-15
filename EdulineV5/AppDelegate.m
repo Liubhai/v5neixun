@@ -501,6 +501,10 @@
     }
 }
 
+- (void)setShouldNeedLandscape:(BOOL)shouldNeedLandscape {
+    __allowRotation = shouldNeedLandscape;
+}
+
 //使用第三方登录需要重写下面两个方法
 
 // 支持所有iOS系统
