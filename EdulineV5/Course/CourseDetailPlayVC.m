@@ -21,6 +21,7 @@
 #import "CourseListVC.h"
 #import "CourseTreeListViewController.h"
 #import "OrderViewController.h"
+#import "WkWebViewController.h"
 
 //
 #import "CourseListModelFinal.h"
@@ -1326,7 +1327,7 @@
             if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationPlayBackSDK];
             } else if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"3"]) {
-//                [self integrationPlayBackSDK];
+                [self ccClassRoomPlayBack];
             } else {
                 if (SWNOTEmptyArr(cell.listFinalModel.model.live_rate.callback_url)) {
                     // 用播放器播放回放视频
@@ -1629,7 +1630,7 @@
             if ([model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationPlayBackSDK];
             } else if ([model.section_live.live_type isEqualToString:@"3"]) {
-//                [self integrationPlayBackSDK];
+                [self ccClassRoomPlayBack];
             } else {
                 if (SWNOTEmptyArr(model.live_rate.callback_url)) {
                     // 用播放器播放回放视频
@@ -3959,6 +3960,19 @@
         return YES;
     }
     return NO;
+}
+
+// MARK: - 云课堂回放(链接网页播放)
+- (void)ccClassRoomPlayBack {
+    if (SWNOTEmptyStr(currentCourseFinalModel.model.section_live.cc_replay_url)) {
+        NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
+        NSString *ccplayBackUrlString = [NSString stringWithFormat:@"%@&autoLogin=true&viewername=%@&viewertoken=%@",currentCourseFinalModel.model.section_live.cc_replay_url,[V5_UserModel uname],ak];
+        NSCharacterSet *set = [NSCharacterSet URLQueryAllowedCharacterSet];
+        NSString *encodedString = [ccplayBackUrlString stringByAddingPercentEncodingWithAllowedCharacters:set];
+        WkWebViewController *vc = [[WkWebViewController alloc] init];
+        vc.urlString = encodedString;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 @end

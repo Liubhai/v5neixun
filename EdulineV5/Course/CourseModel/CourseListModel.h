@@ -150,6 +150,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *update_time;//
 @property (strong, nonatomic) NSString *data_type;//CC回放
 @property (strong, nonatomic) NSString *cc_replay_id;//CC回放ID
+@property (strong, nonatomic) NSString *cc_replay_url;//CC云课堂链接
 @property (strong, nonatomic) NSString *identify;//CC云课堂身份
 
 @end

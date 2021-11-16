@@ -32,6 +32,7 @@
     WKUserContentController *wkUController = [[WKUserContentController alloc] init];
     [wkUController addUserScript:wkUScript];
     WKWebViewConfiguration *wkWebConfig = [[WKWebViewConfiguration alloc] init];
+    wkWebConfig.allowsInlineMediaPlayback = YES;
     wkWebConfig.userContentController = wkUController;
     
     _wkwebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT) configuration:wkWebConfig];
