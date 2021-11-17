@@ -3354,9 +3354,6 @@
     NSString *ak = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];
     SaveToUserDefaults(WATCH_PASSWORD,ak);
     
-    // 请求一次学习记录
-    [self requestOnceStudyRecord:currentCourseFinalModel.model.classHourId];
-    
     [UIApplication sharedApplication].idleTimerDisabled=YES;
     CCPlayerController *playForPCVC = [[CCPlayerController alloc] initWithRoomName:self.roomName];
     playForPCVC.modalPresentationStyle = 0;
