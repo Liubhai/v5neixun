@@ -2600,7 +2600,7 @@
                         [weakself hideHud];
                         [weakself showHudInView:self.view showHint:@"开始进入直播间"];
                         // 请求一次学习记录
-                        [weakself requestOnceStudyRecord:model.classHourId];
+//                        [weakself requestOnceStudyRecord:model.classHourId];
                         if (sceneType == SceneTypeBig) {
                             BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
                             vc.classId = weakself.currentHourseId;
