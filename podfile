@@ -70,7 +70,7 @@ use_frameworks!
 #    pod 'HDVideoClass_Remote', '6.9.3'
 
     pod 'pop'
-    pod 'YBImageBrowser'
+#    pod 'YBImageBrowser'
     pod 'JTCalendar', '~> 2.0'
     pod 'SSZipArchive' , '~> 2.0.0'
 
