@@ -917,6 +917,11 @@
 		78C549E8241B751800A33FC4 /* AliyunMediaDownloader.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78C54900241B642B00A33FC4 /* AliyunMediaDownloader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78C549EA241B773200A33FC4 /* alivcffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C549E9241B773200A33FC4 /* alivcffmpeg.framework */; };
 		78C549EB241B774B00A33FC4 /* alivcffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78C549E9241B773200A33FC4 /* alivcffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		78C8E8EC274CB584007E8E4F /* IDLFaceSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C8E8E7274CB584007E8E4F /* IDLFaceSDK.framework */; };
+		78C8E8ED274CB584007E8E4F /* idl-license.face-ios in Resources */ = {isa = PBXBuildFile; fileRef = 78C8E8E8274CB584007E8E4F /* idl-license.face-ios */; };
+		78C8E8EE274CB584007E8E4F /* com.baidu.idl.face.model.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 78C8E8E9274CB584007E8E4F /* com.baidu.idl.face.model.bundle */; };
+		78C8E8EF274CB584007E8E4F /* com.baidu.idl.face.faceSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 78C8E8EA274CB584007E8E4F /* com.baidu.idl.face.faceSDK.bundle */; };
+		78C8E8F0274CB584007E8E4F /* aip.license in Resources */ = {isa = PBXBuildFile; fileRef = 78C8E8EB274CB584007E8E4F /* aip.license */; };
 		78C936C0248DE41900D5F1ED /* ZPScrollerScaleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */; };
 		78C936C3248DE4C700D5F1ED /* HomePageHotRecommendedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936C2248DE4C700D5F1ED /* HomePageHotRecommendedCell.m */; };
 		78C936C6248F64AF00D5F1ED /* TeacherMainPageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936C5248F64AF00D5F1ED /* TeacherMainPageVC.m */; };
@@ -2818,6 +2823,11 @@
 		78C549C2241B674E00A33FC4 /* NSData+AlivcHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AlivcHelper.m"; sourceTree = "<group>"; };
 		78C549E3241B6C9500A33FC4 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		78C549E9241B773200A33FC4 /* alivcffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = alivcffmpeg.framework; sourceTree = "<group>"; };
+		78C8E8E7274CB584007E8E4F /* IDLFaceSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IDLFaceSDK.framework; sourceTree = "<group>"; };
+		78C8E8E8274CB584007E8E4F /* idl-license.face-ios */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "idl-license.face-ios"; sourceTree = "<group>"; };
+		78C8E8E9274CB584007E8E4F /* com.baidu.idl.face.model.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = com.baidu.idl.face.model.bundle; sourceTree = "<group>"; };
+		78C8E8EA274CB584007E8E4F /* com.baidu.idl.face.faceSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = com.baidu.idl.face.faceSDK.bundle; sourceTree = "<group>"; };
+		78C8E8EB274CB584007E8E4F /* aip.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = aip.license; sourceTree = "<group>"; };
 		78C936BE248DE41900D5F1ED /* ZPScrollerScaleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPScrollerScaleView.h; sourceTree = "<group>"; };
 		78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPScrollerScaleView.m; sourceTree = "<group>"; };
 		78C936C1248DE4C700D5F1ED /* HomePageHotRecommendedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageHotRecommendedCell.h; sourceTree = "<group>"; };
@@ -2911,6 +2921,7 @@
 				78AA1367243D7F88007087F7 /* CoreTelephony.framework in Frameworks */,
 				78AA1365243D6BE1007087F7 /* WebKit.framework in Frameworks */,
 				78AA1363243D6BD5007087F7 /* CoreGraphics.framework in Frameworks */,
+				78C8E8EC274CB584007E8E4F /* IDLFaceSDK.framework in Frameworks */,
 				78AA1361243D6BC2007087F7 /* libsqlite3.tbd in Frameworks */,
 				7853BDF92431E48300F096EC /* OAuth.framework in Frameworks */,
 				7853BDEA2431E15000F096EC /* libc++.1.tbd in Frameworks */,
@@ -3383,6 +3394,7 @@
 			children = (
 				78CE20EE25DFBF7800DFDF85 /* Eduline网校.entitlements */,
 				782AC43125BAC77C009130F9 /* eduline网校Release.entitlements */,
+				78C8E8E5274CB583007E8E4F /* FaceIdl */,
 				78B11485272A439700A3B8CB /* CCLiveDocument */,
 				78B116952733881900A3B8CB /* CCClassRoomDocument */,
 				788E945B253FE24C0089251E /* Agora_edu_sdk */,
@@ -6514,6 +6526,26 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
+		78C8E8E5274CB583007E8E4F /* FaceIdl */ = {
+			isa = PBXGroup;
+			children = (
+				78C8E8E6274CB584007E8E4F /* FaceSDK */,
+			);
+			path = FaceIdl;
+			sourceTree = "<group>";
+		};
+		78C8E8E6274CB584007E8E4F /* FaceSDK */ = {
+			isa = PBXGroup;
+			children = (
+				78C8E8E7274CB584007E8E4F /* IDLFaceSDK.framework */,
+				78C8E8E8274CB584007E8E4F /* idl-license.face-ios */,
+				78C8E8E9274CB584007E8E4F /* com.baidu.idl.face.model.bundle */,
+				78C8E8EA274CB584007E8E4F /* com.baidu.idl.face.faceSDK.bundle */,
+				78C8E8EB274CB584007E8E4F /* aip.license */,
+			);
+			path = FaceSDK;
+			sourceTree = "<group>";
+		};
 		78C936BD248DE41900D5F1ED /* HomeScrollThird */ = {
 			isa = PBXGroup;
 			children = (
@@ -6731,6 +6763,7 @@
 				78B1162D272A439900A3B8CB /* chaoren_left@2x.png in Resources */,
 				78A16C862452F7C100391430 /* Notes in Resources */,
 				788E9570253FE24E0089251E /* EEPageControlView.xib in Resources */,
+				78C8E8ED274CB584007E8E4F /* idl-license.face-ios in Resources */,
 				78B119422733881D00A3B8CB /* start_rec@2x.png in Resources */,
 				788E9564253FE24E0089251E /* MCStudentViewCell.xib in Resources */,
 				78B119192733881D00A3B8CB /* document@3x.png in Resources */,
@@ -6741,6 +6774,7 @@
 				78B1160D272A439900A3B8CB /* Emotion.bundle in Resources */,
 				78B1190C2733881C00A3B8CB /* document@2x.png in Resources */,
 				78C549C5241B674E00A33FC4 /* readMe_Helpers.txt in Resources */,
+				78C8E8EE274CB584007E8E4F /* com.baidu.idl.face.model.bundle in Resources */,
 				78B119082733881C00A3B8CB /* set_touch@3x.png in Resources */,
 				788E95C6253FE24F0089251E /* Replay.storyboard in Resources */,
 				78B1192C2733881D00A3B8CB /* 连麦中点击@3x.png in Resources */,
@@ -6753,8 +6787,10 @@
 				788E956E253FE24E0089251E /* EENavigationView.xib in Resources */,
 				78B1193F2733881D00A3B8CB /* teacher@2x.png in Resources */,
 				78A3A4A325A414CF00F40705 /* InfoPlist.strings in Resources */,
+				78C8E8EF274CB584007E8E4F /* com.baidu.idl.face.faceSDK.bundle in Resources */,
 				78B119202733881D00A3B8CB /* setvcnor@2x.png in Resources */,
 				788E9560253FE24E0089251E /* BCNavigationView.xib in Resources */,
+				78C8E8F0274CB584007E8E4F /* aip.license in Resources */,
 				78C54970241B642B00A33FC4 /* AlivcAbstraction.txt in Resources */,
 				78B1191D2733881D00A3B8CB /* set_touch@2x.png in Resources */,
 				78C549CF241B674E00A33FC4 /* readMe_Utilites.txt in Resources */,
@@ -8461,6 +8497,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/EdulineV5/Video_SDK/AlivcSDK/AlivcFramework/AFNewPlayer",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/EdulineV5/FaceIdl/FaceSDK",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/EdulineV5/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
@@ -8485,7 +8522,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.2;
 				OTHER_CFLAGS = (
 					"-Xclang",
 					"-fcompatibility-qualified-id-block-type-checking",
@@ -8517,6 +8554,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/EdulineV5/Video_SDK/AlivcSDK/AlivcFramework/AFNewPlayer",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/EdulineV5/FaceIdl/FaceSDK",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/EdulineV5/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
@@ -8541,7 +8579,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 5.1;
+				MARKETING_VERSION = 5.2;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Xclang",
@@ -8549,7 +8587,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
 				PRODUCT_NAME = Eduline;
-				PROVISIONING_PROFILE_SPECIFIER = edulineV5Adhoc;
+				PROVISIONING_PROFILE_SPECIFIER = edulineV5AppStoreDis;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
