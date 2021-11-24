@@ -218,6 +218,9 @@
 {
     AppDelegate *app = [AppDelegate delegate];
     app._allowRotation = NO;
+    if (_playerView && _playerView.superview) {
+        app._allowRotation = YES;
+    }
     [super viewWillAppear:animated];
     
 //    if (shouldLoad) {
