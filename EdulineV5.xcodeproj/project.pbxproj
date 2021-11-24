@@ -922,6 +922,14 @@
 		78C8E8EE274CB584007E8E4F /* com.baidu.idl.face.model.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 78C8E8E9274CB584007E8E4F /* com.baidu.idl.face.model.bundle */; };
 		78C8E8EF274CB584007E8E4F /* com.baidu.idl.face.faceSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 78C8E8EA274CB584007E8E4F /* com.baidu.idl.face.faceSDK.bundle */; };
 		78C8E8F0274CB584007E8E4F /* aip.license in Resources */ = {isa = PBXBuildFile; fileRef = 78C8E8EB274CB584007E8E4F /* aip.license */; };
+		78C8E907274DE66E007E8E4F /* ImageIOSave.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C8E8F3274DE66E007E8E4F /* ImageIOSave.m */; };
+		78C8E908274DE66E007E8E4F /* VideoCaptureDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C8E8F8274DE66E007E8E4F /* VideoCaptureDevice.m */; };
+		78C8E909274DE66E007E8E4F /* DetectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C8E8FA274DE66E007E8E4F /* DetectionViewController.m */; };
+		78C8E90A274DE66E007E8E4F /* LivenessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C8E8FB274DE66E007E8E4F /* LivenessViewController.m */; };
+		78C8E90B274DE66E007E8E4F /* FaceBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C8E8FC274DE66E007E8E4F /* FaceBaseViewController.m */; };
+		78C8E90C274DE66E007E8E4F /* RemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C8E8FD274DE66E007E8E4F /* RemindView.m */; };
+		78C8E90D274DE66E007E8E4F /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C8E8FE274DE66E007E8E4F /* CircleView.m */; };
+		78C8E90E274DE66E007E8E4F /* ImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C8E905274DE66E007E8E4F /* ImageUtils.m */; };
 		78C936C0248DE41900D5F1ED /* ZPScrollerScaleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */; };
 		78C936C3248DE4C700D5F1ED /* HomePageHotRecommendedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936C2248DE4C700D5F1ED /* HomePageHotRecommendedCell.m */; };
 		78C936C6248F64AF00D5F1ED /* TeacherMainPageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78C936C5248F64AF00D5F1ED /* TeacherMainPageVC.m */; };
@@ -2828,6 +2836,23 @@
 		78C8E8E9274CB584007E8E4F /* com.baidu.idl.face.model.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = com.baidu.idl.face.model.bundle; sourceTree = "<group>"; };
 		78C8E8EA274CB584007E8E4F /* com.baidu.idl.face.faceSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = com.baidu.idl.face.faceSDK.bundle; sourceTree = "<group>"; };
 		78C8E8EB274CB584007E8E4F /* aip.license */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = aip.license; sourceTree = "<group>"; };
+		78C8E8F3274DE66E007E8E4F /* ImageIOSave.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageIOSave.m; sourceTree = "<group>"; };
+		78C8E8F4274DE66E007E8E4F /* ImageIOSave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageIOSave.h; sourceTree = "<group>"; };
+		78C8E8F7274DE66E007E8E4F /* VideoCaptureDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCaptureDevice.h; sourceTree = "<group>"; };
+		78C8E8F8274DE66E007E8E4F /* VideoCaptureDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCaptureDevice.m; sourceTree = "<group>"; };
+		78C8E8FA274DE66E007E8E4F /* DetectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetectionViewController.m; sourceTree = "<group>"; };
+		78C8E8FB274DE66E007E8E4F /* LivenessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LivenessViewController.m; sourceTree = "<group>"; };
+		78C8E8FC274DE66E007E8E4F /* FaceBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceBaseViewController.m; sourceTree = "<group>"; };
+		78C8E8FD274DE66E007E8E4F /* RemindView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindView.m; sourceTree = "<group>"; };
+		78C8E8FE274DE66E007E8E4F /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
+		78C8E8FF274DE66E007E8E4F /* DetectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetectionViewController.h; sourceTree = "<group>"; };
+		78C8E900274DE66E007E8E4F /* FaceBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceBaseViewController.h; sourceTree = "<group>"; };
+		78C8E901274DE66E007E8E4F /* LivenessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LivenessViewController.h; sourceTree = "<group>"; };
+		78C8E902274DE66E007E8E4F /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
+		78C8E903274DE66E007E8E4F /* RemindView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindView.h; sourceTree = "<group>"; };
+		78C8E905274DE66E007E8E4F /* ImageUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUtils.m; sourceTree = "<group>"; };
+		78C8E906274DE66E007E8E4F /* ImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtils.h; sourceTree = "<group>"; };
+		78C8E90F274DE678007E8E4F /* FaceParameterConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceParameterConfig.h; sourceTree = "<group>"; };
 		78C936BE248DE41900D5F1ED /* ZPScrollerScaleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZPScrollerScaleView.h; sourceTree = "<group>"; };
 		78C936BF248DE41900D5F1ED /* ZPScrollerScaleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZPScrollerScaleView.m; sourceTree = "<group>"; };
 		78C936C1248DE4C700D5F1ED /* HomePageHotRecommendedCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageHotRecommendedCell.h; sourceTree = "<group>"; };
@@ -6529,6 +6554,8 @@
 		78C8E8E5274CB583007E8E4F /* FaceIdl */ = {
 			isa = PBXGroup;
 			children = (
+				78C8E90F274DE678007E8E4F /* FaceParameterConfig.h */,
+				78C8E8F1274DE66E007E8E4F /* Face_Tool */,
 				78C8E8E6274CB584007E8E4F /* FaceSDK */,
 			);
 			path = FaceIdl;
@@ -6544,6 +6571,69 @@
 				78C8E8EB274CB584007E8E4F /* aip.license */,
 			);
 			path = FaceSDK;
+			sourceTree = "<group>";
+		};
+		78C8E8F1274DE66E007E8E4F /* Face_Tool */ = {
+			isa = PBXGroup;
+			children = (
+				78C8E8F2274DE66E007E8E4F /* OtherConfig */,
+				78C8E8F5274DE66E007E8E4F /* FaceUI */,
+			);
+			path = Face_Tool;
+			sourceTree = "<group>";
+		};
+		78C8E8F2274DE66E007E8E4F /* OtherConfig */ = {
+			isa = PBXGroup;
+			children = (
+				78C8E8F3274DE66E007E8E4F /* ImageIOSave.m */,
+				78C8E8F4274DE66E007E8E4F /* ImageIOSave.h */,
+			);
+			path = OtherConfig;
+			sourceTree = "<group>";
+		};
+		78C8E8F5274DE66E007E8E4F /* FaceUI */ = {
+			isa = PBXGroup;
+			children = (
+				78C8E8F6274DE66E007E8E4F /* Core */,
+				78C8E8F9274DE66E007E8E4F /* Face */,
+				78C8E904274DE66E007E8E4F /* Utils */,
+			);
+			path = FaceUI;
+			sourceTree = "<group>";
+		};
+		78C8E8F6274DE66E007E8E4F /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				78C8E8F7274DE66E007E8E4F /* VideoCaptureDevice.h */,
+				78C8E8F8274DE66E007E8E4F /* VideoCaptureDevice.m */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		78C8E8F9274DE66E007E8E4F /* Face */ = {
+			isa = PBXGroup;
+			children = (
+				78C8E8FF274DE66E007E8E4F /* DetectionViewController.h */,
+				78C8E8FA274DE66E007E8E4F /* DetectionViewController.m */,
+				78C8E900274DE66E007E8E4F /* FaceBaseViewController.h */,
+				78C8E8FC274DE66E007E8E4F /* FaceBaseViewController.m */,
+				78C8E901274DE66E007E8E4F /* LivenessViewController.h */,
+				78C8E8FB274DE66E007E8E4F /* LivenessViewController.m */,
+				78C8E902274DE66E007E8E4F /* CircleView.h */,
+				78C8E8FE274DE66E007E8E4F /* CircleView.m */,
+				78C8E903274DE66E007E8E4F /* RemindView.h */,
+				78C8E8FD274DE66E007E8E4F /* RemindView.m */,
+			);
+			path = Face;
+			sourceTree = "<group>";
+		};
+		78C8E904274DE66E007E8E4F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				78C8E906274DE66E007E8E4F /* ImageUtils.h */,
+				78C8E905274DE66E007E8E4F /* ImageUtils.m */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		78C936BD248DE41900D5F1ED /* HomeScrollThird */ = {
@@ -7008,9 +7098,11 @@
 				78B11637272A439900A3B8CB /* HDCoustomButtom.m in Sources */,
 				78795727240FA3840013F95F /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.m in Sources */,
 				78B11646272A439900A3B8CB /* VoteView.m in Sources */,
+				78C8E90C274DE66E007E8E4F /* RemindView.m in Sources */,
 				78C549C9241B674E00A33FC4 /* AlivcLiveEnvManager.m in Sources */,
 				788E955B253FE24E0089251E /* BCNavigationView.m in Sources */,
 				7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */,
+				78C8E90D274DE66E007E8E4F /* CircleView.m in Sources */,
 				78795752240FAA7A0013F95F /* UIViewController+HUD.m in Sources */,
 				787F1E6B247381A400108F7B /* AlivcPlayListsView.m in Sources */,
 				787EF0AA26C520DF0049E8CB /* ShopMainListCell.m in Sources */,
@@ -7349,6 +7441,7 @@
 				78B11660272A439900A3B8CB /* CCDownloadSessionManager.m in Sources */,
 				786CD55025EF624A00172B88 /* MyExamPage.m in Sources */,
 				78D980B524BD48F5000DE0E4 /* MyTeachListVC.m in Sources */,
+				78C8E90B274DE66E007E8E4F /* FaceBaseViewController.m in Sources */,
 				78BBB391262024A0009F5D10 /* QuestionListViewController.m in Sources */,
 				78B11677272A439A00A3B8CB /* QuestionnaireSurvey.m in Sources */,
 				78B118E82733881C00A3B8CB /* CCDragView.m in Sources */,
@@ -7401,6 +7494,7 @@
 				789DB02A2466B3D6001302B4 /* BalanceDetailCell.m in Sources */,
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
 				78B1165E272A439900A3B8CB /* NSURLSession+CCCorrectedResumeData.m in Sources */,
+				78C8E908274DE66E007E8E4F /* VideoCaptureDevice.m in Sources */,
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
 				782AC44325BFEDB8009130F9 /* AnswerSheetViewController.m in Sources */,
@@ -7522,6 +7616,7 @@
 				78795726240FA3840013F95F /* ZLPhotoRect.m in Sources */,
 				7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */,
 				78795732240FA3840013F95F /* ZLPhotoPickerGroupViewController.m in Sources */,
+				78C8E90E274DE66E007E8E4F /* ImageUtils.m in Sources */,
 				78E5B25E2667257A0053F63F /* UserCircleListVC.m in Sources */,
 				785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */,
 				7839C98024206B1F002F6595 /* CourseTeacherAndOrganizationView.m in Sources */,
@@ -7557,6 +7652,7 @@
 				787F1E78247381A400108F7B /* AliyunPlayerViewSeekPopupView.m in Sources */,
 				7853BE002433352E00F096EC /* LingquanViewController.m in Sources */,
 				78B118C92733881C00A3B8CB /* CCTickeResultView.m in Sources */,
+				78C8E909274DE66E007E8E4F /* DetectionViewController.m in Sources */,
 				788E9595253FE24E0089251E /* aestab.c in Sources */,
 				7879573E240FA9B00013F95F /* MBProgressHUD+Add.m in Sources */,
 				78795757240FAA7A0013F95F /* UIView+HUD.m in Sources */,
@@ -7720,6 +7816,7 @@
 				78B118EB2733881C00A3B8CB /* HDAlertView.m in Sources */,
 				78B115F4272A439900A3B8CB /* CCInteractionView.m in Sources */,
 				78AA13A024469D04007087F7 /* MyCenterTypeOneCell.m in Sources */,
+				78C8E907274DE66E007E8E4F /* ImageIOSave.m in Sources */,
 				78B118E42733881C00A3B8CB /* CCUser+CCSound.m in Sources */,
 				78B11686272A439A00A3B8CB /* CCPrivateChatViewCell.m in Sources */,
 				78AAFF162601A081002CD197 /* ExamCalculateHeight.m in Sources */,
@@ -7731,6 +7828,7 @@
 				786E736026C50297006864DE /* ShopMainViewController.m in Sources */,
 				78B11651272A439900A3B8CB /* UIView+GetVC.m in Sources */,
 				78B119642733881D00A3B8CB /* CCDocSkipViewController.m in Sources */,
+				78C8E90A274DE66E007E8E4F /* LivenessViewController.m in Sources */,
 				788E956B253FE24E0089251E /* EEMessageViewCell.m in Sources */,
 				788E9582253FE24E0089251E /* UIColor+Addition.m in Sources */,
 				78A16C852452F7C100391430 /* NSDate+NetworkClock.m in Sources */,
