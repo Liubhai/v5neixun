@@ -196,7 +196,8 @@
         _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
         NSString *sectionCount = [NSString stringWithFormat:@"%@",_courseInfo[@"section_count"]];
         NSString *finishCount = [NSString stringWithFormat:@"%@",_courseInfo[@"finished_num"]];
-        _circleView.progress = 100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
+        NSString *finishRate = [NSString stringWithFormat:@"%@",_courseInfo[@"learn_rate"]];
+        _circleView.progress = [finishRate floatValue];//100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0);
         _circleView.hidden = NO;
         _percentlabel.hidden = NO;
         if ([sectionCount isEqualToString:@"0"]) {
@@ -204,6 +205,7 @@
         } else {
             _percentlabel.text = [NSString stringWithFormat:@"%.f%%",floor(100 * [finishCount integerValue] / ([sectionCount integerValue] * 1.0))];
         }
+        _percentlabel.text = [NSString stringWithFormat:@"%@%%",finishRate];
         _dateTimeLabel.hidden = YES;
         _lineView1.frame = CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4);
         [self setHeight:_lineView1.bottom];
