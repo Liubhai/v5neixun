@@ -263,6 +263,8 @@
 		788D4EA02590483700D024AC /* MoneyPassWordPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E9F2590483700D024AC /* MoneyPassWordPopView.m */; };
 		788D4EA525907DE300D024AC /* SetMoneyPwFirstVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4EA425907DE300D024AC /* SetMoneyPwFirstVC.m */; };
 		788D4EAE2590907C00D024AC /* ModifyMoneyPwVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4EAD2590907C00D024AC /* ModifyMoneyPwVC.m */; };
+		788DAC85275485860038303A /* FaceVerifyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788DAC84275485860038303A /* FaceVerifyViewController.m */; };
+		788DAC882754B5AF0038303A /* VideoCaptureDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 788DAC872754B5AF0038303A /* VideoCaptureDevice.m */; };
 		788E945A25305F9C0089251E /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E945925305F9C0089251E /* NSData+Base64.m */; };
 		788E955A253FE24E0089251E /* BCStudentVideoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 788E945F253FE24C0089251E /* BCStudentVideoView.xib */; };
 		788E955B253FE24E0089251E /* BCNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788E9460253FE24C0089251E /* BCNavigationView.m */; };
@@ -1498,6 +1500,10 @@
 		788D4EA425907DE300D024AC /* SetMoneyPwFirstVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetMoneyPwFirstVC.m; sourceTree = "<group>"; };
 		788D4EAC2590907C00D024AC /* ModifyMoneyPwVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModifyMoneyPwVC.h; sourceTree = "<group>"; };
 		788D4EAD2590907C00D024AC /* ModifyMoneyPwVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModifyMoneyPwVC.m; sourceTree = "<group>"; };
+		788DAC83275485860038303A /* FaceVerifyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FaceVerifyViewController.h; sourceTree = "<group>"; };
+		788DAC84275485860038303A /* FaceVerifyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FaceVerifyViewController.m; sourceTree = "<group>"; };
+		788DAC862754B5AE0038303A /* VideoCaptureDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCaptureDevice.h; sourceTree = "<group>"; };
+		788DAC872754B5AF0038303A /* VideoCaptureDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCaptureDevice.m; sourceTree = "<group>"; };
 		788E945825305F9B0089251E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		788E945925305F9C0089251E /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		788E945F253FE24C0089251E /* BCStudentVideoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BCStudentVideoView.xib; sourceTree = "<group>"; };
@@ -3530,6 +3536,10 @@
 				78795668240E606F0013F95F /* MyRootViewController.m */,
 				78AA13A42446B7EB007087F7 /* PersonalInformationVC.h */,
 				78AA13A52446B7EB007087F7 /* PersonalInformationVC.m */,
+				788DAC83275485860038303A /* FaceVerifyViewController.h */,
+				788DAC84275485860038303A /* FaceVerifyViewController.m */,
+				788DAC862754B5AE0038303A /* VideoCaptureDevice.h */,
+				788DAC872754B5AF0038303A /* VideoCaptureDevice.m */,
 				78AA13A7244708B4007087F7 /* SetingViewController.h */,
 				78AA13A8244708B4007087F7 /* SetingViewController.m */,
 				788EB1C0250218AB00E30D79 /* OtherTypeLoginBindVC.h */,
@@ -7365,6 +7375,7 @@
 				789DB02A2466B3D6001302B4 /* BalanceDetailCell.m in Sources */,
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
 				78B1165E272A439900A3B8CB /* NSURLSession+CCCorrectedResumeData.m in Sources */,
+				788DAC882754B5AF0038303A /* VideoCaptureDevice.m in Sources */,
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
 				782AC44325BFEDB8009130F9 /* AnswerSheetViewController.m in Sources */,
@@ -7571,6 +7582,7 @@
 				78795721240FA3840013F95F /* ZLCameraViewController.m in Sources */,
 				78C5487E2418CC7400A33FC4 /* TYAttributedLabel.m in Sources */,
 				78D980B224BD48A6000DE0E4 /* MyTeachingRootVC.m in Sources */,
+				788DAC85275485860038303A /* FaceVerifyViewController.m in Sources */,
 				78B11653272A439900A3B8CB /* UIButton+Extension.m in Sources */,
 				78AA139A2445A702007087F7 /* MyCenterBalanceView.m in Sources */,
 				788E957D253FE24E0089251E /* OTOTeacherView.m in Sources */,
@@ -8454,7 +8466,7 @@
 				CODE_SIGN_ENTITLEMENTS = "EdulineV5/Eduline网校.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -8511,7 +8523,7 @@
 				CODE_SIGN_ENTITLEMENTS = "EdulineV5/eduline网校Release.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
