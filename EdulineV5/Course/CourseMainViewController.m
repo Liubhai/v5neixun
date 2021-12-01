@@ -882,8 +882,6 @@
 
 // MARK: - 点赞按钮点击事件
 - (void)zanButtonClick:(UIButton *)sender {
-    [self faceVerifyTip];
-    return;;
     if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [AppDelegate presentLoginNav:self];
         return;

@@ -128,8 +128,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>访问蓝牙权限以用于设备数据读取和发送</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>访问蓝牙权限以用于设备数据读取和发送</string>
 	<key>NSCameraUsageDescription</key>
 	<string>App会在使用修改用户头像、保存图片到本地功能时,访问您的相机权限</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>App会在进入直播间的时候,访问您的定位权限</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>App会在直播间连麦的功能时,访问您的麦克风权限</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
