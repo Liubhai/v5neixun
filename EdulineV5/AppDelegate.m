@@ -946,6 +946,7 @@
 //                "note": 0, //课程笔记开关【0：未开启；1：开启；】
                 NSString *comment = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"comment"]];
                 NSString *note = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"note"]];
+                NSString *userFace = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"open_face_verify"]];
                 if ([comment isEqualToString:@"1"]) {
                     [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
                 } else {
@@ -956,20 +957,28 @@
                 } else {
                     [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowCourseNote"];
                 }
+                if ([userFace isEqualToString:@"1"]) {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowUserFace"];
+                } else {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowUserFace"];
+                }
                 [[NSUserDefaults standardUserDefaults] synchronize];
             } else {
                 [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
                 [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
+                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowUserFace"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         } else {
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowUserFace"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     } enError:^(NSError * _Nonnull error) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowUserFace"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
 }

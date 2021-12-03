@@ -615,6 +615,15 @@ struct NetWorkUrl {
 /** 用户的主页信息 */
 + (NSString *)userHomeCourseListNet;
 
+/** 人脸绑定 */
++ (NSString *)userFaceBind;
+
+/** 人脸解除绑定 */
++ (NSString *)userFaceUnbind;
+
+/** 人脸验证 */
++ (NSString *)userFaceVerify;
+
 @end
 
 NS_ASSUME_NONNULL_END

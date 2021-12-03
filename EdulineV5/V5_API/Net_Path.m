@@ -861,4 +861,19 @@
     return [Net_Path fullPath:@"user/home/course" repalce:@"" byReplece:@""];
 }
 
+/** 人脸绑定 */
++ (NSString *)userFaceBind {
+    return [Net_Path fullPath:@"user/tencent/face/person" repalce:@"" byReplece:@""];
+}
+
+/** 人脸解除绑定 */
++ (NSString *)userFaceUnbind {
+    return [Net_Path fullPath:@"user/tencent/face/person/delete" repalce:@"" byReplece:@""];
+}
+
+/** 人脸验证 */
++ (NSString *)userFaceVerify {
+    return [Net_Path fullPath:@"user/tencent/face/person/verify" repalce:@"" byReplece:@""];
+}
+
 @end

@@ -478,6 +478,7 @@
                 [V5_UserModel saveIntro:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"signature"]]];
                 [V5_UserModel saveNeed_set_password:[[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"need_set_password"]] boolValue]];
                 [V5_UserModel saveNeed_set_paypwd:[[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"need_set_paypwd"]] boolValue]];
+                [V5_UserModel saveUserFaceVerify:[NSString stringWithFormat:@"%@",[[[responseObject objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"face_verified"]]];
                 
                 [_iconArray removeAllObjects];
                 NSArray *listArray = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"list"]];

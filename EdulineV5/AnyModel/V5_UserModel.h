@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 // 用户组图标
 + (void)saveUserGroupIcon:(NSArray*)gruopArray;
 + (void)saveVipStatus:(NSString *)status;
++ (void)saveUserFaceVerify:(NSString *)status;
 
 /**
  持久化提现账户
@@ -82,6 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)userNickName;
 +(NSString *)userAuth_scope;
 +(NSString *)vipStatus;
++(NSString *)userFaceVerify;
 
 
 @end

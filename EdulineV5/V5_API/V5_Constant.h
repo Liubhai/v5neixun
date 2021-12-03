@@ -48,6 +48,8 @@
 
 #define ShowCourseNote [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowCourseNote"] == nil ? @ "1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowCourseNote"]
 
+#define ShowUserFace [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowUserFace"] == nil ? @"0" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ShowUserFace"]
+
 #define WebTitleContenDistance 10
 #define WebDistanceLeft 15//内容和左右的边距
 

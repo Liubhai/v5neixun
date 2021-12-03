@@ -11,9 +11,9 @@
 #import "V5_UserModel.h"
 #import "AppDelegate.h"
 
-#define HeaderUrl_V5_Api @"https://api.51eduline.com"// 单机构
+//#define HeaderUrl_V5_Api @"https://api.51eduline.com"// 单机构
 //#define HeaderUrl_V5_Api @"https://saas-api.51eduline.com"//saas版本
-//#define HeaderUrl_V5_Api @"https://tv5-api.51eduline.com"//saas测试版本
+#define HeaderUrl_V5_Api @"https://tv5-api.51eduline.com"//saas测试版本
 
 #define SWNOTEmptyArr_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSArray class]]&&[X count])
 #define SWNOTEmptyDictionary_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSDictionary class]]&&[[X allKeys]count])

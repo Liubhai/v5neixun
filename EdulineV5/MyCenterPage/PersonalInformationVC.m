@@ -11,6 +11,8 @@
 #import "Net_Path.h"
 #import "V5_UserModel.h"
 #import "RegisterAndForgetPwVC.h"
+#import "FaceVerifyViewController.h"
+#import "ZLCameraViewController.h"
 
 @interface PersonalInformationVC ()<UIScrollViewDelegate,UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,TZImagePickerControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
     NSString *gender;
@@ -39,6 +41,11 @@
 @property (strong, nonatomic) UITextField *phoneTextField;
 @property (strong, nonatomic) UIView *line5;
 @property (strong, nonatomic) UIButton *phoneRightBtn;
+
+@property (strong, nonatomic) UILabel *faceVerifyTitle;
+@property (strong, nonatomic) UILabel *faceVerifyStatusLabel;
+@property (strong, nonatomic) UIView *line6;
+@property (strong, nonatomic) UIButton *faceVerifyRightBtn;
 
 @property (strong, nonatomic) UILabel *sexTitle;
 @property (strong, nonatomic) UIButton *maleBtn;
@@ -80,6 +87,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewValueDidChanged:) name:UITextViewTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    // 刷新认证状态
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserInfo) name:@"changeuserinfo" object:nil];
 }
 
 - (void)makeSubView {
@@ -177,7 +187,32 @@
     _line5.backgroundColor = EdlineV5_Color.fengeLineColor;
     [_mainScrollView addSubview:_line5];
     
-    _sexTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line5.bottom, _faceTitle.width, 50)];
+    if ([ShowUserFace isEqualToString:@"1"]) {
+        _faceVerifyTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line5.bottom, _faceTitle.width, 50)];
+        _faceVerifyTitle.text = @"人脸认证";
+        _faceVerifyTitle.textColor = EdlineV5_Color.textFirstColor;
+        _faceVerifyTitle.font = SYSTEMFONT(15);
+        [_mainScrollView addSubview:_faceVerifyTitle];
+        
+        _faceVerifyRightBtn = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 30, 0, 30, 30)];
+        [_faceVerifyRightBtn setImage:Image(@"list_more") forState:0];
+        [_faceVerifyRightBtn addTarget:self action:@selector(faceVerifyButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_mainScrollView addSubview:_faceVerifyRightBtn];
+        
+        _faceVerifyStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceVerifyRightBtn.left - 5 - 200, _faceVerifyTitle.top, 200, 50)];
+        _faceVerifyStatusLabel.textColor = EdlineV5_Color.textThirdColor;
+        _faceVerifyStatusLabel.font = SYSTEMFONT(15);
+        _faceVerifyStatusLabel.textAlignment = NSTextAlignmentRight;
+        _faceVerifyStatusLabel.text = [[V5_UserModel userFaceVerify] isEqualToString:@"1"] ? @"已绑定" : @"未绑定";
+        [_mainScrollView addSubview:_faceVerifyStatusLabel];
+        _faceVerifyRightBtn.centerY = _faceVerifyStatusLabel.centerY;
+        
+        _line6 = [[UIView alloc] initWithFrame:CGRectMake(_faceTitle.left, _faceVerifyTitle.bottom, MainScreenWidth - 15, 0.5)];
+        _line6.backgroundColor = EdlineV5_Color.fengeLineColor;
+        [_mainScrollView addSubview:_line6];
+    }
+    
+    _sexTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, [ShowUserFace isEqualToString:@"1"] ?  _line6.bottom : _line5.bottom, _faceTitle.width, 50)];
     _sexTitle.text = @"性别";
     _sexTitle.textColor = EdlineV5_Color.textFirstColor;
     _sexTitle.font = SYSTEMFONT(15);
@@ -562,6 +597,9 @@
         _nameTextField.text = [NSString stringWithFormat:@"%@",_userInfo[@"nick_name"]];
         _phoneTextField.text = [NSString stringWithFormat:@"%@",_userInfo[@"phone"]];
         
+        [V5_UserModel saveUserFaceVerify:[NSString stringWithFormat:@"%@",[_userInfo objectForKey:@"face_verified"]]];
+        
+        _faceVerifyStatusLabel.text = [[NSString stringWithFormat:@"%@",[_userInfo objectForKey:@"face_verified"]] isEqualToString:@"1"] ? @"已绑定" : @"未绑定";
         gender = [NSString stringWithFormat:@"%@",_userInfo[@"gender"]];// 0 保密 1 男 2 女
         if ([gender isEqualToString:@"0"]) {
             [self sexButtonClick:_secrecyBtn];
@@ -635,6 +673,14 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+// MARK: - 未认证情况下点击认证按钮相应事件
+- (void)faceVerifyButtonClick:(UIButton *)sender {
+    FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+    vc.isVerify = YES;
+    vc.verifyed = [[V5_UserModel userFaceVerify] isEqualToString:@"1"] ? YES : NO;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

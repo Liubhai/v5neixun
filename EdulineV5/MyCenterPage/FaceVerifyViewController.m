@@ -44,7 +44,11 @@
     [super viewWillAppear:animated];
     _hasFinished = NO;
     self.videoCapture.runningStatus = YES;
-    [self.videoCapture startSession];
+    if (_isVerify && _verifyed) {
+        // 解除绑定
+    } else {
+        [self.videoCapture startSession];
+    }
 }
 
 - (void)viewDidLoad {
@@ -103,6 +107,13 @@
         btn.imageEdgeInsets = UIEdgeInsetsMake(-labelHeight-10/2.0, 0, 0, -labelWidth);
         btn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith, -imageHeight-10/2.0, 0);
         btn.tag = 66 + i;
+        if (i == 0) {
+            _button1 = btn;
+        } else if (i == 1) {
+            _button2 = btn;
+        } else if (i == 2) {
+            _button3 = btn;
+        }
         [self.view addSubview:btn];
     }
     
@@ -170,6 +181,17 @@
     
     _rephotographButton.hidden = YES;
     _verifyButton.hidden = YES;
+    
+    if (_isVerify && _verifyed) {
+        _verifyingButton.hidden = YES;
+        _verifyButton.hidden = YES;
+        _rephotographButton.hidden = YES;
+        _unboundButton.hidden = NO;
+        _photoButton.hidden = YES;
+        _button1.hidden = YES;
+        _button2.hidden = YES;
+        _button3.hidden = YES;
+    }
 }
 
 - (void)photoButtonClick:(UIButton *)sender {
@@ -177,6 +199,8 @@
     _rephotographButton.hidden = NO;
     _verifyButton.hidden = NO;
     _photoButton.hidden = YES;
+    _unboundButton.hidden = YES;
+    _verifyingButton.hidden = YES;
 }
 
 - (void)rephotographButtonClick:(UIButton *)sender {
@@ -184,6 +208,8 @@
     _rephotographButton.hidden = YES;
     _verifyButton.hidden = YES;
     _photoButton.hidden = NO;
+    _verifyingButton.hidden = YES;
+    _unboundButton.hidden = YES;
 }
 
 - (void)verifyButtonClick:(UIButton *)sender {
@@ -192,12 +218,22 @@
         _verifyButton.hidden = YES;
         _photoButton.hidden = YES;
         _verifyingButton.hidden = NO;
+        _unboundButton.hidden = YES;
         [self faceProcesss:_finalFaceImage.image];
     }
 }
 
 - (void)unboundButtonClick:(UIButton *)sender {
-    
+    _hasFinished = NO;
+    [_videoCapture startSession];
+    _verifyingButton.hidden = YES;
+    _verifyButton.hidden = YES;
+    _rephotographButton.hidden = YES;
+    _unboundButton.hidden = YES;
+    _photoButton.hidden = NO;
+    _button1.hidden = NO;
+    _button2.hidden = NO;
+    _button3.hidden = NO;
 }
 
 - (void)verifyingButtonClick:(UIButton *)sender {
@@ -238,7 +274,76 @@
 
 // MARK: - 请求借口校验
 - (void)faceProcesss:(UIImage *)image {
+    if (!image) {
+        return;
+    }
     
+    _verifyingButton.hidden = NO;
+    _verifyButton.hidden = YES;
+    _rephotographButton.hidden = YES;
+    _unboundButton.hidden = YES;
+    _photoButton.hidden = YES;
+    
+    NSString *urlString = [Net_Path userFaceBind];
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    if (_isVerify) {
+        if (_verifyed) {
+            urlString = [Net_Path userFaceUnbind];
+        } else {
+            urlString = [Net_Path userFaceBind];
+        }
+    } else {
+        urlString = [Net_Path userFaceVerify];
+        [param setObject:_sourceId forKey:@"scene_key"];
+        [param setObject:_sourceType forKey:@"scene_id"];
+    }
+    
+    [Net_API POST:urlString parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //上传图片
+        NSData *dataImg=UIImageJPEGRepresentation(image, 1);
+        [formData appendPartWithFileData:dataImg name:@"file" fileName:@"imageface.jpg" mimeType:@"image/jpg"];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
+        if ([[responseObject objectForKey:@"code"] integerValue]) {
+            if (_isVerify) {
+                if (_verifyed) {
+                    // 解除绑定
+                    _verifyingButton.hidden = YES;
+                    _verifyButton.hidden = YES;
+                    _rephotographButton.hidden = YES;
+                    _unboundButton.hidden = YES;
+                    _photoButton.hidden = NO;
+                } else {
+                    // 绑定
+                    _verifyingButton.hidden = YES;
+                    _verifyButton.hidden = YES;
+                    _rephotographButton.hidden = YES;
+                    _unboundButton.hidden = NO;
+                    _photoButton.hidden = YES;
+                }
+            } else {
+                // 验证通过
+                _verifyingButton.hidden = YES;
+                _verifyButton.hidden = YES;
+                _rephotographButton.hidden = YES;
+                _unboundButton.hidden = YES;
+                _photoButton.hidden = NO;
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeuserinfo" object:nil];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+        }
+    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+        [self showHudInView:self.view showHint:@"上传头像超时,请重试"];
+        _verifyingButton.hidden = YES;
+        _verifyButton.hidden = YES;
+        _rephotographButton.hidden = YES;
+        _unboundButton.hidden = YES;
+        _photoButton.hidden = NO;
+    }];
 }
 
 // MARK: - Notification

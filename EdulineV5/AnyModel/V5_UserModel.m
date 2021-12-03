@@ -179,6 +179,10 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (void)saveUserFaceVerify:(NSString *)status {
+    [[NSUserDefaults standardUserDefaults] setObject:status forKey:@"face_verified"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 + (NSDictionary *)groupPermission {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"groupPermission"];
@@ -309,6 +313,10 @@
 
 + (NSString *)userAuth_scope {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"user_auth_scope"];
+}
+
++ (NSString *)userFaceVerify {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"face_verified"];
 }
 
 +(NSString *)replaceNilStr:(id)str nilStr:(NSString *)str2
