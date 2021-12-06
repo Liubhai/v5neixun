@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^TaojuanDetailListUserFaceVerify)(BOOL result);
+
 @interface TaojuanDetailListViewController : BaseViewController
+
+@property (nonatomic, strong) TaojuanDetailListUserFaceVerify TaojuanDetailListUserFaceVerifyResult;
 
 @property (strong, nonatomic) NSString *rollup_id;
 @property (strong, nonatomic) NSString *module_title;

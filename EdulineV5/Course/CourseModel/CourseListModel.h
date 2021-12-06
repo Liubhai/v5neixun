@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class CourseListModel,section_data_model,section_rate_model,live_rate_model,section_CCLive;
+@class CourseListModel,section_data_model,section_rate_model,live_rate_model,section_CCLive,section_face_data;
 
 @interface CourseListModel : NSObject
 
@@ -58,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) section_rate_model *section_rate;
 @property (strong, nonatomic) live_rate_model *live_rate;
 @property (strong, nonatomic) section_CCLive *section_live;
+@property (strong, nonatomic) section_face_data *face_data;
 
 @property (nonatomic, weak)   CourseListModel *parentItem;
 @property (nonatomic, strong) NSMutableArray<CourseListModel *> *childItems;
@@ -152,6 +153,21 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *cc_replay_id;//CC回放ID
 @property (strong, nonatomic) NSString *cc_replay_url;//CC云课堂链接
 @property (strong, nonatomic) NSString *identify;//CC云课堂身份
+
+@end
+
+/** 人脸配置 */
+@interface section_face_data : NSObject
+
+/**
+ "verified_count": 0, //已经验证的人脸次数
+ "need_verify_number": 0, //还需要验证人脸次数
+ "verify_timespan": 0 //验证时间间隔 单位：分钟
+ */
+
+@property (assign, nonatomic) unsigned int verified_count;//已经验证次数
+@property (assign, nonatomic) unsigned int need_verify_number;//还需要验证人脸次数
+@property (assign, nonatomic) unsigned int verify_timespan;//分钟数
 
 @end
 

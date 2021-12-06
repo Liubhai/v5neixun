@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "VideoCaptureDevice.h"
+#import "V5_UserModel.h"
 
 @interface FaceVerifyViewController ()<CaptureDataOutputProtocol>
 
@@ -191,6 +192,7 @@
         _button1.hidden = YES;
         _button2.hidden = YES;
         _button3.hidden = YES;
+        _finalFaceImage.image = Image(@"face_placeholder");
     }
 }
 
@@ -322,7 +324,12 @@
                     _rephotographButton.hidden = YES;
                     _unboundButton.hidden = NO;
                     _photoButton.hidden = YES;
+                    [V5_UserModel saveUserFaceVerify:@"1"];
                 }
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeuserinfo" object:nil];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
             } else {
                 // 验证通过
                 _verifyingButton.hidden = YES;
@@ -330,11 +337,9 @@
                 _rephotographButton.hidden = YES;
                 _unboundButton.hidden = YES;
                 _photoButton.hidden = NO;
-            }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeuserinfo" object:nil];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.navigationController popViewControllerAnimated:YES];
-            });
+                self.verifyResult(YES);
+            }
         }
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         [self showHudInView:self.view showHint:@"上传头像超时,请重试"];

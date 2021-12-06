@@ -13,6 +13,8 @@
 #import "Net_Path.h"
 #import "ExamPaperDetailViewController.h"
 #import "OrderViewController.h"
+#import "FaceVerifyViewController.h"
+#import "V5_UserModel.h"
 
 @interface TaojuanDetailListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TaoJuanDetailListCellDelegate> {
     NSInteger page;
@@ -124,14 +126,35 @@
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
-        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-        vc.examType = @"4";
-        NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
-        if (SWNOTEmptyArr(pass)) {
-            vc.examIds = [NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]];
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            self.TaojuanDetailListUserFaceVerifyResult = ^(BOOL result) {
+                if (result) {
+                    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+                    vc.examType = @"4";
+                    NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
+                    if (SWNOTEmptyArr(pass)) {
+                        vc.examIds = [NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]];
+                    }
+                    vc.rollup_id = _rollup_id;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            };
+            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
+                [self faceCompareTip:[NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]]];
+            } else {
+                [self faceVerifyTip];
+            }
+        } else {
+            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+            vc.examType = @"4";
+            NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
+            if (SWNOTEmptyArr(pass)) {
+                vc.examIds = [NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]];
+            }
+            vc.rollup_id = _rollup_id;
+            [self.navigationController pushViewController:vc animated:YES];
         }
-        vc.rollup_id = _rollup_id;
-        [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 购买
         OrderViewController *vc = [[OrderViewController alloc] init];
@@ -145,11 +168,28 @@
     if (SWNOTEmptyDictionary(_detailInfo)) {
         NSString *priceCount = [NSString stringWithFormat:@"%@",_detailInfo[@"user_price"]];
         if ([_detailInfo[@"has_bought"] integerValue] || [priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
-            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-            vc.examType = @"4";
-            vc.examIds = [NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]];
-            vc.rollup_id = _rollup_id;
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([ShowExamUserFace isEqualToString:@"1"]) {
+                self.TaojuanDetailListUserFaceVerifyResult = ^(BOOL result) {
+                    if (result) {
+                        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+                        vc.examType = @"4";
+                        vc.examIds = [NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]];
+                        vc.rollup_id = _rollup_id;
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                };
+                if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                    [self faceCompareTip:[NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]]];
+                } else {
+                    [self faceVerifyTip];
+                }
+            } else {
+                ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+                vc.examType = @"4";
+                vc.examIds = [NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]];
+                vc.rollup_id = _rollup_id;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
         } else {
             // 提示请先购买
             [self showHudInView:self.view showHint:@"请先购买"];
@@ -235,6 +275,54 @@
     }];
 }
 
+// MARK: - 人脸未认证提示
+- (void)faceVerifyTip {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = YES;
+        vc.verifyed = NO;
+//        vc.verifyResult = ^(BOOL result) {
+//            if (result) {
+//                self.TaojuanDetailListUserFaceVerifyResult(result);
+//            }
+//        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 
+// MARK: - 人脸识别提示
+- (void)faceCompareTip:(NSString *)courseHourseId {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = NO;
+        vc.verifyed = YES;
+        vc.sourceType = @"course";
+        vc.sourceId = courseHourseId;
+        vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                self.TaojuanDetailListUserFaceVerifyResult(result);
+            }
+        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 
 @end

@@ -12,7 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 //@class AVCVideoConfig;
 
+typedef void(^userFaceVerify)(BOOL result);
+
 @interface CourseMainViewController : BaseViewController
+
+@property (nonatomic, strong) userFaceVerify userFaceVerifyResult;
 
 @property (assign, nonatomic) BOOL isLive;//是不是直播  区分直播详情页和其他类型详情页
 

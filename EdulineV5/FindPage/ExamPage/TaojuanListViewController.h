@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^taojuanUserFaceVerify)(BOOL result);
+
 @interface TaojuanListViewController : BaseViewController
+
+@property (nonatomic, strong) taojuanUserFaceVerify taojuanUserFaceVerifyResult;
 
 @property (strong, nonatomic) NSString *module_id;
 @property (strong, nonatomic) NSString *module_title;

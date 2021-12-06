@@ -11,7 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^courseTestListUserFaceVerify)(BOOL result);
+
 @interface CourseTestListVC : BaseViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+
+@property (nonatomic, strong) courseTestListUserFaceVerify courseTestListUserFaceVerifyResult;
 
 @property (strong, nonatomic) NSString *courseId;
 @property (assign, nonatomic) CGFloat tabelHeight;

@@ -19,6 +19,8 @@
 #import <AVKit/AVKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import "FaceVerifyViewController.h"
+
 @interface ExamPaperDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
     NSInteger examCount;//整套试卷的总题数
     NSInteger currentExamRow;// 当前答题是第几道题
@@ -2049,6 +2051,56 @@
         [paperTimer invalidate];
         paperTimer = nil;
     }
+}
+
+// MARK: - 人脸未认证提示
+- (void)faceVerifyTip {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = YES;
+        vc.verifyed = NO;
+//        vc.verifyResult = ^(BOOL result) {
+//            if (result) {
+//                self.userFaceVerifyResult(result);
+//            }
+//        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+// MARK: - 人脸识别提示
+- (void)faceCompareTip:(NSString *)courseHourseId {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = NO;
+        vc.verifyed = YES;
+        vc.sourceType = @"course";
+        vc.sourceId = courseHourseId;
+        vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                // 继续答题...
+            }
+        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

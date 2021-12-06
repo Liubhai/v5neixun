@@ -11,6 +11,8 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 #import "ExamPaperDetailViewController.h"
+#import "FaceVerifyViewController.h"
+#import "V5_UserModel.h"
 
 @interface CourseTestListVC () {
     NSInteger page;
@@ -68,11 +70,28 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *can_exam = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"can_exam"]];
     if ([can_exam integerValue] && course_can_exam) {
-        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-        vc.examType = @"3";
-        vc.examIds = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]];
-        vc.courseId = _courseId;
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            self.courseTestListUserFaceVerifyResult = ^(BOOL result) {
+                if (result) {
+                    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+                    vc.examType = @"3";
+                    vc.examIds = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]];
+                    vc.courseId = _courseId;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            };
+            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                [self faceCompareTip:[NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]]];
+            } else {
+                [self faceVerifyTip];
+            }
+        } else {
+            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+            vc.examType = @"3";
+            vc.examIds = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]];
+            vc.courseId = _courseId;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     } else {
         if (!course_can_exam) {
             [self showHudInView:self.vc.view showHint:@"不符合参加考试的条件"];
@@ -163,6 +182,56 @@
             }
         }];
     }
+}
+
+// MARK: - 人脸未认证提示
+- (void)faceVerifyTip {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = YES;
+        vc.verifyed = NO;
+//        vc.verifyResult = ^(BOOL result) {
+//            if (result) {
+//                self.courseTestListUserFaceVerifyResult(result);
+//            }
+//        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+// MARK: - 人脸识别提示
+- (void)faceCompareTip:(NSString *)courseHourseId {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = NO;
+        vc.verifyed = YES;
+        vc.sourceType = @"course";
+        vc.sourceId = courseHourseId;
+        vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                self.courseTestListUserFaceVerifyResult(result);
+            }
+        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 /*

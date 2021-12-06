@@ -10,8 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^specialUserFaceVerify)(BOOL result);
+
 @interface SpecialProjectExamList : BaseViewController
 
+@property (nonatomic, strong) specialUserFaceVerify specialuserFaceVerifyResult;
 @property (strong, nonatomic) NSString *examTypeString;
 @property (strong, nonatomic) NSString *examTypeId;// 板块类型 1 2 3 4
 

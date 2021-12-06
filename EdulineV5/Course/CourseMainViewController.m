@@ -43,6 +43,8 @@
 #import "GroupDetailViewController.h"
 #import "CourseTestListVC.h"//课程详情页考试列表
 
+#import "FaceVerifyViewController.h"// 人脸认证页面
+
 #define FaceImageHeight 207
 
 @interface CourseMainViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,UITableViewDelegate,UITableViewDataSource,CourseTeacherAndOrganizationViewDelegate,CourseCouponViewDelegate,CourseDownViewDelegate,CourseListVCDelegate,CourseTreeListViewControllerDelegate,UMSocialShareMenuViewDelegate> {
@@ -1302,14 +1304,32 @@
         }
         return;
     }
-    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
-    vc.ID = _ID;
-    vc.courselayer = _courselayer;
-    vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
-    vc.isLive = _isLive;
-    vc.courseType = _courseType;
-    vc.currentPlayModel = cell.listFinalModel.model;
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([ShowUserFace isEqualToString:@"1"]) {
+        self.userFaceVerifyResult = ^(BOOL result) {
+            CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+            vc.ID = _ID;
+            vc.courselayer = _courselayer;
+            vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
+            vc.isLive = _isLive;
+            vc.courseType = _courseType;
+            vc.currentPlayModel = cell.listFinalModel.model;
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+            [self faceCompareTip:[NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId]];
+        } else {
+            [self faceVerifyTip];
+        }
+    } else {
+        CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+        vc.ID = _ID;
+        vc.courselayer = _courselayer;
+        vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
+        vc.isLive = _isLive;
+        vc.courseType = _courseType;
+        vc.currentPlayModel = cell.listFinalModel.model;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)newClassCourseCellDidSelected:(CourseListModel *)model indexpath:(nonnull NSIndexPath *)indexpath {
@@ -1329,14 +1349,33 @@
         }
         return;
     }
-    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
-    vc.ID = _ID;
-    vc.courselayer = _courselayer;
-    vc.currentHourseId = [NSString stringWithFormat:@"%@",model.classHourId];
-    vc.isLive = _isLive;
-    vc.courseType = _courseType;
-    vc.currentPlayModel = model;
-    [self.navigationController pushViewController:vc animated:YES];
+    
+    if ([ShowUserFace isEqualToString:@"1"]) {
+        self.userFaceVerifyResult = ^(BOOL result) {
+            CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+            vc.ID = _ID;
+            vc.courselayer = _courselayer;
+            vc.currentHourseId = [NSString stringWithFormat:@"%@",model.classHourId];
+            vc.isLive = _isLive;
+            vc.courseType = _courseType;
+            vc.currentPlayModel = model;
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+            [self faceCompareTip:[NSString stringWithFormat:@"%@",model.classHourId]];
+        } else {
+            [self faceVerifyTip];
+        }
+    } else {
+        CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+        vc.ID = _ID;
+        vc.courselayer = _courselayer;
+        vc.currentHourseId = [NSString stringWithFormat:@"%@",model.classHourId];
+        vc.isLive = _isLive;
+        vc.courseType = _courseType;
+        vc.currentPlayModel = model;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)getCourseInfo {
@@ -1519,6 +1558,15 @@
 - (void)faceVerifyTip {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = YES;
+        vc.verifyed = NO;
+//        vc.verifyResult = ^(BOOL result) {
+//            if (result) {
+//                self.userFaceVerifyResult(result);
+//            }
+//        };
+        [self.navigationController pushViewController:vc animated:YES];
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
@@ -1531,9 +1579,20 @@
 }
 
 // MARK: - 人脸识别提示
-- (void)faceCompareTip {
+- (void)faceCompareTip:(NSString *)courseHourseId {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = NO;
+        vc.verifyed = YES;
+        vc.sourceType = @"course";
+        vc.sourceId = courseHourseId;
+        vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                self.userFaceVerifyResult(result);
+            }
+        };
+        [self.navigationController pushViewController:vc animated:YES];
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];

@@ -17,6 +17,9 @@
 #import "ExamPaperDetailViewController.h"
 #import "OrderViewController.h"
 
+#import "FaceVerifyViewController.h"
+#import "V5_UserModel.h"
+
 @interface SpecialProjectExamList ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TeacherCategoryVCDelegate, CourseTypeVCDelegate> {
     NSInteger page;
     
@@ -127,11 +130,29 @@
             [self showHudInView:self.view showHint:@"考试次数已用完"];
             return;
         }
-        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-        vc.examType = _examTypeId;
-        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"paper_id"]];
-        vc.examModuleId = _examModuleId;
-        [self.navigationController pushViewController:vc animated:YES];
+        
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            self.specialuserFaceVerifyResult = ^(BOOL result) {
+                if (result) {
+                    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+                    vc.examType = _examTypeId;
+                    vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"paper_id"]];
+                    vc.examModuleId = _examModuleId;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            };
+            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                [self faceCompareTip:[NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"paper_id"]]];
+            } else {
+                [self faceVerifyTip];
+            }
+        } else {
+            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+            vc.examType = _examTypeId;
+            vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"paper_id"]];
+            vc.examModuleId = _examModuleId;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     } else if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"购买"]) {
         // 购买
         OrderViewController *vc = [[OrderViewController alloc] init];
@@ -282,6 +303,56 @@
         return NO;
     }
     return YES;
+}
+
+// MARK: - 人脸未认证提示
+- (void)faceVerifyTip {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = YES;
+        vc.verifyed = NO;
+//        vc.verifyResult = ^(BOOL result) {
+//            if (result) {
+//                self.specialuserFaceVerifyResult(result);
+//            }
+//        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+// MARK: - 人脸识别提示
+- (void)faceCompareTip:(NSString *)courseHourseId {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = NO;
+        vc.verifyed = YES;
+        vc.sourceType = @"exam";
+        vc.sourceId = courseHourseId;
+        vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                self.specialuserFaceVerifyResult(result);
+            }
+        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

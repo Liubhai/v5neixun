@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^verifySuccese)(BOOL result);
+
 @interface FaceVerifyViewController : BaseViewController
+
+@property (nonatomic, strong) verifySuccese verifyResult;
 
 @property (nonatomic, readwrite, assign) BOOL hasFinished;
 @property (nonatomic, assign) BOOL isVerify;// 是否是人脸绑定 yes 是人脸绑定 no 是人脸对比(已经绑定人脸)
