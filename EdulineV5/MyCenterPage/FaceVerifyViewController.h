@@ -21,6 +21,8 @@ typedef void(^verifySuccese)(BOOL result);
 @property (nonatomic, assign) BOOL verifyed;// 是否绑定 yes 绑定 no 没绑定
 @property (nonatomic, strong) NSString *sourceId;//
 @property (nonatomic, strong) NSString *sourceType;//
+@property (nonatomic, strong) NSString *scene_type;//场景类型  1: 进入场景之前  2: 处于场景中
+
 
 @end
 

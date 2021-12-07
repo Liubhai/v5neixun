@@ -296,8 +296,9 @@
         }
     } else {
         urlString = [Net_Path userFaceVerify];
-        [param setObject:_sourceId forKey:@"scene_key"];
-        [param setObject:_sourceType forKey:@"scene_id"];
+        [param setObject:_sourceType forKey:@"scene_key"];
+        [param setObject:_sourceId forKey:@"scene_id"];
+        [param setObject:_scene_type forKey:@"scene_type"];
     }
     
     [Net_API POST:urlString parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {

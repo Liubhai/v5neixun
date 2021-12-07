@@ -256,6 +256,7 @@
         vc.verifyed = YES;
         vc.sourceType = @"exam";
         vc.sourceId = courseHourseId;
+        vc.scene_type = @"1";
         vc.verifyResult = ^(BOOL result) {
             if (result) {
                 self.taojuanUserFaceVerifyResult(result);
