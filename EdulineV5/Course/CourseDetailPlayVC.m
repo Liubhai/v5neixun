@@ -1161,15 +1161,18 @@
                     [self setCourseInfoData];
                     if (_shouldContinueLearn) {
                         if (SWNOTEmptyDictionary(_recent_learn_Source)) {
-                            CourseListModel *current_model = [CourseListModel mj_objectWithKeyValues:_recent_learn_Source];
-                            current_model.classHourId = [NSString stringWithFormat:@"%@",_recent_learn_Source[@"section_id"]];
-                            section_rate_model *rateModel = [[section_rate_model alloc] init];
-                            rateModel.current_time = [[NSString stringWithFormat:@"%@",_recent_learn_Source[@"current_time"]] integerValue];
-                            current_model.section_rate = rateModel;
-                            if (!SWNOTEmptyStr(current_model.course_type)) {
-                                current_model.course_type = _isLive ? @"2" : @"";
+                            NSString *section_id = [NSString stringWithFormat:@"%@",[_recent_learn_Source objectForKey:@"section_id"]];
+                            if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"] && ![section_id isEqualToString:@"null"]) {
+                                CourseListModel *current_model = [CourseListModel mj_objectWithKeyValues:_recent_learn_Source];
+                                current_model.classHourId = [NSString stringWithFormat:@"%@",_recent_learn_Source[@"section_id"]];
+                                section_rate_model *rateModel = [[section_rate_model alloc] init];
+                                rateModel.current_time = [[NSString stringWithFormat:@"%@",_recent_learn_Source[@"current_time"]] integerValue];
+                                current_model.section_rate = rateModel;
+                                if (!SWNOTEmptyStr(current_model.course_type)) {
+                                    current_model.course_type = _isLive ? @"2" : @"";
+                                }
+                                [self recordLearnContinuePlay:current_model];
                             }
-                            [self recordLearnContinuePlay:current_model];
                         }
                     } else {
                         if (_currentPlayModel) {
