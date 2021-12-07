@@ -1155,21 +1155,59 @@
     }
     if (SWNOTEmptyDictionary(_dataSource)) {
         if ([[_dataSource objectForKey:@"is_buy"] boolValue]) {
-            CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
-            vc.ID = _ID;
-            vc.courselayer = _courselayer;
-            vc.isLive = _isLive;
-            vc.courseType = _courseType;
-            if ([_dataSource objectForKey:@"recent_learn"]) {
-                if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
-                    NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
-                    if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
-                        vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
-                        vc.shouldContinueLearn = YES;
+            if ([ShowUserFace isEqualToString:@"1"]) {
+                self.userFaceVerifyResult = ^(BOOL result) {
+                    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+                    vc.ID = _ID;
+                    vc.courselayer = _courselayer;
+                    vc.isLive = _isLive;
+                    vc.courseType = _courseType;
+                    if ([_dataSource objectForKey:@"recent_learn"]) {
+                        if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+                            NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+                            if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+                                vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
+                                vc.shouldContinueLearn = YES;
+                            }
+                        }
+                    }
+                    [self.navigationController pushViewController:vc animated:YES];
+                };
+                if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                    if ([_dataSource objectForKey:@"recent_learn"]) {
+                        if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+                            NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+                            if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+                                [self faceCompareTip:section_id sourceType:@"course_section"];
+                            } else {
+                                [self faceCompareTip:_ID sourceType:@"course"];
+                            }
+                        } else {
+                            [self faceCompareTip:_ID sourceType:@"course"];
+                        }
+                    } else {
+                        [self faceCompareTip:_ID sourceType:@"course"];
+                    }
+                } else {
+                    [self faceVerifyTip];
+                }
+            } else {
+                CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+                vc.ID = _ID;
+                vc.courselayer = _courselayer;
+                vc.isLive = _isLive;
+                vc.courseType = _courseType;
+                if ([_dataSource objectForKey:@"recent_learn"]) {
+                    if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+                        NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+                        if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+                            vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
+                            vc.shouldContinueLearn = YES;
+                        }
                     }
                 }
+                [self.navigationController pushViewController:vc animated:YES];
             }
-            [self.navigationController pushViewController:vc animated:YES];
         } else {
             NSString *priceCount = [NSString stringWithFormat:@"%@",_dataSource[@"price"]];
             NSString *user_price = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"user_price"]];
@@ -1316,7 +1354,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         };
         if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
-            [self faceCompareTip:[NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId]];
+            [self faceCompareTip:[NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId] sourceType:@"course_section"];
         } else {
             [self faceVerifyTip];
         }
@@ -1362,7 +1400,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         };
         if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
-            [self faceCompareTip:[NSString stringWithFormat:@"%@",model.classHourId]];
+            [self faceCompareTip:[NSString stringWithFormat:@"%@",model.classHourId] sourceType:@"course_section"];
         } else {
             [self faceVerifyTip];
         }
@@ -1579,13 +1617,13 @@
 }
 
 // MARK: - 人脸识别提示
-- (void)faceCompareTip:(NSString *)courseHourseId {
+- (void)faceCompareTip:(NSString *)courseHourseId sourceType:(NSString *)type {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
         vc.isVerify = NO;
         vc.verifyed = YES;
-        vc.sourceType = @"course";
+        vc.sourceType = type;
         vc.sourceId = courseHourseId;
         vc.scene_type = @"1";
         vc.verifyResult = ^(BOOL result) {

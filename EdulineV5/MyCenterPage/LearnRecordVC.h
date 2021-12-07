@@ -10,7 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^userFaceLearnRecordVerify)(BOOL result);
+
 @interface LearnRecordVC : BaseViewController
+
+@property (nonatomic, strong) userFaceLearnRecordVerify userFaceLearnRecordVerifyResult;
 
 @end
 

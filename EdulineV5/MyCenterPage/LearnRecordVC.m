@@ -13,6 +13,8 @@
 #import "CourseMainViewController.h"
 #import "CourseDetailPlayVC.h"
 #import "CourseListModel.h"
+#import "FaceVerifyViewController.h"
+#import "V5_UserModel.h"
 
 @interface LearnRecordVC ()<UITableViewDataSource,UITableViewDelegate> {
     NSInteger page;
@@ -144,26 +146,56 @@
         return;
     }
     
-    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
-    vc.ID = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
-    vc.courselayer = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_level"]];
-    vc.currentHourseId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
-    vc.isLive = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"2"];
-    vc.courseType = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]];
-    
-    CourseListModel *model = [[CourseListModel alloc] init];
-    section_data_model *sectionModel = [[section_data_model alloc] init];
-    sectionModel.data_type = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_data_type"]];
-    section_rate_model *sectionRateModel = [[section_rate_model alloc] init];
-    sectionRateModel.current_time = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"current_time"]] unsignedIntValue];
-    model.title = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_title"]];
-    model.section_data = sectionModel;
-    model.section_rate = sectionRateModel;
-    model.course_id = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
-    model.classHourId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
-    vc.currentPlayModel = model;
-    
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([ShowUserFace isEqualToString:@"1"]) {
+        self.userFaceLearnRecordVerifyResult = ^(BOOL result) {
+            CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+            vc.ID = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
+            vc.courselayer = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_level"]];
+            vc.currentHourseId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
+            vc.isLive = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"2"];
+            vc.courseType = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]];
+            
+            CourseListModel *model = [[CourseListModel alloc] init];
+            section_data_model *sectionModel = [[section_data_model alloc] init];
+            sectionModel.data_type = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_data_type"]];
+            section_rate_model *sectionRateModel = [[section_rate_model alloc] init];
+            sectionRateModel.current_time = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"current_time"]] unsignedIntValue];
+            model.title = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_title"]];
+            model.section_data = sectionModel;
+            model.section_rate = sectionRateModel;
+            model.course_id = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
+            model.classHourId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
+            vc.currentPlayModel = model;
+            
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+            [self faceCompareTip:[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]] sourceType:@"course_section"];
+        } else {
+            [self faceVerifyTip];
+        }
+    } else {
+        CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+        vc.ID = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
+        vc.courselayer = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_level"]];
+        vc.currentHourseId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
+        vc.isLive = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"2"];
+        vc.courseType = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]];
+        
+        CourseListModel *model = [[CourseListModel alloc] init];
+        section_data_model *sectionModel = [[section_data_model alloc] init];
+        sectionModel.data_type = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_data_type"]];
+        section_rate_model *sectionRateModel = [[section_rate_model alloc] init];
+        sectionRateModel.current_time = [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"current_time"]] unsignedIntValue];
+        model.title = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_title"]];
+        model.section_data = sectionModel;
+        model.section_rate = sectionRateModel;
+        model.course_id = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
+        model.classHourId = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"section_id"]];
+        vc.currentPlayModel = model;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)getlearnRecordList {
@@ -316,5 +348,61 @@
     
     [_tableView reloadData];
 }
+
+// MARK: - 人脸未认证提示
+- (void)faceVerifyTip {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = YES;
+        vc.verifyed = NO;
+//        vc.verifyResult = ^(BOOL result) {
+//            if (result) {
+//                self.userFaceVerifyResult(result);
+//            }
+//        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
+}
+
+// MARK: - 人脸识别提示
+- (void)faceCompareTip:(NSString *)courseHourseId sourceType:(NSString *)type {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = NO;
+        vc.verifyed = YES;
+        vc.sourceType = type;
+        vc.sourceId = courseHourseId;
+        vc.scene_type = @"1";
+        vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                self.userFaceLearnRecordVerifyResult(result);
+            }
+        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alertController animated:YES completion:nil];
+    });
+}
+
 
 @end
