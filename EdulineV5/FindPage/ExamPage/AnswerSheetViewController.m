@@ -9,9 +9,11 @@
 #import "AnswerSheetViewController.h"
 #import "V5_Constant.h"
 #import "Net_Path.h"
+#import "FaceVerifyViewController.h"
 
 @interface AnswerSheetViewController () {
     NSTimer *paperTimer;// 试卷作答时候的计时器(倒计时或者正序即时)
+    BOOL canSelectExam;// 能否点击其他试题跳转到答题页面
 }
 
 @property (strong, nonatomic) UIButton *resetButton;//清空筛选
@@ -27,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    canSelectExam = YES;
     if (_isPaper) {
         _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:_remainTime]];
         paperTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerStart) userInfo:nil repeats:YES];
@@ -242,6 +244,14 @@
 }
 
 - (void)thirdBtnClick:(UIButton *)sender {
+    if (!canSelectExam) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (_popAlertCount>0) {
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+                return;
+            }
+        }
+    }
     UIView *view = (UIView *)sender.superview;
     
     if (_isPaper) {
@@ -276,6 +286,21 @@
         // 显示时间
         _remainTime +=1;
         _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:_remainTime]];
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if ([_examType isEqualToString:@"3"]) {
+                if (self.popAlertCount>0) {
+                    //(_currentExamPaperDetailModel.face_data.verify_timespan * 60)
+                    // 正序计时 就直接用最小间隔去处理
+                    if (self.remainTime % 10 == 0) {
+                        // 弹框
+                        if (paperTimer) {
+                            [paperTimer setFireDate:[NSDate distantFuture]];
+                        }
+                        [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+                    }
+                }
+            }
+        }
     } else {
         // 倒序计时
         // 显示时间
@@ -284,6 +309,21 @@
             [paperTimer invalidate];
             paperTimer = nil;
             _remainTime = 0;
+        } else {
+            if ([ShowExamUserFace isEqualToString:@"1"]) {
+                if ([_examType isEqualToString:@"3"]) {
+                    if (self.popAlertCount>0) {
+                        // 倒序计时 优先判断最小间隔 * 剩余次数 是否大于 倒计时 如果 大于倒计时  那就用倒计时除以剩余次数 获取区间  每个区间里面最后一个时间点来弹框(不随机 随机个锤子)
+                        if (([_currentExamPaperDetailModel.total_time integerValue] * 60 - self.remainTime) % (_currentExamPaperDetailModel.face_data.verify_timespan * 60) == 0) {
+                            // 弹框
+                            if (paperTimer) {
+                                [paperTimer setFireDate:[NSDate distantFuture]];
+                            }
+                            [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+                        }
+                    }
+                }
+            }
         }
         _remainTime -=1;
         if (_remainTime<=-1) {
@@ -312,6 +352,64 @@
         [paperTimer invalidate];
         paperTimer = nil;
     }
+}
+
+// MARK: - 人脸未认证提示
+- (void)faceVerifyTip {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = YES;
+        vc.verifyed = NO;
+//        vc.verifyResult = ^(BOOL result) {
+//            if (result) {
+//                self.userFaceVerifyResult(result);
+//            }
+//        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+// MARK: - 人脸识别提示
+- (void)faceCompareTip:(NSString *)courseHourseId {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"pauseAndResumeExamTime" object:@{@"timeStatus":@"0"}];
+    canSelectExam = NO;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = NO;
+        vc.verifyed = YES;
+        vc.sourceType = @"exam";
+        vc.sourceId = courseHourseId;
+        vc.scene_type = @"2";
+        vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                if (self->paperTimer) {
+                    [self->paperTimer setFireDate:[NSDate date]];
+                    self->_popAlertCount = self->_popAlertCount - 1;
+                    self->canSelectExam = YES;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"pauseAndResumeExamTime" object:@{@"timeStatus":@"1"}];
+                }
+            }
+        };
+        [self.navigationController pushViewController:vc animated:YES];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

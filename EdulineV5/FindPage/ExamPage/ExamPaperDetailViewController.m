@@ -29,6 +29,8 @@
     BOOL canEnterNextExam;// 点击下一题的时候是 答对 答错 能否直接进入下一题 还是需要显示解析
     NSTimer *paperTimer;// 试卷作答时候的计时器(倒计时或者正序即时)
     NSInteger remainTime;
+    NSInteger popAlertCount;// 公开考试弹框次数
+    BOOL canTouchPaper;// 人脸验证取消后能否操作试卷作答
 }
 
 //  用一个专门数组去存储请求到的题的详情 上一题的时候就直接取出来去加载数据; 填充数据的时候 直接用 ExamDetailModel 去填充答案或者填空框内的内容
@@ -78,6 +80,9 @@
     
     canEnterNextExam = NO;
     
+    // 人脸
+    canTouchPaper = YES;
+    
     _answerManagerArray = [NSMutableArray new];
     
     _examIdListArray = [NSMutableArray new];
@@ -99,6 +104,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextFieldChange:) name:UITextFieldTextDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextViewChange:) name:UITextViewTextDidChangeNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paperTimerStopOrStart:) name:@"pauseAndResumeExamTime" object:nil];
 }
 
 - (void)makeTopView {
@@ -686,6 +693,14 @@
 
 // MARK: - cell代理方法合集(ExamAnswerCellDelegate)
 - (void)gapfillingChooseStatusChanged:(ExamAnswerCell *)answerCell button:(nonnull UIButton *)sender {
+    if (!canTouchPaper) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (popAlertCount>0) {
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+            }
+        }
+        return;
+    }
     ExamDetailModel *current_model = [self checkExamDetailArray:currentExamId];
     ExamDetailModel *current_cell_model = current_model.topics[answerCell.cellIndexPath.row];
     for (int i = 0; i<current_cell_model.options.count; i++) {
@@ -699,7 +714,39 @@
     [_tableView reloadRowAtIndexPath:answerCell.cellIndexPath withRowAnimation:UITableViewRowAnimationNone];
 }
 
+- (void)textFieldBegain:(UITextField *)textField {
+    if (!canTouchPaper) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (popAlertCount>0) {
+                [textField resignFirstResponder];
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+            }
+        }
+        return;
+    }
+}
+
+- (void)textViewBegain:(UITextView *)textView {
+    if (!canTouchPaper) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (popAlertCount>0) {
+                [textView resignFirstResponder];
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+            }
+        }
+        return;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!canTouchPaper) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (popAlertCount>0) {
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+            }
+        }
+        return;
+    }
     if (SWNOTEmptyArr(_examDetailArray)) {
         ExamDetailModel *model = [self checkExamDetailArray:currentExamId];
         if ([model.question_type isEqualToString:@"7"]) {
@@ -807,6 +854,9 @@
                     } else {
                         remainTime = [_currentExamPaperDetailModel.total_time integerValue] * 60;
                         paperTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerStart) userInfo:nil repeats:YES];
+                    }
+                    if ([_examType isEqualToString:@"3"]) {
+                        popAlertCount = _currentExamPaperDetailModel.face_data.need_verify_number;
                     }
                     
                     examCount = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"total_count"]] integerValue];
@@ -1073,6 +1123,16 @@
 }
 
 - (void)bottomButtonClick:(UIButton *)sender {
+    if (sender == _nextExamBtn || sender == _previousExamBtn || sender == _examSheetBtn) {
+        if (!canTouchPaper) {
+            if ([ShowExamUserFace isEqualToString:@"1"]) {
+                if (popAlertCount>0) {
+                    [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+                }
+            }
+            return;
+        }
+    }
     if (sender == _nextExamBtn) {
         [self resetVoicePlayer];
         _previousExamBtn.enabled = NO;
@@ -1282,6 +1342,7 @@
         vc.examArray = [NSMutableArray arrayWithArray:_examIdListArray];
         vc.currentIndexpath = currentExamIndexPath;
         vc.courseId = _courseId;
+        vc.popAlertCount = popAlertCount;
         vc.chooseOtherExam = ^(NSString * _Nonnull examId) {
             _previousExamBtn.enabled = NO;
             _nextExamBtn.enabled = NO;
@@ -1596,6 +1657,14 @@
 
 // MARK: - 输入框通知(textfield)
 - (void)userTextFieldChange:(NSNotification *)notice {
+    if (!canTouchPaper) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (popAlertCount>0) {
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+            }
+        }
+        return;
+    }
     UITextField *textF = (UITextField *)notice.object;
     ExamAnswerCell *cell = (ExamAnswerCell *)textF.superview.superview;
     if ([cell.examDetailModel.question_type isEqualToString:@"6"]) {
@@ -1626,6 +1695,14 @@
 
 // MARK: - 输入框通知(textView)
 - (void)userTextViewChange:(NSNotification *)notice {
+    if (!canTouchPaper) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (popAlertCount>0) {
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+            }
+        }
+        return;
+    }
     UITextView *textF = (UITextView *)notice.object;
     ExamAnswerCell *cell = (ExamAnswerCell *)textF.superview.superview;
     if ([cell.examDetailModel.question_type isEqualToString:@"6"]) {
@@ -1894,6 +1971,21 @@
         // 显示时间
         _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:remainTime]];
         remainTime +=1;
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if ([_examType isEqualToString:@"3"]) {
+                if (popAlertCount>0) {
+                    //_currentExamPaperDetailModel.face_data.verify_timespan * 60
+                    // 正序计时 就直接用最小间隔去处理
+                    if (remainTime % 10 == 0) {
+                        // 弹框
+                        if (paperTimer) {
+                            [paperTimer setFireDate:[NSDate distantFuture]];
+                        }
+                        [self faceCompareTip:_examIds];
+                    }
+                }
+            }
+        }
     } else {
         // 倒序计时
         // 显示时间
@@ -1906,12 +1998,35 @@
             paperTimer = nil;
 //            remainTime = [_currentExamPaperDetailModel.total_time integerValue] * 60;
             [self putExamAnswer];
+        } else {
+            if ([ShowExamUserFace isEqualToString:@"1"]) {
+                if ([_examType isEqualToString:@"3"]) {
+                    if (popAlertCount>0) {
+                        // 倒序计时 优先判断最小间隔 * 剩余次数 是否大于 倒计时 如果 大于倒计时  那就用倒计时除以剩余次数 获取区间  每个区间里面最后一个时间点来弹框(不随机 随机个锤子)
+                        if (([_currentExamPaperDetailModel.total_time integerValue] * 60 - remainTime) % (_currentExamPaperDetailModel.face_data.verify_timespan * 60) == 0) {
+                            // 弹框
+                            if (paperTimer) {
+                                [paperTimer setFireDate:[NSDate distantFuture]];
+                            }
+                            [self faceCompareTip:_examIds];
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 // MARK: - section音频播放器
 - (void)voiceButtonClick:(UIButton *)sender {
+    if (!canTouchPaper) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (popAlertCount>0) {
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+            }
+        }
+        return;
+    }
     if (SWNOTEmptyStr(currentExamId)) {
         ExamDetailModel *c_model = [self checkExamDetailArray:currentExamId];
         if (c_model) {
@@ -1965,6 +2080,14 @@
 
 // MARK: - header音视频播放
 - (void)voiceHeaderButtonClick:(UIButton *)sender {
+    if (!canTouchPaper) {
+        if ([ShowExamUserFace isEqualToString:@"1"]) {
+            if (popAlertCount>0) {
+                [self faceCompareTip:_currentExamPaperDetailModel.paper_id];
+            }
+        }
+        return;
+    }
     if (SWNOTEmptyStr(currentExamId)) {
         ExamDetailModel *c_model = [self checkExamDetailArray:currentExamId];
         if (c_model) {
@@ -2079,17 +2202,25 @@
 
 // MARK: - 人脸识别提示
 - (void)faceCompareTip:(NSString *)courseHourseId {
+    if ([[[self.navigationController childViewControllers] lastObject] isKindOfClass:[AnswerSheetViewController class]]) {
+        return;
+    }
+    canTouchPaper = NO;
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
         vc.isVerify = NO;
         vc.verifyed = YES;
-        vc.sourceType = @"course";
+        vc.sourceType = @"exam";
         vc.sourceId = courseHourseId;
-        vc.scene_type = @"1";
+        vc.scene_type = @"2";
         vc.verifyResult = ^(BOOL result) {
             if (result) {
-                // 继续答题...
+                if (self->paperTimer) {
+                    [self->paperTimer setFireDate:[NSDate date]];
+                    self->popAlertCount = self->popAlertCount - 1;
+                    self->canTouchPaper = YES;
+                }
             }
         };
         [self.navigationController pushViewController:vc animated:YES];
@@ -2102,6 +2233,23 @@
     [alertController addAction:cancelAction];
     alertController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)paperTimerStopOrStart:(NSNotification *)notice {
+    NSDictionary *pass = notice.userInfo;
+    if ([[pass objectForKey:@"timeStatus"] integerValue]) {
+        // 开启
+        [self->paperTimer setFireDate:[NSDate date]];
+        self->popAlertCount = self->popAlertCount - 1;
+        self->canTouchPaper = YES;
+    } else {
+        // 暂停
+        canTouchPaper = NO;
+        // 弹框
+        if (paperTimer) {
+            [paperTimer setFireDate:[NSDate distantFuture]];
+        }
+    }
 }
 
 @end

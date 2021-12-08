@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CourseListModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -179,6 +180,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *total_score;
 @property (strong, nonatomic) NSString *unique_code;
 @property (strong, nonatomic) NSArray *parts;
+@property (strong, nonatomic) section_face_data *face_data;
 
 @end
 

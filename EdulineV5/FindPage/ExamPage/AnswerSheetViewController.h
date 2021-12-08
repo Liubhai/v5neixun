@@ -36,6 +36,8 @@ typedef void(^chooseOtherExam)(NSString *examId);
 
 @property (strong, nonatomic) NSString *courseId;
 
+@property (assign, nonatomic) NSInteger popAlertCount;// 公开考试弹框次数
+
 @end
 
 NS_ASSUME_NONNULL_END

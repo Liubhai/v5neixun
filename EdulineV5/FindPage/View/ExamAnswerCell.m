@@ -280,6 +280,20 @@
     return YES;
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (_delegate && [_delegate respondsToSelector:@selector(textFieldBegain:)]) {
+        [_delegate textFieldBegain:textField];
+    }
+    return YES;
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    if (_delegate && [_delegate respondsToSelector:@selector(textViewBegain:)]) {
+        [_delegate textViewBegain:textView];
+    }
+    return YES;
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

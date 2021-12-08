@@ -21,6 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** 完形填空选择 */
 - (void)gapfillingChooseStatusChanged:(ExamAnswerCell *)answerCell button:(UIButton *)sender;
 
+/** 人脸识别时候检测即将输入 */
+- (void)textFieldBegain:(UITextField *)textField;
+- (void)textViewBegain:(UITextView *)textView;
+
 @end
 
 @interface ExamAnswerCell : UITableViewCell <UITextFieldDelegate, UITextViewDelegate>
