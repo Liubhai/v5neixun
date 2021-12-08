@@ -341,14 +341,20 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 self.verifyResult(YES);
             }
+        } else {
+            _verifyingButton.hidden = YES;
+            _verifyButton.hidden = NO;
+            _rephotographButton.hidden = NO;
+            _unboundButton.hidden = YES;
+            _photoButton.hidden = YES;
         }
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         [self showHudInView:self.view showHint:@"上传头像超时,请重试"];
         _verifyingButton.hidden = YES;
-        _verifyButton.hidden = YES;
-        _rephotographButton.hidden = YES;
+        _verifyButton.hidden = NO;
+        _rephotographButton.hidden = NO;
         _unboundButton.hidden = YES;
-        _photoButton.hidden = NO;
+        _photoButton.hidden = YES;
     }];
 }
 
