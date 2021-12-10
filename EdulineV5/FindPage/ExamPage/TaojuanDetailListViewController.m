@@ -126,35 +126,14 @@
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
-        if ([ShowExamUserFace isEqualToString:@"1"]) {
-            self.TaojuanDetailListUserFaceVerifyResult = ^(BOOL result) {
-                if (result) {
-                    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-                    vc.examType = @"4";
-                    NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
-                    if (SWNOTEmptyArr(pass)) {
-                        vc.examIds = [NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]];
-                    }
-                    vc.rollup_id = _rollup_id;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
-            };
-            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
-                NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
-                [self faceCompareTip:[NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]]];
-            } else {
-                [self faceVerifyTip];
-            }
-        } else {
-            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-            vc.examType = @"4";
-            NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
-            if (SWNOTEmptyArr(pass)) {
-                vc.examIds = [NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]];
-            }
-            vc.rollup_id = _rollup_id;
-            [self.navigationController pushViewController:vc animated:YES];
+        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+        vc.examType = @"4";
+        NSArray *pass = [NSArray arrayWithArray:cell.specialInfo[@"rollup_paper"]];
+        if (SWNOTEmptyArr(pass)) {
+            vc.examIds = [NSString stringWithFormat:@"%@",[pass[0] objectForKey:@"paper_id"]];
         }
+        vc.rollup_id = _rollup_id;
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 购买
         OrderViewController *vc = [[OrderViewController alloc] init];
@@ -168,28 +147,11 @@
     if (SWNOTEmptyDictionary(_detailInfo)) {
         NSString *priceCount = [NSString stringWithFormat:@"%@",_detailInfo[@"user_price"]];
         if ([_detailInfo[@"has_bought"] integerValue] || [priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
-            if ([ShowExamUserFace isEqualToString:@"1"]) {
-                self.TaojuanDetailListUserFaceVerifyResult = ^(BOOL result) {
-                    if (result) {
-                        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-                        vc.examType = @"4";
-                        vc.examIds = [NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]];
-                        vc.rollup_id = _rollup_id;
-                        [self.navigationController pushViewController:vc animated:YES];
-                    }
-                };
-                if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
-                    [self faceCompareTip:[NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]]];
-                } else {
-                    [self faceVerifyTip];
-                }
-            } else {
-                ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-                vc.examType = @"4";
-                vc.examIds = [NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]];
-                vc.rollup_id = _rollup_id;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
+            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+            vc.examType = @"4";
+            vc.examIds = [NSString stringWithFormat:@"%@",[cell.taojuanDetailInfo objectForKey:@"paper_id"]];
+            vc.rollup_id = _rollup_id;
+            [self.navigationController pushViewController:vc animated:YES];
         } else {
             // 提示请先购买
             [self showHudInView:self.view showHint:@"请先购买"];

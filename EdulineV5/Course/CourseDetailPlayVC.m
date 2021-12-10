@@ -114,6 +114,7 @@
     NSInteger currentFaceTime;// 当前音视频实际观看的时间
     NSInteger previousFaceTime;// 上一次弹框的时间点
     NSInteger randomNum;// 随机数
+    BOOL playerCanPlay;// 音视频能否播放
 }
 
 @property (strong, nonatomic) UIButton *zanButton;
@@ -282,6 +283,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    playerCanPlay = YES;
     wordMax = 400;
     randomNum = 10;
     previousFaceTime = 0;
@@ -433,6 +435,7 @@
         _playerView.isScreenLocked = false;
         _playerView.fixedPortrait = false;
         _playerView.hidden = YES;
+        _playerView.faceVerifyCanPlay = YES;
     }
     return _playerView;
 }
@@ -2511,6 +2514,24 @@
             __weak CourseDetailPlayVC *wekself = self;
             [wekself stopRecordTimer];
             [wekself stopTuwenTimer];
+        } else if (event == AVPEventSeekEnd) {
+            if (!playerCanPlay) {
+                if (_playerView) {
+                    [_playerView pause];
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 功能：拖动进度条结束事件
+ * 参数：seekDoneTime ： seekDone时播放时间。
+ */
+- (void)aliyunVodPlayerView:(AliyunVodPlayerView*)playerView onSeekDone:(NSTimeInterval)seekDoneTime {
+    if (!playerCanPlay) {
+        if (_playerView) {
+            [_playerView pause];
         }
     }
 }
@@ -2541,8 +2562,21 @@
     if (_isLive) {
         
     } else {
-        __weak CourseDetailPlayVC *wekself = self;
-        [wekself starRecordTimer];
+        if (playerCanPlay) {
+            __weak CourseDetailPlayVC *wekself = self;
+            [wekself starRecordTimer];
+        } else {
+            [self faceCompareTip:currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2"];
+        }
+
+    }
+}
+
+- (void)justUpdatePlayerStatus:(AVPStatus)status {
+    if (!playerCanPlay) {
+        if (status == AVPStatusStarted) {
+            [self faceCompareTip:currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2"];
+        }
     }
 }
 
@@ -4545,6 +4579,8 @@
     if (_playerView) {
         [_playerView pause];
     }
+    playerCanPlay = NO;
+    _playerView.faceVerifyCanPlay = NO;
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
@@ -4555,6 +4591,10 @@
         vc.scene_type = sceneType;
         vc.verifyResult = ^(BOOL result) {
             if (result) {
+                self->playerCanPlay = YES;
+                if (_playerView) {
+                    _playerView.faceVerifyCanPlay = YES;
+                }
                 self.userFaceCourseDetailVerifyResult(result);
             }
         };

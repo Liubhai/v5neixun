@@ -79,6 +79,7 @@
     _finalFaceImage.layer.masksToBounds = YES;
     _finalFaceImage.layer.cornerRadius = _finalFaceImage.width / 2.0;
     _finalFaceImage.center = _cameraImage.center;
+    _finalFaceImage.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:_finalFaceImage];
     
     NSArray *buttonTitle = @[@"正对手机",@"光线充足",@"脸无遮挡"];

@@ -109,30 +109,12 @@
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
-        if ([ShowExamUserFace isEqualToString:@"1"]) {
-            self.taojuanUserFaceVerifyResult = ^(BOOL result) {
-                if (result) {
-                    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-                    vc.examType = _module_id;
-                    vc.examModuleId = _examModuleId;
-                    vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"first_paper_id"]];
-                    vc.rollup_id = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
-            };
-            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
-                [self faceCompareTip:[NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"first_paper_id"]]];
-            } else {
-                [self faceVerifyTip];
-            }
-        } else {
-            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-            vc.examType = _module_id;
-            vc.examModuleId = _examModuleId;
-            vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"first_paper_id"]];
-            vc.rollup_id = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
-            [self.navigationController pushViewController:vc animated:YES];
-        }
+        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+        vc.examType = _module_id;
+        vc.examModuleId = _examModuleId;
+        vc.examIds = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"first_paper_id"]];
+        vc.rollup_id = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
         // 购买
         OrderViewController *vc = [[OrderViewController alloc] init];

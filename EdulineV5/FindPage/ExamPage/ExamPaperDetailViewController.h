@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *examType;
 @property (strong, nonatomic) NSString *examIds;
+@property (assign, nonatomic) BOOL isExamButNoVerify;//是公开考试 但是不考虑人脸验证
 
 @property (strong, nonatomic) NSString *courseId;
 

@@ -70,28 +70,30 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSString *can_exam = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"can_exam"]];
     if ([can_exam integerValue] && course_can_exam) {
-        if ([ShowExamUserFace isEqualToString:@"1"]) {
-            self.courseTestListUserFaceVerifyResult = ^(BOOL result) {
-                if (result) {
-                    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-                    vc.examType = @"3";
-                    vc.examIds = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]];
-                    vc.courseId = _courseId;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
-            };
-            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
-                [self faceCompareTip:[NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]]];
-            } else {
-                [self faceVerifyTip];
-            }
-        } else {
-            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
-            vc.examType = @"3";
-            vc.examIds = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]];
-            vc.courseId = _courseId;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
+        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+        vc.examType = @"3";
+        vc.examIds = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]];
+        vc.courseId = _courseId;
+        vc.isExamButNoVerify = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+//        if ([ShowExamUserFace isEqualToString:@"1"]) {
+//            self.courseTestListUserFaceVerifyResult = ^(BOOL result) {
+//                if (result) {
+//                    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+//                    vc.examType = @"3";
+//                    vc.examIds = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]];
+//                    vc.courseId = _courseId;
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                }
+//            };
+//            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+//                [self faceCompareTip:[NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"paper_id"]]];
+//            } else {
+//                [self faceVerifyTip];
+//            }
+//        } else {
+//
+//        }
     } else {
         if (!course_can_exam) {
             [self showHudInView:self.vc.view showHint:@"不符合参加考试的条件"];

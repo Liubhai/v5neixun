@@ -1971,8 +1971,9 @@
         // 显示时间
         _titleLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool timeChangeTimerWithSeconds:remainTime]];
         remainTime +=1;
+        
         if ([ShowExamUserFace isEqualToString:@"1"]) {
-            if ([_examType isEqualToString:@"3"]) {
+            if ([_examType isEqualToString:@"3"] && !_isExamButNoVerify) {
                 if (popAlertCount>0) {
                     //_currentExamPaperDetailModel.face_data.verify_timespan * 60
                     // 正序计时 就直接用最小间隔去处理
@@ -2000,7 +2001,7 @@
             [self putExamAnswer];
         } else {
             if ([ShowExamUserFace isEqualToString:@"1"]) {
-                if ([_examType isEqualToString:@"3"]) {
+                if ([_examType isEqualToString:@"3"] && !_isExamButNoVerify) {
                     if (popAlertCount>0) {
                         // 倒序计时 优先判断最小间隔 * 剩余次数 是否大于 倒计时 如果 大于倒计时  那就用倒计时除以剩余次数 获取区间  每个区间里面最后一个时间点来弹框(不随机 随机个锤子)
                         if (([_currentExamPaperDetailModel.total_time integerValue] * 60 - remainTime) % (_currentExamPaperDetailModel.face_data.verify_timespan * 60) == 0) {
