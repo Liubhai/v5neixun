@@ -95,7 +95,7 @@
         return;
     }
     
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    if ([ShowUserFace isEqualToString:@"1"] && [[NSString stringWithFormat:@"%@",self.dataSource[indexPath.row][@"course_type"]] isEqualToString:@"1"]) {
         __weak StudyTypeCourseListViewController *weakself = self;
         weakself.userFaceStudyTypeCourseListVerifyResult = ^(BOOL result) {
             NSDictionary *info = weakself.dataSource[indexPath.row];

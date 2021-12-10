@@ -1155,7 +1155,7 @@
     }
     if (SWNOTEmptyDictionary(_dataSource)) {
         if ([[_dataSource objectForKey:@"is_buy"] boolValue]) {
-            if ([ShowUserFace isEqualToString:@"1"]) {
+            if ([ShowUserFace isEqualToString:@"1"] && [_courseType isEqualToString:@"1"]) {
                 self.userFaceVerifyResult = ^(BOOL result) {
                     CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
                     vc.ID = _ID;
@@ -1342,7 +1342,21 @@
         }
         return;
     }
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    
+    if (cell.listFinalModel.model.audition > 0 && !cell.listFinalModel.model.is_buy) {
+        // 可试看  不验证
+        CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+        vc.ID = _ID;
+        vc.courselayer = _courselayer;
+        vc.currentHourseId = [NSString stringWithFormat:@"%@",cell.listFinalModel.model.classHourId];
+        vc.isLive = _isLive;
+        vc.courseType = _courseType;
+        vc.currentPlayModel = cell.listFinalModel.model;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    
+    if ([ShowUserFace isEqualToString:@"1"] && [cell.listFinalModel.model.course_type isEqualToString:@"1"]) {
         self.userFaceVerifyResult = ^(BOOL result) {
             CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
             vc.ID = _ID;
@@ -1388,7 +1402,19 @@
         return;
     }
     
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    if (model.audition > 0 && !model.is_buy) {
+        CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+        vc.ID = _ID;
+        vc.courselayer = _courselayer;
+        vc.currentHourseId = [NSString stringWithFormat:@"%@",model.classHourId];
+        vc.isLive = _isLive;
+        vc.courseType = _courseType;
+        vc.currentPlayModel = model;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    
+    if ([ShowUserFace isEqualToString:@"1"] && [model.course_type isEqualToString:@"1"]) {
         self.userFaceVerifyResult = ^(BOOL result) {
             CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
             vc.ID = _ID;

@@ -19,6 +19,7 @@
 
 #import "FaceVerifyViewController.h"
 #import "V5_UserModel.h"
+#import "AppDelegate.h"
 
 @interface SpecialProjectExamList ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TeacherCategoryVCDelegate, CourseTypeVCDelegate> {
     NSInteger page;
@@ -123,7 +124,10 @@
 }
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
-    
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
         NSString *exam_number = [NSString stringWithFormat:@"%@",cell.specialInfo[@"exam_rest_num"]];
         if ([exam_number isEqualToString:@"0"]) {

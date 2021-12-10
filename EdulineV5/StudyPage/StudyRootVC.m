@@ -658,7 +658,7 @@
         return;
     }
     
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    if ([ShowUserFace isEqualToString:@"1"] && [[NSString stringWithFormat:@"%@",info[@"course_type"]] isEqualToString:@"1"]) {
         self.userFaceStudyRootVerifyResult = ^(BOOL result) {
             CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
             vc.ID = [NSString stringWithFormat:@"%@",info[@"course_id"]];

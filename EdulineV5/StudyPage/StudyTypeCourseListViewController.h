@@ -16,7 +16,7 @@ typedef void(^userFaceStudyTypeCourseListVerify)(BOOL result);
 
 @interface StudyTypeCourseListViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 
-@property (nonatomic, weak) userFaceStudyTypeCourseListVerify userFaceStudyTypeCourseListVerifyResult;
+@property (nonatomic, strong) userFaceStudyTypeCourseListVerify userFaceStudyTypeCourseListVerifyResult;
 @property (weak, nonatomic) StudyRootVC *vc;
 @property (strong, nonatomic) NSMutableArray *dataSource;
 @property (assign, nonatomic) BOOL cellTabelCanScroll;

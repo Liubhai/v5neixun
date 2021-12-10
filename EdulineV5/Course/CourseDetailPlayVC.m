@@ -1368,7 +1368,8 @@
     }
     
     // 先在这里处理入口验证
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    // 有试看时长并且没有购买课时 = 试看
+    if ([ShowUserFace isEqualToString:@"1"] && !(currentCourseFinalModel.model.audition>0 && !currentCourseFinalModel.model.is_buy)) {
         wekself.userFaceCourseDetailVerifyResult = ^(BOOL result) {
             if (result) {
                 for (UIViewController *vc in self.childViewControllers) {
@@ -1879,7 +1880,7 @@
         return;
     }
     
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    if ([ShowUserFace isEqualToString:@"1"] && !(currentCourseFinalModel.model.audition>0 && !currentCourseFinalModel.model.is_buy)) {
         wekself.userFaceCourseDetailVerifyResult = ^(BOOL result) {
             if (result) {
                 for (UIViewController *vc in self.childViewControllers) {
@@ -2679,7 +2680,7 @@
     
     //
     currentFaceTime = currentFaceTime + 10;
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    if ([ShowUserFace isEqualToString:@"1"] && !(currentCourseFinalModel.model.audition>0 && !currentCourseFinalModel.model.is_buy)) {
         if (faceVerifyCount>0) {
             if (currentFaceTime>=(previousFaceTime + currentCourseFinalModel.model.face_data.verify_timespan + (arc4random() % randomNum))) {
                 previousFaceTime = currentFaceTime;
@@ -3608,7 +3609,7 @@
 //        return;
 //    }
     
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    if ([ShowUserFace isEqualToString:@"1"] && !(currentCourseFinalModel.model.audition>0 && !currentCourseFinalModel.model.is_buy)) {
         self.userFaceCourseDetailVerifyResult = ^(BOOL result) {
             if (result) {
                 for (UIViewController *vc in self.childViewControllers) {
