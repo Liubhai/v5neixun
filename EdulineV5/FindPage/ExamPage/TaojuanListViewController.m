@@ -15,6 +15,7 @@
 #import "OrderViewController.h"
 #import "FaceVerifyViewController.h"
 #import "V5_UserModel.h"
+#import "AppDelegate.h"
 
 @interface TaojuanListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate> {
     NSInteger page;
@@ -108,6 +109,12 @@
 }
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
+    
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = _module_id;

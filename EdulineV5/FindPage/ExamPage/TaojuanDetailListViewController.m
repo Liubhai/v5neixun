@@ -15,6 +15,7 @@
 #import "OrderViewController.h"
 #import "FaceVerifyViewController.h"
 #import "V5_UserModel.h"
+#import "AppDelegate.h"
 
 @interface TaojuanDetailListViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource, SpecialExamListCellDelegate, TaoJuanDetailListCellDelegate> {
     NSInteger page;
@@ -125,6 +126,10 @@
 }
 
 - (void)getOrExamButtonWith:(SpecialExamListCell *)cell {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if ([cell.getOrExamBtn.titleLabel.text isEqualToString:@"开始答题"]) {
         ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
         vc.examType = @"4";
@@ -144,6 +149,10 @@
 }
 
 - (void)doVolumeOrBuyExam:(TaoJuanDetailListCell *)cell {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
     if (SWNOTEmptyDictionary(_detailInfo)) {
         NSString *priceCount = [NSString stringWithFormat:@"%@",_detailInfo[@"user_price"]];
         if ([_detailInfo[@"has_bought"] integerValue] || [priceCount isEqualToString:@"0.00"] || [priceCount isEqualToString:@"0.0"] || [priceCount isEqualToString:@"0"]) {
