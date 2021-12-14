@@ -12,7 +12,9 @@
 #import "VideoCaptureDevice.h"
 #import "V5_UserModel.h"
 
-@interface FaceVerifyViewController ()<CaptureDataOutputProtocol>
+@interface FaceVerifyViewController ()<CaptureDataOutputProtocol> {
+    BOOL verifyResult;
+}
 
 @property (nonatomic, readwrite, retain) VideoCaptureDevice *videoCapture;
 
@@ -339,8 +341,9 @@
                 _rephotographButton.hidden = YES;
                 _unboundButton.hidden = YES;
                 _photoButton.hidden = NO;
+                
+                verifyResult = YES;
                 [self.navigationController popViewControllerAnimated:YES];
-                self.verifyResult(YES);
             }
         } else {
             _verifyingButton.hidden = YES;
@@ -379,6 +382,15 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)didMoveToParentViewController:(UIViewController*)parent{
+    [super didMoveToParentViewController:parent];
+    if (!parent) {
+        __weak FaceVerifyViewController *wekself = self;
+        wekself.verifyResult(verifyResult);
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
 }
 
 /*

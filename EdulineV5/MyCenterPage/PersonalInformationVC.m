@@ -682,6 +682,8 @@
     FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
     vc.isVerify = YES;
     vc.verifyed = [[V5_UserModel userFaceVerify] isEqualToString:@"1"] ? YES : NO;
+    vc.verifyResult = ^(BOOL result) {
+    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 

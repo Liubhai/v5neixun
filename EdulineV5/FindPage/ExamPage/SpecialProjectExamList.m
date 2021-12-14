@@ -316,11 +316,11 @@
         FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
         vc.isVerify = YES;
         vc.verifyed = NO;
-//        vc.verifyResult = ^(BOOL result) {
+        vc.verifyResult = ^(BOOL result) {
 //            if (result) {
 //                self.specialuserFaceVerifyResult(result);
 //            }
-//        };
+        };
         [self.navigationController pushViewController:vc animated:YES];
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
