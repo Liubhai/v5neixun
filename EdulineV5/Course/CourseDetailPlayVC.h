@@ -12,10 +12,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^userFaceCourseDetailVerify)(BOOL result);
+typedef void(^userFaceCourseNewDetailVerify)(BOOL result);
+typedef void(^userFaceCourseRecordDetailVerify)(BOOL result);
+typedef void(^userFaceCourseAutoDetailVerify)(BOOL result);
 
 @interface CourseDetailPlayVC : BaseViewController
 
 @property (nonatomic, strong) userFaceCourseDetailVerify userFaceCourseDetailVerifyResult;
+@property (nonatomic, strong) userFaceCourseNewDetailVerify userFaceCourseNewDetailVerifyResult;
+@property (nonatomic, strong) userFaceCourseRecordDetailVerify userFaceCourseRecordDetailVerifyResult;
+@property (nonatomic, strong) userFaceCourseAutoDetailVerify userFaceCourseAutoDetailVerifyResult;
 
 @property (assign, nonatomic) BOOL isLive;//是不是直播  区分直播详情页和其他类型详情页
 
