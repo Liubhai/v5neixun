@@ -2835,7 +2835,7 @@
                         }
                     }
                 };
-                [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:playerCanPlay faceType:@"3"];
+                [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:NO faceType:@"3"];
             }
         }
     }
@@ -4738,12 +4738,17 @@
                     weakSelf.userFaceCourseAutoDetailVerifyResult(result);
                 }
             } else {
-                if (![self->_currentCourseFinalModel.model.classHourId isEqualToString:courseHourseId]) {
-                    // 相同就不能看; 不相同就能看
-                    self->playerCanPlay = lastCanPlay;
-                    if (weakSelf.playerView) {
-                        weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
-                    }
+//                if (![self->_currentCourseFinalModel.model.classHourId isEqualToString:courseHourseId]) {
+//                    // 相同就不能看; 不相同就能看
+//                    self->playerCanPlay = lastCanPlay;
+//                    if (weakSelf.playerView) {
+//                        weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
+//                    }
+//                }
+                // 相同就不能看; 不相同就能看
+                self->playerCanPlay = lastCanPlay;
+                if (weakSelf.playerView) {
+                    weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
                 }
             }
         };
@@ -4752,12 +4757,17 @@
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        if (![self->_currentCourseFinalModel.model.classHourId isEqualToString:courseHourseId]) {
-            // 相同就不能看; 不相同就能看
-            self->playerCanPlay = lastCanPlay;
-            if (weakSelf.playerView) {
-                weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
-            }
+//        if (![self->_currentCourseFinalModel.model.classHourId isEqualToString:courseHourseId]) {
+//            // 相同就不能看; 不相同就能看
+//            self->playerCanPlay = lastCanPlay;
+//            if (weakSelf.playerView) {
+//                weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
+//            }
+//        }
+        // 相同就不能看; 不相同就能看
+        self->playerCanPlay = lastCanPlay;
+        if (weakSelf.playerView) {
+            weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
         }
         }];
     [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
