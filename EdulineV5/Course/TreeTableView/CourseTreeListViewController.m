@@ -307,10 +307,15 @@
 //                    model.childItems = newArray;
                     [self justReloadListStatus];
                     canSelect = YES;
+                } else {
+                    canSelect = YES;
                 }
+            } else {
+                canSelect = YES;
             }
         } enError:^(NSError * _Nonnull error) {
             NSLog(@"课程目录请求失败 = %@",error);
+            canSelect = YES;
         }];
     }
 }
