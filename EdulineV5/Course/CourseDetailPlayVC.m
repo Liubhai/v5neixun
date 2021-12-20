@@ -113,6 +113,9 @@
     NSInteger previousFaceTime;// 上一次弹框的时间点
     NSInteger randomNum;// 随机数
     BOOL playerCanPlay;// 音视频能否播放
+    
+    
+    BOOL isPlayRecord;// 是否该用课程详情的最近在学来播放音视频课时(区别处理从课程详情页点击课时进入播放页)
 }
 
 @property (strong, nonatomic) UIButton *zanButton;
@@ -1314,7 +1317,7 @@
 //    }
     
     __weak CourseDetailPlayVC *wekself = self;
-    if ([_courseType isEqualToString:@"2"]) {
+    if ([model.model.course_type isEqualToString:@"2"]) {
         
         // 下面这段在没有垃圾人脸识别之前是放在类型判断语句之前的
         if (_courseListVC) {
@@ -1842,6 +1845,7 @@
 //    }
     
     //[_courseType isEqualToString:@"2"]
+    
     __weak CourseDetailPlayVC *wekself = self;
     if ([model.course_type isEqualToString:@"2"]) {
         
@@ -2370,6 +2374,98 @@
 
 // MARK: - 有学习记录时候第一次播放逻辑
 - (void)recordLearnContinuePlay:(CourseListModel *)model {
+    
+    __weak CourseDetailPlayVC *wekself = self;
+    if ([model.course_type isEqualToString:@"2"]) {
+        
+        // 为了垃圾人脸
+        if (_courseTreeListVC) {
+            _courseTreeListVC.next_position = nil;
+        }
+        if ([model.course_type isEqualToString:@"2"]) {
+            _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_LIUHAI_HEIGHT);
+            sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - _headerView.height;
+            if (_courseDownView) {
+                _courseDownView.hidden = YES;
+            }
+        } else {
+            _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - 50 - MACRO_UI_LIUHAI_HEIGHT);
+            sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - 50 - _headerView.height;
+            if (_courseDownView) {
+                _courseDownView.hidden = NO;
+            }
+            if ([ShowCourseNote isEqualToString:@"0"]) {
+                _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_LIUHAI_HEIGHT);
+                sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - _headerView.height;
+                if (_courseDownView) {
+                    _courseDownView.hidden = YES;
+                }
+            }
+        }
+        
+        _previousHourseId = _currentHourseId;
+        _currentHourseId = model.classHourId;
+        wekself.freeLook = NO;
+        
+        wekself.freeLookView.hidden = NO;
+        
+        CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
+        curent.model = model;
+        _currentCourseFinalModel = curent;
+        
+        [wekself stopRecordTimer];
+        [wekself stopTuwenTimer];
+        [wekself destroyPlayVideo];
+        [AppDelegate delegate]._allowRotation = NO;
+        _titleImage.hidden = NO;
+        if (model.audition <= 0 && !model.is_buy) {
+            if ([model.price floatValue] > 0) {
+                OrderViewController *vc = [[OrderViewController alloc] init];
+                vc.orderTypeString = [model.course_type isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
+                vc.orderId = model.classHourId;
+                [self.navigationController pushViewController:vc animated:YES];
+                [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
+            } else {
+                [self showHudInView:self.view showHint:@"需解锁该课程"];
+            }
+            return;
+        }
+        //        学习状态【957：未开始；999：直播中；992：已结束；】
+        if (model.live_rate.status == 999) {
+            if ([model.section_live.live_type isEqualToString:@"2"]) {
+                [self integrationSDK];
+            } else if ([model.section_live.live_type isEqualToString:@"3"]) {
+                [self parseCodeStr:@""];
+            } else {
+                [self getShengwangLiveInfo:model.classHourId courselistModel:model];
+            }
+        } else if (model.live_rate.status == 957) {
+            [self showHudInView:self.view showHint:model.live_rate.status_text];
+        } else if (model.live_rate.status == 992) {
+            if ([model.section_live.live_type isEqualToString:@"2"]) {
+                [self integrationPlayBackSDK];
+            } else if ([model.section_live.live_type isEqualToString:@"3"]) {
+                [self ccClassRoomPlayBack];
+            } else {
+                if (SWNOTEmptyArr(model.live_rate.callback_url)) {
+                    // 用播放器播放回放视频
+                    [wekself.headerView addSubview:wekself.playerView];
+                    _wkWebView.hidden = YES;
+                    _playerView.hidden = NO;
+                    _titleImage.hidden = NO;
+                    [wekself.headerView bringSubviewToFront:wekself.titleImage];
+                    wekself.playerView.controlView.topView.backButton.hidden = YES;
+                    [wekself.playerView setTitle:model.title];
+                    wekself.playerView.trackInfoArray = [NSArray arrayWithArray:model.live_rate.callback_url];
+                    [wekself.playerView playViewPrepareWithURL:EdulineUrlString(model.live_rate.callback_url[0][@"play_url"])];
+                    wekself.playerView.userInteractionEnabled = YES;
+                    [AppDelegate delegate]._allowRotation = YES;
+                }
+            }
+        }
+        return;
+    }
+    
     if (_courseListVC) {
         _courseListVC.next_position = nil;
     }
@@ -2420,7 +2516,7 @@
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CourseCommentListVCRloadData" object:nil userInfo:@{@"type":@"note"}];
-    __weak CourseDetailPlayVC *wekself = self;
+    
     [wekself stopRecordTimer];
     [wekself stopTuwenTimer];
     [wekself destroyPlayVideo];
@@ -2496,6 +2592,7 @@
                             
                             CourseListModel *newClassCurrentModel = model;
                             newClassCurrentModel.isPlaying = YES;
+                            newClassCurrentModel.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
                             
                             CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
                             curent.model = newClassCurrentModel;

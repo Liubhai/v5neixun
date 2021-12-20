@@ -146,7 +146,7 @@
         return;
     }
     
-    if ([ShowUserFace isEqualToString:@"1"]) {
+    if ([ShowUserFace isEqualToString:@"1"] && ([[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"1"] || [[NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_type"]] isEqualToString:@"4"])) {
         self.userFaceLearnRecordVerifyResult = ^(BOOL result) {
             CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
             vc.ID = [NSString stringWithFormat:@"%@",_allDateArray[indexPath.section][indexPath.row][@"course_id"]];
