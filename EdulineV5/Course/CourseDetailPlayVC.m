@@ -2443,6 +2443,7 @@
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"][@"position"]];
                 NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"][@"position"]];
+                wekself.currentCourseFinalModel.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
                 if (_courseListVC) {
                     _courseListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
                     _courseListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
