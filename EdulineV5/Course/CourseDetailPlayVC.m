@@ -2418,19 +2418,7 @@
         [wekself destroyPlayVideo];
         [AppDelegate delegate]._allowRotation = NO;
         _titleImage.hidden = NO;
-        if (model.audition <= 0 && !model.is_buy) {
-            if ([model.price floatValue] > 0) {
-                OrderViewController *vc = [[OrderViewController alloc] init];
-                vc.orderTypeString = [model.course_type isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
-                vc.orderId = model.classHourId;
-                [self.navigationController pushViewController:vc animated:YES];
-                [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
-            } else {
-                [self showHudInView:self.view showHint:@"需解锁该课程"];
-            }
-            return;
-        }
-        //        学习状态【957：未开始；999：直播中；992：已结束；】
+        
         if (model.live_rate.status == 999) {
             if ([model.section_live.live_type isEqualToString:@"2"]) {
                 [self integrationSDK];
@@ -2464,6 +2452,22 @@
             }
         }
         return;
+        /**
+        if (model.audition <= 0 && !model.is_buy) {
+            if ([model.price floatValue] > 0) {
+                OrderViewController *vc = [[OrderViewController alloc] init];
+                vc.orderTypeString = [model.course_type isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
+                vc.orderId = model.classHourId;
+                [self.navigationController pushViewController:vc animated:YES];
+                [self showHudInView:self.view showHint:@"需解锁该课时或者该课程"];
+            } else {
+                [self showHudInView:self.view showHint:@"需解锁该课程"];
+            }
+            return;
+        }
+        */
+        //        学习状态【957：未开始；999：直播中；992：已结束；】
+        
     }
     
     if (_courseListVC) {
