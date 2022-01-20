@@ -70,6 +70,7 @@ static RootV5VC *sharedBaseTabBar;
     _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, MainScreenHeight - 49 - MACRO_UI_SAFEAREA, self.view.frame.size.width, 49 + MACRO_UI_SAFEAREA)];
     _imageView.tag = 100;
     [self.view addSubview:_imageView];
+    [self.view addSubview:_imageView];
     
     //添加线
     UILabel *XLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.5)];
