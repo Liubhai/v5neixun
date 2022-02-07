@@ -277,7 +277,7 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"%f",scrollView.contentOffset.y);
+//    NSLog(@"%f",scrollView.contentOffset.y);
 //    if (scrollView.contentOffset.y > - MACRO_UI_STATUSBAR_HEIGHT && scrollView.contentOffset.y < MACRO_UI_STATUSBAR_HEIGHT) {
 //        [UIView animateWithDuration:0.25 animations:^{
 //            _titleImage.alpha = (0.017) * (scrollView.contentOffset.y + MACRO_UI_STATUSBAR_HEIGHT);

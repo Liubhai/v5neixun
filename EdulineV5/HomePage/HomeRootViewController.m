@@ -296,7 +296,7 @@
     UIView *sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 56)];
     sectionHead.backgroundColor = [UIColor whiteColor];
     
-    UILabel *themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, sectionHead.height)];
+    UILabel *themeLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, MainScreenWidth - 15 * 2 - 92, sectionHead.height)];
     themeLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:20];//SYSTEMFONT(20);
     themeLabel.textColor = EdlineV5_Color.textFirstColor;
     themeLabel.text = [NSString stringWithFormat:@"%@",_sortArray[section][@"title"]];
