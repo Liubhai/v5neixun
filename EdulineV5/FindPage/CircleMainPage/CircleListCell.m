@@ -144,6 +144,9 @@
     
     _nameLabel.text = [NSString stringWithFormat:@"%@",dict[@"nick_name"]];
     _timeLabel.text = [EdulineV5_Tool formatterDate:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];
+    CGFloat timeWidth = [_timeLabel.text sizeWithFont:_timeLabel.font].width + 4;
+    _timeLabel.frame = CGRectMake(_nameLabel.left, _userFace.bottom - 13, timeWidth, 13);
+    
     _guanzhuButton.selected = [[NSString stringWithFormat:@"%@",dict[@"followed"]] boolValue];
     _guanzhuButton.layer.borderColor = _guanzhuButton.selected ? EdlineV5_Color.textThirdColor.CGColor : EdlineV5_Color.themeColor.CGColor;
     
@@ -282,7 +285,8 @@
         }
     }
     
-    _deleteButton.frame = CGRectMake(_contentLabel.left, bottomToolTop, 30, 20);
+    _deleteButton.frame = CGRectMake(_timeLabel.right, 0, 30, 20);
+    _deleteButton.centerY = _timeLabel.centerY;
     if (isDetail) {
         if ([user_id isEqualToString:[V5_UserModel uid]]) {
             _deleteButton.hidden = NO;
@@ -334,7 +338,8 @@
     
     if (isDetail) {
         _commentCountButton.hidden = YES;
-        _shareButton.centerX = _contentLabel.left + _contentLabel.width / 2.0;
+        [_shareButton setLeft:_contentLabel.left];
+//        _shareButton.centerX = _contentLabel.left + _contentLabel.width / 2.0;
     } else {
         _commentCountButton.hidden = NO;
         [_shareButton setLeft:_contentLabel.left];
