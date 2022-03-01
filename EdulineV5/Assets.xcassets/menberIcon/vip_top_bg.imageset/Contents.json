@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "card_pre.png",
+      "filename" : "vip_top_bg.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "card_pre@2x.png",
+      "filename" : "vip_top_bg@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "card_pre@3x.png",
+      "filename" : "vip_top_bg@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

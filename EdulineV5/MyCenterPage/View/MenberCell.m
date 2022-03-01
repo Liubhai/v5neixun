@@ -26,6 +26,7 @@
     _selectImage.layer.masksToBounds = YES;
     _selectImage.layer.borderColor = EdlineV5_Color.starNoColor.CGColor;
     _selectImage.layer.borderWidth = 0.5;
+    _selectImage.layer.cornerRadius = 10;
     [self.contentView addSubview:_selectImage];
     
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_selectImage.left + 15, 5, 100, 80)];

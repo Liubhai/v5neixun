@@ -20,6 +20,8 @@
     NSIndexPath *currentIndexpath;
 }
 
+@property (strong, nonatomic) UIImageView *topBackImageView;
+
 @property (strong, nonatomic) UITextField *cardNumT;
 
 @property (strong, nonatomic) UIImageView *topBackView;
@@ -60,6 +62,13 @@
     _memberTypeArray = [NSMutableArray new];
     [_otherTypeArray addObjectsFromArray:@[@{@"title":@"免费课程",@"image":@"vip_icon1",@"type":@"course"},@{@"title":@"付费课程",@"image":@"vip_icon_course",@"type":@"menberCourse"},@{@"title":@"权益说明   ",@"image":@"vip_icon3",@"type":@"menberIntro"}]];
     
+    // 2022.3.1页面优化处理顶部修改背景图的方式
+    _topBackImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 100)];
+    _topBackImageView.image = Image(@"vip_top_bg");
+    _topBackImageView.clipsToBounds = YES;
+    _topBackImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:_topBackImageView];
+    
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"兑换" forState:0];
     [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
@@ -67,11 +76,14 @@
     
     _lineTL.hidden = YES;
     _titleLabel.text = @"会员中心";
-    _titleImage.backgroundColor = HEXCOLOR(0x20233C);
+    _titleLabel.hidden = YES;
+    _titleImage.backgroundColor = [UIColor clearColor];//HEXCOLOR(0x20233C);
     _titleLabel.textColor = [UIColor whiteColor];
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
     [self makeSearchText];
+    [self.view bringSubviewToFront:_titleImage];
     [self makeSubView];
+    [_topBackImageView setHeight:_otherTypeBackView.bottom + 25];
     [self getMemBerInfo];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textfieldDidChanged:) name:UITextFieldTextDidChangeNotification object:nil];
@@ -80,7 +92,8 @@
 
 - (void)makeSearchText {
     _cardNumT = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, _titleLabel.width, 36)];
-    _cardNumT.backgroundColor = HEXCOLOR(0x4d4e64);
+    _cardNumT.backgroundColor = [UIColor clearColor];//HEXCOLOR(0x4d4e64);
+    _cardNumT.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.3].CGColor;
     _cardNumT.layer.masksToBounds = YES;
     _cardNumT.layer.cornerRadius = 18;
     _cardNumT.font = SYSTEMFONT(14);
@@ -92,10 +105,19 @@
     _cardNumT.center = _titleLabel.center;
     [_titleImage addSubview:_cardNumT];
     
-    UIView *leftMode = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 13, 36)];
-    leftMode.backgroundColor = HEXCOLOR(0x4d4e64);
+    
+    UIImageView *leftMode = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 13, 36)];
+    leftMode.backgroundColor = [UIColor clearColor];
+//    leftMode.image = Image(@"vipcenter_searchbar");
     _cardNumT.leftView = leftMode;
     _cardNumT.leftViewMode = UITextFieldViewModeAlways;
+    _cardNumT.leftView.backgroundColor = [UIColor clearColor];
+//    UIView *leftMode = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 13, 36)];
+////    leftMode.backgroundColor = HEXCOLOR(0x4d4e64);
+//    leftMode.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.3];
+//    _cardNumT.leftView = leftMode;
+//    _cardNumT.leftViewMode = UITextFieldViewModeAlways;
+//    _cardNumT.leftView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.3].CGColor;
 }
 
 - (void)makeSubView {
@@ -146,7 +168,7 @@
     [_topBackView addSubview:_introLabel];
     
     _otherTypeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, _topBackView.bottom, MainScreenWidth, 80)];
-    _otherTypeBackView.backgroundColor = HEXCOLOR(0x20233C);
+    _otherTypeBackView.backgroundColor = [UIColor clearColor];//HEXCOLOR(0x20233C);
     [self.view addSubview:_otherTypeBackView];
     
     CGFloat ww = MainScreenWidth / _otherTypeArray.count;
