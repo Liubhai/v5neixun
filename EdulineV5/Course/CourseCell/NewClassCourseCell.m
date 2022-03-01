@@ -33,8 +33,14 @@
     _blueView.layer.cornerRadius = 2;
     [self.contentView addSubview:_blueView];
     
-    _typeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(36, 0, 32, 16)];
+    _typeIcon = [[UILabel alloc] initWithFrame:CGRectMake(36, 0, 32, 16)];
     _typeIcon.centerY = 50 / 2.0;
+    _typeIcon.font = SYSTEMFONT(11);
+    _typeIcon.layer.masksToBounds = YES;
+    _typeIcon.layer.cornerRadius = 3;
+    _typeIcon.textColor = HEXCOLOR(0x6E6E6E);
+    _typeIcon.textAlignment = NSTextAlignmentCenter;
+    _typeIcon.backgroundColor = HEXCOLOR(0xF1F1F1);
     [self.contentView addSubview:_typeIcon];
     
     _lockIcon = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 14, 0, 14, 16)];
@@ -95,6 +101,23 @@
 
 - (void)setCourseInfo:(CourseListModel *)model isMainPage:(BOOL)isMainPage {
     _treeItem = model;
+    
+    // 初始化类型文本
+    _typeIcon.textColor = HEXCOLOR(0x6E6E6E);
+    _typeIcon.backgroundColor = HEXCOLOR(0xF1F1F1);
+    
+    if ([model.section_data.data_type isEqualToString:@"4"]) {
+        [_typeIcon setWidth:39];
+    }  else {
+        [_typeIcon setWidth:32];
+    }
+    
+    _titleLabel.frame = CGRectMake(_typeIcon.right + 5, 0, 150, 50);
+    
+    _freeImageView.frame = CGRectMake(_titleLabel.right + 10, (50 - 16) / 2.0, 36, 16);
+    
+    _priceLabel.frame = CGRectMake(_freeImageView.right + 10, (50 - 13) / 2.0, 100, 13);
+    
     _titleLabel.text = model.title;
     _titleLabel.textColor = EdlineV5_Color.textSecendColor;
     /**
@@ -233,6 +256,8 @@
                 _isLearningIcon.hidden = NO;
                 _titleLabel.textColor = EdlineV5_Color.themeColor;
                 [self setAnimation:_isLearningIcon];
+                _typeIcon.textColor = [UIColor whiteColor];
+                _typeIcon.backgroundColor = EdlineV5_Color.themeColor;
             } else {
                 _learnIcon.hidden = NO;
                 _learnTimeLabel.hidden = NO;
@@ -288,15 +313,20 @@
             }
         }
         if ([model.section_data.data_type isEqualToString:@"1"]) {
-            _typeIcon.image = Image(@"contents_icon_video");
+    //        _typeIcon.image = Image(@"contents_icon_video");
+            _typeIcon.text = @"视频";
         } else if ([model.section_data.data_type isEqualToString:@"2"]) {
-            _typeIcon.image = Image(@"contents_icon_vioce");
+    //        _typeIcon.image = Image(@"contents_icon_vioce");
+            _typeIcon.text = @"音频";
         } else if ([model.section_data.data_type isEqualToString:@"3"]) {
-            _typeIcon.image = Image(@"img_text_icon");
+    //        _typeIcon.image = Image(@"img_text_icon");
+            _typeIcon.text = @"图文";
         } else if ([model.section_data.data_type isEqualToString:@"4"]) {
-            _typeIcon.image = Image(@"ebook_icon_word");
+    //        _typeIcon.image = Image(@"ebook_icon_word");
+            _typeIcon.text = @"电子书";
         } else {
-            _typeIcon.image = Image(@"contents_icon_video");
+    //        _typeIcon.image = Image(@"contents_icon_video");
+            _typeIcon.text = @"视频";
         }
     }
     
@@ -322,6 +352,8 @@
         if (model.live_rate.status == 999) {
             [_isLearningIcon setRight:_learnTimeLabel.left - 5];
             [self setAnimation:_isLearningIcon];
+            _typeIcon.textColor = [UIColor whiteColor];
+            _typeIcon.backgroundColor = EdlineV5_Color.themeColor;
         }
     }
     

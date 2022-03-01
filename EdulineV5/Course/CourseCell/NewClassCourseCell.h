@@ -30,7 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UIImageView *CourseTypeIcon;
 @property (strong, nonatomic) UIView *blueView;
-@property (strong, nonatomic) UIImageView *typeIcon;
+//@property (strong, nonatomic) UIImageView *typeIcon;
+@property (strong, nonatomic) UILabel *typeIcon;
 @property (strong, nonatomic) UIImageView *lockIcon;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UIImageView *freeImageView;

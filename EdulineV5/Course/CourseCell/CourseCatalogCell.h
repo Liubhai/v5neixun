@@ -38,7 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) id<CourseCatalogCellDelegate> delegate;
 
 @property (strong, nonatomic) UIView *blueView;
-@property (strong, nonatomic) UIImageView *typeIcon;
+//@property (strong, nonatomic) UIImageView *typeIcon;
+@property (strong, nonatomic) UILabel *typeIcon;
 @property (strong, nonatomic) UIImageView *lockIcon;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UIImageView *freeImageView;// 免费图标
