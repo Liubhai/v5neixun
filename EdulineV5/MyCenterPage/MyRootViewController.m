@@ -59,6 +59,8 @@
 @property (strong, nonatomic) MyCenterBalanceView *myCenterBalanceView;
 @property (strong, nonatomic) MyCenterUserInfoView *myCenterUserInfoView;
 @property (strong, nonatomic) UIView *headerView;
+@property (strong, nonatomic) UIImageView *vipEnterImageView;
+
 
 @property (strong, nonatomic) NSMutableArray *iconArray;
 
@@ -80,7 +82,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = EdlineV5_Color.backColor;//[UIColor whiteColor];
 //    _titleImage.hidden = YES;
     _iconArray = [NSMutableArray new];
     _titleImage.alpha = 0;
@@ -124,18 +126,56 @@
 
 - (void)makeHeaderView {
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0)];
-    _headerView.backgroundColor = [UIColor whiteColor];
-    _myCenterUserInfoView = [[MyCenterUserInfoView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 234 + MACRO_UI_LIUHAI_HEIGHT)];
+    _headerView.backgroundColor = EdlineV5_Color.backColor;//[UIColor whiteColor];
+    
+    _myCenterUserInfoView = [[MyCenterUserInfoView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 325 + MACRO_UI_LIUHAI_HEIGHT)];
     _myCenterUserInfoView.delegate = self;
     [_headerView addSubview:_myCenterUserInfoView];
-    _mycenterOrderView = [[MyCenterOrderView alloc] initWithFrame:CGRectMake(15, _myCenterUserInfoView.bottom - 80, MainScreenWidth - 30, 140)];
-    _mycenterOrderView.delegate = self;
-    [_headerView addSubview:_mycenterOrderView];
-    _myCenterBalanceView = [[MyCenterBalanceView alloc] initWithFrame:CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, SWNOTEmptyStr([V5_UserModel oauthToken]) ? 90 : 0)];
+    
+    _myCenterBalanceView = [[MyCenterBalanceView alloc] initWithFrame:CGRectMake(0, _myCenterUserInfoView.userFaceImageView.bottom + 15, MainScreenWidth, SWNOTEmptyStr([V5_UserModel oauthToken]) ? 45 : 0)];
     _myCenterBalanceView.hidden = SWNOTEmptyStr([V5_UserModel oauthToken]) ? NO : YES;
     _myCenterBalanceView.delegate = self;
     [_headerView addSubview:_myCenterBalanceView];
-    [_headerView setHeight:_myCenterBalanceView.bottom];
+    
+    _mycenterOrderView = [[MyCenterOrderView alloc] initWithFrame:CGRectMake(15, SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_myCenterUserInfoView.bottom - (130 - 23)) : (_myCenterUserInfoView.bottom - (130 + 13)), MainScreenWidth - 30, 130)];
+    _mycenterOrderView.delegate = self;
+    [_headerView addSubview:_mycenterOrderView];
+    
+    _vipEnterImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _mycenterOrderView.bottom + 8, MainScreenWidth - 30, 65)];
+    _vipEnterImageView.image = Image(@"new_vip_icon");
+    _vipEnterImageView.layer.masksToBounds = YES;
+    _vipEnterImageView.layer.cornerRadius = 10;
+    _vipEnterImageView.clipsToBounds = YES;
+//    _vipEnterImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [_headerView addSubview:_vipEnterImageView];
+    _vipEnterImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *vipTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToMenberCenter)];
+    [_vipEnterImageView addGestureRecognizer:vipTap];
+    _vipEnterImageView.hidden = YES;
+    
+    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_vipEnterImageView.bottom - 10) : _myCenterUserInfoView.bottom];
+        if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
+            _vipEnterImageView.hidden = NO;
+            _vipEnterImageView.image = Image(@"renew_vip_icon");
+        } else if ([[V5_UserModel vipStatus] isEqualToString:@"2"]) {
+            _vipEnterImageView.hidden = NO;
+            _vipEnterImageView.image = Image(@"renew_vip_icon");
+        } else if ([[V5_UserModel vipStatus] isEqualToString:@"0"]) {
+            _vipEnterImageView.hidden = NO;
+            _vipEnterImageView.image = Image(@"new_vip_icon");
+        } else {
+            _vipEnterImageView.hidden = YES;
+            [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
+        }
+        if ([ShowAudit isEqualToString:@"1"]) {
+            _vipEnterImageView.hidden = YES;
+            [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
+        }
+    } else {
+        _vipEnterImageView.hidden = YES;
+        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? _mycenterOrderView.bottom : _myCenterUserInfoView.bottom];
+    }
 }
 
 - (void)makeTableView {
@@ -152,40 +192,55 @@
 
 // MARK: - table代理
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([PROFILELAYOUT isEqualToString:@"1"]) {
-        return _iconArray.count;
-    } else {
-        return 1;
-    }
+//    if ([PROFILELAYOUT isEqualToString:@"1"]) {
+//        return _iconArray.count;
+//    } else {
+//        return 1;
+//    }
+    return 1;;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([PROFILELAYOUT isEqualToString:@"1"]) {
-        static NSString *reuse = @"centerTwoCell";
-        MyCenterTypeTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-        if (!cell) {
-            cell = [[MyCenterTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-        }
-        [cell setMyCenterTypeTwoCellInfo:_iconArray[indexPath.row]];
-        return cell;
-    } else {
-        static NSString *reuse = @"centerOneCell";
-        MyCenterTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-        if (!cell) {
-            cell = [[MyCenterTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-        }
-        cell.delegate = self;
-        [cell setMyCenterClassifyInfo:_iconArray];
-        return cell;
+//    if ([PROFILELAYOUT isEqualToString:@"1"]) {
+//        static NSString *reuse = @"centerTwoCell";
+//        MyCenterTypeTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//        if (!cell) {
+//            cell = [[MyCenterTypeTwoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+//        }
+//        [cell setMyCenterTypeTwoCellInfo:_iconArray[indexPath.row]];
+//        return cell;
+//    } else {
+//        static NSString *reuse = @"centerOneCell";
+//        MyCenterTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//        if (!cell) {
+//            cell = [[MyCenterTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+//        }
+//        cell.delegate = self;
+//        [cell setMyCenterClassifyInfo:_iconArray];
+//        return cell;
+//    }
+    static NSString *reuse = @"centerOneCell";
+    MyCenterTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+    if (!cell) {
+        cell = [[MyCenterTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
+    cell.delegate = self;
+    [cell setMyCenterClassifyInfo:_iconArray];
+    if ([PROFILELAYOUT isEqualToString:@"1"]) {
+        [cell setMyCenterClassifyInfoOnlyOne:_iconArray];
+    } else {
+        [cell setMyCenterClassifyInfo:_iconArray];
+    }
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([PROFILELAYOUT isEqualToString:@"1"]) {
-        return 50.0;
-    } else {
-        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
-    }
+//    if ([PROFILELAYOUT isEqualToString:@"1"]) {
+//        return 50.0;
+//    } else {
+//        return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
+//    }
+    return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -193,87 +248,87 @@
         [AppDelegate presentLoginNav:self];
         return;
     }
-    if ([PROFILELAYOUT isEqualToString:@"1"]) {
-        NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[indexPath.row] objectForKey:@"key"]];
-        if ([iconKey isEqualToString:@"wenda"]) {
-            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
-        } else if ([iconKey isEqualToString:@"comment"]) {
-            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
-        } else if ([iconKey isEqualToString:@"note"]) {
-            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
-        } else if ([iconKey isEqualToString:@"collection"]) {
-            MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([iconKey isEqualToString:@"record"]) {
-            LearnRecordVC *vc = [[LearnRecordVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([iconKey isEqualToString:@"doc"]) {
-            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
-        } else if ([iconKey isEqualToString:@"storage"]) {
-            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
-        } else if ([iconKey isEqualToString:@"vip"]) {
-            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
-        } else if ([iconKey isEqualToString:@"coupon"]) {
-            MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([iconKey isEqualToString:@"exchange"]) {
-            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
-        } else if ([iconKey isEqualToString:@"subordinate"]) {
-            MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([iconKey isEqualToString:@"teacher"]) {
-            if (SWNOTEmptyDictionary(_userInfo)) {
-                NSString *userSchoolId = [NSString stringWithFormat:@"%@",[[[_userInfo objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"mhm_id"]];
-                if (SWNOTEmptyStr(userSchoolId)) {
-                    if (SWNOTEmptyStr([V5_UserModel userPhone])) {
-                        if ([V5_UserModel userPhone].length > 5) {
-                            TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
-                            vc.userSchoolId = userSchoolId;
-                            [self.navigationController pushViewController:vc animated:YES];
-                            return;
-                        }
-                    }
-                    [self needSetUserInfoPhone];
-//                    RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
-//                    vc.changePhone = YES;
-//                    vc.hasPhone = NO;
-//                    vc.oldPhone = NO;
-//                    vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
-//                    [self.navigationController pushViewController:vc animated:YES];
-                } else {
-                    [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
-                }
-            } else {
-                [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
-            }
-        } else if ([iconKey isEqualToString:@"school"]) {
-            if (SWNOTEmptyStr([V5_UserModel userPhone])) {
-                if ([V5_UserModel userPhone].length > 5) {
-                   InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
-                    [self.navigationController pushViewController:vc animated:YES];
-                    return;
-                }
-            }
-            [self needSetUserInfoPhone];
-//            RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
-//            vc.changePhone = YES;
-//            vc.hasPhone = NO;
-//            vc.oldPhone = NO;
-//            vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
+//    if ([PROFILELAYOUT isEqualToString:@"1"]) {
+//        NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[indexPath.row] objectForKey:@"key"]];
+//        if ([iconKey isEqualToString:@"wenda"]) {
+//            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+//        } else if ([iconKey isEqualToString:@"comment"]) {
+//            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+//        } else if ([iconKey isEqualToString:@"note"]) {
+//            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+//        } else if ([iconKey isEqualToString:@"collection"]) {
+//            MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
 //            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([iconKey isEqualToString:@"address"]) {
-            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
-        } else if ([iconKey isEqualToString:@"my_classes"]) {
-            ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([iconKey isEqualToString:@"my_teach"]) {
-            MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else if ([iconKey isEqualToString:@"my_exams"]) {
-            MyExamPage *vc = [[MyExamPage alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-    }
+//        } else if ([iconKey isEqualToString:@"record"]) {
+//            LearnRecordVC *vc = [[LearnRecordVC alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        } else if ([iconKey isEqualToString:@"doc"]) {
+//            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+//        } else if ([iconKey isEqualToString:@"storage"]) {
+//            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+//        } else if ([iconKey isEqualToString:@"vip"]) {
+//            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+//        } else if ([iconKey isEqualToString:@"coupon"]) {
+//            MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        } else if ([iconKey isEqualToString:@"exchange"]) {
+//            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+//        } else if ([iconKey isEqualToString:@"subordinate"]) {
+//            MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        } else if ([iconKey isEqualToString:@"teacher"]) {
+//            if (SWNOTEmptyDictionary(_userInfo)) {
+//                NSString *userSchoolId = [NSString stringWithFormat:@"%@",[[[_userInfo objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"mhm_id"]];
+//                if (SWNOTEmptyStr(userSchoolId)) {
+//                    if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+//                        if ([V5_UserModel userPhone].length > 5) {
+//                            TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
+//                            vc.userSchoolId = userSchoolId;
+//                            [self.navigationController pushViewController:vc animated:YES];
+//                            return;
+//                        }
+//                    }
+//                    [self needSetUserInfoPhone];
+////                    RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
+////                    vc.changePhone = YES;
+////                    vc.hasPhone = NO;
+////                    vc.oldPhone = NO;
+////                    vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
+////                    [self.navigationController pushViewController:vc animated:YES];
+//                } else {
+//                    [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
+//                }
+//            } else {
+//                [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
+//            }
+//        } else if ([iconKey isEqualToString:@"school"]) {
+//            if (SWNOTEmptyStr([V5_UserModel userPhone])) {
+//                if ([V5_UserModel userPhone].length > 5) {
+//                   InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                    return;
+//                }
+//            }
+//            [self needSetUserInfoPhone];
+////            RegisterAndForgetPwVC *vc = [[RegisterAndForgetPwVC alloc] init];
+////            vc.changePhone = YES;
+////            vc.hasPhone = NO;
+////            vc.oldPhone = NO;
+////            vc.topTitle = @"*应《中华人民共和国网络安全法》要求，为了更好保障您的账号安全，请绑定您的手机号！";
+////            [self.navigationController pushViewController:vc animated:YES];
+//        } else if ([iconKey isEqualToString:@"address"]) {
+//            [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+//        } else if ([iconKey isEqualToString:@"my_classes"]) {
+//            ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        } else if ([iconKey isEqualToString:@"my_teach"]) {
+//            MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        } else if ([iconKey isEqualToString:@"my_exams"]) {
+//            MyExamPage *vc = [[MyExamPage alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        }
+//    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -495,9 +550,36 @@
                     _redLabel.hidden = YES;
                     _myCenterUserInfoView.redLabel.hidden = YES;
                 }
-                _myCenterBalanceView.frame = CGRectMake(0, _mycenterOrderView.bottom + 10, MainScreenWidth, SWNOTEmptyStr([V5_UserModel oauthToken]) ? 90 : 0);
+                _myCenterBalanceView.frame = CGRectMake(0, _myCenterUserInfoView.userFaceImageView.bottom + 15, MainScreenWidth, SWNOTEmptyStr([V5_UserModel oauthToken]) ? 45 : 0);
                 _myCenterBalanceView.hidden = SWNOTEmptyStr([V5_UserModel oauthToken]) ? NO : YES;
-                [_headerView setHeight:_myCenterBalanceView.bottom];
+                
+                _mycenterOrderView.frame = CGRectMake(15, SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_myCenterUserInfoView.bottom - (130 - 23)) : (_myCenterUserInfoView.bottom - (130 + 13)), MainScreenWidth - 30, 130);
+                
+                _vipEnterImageView.frame = CGRectMake(15, _mycenterOrderView.bottom + 8, MainScreenWidth - 30, 65);
+                
+                if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
+                    [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_vipEnterImageView.bottom - 10) : _myCenterUserInfoView.bottom];
+                    if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
+                        _vipEnterImageView.hidden = NO;
+                        _vipEnterImageView.image = Image(@"renew_vip_icon");
+                    } else if ([[V5_UserModel vipStatus] isEqualToString:@"2"]) {
+                        _vipEnterImageView.hidden = NO;
+                        _vipEnterImageView.image = Image(@"renew_vip_icon");
+                    } else if ([[V5_UserModel vipStatus] isEqualToString:@"0"]) {
+                        _vipEnterImageView.hidden = NO;
+                        _vipEnterImageView.image = Image(@"new_vip_icon");
+                    } else {
+                        _vipEnterImageView.hidden = YES;
+                        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
+                    }
+                    if ([ShowAudit isEqualToString:@"1"]) {
+                        _vipEnterImageView.hidden = YES;
+                        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
+                    }
+                } else {
+                    _vipEnterImageView.hidden = YES;
+                    [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? _mycenterOrderView.bottom : _myCenterUserInfoView.bottom];
+                }
                 [self.myCenterBalanceView setBalanceInfo:_userInfo];
                 _tableView.tableHeaderView = _headerView;
                 [self reloadUserInfo];

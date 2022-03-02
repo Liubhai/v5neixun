@@ -21,19 +21,19 @@
 }
 
 - (void)makeSubView {
-    NSArray *balanceArray = @[@"我的余额",@"我的推广",@"我的积分"];
+    NSArray *balanceArray = @[@"余额",@"推广",@"积分"];
     CGFloat WW = self.bounds.size.width / (balanceArray.count * 1.0);
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     for (int i = 0; i<balanceArray.count; i++) {
-        UILabel *lable1 = [[UILabel alloc] initWithFrame:CGRectMake(WW * i, (80 - 28 * 2) / 2.0, WW, 28)];
-        lable1.textColor = EdlineV5_Color.textFirstColor;
+        UILabel *lable1 = [[UILabel alloc] initWithFrame:CGRectMake(WW * i, 0, WW, 26)];
+        lable1.textColor = [UIColor whiteColor];//EdlineV5_Color.textFirstColor;
         lable1.font = SYSTEMFONT(16);
         lable1.textAlignment = NSTextAlignmentCenter;
         [self addSubview:lable1];
         
-        UILabel *lable2 = [[UILabel alloc] initWithFrame:CGRectMake(WW * i, lable1.bottom, WW, 28)];
-        lable2.textColor = EdlineV5_Color.textThirdColor;
-        lable2.font = SYSTEMFONT(14);
+        UILabel *lable2 = [[UILabel alloc] initWithFrame:CGRectMake(WW * i, lable1.bottom, WW, 19)];
+        lable2.textColor = [UIColor whiteColor];
+        lable2.font = SYSTEMFONT(13);
         lable2.textAlignment = NSTextAlignmentCenter;
         lable2.text = balanceArray[i];
         [self addSubview:lable2];
@@ -48,15 +48,15 @@
             _scoreLabel = lable1;
             _scoreTitleLabel = lable2;
         }
-        UIButton *selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(WW * i, 0, WW, 80)];
+        UIButton *selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(WW * i, 0, WW, 26+19)];
         selectBtn.backgroundColor = [UIColor clearColor];
         selectBtn.tag = i;
         [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:selectBtn];
     }
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 90 - 10, self.bounds.size.width, 10)];
-    _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:_lineView];
+//    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 90 - 10, self.bounds.size.width, 10)];
+//    _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
+//    [self addSubview:_lineView];
 }
 
 - (void)selectBtnClick:(UIButton *)sender {

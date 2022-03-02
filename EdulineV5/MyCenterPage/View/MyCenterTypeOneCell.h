@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 // 28 + 8 + 20 + 33 / 2.0
 - (void)setMyCenterClassifyInfo:(NSMutableArray *)info;
 
+- (void)setMyCenterClassifyInfoOnlyOne:(NSMutableArray *)info;
+
 @end
 
 NS_ASSUME_NONNULL_END

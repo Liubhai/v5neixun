@@ -22,7 +22,7 @@
 - (void)makeSubView {
     
     self.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
-    self.layer.cornerRadius = 7;
+    self.layer.cornerRadius = 10;
     self.layer.shadowColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.08].CGColor;
     self.layer.shadowOpacity = 1;// 阴影透明度，默认0
     self.layer.shadowOffset = CGSizeMake(0, 1);//shadowOffset阴影偏移，默认(0, -3),这个跟shadowRadius配合使用
@@ -30,9 +30,9 @@
     //@{@"image":@"pre_order_tuikuan",@"title":@"课程售后"}
     NSArray *orderSortArray = @[@{@"image":@"pre_order_fin",@"title":@"已支付"},@{@"image":@"pre_order_daizhifu",@"title":@"待支付"},@{@"image":@"pre_order_quxiao",@"title":@"已取消"}];
     
-    UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.bounds.size.width, 48)];
+    UILabel *themelabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 16, self.bounds.size.width, 21)];
     themelabel.textColor = EdlineV5_Color.textFirstColor;
-    themelabel.font = SYSTEMFONT(15);
+    themelabel.font = SYSTEMFONT(15);//[UIFont fontWithName:@"PingFangSC-Medium" size:15];//
     themelabel.text = @"我的订单";
     [self addSubview:themelabel];
     
@@ -41,18 +41,19 @@
     moreIcon.centerY = themelabel.centerY;
     [self addSubview:moreIcon];
     
-    UILabel *moreLabel = [[UILabel alloc] initWithFrame:CGRectMake(moreIcon.left - 8 - 150, 0, 150, 48)];
-    moreLabel.text = @"查看全部订单";
+    UILabel *moreLabel = [[UILabel alloc] initWithFrame:CGRectMake(moreIcon.left - 8 - 150, 0, 150, 21)];
+    moreLabel.text = @"全部";//@"查看全部订单"
     moreLabel.font = SYSTEMFONT(14);
     moreLabel.textColor = EdlineV5_Color.textThirdColor;
     moreLabel.textAlignment = NSTextAlignmentRight;
+    moreLabel.centerY = themelabel.centerY;
     [self addSubview:moreLabel];
     
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 48, self.bounds.size.width, 0.5)];
-    line.backgroundColor = EdlineV5_Color.fengeLineColor;
-    [self addSubview:line];
+//    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 48, self.bounds.size.width, 0.5)];
+//    line.backgroundColor = EdlineV5_Color.fengeLineColor;
+//    [self addSubview:line];
     
-    UIButton *allBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 48)];
+    UIButton *allBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, themelabel.bottom)];
     allBtn.backgroundColor = [UIColor clearColor];
     [allBtn addTarget:self action:@selector(orderButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     allBtn.tag = 66;
@@ -61,7 +62,7 @@
     CGFloat BtnWidth = self.bounds.size.width / (orderSortArray.count * 1.0);
     
     for (int i = 0; i< orderSortArray.count; i++) {
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(BtnWidth * i, line.bottom, BtnWidth, 90)];
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(BtnWidth * i, themelabel.bottom + 16, BtnWidth, 32 + 4 + 20)];
         btn.tag = i;
         NSString *imageName = [orderSortArray[i] objectForKey:@"image"];
         [btn setImage:Image(imageName) forState:0];
@@ -82,8 +83,8 @@
             labelWidth = btn.titleLabel.frame.size.width;
             labelHeight = btn.titleLabel.frame.size.height;
         }
-        btn.imageEdgeInsets = UIEdgeInsetsMake(-labelHeight-10/2.0, 0, 0, -labelWidth);
-        btn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith, -imageHeight-10/2.0, 0);
+        btn.imageEdgeInsets = UIEdgeInsetsMake(-labelHeight-8/2.0, 0, 0, -labelWidth);
+        btn.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith, -imageHeight-8/2.0, 0);
         [btn addTarget:self action:@selector(orderButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:btn];
     }
