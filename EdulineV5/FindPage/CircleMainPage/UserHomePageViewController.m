@@ -84,7 +84,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     wordMax = 300;
 //    _buttonTypeArray = @[@"介绍",@"动态",@"课程",@"问答"];
-    _buttonTypeArray = @[@"动态",@"课程",@"问答"];
+//    _buttonTypeArray = @[@"动态",@"课程",@"问答"];
+    _buttonTypeArray = @[@"动态",@"课程"];
 //    _buttonTypeArray = @[@"介绍",@"课程"];
     _titleImage.hidden = YES;
     [self makeHeaderView];

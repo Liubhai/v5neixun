@@ -8563,7 +8563,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
 				PRODUCT_NAME = Eduline;
-				PROVISIONING_PROFILE_SPECIFIER = edulineV5AppStoreDis;
+				PROVISIONING_PROFILE_SPECIFIER = edulineV5Adhoc;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";

@@ -180,7 +180,7 @@
             [param setObject:coursetypeIdString forKey:@"course_type"];
         }
     }
-    
+    [_collectionView collectionViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_collectionView.height];
     [Net_API requestGETSuperAPIWithURLStr:getUrl WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         [_collectionView.mj_header endRefreshing];
         if (SWNOTEmptyDictionary(responseObject)) {
@@ -192,6 +192,7 @@
                 } else {
                     _collectionView.mj_footer.hidden = NO;
                 }
+                [_collectionView collectionViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_collectionView.height];
                 [_collectionView reloadData];
             }
         }

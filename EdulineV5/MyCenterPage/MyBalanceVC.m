@@ -255,8 +255,9 @@
         [_cardButton setTitleColor:EdlineV5_Color.textSecendColor forState:0];
         [_cardButton addTarget:self action:@selector(cardButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_moneyView addSubview:_cardButton];
+        _cardButton.hidden = YES;
         
-        _otherMoneyText = [[UITextField alloc] initWithFrame:CGRectMake(_cardButton.right + 10, _cardButton.top, buttonW * 2 + 10, _cardButton.height)];
+        _otherMoneyText = [[UITextField alloc] initWithFrame:CGRectMake(_cardButton.left, _cardButton.top, buttonW * 2 + 10, _cardButton.height)];//_cardButton.right + 10
         _otherMoneyText.backgroundColor = [UIColor whiteColor];
         _otherMoneyText.layer.borderColor = EdlineV5_Color.fengeLineColor.CGColor;
         _otherMoneyText.layer.borderWidth = 1;

@@ -72,15 +72,15 @@
     [_rightButton setImage:nil forState:0];
     [_rightButton setTitle:@"兑换" forState:0];
     [_rightButton setTitleColor:[UIColor whiteColor] forState:0];
-    _rightButton.hidden = NO;
+    _rightButton.hidden = YES;
     
     _lineTL.hidden = YES;
     _titleLabel.text = @"会员中心";
-    _titleLabel.hidden = YES;
+//    _titleLabel.hidden = YES;
     _titleImage.backgroundColor = [UIColor clearColor];//HEXCOLOR(0x20233C);
     _titleLabel.textColor = [UIColor whiteColor];
     [_leftButton setImage:Image(@"nav_back_white") forState:0];
-    [self makeSearchText];
+//    [self makeSearchText];
     [self.view bringSubviewToFront:_titleImage];
     [self makeSubView];
     [_topBackImageView setHeight:_otherTypeBackView.bottom + 25];
