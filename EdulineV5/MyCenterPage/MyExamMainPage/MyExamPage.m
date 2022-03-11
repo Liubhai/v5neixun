@@ -60,6 +60,11 @@
     [self addPublicAndTestExamListVC];
     courseSortString = @"考试记录";
     courseSortIdString = @"examRecord";
+    
+    if (SWNOTEmptyDictionary(_sortTypeFromFind)) {
+        [self sortTypeChooseFromFindVC:_sortTypeFromFind];
+    }
+    
     // Do any additional setup after loading the view.
 }
 
@@ -109,6 +114,28 @@
         [EdulineV5_Tool dealButtonImageAndTitleUIWidthSpace:_topCateButton space:6];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
 //        [self getCourseMainList];
+    }
+}
+
+- (void)sortTypeChooseFromFindVC:(NSDictionary *)info {
+    if (SWNOTEmptyDictionary(info)) {
+        courseSortString = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
+        courseSortIdString = [NSString stringWithFormat:@"%@",[info objectForKey:@"id"]];
+        if ([courseSortIdString isEqualToString:@"examCollect"]) {
+            _rightButton.hidden = NO;
+            [self addCollectionListVC];
+        } else if ([courseSortIdString isEqualToString:@"examRecord"]) {
+            _rightButton.hidden = YES;
+            [self addPublicAndTestExamListVC];
+        } else {
+            [self addErrorExamListVC];
+            _rightButton.hidden = YES;
+        }
+        
+        _topCateButton.selected = NO;
+        [_topCateButton setTitle:courseSortString forState:0];
+        [EdulineV5_Tool dealButtonImageAndTitleUIWidthSpace:_topCateButton space:6];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
     }
 }
 

@@ -33,6 +33,9 @@
 		782AC44325BFEDB8009130F9 /* AnswerSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44225BFEDB8009130F9 /* AnswerSheetViewController.m */; };
 		782AC44925C3E7BD009130F9 /* ExamSheetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44825C3E7BC009130F9 /* ExamSheetModel.m */; };
 		782AC44C25CA7063009130F9 /* ExamResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782AC44B25CA7062009130F9 /* ExamResultViewController.m */; };
+		782FE41A27D9F55700F2648C /* ExamNewMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 782FE41927D9F55700F2648C /* ExamNewMainViewController.m */; };
+		782FE41D27D9F85600F2648C /* ExamNewMainCateListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 782FE41C27D9F85600F2648C /* ExamNewMainCateListVC.m */; };
+		782FE42027DAF4A400F2648C /* ExamNewMainListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 782FE41F27DAF4A400F2648C /* ExamNewMainListCell.m */; };
 		7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96B241F1571002F6595 /* CourseMainViewController.m */; };
 		7839C971241F174D002F6595 /* LBHProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96E241F174D002F6595 /* LBHProgressView.m */; };
 		7839C972241F174D002F6595 /* LBHTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7839C96F241F174D002F6595 /* LBHTableView.m */; };
@@ -1046,6 +1049,12 @@
 		782AC44825C3E7BC009130F9 /* ExamSheetModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamSheetModel.m; sourceTree = "<group>"; };
 		782AC44A25CA7062009130F9 /* ExamResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamResultViewController.h; sourceTree = "<group>"; };
 		782AC44B25CA7062009130F9 /* ExamResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamResultViewController.m; sourceTree = "<group>"; };
+		782FE41827D9F55700F2648C /* ExamNewMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamNewMainViewController.h; sourceTree = "<group>"; };
+		782FE41927D9F55700F2648C /* ExamNewMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamNewMainViewController.m; sourceTree = "<group>"; };
+		782FE41B27D9F85600F2648C /* ExamNewMainCateListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamNewMainCateListVC.h; sourceTree = "<group>"; };
+		782FE41C27D9F85600F2648C /* ExamNewMainCateListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamNewMainCateListVC.m; sourceTree = "<group>"; };
+		782FE41E27DAF4A400F2648C /* ExamNewMainListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamNewMainListCell.h; sourceTree = "<group>"; };
+		782FE41F27DAF4A400F2648C /* ExamNewMainListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamNewMainListCell.m; sourceTree = "<group>"; };
 		7839C96A241F1571002F6595 /* CourseMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMainViewController.h; sourceTree = "<group>"; };
 		7839C96B241F1571002F6595 /* CourseMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMainViewController.m; sourceTree = "<group>"; };
 		7839C96D241F174D002F6595 /* LBHTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBHTableView.h; sourceTree = "<group>"; };
@@ -2955,6 +2964,10 @@
 			children = (
 				78060FA7255E836900009171 /* ExamMainViewController.h */,
 				78060FA8255E836900009171 /* ExamMainViewController.m */,
+				782FE41827D9F55700F2648C /* ExamNewMainViewController.h */,
+				782FE41927D9F55700F2648C /* ExamNewMainViewController.m */,
+				782FE41B27D9F85600F2648C /* ExamNewMainCateListVC.h */,
+				782FE41C27D9F85600F2648C /* ExamNewMainCateListVC.m */,
 				782333B62595B5570076DD85 /* SpecialProjectExamList.h */,
 				782333B72595B5570076DD85 /* SpecialProjectExamList.m */,
 				782AC42825BA7D2F009130F9 /* TaojuanListViewController.h */,
@@ -3282,6 +3295,8 @@
 				784FC8EA24ADBAB400CAE7A6 /* ZixunCommentCell.m */,
 				78060FAA255E8B8100009171 /* ExamMainListCell.h */,
 				78060FAB255E8B8100009171 /* ExamMainListCell.m */,
+				782FE41E27DAF4A400F2648C /* ExamNewMainListCell.h */,
+				782FE41F27DAF4A400F2648C /* ExamNewMainListCell.m */,
 				782333B92595B99E0076DD85 /* SpecialExamListCell.h */,
 				782333BA2595B99E0076DD85 /* SpecialExamListCell.m */,
 				782AC42E25BAA6D4009130F9 /* TaoJuanDetailListCell.h */,
@@ -6919,6 +6934,7 @@
 				78B11667272A439A00A3B8CB /* PhotoNotPermissionVC.m in Sources */,
 				78B119032733881C00A3B8CB /* PopoverAction.m in Sources */,
 				784FC8E224ACA2CD00CAE7A6 /* MyMenberCell.m in Sources */,
+				782FE41D27D9F85600F2648C /* ExamNewMainCateListVC.m in Sources */,
 				78795737240FA3840013F95F /* ZLPhotoPickerCollectionViewCell.m in Sources */,
 				787F1E8E247381A400108F7B /* DownloadManager.m in Sources */,
 				78B11655272A439900A3B8CB /* UIImage+animatedGIF.m in Sources */,
@@ -7057,6 +7073,7 @@
 				78AA1397244596B0007087F7 /* MyCenterOrderView.m in Sources */,
 				78B1163C272A439900A3B8CB /* HDPortraitToolAudioModeView.m in Sources */,
 				7839C98324206B72002F6595 /* CourseCouponView.m in Sources */,
+				782FE42027DAF4A400F2648C /* ExamNewMainListCell.m in Sources */,
 				78B1166E272A439A00A3B8CB /* NewLotteryInfomationCell.m in Sources */,
 				78795618240DE7A50013F95F /* ViewController.m in Sources */,
 				78781D4F260B2EEF000DF351 /* CheckUserInfoViewController.m in Sources */,
@@ -7460,6 +7477,7 @@
 				78B118F02733881C00A3B8CB /* STDDebugPingViewController.m in Sources */,
 				788E95A6253FE24E0089251E /* CombineReplayManager.m in Sources */,
 				788E95A3253FE24E0089251E /* OSSManager.m in Sources */,
+				782FE41A27D9F55700F2648C /* ExamNewMainViewController.m in Sources */,
 				78B118D32733881C00A3B8CB /* PopMenuModel.m in Sources */,
 				78F7C5D024EFC2AF0010F1E9 /* XLCardCell.m in Sources */,
 				788E958A253FE24E0089251E /* ioapi_buf.c in Sources */,

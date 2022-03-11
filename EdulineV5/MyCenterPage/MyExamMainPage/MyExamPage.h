@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MyExamPage : BaseViewController
 
+@property (strong, nonatomic) NSDictionary *sortTypeFromFind;
+
 @end
 
 NS_ASSUME_NONNULL_END
