@@ -25,12 +25,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) id<ZhuangXiangListCellDelegate> delegate;
 
+@property (strong, nonatomic) UIView *grayLineTop;
+@property (strong, nonatomic) UIView *grayLineCenter;
 @property (strong, nonatomic) UIImageView *jiantouImageView;
+@property (strong, nonatomic) UIView *grayLine;
 @property (strong, nonatomic) UIImageView *getOrFreeIamgeView;
 @property (strong, nonatomic) UIView *blueView;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UIProgressView *learnProgress;
 @property (strong, nonatomic) UILabel *progressLabel;
+@property (strong, nonatomic) UILabel *rightRateLabel;
 @property (strong, nonatomic) UILabel *priceLabel;
 @property (strong, nonatomic) UIButton *getOrExamBtn;
 @property (strong, nonatomic) UIButton *doExamButton;
@@ -39,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) ZhuanXiangModel *treeItem;
 
 - (void)updateItem;
-- (void)setZhuangXiangCellInfo:(ZhuanXiangModel *)model;
+- (void)setZhuangXiangCellInfo:(ZhuanXiangModel *)model cellIndex:(NSIndexPath *)index;
 
 @end
 

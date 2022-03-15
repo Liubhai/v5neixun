@@ -876,4 +876,15 @@
     return [Net_Path fullPath:@"user/tencent/face/person/verify" repalce:@"" byReplece:@""];
 }
 
+/// 考试优化接口
+/** 一级大类分类接口 */
++ (NSString *)examFirstTypeNet {
+    return [Net_Path fullPath:@"exam/category/top" repalce:@"" byReplece:@""];
+}
+
+/** 二级分类接口 */
++ (NSString *)examSecondTypeNet {
+    return [Net_Path fullPath:@"exam/category/second/tree" repalce:@"" byReplece:@""];
+}
+
 @end

@@ -38,7 +38,7 @@
 
 - (void)setExamNewMainCellInfo:(NSDictionary *)dict {
     _titleLabel.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
-    [_faceImageView sd_setImageWithURL:EdulineUrlString(dict[@"img"]) placeholderImage:DefaultImage];
+    [_faceImageView sd_setImageWithURL:EdulineUrlString(dict[@"cover_url"]) placeholderImage:DefaultImage];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

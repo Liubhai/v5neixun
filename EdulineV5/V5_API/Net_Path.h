@@ -624,6 +624,13 @@ struct NetWorkUrl {
 /** 人脸验证 */
 + (NSString *)userFaceVerify;
 
+/// 考试优化接口
+/** 一级大类分类接口 */
++ (NSString *)examFirstTypeNet;
+
+/** 二级分类接口 */
++ (NSString *)examSecondTypeNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

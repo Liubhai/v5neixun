@@ -11,6 +11,7 @@
 #import "ExamNewMainCateListVC.h"
 #import "V5_UserModel.h"
 #import "AppDelegate.h"
+#import "Net_Path.h"
 
 @interface ExamNewMainViewController ()<UIScrollViewDelegate>
 
@@ -38,11 +39,12 @@
     _rightButton.hidden = YES;
     _lineTL.hidden = YES;
     
-    _cateArray = [NSMutableArray new];
-    [_cateArray addObjectsFromArray:@[@{@"title":@"语文系汉语言学院",@"type":@"1"},@{@"title":@"数学",@"type":@"2"},@{@"title":@"英语",@"type":@"3"},@{@"title":@"物理系动力与平衡学院",@"type":@"4"},@{@"title":@"生物大学临床学院",@"type":@"5"},@{@"title":@"化学",@"type":@"6"}]];
+//    _cateArray = [NSMutableArray new];
+//    [_cateArray addObjectsFromArray:@[@{@"title":@"语文系汉语言学院",@"id":@"1"},@{@"title":@"数学",@"id":@"2"},@{@"title":@"英语",@"id":@"3"},@{@"title":@"物理系动力与平衡学院",@"id":@"4"},@{@"title":@"生物大学临床学院",@"id":@"5"},@{@"title":@"化学",@"id":@"6"}]];
     
-    [self makeTopCateView];
+//    [self makeTopCateView];
     [self makeScrollView];
+//    [self getExamFirstTypeInfo];
 }
 
 - (void)makeTopCateView {
@@ -95,8 +97,8 @@
 }
 
 - (void)makeScrollView {
-    _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,_topCateView.bottom, MainScreenWidth, MainScreenHeight - _topCateView.bottom)];
-    _mainScrollView.contentSize = CGSizeMake(MainScreenWidth*_cateArray.count, 0);
+    _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _mainScrollView.contentSize = CGSizeMake(MainScreenWidth, 0);
     _mainScrollView.pagingEnabled = YES;
     _mainScrollView.showsHorizontalScrollIndicator = NO;
     _mainScrollView.showsVerticalScrollIndicator = NO;
@@ -104,13 +106,21 @@
     _mainScrollView.delegate = self;
     [self.view addSubview:_mainScrollView];
     
-    for (int i = 0; i<_cateArray.count; i++) {
-        ExamNewMainCateListVC *vc = [[ExamNewMainCateListVC alloc] init];
-        vc.circleType = [NSString stringWithFormat:@"%@",[_cateArray[i] objectForKey:@"type"]];
-        vc.view.frame = CGRectMake(MainScreenWidth*i, 0, MainScreenWidth, _mainScrollView.height);
-        [_mainScrollView addSubview:vc.view];
-        [self addChildViewController:vc];
-    }
+    ExamNewMainCateListVC *vc = [[ExamNewMainCateListVC alloc] init];
+    vc.mainTypeArray = [NSMutableArray arrayWithArray:_cateArray];
+    vc.view.frame = CGRectMake(0, 0, MainScreenWidth, _mainScrollView.height);
+    [_mainScrollView addSubview:vc.view];
+    [self addChildViewController:vc];
+    
+//    for (int i = 0; i<_cateArray.count; i++) {
+//        ExamNewMainCateListVC *vc = [[ExamNewMainCateListVC alloc] init];
+//        vc.circleType = [NSString stringWithFormat:@"%@",[_cateArray[i] objectForKey:@"id"]];
+//        vc.mainTypeArray = [NSMutableArray arrayWithArray:_cateArray];
+//        vc.mainSelectDict = [NSMutableDictionary dictionaryWithDictionary:_cateArray[i]];
+//        vc.view.frame = CGRectMake(MainScreenWidth*i, 0, MainScreenWidth, _mainScrollView.height);
+//        [_mainScrollView addSubview:vc.view];
+//        [self addChildViewController:vc];
+//    }
 }
 
 // MARK: - 滚动和点击事件最终逻辑
@@ -178,6 +188,19 @@
     self.mainScrollView.contentOffset = CGPointMake(index * MainScreenWidth, 0);
     [self cateExchanged:[_topCateView viewWithTag:index + 66]];
     _pastBtn = [_topCateView viewWithTag:index + 66];
+}
+
+- (void)getExamFirstTypeInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path examFirstTypeNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if ([[responseObject objectForKey:@"code"] integerValue]) {
+            [_cateArray removeAllObjects];
+            [_cateArray addObjectsFromArray:responseObject[@"data"]];
+            [self makeTopCateView];
+            [self makeScrollView];
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
 }
 
 @end

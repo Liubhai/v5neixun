@@ -11,11 +11,12 @@
 #import "Net_Path.h"
 #import "ExamPointModel.h"
 #import "ExamDetailViewController.h"
+#import "ExamNewSecendTypeVC.h"
 
 #import "AppDelegate.h"
 #import "V5_UserModel.h"
 
-@interface ExamPointSelectVC ()<UIScrollViewDelegate> {
+@interface ExamPointSelectVC ()<UIScrollViewDelegate, ExamNewSecendTypeVCDelegate> {
     NSInteger maxSelectCount;
 }
 
@@ -30,6 +31,11 @@
 
 @property (strong, nonatomic) NSMutableArray *selectedArray;
 
+@property (strong, nonatomic) UIButton *topCateButton;
+
+@property (strong, nonatomic) UIView *mainTypeBackView;
+@property (strong, nonatomic) UIScrollView *mainTypeScrollView;
+
 @end
 
 @implementation ExamPointSelectVC
@@ -38,7 +44,14 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    _rightButton.hidden = NO;
+    [_rightButton setImage:Image(@"lesson_screen_nor") forState:0];
+    [_rightButton setImage:[Image(@"lesson_screen_nor") converToMainColor] forState:UIControlStateSelected];
+    
     maxSelectCount = 0;
+    
+    _mainTypeArray = [[NSMutableArray alloc] init];
+    _mainSelectDict = [[NSMutableDictionary alloc] init];
     
     _firstArray = [NSMutableArray new];
     _secondArray = [NSMutableArray new];
@@ -48,14 +61,62 @@
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _titleLabel.text = SWNOTEmptyStr(_examTypeString) ? _examTypeString : @"知识点练习";
+    _titleLabel.hidden = YES;
     
     _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - (MACRO_UI_UPHEIGHT + 44 + MACRO_UI_SAFEAREA))];
     _mainScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_mainScrollView];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeRightButton) name:@"hiddenSecondNewType" object:nil];
+    
     [self makeBottomView];
     
-    [self getExamPointListData];
+    [self getExamFirstTypeInfo];
+    
+    [self getExamPointListData:@""];
+}
+
+- (void)makeMainTypeView {
+    _mainTypeBackView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _mainTypeBackView.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3].CGColor;
+    [self.view addSubview:_mainTypeBackView];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenMainTypeView)];
+    _mainTypeBackView.userInteractionEnabled = YES;
+    [_mainTypeBackView addGestureRecognizer:tap];
+    _mainTypeBackView.hidden = YES;
+    
+    _mainTypeScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 0)];
+    _mainTypeScrollView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_mainTypeScrollView];
+    _mainTypeScrollView.hidden = YES;
+}
+
+- (void)makeMainTypeUI {
+    [_mainTypeScrollView removeAllSubviews];
+    CGFloat ww = (MainScreenWidth - 30 - 24) / 3.0;
+    CGFloat hh = 32.0;
+    NSString *selectType = [NSString stringWithFormat:@"%@",_mainSelectDict[@"id"]];
+    for (int i = 0; i<_mainTypeArray.count; i++) {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(15 + (ww + 12) * (i%3), 16 + (hh + 14) * (i/3), ww, 32)];
+        btn.tag = 600 + i;
+        btn.layer.masksToBounds = YES;
+        btn.layer.cornerRadius = btn.height / 2.0;
+        [btn setTitle:[_mainTypeArray[i] objectForKey:@"title"] forState:0];
+        btn.titleLabel.font = SYSTEMFONT(13);
+        [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
+        [btn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
+        btn.backgroundColor = EdlineV5_Color.backColor;
+        if ([selectType isEqualToString:[NSString stringWithFormat:@"%@",[_mainTypeArray[i] objectForKey:@"id"]]]) {
+            btn.selected = YES;
+            btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+        }
+        [btn addTarget:self action:@selector(mainTypeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_mainTypeScrollView addSubview:btn];
+        if (i == (_mainTypeArray.count - 1)) {
+            [_mainTypeScrollView setHeight:(btn.bottom + 15) > (MainScreenHeight - MACRO_UI_UPHEIGHT) ? (MainScreenHeight - MACRO_UI_UPHEIGHT) : (btn.bottom + 15)];
+            [_mainTypeScrollView setContentSize:CGSizeMake(0, btn.bottom + 15)];
+        }
+    }
 }
 
 - (void)makeBottomView {
@@ -326,9 +387,9 @@
     [self changeRightButtonState:[self checkSelectCount] maxCount:maxSelectCount];
 }
 
-- (void)getExamPointListData {
+- (void)getExamPointListData:(NSString *)examNewType {
     if (SWNOTEmptyStr(_examModuleId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointListNet] WithAuthorization:nil paramDic:@{@"module_id":_examModuleId} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointListNet] WithAuthorization:nil paramDic:@{@"module_id":_examModuleId,@"category":examNewType} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     // 改变右上角按钮状态
@@ -351,14 +412,105 @@
 }
 
 - (void)changeRightButtonState:(NSInteger)selectCount maxCount:(NSInteger)maxCount {
-    _rightButton.hidden = NO;
-    [_rightButton setImage:nil forState:0];
-    NSString *maxcount = [NSString stringWithFormat:@"%@",@(maxSelectCount)];
-    NSString *rightTitle = [NSString stringWithFormat:@"%@/%@",@(selectCount),maxcount];
-    NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:rightTitle];
-    [att addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.themeColor} range:NSMakeRange(0, rightTitle.length - maxcount.length)];
-    [att addAttributes:@{NSForegroundColorAttributeName:HEXCOLOR(0xB7BAC1)} range:NSMakeRange(rightTitle.length - maxcount.length, maxcount.length)];
-    [_rightButton setAttributedTitle:[[NSAttributedString alloc] initWithAttributedString:att] forState:0];
+//    _rightButton.hidden = NO;
+//    [_rightButton setImage:nil forState:0];
+//    NSString *maxcount = [NSString stringWithFormat:@"%@",@(maxSelectCount)];
+//    NSString *rightTitle = [NSString stringWithFormat:@"%@/%@",@(selectCount),maxcount];
+//    NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:rightTitle];
+//    [att addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.themeColor} range:NSMakeRange(0, rightTitle.length - maxcount.length)];
+//    [att addAttributes:@{NSForegroundColorAttributeName:HEXCOLOR(0xB7BAC1)} range:NSMakeRange(rightTitle.length - maxcount.length, maxcount.length)];
+//    [_rightButton setAttributedTitle:[[NSAttributedString alloc] initWithAttributedString:att] forState:0];
+    
+    [_sureButton setTitle:[NSString stringWithFormat:@"(%@/%@)开始答题",@(selectCount),@(maxSelectCount)] forState:0];
+}
+
+- (void)headerButtonCilck:(UIButton *)sender {
+    _topCateButton.selected = !_topCateButton.selected;
+    if (_topCateButton.selected) {
+        [self makeMainTypeUI];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+        _rightButton.selected = NO;
+        _mainTypeBackView.hidden = NO;
+        _mainTypeScrollView.hidden = NO;
+    } else {
+        _mainTypeBackView.hidden = YES;
+        _mainTypeScrollView.hidden = YES;
+    }
+}
+
+- (void)mainTypeButtonClick:(UIButton *)sender {
+    _mainSelectDict = [NSMutableDictionary dictionaryWithDictionary:_mainTypeArray[sender.tag - 600]];
+    [_topCateButton setTitle:[NSString stringWithFormat:@"%@",_mainSelectDict[@"title"]] forState:0];
+    [EdulineV5_Tool dealButtonImageAndTitleUIWidthSpace:_topCateButton space:6];
+    _topCateButton.selected = NO;
+    _mainTypeBackView.hidden = YES;
+    _mainTypeScrollView.hidden = YES;
+    [self getExamPointListData:[NSString stringWithFormat:@"%@",_mainSelectDict[@"id"]]];
+}
+
+- (void)hiddenMainTypeView {
+    _topCateButton.selected = NO;
+    _mainTypeBackView.hidden = YES;
+    _mainTypeScrollView.hidden = YES;
+}
+
+- (void)rightButtonClick:(id)sender {
+    _rightButton.selected = !_rightButton.selected;
+    if (_rightButton.selected) {
+        [self hiddenMainTypeView];
+        ExamNewSecendTypeVC *vc = [[ExamNewSecendTypeVC alloc] init];
+        vc.typeString = [NSString stringWithFormat:@"%@",_mainSelectDict[@"title"]];
+        vc.typeId = [NSString stringWithFormat:@"%@",_mainSelectDict[@"id"]];
+        vc.notHiddenNav = NO;
+        vc.hiddenNavDisappear = YES;
+        vc.delegate = self;
+//        vc.delegate = self;
+//        if (SWNOTEmptyStr(coursetypeIdString)) {
+//            vc.typeId = coursetypeIdString;
+//        }
+        vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
+        [self.view addSubview:vc.view];
+        [self addChildViewController:vc];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hiddenCourseAll" object:nil];
+    }
+}
+
+- (void)getExamFirstTypeInfo {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path examFirstTypeNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        if ([[responseObject objectForKey:@"code"] integerValue]) {
+            [_mainTypeArray removeAllObjects];
+            [_mainTypeArray addObjectsFromArray:responseObject[@"data"]];
+            if (SWNOTEmptyArr(_mainTypeArray)) {
+                _mainSelectDict = [NSMutableDictionary dictionaryWithDictionary:_mainTypeArray[0]];
+            }
+            if (SWNOTEmptyDictionary(_mainSelectDict)) {
+                NSString *selectString = [NSString stringWithFormat:@"%@",_mainSelectDict[@"title"]];
+                CGFloat selectStringWitdh = [selectString sizeWithFont:SYSTEMFONT(18)].width;
+                _topCateButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, selectStringWitdh + 4 + 8, _titleLabel.height)];
+                _topCateButton.titleLabel.font = SYSTEMFONT(18);
+                [_topCateButton setTitle:selectString forState:UIControlStateNormal];
+                [_topCateButton setImage:Image(@"exam_navbar_down") forState:0];
+                [_topCateButton setImage:Image(@"exam_navbar_up") forState:UIControlStateSelected];
+                [_topCateButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateNormal];
+                [EdulineV5_Tool dealButtonImageAndTitleUIWidthSpace:_topCateButton space:6];
+                [_topCateButton addTarget:self action:@selector(headerButtonCilck:) forControlEvents:UIControlEventTouchUpInside];
+                _topCateButton.center = _titleLabel.center;
+                [_titleImage addSubview:_topCateButton];
+            }
+            [self makeMainTypeView];
+        }
+    } enError:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
+- (void)chooseExamType:(NSDictionary *)info {
+    [self getExamPointListData:[NSString stringWithFormat:@"%@",info[@"examType"]]];
+}
+
+- (void)changeRightButton {
+    _rightButton.selected = NO;
 }
 
 /*

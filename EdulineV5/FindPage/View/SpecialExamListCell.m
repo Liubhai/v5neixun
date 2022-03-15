@@ -73,12 +73,12 @@
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     [_whiteBack addSubview:_priceLabel];
     
-    _getOrExamBtn = [[UIButton alloc] initWithFrame:CGRectMake(_priceLabel.right + 14, 0, 82, 28)];
+    _getOrExamBtn = [[UIButton alloc] initWithFrame:CGRectMake(_whiteBack.width - 12 - ([NSString stringWithFormat:@"%@",IOSMoneyTitle].length>1 ? 110 : 94), 0, [NSString stringWithFormat:@"%@",IOSMoneyTitle].length>1 ? 110 : 94, 28)];
     _getOrExamBtn.backgroundColor = EdlineV5_Color.themeColor;
     _getOrExamBtn.layer.masksToBounds = YES;
     _getOrExamBtn.layer.cornerRadius = _getOrExamBtn.height / 2.0;
     [_getOrExamBtn setTitleColor:[UIColor whiteColor] forState:0];
-    _getOrExamBtn.titleLabel.font = SYSTEMFONT(14);
+    _getOrExamBtn.titleLabel.font = SYSTEMFONT(12);
     [_getOrExamBtn setTitle:@"购买" forState:0];
     [_getOrExamBtn addTarget:self action:@selector(buttonClickBy:) forControlEvents:UIControlEventTouchUpInside];
     [_whiteBack addSubview:_getOrExamBtn];
@@ -98,7 +98,7 @@
     _examPoint.hidden = YES;
     _lineView.hidden = YES;
     _learnCount.hidden = YES;
-    _priceLabel.hidden = NO;
+    _priceLabel.hidden = YES;
     _gotImage.hidden = YES;
     
     _publicTime.hidden = NO;
@@ -130,7 +130,7 @@
         }
     } else {
         // 不是免费的
-        _priceLabel.hidden = NO;
+        _priceLabel.hidden = YES;
         if ([[NSString stringWithFormat:@"%@",dict[@"has_bought"]] boolValue]) {
             // 已购买
             _priceLabel.hidden = YES;
@@ -145,7 +145,7 @@
         } else {
             _gotImage.hidden = YES;
             _examTitle.frame = CGRectMake(12, 14, _whiteBack.width - 12, 20);
-            [_getOrExamBtn setTitle:@"购买" forState:0];
+            [_getOrExamBtn setTitle:[NSString stringWithFormat:@"%@%@ | 购买",IOSMoneyTitle,dict[@"user_price"]] forState:0];
         }
     }
 }
@@ -155,7 +155,7 @@
     _examPoint.hidden = NO;
     _lineView.hidden = NO;
     _learnCount.hidden = NO;
-    _priceLabel.hidden = NO;
+    _priceLabel.hidden = YES;
     _gotImage.hidden = YES;
     
     _examTitle.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
@@ -198,7 +198,7 @@
         [_getOrExamBtn setTitle:@"开始答题" forState:0];
     } else {
         // 不是免费的
-        _priceLabel.hidden = NO;
+        _priceLabel.hidden = YES;
         if ([[NSString stringWithFormat:@"%@",dict[@"has_bought"]] boolValue]) {
             // 已购买
             _priceLabel.hidden = YES;
@@ -209,7 +209,7 @@
         } else {
             _gotImage.hidden = YES;
             _examTitle.frame = CGRectMake(12, 14, _whiteBack.width - 12, 20);
-            [_getOrExamBtn setTitle:@"购买" forState:0];
+            [_getOrExamBtn setTitle:[NSString stringWithFormat:@"%@%@ | 购买",IOSMoneyTitle,dict[@"user_price"]] forState:0];
         }
     }
     
@@ -239,7 +239,7 @@
     
     _priceLabel.frame = CGRectMake(_whiteBack.width - (100 + 14 + 82 + 15), 0, 100, 21);
     
-    _getOrExamBtn.frame = CGRectMake(_priceLabel.right + 14, 0, 82, 28);
+    _getOrExamBtn.frame = CGRectMake(_whiteBack.width - 12 - ([NSString stringWithFormat:@"%@",IOSMoneyTitle].length>1 ? 110 : 94), 0, [NSString stringWithFormat:@"%@",IOSMoneyTitle].length>1 ? 110 : 94, 28);
     
     _examTitle.text = [NSString stringWithFormat:@"%@",dict[@"title"]];
     _examPoint.numberOfLines = 0;
@@ -281,7 +281,7 @@
         [_getOrExamBtn setTitle:@"开始答题" forState:0];
     } else {
         // 不是免费的
-        _priceLabel.hidden = NO;
+        _priceLabel.hidden = YES;
         if ([[NSString stringWithFormat:@"%@",dict[@"has_bought"]] boolValue]) {
             // 已购买
             _priceLabel.hidden = YES;
@@ -292,7 +292,7 @@
         } else {
             _gotImage.hidden = YES;
             _examTitle.frame = CGRectMake(12, 14, _whiteBack.width - 12, 20);
-            [_getOrExamBtn setTitle:@"购买" forState:0];
+            [_getOrExamBtn setTitle:[NSString stringWithFormat:@"%@%@ | 购买",IOSMoneyTitle,dict[@"user_price"]] forState:0];
         }
     }
     

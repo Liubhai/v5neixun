@@ -16,6 +16,13 @@
 #import "V5_UserModel.h"
 #import "MyExamPage.h"
 
+#import "SpecialProjectExamList.h"
+#import "ExamPointSelectVC.h"
+
+#import "TaojuanListViewController.h"
+
+#import "ZhuangXiangListTreeTableVC.h"
+
 @interface ExamNewMainCateListVC ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger page;
 }
@@ -83,7 +90,7 @@
 
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
@@ -91,7 +98,6 @@
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.showsHorizontalScrollIndicator = NO;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getFirstList)];
-    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreList)];
     _tableView.mj_footer.hidden = YES;
     _tableView.tableHeaderView = _headerView;
     [self.view addSubview:_tableView];
@@ -109,6 +115,7 @@
     if (!cell) {
         cell = [[ExamNewMainListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
+    [cell setExamNewMainCellInfo:_dataSource[indexPath.row]];
     return cell;
 }
 
@@ -118,35 +125,42 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    CircleDetailViewController *vc = [[CircleDetailViewController alloc] init];
-//    vc.circle_id = [NSString stringWithFormat:@"%@",[_dataSource[indexPath.row] objectForKey:@"id"]];
-//    [self.navigationController pushViewController:vc animated:YES];
+    NSString *examTheme = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"module_type"]];
+    if ([examTheme isEqualToString:@"3"]) {
+        SpecialProjectExamList *vc = [[SpecialProjectExamList alloc] init];
+        vc.examTypeId = examTheme;
+        vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([examTheme isEqualToString:@"1"]) {
+        ExamPointSelectVC *vc = [[ExamPointSelectVC alloc] init];
+        vc.examTypeString = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
+        vc.examTypeId = examTheme;
+        vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (([examTheme isEqualToString:@"4"])) {
+        TaojuanListViewController *vc = [[TaojuanListViewController alloc] init];
+        vc.module_id = examTheme;
+        vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];;
+        vc.module_title = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"title"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([examTheme isEqualToString:@"2"]) {
+        ZhuangXiangListTreeTableVC *vc = [[ZhuangXiangListTreeTableVC alloc] init];
+        vc.examTypeId = examTheme;
+        vc.examModuleId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)getFirstList {
-    page = 1;
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    [param setObject:@(page) forKey:@"page"];
-    [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(_circleType)) {
-        [param setObject:_circleType forKey:@"type"];
-    }
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path circleListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path examMainPageNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             [_dataSource removeAllObjects];
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                if (_dataSource.count<10) {
-                    _tableView.mj_footer.hidden = YES;
-                } else {
-                    _tableView.mj_footer.hidden = NO;
-                    [_tableView.mj_footer setState:MJRefreshStateIdle];
-                }
+                [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
             }
             [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:_dataSource.count isLoading:NO tableViewShowHeight:_tableView.height];
             [_tableView reloadData];
@@ -154,38 +168,6 @@
     } enError:^(NSError * _Nonnull error) {
         if (_tableView.mj_header.refreshing) {
             [_tableView.mj_header endRefreshing];
-        }
-    }];
-}
-
-- (void)getMoreList {
-    page = page + 1;
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    [param setObject:@(page) forKey:@"page"];
-    [param setObject:@"10" forKey:@"count"];
-    // 大类型
-    if (SWNOTEmptyStr(_circleType)) {
-        [param setObject:_circleType forKey:@"type"];
-    }
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path circleListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
-        if (_tableView.mj_footer.isRefreshing) {
-            [_tableView.mj_footer endRefreshing];
-        }
-        if (SWNOTEmptyDictionary(responseObject)) {
-            if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
-                if (pass.count<10) {
-                    [_tableView.mj_footer endRefreshingWithNoMoreData];
-                }
-                [_dataSource addObjectsFromArray:pass];
-                
-                [_tableView reloadData];
-            }
-        }
-    } enError:^(NSError * _Nonnull error) {
-        page--;
-        if (_tableView.mj_footer.isRefreshing) {
-            [_tableView.mj_footer endRefreshing];
         }
     }];
 }
