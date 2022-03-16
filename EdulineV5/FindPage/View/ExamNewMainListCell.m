@@ -27,7 +27,8 @@
     _titleLabel.text = @"公开考试";
     [self.contentView addSubview:_titleLabel];
     
-    _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _titleLabel.bottom + 4, MainScreenWidth - 30, 90)];
+    _faceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _titleLabel.bottom + 4, MainScreenWidth - 30, 90 * (MainScreenWidth - 30) / 345)];
+    
     _faceImageView.layer.masksToBounds = YES;
     _faceImageView.layer.cornerRadius = 10;
     _faceImageView.clipsToBounds = YES;
