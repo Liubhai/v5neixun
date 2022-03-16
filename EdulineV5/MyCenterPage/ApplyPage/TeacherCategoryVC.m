@@ -35,7 +35,7 @@
     
     currentSelectRow = 0;
     _titleLabel.text = @"选择所属行业";
-    [_leftButton setImage:Image(@"close") forState:0];
+    [_leftButton setImage:Image(@"categoryClose") forState:0];
     
     _rightButton.frame = CGRectMake(MainScreenWidth - 15 - 50, 0, 50, 28);
     _rightButton.layer.masksToBounds = YES;
