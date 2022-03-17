@@ -887,4 +887,9 @@
     return [Net_Path fullPath:@"exam/category/second/tree" repalce:@"" byReplece:@""];
 }
 
+/** 新的知识点分类列表数据接口 */
++ (NSString *)examNewPointListNet {
+    return [Net_Path fullPath:@"exam/point/list" repalce:@"" byReplece:@""];
+}
+
 @end

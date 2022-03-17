@@ -631,6 +631,9 @@ struct NetWorkUrl {
 /** 二级分类接口 */
 + (NSString *)examSecondTypeNet;
 
+/** 新的知识点分类列表数据接口 */
++ (NSString *)examNewPointListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -18,12 +18,18 @@
 
 @interface ExamPointSelectVC ()<UIScrollViewDelegate, ExamNewSecendTypeVCDelegate> {
     NSInteger maxSelectCount;
+    /// 当前选择的试题数量按钮下标
+    NSInteger currentTestCountSelected;
 }
 
 @property (strong, nonatomic) UIButton *resetButton;//清空筛选
 @property (strong, nonatomic) UIButton *sureButton;//开始学习
 @property (strong, nonatomic) UIView *bottomView;
 @property (strong, nonatomic) UIScrollView *mainScrollView;
+
+/// 选择题量
+@property (strong, nonatomic) UIView *selectCountView;
+@property (strong, nonatomic) NSArray *selectCountArray;
 
 @property (strong, nonatomic) NSMutableArray *firstArray;
 @property (strong, nonatomic) NSMutableArray *secondArray;
@@ -57,6 +63,9 @@
     _secondArray = [NSMutableArray new];
     _thirdArray = [NSMutableArray new];
     _selectedArray = [NSMutableArray new];
+    
+    currentTestCountSelected = 1;
+    _selectCountArray = @[@"10",@"20",@"30",@"40",@"50"];
     
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
@@ -166,6 +175,91 @@
     }
 }
 
+// MARK: - 布局底部试题数量选择视图
+- (void)makeSelectCountViewUI:(CGFloat)top {
+    if (!_selectCountView) {
+        _selectCountView = [[UIView alloc] initWithFrame:CGRectMake(0, top, MainScreenWidth, 135)];
+        _selectCountView.backgroundColor = [UIColor whiteColor];
+    }
+    if (![_selectCountView superview]) {
+        [_mainScrollView addSubview:_selectCountView];
+        _mainScrollView.contentSize = CGSizeMake(0, _selectCountView.bottom);
+    }
+    [_selectCountView removeAllSubviews];
+    
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 5)];
+    line.backgroundColor = EdlineV5_Color.backColor;
+    [_selectCountView addSubview:line];
+    
+    UILabel *countTitle = [[UILabel alloc] initWithFrame:CGRectMake(15, line.bottom + 15, MainScreenWidth - 30, 31)];
+    countTitle.font = [UIFont fontWithName:@"PingFangSC-Medium" size:15];
+    countTitle.textColor = EdlineV5_Color.textFirstColor;
+    countTitle.text = @"出题数量";
+    [_selectCountView addSubview:countTitle];
+    
+    UIView *countLine = [[UIView alloc] initWithFrame:CGRectMake(15, countTitle.bottom + 14, MainScreenWidth - 30, 2)];
+    countLine.backgroundColor = HEXCOLOR(0xEBEEF5);//EdlineV5_Color.backColor;
+    [_selectCountView addSubview:countLine];
+    
+    
+    for (int i = 0; i<_selectCountArray.count; i++) {
+        UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
+        view1.layer.masksToBounds = YES;
+        view1.layer.cornerRadius = view1.height / 2.0;
+        [_selectCountView addSubview:view1];
+        
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+        btn.layer.masksToBounds = YES;
+        btn.layer.cornerRadius = btn.height / 2.0;
+        btn.backgroundColor = [UIColor clearColor];
+        [_selectCountView addSubview:btn];
+        btn.tag = 50 + i;
+        [btn addTarget:self action:@selector(countSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, countLine.bottom + 14, 30, 16.5)];
+        countLabel.font = SYSTEMFONT(12);
+        countLabel.textColor = EdlineV5_Color.textSecendColor;
+        countLabel.text = [NSString stringWithFormat:@"%@",_selectCountArray[i]];
+        [_selectCountView addSubview:countLabel];
+        
+        if (i == currentTestCountSelected) {
+            view1.frame = CGRectMake(0, 0, 18, 18);
+            view1.backgroundColor = [UIColor whiteColor];
+            view1.layer.cornerRadius = view1.height / 2.0;
+            view1.layer.borderWidth = 2;
+            view1.layer.borderColor = EdlineV5_Color.themeColor.CGColor;
+        } else {
+            view1.frame = CGRectMake(0, 0, 8, 8);
+            view1.backgroundColor = HEXCOLOR(0xEBEEF5);//EdlineV5_Color.backColor;
+            view1.layer.cornerRadius = view1.height / 2.0;
+        }
+        
+        if (i == 0) {
+            [view1 setLeft:countLine.left];
+            countLabel.textAlignment = NSTextAlignmentLeft;
+            [countLabel setLeft:countLine.left];
+        } else if (i == (_selectCountArray.count - 1)) {
+            [view1 setRight:countLine.right];
+            countLabel.textAlignment = NSTextAlignmentRight;
+            [countLabel setRight:countLine.right];
+        } else {
+            view1.centerX = (countLine.width * i) / ((_selectCountArray.count - 1) * 1.0);
+            countLabel.textAlignment = NSTextAlignmentCenter;
+            countLabel.centerX = (countLine.width * i) / ((_selectCountArray.count - 1) * 1.0);
+        }
+        view1.centerY = countLine.centerY;
+        
+        btn.centerX = view1.centerX;
+        btn.centerY = view1.centerY;
+    }
+}
+
+// MARK: -试题数量选择按钮点击事件处理
+- (void)countSelectButtonClick:(UIButton *)sender {
+    currentTestCountSelected = sender.tag - 50;
+    [self makeSelectCountViewUI:_selectCountView.top];
+}
+
 // MARK: - 布局右边分类视图
 - (void)makeScrollViewSubView:(NSMutableArray *)selectedInfo {
     if (_mainScrollView) {
@@ -202,12 +296,25 @@
             [secondBtn addTarget:self action:@selector(secondBtnClick:) forControlEvents:UIControlEventTouchUpInside];
             secondBtn.selected = ((ExamPointModel *)_secondArray[j]).isExpend;
             [hotView addSubview:secondBtn];
+            
+            UILabel *allSelectLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 60, 0, 60, 32)];
+            allSelectLabel.font = SYSTEMFONT(12);
+            allSelectLabel.textColor = EdlineV5_Color.textThirdColor;
+            allSelectLabel.centerY = secondBtn.centerY;
+            allSelectLabel.textAlignment = NSTextAlignmentRight;
+            allSelectLabel.tag = 101 + j;
+            allSelectLabel.userInteractionEnabled = YES;
+            [hotView addSubview:allSelectLabel];
+            UIGestureRecognizer *allSelectT = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(allSelectTap:)];
+            [allSelectLabel addGestureRecognizer:allSelectT];
+            allSelectLabel.text = ((ExamPointModel *)_secondArray[j]).selected ? @"取消全选" : @"全选";
+            
             [_thirdArray removeAllObjects];
             if (!((ExamPointModel *)_secondArray[j]).isExpend) {
                 [hotView setHeight:secondBtn.bottom];
                 hotYY = hotView.bottom + 20;
                 if (j == _secondArray.count - 1) {
-                    _mainScrollView.contentSize = CGSizeMake(0, hotYY);
+//                    _mainScrollView.contentSize = CGSizeMake(0, hotYY);
                 }
                 continue;
             }
@@ -260,12 +367,14 @@
             }
             hotYY = hotView.bottom + 20;
             if (j == _secondArray.count - 1) {
-                _mainScrollView.contentSize = CGSizeMake(0, hotYY);
+//                _mainScrollView.contentSize = CGSizeMake(0, hotYY);
             }
         }
     } else {
-        _mainScrollView.contentSize = CGSizeMake(0, hotYY);
+//        _mainScrollView.contentSize = CGSizeMake(0, hotYY);
     }
+    
+    [self makeSelectCountViewUI:hotYY];
 }
 
 - (void)secondBtnClick:(UIButton *)sender {
@@ -278,12 +387,12 @@
 
 - (void)thirdBtnClick:(UIButton *)sender {
     
-    if (!sender.selected) {
-        if ([self checkSelectCount] >= maxSelectCount) {
-            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"最多选择%@个知识点",@(maxSelectCount)]];
-            return;
-        }
-    }
+//    if (!sender.selected) {
+//        if ([self checkSelectCount] >= maxSelectCount) {
+//            [self showHudInView:self.view showHint:[NSString stringWithFormat:@"最多选择%@个知识点",@(maxSelectCount)]];
+//            return;
+//        }
+//    }
     
     UIView *view = (UIView *)sender.superview;
     sender.selected = !sender.selected;
@@ -306,12 +415,54 @@
     
     // 修改并置换第二层m
     secondModel.child = [NSArray arrayWithArray:passThird];
+    
+    /// 直接检索判断是不是全部选中次级分类
+    BOOL selectAll = YES;
+    for (int i = 0; i<passThird.count; i++) {
+        ExamPointModel *thirdModel = passThird[i];
+        if (!thirdModel.selected) {
+            selectAll = NO;
+            break;
+        }
+    }
+    secondModel.selected = selectAll;
+    
     [passSecond replaceObjectAtIndex:view.tag - 10 withObject:secondModel];
     
     _firstArray = [NSMutableArray arrayWithArray:passSecond];
     [self makeScrollViewSubView:_firstArray];
     
-    [self changeRightButtonState:[self checkSelectCount] maxCount:maxSelectCount];
+//    [self changeRightButtonState:[self checkSelectCount] maxCount:maxSelectCount];
+}
+
+- (void)allSelectTap:(UIGestureRecognizer *)tap {
+    if (tap.view.tag) {
+        
+    }
+    
+    UIView *view = (UIView *)tap.view.superview;
+
+    // 获取第二层model
+    NSMutableArray *passSecond = [NSMutableArray arrayWithArray:_firstArray];
+    ExamPointModel *secondModel = (ExamPointModel *)passSecond[view.tag - 10];
+    /// 全选与否 置反
+    secondModel.selected = !secondModel.selected;
+    
+    // 获取第三层model 并修改model选中状态
+    NSMutableArray *passThird = [NSMutableArray arrayWithArray:secondModel.child];
+    /// 第三层状态保持和第二层一致
+    for (int i = 0; i<passThird.count; i++) {
+        ExamPointModel *thirdModel = passThird[i];
+        thirdModel.selected = secondModel.selected;
+        [passThird replaceObjectAtIndex:i withObject:thirdModel];
+    }
+    // 修改并置换第二层m
+    secondModel.child = [NSArray arrayWithArray:passThird];
+    [passSecond replaceObjectAtIndex:view.tag - 10 withObject:secondModel];
+    
+    _firstArray = [NSMutableArray arrayWithArray:passSecond];
+    [self makeScrollViewSubView:_firstArray];
+    
 }
 
 - (NSInteger)checkSelectCount {
@@ -381,10 +532,11 @@
             [pass replaceObjectAtIndex:j withObject:secondModel];
         }
         model.child = [NSArray arrayWithArray:pass];
+        model.selected = NO;
         [_firstArray replaceObjectAtIndex:i withObject:model];
     }
     [self makeScrollViewSubView:_firstArray];
-    [self changeRightButtonState:[self checkSelectCount] maxCount:maxSelectCount];
+//    [self changeRightButtonState:[self checkSelectCount] maxCount:maxSelectCount];
 }
 
 - (void)getExamPointListData:(NSString *)examNewType {
@@ -394,7 +546,7 @@
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     // 改变右上角按钮状态
                     maxSelectCount = [[NSString stringWithFormat:@"%@",responseObject[@"data"][@"point_limit"]] integerValue];
-                    [self changeRightButtonState:0 maxCount:maxSelectCount];
+//                    [self changeRightButtonState:0 maxCount:maxSelectCount];
                     
                     [_firstArray removeAllObjects];
                     [_firstArray addObjectsFromArray:[NSArray arrayWithArray:[ExamPointModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"point_tree"]]]];
