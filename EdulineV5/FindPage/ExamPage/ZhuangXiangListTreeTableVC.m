@@ -600,7 +600,7 @@
 - (void)mainTypeButtonClick:(UIButton *)sender {
     _mainSelectDict = [NSMutableDictionary dictionaryWithDictionary:_mainTypeArray[sender.tag - 600]];
     [_topCateButton setTitle:[NSString stringWithFormat:@"%@",_mainSelectDict[@"title"]] forState:0];
-    [EdulineV5_Tool dealButtonImageAndTitleUIWidthSpace:_topCateButton space:6];
+    [EdulineV5_Tool dealButtonImageAndTitleUI:_topCateButton];
     _topCateButton.selected = NO;
     _mainTypeBackView.hidden = YES;
     _mainTypeScrollView.hidden = YES;
@@ -656,13 +656,13 @@
             if (SWNOTEmptyDictionary(_mainSelectDict)) {
                 NSString *selectString = [NSString stringWithFormat:@"%@",_mainSelectDict[@"title"]];
                 CGFloat selectStringWitdh = [selectString sizeWithFont:SYSTEMFONT(18)].width;
-                _topCateButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, selectStringWitdh + 4 + 8, _titleLabel.height)];
+                _topCateButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, _titleLabel.width, _titleLabel.height)];
                 _topCateButton.titleLabel.font = SYSTEMFONT(18);
                 [_topCateButton setTitle:selectString forState:UIControlStateNormal];
                 [_topCateButton setImage:Image(@"exam_navbar_down") forState:0];
                 [_topCateButton setImage:Image(@"exam_navbar_up") forState:UIControlStateSelected];
                 [_topCateButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateNormal];
-                [EdulineV5_Tool dealButtonImageAndTitleUIWidthSpace:_topCateButton space:6];
+                [EdulineV5_Tool dealButtonImageAndTitleUI:_topCateButton];
                 [_topCateButton addTarget:self action:@selector(headerButtonCilck:) forControlEvents:UIControlEventTouchUpInside];
                 _topCateButton.center = _titleLabel.center;
                 [_titleImage addSubview:_topCateButton];
