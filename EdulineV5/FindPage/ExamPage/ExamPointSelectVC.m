@@ -20,6 +20,7 @@
     NSInteger maxSelectCount;
     /// 当前选择的试题数量按钮下标
     NSInteger currentTestCountSelected;
+    NSString *examNewType;/// 新优化选择的分类
 }
 
 @property (strong, nonatomic) UIButton *resetButton;//清空筛选
@@ -64,6 +65,7 @@
     _thirdArray = [NSMutableArray new];
     _selectedArray = [NSMutableArray new];
     
+    examNewType = @"";
     currentTestCountSelected = 1;
     _selectCountArray = @[@"10",@"20",@"30",@"40",@"50"];
     
@@ -82,7 +84,7 @@
     
     [self getExamFirstTypeInfo];
     
-    [self getExamPointListData:@""];
+//    [self getExamPointListData:@""];
 }
 
 - (void)makeMainTypeView {
@@ -181,6 +183,7 @@
         _selectCountView = [[UIView alloc] initWithFrame:CGRectMake(0, top, MainScreenWidth, 135)];
         _selectCountView.backgroundColor = [UIColor whiteColor];
     }
+    _selectCountView.frame = CGRectMake(0, top, MainScreenWidth, 135);
     if (![_selectCountView superview]) {
         [_mainScrollView addSubview:_selectCountView];
         _mainScrollView.contentSize = CGSizeMake(0, _selectCountView.bottom);
@@ -519,6 +522,7 @@
     vc.examType = _examTypeId;
     vc.examTitle = _examTypeString;
     vc.examModuleId = _examModuleId;
+    vc.examNewSelectCount = _selectCountArray[currentTestCountSelected];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -541,7 +545,7 @@
 
 - (void)getExamPointListData:(NSString *)examNewType {
     if (SWNOTEmptyStr(_examModuleId)) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examPointListNet] WithAuthorization:nil paramDic:@{@"module_id":_examModuleId,@"category":examNewType} finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path examNewPointListNet] WithAuthorization:nil paramDic:@{@"module_id":_examModuleId,@"category":examNewType} finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     // 改变右上角按钮状态
@@ -554,6 +558,8 @@
                         ((ExamPointModel *)_firstArray[i]).isExpend = YES;
                     }
                     if (SWNOTEmptyArr(_firstArray)) {
+                        [self makeScrollViewSubView:_firstArray];
+                    } else {
                         [self makeScrollViewSubView:_firstArray];
                     }
                 }
@@ -635,6 +641,8 @@
             [_mainTypeArray addObjectsFromArray:responseObject[@"data"]];
             if (SWNOTEmptyArr(_mainTypeArray)) {
                 _mainSelectDict = [NSMutableDictionary dictionaryWithDictionary:_mainTypeArray[0]];
+                examNewType = [NSString stringWithFormat:@"%@",_mainSelectDict[@"id"]];
+                [self getExamPointListData:examNewType];
             }
             if (SWNOTEmptyDictionary(_mainSelectDict)) {
                 NSString *selectString = [NSString stringWithFormat:@"%@",_mainSelectDict[@"title"]];

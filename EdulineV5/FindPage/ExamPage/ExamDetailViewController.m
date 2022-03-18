@@ -639,6 +639,7 @@
             getUrl = [Net_Path examPointIdListNet];
             [param setObject:_examIds forKey:@"point_ids"];
             [param setObject:_examModuleId forKey:@"module_id"];
+            [param setObject:_examNewSelectCount forKey:@"topic_num"];
         } else if ([_examType isEqualToString:@"2"]) {
             getUrl = [Net_Path specialExamIdListNet];
             [param setObject:_examIds forKey:@"special_id"];
