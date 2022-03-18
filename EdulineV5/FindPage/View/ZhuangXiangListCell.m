@@ -254,10 +254,10 @@
 - (void)refreshArrow {
     
     if (self.treeItem.isExpand) {
-        self.jiantouImageView.image = Image(@"zhuanxiang_minus");
+        self.jiantouImageView.image = [Image(@"zhuanxiang_minus") converToMainColor];
 //        self.jiantouImageView.transform = CGAffineTransformMakeRotation(M_PI);
     } else {
-        self.jiantouImageView.image = Image(@"zhuanxaing_plussign");
+        self.jiantouImageView.image = [Image(@"zhuanxaing_plussign") converToMainColor];
 //        self.jiantouImageView.transform = CGAffineTransformMakeRotation(0);
     }
 }
