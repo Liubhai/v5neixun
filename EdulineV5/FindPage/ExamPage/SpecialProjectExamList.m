@@ -221,6 +221,7 @@
         OrderViewController *vc = [[OrderViewController alloc] init];
         vc.orderTypeString = @"exam_public";
         vc.orderId = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"paper_id"]];
+        vc.publicExamId = [NSString stringWithFormat:@"%@",[cell.specialInfo objectForKey:@"id"]];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

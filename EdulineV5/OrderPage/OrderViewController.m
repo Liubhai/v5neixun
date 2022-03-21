@@ -386,6 +386,7 @@
             [param setObject:_orderId forKey:@"special_id"];
         } else if ([_orderTypeString isEqualToString:@"exam_public"]) {
             [param setObject:_orderId forKey:@"paper_id"];
+            [param setObject:_publicExamId forKey:@"id"];
         } else if ([_orderTypeString isEqualToString:@"exam_volume"]) {
             [param setObject:_orderId forKey:@"rollup_id"];
         }
@@ -458,6 +459,7 @@
         [pass setObject:_orderId forKey:@"special_id"];
     } else if ([_orderTypeString isEqualToString:@"exam_public"]) {
         [pass setObject:_orderId forKey:@"paper_id"];
+        [pass setObject:_publicExamId forKey:@"id"];
     } else if ([_orderTypeString isEqualToString:@"exam_volume"]) {
         [pass setObject:_orderId forKey:@"rollup_id"];
     }

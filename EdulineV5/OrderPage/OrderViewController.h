@@ -66,6 +66,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *orderTypeString;
 @property (strong, nonatomic) NSString *orderId;
 
+/** 公开考试ID */
+@property (strong, nonatomic) NSString *publicExamId;
+
 
 @property (strong, nonatomic) CouponModel *couponModel;
 
