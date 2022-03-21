@@ -606,16 +606,20 @@
         }
         
         NSString *timeLine = [NSString stringWithFormat:@"%@",[[_orderInfo objectForKey:@"data"] objectForKey:@"term_time"]];
-        if ([timeLine isEqualToString:@"0"]) {
-            _timeLabel.text = @"永久有效";
-        } else if (timeLine.length>4) {
-            _timeLabel.text = [NSString stringWithFormat:@"%@前有效",[EdulineV5_Tool timeForYYYYMMDDNianYueRI:timeLine]];
-            _timeLabel.textColor = EdlineV5_Color.textThirdColor;
+        if ([[_orderInfo objectForKey:@"data"] objectForKey:@"term_time"]) {
+            if ([timeLine isEqualToString:@"0"]) {
+                _timeLabel.text = @"永久有效";
+            } else if (timeLine.length>4) {
+                _timeLabel.text = [NSString stringWithFormat:@"%@前有效",[EdulineV5_Tool timeForYYYYMMDDNianYueRI:timeLine]];
+                _timeLabel.textColor = EdlineV5_Color.textThirdColor;
+            } else {
+                _timeLabel.text = [NSString stringWithFormat:@"购买之日起%@天内有效",timeLine];
+                NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_timeLabel.text];
+                [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(5, timeLine.length)];
+                _timeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+            }
         } else {
-            _timeLabel.text = [NSString stringWithFormat:@"购买之日起%@天内有效",timeLine];
-            NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_timeLabel.text];
-            [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(5, timeLine.length)];
-            _timeLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+            _timeLabel.text = @"永久有效";
         }
     }
 }
