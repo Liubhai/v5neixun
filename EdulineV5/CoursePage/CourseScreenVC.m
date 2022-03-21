@@ -35,7 +35,7 @@
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
-    [_dataSource addObjectsFromArray:@[@{@"title":@"免费",@"type":@"free"},@{@"title":@"可试听",@"type":@"audition"},@{@"title":@"习题练习",@"type":@"exam"},@{@"title":@"会员",@"type":@"vip"},@{@"title":@"活动",@"type":@"event"}]];
+    [_dataSource addObjectsFromArray:@[@{@"title":@"免费",@"type":@"free"},@{@"title":@"可试听",@"type":@"audition"},@{@"title":@"会员",@"type":@"vip"},@{@"title":@"活动",@"type":@"event"}]];//@{@"title":@"习题练习",@"type":@"exam"}
     [self makeSubViews];
     [self makeBottomView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenCourseTypeVC:) name:@"hiddenCourseAll" object:nil];
