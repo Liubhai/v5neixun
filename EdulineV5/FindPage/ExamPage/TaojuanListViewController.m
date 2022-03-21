@@ -373,6 +373,7 @@
         ExamNewSecendTypeVC *vc = [[ExamNewSecendTypeVC alloc] init];
         vc.typeString = [NSString stringWithFormat:@"%@",_mainSelectDict[@"title"]];
         vc.typeId = [NSString stringWithFormat:@"%@",_mainSelectDict[@"id"]];
+        vc.currentSelectId = examNewType;
         vc.notHiddenNav = NO;
         vc.hiddenNavDisappear = YES;
         vc.delegate = self;

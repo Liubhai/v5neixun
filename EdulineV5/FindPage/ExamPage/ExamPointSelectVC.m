@@ -619,6 +619,7 @@
         ExamNewSecendTypeVC *vc = [[ExamNewSecendTypeVC alloc] init];
         vc.typeString = [NSString stringWithFormat:@"%@",_mainSelectDict[@"title"]];
         vc.typeId = [NSString stringWithFormat:@"%@",_mainSelectDict[@"id"]];
+        vc.currentSelectId = examNewType;
         vc.notHiddenNav = NO;
         vc.hiddenNavDisappear = YES;
         vc.delegate = self;
@@ -666,7 +667,8 @@
 }
 
 - (void)chooseExamType:(NSDictionary *)info {
-    [self getExamPointListData:[NSString stringWithFormat:@"%@",info[@"examType"]]];
+    examNewType = [NSString stringWithFormat:@"%@",info[@"examType"]];
+    [self getExamPointListData:examNewType];
 }
 
 - (void)changeRightButton {

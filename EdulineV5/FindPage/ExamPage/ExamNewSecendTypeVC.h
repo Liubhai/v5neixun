@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) id<ExamNewSecendTypeVCDelegate> delegate;
 @property (strong, nonatomic) NSString *typeId;// 当前选中的类型
 @property (strong, nonatomic) NSString *typeString;// 区分课程还是公开考试
+@property (strong, nonatomic) NSString *currentSelectId;// 当前选中的分类ID
 
 @end
 

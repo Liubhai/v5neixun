@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TeacherCategoryModel : NSObject
 
 @property (strong, nonatomic) NSString *cateGoryId;
+@property (strong, nonatomic) NSString *pid;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSArray *child;
 @property (strong, nonatomic) CateGoryModelThird *all;
@@ -25,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CateGoryModelSecond : NSObject
 
 @property (strong, nonatomic) NSString *cateGoryId;
+@property (strong, nonatomic) NSString *pid;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSArray *child;
 @property (assign, nonatomic) BOOL selected;
@@ -34,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CateGoryModelThird : NSObject
 
 @property (strong, nonatomic) NSString *cateGoryId;
+@property (strong, nonatomic) NSString *pid;
 @property (strong, nonatomic) NSString *title;
 @property (assign, nonatomic) BOOL selected;
 

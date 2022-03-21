@@ -299,6 +299,7 @@
                         NSMutableDictionary *passdict1 = [NSMutableDictionary new];
                         [passdict1 setObject:@"全部" forKey:@"title"];
                         [passdict1 setObject:[NSString stringWithFormat:@"%@",passdict[@"id"]] forKey:@"id"];
+                        [passdict1 setObject:[NSString stringWithFormat:@"%@",passdict[@"id"]] forKey:@"pid"];
                         [thirdChild insertObject:passdict1 atIndex:0];
                         NSArray *thirdArray = [NSArray arrayWithArray:thirdChild];
                         [passdict setObject:thirdArray forKey:@"child"];
@@ -310,7 +311,8 @@
                 NSMutableDictionary *passdict = [NSMutableDictionary new];
                 [passdict setObject:@"全部" forKey:@"title"];
                 [passdict setObject:_typeId forKey:@"id"];
-                [passdict setObject:@"1" forKey:@"selected"];
+                [passdict setObject:_typeId forKey:@"pid"];
+//                [passdict setObject:@"1" forKey:@"selected"];
                 [pass insertObject:passdict atIndex:0];
                 
                 /// 组装成完成的一个拥有3级的模型字典
@@ -323,9 +325,86 @@
                 [_firstTypeArray removeAllObjects];
                 
                 [_firstTypeArray addObjectsFromArray:[NSArray arrayWithArray:[TeacherCategoryModel mj_objectArrayWithKeyValuesArray:@[firstDict]]]];
+                
                 if (SWNOTEmptyArr(_firstTypeArray)) {
+                    BOOL hasSelect = NO;
+                    /// 这里处理保留上次选中状态
+                    TeacherCategoryModel *model = _firstTypeArray[0];
+                    /// 记录当前第三级
+                    CateGoryModelSecond *modelsecondCurrent;
+                    NSMutableArray *secondArray = [NSMutableArray arrayWithArray:model.child];
+                    for (int i = 0; i<secondArray.count; i++) {
+                        /// 第二级
+                        if (hasSelect) {
+                            break;
+                        }
+                        CateGoryModelSecond *modelsecond = secondArray[i];
+                        if ([modelsecond.pid isEqualToString:_currentSelectId]) {
+                            if (i == 0) {
+                                modelsecond.selected = YES;
+                                hasSelect = YES;
+                                modelsecondCurrent = modelsecond;
+                                [secondArray replaceObjectAtIndex:i withObject:modelsecond];
+                                model.child = [NSArray arrayWithArray:secondArray];
+                                [_firstTypeArray replaceObjectAtIndex:0 withObject:model];
+                                break;
+                            }
+                        } else {
+                            if ([modelsecond.cateGoryId isEqualToString:_currentSelectId]) {
+                                modelsecond.selected = YES;
+                                hasSelect = YES;
+                                NSMutableArray *thirdArray = [NSMutableArray arrayWithArray:modelsecond.child];
+                                if (SWNOTEmptyArr(thirdArray)) {
+                                    CateGoryModelThird *thirdModel = thirdArray[0];
+                                    thirdModel.selected = YES;
+                                    // 替换
+                                    [thirdArray replaceObjectAtIndex:0 withObject:thirdModel];
+                                }
+                                modelsecond.child = [NSArray arrayWithArray:thirdArray];
+                                modelsecondCurrent = modelsecond;
+                                [secondArray replaceObjectAtIndex:i withObject:modelsecond];
+                                model.child = [NSArray arrayWithArray:secondArray];
+                                [_firstTypeArray replaceObjectAtIndex:0 withObject:model];
+                                break;
+                            } else {
+                                NSMutableArray *thirdArray = [NSMutableArray arrayWithArray:modelsecond.child];
+                                for (int j = 0; j<thirdArray.count; j++) {
+                                    CateGoryModelThird *thirdModel = thirdArray[j];
+                                    if ([thirdModel.cateGoryId isEqualToString:_currentSelectId]) {
+                                        thirdModel.selected = YES;
+                                        //
+                                        modelsecond.selected = YES;
+                                        hasSelect = YES;
+                                        
+                                        [thirdArray replaceObjectAtIndex:j withObject:thirdModel];
+                                        modelsecond.child = [NSArray arrayWithArray:thirdArray];
+                                        modelsecondCurrent = modelsecond;
+                                        [secondArray replaceObjectAtIndex:i withObject:modelsecond];
+                                        model.child = [NSArray arrayWithArray:secondArray];
+                                        [_firstTypeArray replaceObjectAtIndex:0 withObject:model];
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!hasSelect) {
+                        if (SWNOTEmptyArr(secondArray)) {
+                            CateGoryModelSecond *modelSecond = secondArray[0];
+                            modelSecond.selected = YES;
+                            modelsecondCurrent = modelSecond;
+                            [secondArray replaceObjectAtIndex:0 withObject:modelSecond];
+                            model.child = [NSArray arrayWithArray:secondArray];
+                            [_firstTypeArray replaceObjectAtIndex:0 withObject:model];
+                        }
+                    }
+                    
                     [self makeBottomView];
                     [self makeSecondTypeUI:_firstTypeArray[0]];
+                    if (modelsecondCurrent) {
+                        [self makeThirdTypeUI:modelsecondCurrent];
+                    }
+                    
                     self.view.hidden = NO;
                 }
             }
