@@ -2925,7 +2925,7 @@
     currentFaceTime = currentFaceTime + 10;
     if ([ShowUserFace isEqualToString:@"1"] && !(_currentCourseFinalModel.model.audition>0 && !_currentCourseFinalModel.model.is_buy)) {
         if (faceVerifyCount>0) {
-            if (currentFaceTime>=(previousFaceTime + 20 + (arc4random() % randomNum))) {
+            if (currentFaceTime>=(previousFaceTime + 20 + (arc4random() % (_currentCourseFinalModel.model.face_data.verify_timespan * 60)))) {
                 previousFaceTime = currentFaceTime;
                 wekself.userFaceCourseRecordDetailVerifyResult = ^(BOOL result) {
                     if (result) {

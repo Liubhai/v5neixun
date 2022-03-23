@@ -1977,7 +1977,7 @@
                 if (popAlertCount>0) {
                     //_currentExamPaperDetailModel.face_data.verify_timespan * 60
                     // 正序计时 就直接用最小间隔去处理
-                    if (remainTime % 10 == 0) {
+                    if (remainTime % (_currentExamPaperDetailModel.face_data.verify_timespan * 60) == 0) {
                         // 弹框
                         if (paperTimer) {
                             [paperTimer setFireDate:[NSDate distantFuture]];
