@@ -82,11 +82,11 @@
         btn.layer.cornerRadius = btnHeight / 2.0;
         if ([_screenType isEqualToString:_dataSource[i][@"type"]]) {
             btn.selected = YES;
-            const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
-            btn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
+//            const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
+//            btn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
         } else {
             btn.selected = NO;
-            btn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
+//            btn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
         }
         if (i == _dataSource.count - 1) {
             [_screenBackView setHeight:btn.bottom];
@@ -133,13 +133,13 @@
     for (UIButton *btn in _screenBackView.subviews) {
         if (btn.tag == sender.tag) {
             btn.selected = YES;
-            const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
-            btn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
+//            const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
+//            btn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
             _screenType = _dataSource[sender.tag - 400][@"type"];
             _screenTitle = _dataSource[sender.tag - 400][@"title"];
         } else {
             btn.selected = NO;
-            btn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
+//            btn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
         }
     }
 }
