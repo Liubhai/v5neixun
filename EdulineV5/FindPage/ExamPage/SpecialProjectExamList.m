@@ -112,7 +112,7 @@
         btn.backgroundColor = EdlineV5_Color.backColor;
         if ([selectType isEqualToString:[NSString stringWithFormat:@"%@",[_mainTypeArray[i] objectForKey:@"id"]]]) {
             btn.selected = YES;
-            btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+//            btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
         }
         [btn addTarget:self action:@selector(mainTypeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_mainTypeScrollView addSubview:btn];

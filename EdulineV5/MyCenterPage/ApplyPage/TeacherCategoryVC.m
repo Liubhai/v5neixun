@@ -215,11 +215,11 @@
                     [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
                     btn.backgroundColor = EdlineV5_Color.backColor;
                     btn.selected = ((CateGoryModelThird *)_thirdArray[i]).selected;
-                    if (btn.selected) {
-                        btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
-                    } else {
-                        btn.backgroundColor = EdlineV5_Color.backColor;
-                    }
+//                    if (btn.selected) {
+//                        btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+//                    } else {
+//                        btn.backgroundColor = EdlineV5_Color.backColor;
+//                    }
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = btnHeight / 2.0;
                     CGFloat btnWidth = ([btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2) > (hotView.width - 30) ? (hotView.width - 30) : ([btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2);//[btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2;
@@ -387,11 +387,11 @@
 - (void)thirdBtnClick:(UIButton *)sender {
     UIView *view = (UIView *)sender.superview;
     sender.selected = !sender.selected;
-    if (sender.selected) {
-        sender.backgroundColor = EdlineV5_Color.buttonWeakeColor;
-    } else {
-        sender.backgroundColor = EdlineV5_Color.backColor;
-    }
+//    if (sender.selected) {
+//        sender.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+//    } else {
+//        sender.backgroundColor = EdlineV5_Color.backColor;
+//    }
     
     // 获取第一层model
     TeacherCategoryModel *model = (TeacherCategoryModel *)_firstArray[currentSelectRow];

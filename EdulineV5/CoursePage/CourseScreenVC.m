@@ -217,17 +217,17 @@
         _upAndDown = @"up";
     }
     if (_lowBtn.selected) {
-        const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
-        _lowBtn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
+//        const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
+//        _lowBtn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
     } else {
-        _lowBtn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
+//        _lowBtn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
     }
     
     if (_highBtn.selected) {
-        const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
-        _highBtn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
+//        const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
+//        _highBtn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
     } else {
-        _highBtn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
+//        _highBtn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
     }
 }
 
@@ -252,12 +252,12 @@
     for (UIButton *btn in _screenBackView.subviews) {
         if (btn.tag == sender.tag) {
             btn.selected = YES;
-            const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
-            btn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
+//            const CGFloat *components = [EdulineV5_Tool getColorRGB:EdlineV5_Color.buttonWeakeColor];
+//            btn.layer.backgroundColor = [UIColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:0.5].CGColor;
             _screenType = _dataSource[sender.tag - 400][@"type"];
         } else {
             btn.selected = NO;
-            btn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
+//            btn.layer.backgroundColor = EdlineV5_Color.backColor.CGColor;
         }
     }
 }

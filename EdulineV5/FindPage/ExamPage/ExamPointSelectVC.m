@@ -119,7 +119,7 @@
         btn.backgroundColor = EdlineV5_Color.backColor;
         if ([selectType isEqualToString:[NSString stringWithFormat:@"%@",[_mainTypeArray[i] objectForKey:@"id"]]]) {
             btn.selected = YES;
-            btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+//            btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
         }
         [btn addTarget:self action:@selector(mainTypeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_mainTypeScrollView addSubview:btn];
@@ -211,7 +211,7 @@
         view1.layer.cornerRadius = view1.height / 2.0;
         [_selectCountView addSubview:view1];
         
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
         btn.layer.masksToBounds = YES;
         btn.layer.cornerRadius = btn.height / 2.0;
         btn.backgroundColor = [UIColor clearColor];
@@ -346,11 +346,11 @@
                     [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
                     btn.backgroundColor = EdlineV5_Color.backColor;
                     btn.selected = ((ExamPointModel *)_thirdArray[i]).selected;
-                    if (btn.selected) {
-                        btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
-                    } else {
-                        btn.backgroundColor = EdlineV5_Color.backColor;
-                    }
+//                    if (btn.selected) {
+//                        btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+//                    } else {
+//                        btn.backgroundColor = EdlineV5_Color.backColor;
+//                    }
                     btn.layer.masksToBounds = YES;
                     btn.layer.cornerRadius = btnHeight / 2.0;
                     CGFloat btnWidth = [btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2;
@@ -399,11 +399,11 @@
     
     UIView *view = (UIView *)sender.superview;
     sender.selected = !sender.selected;
-    if (sender.selected) {
-        sender.backgroundColor = EdlineV5_Color.buttonWeakeColor;
-    } else {
-        sender.backgroundColor = EdlineV5_Color.backColor;
-    }
+//    if (sender.selected) {
+//        sender.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+//    } else {
+//        sender.backgroundColor = EdlineV5_Color.backColor;
+//    }
 
     // 获取第二层model
     NSMutableArray *passSecond = [NSMutableArray arrayWithArray:_firstArray];

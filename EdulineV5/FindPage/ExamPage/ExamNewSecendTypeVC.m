@@ -114,11 +114,11 @@
             [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
             btn.backgroundColor = EdlineV5_Color.backColor;
             btn.selected = ((CateGoryModelSecond *)_secondTypeArray[i]).selected;
-            if (btn.selected) {
-                btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
-            } else {
-                btn.backgroundColor = EdlineV5_Color.backColor;
-            }
+//            if (btn.selected) {
+//                btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+//            } else {
+//                btn.backgroundColor = EdlineV5_Color.backColor;
+//            }
             btn.layer.masksToBounds = YES;
             btn.layer.cornerRadius = btnHeight / 2.0;
             CGFloat btnWidth = ([btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2) > (MainScreenWidth - 30) ? (MainScreenWidth - 30) : ([btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2);
@@ -215,11 +215,11 @@
             [btn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
             btn.backgroundColor = EdlineV5_Color.backColor;
             btn.selected = ((CateGoryModelThird *)_thirdTypeArray[i]).selected;
-            if (btn.selected) {
-                btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
-            } else {
-                btn.backgroundColor = EdlineV5_Color.backColor;
-            }
+//            if (btn.selected) {
+//                btn.backgroundColor = EdlineV5_Color.buttonWeakeColor;
+//            } else {
+//                btn.backgroundColor = EdlineV5_Color.backColor;
+//            }
             btn.layer.masksToBounds = YES;
             btn.layer.cornerRadius = btnHeight / 2.0;
             CGFloat btnWidth = ([btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2) > (MainScreenWidth - 30) ? (MainScreenWidth - 30) : ([btn.titleLabel.text sizeWithFont:btn.titleLabel.font].width + btnInSpace * 2);
