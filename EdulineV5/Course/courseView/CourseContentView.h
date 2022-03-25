@@ -36,6 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSDictionary *courseInfo;
 
 @property (strong, nonatomic) UILabel *sectionCountLabel;
+
+@property (strong, nonatomic) UIView *circle1;
+@property (strong, nonatomic) UIView *circle2;
+
 @property (strong, nonatomic) JustCircleProgress *circleView;
 @property (strong, nonatomic) UILabel *percentlabel;
 

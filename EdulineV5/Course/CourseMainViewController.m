@@ -261,7 +261,7 @@
     [_navZanButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_faceImageView addSubview:_navZanButton];
     
-    _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86 + 4 + 18)];
+    _courseContentView = [[CourseContentView alloc] initWithFrame:CGRectMake(0, _faceImageView.bottom, MainScreenWidth, 86)];
     [_headerView addSubview:_courseContentView];
     
     /**优惠卷*/
