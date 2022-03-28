@@ -33,6 +33,7 @@
     _courseTypeImage.image = Image(@"class_icon");
     _courseTypeImage.layer.masksToBounds = YES;
     _courseTypeImage.layer.cornerRadius = 2;
+    _courseTypeImage.hidden = YES;
     [self.contentView addSubview:_courseTypeImage];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
@@ -63,7 +64,7 @@
     _cellType = cellType;
     [_courseFace sd_setImageWithURL:EdulineUrlString([info objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
     // 1 点播 2 直播 3 面授 4 专辑
-    _courseTypeImage.hidden = NO;
+    _courseTypeImage.hidden = YES;
     NSString *courseType = [NSString stringWithFormat:@"%@",[info objectForKey:@"course_type"]];
     if ([courseType isEqualToString:@"1"]) {
         _courseTypeImage.image = Image(@"dianbo");
@@ -119,7 +120,7 @@
     }
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if ([[info objectForKey:@"is_buy"] integerValue]) {
-        _priceLabel.text = @"已购买";
+        _priceLabel.text = @"已报名";
         _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
     } else {
         if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"]) {

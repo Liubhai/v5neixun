@@ -35,6 +35,7 @@
     _courseTypeImage.layer.masksToBounds = YES;
     _courseTypeImage.layer.cornerRadius = 2;
     [self.contentView addSubview:_courseTypeImage];
+    _courseTypeImage.hidden = YES;
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
     _titleL.textColor = EdlineV5_Color.textFirstColor;

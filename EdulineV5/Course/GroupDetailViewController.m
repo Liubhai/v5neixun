@@ -128,6 +128,7 @@
     _courseTypeIcon.layer.masksToBounds = YES;
     _courseTypeIcon.layer.cornerRadius = 2;
     [_courseInfoBackView addSubview:_courseTypeIcon];
+    _courseTypeIcon.hidden = YES;
     
     _courseActivityIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImage.right - 32, _courseFaceImage.bottom - 17, 32, 17)];
     _courseActivityIcon.hidden = YES;

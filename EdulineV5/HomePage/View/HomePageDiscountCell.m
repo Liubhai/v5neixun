@@ -76,6 +76,7 @@
         courseTypeImage.layer.masksToBounds = YES;
         courseTypeImage.layer.cornerRadius = 2;
         [view addSubview:courseTypeImage];
+        courseTypeImage.hidden = YES;
         
         UIImageView *courseActivityIcon = [[UIImageView alloc] initWithFrame:CGRectMake(TeaImageView.right - 52, TeaImageView.bottom - 17, 52, 17)];
         courseActivityIcon.image = Image(@"discount_icon");

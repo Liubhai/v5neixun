@@ -46,6 +46,7 @@
     _courseTypeImage.layer.masksToBounds = YES;
     _courseTypeImage.layer.cornerRadius = 2;
     [self.contentView addSubview:_courseTypeImage];
+    _courseTypeImage.hidden = YES;
     
     self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, imageViewHeight, self.bounds.size.width, labelHeight)];
     self.textLabel.font = SYSTEMFONT(15);

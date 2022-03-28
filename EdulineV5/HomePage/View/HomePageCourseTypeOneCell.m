@@ -34,6 +34,7 @@
     _courseTypeImage.image = Image(@"class_icon");
     _courseTypeImage.layer.masksToBounds = YES;
     _courseTypeImage.layer.cornerRadius = 2;
+    _courseTypeImage.hidden = YES;
     [self.contentView addSubview:_courseTypeImage];
     
     _weekSortIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 37, 33)];

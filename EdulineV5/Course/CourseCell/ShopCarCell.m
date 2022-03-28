@@ -39,9 +39,10 @@
     
     _courseTypeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFaceImageView.left, _courseFaceImageView.top, 33, 20)];
     _courseTypeImageView.image = Image(@"class_icon");
-    _courseFaceImageView.layer.masksToBounds = YES;
-    _courseFaceImageView.layer.cornerRadius = 2;
+    _courseTypeImageView.layer.masksToBounds = YES;
+    _courseTypeImageView.layer.cornerRadius = 2;
     [self.contentView addSubview:_courseTypeImageView];
+    _courseTypeImageView.hidden = YES;
     
     _themeLabel = [[TYAttributedLabel alloc] initWithFrame:CGRectMake(_courseFaceImageView.right + 8, 10, MainScreenWidth - (_courseFaceImageView.right + 8) - 15, 40)];
     _themeLabel.textColor = EdlineV5_Color.textFirstColor;

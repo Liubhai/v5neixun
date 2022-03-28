@@ -31,6 +31,7 @@
     _courseTypeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_courseFace.right - 32, _courseFace.top + 8, 32, 18)];
     _courseTypeImage.image = Image(@"class_icon");
     [self.contentView addSubview:_courseTypeImage];
+    _courseTypeImage.hidden = YES;
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50)];
     _titleL.textColor = EdlineV5_Color.textFirstColor;

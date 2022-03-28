@@ -81,7 +81,7 @@
         } else if ([courseType isEqualToString:@"4"]) {
             courseTypeImage.image = Image(@"class_icon");
         }
-        
+        courseTypeImage.hidden = YES;
         courseFace.frame = CGRectMake(singleLeftSpace, topSpace, MainScreenWidth/2.0 - singleRightSpace * 2 - singleLeftSpace, faceImageHeight);
         titleL.frame = CGRectMake(courseFace.left, courseFace.bottom + 6, courseFace.width, 20);
         learnCountLabel.frame = CGRectMake(courseFace.left, titleL.bottom + 13, courseFace.width, 16);

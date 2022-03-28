@@ -59,6 +59,7 @@
     _courseTypeImage.layer.masksToBounds = YES;
     _courseTypeImage.layer.cornerRadius = 2;
     [self.contentView addSubview:_courseTypeImage];
+    _courseTypeImage.hidden = YES;
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 20)];
     _titleL.text = @"你是个傻屌";

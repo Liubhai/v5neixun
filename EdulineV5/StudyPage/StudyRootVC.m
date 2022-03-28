@@ -292,6 +292,7 @@
             icon.image = Image(@"class_icon");
         }
         [studyScrollView addSubview:icon];
+        icon.hidden = YES;
         
         UILabel *learnTime = [[UILabel alloc] initWithFrame:CGRectMake(face.left, face.bottom - 16, face.width, 16)];
         learnTime.layer.backgroundColor = [UIColor colorWithRed:48/255.0 green:49/255.0 blue:51/255.0 alpha:0.5].CGColor;
