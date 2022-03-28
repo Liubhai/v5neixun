@@ -26,6 +26,7 @@
 
 // 内训版
 #import "HomeExamCell.h"
+#import "HomeZixunCell.h"
 
 // 直播测试
 //#import "LiveRoomViewController.h"
@@ -48,7 +49,7 @@
 #import "CourseTreeListViewController.h"
 #import "InstitutionsChooseVC.h"
 
-@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate,HomePageDiscountCellDelegate> {
+@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate,HomePageDiscountCellDelegate, HomeZixunCellDelegate> {
     BOOL isWeek;// 显示周榜还是月榜
 }
 

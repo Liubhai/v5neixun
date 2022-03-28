@@ -963,6 +963,7 @@
 		78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */; };
 		78F94CFF27F185080010ED35 /* NeixunMyCenterListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94CFE27F185080010ED35 /* NeixunMyCenterListView.m */; };
 		78F94D0227F192290010ED35 /* HomeExamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0127F192290010ED35 /* HomeExamCell.m */; };
+		78F94D0527F19D2C0010ED35 /* HomeZixunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0427F19D2C0010ED35 /* HomeZixunCell.m */; };
 		78FB7E0A2508AB5000344437 /* UnBindMsgCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */; };
 /* End PBXBuildFile section */
 
@@ -2918,6 +2919,8 @@
 		78F94CFE27F185080010ED35 /* NeixunMyCenterListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NeixunMyCenterListView.m; sourceTree = "<group>"; };
 		78F94D0027F192290010ED35 /* HomeExamCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeExamCell.h; sourceTree = "<group>"; };
 		78F94D0127F192290010ED35 /* HomeExamCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeExamCell.m; sourceTree = "<group>"; };
+		78F94D0327F19D2C0010ED35 /* HomeZixunCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeZixunCell.h; sourceTree = "<group>"; };
+		78F94D0427F19D2C0010ED35 /* HomeZixunCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeZixunCell.m; sourceTree = "<group>"; };
 		78FB7E082508AB5000344437 /* UnBindMsgCodeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnBindMsgCodeVC.h; sourceTree = "<group>"; };
 		78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnBindMsgCodeVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
@@ -4954,6 +4957,8 @@
 				78D4EC3926E7471D002E9493 /* HomePageDiscountCell.m */,
 				78F94D0027F192290010ED35 /* HomeExamCell.h */,
 				78F94D0127F192290010ED35 /* HomeExamCell.m */,
+				78F94D0327F19D2C0010ED35 /* HomeZixunCell.h */,
+				78F94D0427F19D2C0010ED35 /* HomeZixunCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -7570,6 +7575,7 @@
 				788E9595253FE24E0089251E /* aestab.c in Sources */,
 				7879573E240FA9B00013F95F /* MBProgressHUD+Add.m in Sources */,
 				78795757240FAA7A0013F95F /* UIView+HUD.m in Sources */,
+				78F94D0527F19D2C0010ED35 /* HomeZixunCell.m in Sources */,
 				787956D6240F9FCC0013F95F /* STRIAPManager.m in Sources */,
 				780487E92510A433001118F3 /* EmptyCell.m in Sources */,
 				786CD55C25EF6F7B00172B88 /* ExamRecordList.m in Sources */,
