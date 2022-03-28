@@ -22,21 +22,23 @@
 - (void)makeSubViews {
     _lianzaiIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 41, 18)];
     _lianzaiIcon.image = Image(@"star_icon");
+    _lianzaiIcon.hidden = YES;
     [self addSubview:_lianzaiIcon];
     
     _courseTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_lianzaiIcon.right + 8, 12, MainScreenWidth - (_lianzaiIcon.right + 8) - 15, 32)];
     _courseTitleLabel.textColor = EdlineV5_Color.textFirstColor;
     _courseTitleLabel.font = SYSTEMFONT(16);
-    _courseTitleLabel.text = @"面授课考试标题显示标题文字有点标题显";
+//    _courseTitleLabel.text = @"面授课考试标题显示标题文字有点标题显";
     [self addSubview:_courseTitleLabel];
     _lianzaiIcon.centerY = _courseTitleLabel.centerY;
     
     _courseScore = [[UILabel alloc] initWithFrame:CGRectMake(_lianzaiIcon.left + 20, _lianzaiIcon.top, 25, 18)];
-    _courseScore.text = @"4.8";
+//    _courseScore.text = @"4.8";
     _courseScore.textColor = EdlineV5_Color.textzanColor;
     _courseScore.font = SYSTEMFONT(12);
     _courseScore.backgroundColor = [UIColor clearColor];
     [self addSubview:_courseScore];
+    _courseScore.hidden = YES;
     
     /** 不带边框星星 **/
     _courseStar = [[StarEvaluator alloc] initWithFrame:CGRectMake(_courseScore.right + 3, _courseScore.top, 76, 12)];
@@ -57,12 +59,14 @@
     _circle1.layer.cornerRadius = _circle1.height / 2.0;
     _circle1.backgroundColor = HEXCOLOR(0xD6D6D6);//EdlineV5_Color.backColor;
     [self addSubview:_circle1];
+    _circle1.hidden = YES;
     _circle1.centerY = _sectionCountLabel.centerY;
     
     _courseLearn = [[UILabel alloc] initWithFrame:CGRectMake(_circle1.right + 8, _sectionCountLabel.top, 58, 20)];
     _courseLearn.font = SYSTEMFONT(12);
     _courseLearn.textColor = EdlineV5_Color.textThirdColor;
-    _courseLearn.text = @"12人在学";
+//    _courseLearn.text = @"12人在学";
+    _courseLearn.hidden = YES;
     [self addSubview:_courseLearn];
     
     _circle2 = [[UIView alloc] initWithFrame:CGRectMake(_courseLearn.right + 4, 0, 3, 3)];
@@ -70,6 +74,7 @@
     _circle2.layer.cornerRadius = _circle2.height / 2.0;
     _circle2.backgroundColor = HEXCOLOR(0xD6D6D6);//EdlineV5_Color.backColor;
     [self addSubview:_circle2];
+    _circle2.hidden = YES;
     _circle2.centerY = _sectionCountLabel.centerY;
     
     _coursePrice = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 150, 0, 150, 34)];
@@ -204,12 +209,15 @@
         _courseScore.hidden = YES;
         _courseLearn.hidden = YES;
         _dateTimeLabel.hidden = YES;
+        _circle1.hidden = YES;
+        _circle2.hidden = YES;
         
         _sectionCountLabel.hidden = NO;
         _detailButton.hidden = NO;
         _detailButton.centerY = _courseTitleLabel.centerY;
         
         _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
+        [_sectionCountLabel setWidth:100];
         NSString *sectionCount = [NSString stringWithFormat:@"%@",_courseInfo[@"section_count"]];
         NSString *finishCount = [NSString stringWithFormat:@"%@",_courseInfo[@"finished_num"]];
         NSString *finishRate = [NSString stringWithFormat:@"%@",_courseInfo[@"learn_rate"]];
@@ -223,7 +231,7 @@
         }
         _percentlabel.text = [NSString stringWithFormat:@"%@%%",finishRate];
         _dateTimeLabel.hidden = YES;
-        _lineView1.frame = CGRectMake(0, _courseScore.bottom + 10, MainScreenWidth, 4);
+        _lineView1.frame = CGRectMake(0, 86, MainScreenWidth, 4);
         [self setHeight:_lineView1.bottom];
 //        if ([[NSString stringWithFormat:@"%@",_courseInfo[@"course_type"]] isEqualToString:@"4"]) {
 //            _sectionCountLabel.hidden = YES;
@@ -249,7 +257,11 @@
 //            [self setHeight:_lineView1.bottom];
 //        }
     } else {
-        
+        _lianzaiIcon.hidden = NO;
+        _courseLearn.hidden = NO;
+        _courseScore.hidden = NO;
+        _circle1.hidden = NO;
+        _circle2.hidden = NO;
         _coursePrice.centerY = _sectionCountLabel.centerY;
         
         NSString *is_buy = [NSString stringWithFormat:@"%@",_courseInfo[@"is_buy"]];
@@ -258,7 +270,12 @@
             
             _coursePrice.hidden = YES;
             
-            _sectionCountLabel.text = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
+            NSString *allString = [NSString stringWithFormat:@"已完成：%@/%@",_courseInfo[@"finished_num"],_courseInfo[@"section_count"]];
+            
+            NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:allString];
+            [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.textFirstColor} range:NSMakeRange(4, allString.length - 4)];
+            _sectionCountLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+            
             // 有效期处理
             NSString *term_time = [NSString stringWithFormat:@"%@",contentInfo[@"term_rest"]];
             if ([term_time isEqualToString:@"-1"]) {
