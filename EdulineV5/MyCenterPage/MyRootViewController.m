@@ -43,13 +43,16 @@
 #import "MyCenterBalanceView.h"
 #import "MyCenterUserInfoView.h"
 
+// 内训版类型列表
+#import "NeixunMyCenterListView.h"
+
 //
 #import "MyCenterTypeOneCell.h"
 #import "MyCenterTypeTwoCell.h"
 #import "UIImage+Util.h"
 #import "NSObject+PYThemeExtension.h"
 
-@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate,MyCenterBalanceViewDelegate,MyCenterTypeOneCellDelegate> {
+@interface MyRootViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,MyCenterUserInfoViewDelegate,MyCenterOrderViewDelegate,MyCenterBalanceViewDelegate,MyCenterTypeOneCellDelegate, NeixunMyCenterListViewDelegate> {
     BOOL shouldLoad;
 }
 
@@ -58,6 +61,9 @@
 @property (strong, nonatomic) MyCenterOrderView *mycenterOrderView;
 @property (strong, nonatomic) MyCenterBalanceView *myCenterBalanceView;
 @property (strong, nonatomic) MyCenterUserInfoView *myCenterUserInfoView;
+
+@property (strong, nonatomic) NeixunMyCenterListView *neixunCenterListView;
+
 @property (strong, nonatomic) UIView *headerView;
 @property (strong, nonatomic) UIImageView *vipEnterImageView;
 
@@ -137,45 +143,51 @@
     _myCenterBalanceView.delegate = self;
     [_headerView addSubview:_myCenterBalanceView];
     
-    _mycenterOrderView = [[MyCenterOrderView alloc] initWithFrame:CGRectMake(15, SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_myCenterUserInfoView.bottom - (130 - 23)) : (_myCenterUserInfoView.bottom - (130 + 13)), MainScreenWidth - 30, 130)];
-    _mycenterOrderView.delegate = self;
-    [_headerView addSubview:_mycenterOrderView];
+    _neixunCenterListView = [[NeixunMyCenterListView alloc] initWithFrame:CGRectMake(15, SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_myCenterUserInfoView.bottom - (130 - 23)) : (_myCenterUserInfoView.bottom - (130 + 13)), MainScreenWidth - 30, 130)];
+    _neixunCenterListView.delegate = self;
+    [_headerView addSubview:_neixunCenterListView];
     
-    _vipEnterImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _mycenterOrderView.bottom + 8, MainScreenWidth - 30, 65)];
-    _vipEnterImageView.image = Image(@"new_vip_icon");
-    _vipEnterImageView.layer.masksToBounds = YES;
-    _vipEnterImageView.layer.cornerRadius = 10;
-    _vipEnterImageView.clipsToBounds = YES;
-//    _vipEnterImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [_headerView addSubview:_vipEnterImageView];
-    _vipEnterImageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *vipTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToMenberCenter)];
-    [_vipEnterImageView addGestureRecognizer:vipTap];
-    _vipEnterImageView.hidden = YES;
+    [_headerView setHeight:MAX(_myCenterUserInfoView.bottom, _neixunCenterListView.bottom)];
     
-    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
-        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_vipEnterImageView.bottom - 10) : _myCenterUserInfoView.bottom];
-        if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
-            _vipEnterImageView.hidden = NO;
-            _vipEnterImageView.image = Image(@"renew_vip_icon");
-        } else if ([[V5_UserModel vipStatus] isEqualToString:@"2"]) {
-            _vipEnterImageView.hidden = NO;
-            _vipEnterImageView.image = Image(@"renew_vip_icon");
-        } else if ([[V5_UserModel vipStatus] isEqualToString:@"0"]) {
-            _vipEnterImageView.hidden = NO;
-            _vipEnterImageView.image = Image(@"new_vip_icon");
-        } else {
-            _vipEnterImageView.hidden = YES;
-            [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
-        }
-        if ([ShowAudit isEqualToString:@"1"]) {
-            _vipEnterImageView.hidden = YES;
-            [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
-        }
-    } else {
-        _vipEnterImageView.hidden = YES;
-        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? _mycenterOrderView.bottom : _myCenterUserInfoView.bottom];
-    }
+//    _mycenterOrderView = [[MyCenterOrderView alloc] initWithFrame:CGRectMake(15, SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_myCenterUserInfoView.bottom - (130 - 23)) : (_myCenterUserInfoView.bottom - (130 + 13)), MainScreenWidth - 30, 130)];
+//    _mycenterOrderView.delegate = self;
+//    [_headerView addSubview:_mycenterOrderView];
+//
+//    _vipEnterImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _mycenterOrderView.bottom + 8, MainScreenWidth - 30, 65)];
+//    _vipEnterImageView.image = Image(@"new_vip_icon");
+//    _vipEnterImageView.layer.masksToBounds = YES;
+//    _vipEnterImageView.layer.cornerRadius = 10;
+//    _vipEnterImageView.clipsToBounds = YES;
+////    _vipEnterImageView.contentMode = UIViewContentModeScaleAspectFill;
+//    [_headerView addSubview:_vipEnterImageView];
+//    _vipEnterImageView.userInteractionEnabled = YES;
+//    UITapGestureRecognizer *vipTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToMenberCenter)];
+//    [_vipEnterImageView addGestureRecognizer:vipTap];
+//    _vipEnterImageView.hidden = YES;
+    
+//    if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
+//        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_vipEnterImageView.bottom - 10) : _myCenterUserInfoView.bottom];
+//        if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
+//            _vipEnterImageView.hidden = NO;
+//            _vipEnterImageView.image = Image(@"renew_vip_icon");
+//        } else if ([[V5_UserModel vipStatus] isEqualToString:@"2"]) {
+//            _vipEnterImageView.hidden = NO;
+//            _vipEnterImageView.image = Image(@"renew_vip_icon");
+//        } else if ([[V5_UserModel vipStatus] isEqualToString:@"0"]) {
+//            _vipEnterImageView.hidden = NO;
+//            _vipEnterImageView.image = Image(@"new_vip_icon");
+//        } else {
+//            _vipEnterImageView.hidden = YES;
+//            [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
+//        }
+//        if ([ShowAudit isEqualToString:@"1"]) {
+//            _vipEnterImageView.hidden = YES;
+//            [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
+//        }
+//    } else {
+//        _vipEnterImageView.hidden = YES;
+//        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? _mycenterOrderView.bottom : _myCenterUserInfoView.bottom];
+//    }
 }
 
 - (void)makeTableView {
@@ -197,7 +209,7 @@
 //    } else {
 //        return 1;
 //    }
-    return 1;;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -433,6 +445,69 @@
     }
 }
 
+// MARK: - 内训版点击事件
+- (void)neixunJumpToOtherPage:(UIButton *)sender {
+    if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+        [AppDelegate presentLoginNav:self];
+        return;
+    }
+    NSString *iconKey = [NSString stringWithFormat:@"%@",[_iconArray[sender.tag - 66] objectForKey:@"key"]];
+    if ([iconKey isEqualToString:@"wenda"]) {
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+    } else if ([iconKey isEqualToString:@"comment"]) {
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+    } else if ([iconKey isEqualToString:@"note"]) {
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+    } else if ([iconKey isEqualToString:@"collection"]) {
+        MyCollectCourseVC *vc = [[MyCollectCourseVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"record"]) {
+        LearnRecordVC *vc = [[LearnRecordVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"doc"]) {
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+    } else if ([iconKey isEqualToString:@"storage"]) {
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+    } else if ([iconKey isEqualToString:@"vip"]) {
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+    } else if ([iconKey isEqualToString:@"coupon"]) {
+        MycouponsRootVC *vc = [[MycouponsRootVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"exchange"]) {
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+    } else if ([iconKey isEqualToString:@"subordinate"]) {
+        MyRecommendViewController *vc = [[MyRecommendViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"teacher"]) {
+        if (SWNOTEmptyDictionary(_userInfo)) {
+            NSString *userSchoolId = [NSString stringWithFormat:@"%@",[[[_userInfo objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"mhm_id"]];
+            if (SWNOTEmptyStr(userSchoolId)) {
+                TeacherApplyVC *vc = [[TeacherApplyVC alloc] init];
+                vc.userSchoolId = userSchoolId;
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
+            }
+        } else {
+            [self showHudInView:self.view showHint:@"用户信息未包含所属机构信息,不能进行讲师认证"];
+        }
+    } else if ([iconKey isEqualToString:@"school"]) {
+        InstitutionApplyVC *vc = [[InstitutionApplyVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"address"]) {
+        [self showHudInView:self.view showHint:@"功能开发中,敬请期待"];
+    } else if ([iconKey isEqualToString:@"my_classes"]) {
+        ClassCourseListVC *vc = [[ClassCourseListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"my_teach"]) {
+        MyTeachingRootVC *vc = [[MyTeachingRootVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"my_exams"]) {
+        MyExamPage *vc = [[MyExamPage alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 // MARK: - MyCenterUserInfoViewDelegate(进入个人信息页面)
 - (void)goToUserCircleListVC {
     [self leftButtonClick:nil];
@@ -553,33 +628,38 @@
                 _myCenterBalanceView.frame = CGRectMake(0, _myCenterUserInfoView.userFaceImageView.bottom + 15, MainScreenWidth, SWNOTEmptyStr([V5_UserModel oauthToken]) ? 45 : 0);
                 _myCenterBalanceView.hidden = SWNOTEmptyStr([V5_UserModel oauthToken]) ? NO : YES;
                 
-                _mycenterOrderView.frame = CGRectMake(15, SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_myCenterUserInfoView.bottom - (130 - 23)) : (_myCenterUserInfoView.bottom - (130 + 13)), MainScreenWidth - 30, 130);
+                _neixunCenterListView.frame = CGRectMake(15, SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_myCenterUserInfoView.bottom - (130 - 23)) : (_myCenterUserInfoView.bottom - (130 + 13)), MainScreenWidth - 30, _iconArray.count * 50.0);
+                [_neixunCenterListView setListinfo:_iconArray];
                 
-                _vipEnterImageView.frame = CGRectMake(15, _mycenterOrderView.bottom + 8, MainScreenWidth - 30, 65);
+                [_headerView setHeight:MAX(_myCenterUserInfoView.bottom, _neixunCenterListView.bottom)];
                 
-                if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
-                    [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_vipEnterImageView.bottom - 10) : _myCenterUserInfoView.bottom];
-                    if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
-                        _vipEnterImageView.hidden = NO;
-                        _vipEnterImageView.image = Image(@"renew_vip_icon");
-                    } else if ([[V5_UserModel vipStatus] isEqualToString:@"2"]) {
-                        _vipEnterImageView.hidden = NO;
-                        _vipEnterImageView.image = Image(@"renew_vip_icon");
-                    } else if ([[V5_UserModel vipStatus] isEqualToString:@"0"]) {
-                        _vipEnterImageView.hidden = NO;
-                        _vipEnterImageView.image = Image(@"new_vip_icon");
-                    } else {
-                        _vipEnterImageView.hidden = YES;
-                        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
-                    }
-                    if ([ShowAudit isEqualToString:@"1"]) {
-                        _vipEnterImageView.hidden = YES;
-                        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
-                    }
-                } else {
-                    _vipEnterImageView.hidden = YES;
-                    [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? _mycenterOrderView.bottom : _myCenterUserInfoView.bottom];
-                }
+//                _mycenterOrderView.frame = CGRectMake(15, SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_myCenterUserInfoView.bottom - (130 - 23)) : (_myCenterUserInfoView.bottom - (130 + 13)), MainScreenWidth - 30, 130);
+//
+//                _vipEnterImageView.frame = CGRectMake(15, _mycenterOrderView.bottom + 8, MainScreenWidth - 30, 65);
+//
+//                if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
+//                    [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_vipEnterImageView.bottom - 10) : _myCenterUserInfoView.bottom];
+//                    if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
+//                        _vipEnterImageView.hidden = NO;
+//                        _vipEnterImageView.image = Image(@"renew_vip_icon");
+//                    } else if ([[V5_UserModel vipStatus] isEqualToString:@"2"]) {
+//                        _vipEnterImageView.hidden = NO;
+//                        _vipEnterImageView.image = Image(@"renew_vip_icon");
+//                    } else if ([[V5_UserModel vipStatus] isEqualToString:@"0"]) {
+//                        _vipEnterImageView.hidden = NO;
+//                        _vipEnterImageView.image = Image(@"new_vip_icon");
+//                    } else {
+//                        _vipEnterImageView.hidden = YES;
+//                        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
+//                    }
+//                    if ([ShowAudit isEqualToString:@"1"]) {
+//                        _vipEnterImageView.hidden = YES;
+//                        [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? (_mycenterOrderView.bottom + 14) : _myCenterUserInfoView.bottom];
+//                    }
+//                } else {
+//                    _vipEnterImageView.hidden = YES;
+//                    [_headerView setHeight:SWNOTEmptyStr([V5_UserModel oauthToken]) ? _mycenterOrderView.bottom : _myCenterUserInfoView.bottom];
+//                }
                 [self.myCenterBalanceView setBalanceInfo:_userInfo];
                 _tableView.tableHeaderView = _headerView;
                 [self reloadUserInfo];

@@ -961,6 +961,7 @@
 		78F7C5D124EFC2AF0010F1E9 /* XLCardSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CA24EFC2AD0010F1E9 /* XLCardSwitch.m */; };
 		78F7C5D224EFC2AF0010F1E9 /* XLCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */; };
 		78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */; };
+		78F94CFF27F185080010ED35 /* NeixunMyCenterListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94CFE27F185080010ED35 /* NeixunMyCenterListView.m */; };
 		78FB7E0A2508AB5000344437 /* UnBindMsgCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */; };
 /* End PBXBuildFile section */
 
@@ -2912,6 +2913,8 @@
 		78F7C5CD24EFC2AD0010F1E9 /* XLCardSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XLCardSwitch.h; sourceTree = "<group>"; };
 		78F7C5CE24EFC2AD0010F1E9 /* XLCardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardModel.m; sourceTree = "<group>"; };
 		78F7C5CF24EFC2AD0010F1E9 /* XLCardSwitchFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XLCardSwitchFlowLayout.m; sourceTree = "<group>"; };
+		78F94CFD27F185080010ED35 /* NeixunMyCenterListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NeixunMyCenterListView.h; sourceTree = "<group>"; };
+		78F94CFE27F185080010ED35 /* NeixunMyCenterListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NeixunMyCenterListView.m; sourceTree = "<group>"; };
 		78FB7E082508AB5000344437 /* UnBindMsgCodeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnBindMsgCodeVC.h; sourceTree = "<group>"; };
 		78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnBindMsgCodeVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
@@ -4963,6 +4966,8 @@
 				78AA139F24469D04007087F7 /* MyCenterTypeOneCell.m */,
 				78AA13A12446AB00007087F7 /* MyCenterTypeTwoCell.h */,
 				78AA13A22446AB00007087F7 /* MyCenterTypeTwoCell.m */,
+				78F94CFD27F185080010ED35 /* NeixunMyCenterListView.h */,
+				78F94CFE27F185080010ED35 /* NeixunMyCenterListView.m */,
 				787E19AF24566FAE00E2E016 /* OrderCell.h */,
 				787E19B024566FAE00E2E016 /* OrderCell.m */,
 				789DB01F24658C8D001302B4 /* OrderFinalCell.h */,
@@ -7498,6 +7503,7 @@
 				788E95B7253FE24E0089251E /* BaseEducationManager+RTC.m in Sources */,
 				78B118AE2733881C00A3B8CB /* CCBaseViewController.m in Sources */,
 				788D4EA525907DE300D024AC /* SetMoneyPwFirstVC.m in Sources */,
+				78F94CFF27F185080010ED35 /* NeixunMyCenterListView.m in Sources */,
 				788E9593253FE24E0089251E /* prng.c in Sources */,
 				78B1163F272A439900A3B8CB /* HDPortraitToolBaseView.m in Sources */,
 				78B1163A272A439900A3B8CB /* HDPortraitToolDynamicView.m in Sources */,
