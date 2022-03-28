@@ -154,7 +154,7 @@
     [self.view addSubview:_headerView];
     
     
-    NSArray *titleArray = @[@"课程类型",SWNOTEmptyStr(_cateStr) ? _cateStr : @"分类",SWNOTEmptyStr(courseSortString) ? courseSortString : @"排序",@"筛选"];
+    NSArray *titleArray = @[@"课程类型",SWNOTEmptyStr(_cateStr) ? _cateStr : @"分类",SWNOTEmptyStr(courseSortString) ? courseSortString : @"排序"];//@"筛选"
     CGFloat ButtonH = 45;
     CGFloat ButtonW = MainScreenWidth / titleArray.count;
     
@@ -440,7 +440,7 @@
         _classOrLiveButton.selected = !_classOrLiveButton.selected;
         _classTypeButton.selected = NO;
         _moreButton.selected = NO;
-        _screeningButton.selected = NO;
+//        _screeningButton.selected = NO;
         if (_classOrLiveButton.selected) {
             CourseTypeVC *vc = [[CourseTypeVC alloc] init];
             vc.notHiddenNav = !_isSearch;
@@ -458,7 +458,7 @@
         _classTypeButton.selected = !_classTypeButton.selected;
         _classOrLiveButton.selected = NO;
         _moreButton.selected = NO;
-        _screeningButton.selected = NO;
+//        _screeningButton.selected = NO;
         if (_classTypeButton.selected) {
             
             TeacherCategoryVC *vc = [[TeacherCategoryVC alloc] init];
@@ -490,7 +490,7 @@
         _moreButton.selected = !_moreButton.selected;
         _classOrLiveButton.selected = NO;
         _classTypeButton.selected = NO;
-        _screeningButton.selected = NO;
+//        _screeningButton.selected = NO;
         if (_moreButton.selected) {
             CourseSortVC *vc = [[CourseSortVC alloc] init];
             vc.notHiddenNav = !_isSearch;
@@ -582,7 +582,7 @@
 }
 
 - (void)cleanChooseScreen:(NSDictionary *)info {
-    _screeningButton.selected = NO;
+//    _screeningButton.selected = NO;
     screenId = @"";
     screenPriceUpAndDown = @"";
     maxPrice = @"";
@@ -593,7 +593,7 @@
 }
 
 - (void)sureChooseScreen:(NSDictionary *)info {
-    _screeningButton.selected = NO;
+//    _screeningButton.selected = NO;
     if (SWNOTEmptyDictionary(info)) {
         screenId = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenId"]];
         screenPriceUpAndDown = [NSString stringWithFormat:@"%@",[info objectForKey:@"screenUpAndDown"]];
