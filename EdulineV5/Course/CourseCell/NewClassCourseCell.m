@@ -67,6 +67,7 @@
     _priceLabel.layer.borderColor = EdlineV5_Color.faildColor.CGColor;
     _priceLabel.layer.borderWidth = 1;
     _priceLabel.font = SYSTEMFONT(11);
+    _priceLabel.hidden = YES;
     [self.contentView addSubview:_priceLabel];
     
     _courseRightBtn = [[UIImageView alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 14, 0, 14, 8)];
@@ -228,6 +229,9 @@
                 _freeImageView.hidden = YES;
             }
         }
+        
+        _freeImageView.hidden = YES;
+        _priceLabel.hidden = YES;
         
         // 处理学习记录ui
         _learnTimeLabel.frame = CGRectMake(MainScreenWidth - 15 - 85, 0, 85, 50);

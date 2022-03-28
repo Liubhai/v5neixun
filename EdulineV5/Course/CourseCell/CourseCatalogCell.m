@@ -339,6 +339,10 @@
             _freeImageView.hidden = YES;
         }
     }
+    
+    _freeImageView.hidden = YES;
+    _priceLabel.hidden = YES;
+    
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     CGFloat titleWidth = ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4) > 150 ? 150 : ([_titleLabel.text sizeWithFont:_titleLabel.font].width + 4);
     [_titleLabel setWidth:titleWidth];

@@ -354,7 +354,7 @@
             if (self.courseButton) {
                 [self.seeFreeIcon setOrigin:CGPointMake(self.courseButton.width / 2.0 + 17, self.courseButton.height / 2.0 - 14)];
                 self.seeFreeIcon.hidden = YES;
-                [self.courseButton addSubview:self.seeFreeIcon];
+//                [self.courseButton addSubview:self.seeFreeIcon];
             }
             
             if (SWNOTEmptyDictionary(self.dataSource)) {

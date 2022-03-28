@@ -659,7 +659,7 @@
             if (self.introButton) {
                 [self.seeFreeIcon setOrigin:CGPointMake(self.introButton.width / 2.0 + 17, self.introButton.height / 2.0 - 14)];
                 self.seeFreeIcon.hidden = YES;
-                [self.introButton addSubview:self.seeFreeIcon];
+//                [self.introButton addSubview:self.seeFreeIcon];
             }
             
             if (SWNOTEmptyDictionary(self.dataSource)) {
