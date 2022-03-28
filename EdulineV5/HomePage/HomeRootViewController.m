@@ -24,6 +24,9 @@
 #import "HomePageHotRecommendedCell.h"
 #import "HomePageDiscountCell.h"
 
+// 内训版
+#import "HomeExamCell.h"
+
 // 直播测试
 //#import "LiveRoomViewController.h"
 //#import "BCLiveRoomViewController.h"
@@ -577,12 +580,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
-        static NSString *reuse = @"HomePageCourseTypeOnefavoriteCourseCell";
-        HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//        static NSString *reuse = @"HomePageCourseTypeOnefavoriteCourseCell";
+//        HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+//        if (!cell) {
+//            cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+//        }
+//        [cell setHomePageCourseTypeOneCellInfo:_sortArray[indexPath.section][@"list"][indexPath.row]];
+//        return cell;
+        static NSString *reuse = @"HomeExamCell";
+        HomeExamCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
-            cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+            cell = [[HomeExamCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell setHomePageCourseTypeOneCellInfo:_sortArray[indexPath.section][@"list"][indexPath.row]];
         return cell;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendCourse"]) {
         static NSString *reuse = @"HomePageHotRecommendedCell";
