@@ -45,6 +45,7 @@
 
 // 内训版类型列表
 #import "NeixunMyCenterListView.h"
+#import "MyCreditVC.h"
 
 //
 #import "MyCenterTypeOneCell.h"
@@ -574,7 +575,7 @@
         return;
     }
     if (sender.tag == 0) {
-        MyBalanceVC *vc = [[MyBalanceVC alloc] init];
+        MyCreditVC *vc = [[MyCreditVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (sender.tag == 2) {
         if ([ShowAudit isEqualToString:@"1"]) {

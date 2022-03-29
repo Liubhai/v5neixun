@@ -964,6 +964,7 @@
 		78F94CFF27F185080010ED35 /* NeixunMyCenterListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94CFE27F185080010ED35 /* NeixunMyCenterListView.m */; };
 		78F94D0227F192290010ED35 /* HomeExamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0127F192290010ED35 /* HomeExamCell.m */; };
 		78F94D0527F19D2C0010ED35 /* HomeZixunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0427F19D2C0010ED35 /* HomeZixunCell.m */; };
+		78F94D0827F2A39F0010ED35 /* MyCreditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0727F2A39F0010ED35 /* MyCreditVC.m */; };
 		78FB7E0A2508AB5000344437 /* UnBindMsgCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */; };
 /* End PBXBuildFile section */
 
@@ -2921,6 +2922,8 @@
 		78F94D0127F192290010ED35 /* HomeExamCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeExamCell.m; sourceTree = "<group>"; };
 		78F94D0327F19D2C0010ED35 /* HomeZixunCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeZixunCell.h; sourceTree = "<group>"; };
 		78F94D0427F19D2C0010ED35 /* HomeZixunCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeZixunCell.m; sourceTree = "<group>"; };
+		78F94D0627F2A39F0010ED35 /* MyCreditVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCreditVC.h; sourceTree = "<group>"; };
+		78F94D0727F2A39F0010ED35 /* MyCreditVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCreditVC.m; sourceTree = "<group>"; };
 		78FB7E082508AB5000344437 /* UnBindMsgCodeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnBindMsgCodeVC.h; sourceTree = "<group>"; };
 		78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnBindMsgCodeVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
@@ -3589,6 +3592,8 @@
 				789DB01D2465785C001302B4 /* MyScoreVC.m */,
 				784D648C26D490A400461A21 /* MyScoreNewVC.h */,
 				784D648D26D490A400461A21 /* MyScoreNewVC.m */,
+				78F94D0627F2A39F0010ED35 /* MyCreditVC.h */,
+				78F94D0727F2A39F0010ED35 /* MyCreditVC.m */,
 				789DB02224663EC9001302B4 /* MyIncomeVC.h */,
 				789DB02324663ECA001302B4 /* MyIncomeVC.m */,
 				784E5CFC24AC693000646916 /* MoubaoBindViewController.h */,
@@ -7653,6 +7658,7 @@
 				78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */,
 				782AC43725BC125B009130F9 /* ZhuangXiangListTreeTableVC.m in Sources */,
 				78B115F9272A439900A3B8CB /* HDPlayerBasePublicCell.m in Sources */,
+				78F94D0827F2A39F0010ED35 /* MyCreditVC.m in Sources */,
 				78795734240FA3840013F95F /* ZLNavigationController.m in Sources */,
 				78D97FF124B83C58000DE0E4 /* ClassCourseListVC.m in Sources */,
 				7853164E245040CF007E239E /* UINavigationController+EdulineStatusBar.m in Sources */,
