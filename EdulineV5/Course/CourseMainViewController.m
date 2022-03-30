@@ -116,6 +116,9 @@
 @property (strong, nonatomic) UIButton *navZanButton;
 @property (strong, nonatomic) UIButton *navShareButton;
 
+/** 内训培训计划学分 */
+@property (strong, nonatomic) UILabel *creditLabel;
+
 @end
 
 @implementation CourseMainViewController
@@ -238,6 +241,20 @@
     _faceImageView.image = DefaultImage;
     _faceImageView.userInteractionEnabled = YES;
     [_headerView addSubview:_faceImageView];
+    
+    /// 学分
+    _creditLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - 74, _faceImageView.bottom - 31, 74, 31)];
+    _creditLabel.font = SYSTEMFONT(15);
+    _creditLabel.textColor = [UIColor whiteColor];
+    _creditLabel.textAlignment = NSTextAlignmentCenter;
+    _creditLabel.text = @"10学分";
+    _creditLabel.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.36].CGColor;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_creditLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(8, 8)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = _creditLabel.bounds;
+    maskLayer.path = maskPath.CGPath;
+    _creditLabel.layer.mask = maskLayer;
+    [_headerView addSubview:_creditLabel];
     
     _courseActivityView = [[CourseActivityView alloc] initWithFrame:CGRectMake(0, _faceImageView.height - 45, MainScreenWidth, 45)];
     [_headerView addSubview:_courseActivityView];
