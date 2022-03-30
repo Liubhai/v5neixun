@@ -965,6 +965,8 @@
 		78F94D0227F192290010ED35 /* HomeExamCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0127F192290010ED35 /* HomeExamCell.m */; };
 		78F94D0527F19D2C0010ED35 /* HomeZixunCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0427F19D2C0010ED35 /* HomeZixunCell.m */; };
 		78F94D0827F2A39F0010ED35 /* MyCreditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0727F2A39F0010ED35 /* MyCreditVC.m */; };
+		78F94D0B27F3F86E0010ED35 /* MyCertificateListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0A27F3F86E0010ED35 /* MyCertificateListVC.m */; };
+		78F94D0E27F3FFD60010ED35 /* MyCertificateListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78F94D0D27F3FFD60010ED35 /* MyCertificateListCell.m */; };
 		78FB7E0A2508AB5000344437 /* UnBindMsgCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */; };
 /* End PBXBuildFile section */
 
@@ -2924,6 +2926,10 @@
 		78F94D0427F19D2C0010ED35 /* HomeZixunCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeZixunCell.m; sourceTree = "<group>"; };
 		78F94D0627F2A39F0010ED35 /* MyCreditVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCreditVC.h; sourceTree = "<group>"; };
 		78F94D0727F2A39F0010ED35 /* MyCreditVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCreditVC.m; sourceTree = "<group>"; };
+		78F94D0927F3F86E0010ED35 /* MyCertificateListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCertificateListVC.h; sourceTree = "<group>"; };
+		78F94D0A27F3F86E0010ED35 /* MyCertificateListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCertificateListVC.m; sourceTree = "<group>"; };
+		78F94D0C27F3FFD60010ED35 /* MyCertificateListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCertificateListCell.h; sourceTree = "<group>"; };
+		78F94D0D27F3FFD60010ED35 /* MyCertificateListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCertificateListCell.m; sourceTree = "<group>"; };
 		78FB7E082508AB5000344437 /* UnBindMsgCodeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnBindMsgCodeVC.h; sourceTree = "<group>"; };
 		78FB7E092508AB5000344437 /* UnBindMsgCodeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnBindMsgCodeVC.m; sourceTree = "<group>"; };
 		9AED2356104BF1738A6C88B4 /* Pods-EdulineV5.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EdulineV5.release.xcconfig"; path = "Pods/Target Support Files/Pods-EdulineV5/Pods-EdulineV5.release.xcconfig"; sourceTree = "<group>"; };
@@ -3351,6 +3357,8 @@
 				789DB03A24698BC3001302B4 /* JoinCourseVC.m */,
 				789DB03C24698EE8001302B4 /* JoinCourseTypeVC.h */,
 				789DB03D24698EE8001302B4 /* JoinCourseTypeVC.m */,
+				78F94D0927F3F86E0010ED35 /* MyCertificateListVC.h */,
+				78F94D0A27F3F86E0010ED35 /* MyCertificateListVC.m */,
 				789DB02E246924AC001302B4 /* view */,
 			);
 			path = StudyPage;
@@ -4827,6 +4835,8 @@
 				78D4EC3C26FB054C002E9493 /* NewStudyTimeView.m */,
 				78D4EC3E26FB06A6002E9493 /* NewStudyRecentView.h */,
 				78D4EC3F26FB06A6002E9493 /* NewStudyRecentView.m */,
+				78F94D0C27F3FFD60010ED35 /* MyCertificateListCell.h */,
+				78F94D0D27F3FFD60010ED35 /* MyCertificateListCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -7025,6 +7035,7 @@
 				78B11646272A439900A3B8CB /* VoteView.m in Sources */,
 				78C549C9241B674E00A33FC4 /* AlivcLiveEnvManager.m in Sources */,
 				788E955B253FE24E0089251E /* BCNavigationView.m in Sources */,
+				78F94D0B27F3F86E0010ED35 /* MyCertificateListVC.m in Sources */,
 				7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */,
 				78795752240FAA7A0013F95F /* UIViewController+HUD.m in Sources */,
 				787F1E6B247381A400108F7B /* AlivcPlayListsView.m in Sources */,
@@ -7119,6 +7130,7 @@
 				78B118FC2733881C00A3B8CB /* LCActionSheetCell.m in Sources */,
 				788E9563253FE24E0089251E /* MCStudentListView.m in Sources */,
 				78C549CC241B674E00A33FC4 /* AlivcLocalDatabaseManager.m in Sources */,
+				78F94D0E27F3FFD60010ED35 /* MyCertificateListCell.m in Sources */,
 				788E956A253FE24E0089251E /* MCViewController.m in Sources */,
 				78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */,
 				788E95AC253FE24E0089251E /* EnterRoomAllModel.m in Sources */,
