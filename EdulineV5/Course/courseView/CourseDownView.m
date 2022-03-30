@@ -221,7 +221,7 @@
             }
         } else {
             
-            [_joinStudyButton setTitle:@"加入学习" forState:0];
+            [_joinStudyButton setTitle:@"我要报名" forState:0];
             _joinStudyButton.hidden = NO;
 //            _joinShopCarButton.hidden = NO;
 //            _joinStudyButton.hidden = NO;
