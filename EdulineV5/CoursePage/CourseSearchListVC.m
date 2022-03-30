@@ -65,7 +65,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self getShopCarCount];
+//    [self getShopCarCount];
 }
 
 - (void)viewDidLoad {
@@ -76,13 +76,13 @@
     _titleLabel.text = @"课程";
     _titleLabel.hidden = YES;
     _leftButton.hidden = YES;
-    _rightButton.hidden = NO;
+//    _rightButton.hidden = NO;
     if ([COURSELAYOUT isEqualToString:@"2"]) {
         _cellType = YES;
     } else {
         _cellType = NO;
     }
-    [_rightButton setImage:Image(@"lesson_cart_icon") forState:0];
+//    [_rightButton setImage:Image(@"lesson_cart_icon") forState:0];
     if (SWNOTEmptyStr(_themeTitle)) {
         _titleLabel.text = _themeTitle;
         _leftButton.hidden = NO;
@@ -105,15 +105,15 @@
         screenType = _screenTypeStr;
     }
     
-    _shopCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_rightButton.centerX, _rightButton.top + 3, 18, 12)];
-    _shopCountLabel.layer.masksToBounds = YES;
-    _shopCountLabel.layer.cornerRadius = 6;
-    _shopCountLabel.backgroundColor = EdlineV5_Color.faildColor;
-    _shopCountLabel.textColor = [UIColor whiteColor];
-    _shopCountLabel.font = SYSTEMFONT(10);
-    _shopCountLabel.textAlignment = NSTextAlignmentCenter;
-    _shopCountLabel.hidden = YES;
-    [_titleImage addSubview:_shopCountLabel];
+//    _shopCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(_rightButton.centerX, _rightButton.top + 3, 18, 12)];
+//    _shopCountLabel.layer.masksToBounds = YES;
+//    _shopCountLabel.layer.cornerRadius = 6;
+//    _shopCountLabel.backgroundColor = EdlineV5_Color.faildColor;
+//    _shopCountLabel.textColor = [UIColor whiteColor];
+//    _shopCountLabel.font = SYSTEMFONT(10);
+//    _shopCountLabel.textAlignment = NSTextAlignmentCenter;
+//    _shopCountLabel.hidden = YES;
+//    [_titleImage addSubview:_shopCountLabel];
     
     [self makeTopSearch];
     [self addHeaderView];
@@ -127,7 +127,7 @@
 
 - (void)makeTopSearch {
     // 顶部搜索框和 取消按钮
-    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_isSearch ? _leftButton.right : 15, _titleLabel.top, MainScreenWidth - _rightButton.width - (_isSearch ? _leftButton.right : 15) , 36)];
+    _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_isSearch ? _leftButton.right : 15, _titleLabel.top, MainScreenWidth - 15 - (_isSearch ? _leftButton.right : 15) , 36)];
     _institutionSearch.font = SYSTEMFONT(14);
     _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索课程" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     _institutionSearch.delegate = self;
@@ -605,22 +605,22 @@
     }
 }
 
-- (void)getShopCarCount {
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userShopCarCountNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
-        if (SWNOTEmptyDictionary(responseObject)) {
-            if ([[responseObject objectForKey:@"code"] integerValue]) {
-                _shopCountLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"]];
-                if ([_shopCountLabel.text integerValue]>0) {
-                    _shopCountLabel.hidden = NO;
-                } else {
-                    _shopCountLabel.hidden = YES;
-                }
-            }
-        }
-    } enError:^(NSError * _Nonnull error) {
-        
-    }];
-}
+//- (void)getShopCarCount {
+//    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userShopCarCountNet] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+//        if (SWNOTEmptyDictionary(responseObject)) {
+//            if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                _shopCountLabel.text = [NSString stringWithFormat:@"%@",responseObject[@"data"]];
+//                if ([_shopCountLabel.text integerValue]>0) {
+//                    _shopCountLabel.hidden = NO;
+//                } else {
+//                    _shopCountLabel.hidden = YES;
+//                }
+//            }
+//        }
+//    } enError:^(NSError * _Nonnull error) {
+//
+//    }];
+//}
 
 - (void)chooseCategoryModel:(TeacherCategoryModel *)model {
     courseClassifyString = [NSString stringWithFormat:@"%@",model.title];
