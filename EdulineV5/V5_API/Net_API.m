@@ -13,7 +13,11 @@
 
 //#define HeaderUrl_V5_Api @"https://api.51eduline.com"// 单机构
 //#define HeaderUrl_V5_Api @"https://saas-api.51eduline.com"//saas版本
-#define HeaderUrl_V5_Api @"https://tv5-api.51eduline.com"//saas测试版本
+//#define HeaderUrl_V5_Api @"https://tv5-api.51eduline.com"//saas测试版本
+#define HeaderUrl_V5_Api @"http://qipei.api.51eduline.com"//内训版
+
+#define VUE_APP_ID @"BPvfj1SI5tU50lgLEx"
+#define VUE_APP_KEY @"OtKFHXHAzCLpNzWL6k"
 
 #define SWNOTEmptyArr_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSArray class]]&&[X count])
 #define SWNOTEmptyDictionary_Api(X) (NOTNULL_Api(X)&&[X isKindOfClass:[NSDictionary class]]&&[[X allKeys]count])
@@ -26,7 +30,7 @@
    
     NSString *randomString = [EdulineV5_Tool getRandomString];
     NSString *currentTime = [EdulineV5_Tool currentdateInterval];
-    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
+    NSString *fullString = [NSString stringWithFormat:@"%@|%@|%@|%@",VUE_APP_KEY,[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
     NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
     NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
@@ -43,7 +47,7 @@
         [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
-    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:VUE_APP_ID forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
@@ -109,7 +113,7 @@
     // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
     NSString *randomString = [EdulineV5_Tool getRandomString];
     NSString *currentTime = [EdulineV5_Tool currentdateInterval];
-    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
+    NSString *fullString = [NSString stringWithFormat:@"%@|%@|%@|%@",VUE_APP_KEY,[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
     NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
     NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
@@ -126,7 +130,7 @@
         [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
-    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:VUE_APP_ID forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
     [manager.requestSerializer setValue:randomString forHTTPHeaderField:@"E-APP-nonce"];
@@ -186,7 +190,7 @@
     // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
     NSString *randomString = [EdulineV5_Tool getRandomString];
     NSString *currentTime = [EdulineV5_Tool currentdateInterval];
-    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
+    NSString *fullString = [NSString stringWithFormat:@"%@|%@|%@|%@",VUE_APP_KEY,[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
     NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
     NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
@@ -203,7 +207,7 @@
         [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
-    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:VUE_APP_ID forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
@@ -265,7 +269,7 @@
     // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
     NSString *randomString = [EdulineV5_Tool getRandomString];
     NSString *currentTime = [EdulineV5_Tool currentdateInterval];
-    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
+    NSString *fullString = [NSString stringWithFormat:@"%@|%@|%@|%@",VUE_APP_KEY,[EdulineV5_Tool sortedDictionary:paramDic],currentTime,randomString];
     NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
     NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
@@ -282,7 +286,7 @@
         [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
-    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:VUE_APP_ID forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];
@@ -357,7 +361,7 @@
     // > `APP_KEY` | `stringA` | `timestamp`|`nonce_str`
     NSString *randomString = [EdulineV5_Tool getRandomString];
     NSString *currentTime = [EdulineV5_Tool currentdateInterval];
-    NSString *fullString = [NSString stringWithFormat:@"7WFDuCGYa1XEBj6Y|%@|%@|%@",[EdulineV5_Tool sortedDictionary:parameters],currentTime,randomString];
+    NSString *fullString = [NSString stringWithFormat:@"%@|%@|%@|%@",VUE_APP_KEY,[EdulineV5_Tool sortedDictionary:parameters],currentTime,randomString];
     NSString *final = [NSString stringWithFormat:@"%@?timestamp=%@&nonce_str=%@&sign=%@",HeaderUrl_V5_Api,[EdulineV5_Tool currentdateInterval],[EdulineV5_Tool getRandomString],[EdulineV5_Tool getmd5WithString:fullString]];
     NSLog(@"%@ ==== %@ ===  %@",fullString,final,[EdulineV5_Tool getmd5WithString:fullString]);
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:HeaderUrl_V5_Api]];
@@ -374,7 +378,7 @@
         [manager.requestSerializer setValue:[V5_UserModel oauthToken] forHTTPHeaderField:@"E-USER-AK"];
         [manager.requestSerializer setValue:[V5_UserModel oauthTokenSecret] forHTTPHeaderField:@"E-USER-SK"];
     }
-    [manager.requestSerializer setValue:@"WASD123456" forHTTPHeaderField:@"E-APP-ID"];
+    [manager.requestSerializer setValue:VUE_APP_ID forHTTPHeaderField:@"E-APP-ID"];
     [manager.requestSerializer setValue:@"ios" forHTTPHeaderField:@"E-DEVICE-TYPE"];
     
     [manager.requestSerializer setValue:currentTime forHTTPHeaderField:@"E-APP-timestamp"];

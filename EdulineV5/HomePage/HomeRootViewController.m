@@ -27,6 +27,9 @@
 // 内训版
 #import "HomeExamCell.h"
 #import "HomeZixunCell.h"
+#import "ZiXunDetailVC.h"
+#import "ZiXunListVC.h"
+#import "ExamPaperDetailViewController.h"
 
 // 直播测试
 //#import "LiveRoomViewController.h"
@@ -75,6 +78,13 @@
 
 @property (strong, nonatomic) NSMutableArray *sortArray;
 
+/** 内训资讯 */
+@property (strong, nonatomic) NSMutableArray *zixunArray;
+/** 内训考试 */
+@property (strong, nonatomic) NSMutableArray *examArray;
+/** 内训计划 */
+@property (strong, nonatomic) NSMutableArray *planArray;
+
 // 周榜月榜按钮
 @property (strong, nonatomic) UIButton *weekBtn;
 @property (strong, nonatomic) UIButton *monthBtn;
@@ -96,6 +106,10 @@
     _sortArray = [NSMutableArray new];
     
     _teacherArray = [NSMutableArray new];
+    
+    _zixunArray = [NSMutableArray new];
+    _planArray = [NSMutableArray new];
+    _examArray = [NSMutableArray new];
     
     _titleLabel.text = @"首页";
     [self makeTopSearch];
@@ -176,7 +190,7 @@
         _imageBannerBackView = [[UIView alloc] initWithFrame:CGRectMake(0, SWNOTEmptyArr(_bannerImageArray) ? 15 : 0, MainScreenWidth, 0)];
         _imageBannerBackView.backgroundColor = [UIColor whiteColor];
     }
-    _imageBannerBackView.frame = CGRectMake(0, 0, MainScreenWidth, 2 * MainScreenWidth / 5 + 20);//SWNOTEmptyArr(_bannerImageArray) ? (2 * MainScreenWidth / 5 + 20) : 0
+    _imageBannerBackView.frame = CGRectMake(0, 0, MainScreenWidth, SWNOTEmptyArr(_bannerImageArray) ? (2 * MainScreenWidth / 5 + 20) : 0);//2 * MainScreenWidth / 5 + 20
     [_imageBannerBackView removeAllSubviews];
     
     if (SWNOTEmptyArr(_bannerImageSourceArray)) {
@@ -239,7 +253,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"]) {
+    if ([_sortArray[section][@"key"] isEqualToString:@"favoriteCourse"] || [_sortArray[section][@"key"] isEqualToString:@"userClasses"] || [_sortArray[section][@"key"] isEqualToString:@"userExams"]) {
         NSArray *pass = [NSArray arrayWithArray:_sortArray[section][@"list"]];
         return [pass count];
     } else if ([_sortArray[section][@"key"] isEqualToString:@"recommendWellSale"]) {
@@ -580,19 +594,31 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
-//        static NSString *reuse = @"HomePageCourseTypeOnefavoriteCourseCell";
-//        HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
-//        if (!cell) {
-//            cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
-//        }
-//        [cell setHomePageCourseTypeOneCellInfo:_sortArray[indexPath.section][@"list"][indexPath.row]];
-//        return cell;
+    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"userClasses"]) {
+        static NSString *reuse = @"HomePageCourseTypeOnefavoriteCourseCell";
+        HomePageCourseTypeOneCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[HomePageCourseTypeOneCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setHomePageCourseTypeOneCellInfo:_sortArray[indexPath.section][@"list"][indexPath.row]];
+        return cell;
+        
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"userExams"]) {
         static NSString *reuse = @"HomeExamCell";
         HomeExamCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
         if (!cell) {
             cell = [[HomeExamCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
+        [cell setHomeExamListInfo:_sortArray[indexPath.section][@"list"][indexPath.row]];
+        return cell;
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"information"]) {
+        static NSString *reuse = @"HomeZixunCell";
+        HomeZixunCell *cell = [tableView dequeueReusableCellWithIdentifier:reuse];
+        if (!cell) {
+            cell = [[HomeZixunCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        }
+        [cell setZixunArrayInfo:_sortArray[indexPath.section][@"list"]];
+        cell.delegate = self;
         return cell;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendCourse"]) {
         static NSString *reuse = @"HomePageHotRecommendedCell";
@@ -672,7 +698,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
+    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"userClasses"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"userExams"]) {
         NSArray *pass = [NSArray arrayWithArray:_sortArray[indexPath.section][@"list"]];
         return [pass count] > 0 ? 106 : 0;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendCourse"]) {
@@ -681,7 +707,7 @@
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"]) {
         NSArray *pass = [NSArray arrayWithArray:_sortArray[indexPath.section][@"list"]];
         return [pass count] > 0 ? 106 : 0;
-    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"flashSaleCourse"]) {
+    } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendTeacher"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"flashSaleCourse"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"information"]) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"categoryCourse"]) {
         return [self tableView:self.tableView cellForRowAtIndexPath:indexPath].height;
@@ -829,6 +855,9 @@
         vc.notHiddenNav = NO;
         vc.screenTypeStr = @"event";
         [self.navigationController pushViewController:vc animated:YES];
+    } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"information"]) {
+        ZiXunListVC *vc = [[ZiXunListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -837,6 +866,33 @@
     TeacherMainPageVC *vc = [[TeacherMainPageVC alloc] init];
     vc.teacherId = teacherId;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 跳转到资讯详情页
+- (void)goToZixunDetailPage:(NSString *)zixunId {
+    ZiXunDetailVC *vc = [[ZiXunDetailVC alloc] init];
+    vc.zixunId = zixunId;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 考试或者查看详情
+- (void)doExamOrLookExamResult:(NSDictionary *)examInfo {
+    
+    NSString *exam_status = [NSString stringWithFormat:@"%@",examInfo[@"exam_status"]];
+    if ([exam_status isEqualToString:@"1"]) {
+        
+    } else {
+        NSString *exam_number = [NSString stringWithFormat:@"%@",examInfo[@"exam_rest_num"]];
+        if ([exam_number isEqualToString:@"0"]) {
+            [self showHudInView:self.view showHint:@"考试次数已用完"];
+            return;
+        }
+        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+        vc.examType = @"3";
+        vc.examIds = [NSString stringWithFormat:@"%@",[examInfo objectForKey:@"paper_id"]];
+        vc.examModuleId = [NSString stringWithFormat:@"%@",[examInfo objectForKey:@"exam_id"]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 // MARK: 热门推荐课程跳转(HomePageHotRecommendedCellDelegate)

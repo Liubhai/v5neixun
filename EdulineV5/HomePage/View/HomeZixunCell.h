@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol HomeZixunCellDelegate <NSObject>
 
 @optional
-- (void)goToZixunDetailPage:(NSString *)teacherId;
+- (void)goToZixunDetailPage:(NSString *)zixunId;
 
 @end
 
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIScrollView *teacherScrollView;
 @property (strong, nonatomic) NSMutableArray *teacherInfoArray;
 
-- (void)setTeacherArrayInfo:(NSMutableArray *)infoArray;
+- (void)setZixunArrayInfo:(NSMutableArray *)infoArray;
 
 @end
 

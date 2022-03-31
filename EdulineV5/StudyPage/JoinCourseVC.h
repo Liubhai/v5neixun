@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JoinCourseVC : BaseViewController
 
+/** 内训 是计划还是课程 */
+@property (strong, nonatomic) NSString *courseType;// 3计划 1课程
+
 @end
 
 NS_ASSUME_NONNULL_END

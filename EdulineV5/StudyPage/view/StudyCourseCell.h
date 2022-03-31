@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *learnCountLabel;
 @property (strong, nonatomic) UIProgressView *learnProgress;
 
+/** 内训 */
+@property (strong, nonatomic) UILabel *learnStatusLabel;
+ 
 - (void)setStudyCourseInfo:(NSDictionary *)courseInfo showOutDate:(BOOL)showOutDate isOutDate:(BOOL)isOutDate;
 
 - (void)setJoinStudyCourseInfo:(NSDictionary *)courseInfo;

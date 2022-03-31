@@ -21,35 +21,46 @@
 
 - (void)makeSubView {
     
-    _whiteView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 150)];
+    _whiteView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 200 + MACRO_UI_LIUHAI_HEIGHT)];
     _whiteView.backgroundColor = [UIColor whiteColor];
     [self addSubview:_whiteView];
     
-    _studyIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 40, MainScreenWidth - 30, 100)];
-    _studyIcon.image = Image(@"study_card_img");
-    _studyIcon.layer.masksToBounds = YES;
-    _studyIcon.layer.cornerRadius = 8;
+    _studyIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 200 + MACRO_UI_LIUHAI_HEIGHT)];
+    _studyIcon.image = Image(@"study_card_img_neixun");
     _studyIcon.backgroundColor = EdlineV5_Color.themeColor;
     [self addSubview:_studyIcon];
-    
-    for (int i = 0; i<3; i++) {
-        UILabel *timeCount = [[UILabel alloc] initWithFrame:CGRectMake(_studyIcon.width * i /3.0, 22, _studyIcon.width / 3.0, 26)];
-        timeCount.font = SYSTEMFONT(22);
+    CGFloat ww = (MainScreenWidth - 100) / 3.0;
+    for (int i = 0; i<6; i++) {
+        UILabel *timeCount = [[UILabel alloc] initWithFrame:CGRectMake(25 + (i%3) * (ww + 25), MACRO_UI_LIUHAI_HEIGHT + 44 + (i/3) * (39 + 27), ww, 27)];
+        timeCount.font = SYSTEMFONT(20);
         timeCount.textColor = [UIColor whiteColor];
-        timeCount.textAlignment = NSTextAlignmentCenter;
         [_studyIcon addSubview:timeCount];
         
-        UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(timeCount.left, timeCount.bottom + 6, _studyIcon.width / 3.0, 18)];
-        theme.font = SYSTEMFONT(13);
+        UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(timeCount.left, timeCount.bottom + 2, timeCount.width, 18)];
+        theme.font = SYSTEMFONT(12);
         theme.textColor = [UIColor whiteColor];
-        theme.textAlignment = NSTextAlignmentCenter;
         [_studyIcon addSubview:theme];
         
         if (i == 0) {
+            theme.text = @"完成/参与课程";
+            _courseCount = timeCount;
+            _courseCount.text = @"12/24";
+            _courseLabel = theme;
+        } else if (i == 1) {
+            theme.text = @"完成/参与计划";
+            _planCount = timeCount;
+            _planCount.text = @"10/30";
+            _planLabel = theme;
+        } else if (i == 2) {
+            theme.text = @"获得证书";
+            _certificateCount = timeCount;
+            _certificateCount.text = @"2";
+            _certificateLabel = theme;
+        } else if (i == 3) {
             theme.text = @"今日学习";
             _todayLearnTime = timeCount;
             _todayLearn = theme;
-        } else if (i == 1) {
+        } else if (i == 4) {
             theme.text = @"连续学习";
             _continuousLearnTime = timeCount;
             _continuousLearn = theme;

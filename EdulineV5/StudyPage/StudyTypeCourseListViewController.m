@@ -13,6 +13,7 @@
 #import "CourseDetailPlayVC.h"
 #import "FaceVerifyViewController.h"
 #import "V5_UserModel.h"
+#import "JoinCourseVC.h"
 
 @interface StudyTypeCourseListViewController () {
     NSInteger page;
@@ -37,7 +38,8 @@
 }
 
 - (void)addTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _tabelHeight) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, _tabelHeight) style:UITableViewStyleGrouped];
+    _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -49,6 +51,10 @@
     [EdulineV5_Tool adapterOfIOS11With:_tableView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeScreenTypeNotice:) name:@"getFirstStudyCourseData" object:nil];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -85,13 +91,47 @@
     return 106;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.001;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (_dataSource.count >= 5) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 18 * 3)];
+        view.backgroundColor = [UIColor whiteColor];
+        
+        UIButton *moreBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 17, 80, 20)];
+        [moreBtn setImage:[Image(@"study_more") converToMainColor] forState:0];
+        [moreBtn setTitle:@"查看更多" forState:0];
+        moreBtn.titleLabel.font = SYSTEMFONT(13);
+        [moreBtn setTitleColor:EdlineV5_Color.themeColor forState:0];
+        [EdulineV5_Tool dealButtonImageAndTitleUI:moreBtn];
+        moreBtn.centerX = MainScreenWidth / 2.0;
+        [moreBtn addTarget:self action:@selector(moreJoinCourseButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:moreBtn];
+        return view;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (_dataSource.count >= 5) {
+        return 18 * 3;
+    }
+    return 0.001;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (emptyData) {
         return;
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row >= outdateIndex) {
-        [self showHudInView:self.view showHint:@"课程已过期"];
+        [self.vc showHudInView:self.vc.view showHint:@"课程已过期"];
         return;
     }
     
@@ -273,6 +313,13 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self presentViewController:alertController animated:YES completion:nil];
     });
+}
+
+// MARK: - 内训学习页面课程列表底部查看更多按钮
+- (void)moreJoinCourseButtonClick:(UIButton *)sender {
+    JoinCourseVC *vc = [[JoinCourseVC alloc] init];
+    vc.courseType = @"3";
+    [self.vc.navigationController pushViewController:vc animated:YES];
 }
 
 @end

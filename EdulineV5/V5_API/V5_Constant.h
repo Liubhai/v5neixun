@@ -35,7 +35,7 @@
 
 #define QuickLoginUrl [[NSUserDefaults standardUserDefaults] objectForKey:@"register_agre"] == nil ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"register_agre"]
 
-#define IOSMoneyTitle [[NSUserDefaults standardUserDefaults] objectForKey:@"ios_bconf_title"] == nil ? @"育币" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ios_bconf_title"]
+#define IOSMoneyTitle @"积分"//[[NSUserDefaults standardUserDefaults] objectForKey:@"ios_bconf_title"] == nil ? @"育币" : [[NSUserDefaults standardUserDefaults] objectForKey:@"ios_bconf_title"]
 
 #define shengwangAppid [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_appid"] == nil ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_appid"]
 #define shengwangAuth [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_auth"] == nil ? @"" : [[NSUserDefaults standardUserDefaults] objectForKey:@"shengwang_auth"]

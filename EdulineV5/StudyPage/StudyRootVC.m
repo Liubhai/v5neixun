@@ -24,6 +24,7 @@
 #import "StudyTypeCourseListViewController.h"
 
 #import "FaceVerifyViewController.h"
+#import "MyCertificateListVC.h"
 
 @interface StudyRootVC ()<UITableViewDelegate, UITableViewDataSource,StudyLatestCellDelegate, UIScrollViewDelegate> {
     NSInteger currentCourseType;
@@ -104,7 +105,7 @@
     currentCourseType = 0;
     dataType = @"add";
     
-    _tabClassArray = [NSMutableArray arrayWithArray:@[@"点播",@"直播",@"班级"]];//@[@"点播",@"直播",@"班级",@"面授"]
+    _tabClassArray = [NSMutableArray arrayWithArray:@[@"培训计划",@"公开课程"]];//@[@"点播",@"直播",@"班级",@"面授"]
     
     _courseArray = [NSMutableArray new];
     _liveArray = [NSMutableArray new];
@@ -187,7 +188,7 @@
         
         _joinFirstBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 6, _changeTypeBackView.width, 32)];
         _joinFirstBtn.tag = 10;
-        [_joinFirstBtn setTitle:@"最近加入的优先" forState:0];
+        [_joinFirstBtn setTitle:@"最近报名的优先" forState:0];
         [_joinFirstBtn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
         [_joinFirstBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
         _joinFirstBtn.titleLabel.font = SYSTEMFONT(13);
@@ -217,11 +218,20 @@
 }
 
 - (void)makeHeaderView {
-    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 150 + 40)];
+    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 200 + 40 + MACRO_UI_LIUHAI_HEIGHT)];
     _headerView.backgroundColor = EdlineV5_Color.backColor;
     
-    _studyTimeView = [[NewStudyTimeView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 150)];
+    _studyTimeView = [[NewStudyTimeView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 200 + MACRO_UI_LIUHAI_HEIGHT)];
     [_headerView addSubview:_studyTimeView];
+    
+    UIView *whiteLayer = [[UIView alloc] initWithFrame:CGRectMake(0, _studyTimeView.height - 15, MainScreenWidth, 15)];
+    whiteLayer.backgroundColor = [UIColor whiteColor];
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:whiteLayer.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(10, 10)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = whiteLayer.bounds;
+    maskLayer.path = maskPath.CGPath;
+    whiteLayer.layer.mask = maskLayer;
+    [_headerView addSubview:whiteLayer];
     
     _studyLatestView = [[UIView alloc] initWithFrame:CGRectMake(0, _studyTimeView.bottom, MainScreenWidth, 40)];
     _studyLatestView.backgroundColor = [UIColor whiteColor];
@@ -394,7 +404,7 @@
             [weakself.bg addSubview:view];
             
             UILabel *theme = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 100, 22)];
-            theme.text = @"加入的课程";
+            theme.text = @"报名的课程";
             theme.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];//SYSTEMFONT(16);
             theme.textColor = EdlineV5_Color.textFirstColor;
             [view addSubview:theme];
@@ -408,7 +418,7 @@
             [view addSubview:_changeTypeBtn];
             
             for (int i = 0; i < _tabClassArray.count; i++) {
-                UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(15 + 77 * i, theme.bottom + 13, 65, 28)];
+                UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(15 + (94 + 12) * i, theme.bottom + 13, 94, 28)];
                 btn.layer.masksToBounds = YES;
                 btn.layer.cornerRadius = 14;
                 [btn setTitle:_tabClassArray[i] forState:0];
@@ -450,50 +460,28 @@
             self.mainScroll.frame = CGRectMake(0,93, MainScreenWidth, sectionHeight - 93);
         }
         
-        if (_dianboVC == nil) {
-            _dianboVC = [[StudyTypeCourseListViewController alloc] init];
-            _dianboVC.notHiddenNav = YES;
-            _dianboVC.courseType = @"1";
-            _dianboVC.screenType = dataType;
-            _dianboVC.tabelHeight = sectionHeight - 93;
-            _dianboVC.vc = weakself;
-            _dianboVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 93);
-            [weakself.mainScroll addSubview:weakself.dianboVC.view];
-            [weakself addChildViewController:weakself.dianboVC];
-        } else {
-            _dianboVC.tabelHeight = sectionHeight - 93;
-            _dianboVC.notHiddenNav = YES;
-            _dianboVC.courseType = @"1";
-            _dianboVC.screenType = dataType;
-            weakself.dianboVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-            _dianboVC.vc = weakself;
-            _dianboVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 93);
-            _dianboVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
-            [_dianboVC getFirstStudyCourseData];
-        }
-        
-        if (_zhiboVC == nil) {
-            _zhiboVC = [[StudyTypeCourseListViewController alloc] init];
-            _zhiboVC.courseType = @"2";
-            _zhiboVC.notHiddenNav = YES;
-            _zhiboVC.screenType = dataType;
-            weakself.zhiboVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-            _zhiboVC.tabelHeight = sectionHeight - 93;
-            _zhiboVC.vc = weakself;
-            _zhiboVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 93);
-            [weakself.mainScroll addSubview:weakself.zhiboVC.view];
-            [weakself addChildViewController:weakself.zhiboVC];
-        } else {
-            _zhiboVC.tabelHeight = sectionHeight - 93;
-            _zhiboVC.courseType = @"2";
-            _zhiboVC.notHiddenNav = YES;
-            _zhiboVC.screenType = dataType;
-            weakself.zhiboVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-            _zhiboVC.vc = weakself;
-            _zhiboVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 93);
-            _zhiboVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
-            [_zhiboVC getFirstStudyCourseData];
-        }
+//        if (_zhiboVC == nil) {
+//            _zhiboVC = [[StudyTypeCourseListViewController alloc] init];
+//            _zhiboVC.courseType = @"2";
+//            _zhiboVC.notHiddenNav = YES;
+//            _zhiboVC.screenType = dataType;
+//            weakself.zhiboVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+//            _zhiboVC.tabelHeight = sectionHeight - 93;
+//            _zhiboVC.vc = weakself;
+//            _zhiboVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 93);
+//            [weakself.mainScroll addSubview:weakself.zhiboVC.view];
+//            [weakself addChildViewController:weakself.zhiboVC];
+//        } else {
+//            _zhiboVC.tabelHeight = sectionHeight - 93;
+//            _zhiboVC.courseType = @"2";
+//            _zhiboVC.notHiddenNav = YES;
+//            _zhiboVC.screenType = dataType;
+//            weakself.zhiboVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+//            _zhiboVC.vc = weakself;
+//            _zhiboVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 93);
+//            _zhiboVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
+//            [_zhiboVC getFirstStudyCourseData];
+//        }
         
         if (_banjiVC == nil) {
             _banjiVC = [[StudyTypeCourseListViewController alloc] init];
@@ -503,7 +491,7 @@
             weakself.banjiVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
             _banjiVC.tabelHeight = sectionHeight - 93;
             _banjiVC.vc = weakself;
-            _banjiVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 93);
+            _banjiVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 93);
             [weakself.mainScroll addSubview:weakself.banjiVC.view];
             [weakself addChildViewController:weakself.banjiVC];
         } else {
@@ -513,33 +501,56 @@
             _banjiVC.screenType = dataType;
             weakself.banjiVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
             _banjiVC.vc = weakself;
-            _banjiVC.view.frame = CGRectMake(MainScreenWidth*2,0, MainScreenWidth, sectionHeight - 93);
+            _banjiVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 93);
             _banjiVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
             [_banjiVC getFirstStudyCourseData];
         }
         
-        if (_mianshouVC == nil) {
-            _mianshouVC = [[StudyTypeCourseListViewController alloc] init];
-            _mianshouVC.courseType = @"3";
-            _mianshouVC.notHiddenNav = YES;
-            _mianshouVC.screenType = dataType;
-            weakself.mianshouVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-            _mianshouVC.tabelHeight = sectionHeight - 93;
-            _mianshouVC.vc = weakself;
-            _mianshouVC.view.frame = CGRectMake(MainScreenWidth * 3,0, MainScreenWidth, sectionHeight - 93);
-            [weakself.mainScroll addSubview:weakself.mianshouVC.view];
-            [weakself addChildViewController:weakself.mianshouVC];
+        if (_dianboVC == nil) {
+            _dianboVC = [[StudyTypeCourseListViewController alloc] init];
+            _dianboVC.notHiddenNav = YES;
+            _dianboVC.courseType = @"1";
+            _dianboVC.screenType = dataType;
+            weakself.dianboVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+            _dianboVC.tabelHeight = sectionHeight - 93;
+            _dianboVC.vc = weakself;
+            _dianboVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 93);
+            [weakself.mainScroll addSubview:weakself.dianboVC.view];
+            [weakself addChildViewController:weakself.dianboVC];
         } else {
-            _mianshouVC.tabelHeight = sectionHeight - 93;
-            _mianshouVC.courseType = @"3";
-            _mianshouVC.notHiddenNav = YES;
-            _mianshouVC.screenType = dataType;
-            weakself.mianshouVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
-            _mianshouVC.vc = weakself;
-            _mianshouVC.view.frame = CGRectMake(MainScreenWidth *3,0, MainScreenWidth, sectionHeight - 93);
-            _mianshouVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
-            [_mianshouVC getFirstStudyCourseData];
+            _dianboVC.tabelHeight = sectionHeight - 93;
+            _dianboVC.notHiddenNav = YES;
+            _dianboVC.courseType = @"1";
+            _dianboVC.screenType = dataType;
+            weakself.dianboVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+            _dianboVC.vc = weakself;
+            _dianboVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 93);
+            _dianboVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
+            [_dianboVC getFirstStudyCourseData];
         }
+        
+//        if (_mianshouVC == nil) {
+//            _mianshouVC = [[StudyTypeCourseListViewController alloc] init];
+//            _mianshouVC.courseType = @"3";
+//            _mianshouVC.notHiddenNav = YES;
+//            _mianshouVC.screenType = dataType;
+//            weakself.mianshouVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+//            _mianshouVC.tabelHeight = sectionHeight - 93;
+//            _mianshouVC.vc = weakself;
+//            _mianshouVC.view.frame = CGRectMake(MainScreenWidth * 3,0, MainScreenWidth, sectionHeight - 93);
+//            [weakself.mainScroll addSubview:weakself.mianshouVC.view];
+//            [weakself addChildViewController:weakself.mianshouVC];
+//        } else {
+//            _mianshouVC.tabelHeight = sectionHeight - 93;
+//            _mianshouVC.courseType = @"3";
+//            _mianshouVC.notHiddenNav = YES;
+//            _mianshouVC.screenType = dataType;
+//            weakself.mianshouVC.cellTabelCanScroll = !weakself.canScrollAfterVideoPlay;
+//            _mianshouVC.vc = weakself;
+//            _mianshouVC.view.frame = CGRectMake(MainScreenWidth *3,0, MainScreenWidth, sectionHeight - 93);
+//            _mianshouVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
+//            [_mianshouVC getFirstStudyCourseData];
+//        }
     }
     return weakself.bg;
 }
@@ -601,7 +612,7 @@
                     if (self.courseBtn.selected) {
                         if ([vc isKindOfClass:[StudyTypeCourseListViewController class]]) {
                             StudyTypeCourseListViewController *vccomment = (StudyTypeCourseListViewController *)vc;
-                            if ([vccomment.courseType isEqualToString:@"1"]) {
+                            if ([vccomment.courseType isEqualToString:@"4"]) {
                                 vccomment.cellTabelCanScroll = YES;
                             }
                         }
@@ -609,7 +620,7 @@
                     if (self.liveBtn.selected) {
                         if ([vc isKindOfClass:[StudyTypeCourseListViewController class]]) {
                             StudyTypeCourseListViewController *vccomment = (StudyTypeCourseListViewController *)vc;
-                            if ([vccomment.courseType isEqualToString:@"2"]) {
+                            if ([vccomment.courseType isEqualToString:@"1"]) {
                                 vccomment.cellTabelCanScroll = YES;
                             }
                         }

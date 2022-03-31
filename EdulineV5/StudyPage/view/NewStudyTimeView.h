@@ -16,6 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UIImageView *studyIcon;
 
+@property (strong, nonatomic) UILabel *courseCount;
+@property (strong, nonatomic) UILabel *courseLabel;
+
+@property (strong, nonatomic) UILabel *planCount;
+@property (strong, nonatomic) UILabel *planLabel;
+
+@property (strong, nonatomic) UILabel *certificateCount;
+@property (strong, nonatomic) UILabel *certificateLabel;
+
 @property (strong, nonatomic) UILabel *todayLearnTime;
 @property (strong, nonatomic) UILabel *todayLearn;
 

@@ -61,6 +61,19 @@
     [self.contentView addSubview:_courseTypeImage];
     _courseTypeImage.hidden = YES;
     
+    _learnStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right - 44, _courseFace.bottom - 20, 44, 20)];
+    _learnStatusLabel.font = SYSTEMFONT(10);
+    _learnStatusLabel.textColor = [UIColor whiteColor];
+    _learnStatusLabel.textAlignment = NSTextAlignmentCenter;
+    _learnStatusLabel.text = @"未开始";
+    _learnStatusLabel.layer.backgroundColor = [UIColor colorWithRed:48/255.0 green:49/255.0 blue:51/255.0 alpha:0.2].CGColor;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_learnStatusLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(2, 2)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = _learnStatusLabel.bounds;
+    maskLayer.path = maskPath.CGPath;
+    _learnStatusLabel.layer.mask = maskLayer;
+    [self.contentView addSubview:_learnStatusLabel];
+    
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 20)];
     _titleL.text = @"你是个傻屌";
     _titleL.textColor = EdlineV5_Color.textFirstColor;

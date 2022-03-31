@@ -22,6 +22,7 @@
 @property (strong, nonatomic) UIButton *cancelButton;
 @property (strong, nonatomic) UIButton *finishButton;
 @property (strong, nonatomic) UIButton *otherButton;
+@property (strong, nonatomic) UIButton *outdateButton;
 @property (strong, nonatomic) NSMutableArray *typeArray;
 
 @property (strong, nonatomic) UIScrollView *mainScrollView;
@@ -34,48 +35,55 @@
     self.view.backgroundColor = [UIColor whiteColor];
     courseSortIdString = @"";
     courseSortString = @"";
-    _titleLabel.text = @"加入的课程";
-    [_rightButton setImage:Image(@"lesson_screen_nor") forState:0];
-    _rightButton.hidden = NO;
+    _titleLabel.text = [_courseType isEqualToString:@"3"] ? @"我的计划" : @"我的课程";
+//    [_rightButton setImage:Image(@"lesson_screen_nor") forState:0];
+//    _rightButton.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     _typeArray = [NSMutableArray new];
-    [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"1"},@{@"title":@"直播",@"type":@"2"},@{@"title":@"班级",@"type":@"4"}]];//@{@"title":@"面授",@"type":@"3"}
+    if ([_courseType isEqualToString:@"3"]) {
+        [_typeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"1"},@{@"title":@"学习中",@"type":@"2"},@{@"title":@"未开始",@"type":@"3"},@{@"title":@"已完成",@"type":@"4"},@{@"title":@"已到期",@"type":@"5"}]];
+    }
     
     [self makeTopView];
     [self makeScrollView];
 }
 
 - (void)makeTopView {
-    _topView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 45)];
+    _topView = [[UIView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 0)];
     _topView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_topView];
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45 / 2.0 + 7 + 5, 20, 2)];
-    _lineView.backgroundColor = EdlineV5_Color.baseColor;
-    [_topView addSubview:_lineView];
-    CGFloat WW = MainScreenWidth / _typeArray.count;
-    for (int i = 0; i<_typeArray.count; i++) {
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*WW, 0, WW, _topView.height)];
-        [btn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
-        [btn setTitleColor:EdlineV5_Color.baseColor forState:UIControlStateSelected];
-        btn.titleLabel.font = SYSTEMFONT(14);
-        btn.tag = i;
-        [btn setTitle:[_typeArray[i] objectForKey:@"title"] forState:0];
-        [btn addTarget:self action:@selector(topButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        if (i == 0) {
-            btn.selected = YES;
-            _lineView.centerX = btn.centerX;
-            _needDealButton = btn;
-        } else if (i == 1) {
-            _cancelButton = btn;
-        } else if (i == 2) {
-            _finishButton = btn;
-        } else if (i == 3) {
-            _otherButton = btn;
+    if (SWNOTEmptyArr(_typeArray)) {
+        _topView.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 45);
+        _lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 45 / 2.0 + 7 + 5, 20, 2)];
+        _lineView.backgroundColor = EdlineV5_Color.baseColor;
+        [_topView addSubview:_lineView];
+        CGFloat WW = MainScreenWidth / _typeArray.count;
+        for (int i = 0; i<_typeArray.count; i++) {
+            UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i*WW, 0, WW, _topView.height)];
+            [btn setTitleColor:EdlineV5_Color.textThirdColor forState:0];
+            [btn setTitleColor:EdlineV5_Color.baseColor forState:UIControlStateSelected];
+            btn.titleLabel.font = SYSTEMFONT(14);
+            btn.tag = i;
+            [btn setTitle:[_typeArray[i] objectForKey:@"title"] forState:0];
+            [btn addTarget:self action:@selector(topButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+            if (i == 0) {
+                btn.selected = YES;
+                _lineView.centerX = btn.centerX;
+                _needDealButton = btn;
+            } else if (i == 1) {
+                _cancelButton = btn;
+            } else if (i == 2) {
+                _finishButton = btn;
+            } else if (i == 3) {
+                _otherButton = btn;
+            } else if (i == 4) {
+                _outdateButton = btn;
+            }
+            [_topView addSubview:btn];
         }
-        [_topView addSubview:btn];
+        [_topView bringSubviewToFront:_lineView];
     }
-    [_topView bringSubviewToFront:_lineView];
 }
 
 - (void)makeScrollView {
@@ -88,10 +96,18 @@
     _mainScrollView.delegate = self;
     [self.view addSubview:_mainScrollView];
     
-    for (int i = 0; i<_typeArray.count; i++) {
+    if (SWNOTEmptyArr(_typeArray)) {
+        for (int i = 0; i<_typeArray.count; i++) {
+            JoinCourseTypeVC *vc = [[JoinCourseTypeVC alloc] init];
+            vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
+            vc.view.frame = CGRectMake(MainScreenWidth*i, 0, MainScreenWidth, _mainScrollView.height);
+            [_mainScrollView addSubview:vc.view];
+            [self addChildViewController:vc];
+        }
+    } else {
         JoinCourseTypeVC *vc = [[JoinCourseTypeVC alloc] init];
-        vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
-        vc.view.frame = CGRectMake(MainScreenWidth*i, 0, MainScreenWidth, _mainScrollView.height);
+        vc.courseType = @"1";
+        vc.view.frame = CGRectMake(0, 0, MainScreenWidth, _mainScrollView.height);
         [_mainScrollView addSubview:vc.view];
         [self addChildViewController:vc];
     }
@@ -105,24 +121,35 @@
             self.cancelButton.selected = NO;
             self.finishButton.selected = NO;
             self.otherButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= MainScreenWidth * 2 && scrollView.contentOffset.x <= 2 * MainScreenWidth){
+            self.outdateButton.selected = NO;
+        } else if (scrollView.contentOffset.x >= MainScreenWidth * 2 && scrollView.contentOffset.x <= 2 * MainScreenWidth){
             self.lineView.centerX = self.finishButton.centerX;
             self.needDealButton.selected = NO;
             self.cancelButton.selected = NO;
             self.finishButton.selected = YES;
             self.otherButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
+            self.outdateButton.selected = NO;
+        } else if (scrollView.contentOffset.x >= MainScreenWidth && scrollView.contentOffset.x <= MainScreenWidth){
             self.lineView.centerX = self.cancelButton.centerX;
             self.needDealButton.selected = NO;
             self.cancelButton.selected = YES;
             self.finishButton.selected = NO;
             self.otherButton.selected = NO;
-        }else if (scrollView.contentOffset.x >= 3*MainScreenWidth && scrollView.contentOffset.x <= 3*MainScreenWidth){
+            self.outdateButton.selected = NO;
+        } else if (scrollView.contentOffset.x >= 3*MainScreenWidth && scrollView.contentOffset.x <= 3*MainScreenWidth){
             self.lineView.centerX = self.otherButton.centerX;
             self.needDealButton.selected = NO;
             self.cancelButton.selected = NO;
             self.finishButton.selected = NO;
             self.otherButton.selected = YES;
+            self.outdateButton.selected = NO;
+        } else if (scrollView.contentOffset.x >= 4*MainScreenWidth && scrollView.contentOffset.x <= 4*MainScreenWidth){
+            self.lineView.centerX = self.outdateButton.centerX;
+            self.needDealButton.selected = NO;
+            self.cancelButton.selected = NO;
+            self.finishButton.selected = NO;
+            self.otherButton.selected = NO;
+            self.outdateButton.selected = YES;
         }
     }
 }

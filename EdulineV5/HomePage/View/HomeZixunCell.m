@@ -29,7 +29,7 @@
     [self.contentView addSubview:_teacherScrollView];
 }
 
-- (void)setTeacherArrayInfo:(NSMutableArray *)infoArray {
+- (void)setZixunArrayInfo:(NSMutableArray *)infoArray {
     [_teacherInfoArray removeAllObjects];
     [_teacherInfoArray addObjectsFromArray:infoArray];
     [_teacherScrollView removeAllSubviews];
@@ -56,8 +56,8 @@
         [_teacherScrollView addSubview:view];
         
         //添加头像
-        UIImageView *TeaImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 15, 160, 90)];
-        NSString *urlStr = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"avatar_url"]];
+        UIImageView *TeaImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 160, 90)];
+        NSString *urlStr = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"cover_url"]];
         [TeaImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:DefaultUserImage];
         TeaImageView.layer.masksToBounds = YES;
         TeaImageView.layer.cornerRadius = 2;
@@ -69,13 +69,12 @@
         //添加名字
         UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(TeaImageView.frame) + 6, TeaViewWidth, 20)];
         NSString *nametext = [NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"title"]];
+        NSString *timeString = [EdulineV5_Tool timeForYYYYMMDD:[NSString stringWithFormat:@"%@",[infoArray[i] objectForKey:@"publish_time"]]];
         if ([nametext isEqualToString:@"<null>"] || [nametext isEqualToString:@"null"]) {
-           name.text = @"";
+           name.text = timeString;
         } else {
-            name.text = nametext;
+            name.text = [NSString stringWithFormat:@"%@ %@",timeString,nametext];
         }
-        NSString *timeString = @"03-12";
-        name.text = @"03-12 显示一行索潮玩…";
         name.textAlignment = NSTextAlignmentCenter;
         name.font = SYSTEMFONT(13);
         name.textColor = EdlineV5_Color.textFirstColor;

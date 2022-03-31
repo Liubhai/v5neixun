@@ -107,6 +107,7 @@
                 scrollView.contentOffset = CGPointZero;
                 self.vc.canScroll = YES;
             }
+            
         } else {
             if (self.detailVC.canScrollAfterVideoPlay == YES) {
                 self.cellTabelCanScroll = NO;
