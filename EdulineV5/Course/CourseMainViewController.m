@@ -247,7 +247,6 @@
     _creditLabel.font = SYSTEMFONT(15);
     _creditLabel.textColor = [UIColor whiteColor];
     _creditLabel.textAlignment = NSTextAlignmentCenter;
-    _creditLabel.text = @"10学分";
     _creditLabel.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.36].CGColor;
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_creditLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(8, 8)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
@@ -255,6 +254,7 @@
     maskLayer.path = maskPath.CGPath;
     _creditLabel.layer.mask = maskLayer;
     [_headerView addSubview:_creditLabel];
+    _creditLabel.hidden = YES;
     
     _courseActivityView = [[CourseActivityView alloc] initWithFrame:CGRectMake(0, _faceImageView.height - 45, MainScreenWidth, 45)];
     [_headerView addSubview:_courseActivityView];
@@ -1483,6 +1483,13 @@
 
 - (void)setCourseInfoData {
     if (SWNOTEmptyDictionary(_dataSource)) {
+        
+        if ([[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"]) {
+            _creditLabel.hidden = NO;
+        }
+        
+        _creditLabel.text = [NSString stringWithFormat:@"%@学分",_dataSource[@"study_score"]];
+        
         NSString *faceUrlString = [NSString stringWithFormat:@"%@",[_dataSource objectForKey:@"cover_url"]];
         if ([faceUrlString containsString:@"http"]) {
             [_faceImageView sd_setImageWithURL:EdulineUrlString([_dataSource objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
