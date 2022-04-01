@@ -72,6 +72,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     page = 1;
+    coursetypeIdString = @"1";// 默认公开课程
     _dataSource = [NSMutableArray new];
     _titleLabel.text = @"课程";
     _titleLabel.hidden = YES;
@@ -129,7 +130,7 @@
     // 顶部搜索框和 取消按钮
     _institutionSearch = [[UITextField alloc] initWithFrame:CGRectMake(_isSearch ? _leftButton.right : 15, _titleLabel.top, MainScreenWidth - 15 - (_isSearch ? _leftButton.right : 15) , 36)];
     _institutionSearch.font = SYSTEMFONT(14);
-    _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索课程" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
+    _institutionSearch.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"搜索课程和关键字" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]}];
     _institutionSearch.delegate = self;
     _institutionSearch.returnKeyType = UIReturnKeySearch;
     _institutionSearch.layer.cornerRadius = 18;
@@ -154,7 +155,7 @@
     [self.view addSubview:_headerView];
     
     
-    NSArray *titleArray = @[@"课程类型",SWNOTEmptyStr(_cateStr) ? _cateStr : @"分类",SWNOTEmptyStr(courseSortString) ? courseSortString : @"排序"];//@"筛选"
+    NSArray *titleArray = @[@"公开课程",SWNOTEmptyStr(_cateStr) ? _cateStr : @"分类",SWNOTEmptyStr(courseSortString) ? courseSortString : @"排序"];//@"筛选"
     CGFloat ButtonH = 45;
     CGFloat ButtonW = MainScreenWidth / titleArray.count;
     

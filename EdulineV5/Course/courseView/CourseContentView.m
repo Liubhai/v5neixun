@@ -81,6 +81,7 @@
     _coursePrice.textAlignment = NSTextAlignmentRight;
     _coursePrice.textColor = EdlineV5_Color.textPriceColor;
     _coursePrice.font = SYSTEMFONT(16);
+    _coursePrice.hidden = YES;
     [self addSubview:_coursePrice];
     
     _dateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_circle2.right + 8, _sectionCountLabel.top, 58, 20)];
@@ -294,7 +295,11 @@
             if ([price isEqualToString:@"0.00"] || [price isEqualToString:@"0.0"] ||[price isEqualToString:@"0"]) {
                 _coursePrice.hidden = YES;
             } else {
-                _coursePrice.hidden = NO;
+                if ([[NSString stringWithFormat:@"%@",_courseInfo[@"course_type"]] isEqualToString:@"4"]) {
+                    _coursePrice.hidden = YES;
+                } else {
+                    _coursePrice.hidden = NO;
+                }
             }
             
             _sectionCountLabel.text = [NSString stringWithFormat:@"共%@课时",_courseInfo[@"section_count"]];
