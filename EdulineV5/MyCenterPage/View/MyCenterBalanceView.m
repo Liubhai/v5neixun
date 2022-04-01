@@ -21,7 +21,7 @@
 }
 
 - (void)makeSubView {
-    NSArray *balanceArray = @[@"余额",@"推广",@"积分"];
+    NSArray *balanceArray = @[@"我的学分",@"我的积分",@"我的证书"];
     CGFloat WW = self.bounds.size.width / (balanceArray.count * 1.0);
     self.backgroundColor = [UIColor clearColor];
     for (int i = 0; i<balanceArray.count; i++) {
@@ -70,9 +70,9 @@
         NSString *balance = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"balance"]];
         NSString *income = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"income"]];
         NSString *credit = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"credit"]];
-        _balanceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:balance]];
-        _incomeLabel.text = [NSString stringWithFormat:@"%@%.2f",IOSMoneyTitle,[income floatValue]];
-        _scoreLabel.text = [NSString stringWithFormat:@"%.f",[credit floatValue]];
+        _balanceLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:balance]];
+        _incomeLabel.text = [NSString stringWithFormat:@"%.f",[credit floatValue]];
+        _scoreLabel.text = [NSString stringWithFormat:@"%.2f",[income floatValue]];
     }
 }
 

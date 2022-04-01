@@ -46,6 +46,7 @@
 // 内训版类型列表
 #import "NeixunMyCenterListView.h"
 #import "MyCreditVC.h"
+#import "MyCertificateListVC.h"
 
 //
 #import "MyCenterTypeOneCell.h"
@@ -577,7 +578,7 @@
     if (sender.tag == 0) {
         MyCreditVC *vc = [[MyCreditVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
-    } else if (sender.tag == 2) {
+    } else if (sender.tag == 1) {
         if ([ShowAudit isEqualToString:@"1"]) {
             MyScoreVC *vc = [[MyScoreVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -585,8 +586,8 @@
             MyScoreNewVC *vc = [[MyScoreNewVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
-    } else if (sender.tag == 1) {
-        MyIncomeVC *vc = [[MyIncomeVC alloc] init];
+    } else if (sender.tag == 2) {
+        MyCertificateListVC *vc = [[MyCertificateListVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
