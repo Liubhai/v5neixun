@@ -104,8 +104,9 @@
     }
     _titleL.text = [NSString stringWithFormat:@"%@",[info objectForKey:@"title"]];
     _learnCountLabel.text = [NSString stringWithFormat:@"%@人在学",[info objectForKey:@"sale_count"]];
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[info objectForKey:@"price"]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",[info objectForKey:@"price"],IOSMoneyTitle];
     NSString *priceValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"price"]];
+    NSString *studyScoreValue = [NSString stringWithFormat:@"%@",[info objectForKey:@"study_score"]];
     
     if (!_cellType) {
         _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 50);
@@ -123,12 +124,22 @@
         _priceLabel.text = @"已报名";
         _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
     } else {
-        if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"]) {
-            _priceLabel.text = @"免费";
-            _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+        if ([courseType isEqualToString:@"4"]) {
+            if ([studyScoreValue isEqualToString:@"0.00"] || [studyScoreValue isEqualToString:@"0.0"] || [studyScoreValue isEqualToString:@"0"]) {
+                _priceLabel.text = @"免费";
+                _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+            } else {
+                _priceLabel.text = [NSString stringWithFormat:@"%@学分",[EdulineV5_Tool reviseString:[info objectForKey:@"study_score"]]];
+                _priceLabel.textColor = EdlineV5_Color.faildColor;
+            }
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[info objectForKey:@"price"]]];
-            _priceLabel.textColor = EdlineV5_Color.faildColor;
+            if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"]) {
+                _priceLabel.text = @"免费";
+                _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
+            } else {
+                _priceLabel.text = [NSString stringWithFormat:@"%@%@",[EdulineV5_Tool reviseString:[info objectForKey:@"price"]],IOSMoneyTitle];
+                _priceLabel.textColor = EdlineV5_Color.faildColor;
+            }
         }
     }
     // 1 限时折扣 2 限时秒杀 3 砍价 4 拼团 0 没有活动
