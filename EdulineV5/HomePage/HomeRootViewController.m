@@ -718,7 +718,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"]) {
+    if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"recommendWellSale"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"favoriteCourse"] || [_sortArray[indexPath.section][@"key"] isEqualToString:@"userClasses"]) {
         
         HomePageCourseTypeOneCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         
