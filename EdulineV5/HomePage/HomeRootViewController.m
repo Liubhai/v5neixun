@@ -30,6 +30,7 @@
 #import "ZiXunDetailVC.h"
 #import "ZiXunListVC.h"
 #import "ExamPaperDetailViewController.h"
+#import "JoinCourseVC.h"
 
 // 直播测试
 //#import "LiveRoomViewController.h"
@@ -857,6 +858,10 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"information"]) {
         ZiXunListVC *vc = [[ZiXunListVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"userClasses"]) {
+        JoinCourseVC *vc = [[JoinCourseVC alloc] init];
+        vc.courseType = @"3";
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
