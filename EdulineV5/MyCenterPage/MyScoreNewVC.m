@@ -241,6 +241,12 @@
 - (void)setTopInfoData {
     if (SWNOTEmptyDictionary(_scoreInfo)) {
         _scoreCountLabel.text = [NSString stringWithFormat:@"%@",_scoreInfo[@"credit"]];
+        if (_scoreCountLabel.text.length > 7) {
+            _scoreCountLabel.font = SYSTEMFONT(30);
+        }
+        if (_scoreCountLabel.text.length > 10) {
+            _scoreCountLabel.font = SYSTEMFONT(25);
+        }
         CGFloat scoreWith = [_scoreCountLabel.text sizeWithFont:_scoreCountLabel.font].width + 4;
         [_scoreCountLabel setWidth:scoreWith];
         [_scoreBigIcon setLeft:_scoreCountLabel.right + 2];// 原本宽度+4这里就少加2 看上去更真实
