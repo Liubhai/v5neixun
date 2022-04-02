@@ -52,7 +52,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = EdlineV5_Color.backColor;
-    typeString = @"lcnpay";
+    typeString = @"credit";
     _typeArray = [NSMutableArray new];
     _titleLabel.text = @"订单支付";
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT + 10, MainScreenWidth, 75)];
@@ -180,14 +180,14 @@
     [_orderTypeView3 addGestureRecognizer:selectTap];
     
     _orderLeftIcon3 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
-    _orderLeftIcon3.image = Image(@"order_yue_icon");
+    _orderLeftIcon3.image = Image(@"order_jifen_icon");
     _orderLeftIcon3.centerY = 56 / 2.0;
     [_orderTypeView3 addSubview:_orderLeftIcon3];
     
     _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, MainScreenWidth - 15 - 56 - (_orderLeftIcon3.right + 12), 56)];
     _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle3.font = SYSTEMFONT(15);
-    _orderTitle3.text = [NSString stringWithFormat:@"余额(%@0.00)",IOSMoneyTitle];
+    _orderTitle3.text = [NSString stringWithFormat:@"积分(%@0.00)",IOSMoneyTitle];
     [_orderTypeView3 addSubview:_orderTitle3];
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
@@ -199,7 +199,7 @@
     BOOL hasW = NO;
     
     if (SWNOTEmptyArr(_typeArray)) {
-        if ([_typeArray containsObject:@"lcnpay"]) {
+        if ([_typeArray containsObject:@"credit"]) {
             hasW = YES;
         } else {
             hasW = NO;
@@ -248,6 +248,84 @@
         }
     }
 }
+
+//- (void)makeOrderType1View3 {
+//    _orderTypeView3 = [[UIView alloc] initWithFrame:CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56)];
+//    _orderTypeView3.backgroundColor = [UIColor whiteColor];
+//    [_orderTypeView addSubview:_orderTypeView3];
+//
+//    UITapGestureRecognizer *selectTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seleteViewTapClick:)];
+//    [_orderTypeView3 addGestureRecognizer:selectTap];
+//
+//    _orderLeftIcon3 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
+//    _orderLeftIcon3.image = Image(@"order_jifen_icon");//Image(@"order_yue_icon");
+//    _orderLeftIcon3.centerY = 56 / 2.0;
+//    [_orderTypeView3 addSubview:_orderLeftIcon3];
+//
+//    _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, MainScreenWidth - 15 - 56 - (_orderLeftIcon3.right + 12), 56)];
+//    _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
+//    _orderTitle3.font = SYSTEMFONT(15);
+//    _orderTitle3.text = [NSString stringWithFormat:@"余额(%@0.00)",IOSMoneyTitle];
+//    [_orderTypeView3 addSubview:_orderTitle3];
+//
+//    _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
+//    [_orderRightBtn3 setImage:Image(@"checkbox_def") forState:0];
+//    [_orderRightBtn3 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
+//    [_orderRightBtn3 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [_orderTypeView3 addSubview:_orderRightBtn3];
+//
+//    BOOL hasW = NO;
+//
+//    if (SWNOTEmptyArr(_typeArray)) {
+//        if ([_typeArray containsObject:@"credit"]) {
+//            hasW = YES;
+//        } else {
+//            hasW = NO;
+//        }
+//    } else {
+//        hasW = NO;
+//    }
+//
+//    if (!hasW) {
+//        [_orderTypeView3 setHeight:0];
+//        _orderTypeView3.hidden = YES;
+//    } else {
+//
+//        BOOL hasAp = NO;
+//        if (SWNOTEmptyArr(_typeArray)) {
+//            if ([_typeArray containsObject:@"applepay"]) {
+//                hasAp = YES;
+//            } else {
+//                hasAp = NO;
+//            }
+//        } else {
+//            hasAp = NO;
+//        }
+//
+//        if (hasAp) {
+//            [_orderTypeView1 setHeight:0];
+//            _orderTypeView1.hidden = YES;
+//
+//            _orderTypeView2.frame = CGRectMake(0, _orderTypeView1.bottom, MainScreenWidth, 0);
+//            _orderTypeView2.hidden = YES;
+//
+//            _orderTypeView3.frame = CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56);
+//        }
+//
+////        [_orderTypeView1 setHeight:0];
+////        _orderTypeView1.hidden = YES;
+////
+////        _orderTypeView2.frame = CGRectMake(0, _orderTypeView1.bottom, MainScreenWidth, 56);
+////        [_orderTypeView2 setHeight:0];
+////        _orderTypeView2.hidden = YES;
+////
+////        _orderTypeView3.frame = CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56);
+////        [self seleteButtonClick:_orderRightBtn3];
+//        if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
+//            [self seleteButtonClick:_orderRightBtn3];
+//        }
+//    }
+//}
 
 - (void)makeAgreeView {
     if (!_agreeBackView) {
@@ -336,7 +414,7 @@
         _orderRightBtn3.selected = YES;
         _orderRightBtn1.selected = NO;
         _orderRightBtn2.selected = NO;
-        typeString = @"lcnpay";
+        typeString = @"credit";
     }
 }
 
@@ -355,7 +433,7 @@
         _orderRightBtn3.selected = YES;
         _orderRightBtn1.selected = NO;
         _orderRightBtn2.selected = NO;
-        typeString = @"lcnpay";
+        typeString = @"credit";
     }
 }
 
@@ -380,12 +458,12 @@
                             [self seleteButtonClick:_orderRightBtn1];
                         } else if ([currentTypeString isEqualToString:@"alipay"]) {
                             [self seleteButtonClick:_orderRightBtn2];
-                        } else if ([currentTypeString isEqualToString:@"lcnpay"]) {
+                        } else if ([currentTypeString isEqualToString:@"credit"]) {
                             [self seleteButtonClick:_orderRightBtn3];
                         }
                     }
                     
-                    _orderTitle3.text = [NSString stringWithFormat:@"余额(%@%@)",IOSMoneyTitle,[_balanceInfo[@"data"] objectForKey:@"balance"]];
+                    _orderTitle3.text = [NSString stringWithFormat:@"积分(%@%@)",[_balanceInfo[@"data"] objectForKey:@"credit"],IOSMoneyTitle];
                     balpwd_setus = [[NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balpwd_setus"]] boolValue];
                     
                     [self makeAgreeView];
@@ -404,52 +482,62 @@
         _submitButton.enabled = YES;
         return;
     }
-    if ([typeString isEqualToString:@"lcnpay"] && SWNOTEmptyStr([V5_UserModel userPhone])) {
-        if ([V5_UserModel userPhone].length >= 11) {
-            
-            if (!balpwd_setus) {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未设置支付密码" preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [self jumpSetPwPage];
-                    }];
-                [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
-                [alertController addAction:commentAction];
-                alertController.modalPresentationStyle = UIModalPresentationFullScreen;
-                [self presentViewController:alertController animated:YES completion:nil];
-                _submitButton.enabled = YES;
-                return;
-            }
-            
-            NSString *paymentString = @"";
-            if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
-                paymentString = [EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]];
-            } else {
-                NSString *monyType = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
-                if ([_payment containsString:@"VIP"]) {
-                    paymentString = [_payment substringFromIndex:[monyType length] + 4];
-                } else {
-                    paymentString = [_payment substringFromIndex:[monyType length]];
-                }
-            }
-            
-            NSString *userMoney = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"balance"]];
-            if ([paymentString floatValue] > [userMoney floatValue]) {
-                [self showHudInView:self.view showHint:@"余额不足，请先充值"];
-                _submitButton.enabled = YES;
-                return;
-            }
-            
-            MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
-            vc.delegate = self;
-            [self.view addSubview:vc];
-            _submitButton.enabled = YES;
-        } else {
-            [self getMoneyPasWordString:@""];
-            //
-        }
-    } else {
-        [self getMoneyPasWordString:@""];
+    NSString *paymentString = [EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+    NSString *userMoney = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"credit"]];
+    if ([paymentString floatValue] > [userMoney floatValue]) {
+        [self showHudInView:self.view showHint:@"积分不足"];
+        _submitButton.enabled = YES;
+        return;
     }
+    
+    [self getMoneyPasWordString:@""];
+    
+//    if ([typeString isEqualToString:@"credit"] && SWNOTEmptyStr([V5_UserModel userPhone])) {
+//        if ([V5_UserModel userPhone].length >= 11) {
+//
+//            if (!balpwd_setus) {
+//                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未设置支付密码" preferredStyle:UIAlertControllerStyleAlert];
+//                UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                    [self jumpSetPwPage];
+//                    }];
+//                [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+//                [alertController addAction:commentAction];
+//                alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+//                [self presentViewController:alertController animated:YES completion:nil];
+//                _submitButton.enabled = YES;
+//                return;
+//            }
+//
+//            NSString *paymentString = @"";
+//            if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
+//                paymentString = [EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]];
+//            } else {
+//                NSString *monyType = [NSString stringWithFormat:@"%@",IOSMoneyTitle];
+//                if ([_payment containsString:@"VIP"]) {
+//                    paymentString = [_payment substringFromIndex:[monyType length] + 4];
+//                } else {
+//                    paymentString = [_payment substringFromIndex:[monyType length]];
+//                }
+//            }
+//
+//            NSString *userMoney = [NSString stringWithFormat:@"%@",[_balanceInfo[@"data"] objectForKey:@"credit"]];
+//            if ([paymentString floatValue] > [userMoney floatValue]) {
+//                [self showHudInView:self.view showHint:@"积分不足"];
+//                _submitButton.enabled = YES;
+//                return;
+//            }
+//
+//            MoneyPassWordPopView *vc = [[MoneyPassWordPopView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight)];
+//            vc.delegate = self;
+//            [self.view addSubview:vc];
+//            _submitButton.enabled = YES;
+//        } else {
+//            [self getMoneyPasWordString:@""];
+//            //
+//        }
+//    } else {
+//        [self getMoneyPasWordString:@""];
+//    }
 }
 
 // MARK: - 密码输入完成代理
@@ -464,7 +552,7 @@
         [Net_API requestPOSTWithURLStr:[Net_Path subMitOrder] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    if ([typeString isEqualToString:@"lcnpay"]) {
+                    if ([typeString isEqualToString:@"credit"]) {
                         [self showHudInView:self.view showHint:[responseObject objectForKey:@"msg"]];
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                             [self popVcToWhich];
@@ -482,9 +570,9 @@
                 } else {
                     _submitButton.enabled = YES;
                     NSString *msg = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"msg"]];
-                    if ([msg isEqualToString:@"余额不足"]) {
+                    if ([msg isEqualToString:@"积分不足"]) {
                         // 弹框提示跳转到余额充值页面
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"余额不足,立即去充值?" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"积分不足,立即去充值?" preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去充值" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             showReload = YES;
                             MyBalanceVC *vc = [[MyBalanceVC alloc] init];

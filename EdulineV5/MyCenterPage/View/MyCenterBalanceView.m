@@ -71,8 +71,8 @@
         NSString *income = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"income"]];
         NSString *credit = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"credit"]];
         _balanceLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:balance]];
-        _incomeLabel.text = [NSString stringWithFormat:@"%.f",[credit floatValue]];
-        _scoreLabel.text = [NSString stringWithFormat:@"%.2f",[income floatValue]];
+        _incomeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:credit]];
+        _scoreLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:income]];
     }
 }
 

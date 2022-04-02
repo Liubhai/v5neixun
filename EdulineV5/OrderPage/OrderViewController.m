@@ -110,7 +110,8 @@
 //    [self makeOrderType1View3];
 //    [_orderTypeView setHeight:_orderTypeView3.bottom];
     
-    if ([ShowAudit isEqualToString:@"1"]) {
+    /// [ShowAudit isEqualToString:@"1"]
+    if (1) {
         
     } else {
         if ([_orderTypeString isEqualToString:@"course"] || [_orderTypeString isEqualToString:@"courseKanjia"]) {
@@ -277,7 +278,7 @@
     _youhuiLabel.font = SYSTEMFONT(13);
     _youhuiLabel.textColor = EdlineV5_Color.textThirdColor;
     [_bottomView addSubview:_youhuiLabel];
-    _youhuiLabel.hidden = (![_orderTypeString isEqualToString:@"course"] && ![_orderTypeString isEqualToString:@"courseKanjia"]);
+    _youhuiLabel.hidden = YES;//(![_orderTypeString isEqualToString:@"course"] && ![_orderTypeString isEqualToString:@"courseKanjia"]);
     
     _submitButton = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 110, 0, 110, 36)];
     [_submitButton setTitle:@"提交订单" forState:0];
@@ -289,11 +290,11 @@
     [_submitButton addTarget:self action:@selector(submitButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_submitButton];
     // nisongwodefengjing pianrujinghongyu shuiyipinyiyu siwenli ziyanran shishulihaojieyoujixu qingchenyouleni nyuanshuisanyanlianyu liaobole jinghongyimian shuishidiuadnshidenahdhsiaodnaisd wojinshenheqiuweinidenghuolanshanchu tingdejianfeibuhuitaojian qianbaidu chogmanxinxi wobuyaodaizhejinglianhhua qioqiaoou j429jfejp odbaudhuahenhyu shouhujemh uouxieai xiangdijiejubeiyushouxnhdis manhengyansha syiufengerxia h=zhian
-    _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_submitButton.left - 200 - 15, 0, 200, 49)];
+    _finalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, 49)];//_submitButton.left - 200 - 15
     _finalPriceLabel.textColor = EdlineV5_Color.faildColor;
     _finalPriceLabel.font = SYSTEMFONT(15);
     _finalPriceLabel.text = [NSString stringWithFormat:@"合计: %@0.00",IOSMoneyTitle];
-    _finalPriceLabel.textAlignment = NSTextAlignmentRight;
+//    _finalPriceLabel.textAlignment = NSTextAlignmentRight;
     [_bottomView addSubview:_finalPriceLabel];
     
     NSMutableAttributedString *pass = [[NSMutableAttributedString alloc] initWithString:_finalPriceLabel.text];
@@ -564,8 +565,8 @@
         } else {
             [_scoreOtherView setTop:_topContentView.bottom + 10];
         }
-        
-        if ([ShowAudit isEqualToString:@"1"]) {
+        /// [ShowAudit isEqualToString:@"1"]
+        if (1) {
             _currentScoreModel = nil;
             [_scoresArray removeAllObjects];
         }
