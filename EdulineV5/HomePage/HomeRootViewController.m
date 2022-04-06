@@ -728,6 +728,9 @@
         vc.courselayer = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"section_level"]];
         vc.isLive = [[NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"course_type"]] isEqualToString:@"2"] ? YES : NO;
         vc.courseType = [NSString stringWithFormat:@"%@",[cell.courseInfoDict objectForKey:@"course_type"]];
+        if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"userClasses"]) {
+            vc.courseType = @"4";
+        }
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"categoryCourse"]) {
         HomePageCourseTypeOneCell *cell = [tableView cellForRowAtIndexPath:indexPath];

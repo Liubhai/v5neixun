@@ -73,6 +73,15 @@
 }
 
 - (void)getCourseTypeList {
+    
+    if (![_typeString isEqualToString:@"exam"]) {
+        [_dataSource addObjectsFromArray:@[@{@"id":@"1",@"title":@"公开课程"},@{@"id":@"4",@"title":@"培训计划"}]];
+        _tableView.frame = CGRectMake(0, 0, MainScreenWidth, _dataSource.count * 60 > (MainScreenHeight - MACRO_UI_UPHEIGHT) ? (MainScreenHeight - MACRO_UI_UPHEIGHT) : _dataSource.count * 60);
+        [_tableView reloadData];
+        self.view.hidden = NO;
+        return;
+    }
+    
     NSString *getUrl = [Net_Path coursetypeList];
     NSMutableDictionary *param = [NSMutableDictionary new];
     if ([_typeString isEqualToString:@"exam"]) {
