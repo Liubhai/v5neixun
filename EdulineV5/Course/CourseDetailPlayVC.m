@@ -4782,12 +4782,19 @@
 - (void)faceVerifyTip {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
-        vc.isVerify = YES;
-        vc.verifyed = NO;
-        vc.verifyResult = ^(BOOL result) {
-        };
-        [self.navigationController pushViewController:vc animated:YES];
+        
+        if (isFullS) {
+            [self changeOrientation:UIInterfaceOrientationPortrait];
+            [self aliyunVodPlayerView:_playerView fullScreen:NO];
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+            vc.isVerify = YES;
+            vc.verifyed = NO;
+            vc.verifyResult = ^(BOOL result) {
+            };
+            [self.navigationController pushViewController:vc animated:YES];
+        });
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
@@ -4815,58 +4822,51 @@
     weakSelf.playerView.faceVerifyCanPlay = NO;
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"请进行人脸验证" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去验证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
-        vc.isVerify = NO;
-        vc.verifyed = YES;
-        vc.sourceType = type;
-        vc.sourceId = courseHourseId;
-        vc.scene_type = sceneType;
-        vc.verifyResult = ^(BOOL result) {
-            if (result) {
-                self->playerCanPlay = YES;
-                faceVerifyCount = faceVerifyCount - 1;
-                if (weakSelf.playerView) {
-                    weakSelf.playerView.faceVerifyCanPlay = YES;
+        
+        if (isFullS) {
+            [self changeOrientation:UIInterfaceOrientationPortrait];
+            [self aliyunVodPlayerView:_playerView fullScreen:NO];
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+            vc.isVerify = NO;
+            vc.verifyed = YES;
+            vc.sourceType = type;
+            vc.sourceId = courseHourseId;
+            vc.scene_type = sceneType;
+            vc.verifyResult = ^(BOOL result) {
+                if (result) {
+                    self->playerCanPlay = YES;
+                    faceVerifyCount = faceVerifyCount - 1;
+                    if (weakSelf.playerView) {
+                        weakSelf.playerView.faceVerifyCanPlay = YES;
+                    }
+                    if ([faceType isEqualToString:@"1"]) {
+                        weakSelf.userFaceCourseDetailVerifyResult(result);
+                    }
+                    if ([faceType isEqualToString:@"2"]) {
+                        weakSelf.userFaceCourseNewDetailVerifyResult(result);
+                    }
+                    if ([faceType isEqualToString:@"3"]) {
+                        weakSelf.userFaceCourseRecordDetailVerifyResult(result);
+                    }
+                    if ([faceType isEqualToString:@"4"]) {
+                        weakSelf.userFaceCourseAutoDetailVerifyResult(result);
+                    }
+                } else {
+                    // 相同就不能看; 不相同就能看
+                    self->playerCanPlay = lastCanPlay;
+                    if (weakSelf.playerView) {
+                        weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
+                    }
                 }
-                if ([faceType isEqualToString:@"1"]) {
-                    weakSelf.userFaceCourseDetailVerifyResult(result);
-                }
-                if ([faceType isEqualToString:@"2"]) {
-                    weakSelf.userFaceCourseNewDetailVerifyResult(result);
-                }
-                if ([faceType isEqualToString:@"3"]) {
-                    weakSelf.userFaceCourseRecordDetailVerifyResult(result);
-                }
-                if ([faceType isEqualToString:@"4"]) {
-                    weakSelf.userFaceCourseAutoDetailVerifyResult(result);
-                }
-            } else {
-//                if (![self->_currentCourseFinalModel.model.classHourId isEqualToString:courseHourseId]) {
-//                    // 相同就不能看; 不相同就能看
-//                    self->playerCanPlay = lastCanPlay;
-//                    if (weakSelf.playerView) {
-//                        weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
-//                    }
-//                }
-                // 相同就不能看; 不相同就能看
-                self->playerCanPlay = lastCanPlay;
-                if (weakSelf.playerView) {
-                    weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
-                }
-            }
-        };
-        [self.navigationController pushViewController:vc animated:YES];
+            };
+            [self.navigationController pushViewController:vc animated:YES];
+        });
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//        if (![self->_currentCourseFinalModel.model.classHourId isEqualToString:courseHourseId]) {
-//            // 相同就不能看; 不相同就能看
-//            self->playerCanPlay = lastCanPlay;
-//            if (weakSelf.playerView) {
-//                weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
-//            }
-//        }
         // 相同就不能看; 不相同就能看
         self->playerCanPlay = lastCanPlay;
         if (weakSelf.playerView) {
