@@ -892,4 +892,25 @@
     return [Net_Path fullPath:@"exam/point/list" repalce:@"" byReplece:@""];
 }
 
+/** 培训计划报名 */
++ (NSString *)classCourseApply {
+    return [Net_Path fullPath:@"course/classes/signup" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)courseStudyListNet {
+    return [Net_Path fullPath:@"course/base/student/course" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)planStudyListNet {
+    return [Net_Path fullPath:@"course/base/student/plan" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)studyScoreNet {
+    return [Net_Path fullPath:@"user/study/score" repalce:@"" byReplece:@""];
+}
+
++ (NSString *)certificateListNet {
+    return [Net_Path fullPath:@"course/base/student/cert" repalce:@"" byReplece:@""];
+}
+
 @end

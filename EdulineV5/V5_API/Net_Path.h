@@ -634,6 +634,18 @@ struct NetWorkUrl {
 /** 新的知识点分类列表数据接口 */
 + (NSString *)examNewPointListNet;
 
+// MARK: - 内训
+/** 培训计划 */
++ (NSString *)classCourseApply;
+
++ (NSString *)courseStudyListNet;
+
++ (NSString *)planStudyListNet;
+
++ (NSString *)studyScoreNet;
+
++ (NSString *)certificateListNet;
+
 @end
 
 NS_ASSUME_NONNULL_END
