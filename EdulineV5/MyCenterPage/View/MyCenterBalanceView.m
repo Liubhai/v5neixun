@@ -67,8 +67,8 @@
 
 - (void)setBalanceInfo:(NSDictionary *)info {
     if (SWNOTEmptyDictionary(info)) {
-        NSString *balance = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"balance"]];
-        NSString *income = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"income"]];
+        NSString *balance = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"study_score"]];
+        NSString *income = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"cert_count"]];
         NSString *credit = [NSString stringWithFormat:@"%@",[[[info objectForKey:@"data"] objectForKey:@"user"] objectForKey:@"credit"]];
         _balanceLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:balance]];
         _incomeLabel.text = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:credit]];

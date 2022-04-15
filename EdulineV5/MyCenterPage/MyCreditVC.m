@@ -138,7 +138,7 @@
 - (void)getFirstData {
     page = 1;
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userScoreDetailNewNet] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyScoreNet] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.isRefreshing) {
             [_tableView.mj_header endRefreshing];
         }
@@ -168,7 +168,7 @@
 
 - (void)getMoreData {
     page = page + 1;
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userScoreDetailNewNet] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyScoreNet] WithAuthorization:nil paramDic:@{@"page":@(page),@"count":@"10"} finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }
@@ -196,7 +196,7 @@
 // MARK: - 赋值
 - (void)setTopInfoData {
     if (SWNOTEmptyDictionary(_scoreInfo)) {
-        _scoreCountLabel.text = [NSString stringWithFormat:@"%@",_scoreInfo[@"credit"]];
+        _scoreCountLabel.text = [NSString stringWithFormat:@"%@",_scoreInfo[@"score"]];
         CGFloat scoreWith = [_scoreCountLabel.text sizeWithFont:_scoreCountLabel.font].width + 4;
         [_scoreCountLabel setWidth:scoreWith];
         [_scoreBigIcon setLeft:_scoreCountLabel.right + 2];// 原本宽度+4这里就少加2 看上去更真实
