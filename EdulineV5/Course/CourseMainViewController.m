@@ -1171,6 +1171,71 @@
         return;
     }
     if (SWNOTEmptyDictionary(_dataSource)) {
+        if ([[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"]) {
+//            "study_status": 0, //报名状态【0：未报名；1：已报名，待审核；2：审核通过；3：审核未通过；】
+            NSString *study_status = [NSString stringWithFormat:@"%@",_dataSource[@"study_status"]];
+            if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
+                [self classCourseApplyNet];
+            } else if ([study_status isEqualToString:@"1"]) {
+                [self showHudInView:self.view showHint:@"已报名，待审核"];
+            } else if ([study_status isEqualToString:@"2"]) {
+                if ([ShowUserFace isEqualToString:@"1"]) {
+                    self.userFaceVerifyResult = ^(BOOL result) {
+                        CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+                        vc.ID = _ID;
+                        vc.courselayer = _courselayer;
+                        vc.isLive = _isLive;
+                        vc.courseType = _courseType;
+                        if ([_dataSource objectForKey:@"recent_learn"]) {
+                            if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+                                NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+                                if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+                                    vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
+                                    vc.shouldContinueLearn = YES;
+                                }
+                            }
+                        }
+                        [self.navigationController pushViewController:vc animated:YES];
+                    };
+                    if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                        if ([_dataSource objectForKey:@"recent_learn"]) {
+                            if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+                                NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+                                if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+                                    [self faceCompareTip:section_id sourceType:@"course_section"];
+                                } else {
+                                    [self faceCompareTip:_ID sourceType:@"course"];
+                                }
+                            } else {
+                                [self faceCompareTip:_ID sourceType:@"course"];
+                            }
+                        } else {
+                            [self faceCompareTip:_ID sourceType:@"course"];
+                        }
+                    } else {
+                        [self faceVerifyTip];
+                    }
+                } else {
+                    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+                    vc.ID = _ID;
+                    vc.courselayer = _courselayer;
+                    vc.isLive = _isLive;
+                    vc.courseType = _courseType;
+                    if ([_dataSource objectForKey:@"recent_learn"]) {
+                        if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+                            NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+                            if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+                                vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
+                                vc.shouldContinueLearn = YES;
+                            }
+                        }
+                    }
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            }
+            return;
+        }
+        
         if ([[_dataSource objectForKey:@"is_buy"] boolValue]) {
             if ([ShowUserFace isEqualToString:@"1"] && ([_courseType isEqualToString:@"1"] || [_courseType isEqualToString:@"4"])) {
                 self.userFaceVerifyResult = ^(BOOL result) {
@@ -1262,22 +1327,6 @@
                                 }
                             }
                         } else if ([promotionType isEqualToString:@"4"]) {
-                            // 拼团 (拼团无论什么状态 立即加入都是按照课程价格走)
-                            
-//                            if ([running_status isEqualToString:@"1"]) {
-//                                vc.promotion_id = [NSString stringWithFormat:@"%@",promotion[@"id"]];
-//                            }
-//                            if (SWNOTEmptyDictionary(_dataSource[@"pintuan_data"])) {
-//                                NSString *pintuanStatus = [NSString stringWithFormat:@"%@",_dataSource[@"pintuan_data"][@"status"]];
-//
-//                                /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功(应该是已经购买了)；3:拼团失败】 */
-//                                if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
-//                                } else if ([pintuanStatus isEqualToString:@"0"]) {
-//                                    vc.ignoreActivity = YES;
-//                                } else {
-//                                }
-//                            } else {
-//                            }
                         }
                     }
                 [self.navigationController pushViewController:vc animated:YES];
@@ -1691,6 +1740,27 @@
     [alertController addAction:cancelAction];
     alertController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+// MARK: - 内训培训计划报名
+- (void)classCourseApplyNet {
+    if (SWNOTEmptyDictionary(_dataSource)) {
+        if (SWNOTEmptyStr(_ID)) {
+            [Net_API requestPOSTWithURLStr:[Net_Path classCourseApply] WithAuthorization:nil paramDic:@{@"id":_ID} finish:^(id  _Nonnull responseObject) {
+                if (SWNOTEmptyDictionary(responseObject)) {
+                    [self showHudInView:self.view showHint:responseObject[@"msg"]];
+                    if ([[responseObject objectForKey:@"code"] integerValue]) {
+                        // 应该是成功了
+                        if (_courseDownView) {
+                            [_courseDownView.joinStudyButton setTitle:@"已报名" forState:0];
+                        }
+                    }
+                }
+            } enError:^(NSError * _Nonnull error) {
+                
+            }];
+        }
+    }
 }
 
 @end

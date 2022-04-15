@@ -105,7 +105,6 @@
     _joinStudyButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 5, MainScreenWidth - 30, 40)];
     _joinStudyButton.layer.masksToBounds = YES;
     _joinStudyButton.layer.cornerRadius = 20.0;
-    [_joinStudyButton setTitle:@"加入学习" forState:0];
     _joinStudyButton.titleLabel.font = SYSTEMFONT(16);
     [_joinStudyButton setTitleColor:[UIColor whiteColor] forState:0];
     _joinStudyButton.backgroundColor = EdlineV5_Color.themeColor;
@@ -202,79 +201,45 @@
 
 - (void)setCOurseInfoData:(NSDictionary *)courseInfo {
     if (SWNOTEmptyDictionary(courseInfo)) {
-        if ([[courseInfo objectForKey:@"is_buy"] boolValue]) {
-            _joinShopCarButton.hidden = YES;
-            
-            _activityButton.hidden = YES;
-            _activityJoinStudyButton.hidden = YES;
-            
-//            [_joinStudyButton setLeft:_joinShopCarButton.left];
-//            [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
-            [_joinStudyButton setTitle:@"开始学习" forState:0];
-            _joinStudyButton.hidden = NO;
-            if ([courseInfo objectForKey:@"recent_learn"]) {
-                if (SWNOTEmptyDictionary([courseInfo objectForKey:@"recent_learn"])) {
-                    if (SWNOTEmptyDictionary([[courseInfo objectForKey:@"recent_learn"] objectForKey:@"section_data"])) {
-                        [_joinStudyButton setTitle:@"继续学习" forState:0];
+        if ([[NSString stringWithFormat:@"%@",courseInfo[@"course_type"]] isEqualToString:@"4"]) {
+//            "study_status": 0, //报名状态【0：未报名；1：已报名，待审核；2：审核通过；3：审核未通过；】
+            NSString *study_status = [NSString stringWithFormat:@"%@",courseInfo[@"study_status"]];
+            if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
+                [_joinStudyButton setTitle:@"我要报名" forState:0];
+                _joinStudyButton.hidden = NO;
+            } else if ([study_status isEqualToString:@"1"]) {
+                [_joinStudyButton setTitle:@"已报名" forState:0];
+                _joinStudyButton.hidden = NO;
+            } else if ([study_status isEqualToString:@"2"]) {
+                [_joinStudyButton setTitle:@"开始学习" forState:0];
+                _joinStudyButton.hidden = NO;
+                if ([courseInfo objectForKey:@"recent_learn"]) {
+                    if (SWNOTEmptyDictionary([courseInfo objectForKey:@"recent_learn"])) {
+                        if (SWNOTEmptyDictionary([[courseInfo objectForKey:@"recent_learn"] objectForKey:@"section_data"])) {
+                            [_joinStudyButton setTitle:@"继续学习" forState:0];
+                        }
                     }
                 }
             }
         } else {
-            
-            [_joinStudyButton setTitle:@"我要报名" forState:0];
-            _joinStudyButton.hidden = NO;
-//            _joinShopCarButton.hidden = NO;
-//            _joinStudyButton.hidden = NO;
-//
-//            // 活动
-//            if (SWNOTEmptyDictionary(courseInfo[@"promotion"])) {
-//                if ([[NSString stringWithFormat:@"%@",courseInfo[@"promotion"][@"running_status"]] isEqualToString:@"1"]) {
-//                    _joinShopCarButton.hidden = YES;
-//                    NSDictionary *promotion = [NSDictionary dictionaryWithDictionary:courseInfo[@"promotion"]];
-//                    NSString *promotionType = [NSString stringWithFormat:@"%@",promotion[@"type"]];
-//                    /** 活动类型【1：限时折扣；2：限时秒杀；3：砍价；4：拼团；】 */
-//                    if ([promotionType isEqualToString:@"1"] || [promotionType isEqualToString:@"2"]) {
-//                        [_joinStudyButton setLeft:_joinShopCarButton.left];
-//                        [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
-//                        [_joinStudyButton setTitle:@"立即加入" forState:0];
-//                    } else if ([promotionType isEqualToString:@"3"]) {
-//                        _joinStudyButton.hidden = YES;
-//                        _activityButton.hidden = NO;
-//                        _activityJoinStudyButton.hidden = NO;
-//                        [_activityButton setTitle:@"邀请砍价" forState:0];
-//                    } else if ([promotionType isEqualToString:@"4"]) {
-//                        _joinStudyButton.hidden = YES;
-//                        _activityButton.hidden = NO;
-//                        _activityJoinStudyButton.hidden = NO;
-//                        [_activityButton setTitle:@"发起拼团" forState:0];
-//                        if (SWNOTEmptyDictionary(courseInfo[@"pintuan_data"])) {
-//                            NSString *pintuanStatus = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"status"]];
-//                            /** 团状态【0：开团待审(未支付成功)；1：开团成功；2：拼团成功(应该是已经购买了)；3:拼团失败】 */
-//                            if ([pintuanStatus isEqualToString:@"1"] || [pintuanStatus isEqualToString:@"2"]) {
-//                                _activityJoinStudyButton.hidden = YES;
-//                                NSString *total_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"total_num"]];
-//                                NSString *join_num = [NSString stringWithFormat:@"%@",courseInfo[@"pintuan_data"][@"join_num"]];
-//                                [_activityButton setTitle:[NSString stringWithFormat:@"已参团%@/%@人",join_num,total_num] forState:0];
-//                                [_activityButton setLeft:_activityJoinStudyButton.left];
-//                                [_activityButton setWidth:MainScreenWidth - 15 - _activityJoinStudyButton.left];
-//                            } else {
-//                                [_activityButton setTitle:@"发起拼团" forState:0];
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            if ([[courseInfo objectForKey:@"is_buy"] boolValue]) {
+                _joinShopCarButton.hidden = YES;
+                _activityButton.hidden = YES;
+                _activityJoinStudyButton.hidden = YES;
+                [_joinStudyButton setTitle:@"开始学习" forState:0];
+                _joinStudyButton.hidden = NO;
+                if ([courseInfo objectForKey:@"recent_learn"]) {
+                    if (SWNOTEmptyDictionary([courseInfo objectForKey:@"recent_learn"])) {
+                        if (SWNOTEmptyDictionary([[courseInfo objectForKey:@"recent_learn"] objectForKey:@"section_data"])) {
+                            [_joinStudyButton setTitle:@"继续学习" forState:0];
+                        }
+                    }
+                }
+            } else {
+                [_joinStudyButton setTitle:@"我要报名" forState:0];
+                _joinStudyButton.hidden = NO;
+            }
         }
-//        NSString *priceValue = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"price"]];
-//        NSString *user_price = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"user_price"]];
-//        if ([priceValue isEqualToString:@"0.00"] || [priceValue isEqualToString:@"0.0"] || [priceValue isEqualToString:@"0"] || ([[V5_UserModel vipStatus] isEqualToString:@"1"] && ([user_price isEqualToString:@"0.00"] || [user_price isEqualToString:@"0.0"] || [user_price isEqualToString:@"0"]))) {
-//            _joinShopCarButton.hidden = YES;
-//            _joinStudyButton.hidden = NO;
-//            _activityJoinStudyButton.hidden = YES;
-//            _activityButton.hidden = YES;
-//            [_joinStudyButton setLeft:_joinShopCarButton.left];
-//            [_joinStudyButton setWidth:MainScreenWidth - 15 - _joinShopCarButton.left];
-//        }
     }
 }
 
