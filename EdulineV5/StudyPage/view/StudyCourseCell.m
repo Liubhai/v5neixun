@@ -75,7 +75,6 @@
     [self.contentView addSubview:_learnStatusLabel];
     
     _titleL = [[UILabel alloc] initWithFrame:CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 20)];
-    _titleL.text = @"你是个傻屌";
     _titleL.textColor = EdlineV5_Color.textFirstColor;
     _titleL.font = SYSTEMFONT(15);
     [self.contentView addSubview:_titleL];
@@ -85,7 +84,7 @@
     _timedate.font = SYSTEMFONT(11);
     [self.contentView addSubview:_timedate];
     
-    _learnProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 8, MainScreenWidth - _titleL.left - 15, 4)];
+    _learnProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4)];
     _learnProgress.layer.masksToBounds = YES;
     _learnProgress.layer.cornerRadius = 2;
     _learnProgress.progress = 0.5;
@@ -124,7 +123,13 @@
     if ([expire_rest isEqualToString:@"-1"]) {
         _timedate.text = @"永久有效";
         _timedate.textColor = EdlineV5_Color.textThirdColor;
+        isOutDate = NO;
+    } else if ([expire_rest isEqualToString:@"0"]) {
+        _timedate.text = @"课程已过期";
+        _timedate.textColor = EdlineV5_Color.textThirdColor;
+        isOutDate = YES;
     } else {
+        isOutDate = NO;
         _timedate.text = [NSString stringWithFormat:@"距离课程到期还有%@天",expire_rest];
         NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_timedate.text];
         [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(8, expire_rest.length)];
@@ -164,7 +169,7 @@
             _titleL.textColor = EdlineV5_Color.textThirdColor;
             _timedate.frame = CGRectMake(_titleL.left, _titleL.bottom + 7, _titleL.width, 16);
             _timedate.text = @"课程已过期";
-            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 8, MainScreenWidth - _titleL.left - 15, 4);
+            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4);
             _learnCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16);
         }
     } else {
@@ -180,7 +185,7 @@
             _titleL.textColor = EdlineV5_Color.textThirdColor;
             _timedate.frame = CGRectMake(_titleL.left, _titleL.bottom + 7, _titleL.width, 16);
             _timedate.text = @"课程已过期";
-            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 8, MainScreenWidth - _titleL.left - 15, 4);
+            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4);
             _learnCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16);
         } else {
             _learnProgress.hidden = NO;
@@ -193,7 +198,7 @@
             _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 20);
             _titleL.textColor = EdlineV5_Color.textFirstColor;
             _timedate.frame = CGRectMake(_titleL.left, _titleL.bottom + 7, _titleL.width, 16);
-            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 8, MainScreenWidth - _titleL.left - 15, 4);
+            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4);
             _learnCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16);
         }
     }
@@ -230,6 +235,90 @@
         _learnCountLabel.text = @"已完成";
     } else {
         _learnCountLabel.text = [NSString stringWithFormat:@"%@%%",@([[courseInfo objectForKey:@"finished_rate"] integerValue])];
+    }
+}
+
+- (void)setJoinStudyCourseListInfo:(NSDictionary *)courseInfo showOutDate:(BOOL)showOutDate isOutDate:(BOOL)isOutDate {
+    [_courseFace sd_setImageWithURL:EdulineUrlString([courseInfo objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
+    
+    _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"title"]];
+    _titleL.textColor = EdlineV5_Color.textFirstColor;
+    
+    NSString *expire_rest = [NSString stringWithFormat:@"%@",courseInfo[@"expire_rest"]];
+    if ([expire_rest isEqualToString:@"-1"]) {
+        _timedate.text = @"永久有效";
+        _timedate.textColor = EdlineV5_Color.textThirdColor;
+        isOutDate = NO;
+    } else if ([expire_rest isEqualToString:@"0"]) {
+        _timedate.text = @"课程已过期";
+        _timedate.textColor = EdlineV5_Color.textThirdColor;
+        isOutDate = YES;
+    } else {
+        isOutDate = NO;
+        _timedate.text = [NSString stringWithFormat:@"距离课程到期还有%@天",expire_rest];
+        NSMutableAttributedString *priceAtt = [[NSMutableAttributedString alloc] initWithString:_timedate.text];
+        [priceAtt addAttributes:@{NSForegroundColorAttributeName: EdlineV5_Color.faildColor} range:NSMakeRange(8, expire_rest.length)];
+        _timedate.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+    }
+    
+    NSString *progressString = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"rate"]];
+    _learnProgress.progress = [progressString integerValue] * 0.01;
+    if ([[courseInfo objectForKey:@"rate"] integerValue] == 0) {
+        _learnCountLabel.text = @"开始学习";
+        _learnCountLabel.textColor = EdlineV5_Color.themeColor;
+    } else if ([[courseInfo objectForKey:@"rate"] integerValue] == 100) {
+        _learnCountLabel.text = @"已完成";
+        _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
+    } else {
+        _learnCountLabel.text = [NSString stringWithFormat:@"%@%%",@([[courseInfo objectForKey:@"rate"] integerValue])];
+        _learnCountLabel.textColor = EdlineV5_Color.textThirdColor;
+    }
+    
+    if (showOutDate) {
+        if (isOutDate) {
+            _learnProgress.hidden = YES;
+            _learnCountLabel.hidden = YES;
+            _outDateL.hidden = NO;
+            _outDateLineLeft.hidden = NO;
+            _outDateLineRight.hidden = NO;
+            _courseFace.frame = CGRectMake(15, _outDateL.bottom + 15, 153, 86);
+            _courseTypeImage.frame = CGRectMake(_courseFace.left, _courseFace.top, 33, 20);
+            _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 20);
+            _titleL.textColor = EdlineV5_Color.textThirdColor;
+            _timedate.frame = CGRectMake(_titleL.left, _titleL.bottom + 7, _titleL.width, 16);
+            _timedate.text = @"课程已过期";
+            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4);
+            _learnCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16);
+        }
+    } else {
+        if (isOutDate) {
+            _learnProgress.hidden = YES;
+            _learnCountLabel.hidden = YES;
+            _outDateL.hidden = YES;
+            _outDateLineLeft.hidden = YES;
+            _outDateLineRight.hidden = YES;
+            _courseFace.frame = CGRectMake(15, 10, 153, 86);
+            _courseTypeImage.frame = CGRectMake(_courseFace.left, _courseFace.top, 33, 20);
+            _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 20);
+            _titleL.textColor = EdlineV5_Color.textThirdColor;
+            _timedate.frame = CGRectMake(_titleL.left, _titleL.bottom + 7, _titleL.width, 16);
+            _timedate.text = @"课程已过期";
+            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4);
+            _learnCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16);
+        } else {
+            _learnProgress.hidden = NO;
+            _learnCountLabel.hidden = NO;
+            _outDateL.hidden = YES;
+            _outDateLineLeft.hidden = YES;
+            _outDateLineRight.hidden = YES;
+            _courseFace.frame = CGRectMake(15, 10, 153, 86);
+            _courseTypeImage.frame = CGRectMake(_courseFace.left, _courseFace.top, 33, 20);
+            _titleL.frame = CGRectMake(_courseFace.right + 12, _courseFace.top, MainScreenWidth - (_courseFace.right + 12) - 15, 20);
+            _titleL.textColor = EdlineV5_Color.textFirstColor;
+            _timedate.frame = CGRectMake(_titleL.left, _titleL.bottom + 7, _titleL.width, 16);
+            _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4);
+            _learnCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16);
+        }
     }
 }
 

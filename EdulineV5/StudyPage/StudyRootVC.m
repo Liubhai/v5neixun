@@ -485,6 +485,11 @@
         
         if (_banjiVC == nil) {
             _banjiVC = [[StudyTypeCourseListViewController alloc] init];
+            if (SWNOTEmptyDictionary(_studyInfo)) {
+                if (_studyInfo[@"data"][@"plan"]) {
+                    _banjiVC.dataSource = [NSMutableArray arrayWithArray:_studyInfo[@"data"][@"plan"]];
+                }
+            }
             _banjiVC.courseType = @"4";
             _banjiVC.notHiddenNav = YES;
             _banjiVC.screenType = dataType;
@@ -503,11 +508,22 @@
             _banjiVC.vc = weakself;
             _banjiVC.view.frame = CGRectMake(0,0, MainScreenWidth, sectionHeight - 93);
             _banjiVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
-            [_banjiVC getFirstStudyCourseData];
+            if (SWNOTEmptyDictionary(_studyInfo)) {
+                if (_studyInfo[@"data"][@"plan"]) {
+                    _banjiVC.dataSource = [NSMutableArray arrayWithArray:_studyInfo[@"data"][@"plan"]];
+                }
+            }
+            [_banjiVC.tableView reloadData];
+//            [_banjiVC getFirstStudyCourseData];
         }
         
         if (_dianboVC == nil) {
             _dianboVC = [[StudyTypeCourseListViewController alloc] init];
+            if (SWNOTEmptyDictionary(_studyInfo)) {
+                if (_studyInfo[@"data"][@"course"]) {
+                    _dianboVC.dataSource = [NSMutableArray arrayWithArray:_studyInfo[@"data"][@"course"]];
+                }
+            }
             _dianboVC.notHiddenNav = YES;
             _dianboVC.courseType = @"1";
             _dianboVC.screenType = dataType;
@@ -526,7 +542,13 @@
             _dianboVC.vc = weakself;
             _dianboVC.view.frame = CGRectMake(MainScreenWidth,0, MainScreenWidth, sectionHeight - 93);
             _dianboVC.tableView.frame = CGRectMake(0, 0, MainScreenWidth, sectionHeight - 93);
-            [_dianboVC getFirstStudyCourseData];
+            if (SWNOTEmptyDictionary(_studyInfo)) {
+                if (_studyInfo[@"data"][@"course"]) {
+                    _dianboVC.dataSource = [NSMutableArray arrayWithArray:_studyInfo[@"data"][@"course"]];
+                }
+            }
+            [_dianboVC.tableView reloadData];
+//            [_dianboVC getFirstStudyCourseData];
         }
         
 //        if (_mianshouVC == nil) {
@@ -751,8 +773,9 @@
         _joinFirstBtn.selected = NO;
         _studyFirstBtn.selected = YES;
     }
+    [self getStudyInfo];
     // 发通知 重新刷新页面数据
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"getFirstStudyCourseData" object:nil userInfo:@{@"dataType":dataType}];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"getFirstStudyCourseData" object:nil userInfo:@{@"dataType":dataType}];
 }
 
 - (void)jumpLearnRecord:(UIButton *)sender {
@@ -771,7 +794,7 @@
 
 - (void)getStudyInfo {
     if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageData] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
+        [Net_API requestGETSuperAPIWithURLStr:[Net_Path studyMainPageData] WithAuthorization:nil paramDic:@{@"order":dataType} finish:^(id  _Nonnull responseObject) {
             if ([_tableView.mj_header isRefreshing]) {
                 [_tableView.mj_header endRefreshing];
             }

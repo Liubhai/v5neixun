@@ -35,13 +35,13 @@
     self.view.backgroundColor = [UIColor whiteColor];
     courseSortIdString = @"";
     courseSortString = @"";
-    _titleLabel.text = [_courseType isEqualToString:@"3"] ? @"我的计划" : @"我的课程";
+    _titleLabel.text = [_courseType isEqualToString:@"4"] ? @"我的计划" : @"我的课程";
 //    [_rightButton setImage:Image(@"lesson_screen_nor") forState:0];
 //    _rightButton.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
     _typeArray = [NSMutableArray new];
-    if ([_courseType isEqualToString:@"3"]) {
+    if ([_courseType isEqualToString:@"4"]) {
         [_typeArray addObjectsFromArray:@[@{@"title":@"全部",@"type":@"1"},@{@"title":@"学习中",@"type":@"2"},@{@"title":@"未开始",@"type":@"3"},@{@"title":@"已完成",@"type":@"4"},@{@"title":@"已到期",@"type":@"5"}]];
     }
     
@@ -99,7 +99,8 @@
     if (SWNOTEmptyArr(_typeArray)) {
         for (int i = 0; i<_typeArray.count; i++) {
             JoinCourseTypeVC *vc = [[JoinCourseTypeVC alloc] init];
-            vc.courseType = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
+            vc.courseType = @"4";
+            vc.typeString = [NSString stringWithFormat:@"%@",[_typeArray[i] objectForKey:@"type"]];
             vc.view.frame = CGRectMake(MainScreenWidth*i, 0, MainScreenWidth, _mainScrollView.height);
             [_mainScrollView addSubview:vc.view];
             [self addChildViewController:vc];

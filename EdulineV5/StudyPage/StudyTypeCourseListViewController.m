@@ -33,7 +33,8 @@
     _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
     [self addTableView];
-    [self getFirstStudyCourseData];
+//    [self getFirstStudyCourseData];
+    [_tableView reloadData];
     // Do any additional setup after loading the view.
 }
 
@@ -59,7 +60,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     emptyData = SWNOTEmptyArr(_dataSource) ? NO : YES;
-    return SWNOTEmptyArr(_dataSource) ? _dataSource.count : 1;
+    return SWNOTEmptyArr(_dataSource) ? (_dataSource.count>5 ? 5 : _dataSource.count) : 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -76,7 +77,7 @@
         if (!cell) {
             cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
-        [cell setStudyCourseInfo:_dataSource[indexPath.row] showOutDate:outdateIndex == indexPath.row ? YES : NO isOutDate:indexPath.row >= outdateIndex ? YES : NO];
+        [cell setStudyCourseInfo:_dataSource[indexPath.row] showOutDate:NO isOutDate:NO];
         return cell;
     }
 }
@@ -85,9 +86,9 @@
     if (emptyData) {
         return 150;
     }
-    if (outdateIndex == indexPath.row) {
-        return 106 + 5 + 16 + 5;
-    }
+//    if (outdateIndex == indexPath.row) {
+//        return 106 + 5 + 16 + 5;
+//    }
     return 106;
 }
 
@@ -130,7 +131,7 @@
         return;
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row >= outdateIndex) {
+    if ([[NSString stringWithFormat:@"%@",self.dataSource[indexPath.row][@"expire_rest"]] isEqualToString:@"0"]) {
         [self.vc showHudInView:self.vc.view showHint:@"课程已过期"];
         return;
     }
@@ -318,7 +319,7 @@
 // MARK: - 内训学习页面课程列表底部查看更多按钮
 - (void)moreJoinCourseButtonClick:(UIButton *)sender {
     JoinCourseVC *vc = [[JoinCourseVC alloc] init];
-    vc.courseType = @"3";
+    vc.courseType = _courseType;
     [self.vc.navigationController pushViewController:vc animated:YES];
 }
 

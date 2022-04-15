@@ -83,6 +83,15 @@
             [pass addAttributes:@{NSFontAttributeName:SYSTEMFONT(20)} range:NSMakeRange(0, daysTime.length-1)];
             _continuousLearnTime.attributedText = [[NSAttributedString alloc] initWithAttributedString:pass];
             _allLearnTime.attributedText = [EdulineV5_Tool attributionTimeChangeWithSeconds:[[timeInfoData objectForKey:@"total_learn_time"] integerValue] isMinite:NO];
+
+            NSString *course_count = [NSString stringWithFormat:@"%@",timeInfoData[@"course_count"]];
+            NSString *course_finished_count = [NSString stringWithFormat:@"%@",timeInfoData[@"course_finished_count"]];
+            NSString *plan_count = [NSString stringWithFormat:@"%@",timeInfoData[@"plan_count"]];
+            NSString *plan_finished_count = [NSString stringWithFormat:@"%@",timeInfoData[@"plan_finished_count"]];
+            NSString *cert_count = [NSString stringWithFormat:@"%@",timeInfoData[@"cert_count"]];
+            _courseCount.text = [NSString stringWithFormat:@"%@/%@",course_finished_count,course_count];
+            _planCount.text = [NSString stringWithFormat:@"%@/%@",plan_finished_count,plan_count];
+            _certificateCount.text = [NSString stringWithFormat:@"%@",cert_count];
         }
     }
 }

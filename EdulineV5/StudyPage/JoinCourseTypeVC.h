@@ -10,9 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^userFaceJoinCourseTypeVerify)(BOOL result);
+
 @interface JoinCourseTypeVC : BaseViewController
 
+@property (nonatomic, strong) userFaceJoinCourseTypeVerify userFaceJoinCourseTypeVerify;
 @property (strong, nonatomic) NSString *courseType;
+@property (strong, nonatomic) NSString *typeString;
 
 @end
 

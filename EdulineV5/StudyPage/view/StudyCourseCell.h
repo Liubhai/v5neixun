@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setJoinStudyCourseInfo:(NSDictionary *)courseInfo;
 
+- (void)setJoinStudyCourseListInfo:(NSDictionary *)courseInfo showOutDate:(BOOL)showOutDate isOutDate:(BOOL)isOutDate;
+
 @end
 
 NS_ASSUME_NONNULL_END
