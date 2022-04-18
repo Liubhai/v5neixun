@@ -66,10 +66,6 @@
     _titleImage.userInteractionEnabled = YES;
     [self.view addSubview:_titleImage];
     
-    _lineTL = [[UIView alloc]initWithFrame:CGRectMake(0, 43.5, MainScreenWidth, 0.5)];
-    _lineTL.backgroundColor = [UIColor whiteColor];
-    [_titleImage addSubview:_lineTL];
-    
     _titleLabel = [[UILabel alloc]init];
     [_titleLabel setTextColor:EdlineV5_Color.textFirstColor];
     [_titleLabel setBackgroundColor:[UIColor clearColor]];
@@ -94,12 +90,16 @@
     _rightButton.hidden = YES;
     [_titleImage addSubview:_rightButton];
     
+    _lineTL = [[UIView alloc]initWithFrame:CGRectMake(0, 43, MainScreenWidth, 1)];
+    _lineTL.backgroundColor = [UIColor whiteColor];
+    [_titleImage addSubview:_lineTL];
+    
     // 这里对顶部所有控件重新调整了frame以适配iPhoneX
     _titleImage.frame = CGRectMake(0, 0, MainScreenWidth, 64+MACRO_UI_STATUSBAR_ADD_HEIGHT);
     _titleLabel.frame = CGRectMake(50, 27+MACRO_UI_STATUSBAR_ADD_HEIGHT, MainScreenWidth-100, 34);
     _leftButton.frame = CGRectMake(0, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 54, 44);
     _rightButton.frame = CGRectMake(MainScreenWidth-52, 22+MACRO_UI_STATUSBAR_ADD_HEIGHT, 53, 44);
-    _lineTL.frame = CGRectMake(0, 63.5+MACRO_UI_STATUSBAR_ADD_HEIGHT, MainScreenWidth, 0.5);
+    _lineTL.frame = CGRectMake(0, 63+MACRO_UI_STATUSBAR_ADD_HEIGHT, MainScreenWidth, 1);
 
 }
 

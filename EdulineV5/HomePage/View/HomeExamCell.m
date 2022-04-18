@@ -46,6 +46,7 @@
     _examButton.layer.cornerRadius = _examButton.height / 2.0;
     _examButton.titleLabel.font = SYSTEMFONT(12);
     _examButton.titleLabel.textColor = [UIColor whiteColor];
+    [_examButton addTarget:self action:@selector(doExamButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     _examButton.backgroundColor = EdlineV5_Color.themeColor;
     
     [_whiteBackView addSubview:_examButton];

@@ -33,6 +33,7 @@
 #import "JoinCourseVC.h"
 #import "ExamNewMainViewController.h"
 #import "ExamResultViewController.h"
+#import "HomeExamMoreVC.h"
 
 // 直播测试
 //#import "LiveRoomViewController.h"
@@ -55,7 +56,7 @@
 #import "CourseTreeListViewController.h"
 #import "InstitutionsChooseVC.h"
 
-@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate,HomePageDiscountCellDelegate, HomeZixunCellDelegate> {
+@interface HomeRootViewController ()<UITextFieldDelegate,SDCycleScrollViewDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,HomePageTeacherCellDelegate,HomePageHotRecommendedCellDelegate,HomePageCourseTypeTwoCellDelegate,HomePageDiscountCellDelegate, HomeZixunCellDelegate, HomeExamCellDelegate> {
     BOOL isWeek;// 显示周榜还是月榜
 }
 
@@ -613,6 +614,7 @@
             cell = [[HomeExamCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
         }
         [cell setHomeExamListInfo:_sortArray[indexPath.section][@"list"][indexPath.row]];
+        cell.delegate = self;
         return cell;
     } else if ([_sortArray[indexPath.section][@"key"] isEqualToString:@"information"]) {
         static NSString *reuse = @"HomeZixunCell";
@@ -869,7 +871,7 @@
         vc.courseType = @"3";
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"userExams"]) {
-        ExamNewMainViewController *vc = [[ExamNewMainViewController alloc] init];
+        HomeExamMoreVC *vc = [[HomeExamMoreVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

@@ -122,6 +122,7 @@
 		785A3E1B2498757200298054 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E192498757200298054 /* UIActionSheet+Blocks.m */; };
 		785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E1D2498F65900298054 /* TeacherCategoryVC.m */; };
 		785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A3E222499C1AE00298054 /* TeacherCategoryModel.m */; };
+		78637B73280D5E8400751D65 /* HomeExamMoreVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78637B72280D5E8400751D65 /* HomeExamMoreVC.m */; };
 		786CD55025EF624A00172B88 /* MyExamPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD54F25EF624A00172B88 /* MyExamPage.m */; };
 		786CD55325EF638200172B88 /* ExamRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55225EF638200172B88 /* ExamRecordCell.m */; };
 		786CD55625EF64DF00172B88 /* EXamRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 786CD55525EF64DF00172B88 /* EXamRecordModel.m */; };
@@ -1224,6 +1225,8 @@
 		785A3E1D2498F65900298054 /* TeacherCategoryVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherCategoryVC.m; sourceTree = "<group>"; };
 		785A3E212499C1AE00298054 /* TeacherCategoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherCategoryModel.h; sourceTree = "<group>"; };
 		785A3E222499C1AE00298054 /* TeacherCategoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherCategoryModel.m; sourceTree = "<group>"; };
+		78637B71280D5E8400751D65 /* HomeExamMoreVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeExamMoreVC.h; sourceTree = "<group>"; };
+		78637B72280D5E8400751D65 /* HomeExamMoreVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeExamMoreVC.m; sourceTree = "<group>"; };
 		786CD54E25EF624A00172B88 /* MyExamPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyExamPage.h; sourceTree = "<group>"; };
 		786CD54F25EF624A00172B88 /* MyExamPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyExamPage.m; sourceTree = "<group>"; };
 		786CD55125EF638200172B88 /* ExamRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamRecordCell.h; sourceTree = "<group>"; };
@@ -3520,6 +3523,8 @@
 			children = (
 				7879565E240E60320013F95F /* HomeRootViewController.h */,
 				7879565F240E60320013F95F /* HomeRootViewController.m */,
+				78637B71280D5E8400751D65 /* HomeExamMoreVC.h */,
+				78637B72280D5E8400751D65 /* HomeExamMoreVC.m */,
 				78AA139024441082007087F7 /* IntendedCourseVC.h */,
 				78AA139124441082007087F7 /* IntendedCourseVC.m */,
 				78AA138524405F22007087F7 /* View */,
@@ -6992,6 +6997,7 @@
 				78B119682733881D00A3B8CB /* CCSignManger.m in Sources */,
 				78C549DF241B674F00A33FC4 /* MBProgressHUD+AlivcHelper.m in Sources */,
 				78C549CA241B674E00A33FC4 /* AlivcAppServer.m in Sources */,
+				78637B73280D5E8400751D65 /* HomeExamMoreVC.m in Sources */,
 				78793A4F26522115000554C8 /* OrderScreenViewController.m in Sources */,
 				78E5B2582664B6FA0053F63F /* CircleDetailViewController.m in Sources */,
 				78E5B255265B74D20053F63F /* UploadImageModel.m in Sources */,
