@@ -109,6 +109,7 @@
     if (!cell) {
         cell = [[MyCertificateListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
+    [cell setMyCertificateListCellInfo:_dataSource[indexPath.row]];
     return cell;
 }
 

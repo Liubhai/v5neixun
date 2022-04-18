@@ -913,4 +913,8 @@
     return [Net_Path fullPath:@"course/base/student/cert" repalce:@"" byReplece:@""];
 }
 
++ (NSString *)certificateDetailNet {
+    return [Net_Path fullPath:@"course/base/student/cert/detail" repalce:@"" byReplece:@""];
+}
+
 @end

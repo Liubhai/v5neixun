@@ -646,6 +646,8 @@ struct NetWorkUrl {
 
 + (NSString *)certificateListNet;
 
++ (NSString *)certificateDetailNet;
+
 @end
 
 NS_ASSUME_NONNULL_END

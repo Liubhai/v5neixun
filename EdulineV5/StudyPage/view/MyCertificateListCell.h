@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *getTimeLabel;
 @property (strong, nonatomic) UILabel *datelineLabel;
 
+- (void)setMyCertificateListCellInfo:(NSDictionary *)dict;
 
 @end
 
