@@ -31,6 +31,8 @@
 #import "ZiXunListVC.h"
 #import "ExamPaperDetailViewController.h"
 #import "JoinCourseVC.h"
+#import "ExamNewMainViewController.h"
+#import "ExamResultViewController.h"
 
 // 直播测试
 //#import "LiveRoomViewController.h"
@@ -866,6 +868,9 @@
         JoinCourseVC *vc = [[JoinCourseVC alloc] init];
         vc.courseType = @"3";
         [self.navigationController pushViewController:vc animated:YES];
+    } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"userExams"]) {
+        ExamNewMainViewController *vc = [[ExamNewMainViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -887,18 +892,30 @@
 - (void)doExamOrLookExamResult:(NSDictionary *)examInfo {
     
     NSString *exam_status = [NSString stringWithFormat:@"%@",examInfo[@"exam_status"]];
-    if ([exam_status isEqualToString:@"1"]) {
-        
-    } else {
-        NSString *exam_number = [NSString stringWithFormat:@"%@",examInfo[@"exam_rest_num"]];
-        if ([exam_number isEqualToString:@"0"]) {
-            [self showHudInView:self.view showHint:@"考试次数已用完"];
-            return;
+    NSString *answer_times = [NSString stringWithFormat:@"%@",examInfo[@"answer_times"]];
+    NSString *exam_number = [NSString stringWithFormat:@"%@",examInfo[@"exam_rest_num"]];
+    
+    if ([answer_times isEqualToString:@"0"] || [answer_times isEqualToString:@"null"] || [answer_times isEqualToString:@"<null>"]) {
+        // 未作答
+        if ([exam_status isEqualToString:@"0"]) {
+            // 未开放
+        } else {
+            // 开始答题
+            if ([exam_number isEqualToString:@"0"]) {
+                [self showHudInView:self.view showHint:@"考试次数已用完"];
+                return;
+            }
+            ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+            vc.examType = @"3";
+            vc.examIds = [NSString stringWithFormat:@"%@",[examInfo objectForKey:@"paper_id"]];
+            vc.examModuleId = [NSString stringWithFormat:@"%@",[examInfo objectForKey:@"exam_id"]];
+            [self.navigationController pushViewController:vc animated:YES];
         }
-        ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+    } else {
+        /// 已参考
+        ExamResultViewController *vc = [[ExamResultViewController alloc] init];
+        vc.record_id = [NSString stringWithFormat:@"%@",examInfo[@"record_id"]];
         vc.examType = @"3";
-        vc.examIds = [NSString stringWithFormat:@"%@",[examInfo objectForKey:@"paper_id"]];
-        vc.examModuleId = [NSString stringWithFormat:@"%@",[examInfo objectForKey:@"exam_id"]];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

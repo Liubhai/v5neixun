@@ -14,6 +14,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self makeSubViews];
     }
     return self;
@@ -32,7 +33,7 @@
     _examStatusImageView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 0, 44, 17)];
     _examStatusImageView.image = Image(@"exam_yicankao");
     _examStatusImageView.hidden = YES;
-    [self.contentView addSubview:_examStatusImageView];
+    [_whiteBackView addSubview:_examStatusImageView];
     
     _examTitle = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, _whiteBackView.width - 15 - 70 - 12, 20 + 16 * 2)];
     _examTitle.font = SYSTEMFONT(15);
@@ -78,16 +79,27 @@
     _examMenberNumLabel.text = [NSString stringWithFormat:@"参考人数：%@",info[@"user_count"]];
     _scoreLabel.text = [NSString stringWithFormat:@"总分：%@",info[@"total_score"]];
     
+    _examButton.backgroundColor = EdlineV5_Color.themeColor;
+    
     NSString *exam_status = [NSString stringWithFormat:@"%@",info[@"exam_status"]];
-    if ([exam_status isEqualToString:@"1"]) {
+    NSString *answer_times = [NSString stringWithFormat:@"%@",info[@"answer_times"]];
+    if ([answer_times isEqualToString:@"0"] || [answer_times isEqualToString:@"<null>"] || [answer_times isEqualToString:@"null"]) {
+        // 未作答
+        _examStatusImageView.hidden = YES;
+        _examTitle.frame = CGRectMake(12, 0, _whiteBackView.width - 15 - 70 - 12, 20 + 16 * 2);
+        if ([exam_status isEqualToString:@"0"]) {
+            // 未开放
+            [_examButton setTitle:@"暂未开放" forState:0];
+            _examButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
+        } else {
+            // 开始答题
+            [_examButton setTitle:@"开始考试" forState:0];
+        }
+    } else {
         /// 已参考
         _examStatusImageView.hidden = NO;
         _examTitle.frame = CGRectMake(_examStatusImageView.right + 4.5, 0, _whiteBackView.width - 15 - 70 - (_examStatusImageView.right + 4.5), 20 + 16 * 2);
         [_examButton setTitle:@"查看详情" forState:0];
-    } else {
-        _examStatusImageView.hidden = YES;
-        _examTitle.frame = CGRectMake(12, 0, _whiteBackView.width - 15 - 70 - 12, 20 + 16 * 2);
-        [_examButton setTitle:@"开始考试" forState:0];
     }
 }
 
