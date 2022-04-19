@@ -13,6 +13,7 @@
 #import "ExamRecordList.h"
 
 #import "ExamRecordManagerVC.h"
+#import "HomeExamMoreVC.h"
 
 @interface MyExamPage ()<CourseSortVCDelegate> {
     // 课程
@@ -24,6 +25,7 @@
 @property (strong, nonatomic) ExamRecordList *collectionVC;
 @property (strong, nonatomic) ExamRecordList *errorExamListVC;
 @property (strong, nonatomic) ExamRecordManagerVC *publicAndTestExamListVC;
+@property (strong, nonatomic) HomeExamMoreVC *homeExamMoreVCListVC;
 
 @end
 
@@ -48,7 +50,7 @@
     
     _topCateButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80 + 4 + 13, _titleLabel.height)];
     _topCateButton.titleLabel.font = SYSTEMFONT(18);
-    [_topCateButton setTitle:@"考试记录" forState:UIControlStateNormal];
+    [_topCateButton setTitle:@"分配考试" forState:UIControlStateNormal];
     [_topCateButton setImage:Image(@"myexam_down_icon") forState:0];
     [_topCateButton setImage:Image(@"myexam_up_icon") forState:UIControlStateSelected];
     [_topCateButton setTitleColor:EdlineV5_Color.textFirstColor forState:UIControlStateNormal];
@@ -58,8 +60,8 @@
     [_titleImage addSubview:_topCateButton];
     
     [self addPublicAndTestExamListVC];
-    courseSortString = @"考试记录";
-    courseSortIdString = @"examRecord";
+    courseSortString = @"分配考试";
+    courseSortIdString = @"examApportion";
     
     if (SWNOTEmptyDictionary(_sortTypeFromFind)) {
         [self sortTypeChooseFromFindVC:_sortTypeFromFind];
@@ -104,6 +106,9 @@
         } else if ([courseSortIdString isEqualToString:@"examRecord"]) {
             _rightButton.hidden = YES;
             [self addPublicAndTestExamListVC];
+        } else if ([courseSortIdString isEqualToString:@"examApportion"]) {
+            _rightButton.hidden = YES;
+            [self addExamApportionListVC];
         } else {
             [self addErrorExamListVC];
             _rightButton.hidden = YES;
@@ -127,6 +132,9 @@
         } else if ([courseSortIdString isEqualToString:@"examRecord"]) {
             _rightButton.hidden = YES;
             [self addPublicAndTestExamListVC];
+        } else if ([courseSortIdString isEqualToString:@"examApportion"]) {
+            _rightButton.hidden = YES;
+            [self addExamApportionListVC];
         } else {
             [self addErrorExamListVC];
             _rightButton.hidden = YES;
@@ -156,6 +164,10 @@
     if (_publicAndTestExamListVC) {
         _publicAndTestExamListVC.view.hidden = YES;
     }
+    
+    if (_homeExamMoreVCListVC) {
+        _homeExamMoreVCListVC.view.hidden = YES;
+    }
 }
 
 - (void)addErrorExamListVC {
@@ -175,6 +187,10 @@
     if (_publicAndTestExamListVC) {
         _publicAndTestExamListVC.view.hidden = YES;
     }
+    
+    if (_homeExamMoreVCListVC) {
+        _homeExamMoreVCListVC.view.hidden = YES;
+    }
 }
 
 - (void)addPublicAndTestExamListVC {
@@ -188,6 +204,32 @@
     
     if (_collectionVC) {
         _collectionVC.view.hidden = YES;
+    }
+    
+    if (_errorExamListVC) {
+        _errorExamListVC.view.hidden = YES;
+    }
+    
+    if (_homeExamMoreVCListVC) {
+        _homeExamMoreVCListVC.view.hidden = YES;
+    }
+}
+
+- (void)addExamApportionListVC {
+    if (!_homeExamMoreVCListVC) {
+        _homeExamMoreVCListVC = [[HomeExamMoreVC alloc] init];
+        _homeExamMoreVCListVC.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT);
+        [self.view addSubview:_homeExamMoreVCListVC.view];
+        [self addChildViewController:_homeExamMoreVCListVC];
+    }
+    _homeExamMoreVCListVC.view.hidden = NO;
+    
+    if (_collectionVC) {
+        _collectionVC.view.hidden = YES;
+    }
+    
+    if (_publicAndTestExamListVC) {
+        _publicAndTestExamListVC.view.hidden = YES;
     }
     
     if (_errorExamListVC) {

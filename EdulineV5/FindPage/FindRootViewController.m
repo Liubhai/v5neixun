@@ -102,7 +102,7 @@
     [cell setFindListInfo:_dataSource[indexPath.row] cellIndex:indexPath cellType:_cellType];
     return cell;
 }
-
+//
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     NSString *keyType = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"key"]];

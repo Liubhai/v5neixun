@@ -31,6 +31,7 @@
     _titleLabel.text = @"我的考试";
     _lineTL.hidden = NO;
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
+    _titleImage.hidden = YES;
     _dataSource = [NSMutableArray new];
     page = 1;
     [self makeTableView];
@@ -38,7 +39,7 @@
 }
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];

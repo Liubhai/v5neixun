@@ -37,7 +37,9 @@
     _titleLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:20];
     
     _rightButton.hidden = YES;
-    _lineTL.hidden = YES;
+    _leftButton.hidden = YES;
+    _lineTL.hidden = NO;
+    _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     
 //    _cateArray = [NSMutableArray new];
 //    [_cateArray addObjectsFromArray:@[@{@"title":@"语文系汉语言学院",@"id":@"1"},@{@"title":@"数学",@"id":@"2"},@{@"title":@"英语",@"id":@"3"},@{@"title":@"物理系动力与平衡学院",@"id":@"4"},@{@"title":@"生物大学临床学院",@"id":@"5"},@{@"title":@"化学",@"id":@"6"}]];
@@ -97,7 +99,7 @@
 }
 
 - (void)makeScrollView {
-    _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_TABBAR_HEIGHT)];
     _mainScrollView.contentSize = CGSizeMake(MainScreenWidth, 0);
     _mainScrollView.pagingEnabled = YES;
     _mainScrollView.showsHorizontalScrollIndicator = NO;
@@ -107,6 +109,7 @@
     [self.view addSubview:_mainScrollView];
     
     ExamNewMainCateListVC *vc = [[ExamNewMainCateListVC alloc] init];
+    vc.notHiddenNav = YES;
     vc.mainTypeArray = [NSMutableArray arrayWithArray:_cateArray];
     vc.view.frame = CGRectMake(0, 0, MainScreenWidth, _mainScrollView.height);
     [_mainScrollView addSubview:vc.view];

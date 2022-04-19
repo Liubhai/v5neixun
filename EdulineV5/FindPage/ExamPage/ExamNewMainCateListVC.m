@@ -55,7 +55,7 @@
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 110)];
     _headerView.backgroundColor = [UIColor whiteColor];
     
-    NSArray *orderSortArray = @[@{@"image":@"exam_record",@"title":@"考试记录"},@{@"image":@"exam_topic",@"title":@"题目收藏"},@{@"image":@"exma_wrongtopic",@"title":@"错题本"}];
+    NSArray *orderSortArray = @[@{@"image":@"exam_apportion",@"title":@"分配考试"},@{@"image":@"exam_record",@"title":@"考试记录"},@{@"image":@"exam_topic",@"title":@"题目收藏"},@{@"image":@"exma_wrongtopic",@"title":@"错题本"}];
     
     CGFloat BtnWidth = MainScreenWidth / (orderSortArray.count * 1.0);
     
@@ -90,7 +90,7 @@
 
 
 - (void)makeTableView {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_TABBAR_HEIGHT)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = [UIColor whiteColor];
@@ -180,12 +180,14 @@
     }
     
     MyExamPage *vc = [[MyExamPage alloc] init];
-    if (sender.tag == 0) {
+    if (sender.tag == 1) {
         vc.sortTypeFromFind = @{@"title":@"考试记录",@"id":@"examRecord"};
-    } else if (sender.tag == 1) {
+    } else if (sender.tag == 2) {
         vc.sortTypeFromFind = @{@"title":@"题目收藏",@"id":@"examCollect"};
-    } else {
+    } else if (sender.tag == 3) {
         vc.sortTypeFromFind = @{@"title":@"错题本",@"id":@"errorExam"};
+    } else {
+        vc.sortTypeFromFind = @{@"title":@"分配考试",@"id":@"examApportion"};
     }
     [self.navigationController pushViewController:vc animated:YES];
 }

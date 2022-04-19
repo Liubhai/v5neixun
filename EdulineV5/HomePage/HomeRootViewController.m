@@ -33,7 +33,7 @@
 #import "JoinCourseVC.h"
 #import "ExamNewMainViewController.h"
 #import "ExamResultViewController.h"
-#import "HomeExamMoreVC.h"
+#import "MyExamPage.h"
 
 // 直播测试
 //#import "LiveRoomViewController.h"
@@ -871,7 +871,8 @@
         vc.courseType = @"3";
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"userExams"]) {
-        HomeExamMoreVC *vc = [[HomeExamMoreVC alloc] init];
+        MyExamPage *vc = [[MyExamPage alloc] init];
+        vc.sortTypeFromFind = @{@"title":@"分配考试",@"id":@"examApportion"};
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
