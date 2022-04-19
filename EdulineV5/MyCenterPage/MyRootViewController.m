@@ -506,6 +506,7 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([iconKey isEqualToString:@"my_exams"]) {
         MyExamPage *vc = [[MyExamPage alloc] init];
+        vc.sortTypeFromFind = @{@"title":@"考试记录",@"id":@"examRecord"};
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
