@@ -49,6 +49,11 @@
 @property (strong, nonatomic) NSDictionary *resultDictWrong;// 考试结果信息(所有错题)
 @property (strong, nonatomic) NSMutableArray *examWrongArray;// 每部分数组(所有错题)
 
+@property (strong, nonatomic) UIView *changeTypeBackView;
+
+@property (strong, nonatomic) UIButton *joinFirstBtn;
+@property (strong, nonatomic) UIButton *studyFirstBtn;
+
 @end
 
 @implementation ExamResultViewController
@@ -289,19 +294,22 @@
     [_bottomView addSubview:_resetButton];
     
     _allAnalysisButton = [[UIButton alloc] initWithFrame:CGRectMake(_resetButton.right, 0, MainScreenWidth / 3.0, 44)];
-    [_allAnalysisButton setTitle:@"全部解析" forState:0];
+    [_allAnalysisButton setTitle:@"查看解析" forState:0];
+    [_allAnalysisButton setImage:[Image(@"examresult_up") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateNormal];
+    [_allAnalysisButton setImage:[Image(@"examresult_down") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateSelected];
     [_allAnalysisButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _allAnalysisButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     _allAnalysisButton.titleLabel.font = SYSTEMFONT(16);
-    [_allAnalysisButton addTarget:self action:@selector(allAnalysisButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [EdulineV5_Tool dealButtonImageAndTitleUI:_allAnalysisButton];
+    [_allAnalysisButton addTarget:self action:@selector(makeChangeTypeBackView) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_allAnalysisButton];
     
     _sureButton = [[UIButton alloc] initWithFrame:CGRectMake(_allAnalysisButton.right, 0, MainScreenWidth / 3.0, 44)];
-    [_sureButton setTitle:@"错题解析" forState:0];
+    [_sureButton setTitle:@"重新考试" forState:0];
     [_sureButton setTitleColor:[UIColor whiteColor] forState:0];
     _sureButton.backgroundColor = EdlineV5_Color.themeColor;
     _sureButton.titleLabel.font = SYSTEMFONT(16);
-    [_sureButton addTarget:self action:@selector(sureButtonClick) forControlEvents:UIControlEventTouchUpInside];
+//    [_sureButton addTarget:self action:@selector(sureButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_sureButton];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth / 3.0, 1)];
@@ -324,6 +332,8 @@
 //    if (![_answer_status isEqualToString:@"2"]) {
 //        return;
 //    }
+    _changeTypeBackView.hidden = YES;
+    _allAnalysisButton.selected = NO;
     ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDict];
     vc.answer_status = _answer_status;
@@ -335,6 +345,8 @@
 //    if (![_answer_status isEqualToString:@"2"]) {
 //        return;
 //    }
+    _changeTypeBackView.hidden = YES;
+    _allAnalysisButton.selected = NO;
     ExamResultDetailViewController *vc = [[ExamResultDetailViewController alloc] init];
     vc.paperInfo = [NSDictionary dictionaryWithDictionary:_resultDictWrong];
     vc.isErrorAnalysis = YES;
@@ -540,6 +552,43 @@
         _percentlabel.textColor = [UIColor whiteColor];
         _percentlabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:att];
     }
+}
+
+- (void)makeChangeTypeBackView {
+    
+    if (!_changeTypeBackView) {
+        _changeTypeBackView = [[UIView alloc] init];
+        _changeTypeBackView.frame = CGRectMake(_allAnalysisButton.left, _bottomView.top - 4 - 100, _allAnalysisButton.width, 100);
+        
+        _changeTypeBackView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
+        _changeTypeBackView.layer.cornerRadius = 4;
+        _changeTypeBackView.layer.shadowColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.15].CGColor;
+        _changeTypeBackView.layer.shadowOffset = CGSizeMake(0,1);
+        _changeTypeBackView.layer.shadowOpacity = 1;
+        _changeTypeBackView.layer.shadowRadius = 7;
+        
+        _joinFirstBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 10, _changeTypeBackView.width, 22 + 9 + 9)];
+        _joinFirstBtn.tag = 10;
+        [_joinFirstBtn setTitle:@"错题解析" forState:0];
+        [_joinFirstBtn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+        [_joinFirstBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
+        _joinFirstBtn.titleLabel.font = SYSTEMFONT(16);
+        [_joinFirstBtn addTarget:self action:@selector(sureButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [_changeTypeBackView addSubview:_joinFirstBtn];
+        
+        _studyFirstBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, _joinFirstBtn.bottom, _changeTypeBackView.width, 22 + 9 + 9)];
+        _studyFirstBtn.tag = 11;
+        [_studyFirstBtn setTitle:@"全部解析" forState:0];
+        [_studyFirstBtn setTitleColor:EdlineV5_Color.textFirstColor forState:0];
+        [_studyFirstBtn setTitleColor:EdlineV5_Color.themeColor forState:UIControlStateSelected];
+        _studyFirstBtn.titleLabel.font = SYSTEMFONT(16);
+        [_studyFirstBtn addTarget:self action:@selector(allAnalysisButtonClick) forControlEvents:UIControlEventTouchUpInside];
+        [_changeTypeBackView addSubview:_studyFirstBtn];
+        _changeTypeBackView.hidden = YES;
+        [self.view addSubview:_changeTypeBackView];
+    }
+    _allAnalysisButton.selected = !_allAnalysisButton.selected;
+    _changeTypeBackView.hidden = !_changeTypeBackView.hidden;
 }
 
 @end
