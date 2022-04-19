@@ -325,7 +325,9 @@
     [param setObject:@(page) forKey:@"page"];
     // 大类型
     if (SWNOTEmptyStr(coursetypeIdString)) {
-        [param setObject:coursetypeIdString forKey:@"course_type"];
+        if ([coursetypeIdString isEqualToString:@"4"]) {
+            [param setObject:coursetypeIdString forKey:@"course_type"];
+        }
     }
     // 小分类
     if (SWNOTEmptyStr(courseClassifyIdString)) {
@@ -384,7 +386,9 @@
     [param setObject:@(page) forKey:@"page"];
     // 大类型
     if (SWNOTEmptyStr(coursetypeIdString)) {
-        [param setObject:coursetypeIdString forKey:@"course_type"];
+        if ([coursetypeIdString isEqualToString:@"4"]) {
+            [param setObject:coursetypeIdString forKey:@"course_type"];
+        }
     }
     // 小分类
     if (SWNOTEmptyStr(courseClassifyIdString)) {

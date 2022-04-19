@@ -119,6 +119,9 @@
 /** 内训培训计划学分 */
 @property (strong, nonatomic) UILabel *creditLabel;
 
+///傻逼弹框模式
+@property (strong, nonatomic) UIImageView *applyTipImageView;
+
 @end
 
 @implementation CourseMainViewController
@@ -204,6 +207,12 @@
     [self makeDownView];
     [self getCourseInfo];
     [self getShopCarCount];
+    
+    _applyTipImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 120, 120)];
+    _applyTipImageView.center = CGPointMake(self.view.frame.size.width / 2.0, self.view.frame.size.height / 2.0);
+    _applyTipImageView.image = Image(@"success_toast");
+    [self.view addSubview:_applyTipImageView];
+    _applyTipImageView.alpha = 0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadCourseDetailPageData) name:@"reloadCourseDetailPage" object:nil];
 }
@@ -1175,7 +1184,7 @@
 //            "study_status": 0, //报名状态【0：未报名；1：已报名，待审核；2：审核通过；3：审核未通过；】
             NSString *study_status = [NSString stringWithFormat:@"%@",_dataSource[@"study_status"]];
             if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
-                [self classCourseApplyNet];
+                [self joinApplyTip];
             } else if ([study_status isEqualToString:@"1"]) {
                 [self showHudInView:self.view showHint:@"已报名，待审核"];
             } else if ([study_status isEqualToString:@"2"]) {
@@ -1748,12 +1757,23 @@
         if (SWNOTEmptyStr(_ID)) {
             [Net_API requestPOSTWithURLStr:[Net_Path classCourseApply] WithAuthorization:nil paramDic:@{@"id":_ID} finish:^(id  _Nonnull responseObject) {
                 if (SWNOTEmptyDictionary(responseObject)) {
-                    [self showHudInView:self.view showHint:responseObject[@"msg"]];
                     if ([[responseObject objectForKey:@"code"] integerValue]) {
                         // 应该是成功了
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [UIView animateWithDuration:2 animations:^{
+                                _applyTipImageView.alpha = 1;
+                            } completion:^(BOOL finished) {
+                                if (finished) {
+                                    _applyTipImageView.alpha = 0;
+                                }
+                            }];
+                        });
+                        
                         if (_courseDownView) {
                             [_courseDownView.joinStudyButton setTitle:@"已报名" forState:0];
                         }
+                    } else {
+                        [self showHudInView:self.view showHint:responseObject[@"msg"]];
                     }
                 }
             } enError:^(NSError * _Nonnull error) {
@@ -1761,6 +1781,21 @@
             }];
         }
     }
+}
+
+- (void)joinApplyTip {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"报名需由管理员审核" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self classCourseApplyNet];
+        }];
+    [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
+    [alertController addAction:commentAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [cancelAction setValue:EdlineV5_Color.textSecendColor forKey:@"_titleTextColor"];
+    [alertController addAction:cancelAction];
+    alertController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

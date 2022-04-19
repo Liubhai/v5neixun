@@ -11,6 +11,7 @@
 #import "HomeRootViewController.h"
 #import "CourseRootViewController.h"
 #import "FindRootViewController.h"
+#import "ExamNewMainViewController.h"
 #import "StudyRootVC.h"
 #import "MyRootViewController.h"
 #import "V5_Constant.h"
@@ -52,7 +53,7 @@ static RootV5VC *sharedBaseTabBar;
     courseVC.isSearch = NO;
     UINavigationController *courseNav = [[UINavigationController alloc] initWithRootViewController:courseVC];
 
-    FindRootViewController *findVC = [[FindRootViewController alloc] init];
+    ExamNewMainViewController *findVC = [[ExamNewMainViewController alloc] init];
     findVC.notHiddenNav = YES;
     UINavigationController *findNav = [[UINavigationController alloc] initWithRootViewController:findVC];
 
