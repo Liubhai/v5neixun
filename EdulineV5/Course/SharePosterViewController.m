@@ -122,6 +122,9 @@
         [priceAtt addAttributes:@{NSFontAttributeName: SYSTEMFONT(15),NSForegroundColorAttributeName: EdlineV5_Color.textPriceColor} range:rangOld];
         [priceAtt addAttributes:@{NSStrikethroughStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSBaselineOffsetAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle],NSForegroundColorAttributeName:EdlineV5_Color.textThirdColor} range:rangNow];
         _coursePricelabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:priceAtt];
+        if ([_courseType isEqualToString:@"4"]) {
+            _coursePricelabel.hidden = YES;
+        }
 //        _coursePricelabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"course_price"]]];
         
         NSString *tipPrice = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_shareContentDict[@"max_profit"]]];
@@ -129,7 +132,7 @@
         NSMutableAttributedString *atr1 = [[NSMutableAttributedString alloc] initWithString:tipText];
         [atr1 addAttributes:@{NSForegroundColorAttributeName:EdlineV5_Color.faildColor,NSFontAttributeName:SYSTEMFONT(12)} range:[tipText rangeOfString:tipPrice]];
         _tipLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:atr1];
-        
+        _tipLabel.hidden = YES;
 //        [_teacherFace sd_setImageWithURL:EdulineUrlString(_shareContentDict[@"teacher_avatar"]) placeholderImage:DefaultUserImage];
         
 //        _teacherName.text = [NSString stringWithFormat:@"%@",_shareContentDict[@"teacher_name"]];
