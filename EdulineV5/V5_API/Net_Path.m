@@ -917,4 +917,9 @@
     return [Net_Path fullPath:@"course/base/student/cert/detail" repalce:@"" byReplece:@""];
 }
 
+/** 分配的考试 */
++ (NSString *)userOwnExamListNet {
+    return [Net_Path fullPath:@"user/exam/student" repalce:@"" byReplece:@""];
+}
+
 @end

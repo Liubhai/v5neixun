@@ -84,14 +84,14 @@
     [param setObject:@"10" forKey:@"count"];
     
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path certificateListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userOwnExamListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_header.isRefreshing) {
             [_tableView.mj_header endRefreshing];
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
                 [_dataSource removeAllObjects];
-                [_dataSource addObjectsFromArray:[responseObject objectForKey:@"data"]];
+                [_dataSource addObjectsFromArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
             }
         }
         if (_dataSource.count<10) {
@@ -114,13 +114,13 @@
     [param setObject:@(page) forKey:@"page"];
     [param setObject:@"10" forKey:@"count"];
     
-    [Net_API requestGETSuperAPIWithURLStr:[Net_Path certificateListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+    [Net_API requestGETSuperAPIWithURLStr:[Net_Path userOwnExamListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
             [_tableView.mj_footer endRefreshing];
         }
         if (SWNOTEmptyDictionary(responseObject)) {
             if ([[responseObject objectForKey:@"code"] integerValue]) {
-                NSArray *pass = [NSArray arrayWithArray:[responseObject objectForKey:@"data"]];
+                NSArray *pass = [NSArray arrayWithArray:[[responseObject objectForKey:@"data"] objectForKey:@"data"]];
                 [_dataSource addObjectsFromArray:pass];
                 if (pass.count<10) {
                     _tableView.mj_footer.hidden = YES;

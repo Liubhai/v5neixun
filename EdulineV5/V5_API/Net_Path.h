@@ -638,15 +638,23 @@ struct NetWorkUrl {
 /** 培训计划 */
 + (NSString *)classCourseApply;
 
+/** 我的课程 */
 + (NSString *)courseStudyListNet;
 
+/** 我的计划 */
 + (NSString *)planStudyListNet;
 
+/** 学分详情(明细) */
 + (NSString *)studyScoreNet;
 
+/** 证书列表 */
 + (NSString *)certificateListNet;
 
+/** 证书详情*/
 + (NSString *)certificateDetailNet;
+
+/** 分配的考试 */
++ (NSString *)userOwnExamListNet;
 
 @end
 
