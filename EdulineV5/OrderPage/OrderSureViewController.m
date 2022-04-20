@@ -61,9 +61,9 @@
     _priceLabel.textAlignment = NSTextAlignmentCenter;
     _priceLabel.textColor = EdlineV5_Color.faildColor;
     if (SWNOTEmptyDictionary(_orderSureInfo) && !SWNOTEmptyStr(_payment) && !SWNOTEmptyStr(_order_no)) {
-        _payment = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]]];
+        _payment = [NSString stringWithFormat:@"%@%@",[EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]],IOSMoneyTitle];
         if ([[V5_UserModel vipStatus] isEqualToString:@"1"]) {
-            _payment = [NSString stringWithFormat:@"VIP:%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]]];
+            _payment = [NSString stringWithFormat:@"VIP:%@%@",[EdulineV5_Tool reviseString:[_orderSureInfo[@"data"] objectForKey:@"payment"]],IOSMoneyTitle];
         }
         _order_no = [NSString stringWithFormat:@"%@",[[_orderSureInfo objectForKey:@"data"] objectForKey:@"order_no"]];
     }
@@ -176,8 +176,8 @@
     _orderTypeView3.backgroundColor = [UIColor whiteColor];
     [_orderTypeView addSubview:_orderTypeView3];
     
-    UITapGestureRecognizer *selectTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seleteViewTapClick:)];
-    [_orderTypeView3 addGestureRecognizer:selectTap];
+//    UITapGestureRecognizer *selectTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seleteViewTapClick:)];
+//    [_orderTypeView3 addGestureRecognizer:selectTap];
     
     _orderLeftIcon3 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, 22, 22)];
     _orderLeftIcon3.image = Image(@"order_jifen_icon");
@@ -187,13 +187,13 @@
     _orderTitle3 = [[UILabel alloc] initWithFrame:CGRectMake(_orderLeftIcon3.right + 12, 0, MainScreenWidth - 15 - 56 - (_orderLeftIcon3.right + 12), 56)];
     _orderTitle3.textColor = EdlineV5_Color.textSecendColor;
     _orderTitle3.font = SYSTEMFONT(15);
-    _orderTitle3.text = [NSString stringWithFormat:@"积分(%@0.00)",IOSMoneyTitle];
+    _orderTitle3.text = [NSString stringWithFormat:@"积分(0.00%@)",IOSMoneyTitle];
     [_orderTypeView3 addSubview:_orderTitle3];
     
     _orderRightBtn3 = [[UIButton alloc] initWithFrame:CGRectMake(MainScreenWidth - 15 - 56, 0, 56, 56)];
-    [_orderRightBtn3 setImage:Image(@"checkbox_def") forState:0];
-    [_orderRightBtn3 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
-    [_orderRightBtn3 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_orderRightBtn3 setImage:Image(@"checkbox_nor_order") forState:0];
+//    [_orderRightBtn3 setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
+//    [_orderRightBtn3 addTarget:self action:@selector(seleteButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_orderTypeView3 addSubview:_orderRightBtn3];
     
     BOOL hasW = NO;
@@ -244,7 +244,7 @@
 //        _orderTypeView3.frame = CGRectMake(0, _orderTypeView2.bottom, MainScreenWidth, 56);
 //        [self seleteButtonClick:_orderRightBtn3];
         if (_orderTypeView1.height == 0 && _orderTypeView2.height == 0) {
-            [self seleteButtonClick:_orderRightBtn3];
+//            [self seleteButtonClick:_orderRightBtn3];
         }
     }
 }
