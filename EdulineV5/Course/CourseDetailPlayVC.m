@@ -3750,7 +3750,15 @@
 - (void)requestTuwenRecord {
     WEAK(self);
     if (SWNOTEmptyStr(_currentHourseId)) {
-        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":weakself.ID,@"section_id":_currentHourseId,@"current_time":@"10"} finish:^(id  _Nonnull responseObject) {
+        
+        NSString *courseId = _currentCourseFinalModel.model.course_id;
+        CourseListModel *parentModel  = _currentCourseFinalModel.model.parentItem;
+        
+        while (parentModel) {
+            courseId = parentModel.course_id;
+            parentModel = parentModel.parentItem;
+        }
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":([_courseType isEqualToString:@"4"] ? courseId : weakself.ID),@"section_id":_currentHourseId,@"current_time":@"10"} finish:^(id  _Nonnull responseObject) {
             
         } enError:^(NSError * _Nonnull error) {
             
