@@ -77,9 +77,9 @@ static RootV5VC *sharedBaseTabBar;
     XLabel.backgroundColor = EdlineV5_Color.layarLineColor;//[UIColor colorWithRed:143.f / 255 green:143.f / 255 blue:143.f / 255 alpha:0.5];
     [_imageView addSubview:XLabel];
     
-    NSArray *imageArray = @[@"tabbar_home_nor",@"tabbar_lesson_nor",@"tabbar_find_nor",@"tabbar_study_nor",@"tabbar_pre_nor"];
-    NSArray *selectedArray = @[@"tabbar_home_pre",@"tabbar_lesson_pre",@"tabbar_find_pre",@"tabbar_study_pre",@"tabbar_pre_pre"];
-    NSArray *normalTitleArray = @[@"首页",@"课程",@"发现",@"学习",@"我的"];
+    NSArray *imageArray = @[@"tabbar_home_nor",@"tabbar_lesson_nor",@"tabbar_pre_exam_icon",@"tabbar_study_nor",@"tabbar_pre_nor"];
+    NSArray *selectedArray = @[@"tabbar_home_pre",@"tabbar_lesson_pre",@"tabbar_nor_exam_icon",@"tabbar_study_pre",@"tabbar_pre_pre"];
+    NSArray *normalTitleArray = @[@"首页",@"课程",@"题库",@"学习",@"我的"];
     
     //添加按钮
     CGFloat space = (self.view.frame.size.width-40*imageArray.count)/(imageArray.count + 1);

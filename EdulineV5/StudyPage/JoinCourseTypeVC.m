@@ -64,7 +64,7 @@
     if (!cell) {
         cell = [[StudyCourseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
-    [cell setJoinStudyCourseListInfo:_dataSource[indexPath.row] showOutDate:NO isOutDate:NO];
+    [cell setJoinStudyCourseListInfo:_dataSource[indexPath.row] showOutDate:NO isOutDate:NO courseType:_courseType];
     return cell;
 }
 

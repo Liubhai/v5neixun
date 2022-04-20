@@ -175,7 +175,7 @@
     [param setObject:@"10" forKey:@"count"];
     // 大类型
     if (SWNOTEmptyStr(_courseType)) {
-        if ([_courseType isEqualToString:@"4"]) {
+        if ([_courseType isEqualToString:@"classes"]) {
             [param setObject:_courseType forKey:@"source_type"];
         }
     }
@@ -214,7 +214,7 @@
     [param setObject:@"10" forKey:@"count"];
     // 大类型
     if (SWNOTEmptyStr(_courseType)) {
-        if ([_courseType isEqualToString:@"4"]) {
+        if ([_courseType isEqualToString:@"classes"]) {
             [param setObject:_courseType forKey:@"source_type"];
         }
     }

@@ -198,9 +198,6 @@
             } else {
                 _learnStatusLabel.text = @"学习中";
             }
-            if (![courseType isEqualToString:@"4"]) {
-                _learnStatusLabel.hidden = YES;
-            }
             _learnProgress.hidden = NO;
             _learnCountLabel.hidden = NO;
             _outDateL.hidden = YES;
@@ -214,6 +211,9 @@
             _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4);
             _learnCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16);
         }
+    }
+    if (![courseType isEqualToString:@"4"]) {
+        _learnStatusLabel.hidden = YES;
     }
 }
 
@@ -251,9 +251,8 @@
     }
 }
 
-- (void)setJoinStudyCourseListInfo:(NSDictionary *)courseInfo showOutDate:(BOOL)showOutDate isOutDate:(BOOL)isOutDate {
+- (void)setJoinStudyCourseListInfo:(NSDictionary *)courseInfo showOutDate:(BOOL)showOutDate isOutDate:(BOOL)isOutDate courseType:(nonnull NSString *)courseType {
     [_courseFace sd_setImageWithURL:EdulineUrlString([courseInfo objectForKey:@"cover_url"]) placeholderImage:DefaultImage];
-    NSString *courseType = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"course_type"]];
     _titleL.text = [NSString stringWithFormat:@"%@",[courseInfo objectForKey:@"title"]];
     _titleL.textColor = EdlineV5_Color.textFirstColor;
     _learnStatusLabel.hidden = NO;
@@ -332,17 +331,17 @@
             _timedate.frame = CGRectMake(_titleL.left, _titleL.bottom + 7, _titleL.width, 16);
             _learnProgress.frame = CGRectMake(_titleL.left, _courseFace.bottom - 4, MainScreenWidth - _titleL.left - 15, 4);
             _learnCountLabel.frame = CGRectMake(MainScreenWidth - 15 - 100, _learnProgress.top - 3 - 16, 100, 16);
-            if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 0) {
+            if ([[courseInfo objectForKey:@"rate"] integerValue] == 0) {
                 _learnStatusLabel.text = @"未开始";
-            } else if ([[courseInfo objectForKey:@"finished_rate"] integerValue] == 100) {
+            } else if ([[courseInfo objectForKey:@"rate"] integerValue] == 100) {
                 _learnStatusLabel.text = @"已完成";
             } else {
                 _learnStatusLabel.text = @"学习中";
             }
-            if (![courseType isEqualToString:@"4"]) {
-                _learnStatusLabel.hidden = YES;
-            }
         }
+    }
+    if (![courseType isEqualToString:@"4"]) {
+        _learnStatusLabel.hidden = YES;
     }
 }
 
