@@ -868,7 +868,7 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"userClasses"]) {
         JoinCourseVC *vc = [[JoinCourseVC alloc] init];
-        vc.courseType = @"3";
+        vc.courseType = @"4";
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([_sortArray[sender.tag][@"key"] isEqualToString:@"userExams"]) {
         MyExamPage *vc = [[MyExamPage alloc] init];

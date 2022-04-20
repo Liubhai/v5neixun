@@ -175,7 +175,9 @@
     [param setObject:@"10" forKey:@"count"];
     // 大类型
     if (SWNOTEmptyStr(_courseType)) {
-        [param setObject:_courseType forKey:@"source_type"];
+        if ([_courseType isEqualToString:@"4"]) {
+            [param setObject:_courseType forKey:@"source_type"];
+        }
     }
     [_tableView tableViewDisplayWitMsg:@"暂无内容～" img:@"empty_img" ifNecessaryForRowCount:0 isLoading:YES tableViewShowHeight:_tableView.height];
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
@@ -212,7 +214,9 @@
     [param setObject:@"10" forKey:@"count"];
     // 大类型
     if (SWNOTEmptyStr(_courseType)) {
-        [param setObject:_courseType forKey:@"source_type"];
+        if ([_courseType isEqualToString:@"4"]) {
+            [param setObject:_courseType forKey:@"source_type"];
+        }
     }
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path userCollectionListNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
         if (_tableView.mj_footer.isRefreshing) {
