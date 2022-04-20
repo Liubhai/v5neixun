@@ -70,7 +70,7 @@
     [_headerView addSubview:_scoreCountLabel];
     
     _scoreBigIcon = [[UIImageView alloc] initWithFrame:CGRectMake(_scoreCountLabel.right + 4, 0, 35, 35)];
-    _scoreBigIcon.image = Image(@"integral_big_icon");
+    _scoreBigIcon.image = Image(@"credit_icon");
     _scoreBigIcon.centerY = _scoreCountLabel.centerY;
     [_headerView addSubview:_scoreBigIcon];
     
@@ -127,7 +127,7 @@
     if (!cell) {
         cell = [[ScoreNewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    [cell setScoreInfo:_dataSource[indexPath.row]];
+    [cell setScoreInfo:_dataSource[indexPath.row] isCredit:YES];
     return cell;
 }
 

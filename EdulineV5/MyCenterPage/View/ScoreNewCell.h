@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *scoreCountLabel;
 @property (strong, nonatomic) UIView *lineView;
 
-- (void)setScoreInfo:(NSDictionary *)dict;
+- (void)setScoreInfo:(NSDictionary *)dict isCredit:(BOOL)isCredit;
 
 @end
 

@@ -35,7 +35,7 @@
     [self.contentView addSubview:_timeLabel];
     
     _iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(scoreCellWith - 15 - 15, 0, 15, 15)];
-    _iconImageView.image = Image(@"integral_small_icon");
+//    _iconImageView.image = Image(@"integral_small_icon");
     _iconImageView.centerY = 70 / 2.0;
     [self.contentView addSubview:_iconImageView];
     
@@ -60,7 +60,13 @@
 
 //【1:充值;2:冻结;3:解冻;4:网页操作增加;5:兑换收入扣除;6:兑换商品扣除;】
 
-- (void)setScoreInfo:(NSDictionary *)dict {
+- (void)setScoreInfo:(NSDictionary *)dict isCredit:(BOOL)isCredit {
+    
+    if (isCredit) {
+        _iconImageView.image = Image(@"credits_small");
+    } else {
+        _iconImageView.image = Image(@"integral_small_icon");
+    }
     
     _scoreTitle.text = [NSString stringWithFormat:@"%@",dict[@"note"]];
     _timeLabel.text = [EdulineV5_Tool formateYYYYMMDDHHMMTime:[NSString stringWithFormat:@"%@",dict[@"create_time"]]];

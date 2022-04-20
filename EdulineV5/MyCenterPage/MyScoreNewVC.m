@@ -171,7 +171,7 @@
     if (!cell) {
         cell = [[ScoreNewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    [cell setScoreInfo:_dataSource[indexPath.row]];
+    [cell setScoreInfo:_dataSource[indexPath.row] isCredit:NO];
     return cell;
 }
 
