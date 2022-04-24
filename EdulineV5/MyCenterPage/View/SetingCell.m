@@ -50,7 +50,7 @@
     _switchOther.layer.masksToBounds = YES;
     _switchOther.layer.cornerRadius = 15;
     
-    _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 49.5, MainScreenWidth - 15, 0.5)];
+    _lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 49, MainScreenWidth - 15, 1)];
     _lineView.backgroundColor = EdlineV5_Color.fengeLineColor;
     [self.contentView addSubview:_lineView];
 }

@@ -224,7 +224,7 @@
     gender = [NSString stringWithFormat:@"%@",[V5_UserModel gender]];// 0 保密 1 男 2 女
     
     _secrecyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _secrecyBtn.frame = CGRectMake(MainScreenWidth - 15 - 60, _sexTitle.top, 60, 50);
+    _secrecyBtn.frame = CGRectMake(0, _sexTitle.top, 0, 50);//MainScreenWidth - 15 - 60///60
     _secrecyBtn.titleLabel.font = SYSTEMFONT(15);
     [_secrecyBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
     [_secrecyBtn setImage:Image(@"sexcheckbox_nor") forState:0];
@@ -234,9 +234,10 @@
     _secrecyBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 12/2.0, 0, -12/2.0);
     [_secrecyBtn addTarget:self action:@selector(sexButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_mainScrollView addSubview:_secrecyBtn];
+    _secrecyBtn.hidden = YES;
     
     _feMaleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _feMaleBtn.frame = CGRectMake(_secrecyBtn.left - 40 - 47, _sexTitle.top, 47, 50);
+    _feMaleBtn.frame = CGRectMake(MainScreenWidth - 15 - 47, _sexTitle.top, 47, 50);
     _feMaleBtn.titleLabel.font = SYSTEMFONT(15);
     [_feMaleBtn setTitleColor:EdlineV5_Color.textSecendColor forState:0];
     [_feMaleBtn setImage:Image(@"sexcheckbox_nor") forState:0];
