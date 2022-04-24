@@ -13,6 +13,7 @@
 #import "Net_Path.h"
 #import "ExamResultDetailViewController.h"
 #import "ExamPaperErrorTestAgainVC.h"
+#import "ExamPaperDetailViewController.h"
 
 @interface ExamResultViewController ()
 
@@ -309,7 +310,7 @@
     [_sureButton setTitleColor:[UIColor whiteColor] forState:0];
     _sureButton.backgroundColor = EdlineV5_Color.themeColor;
     _sureButton.titleLabel.font = SYSTEMFONT(16);
-//    [_sureButton addTarget:self action:@selector(sureButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [_sureButton addTarget:self action:@selector(examAgain) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_sureButton];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth / 3.0, 1)];
@@ -352,6 +353,20 @@
     vc.isErrorAnalysis = YES;
     vc.answer_status = _answer_status;
     vc.examType = _examType;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// MARK: - 重新考试
+- (void)examAgain {
+    ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
+    NSString *rollId = [NSString stringWithFormat:@"%@",[_resultDict objectForKey:@"rollup_id"]];
+    if ([rollId isEqualToString:@"0"]) {
+        vc.examType = @"3";
+    } else {
+        vc.examType = @"4";
+        vc.rollup_id = rollId;
+    }
+    vc.examIds = [NSString stringWithFormat:@"%@",[_resultDict objectForKey:@"paper_id"]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
