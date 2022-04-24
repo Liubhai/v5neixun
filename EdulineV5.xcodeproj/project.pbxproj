@@ -11,6 +11,47 @@
 		780487E92510A433001118F3 /* EmptyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 780487E82510A433001118F3 /* EmptyCell.m */; };
 		78060FA9255E836900009171 /* ExamMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78060FA8255E836900009171 /* ExamMainViewController.m */; };
 		78060FAC255E8B8100009171 /* ExamMainListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78060FAB255E8B8100009171 /* ExamMainListCell.m */; };
+		78093D4928153CEC00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CEA28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.m */; };
+		78093D4A28153CEC00E6EEB7 /* AVCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CEB28153CEB00E6EEB7 /* AVCSlider.m */; };
+		78093D4B28153CEC00E6EEB7 /* AVCSelectSharpnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CEC28153CEB00E6EEB7 /* AVCSelectSharpnessView.m */; };
+		78093D4C28153CEC00E6EEB7 /* AlivcVideoPlayThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CED28153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.m */; };
+		78093D4D28153CEC00E6EEB7 /* AVCLogView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CEE28153CEB00E6EEB7 /* AVCLogView.m */; };
+		78093D4E28153CEC00E6EEB7 /* AVCVideoDownloadTCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CF028153CEB00E6EEB7 /* AVCVideoDownloadTCell.m */; };
+		78093D4F28153CEC00E6EEB7 /* AlivcPlayListsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CF128153CEB00E6EEB7 /* AlivcPlayListsView.m */; };
+		78093D5028153CEC00E6EEB7 /* AVCVideoDownloadTCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78093CF228153CEB00E6EEB7 /* AVCVideoDownloadTCell.xib */; };
+		78093D5128153CEC00E6EEB7 /* AliyunVodPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CF728153CEB00E6EEB7 /* AliyunVodPlayerView.m */; };
+		78093D5228153CEC00E6EEB7 /* AliyunDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093CFF28153CEB00E6EEB7 /* AliyunDataSource.m */; };
+		78093D5328153CEC00E6EEB7 /* AliyunUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D0028153CEB00E6EEB7 /* AliyunUtil.m */; };
+		78093D5428153CEC00E6EEB7 /* AliyunLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D0228153CEB00E6EEB7 /* AliyunLog.m */; };
+		78093D5528153CEC00E6EEB7 /* AliyunPlayerViewPopLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D0728153CEB00E6EEB7 /* AliyunPlayerViewPopLayer.m */; };
+		78093D5628153CEC00E6EEB7 /* AliyunPlayerViewErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D0828153CEB00E6EEB7 /* AliyunPlayerViewErrorView.m */; };
+		78093D5728153CEC00E6EEB7 /* AliyunPlayerViewTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D0E28153CEB00E6EEB7 /* AliyunPlayerViewTopView.m */; };
+		78093D5828153CEC00E6EEB7 /* AliyunPlayerViewControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D0F28153CEB00E6EEB7 /* AliyunPlayerViewControlView.m */; };
+		78093D5928153CEC00E6EEB7 /* AliyunPlayerViewSeekPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D1128153CEB00E6EEB7 /* AliyunPlayerViewSeekPopupView.m */; };
+		78093D5A28153CEC00E6EEB7 /* AliyunPlayerViewGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D1528153CEB00E6EEB7 /* AliyunPlayerViewGestureView.m */; };
+		78093D5B28153CEC00E6EEB7 /* AliyunGestureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D1628153CEB00E6EEB7 /* AliyunGestureModel.m */; };
+		78093D5C28153CEC00E6EEB7 /* AliyunPlayerViewProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D1D28153CEC00E6EEB7 /* AliyunPlayerViewProgressView.m */; };
+		78093D5D28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D1E28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.m */; };
+		78093D5E28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D1F28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.m */; };
+		78093D5F28153CEC00E6EEB7 /* AliyunPlayerViewSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D2028153CEC00E6EEB7 /* AliyunPlayerViewSlider.m */; };
+		78093D6028153CEC00E6EEB7 /* AlilyunViewLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D2428153CEC00E6EEB7 /* AlilyunViewLoadingView.m */; };
+		78093D6128153CEC00E6EEB7 /* AliyunPlayerViewGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D2628153CEC00E6EEB7 /* AliyunPlayerViewGifView.m */; };
+		78093D6228153CEC00E6EEB7 /* AliyunViewMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D2828153CEC00E6EEB7 /* AliyunViewMoreView.m */; };
+		78093D6328153CEC00E6EEB7 /* AliyunSpeedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D2B28153CEC00E6EEB7 /* AliyunSpeedButton.m */; };
+		78093D6428153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D2E28153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.m */; };
+		78093D6528153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D3028153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.m */; };
+		78093D6628153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78093D3328153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.xib */; };
+		78093D6728153CEC00E6EEB7 /* AVC_VP_BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D3428153CEC00E6EEB7 /* AVC_VP_BaseViewController.m */; };
+		78093D6828153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D3528153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.m */; };
+		78093D6928153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D3928153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.m */; };
+		78093D6A28153CEC00E6EEB7 /* readMe_videoPlay.txt in Resources */ = {isa = PBXBuildFile; fileRef = 78093D3A28153CEC00E6EEB7 /* readMe_videoPlay.txt */; };
+		78093D6B28153CEC00E6EEB7 /* AVC_VP_Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78093D3C28153CEC00E6EEB7 /* AVC_VP_Main.storyboard */; };
+		78093D6C28153CEC00E6EEB7 /* AliyunImageSource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 78093D3D28153CEC00E6EEB7 /* AliyunImageSource.bundle */; };
+		78093D6D28153CEC00E6EEB7 /* encryptedApp.dat in Resources */ = {isa = PBXBuildFile; fileRef = 78093D3E28153CEC00E6EEB7 /* encryptedApp.dat */; };
+		78093D6E28153CEC00E6EEB7 /* AlivcVideoDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D4528153CEC00E6EEB7 /* AlivcVideoDataBase.m */; };
+		78093D6F28153CEC00E6EEB7 /* DownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D4628153CEC00E6EEB7 /* DownloadManager.m */; };
+		78093D7028153CEC00E6EEB7 /* AVCVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D4728153CEC00E6EEB7 /* AVCVideo.m */; };
+		78093D7128153CEC00E6EEB7 /* AVCVideoConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 78093D4828153CEC00E6EEB7 /* AVCVideoConfig.m */; };
 		780B8B462716AD5B0022B63A /* CourseMakeNoteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 780B8B452716AD5B0022B63A /* CourseMakeNoteVC.m */; };
 		780F9577254FDD810070EB1F /* LiveTeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F9576254FDD810070EB1F /* LiveTeacherView.m */; };
 		780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 780F95BA25551FEC0070EB1F /* LivePageControlView.m */; };
@@ -209,47 +250,6 @@
 		787ED6F5255A341E00906846 /* BCLiveRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787ED6F4255A341E00906846 /* BCLiveRoomViewController.m */; };
 		787ED6F8255A62C000906846 /* OneToOneLiveRoomVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787ED6F7255A62C000906846 /* OneToOneLiveRoomVC.m */; };
 		787EF0AA26C520DF0049E8CB /* ShopMainListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787EF0A926C520DF0049E8CB /* ShopMainListCell.m */; };
-		787F1E65247381A400108F7B /* AlivcVideoPlayerListsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E00247381A300108F7B /* AlivcVideoPlayerListsTableViewCell.m */; };
-		787F1E66247381A400108F7B /* AVCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E01247381A300108F7B /* AVCSlider.m */; };
-		787F1E67247381A400108F7B /* AVCSelectSharpnessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E02247381A300108F7B /* AVCSelectSharpnessView.m */; };
-		787F1E68247381A400108F7B /* AlivcVideoPlayThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E03247381A300108F7B /* AlivcVideoPlayThumbnailView.m */; };
-		787F1E69247381A400108F7B /* AVCLogView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E04247381A300108F7B /* AVCLogView.m */; };
-		787F1E6A247381A400108F7B /* AVCVideoDownloadTCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E06247381A300108F7B /* AVCVideoDownloadTCell.m */; };
-		787F1E6B247381A400108F7B /* AlivcPlayListsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E07247381A300108F7B /* AlivcPlayListsView.m */; };
-		787F1E6C247381A400108F7B /* AVCVideoDownloadTCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 787F1E08247381A300108F7B /* AVCVideoDownloadTCell.xib */; };
-		787F1E6D247381A400108F7B /* AliyunVodPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E0D247381A300108F7B /* AliyunVodPlayerView.m */; };
-		787F1E6E247381A400108F7B /* AliyunDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E15247381A300108F7B /* AliyunDataSource.m */; };
-		787F1E6F247381A400108F7B /* AliyunUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E16247381A300108F7B /* AliyunUtil.m */; };
-		787F1E70247381A400108F7B /* AliyunLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E18247381A300108F7B /* AliyunLog.m */; };
-		787F1E74247381A400108F7B /* AliyunPlayerViewPopLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E21247381A300108F7B /* AliyunPlayerViewPopLayer.m */; };
-		787F1E75247381A400108F7B /* AliyunPlayerViewErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E22247381A300108F7B /* AliyunPlayerViewErrorView.m */; };
-		787F1E76247381A400108F7B /* AliyunPlayerViewTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E28247381A300108F7B /* AliyunPlayerViewTopView.m */; };
-		787F1E77247381A400108F7B /* AliyunPlayerViewControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E29247381A300108F7B /* AliyunPlayerViewControlView.m */; };
-		787F1E78247381A400108F7B /* AliyunPlayerViewSeekPopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E2B247381A300108F7B /* AliyunPlayerViewSeekPopupView.m */; };
-		787F1E79247381A400108F7B /* AliyunPlayerViewGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E2F247381A300108F7B /* AliyunPlayerViewGestureView.m */; };
-		787F1E7A247381A400108F7B /* AliyunGestureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E30247381A300108F7B /* AliyunGestureModel.m */; };
-		787F1E7B247381A400108F7B /* AliyunPlayerViewProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E37247381A300108F7B /* AliyunPlayerViewProgressView.m */; };
-		787F1E7C247381A400108F7B /* AliyunPlayerViewBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E38247381A300108F7B /* AliyunPlayerViewBottomView.m */; };
-		787F1E7D247381A400108F7B /* AliyunPlayerViewQualityListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E39247381A300108F7B /* AliyunPlayerViewQualityListView.m */; };
-		787F1E7E247381A400108F7B /* AliyunPlayerViewSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E3A247381A300108F7B /* AliyunPlayerViewSlider.m */; };
-		787F1E7F247381A400108F7B /* AlilyunViewLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E3E247381A300108F7B /* AlilyunViewLoadingView.m */; };
-		787F1E80247381A400108F7B /* AliyunPlayerViewGifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E40247381A300108F7B /* AliyunPlayerViewGifView.m */; };
-		787F1E81247381A400108F7B /* AliyunViewMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E42247381A300108F7B /* AliyunViewMoreView.m */; };
-		787F1E82247381A400108F7B /* AliyunSpeedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E45247381A300108F7B /* AliyunSpeedButton.m */; };
-		787F1E83247381A400108F7B /* AliyunPlayerViewSpeedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E48247381A300108F7B /* AliyunPlayerViewSpeedView.m */; };
-		787F1E84247381A400108F7B /* AliyunPlayerViewFirstStartGuideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E4A247381A300108F7B /* AliyunPlayerViewFirstStartGuideView.m */; };
-		787F1E85247381A400108F7B /* AVC_VP_PlaySettingVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 787F1E4D247381A300108F7B /* AVC_VP_PlaySettingVC.xib */; };
-		787F1E86247381A400108F7B /* AVC_VP_BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E4E247381A300108F7B /* AVC_VP_BaseViewController.m */; };
-		787F1E87247381A400108F7B /* AVC_VP_VideoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E4F247381A300108F7B /* AVC_VP_VideoPlayViewController.m */; };
-		787F1E88247381A400108F7B /* AVC_VP_PlaySettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E53247381A300108F7B /* AVC_VP_PlaySettingVC.m */; };
-		787F1E89247381A400108F7B /* readMe_videoPlay.txt in Resources */ = {isa = PBXBuildFile; fileRef = 787F1E54247381A300108F7B /* readMe_videoPlay.txt */; };
-		787F1E8A247381A400108F7B /* AVC_VP_Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 787F1E56247381A300108F7B /* AVC_VP_Main.storyboard */; };
-		787F1E8B247381A400108F7B /* AliyunImageSource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 787F1E57247381A300108F7B /* AliyunImageSource.bundle */; };
-		787F1E8C247381A400108F7B /* encryptedApp.dat in Resources */ = {isa = PBXBuildFile; fileRef = 787F1E58247381A300108F7B /* encryptedApp.dat */; };
-		787F1E8D247381A400108F7B /* AlivcVideoDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E5F247381A300108F7B /* AlivcVideoDataBase.m */; };
-		787F1E8E247381A400108F7B /* DownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E60247381A300108F7B /* DownloadManager.m */; };
-		787F1E8F247381A400108F7B /* AVCVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E61247381A300108F7B /* AVCVideo.m */; };
-		787F1E90247381A400108F7B /* AVCVideoConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E62247381A300108F7B /* AVCVideoConfig.m */; };
 		787F1E952479198400108F7B /* TeacherListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E942479198100108F7B /* TeacherListVC.m */; };
 		787F1E9A24791A6300108F7B /* TeacherListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9924791A6300108F7B /* TeacherListCell.m */; };
 		787F1E9D247925AD00108F7B /* InstitutionListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787F1E9C247925AD00108F7B /* InstitutionListVC.m */; };
@@ -1014,6 +1014,86 @@
 		78060FA8255E836900009171 /* ExamMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamMainViewController.m; sourceTree = "<group>"; };
 		78060FAA255E8B8100009171 /* ExamMainListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExamMainListCell.h; sourceTree = "<group>"; };
 		78060FAB255E8B8100009171 /* ExamMainListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExamMainListCell.m; sourceTree = "<group>"; };
+		78093CE628153CEB00E6EEB7 /* AVCLogView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCLogView.h; sourceTree = "<group>"; };
+		78093CE728153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcVideoPlayThumbnailView.h; sourceTree = "<group>"; };
+		78093CE828153CEB00E6EEB7 /* AlivcPlayListsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcPlayListsView.h; sourceTree = "<group>"; };
+		78093CE928153CEB00E6EEB7 /* AVCVideoDownloadTCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCVideoDownloadTCell.h; sourceTree = "<group>"; };
+		78093CEA28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlivcVideoPlayerListsTableViewCell.m; sourceTree = "<group>"; };
+		78093CEB28153CEB00E6EEB7 /* AVCSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCSlider.m; sourceTree = "<group>"; };
+		78093CEC28153CEB00E6EEB7 /* AVCSelectSharpnessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCSelectSharpnessView.m; sourceTree = "<group>"; };
+		78093CED28153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlivcVideoPlayThumbnailView.m; sourceTree = "<group>"; };
+		78093CEE28153CEB00E6EEB7 /* AVCLogView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCLogView.m; sourceTree = "<group>"; };
+		78093CEF28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcVideoPlayerListsTableViewCell.h; sourceTree = "<group>"; };
+		78093CF028153CEB00E6EEB7 /* AVCVideoDownloadTCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCVideoDownloadTCell.m; sourceTree = "<group>"; };
+		78093CF128153CEB00E6EEB7 /* AlivcPlayListsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlivcPlayListsView.m; sourceTree = "<group>"; };
+		78093CF228153CEB00E6EEB7 /* AVCVideoDownloadTCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AVCVideoDownloadTCell.xib; sourceTree = "<group>"; };
+		78093CF328153CEB00E6EEB7 /* AVCSelectSharpnessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCSelectSharpnessView.h; sourceTree = "<group>"; };
+		78093CF428153CEB00E6EEB7 /* AVCSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCSlider.h; sourceTree = "<group>"; };
+		78093CF728153CEB00E6EEB7 /* AliyunVodPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunVodPlayerView.m; sourceTree = "<group>"; };
+		78093CF828153CEB00E6EEB7 /* AliyunVodPlayerViewSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunVodPlayerViewSDK.h; sourceTree = "<group>"; };
+		78093CF928153CEB00E6EEB7 /* AliyunVodPlayerViewDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunVodPlayerViewDefine.h; sourceTree = "<group>"; };
+		78093CFA28153CEB00E6EEB7 /* AliyunVodPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunVodPlayerView.h; sourceTree = "<group>"; };
+		78093CFE28153CEB00E6EEB7 /* AliyunDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunDataSource.h; sourceTree = "<group>"; };
+		78093CFF28153CEB00E6EEB7 /* AliyunDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunDataSource.m; sourceTree = "<group>"; };
+		78093D0028153CEB00E6EEB7 /* AliyunUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunUtil.m; sourceTree = "<group>"; };
+		78093D0228153CEB00E6EEB7 /* AliyunLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunLog.m; sourceTree = "<group>"; };
+		78093D0328153CEB00E6EEB7 /* AliyunLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunLog.h; sourceTree = "<group>"; };
+		78093D0428153CEB00E6EEB7 /* AliyunUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunUtil.h; sourceTree = "<group>"; };
+		78093D0528153CEB00E6EEB7 /* AliyunPrivateDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPrivateDefine.h; sourceTree = "<group>"; };
+		78093D0728153CEB00E6EEB7 /* AliyunPlayerViewPopLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewPopLayer.m; sourceTree = "<group>"; };
+		78093D0828153CEB00E6EEB7 /* AliyunPlayerViewErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewErrorView.m; sourceTree = "<group>"; };
+		78093D0928153CEB00E6EEB7 /* AliyunPlayerViewErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewErrorView.h; sourceTree = "<group>"; };
+		78093D0A28153CEB00E6EEB7 /* AliyunPlayerViewPopLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewPopLayer.h; sourceTree = "<group>"; };
+		78093D0D28153CEB00E6EEB7 /* AliyunPlayerViewTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewTopView.h; sourceTree = "<group>"; };
+		78093D0E28153CEB00E6EEB7 /* AliyunPlayerViewTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewTopView.m; sourceTree = "<group>"; };
+		78093D0F28153CEB00E6EEB7 /* AliyunPlayerViewControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewControlView.m; sourceTree = "<group>"; };
+		78093D1128153CEB00E6EEB7 /* AliyunPlayerViewSeekPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewSeekPopupView.m; sourceTree = "<group>"; };
+		78093D1228153CEB00E6EEB7 /* AliyunPlayerViewGestureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewGestureView.h; sourceTree = "<group>"; };
+		78093D1328153CEB00E6EEB7 /* AliyunGestureModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunGestureModel.h; sourceTree = "<group>"; };
+		78093D1428153CEB00E6EEB7 /* AliyunPlayerViewSeekPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewSeekPopupView.h; sourceTree = "<group>"; };
+		78093D1528153CEB00E6EEB7 /* AliyunPlayerViewGestureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewGestureView.m; sourceTree = "<group>"; };
+		78093D1628153CEB00E6EEB7 /* AliyunGestureModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunGestureModel.m; sourceTree = "<group>"; };
+		78093D1728153CEC00E6EEB7 /* AliyunPlayerViewControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewControlView.h; sourceTree = "<group>"; };
+		78093D1928153CEC00E6EEB7 /* AliyunPlayerViewProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewProgressView.h; sourceTree = "<group>"; };
+		78093D1A28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewQualityListView.h; sourceTree = "<group>"; };
+		78093D1B28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewBottomView.h; sourceTree = "<group>"; };
+		78093D1C28153CEC00E6EEB7 /* AliyunPlayerViewSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewSlider.h; sourceTree = "<group>"; };
+		78093D1D28153CEC00E6EEB7 /* AliyunPlayerViewProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewProgressView.m; sourceTree = "<group>"; };
+		78093D1E28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewBottomView.m; sourceTree = "<group>"; };
+		78093D1F28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewQualityListView.m; sourceTree = "<group>"; };
+		78093D2028153CEC00E6EEB7 /* AliyunPlayerViewSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewSlider.m; sourceTree = "<group>"; };
+		78093D2328153CEC00E6EEB7 /* AliyunPlayerViewGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewGifView.h; sourceTree = "<group>"; };
+		78093D2428153CEC00E6EEB7 /* AlilyunViewLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlilyunViewLoadingView.m; sourceTree = "<group>"; };
+		78093D2528153CEC00E6EEB7 /* AlilyunViewLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlilyunViewLoadingView.h; sourceTree = "<group>"; };
+		78093D2628153CEC00E6EEB7 /* AliyunPlayerViewGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewGifView.m; sourceTree = "<group>"; };
+		78093D2828153CEC00E6EEB7 /* AliyunViewMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunViewMoreView.m; sourceTree = "<group>"; };
+		78093D2928153CEC00E6EEB7 /* AliyunViewMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunViewMoreView.h; sourceTree = "<group>"; };
+		78093D2B28153CEC00E6EEB7 /* AliyunSpeedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunSpeedButton.m; sourceTree = "<group>"; };
+		78093D2C28153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewSpeedView.h; sourceTree = "<group>"; };
+		78093D2D28153CEC00E6EEB7 /* AliyunSpeedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunSpeedButton.h; sourceTree = "<group>"; };
+		78093D2E28153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewSpeedView.m; sourceTree = "<group>"; };
+		78093D3028153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewFirstStartGuideView.m; sourceTree = "<group>"; };
+		78093D3128153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewFirstStartGuideView.h; sourceTree = "<group>"; };
+		78093D3328153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AVC_VP_PlaySettingVC.xib; sourceTree = "<group>"; };
+		78093D3428153CEC00E6EEB7 /* AVC_VP_BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVC_VP_BaseViewController.m; sourceTree = "<group>"; };
+		78093D3528153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVC_VP_VideoPlayViewController.m; sourceTree = "<group>"; };
+		78093D3628153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVC_VP_PlaySettingVC.h; sourceTree = "<group>"; };
+		78093D3728153CEC00E6EEB7 /* AVC_VP_BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVC_VP_BaseViewController.h; sourceTree = "<group>"; };
+		78093D3828153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVC_VP_VideoPlayViewController.h; sourceTree = "<group>"; };
+		78093D3928153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVC_VP_PlaySettingVC.m; sourceTree = "<group>"; };
+		78093D3A28153CEC00E6EEB7 /* readMe_videoPlay.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readMe_videoPlay.txt; sourceTree = "<group>"; };
+		78093D3C28153CEC00E6EEB7 /* AVC_VP_Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AVC_VP_Main.storyboard; sourceTree = "<group>"; };
+		78093D3D28153CEC00E6EEB7 /* AliyunImageSource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AliyunImageSource.bundle; sourceTree = "<group>"; };
+		78093D3E28153CEC00E6EEB7 /* encryptedApp.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encryptedApp.dat; sourceTree = "<group>"; };
+		78093D4028153CEC00E6EEB7 /* AVCDownloadVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCDownloadVideo.h; sourceTree = "<group>"; };
+		78093D4128153CEC00E6EEB7 /* DownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
+		78093D4228153CEC00E6EEB7 /* AlivcVideoDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcVideoDataBase.h; sourceTree = "<group>"; };
+		78093D4328153CEC00E6EEB7 /* AVCVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCVideo.h; sourceTree = "<group>"; };
+		78093D4428153CEC00E6EEB7 /* AVCVideoConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCVideoConfig.h; sourceTree = "<group>"; };
+		78093D4528153CEC00E6EEB7 /* AlivcVideoDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlivcVideoDataBase.m; sourceTree = "<group>"; };
+		78093D4628153CEC00E6EEB7 /* DownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadManager.m; sourceTree = "<group>"; };
+		78093D4728153CEC00E6EEB7 /* AVCVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCVideo.m; sourceTree = "<group>"; };
+		78093D4828153CEC00E6EEB7 /* AVCVideoConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCVideoConfig.m; sourceTree = "<group>"; };
 		780B8B442716AD5B0022B63A /* CourseMakeNoteVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseMakeNoteVC.h; sourceTree = "<group>"; };
 		780B8B452716AD5B0022B63A /* CourseMakeNoteVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseMakeNoteVC.m; sourceTree = "<group>"; };
 		780F9575254FDD810070EB1F /* LiveTeacherView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveTeacherView.h; sourceTree = "<group>"; };
@@ -1405,86 +1485,6 @@
 		787ED6F7255A62C000906846 /* OneToOneLiveRoomVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneToOneLiveRoomVC.m; sourceTree = "<group>"; };
 		787EF0A826C520DF0049E8CB /* ShopMainListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShopMainListCell.h; sourceTree = "<group>"; };
 		787EF0A926C520DF0049E8CB /* ShopMainListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShopMainListCell.m; sourceTree = "<group>"; };
-		787F1DFA247381A300108F7B /* AVCLogView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCLogView.h; sourceTree = "<group>"; };
-		787F1DFB247381A300108F7B /* AlivcVideoPlayThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcVideoPlayThumbnailView.h; sourceTree = "<group>"; };
-		787F1DFE247381A300108F7B /* AlivcPlayListsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcPlayListsView.h; sourceTree = "<group>"; };
-		787F1DFF247381A300108F7B /* AVCVideoDownloadTCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCVideoDownloadTCell.h; sourceTree = "<group>"; };
-		787F1E00247381A300108F7B /* AlivcVideoPlayerListsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlivcVideoPlayerListsTableViewCell.m; sourceTree = "<group>"; };
-		787F1E01247381A300108F7B /* AVCSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCSlider.m; sourceTree = "<group>"; };
-		787F1E02247381A300108F7B /* AVCSelectSharpnessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCSelectSharpnessView.m; sourceTree = "<group>"; };
-		787F1E03247381A300108F7B /* AlivcVideoPlayThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlivcVideoPlayThumbnailView.m; sourceTree = "<group>"; };
-		787F1E04247381A300108F7B /* AVCLogView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCLogView.m; sourceTree = "<group>"; };
-		787F1E05247381A300108F7B /* AlivcVideoPlayerListsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcVideoPlayerListsTableViewCell.h; sourceTree = "<group>"; };
-		787F1E06247381A300108F7B /* AVCVideoDownloadTCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCVideoDownloadTCell.m; sourceTree = "<group>"; };
-		787F1E07247381A300108F7B /* AlivcPlayListsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlivcPlayListsView.m; sourceTree = "<group>"; };
-		787F1E08247381A300108F7B /* AVCVideoDownloadTCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AVCVideoDownloadTCell.xib; sourceTree = "<group>"; };
-		787F1E09247381A300108F7B /* AVCSelectSharpnessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCSelectSharpnessView.h; sourceTree = "<group>"; };
-		787F1E0A247381A300108F7B /* AVCSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCSlider.h; sourceTree = "<group>"; };
-		787F1E0D247381A300108F7B /* AliyunVodPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunVodPlayerView.m; sourceTree = "<group>"; };
-		787F1E0E247381A300108F7B /* AliyunVodPlayerViewSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunVodPlayerViewSDK.h; sourceTree = "<group>"; };
-		787F1E0F247381A300108F7B /* AliyunVodPlayerViewDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunVodPlayerViewDefine.h; sourceTree = "<group>"; };
-		787F1E10247381A300108F7B /* AliyunVodPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunVodPlayerView.h; sourceTree = "<group>"; };
-		787F1E14247381A300108F7B /* AliyunDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunDataSource.h; sourceTree = "<group>"; };
-		787F1E15247381A300108F7B /* AliyunDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunDataSource.m; sourceTree = "<group>"; };
-		787F1E16247381A300108F7B /* AliyunUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunUtil.m; sourceTree = "<group>"; };
-		787F1E18247381A300108F7B /* AliyunLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunLog.m; sourceTree = "<group>"; };
-		787F1E19247381A300108F7B /* AliyunLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunLog.h; sourceTree = "<group>"; };
-		787F1E1A247381A300108F7B /* AliyunUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunUtil.h; sourceTree = "<group>"; };
-		787F1E1F247381A300108F7B /* AliyunPrivateDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPrivateDefine.h; sourceTree = "<group>"; };
-		787F1E21247381A300108F7B /* AliyunPlayerViewPopLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewPopLayer.m; sourceTree = "<group>"; };
-		787F1E22247381A300108F7B /* AliyunPlayerViewErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewErrorView.m; sourceTree = "<group>"; };
-		787F1E23247381A300108F7B /* AliyunPlayerViewErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewErrorView.h; sourceTree = "<group>"; };
-		787F1E24247381A300108F7B /* AliyunPlayerViewPopLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewPopLayer.h; sourceTree = "<group>"; };
-		787F1E27247381A300108F7B /* AliyunPlayerViewTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewTopView.h; sourceTree = "<group>"; };
-		787F1E28247381A300108F7B /* AliyunPlayerViewTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewTopView.m; sourceTree = "<group>"; };
-		787F1E29247381A300108F7B /* AliyunPlayerViewControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewControlView.m; sourceTree = "<group>"; };
-		787F1E2B247381A300108F7B /* AliyunPlayerViewSeekPopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewSeekPopupView.m; sourceTree = "<group>"; };
-		787F1E2C247381A300108F7B /* AliyunPlayerViewGestureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewGestureView.h; sourceTree = "<group>"; };
-		787F1E2D247381A300108F7B /* AliyunGestureModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunGestureModel.h; sourceTree = "<group>"; };
-		787F1E2E247381A300108F7B /* AliyunPlayerViewSeekPopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewSeekPopupView.h; sourceTree = "<group>"; };
-		787F1E2F247381A300108F7B /* AliyunPlayerViewGestureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewGestureView.m; sourceTree = "<group>"; };
-		787F1E30247381A300108F7B /* AliyunGestureModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunGestureModel.m; sourceTree = "<group>"; };
-		787F1E31247381A300108F7B /* AliyunPlayerViewControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewControlView.h; sourceTree = "<group>"; };
-		787F1E33247381A300108F7B /* AliyunPlayerViewProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewProgressView.h; sourceTree = "<group>"; };
-		787F1E34247381A300108F7B /* AliyunPlayerViewQualityListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewQualityListView.h; sourceTree = "<group>"; };
-		787F1E35247381A300108F7B /* AliyunPlayerViewBottomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewBottomView.h; sourceTree = "<group>"; };
-		787F1E36247381A300108F7B /* AliyunPlayerViewSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewSlider.h; sourceTree = "<group>"; };
-		787F1E37247381A300108F7B /* AliyunPlayerViewProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewProgressView.m; sourceTree = "<group>"; };
-		787F1E38247381A300108F7B /* AliyunPlayerViewBottomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewBottomView.m; sourceTree = "<group>"; };
-		787F1E39247381A300108F7B /* AliyunPlayerViewQualityListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewQualityListView.m; sourceTree = "<group>"; };
-		787F1E3A247381A300108F7B /* AliyunPlayerViewSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewSlider.m; sourceTree = "<group>"; };
-		787F1E3D247381A300108F7B /* AliyunPlayerViewGifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewGifView.h; sourceTree = "<group>"; };
-		787F1E3E247381A300108F7B /* AlilyunViewLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlilyunViewLoadingView.m; sourceTree = "<group>"; };
-		787F1E3F247381A300108F7B /* AlilyunViewLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlilyunViewLoadingView.h; sourceTree = "<group>"; };
-		787F1E40247381A300108F7B /* AliyunPlayerViewGifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewGifView.m; sourceTree = "<group>"; };
-		787F1E42247381A300108F7B /* AliyunViewMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunViewMoreView.m; sourceTree = "<group>"; };
-		787F1E43247381A300108F7B /* AliyunViewMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunViewMoreView.h; sourceTree = "<group>"; };
-		787F1E45247381A300108F7B /* AliyunSpeedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunSpeedButton.m; sourceTree = "<group>"; };
-		787F1E46247381A300108F7B /* AliyunPlayerViewSpeedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewSpeedView.h; sourceTree = "<group>"; };
-		787F1E47247381A300108F7B /* AliyunSpeedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunSpeedButton.h; sourceTree = "<group>"; };
-		787F1E48247381A300108F7B /* AliyunPlayerViewSpeedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewSpeedView.m; sourceTree = "<group>"; };
-		787F1E4A247381A300108F7B /* AliyunPlayerViewFirstStartGuideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AliyunPlayerViewFirstStartGuideView.m; sourceTree = "<group>"; };
-		787F1E4B247381A300108F7B /* AliyunPlayerViewFirstStartGuideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliyunPlayerViewFirstStartGuideView.h; sourceTree = "<group>"; };
-		787F1E4D247381A300108F7B /* AVC_VP_PlaySettingVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AVC_VP_PlaySettingVC.xib; sourceTree = "<group>"; };
-		787F1E4E247381A300108F7B /* AVC_VP_BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVC_VP_BaseViewController.m; sourceTree = "<group>"; };
-		787F1E4F247381A300108F7B /* AVC_VP_VideoPlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVC_VP_VideoPlayViewController.m; sourceTree = "<group>"; };
-		787F1E50247381A300108F7B /* AVC_VP_PlaySettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVC_VP_PlaySettingVC.h; sourceTree = "<group>"; };
-		787F1E51247381A300108F7B /* AVC_VP_BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVC_VP_BaseViewController.h; sourceTree = "<group>"; };
-		787F1E52247381A300108F7B /* AVC_VP_VideoPlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVC_VP_VideoPlayViewController.h; sourceTree = "<group>"; };
-		787F1E53247381A300108F7B /* AVC_VP_PlaySettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVC_VP_PlaySettingVC.m; sourceTree = "<group>"; };
-		787F1E54247381A300108F7B /* readMe_videoPlay.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readMe_videoPlay.txt; sourceTree = "<group>"; };
-		787F1E56247381A300108F7B /* AVC_VP_Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AVC_VP_Main.storyboard; sourceTree = "<group>"; };
-		787F1E57247381A300108F7B /* AliyunImageSource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AliyunImageSource.bundle; sourceTree = "<group>"; };
-		787F1E58247381A300108F7B /* encryptedApp.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encryptedApp.dat; sourceTree = "<group>"; };
-		787F1E5A247381A300108F7B /* AVCDownloadVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCDownloadVideo.h; sourceTree = "<group>"; };
-		787F1E5B247381A300108F7B /* DownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadManager.h; sourceTree = "<group>"; };
-		787F1E5C247381A300108F7B /* AlivcVideoDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlivcVideoDataBase.h; sourceTree = "<group>"; };
-		787F1E5D247381A300108F7B /* AVCVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCVideo.h; sourceTree = "<group>"; };
-		787F1E5E247381A300108F7B /* AVCVideoConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCVideoConfig.h; sourceTree = "<group>"; };
-		787F1E5F247381A300108F7B /* AlivcVideoDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlivcVideoDataBase.m; sourceTree = "<group>"; };
-		787F1E60247381A300108F7B /* DownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadManager.m; sourceTree = "<group>"; };
-		787F1E61247381A300108F7B /* AVCVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCVideo.m; sourceTree = "<group>"; };
-		787F1E62247381A300108F7B /* AVCVideoConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVCVideoConfig.m; sourceTree = "<group>"; };
 		787F1E932479198100108F7B /* TeacherListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherListVC.h; sourceTree = "<group>"; };
 		787F1E942479198100108F7B /* TeacherListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherListVC.m; sourceTree = "<group>"; };
 		787F1E9824791A6300108F7B /* TeacherListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherListCell.h; sourceTree = "<group>"; };
@@ -3024,6 +3024,261 @@
 			path = ExamPage;
 			sourceTree = "<group>";
 		};
+		78093CE328153CEB00E6EEB7 /* AlivcVideoPlay */ = {
+			isa = PBXGroup;
+			children = (
+				78093CE428153CEB00E6EEB7 /* AlivcVideoPlayView */,
+				78093D3228153CEC00E6EEB7 /* AlivcVideoPlayController */,
+				78093D3A28153CEC00E6EEB7 /* readMe_videoPlay.txt */,
+				78093D3B28153CEC00E6EEB7 /* AlivcVideoPlayResource */,
+				78093D3F28153CEC00E6EEB7 /* AlivcVideoPlayModel */,
+			);
+			path = AlivcVideoPlay;
+			sourceTree = "<group>";
+		};
+		78093CE428153CEB00E6EEB7 /* AlivcVideoPlayView */ = {
+			isa = PBXGroup;
+			children = (
+				78093CE528153CEB00E6EEB7 /* Other */,
+				78093CF528153CEB00E6EEB7 /* AlivcAbstractionView */,
+			);
+			path = AlivcVideoPlayView;
+			sourceTree = "<group>";
+		};
+		78093CE528153CEB00E6EEB7 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				78093CE628153CEB00E6EEB7 /* AVCLogView.h */,
+				78093CE728153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.h */,
+				78093CE828153CEB00E6EEB7 /* AlivcPlayListsView.h */,
+				78093CE928153CEB00E6EEB7 /* AVCVideoDownloadTCell.h */,
+				78093CEA28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.m */,
+				78093CEB28153CEB00E6EEB7 /* AVCSlider.m */,
+				78093CEC28153CEB00E6EEB7 /* AVCSelectSharpnessView.m */,
+				78093CED28153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.m */,
+				78093CEE28153CEB00E6EEB7 /* AVCLogView.m */,
+				78093CEF28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.h */,
+				78093CF028153CEB00E6EEB7 /* AVCVideoDownloadTCell.m */,
+				78093CF128153CEB00E6EEB7 /* AlivcPlayListsView.m */,
+				78093CF228153CEB00E6EEB7 /* AVCVideoDownloadTCell.xib */,
+				78093CF328153CEB00E6EEB7 /* AVCSelectSharpnessView.h */,
+				78093CF428153CEB00E6EEB7 /* AVCSlider.h */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		78093CF528153CEB00E6EEB7 /* AlivcAbstractionView */ = {
+			isa = PBXGroup;
+			children = (
+				78093CF628153CEB00E6EEB7 /* Public */,
+				78093CFB28153CEB00E6EEB7 /* Private */,
+			);
+			path = AlivcAbstractionView;
+			sourceTree = "<group>";
+		};
+		78093CF628153CEB00E6EEB7 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				78093CF728153CEB00E6EEB7 /* AliyunVodPlayerView.m */,
+				78093CF828153CEB00E6EEB7 /* AliyunVodPlayerViewSDK.h */,
+				78093CF928153CEB00E6EEB7 /* AliyunVodPlayerViewDefine.h */,
+				78093CFA28153CEB00E6EEB7 /* AliyunVodPlayerView.h */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+		78093CFB28153CEB00E6EEB7 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				78093CFC28153CEB00E6EEB7 /* Util */,
+				78093D0528153CEB00E6EEB7 /* AliyunPrivateDefine.h */,
+				78093D0628153CEB00E6EEB7 /* PopLayer */,
+				78093D0B28153CEB00E6EEB7 /* ControlLayer */,
+				78093D2128153CEC00E6EEB7 /* GlobalView */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		78093CFC28153CEB00E6EEB7 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				78093CFD28153CEB00E6EEB7 /* dataSource */,
+				78093D0028153CEB00E6EEB7 /* AliyunUtil.m */,
+				78093D0128153CEB00E6EEB7 /* log */,
+				78093D0428153CEB00E6EEB7 /* AliyunUtil.h */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		78093CFD28153CEB00E6EEB7 /* dataSource */ = {
+			isa = PBXGroup;
+			children = (
+				78093CFE28153CEB00E6EEB7 /* AliyunDataSource.h */,
+				78093CFF28153CEB00E6EEB7 /* AliyunDataSource.m */,
+			);
+			path = dataSource;
+			sourceTree = "<group>";
+		};
+		78093D0128153CEB00E6EEB7 /* log */ = {
+			isa = PBXGroup;
+			children = (
+				78093D0228153CEB00E6EEB7 /* AliyunLog.m */,
+				78093D0328153CEB00E6EEB7 /* AliyunLog.h */,
+			);
+			path = log;
+			sourceTree = "<group>";
+		};
+		78093D0628153CEB00E6EEB7 /* PopLayer */ = {
+			isa = PBXGroup;
+			children = (
+				78093D0728153CEB00E6EEB7 /* AliyunPlayerViewPopLayer.m */,
+				78093D0828153CEB00E6EEB7 /* AliyunPlayerViewErrorView.m */,
+				78093D0928153CEB00E6EEB7 /* AliyunPlayerViewErrorView.h */,
+				78093D0A28153CEB00E6EEB7 /* AliyunPlayerViewPopLayer.h */,
+			);
+			path = PopLayer;
+			sourceTree = "<group>";
+		};
+		78093D0B28153CEB00E6EEB7 /* ControlLayer */ = {
+			isa = PBXGroup;
+			children = (
+				78093D0C28153CEB00E6EEB7 /* top */,
+				78093D0F28153CEB00E6EEB7 /* AliyunPlayerViewControlView.m */,
+				78093D1028153CEB00E6EEB7 /* gesture */,
+				78093D1728153CEC00E6EEB7 /* AliyunPlayerViewControlView.h */,
+				78093D1828153CEC00E6EEB7 /* bottom */,
+			);
+			path = ControlLayer;
+			sourceTree = "<group>";
+		};
+		78093D0C28153CEB00E6EEB7 /* top */ = {
+			isa = PBXGroup;
+			children = (
+				78093D0D28153CEB00E6EEB7 /* AliyunPlayerViewTopView.h */,
+				78093D0E28153CEB00E6EEB7 /* AliyunPlayerViewTopView.m */,
+			);
+			path = top;
+			sourceTree = "<group>";
+		};
+		78093D1028153CEB00E6EEB7 /* gesture */ = {
+			isa = PBXGroup;
+			children = (
+				78093D1128153CEB00E6EEB7 /* AliyunPlayerViewSeekPopupView.m */,
+				78093D1228153CEB00E6EEB7 /* AliyunPlayerViewGestureView.h */,
+				78093D1328153CEB00E6EEB7 /* AliyunGestureModel.h */,
+				78093D1428153CEB00E6EEB7 /* AliyunPlayerViewSeekPopupView.h */,
+				78093D1528153CEB00E6EEB7 /* AliyunPlayerViewGestureView.m */,
+				78093D1628153CEB00E6EEB7 /* AliyunGestureModel.m */,
+			);
+			path = gesture;
+			sourceTree = "<group>";
+		};
+		78093D1828153CEC00E6EEB7 /* bottom */ = {
+			isa = PBXGroup;
+			children = (
+				78093D1928153CEC00E6EEB7 /* AliyunPlayerViewProgressView.h */,
+				78093D1A28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.h */,
+				78093D1B28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.h */,
+				78093D1C28153CEC00E6EEB7 /* AliyunPlayerViewSlider.h */,
+				78093D1D28153CEC00E6EEB7 /* AliyunPlayerViewProgressView.m */,
+				78093D1E28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.m */,
+				78093D1F28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.m */,
+				78093D2028153CEC00E6EEB7 /* AliyunPlayerViewSlider.m */,
+			);
+			path = bottom;
+			sourceTree = "<group>";
+		};
+		78093D2128153CEC00E6EEB7 /* GlobalView */ = {
+			isa = PBXGroup;
+			children = (
+				78093D2228153CEC00E6EEB7 /* loading */,
+				78093D2728153CEC00E6EEB7 /* more */,
+				78093D2A28153CEC00E6EEB7 /* speedView */,
+				78093D2F28153CEC00E6EEB7 /* guideView */,
+			);
+			path = GlobalView;
+			sourceTree = "<group>";
+		};
+		78093D2228153CEC00E6EEB7 /* loading */ = {
+			isa = PBXGroup;
+			children = (
+				78093D2328153CEC00E6EEB7 /* AliyunPlayerViewGifView.h */,
+				78093D2428153CEC00E6EEB7 /* AlilyunViewLoadingView.m */,
+				78093D2528153CEC00E6EEB7 /* AlilyunViewLoadingView.h */,
+				78093D2628153CEC00E6EEB7 /* AliyunPlayerViewGifView.m */,
+			);
+			path = loading;
+			sourceTree = "<group>";
+		};
+		78093D2728153CEC00E6EEB7 /* more */ = {
+			isa = PBXGroup;
+			children = (
+				78093D2828153CEC00E6EEB7 /* AliyunViewMoreView.m */,
+				78093D2928153CEC00E6EEB7 /* AliyunViewMoreView.h */,
+			);
+			path = more;
+			sourceTree = "<group>";
+		};
+		78093D2A28153CEC00E6EEB7 /* speedView */ = {
+			isa = PBXGroup;
+			children = (
+				78093D2B28153CEC00E6EEB7 /* AliyunSpeedButton.m */,
+				78093D2C28153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.h */,
+				78093D2D28153CEC00E6EEB7 /* AliyunSpeedButton.h */,
+				78093D2E28153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.m */,
+			);
+			path = speedView;
+			sourceTree = "<group>";
+		};
+		78093D2F28153CEC00E6EEB7 /* guideView */ = {
+			isa = PBXGroup;
+			children = (
+				78093D3028153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.m */,
+				78093D3128153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.h */,
+			);
+			path = guideView;
+			sourceTree = "<group>";
+		};
+		78093D3228153CEC00E6EEB7 /* AlivcVideoPlayController */ = {
+			isa = PBXGroup;
+			children = (
+				78093D3328153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.xib */,
+				78093D3428153CEC00E6EEB7 /* AVC_VP_BaseViewController.m */,
+				78093D3528153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.m */,
+				78093D3628153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.h */,
+				78093D3728153CEC00E6EEB7 /* AVC_VP_BaseViewController.h */,
+				78093D3828153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.h */,
+				78093D3928153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.m */,
+			);
+			path = AlivcVideoPlayController;
+			sourceTree = "<group>";
+		};
+		78093D3B28153CEC00E6EEB7 /* AlivcVideoPlayResource */ = {
+			isa = PBXGroup;
+			children = (
+				78093D3C28153CEC00E6EEB7 /* AVC_VP_Main.storyboard */,
+				78093D3D28153CEC00E6EEB7 /* AliyunImageSource.bundle */,
+				78093D3E28153CEC00E6EEB7 /* encryptedApp.dat */,
+			);
+			path = AlivcVideoPlayResource;
+			sourceTree = "<group>";
+		};
+		78093D3F28153CEC00E6EEB7 /* AlivcVideoPlayModel */ = {
+			isa = PBXGroup;
+			children = (
+				78093D4028153CEC00E6EEB7 /* AVCDownloadVideo.h */,
+				78093D4128153CEC00E6EEB7 /* DownloadManager.h */,
+				78093D4228153CEC00E6EEB7 /* AlivcVideoDataBase.h */,
+				78093D4328153CEC00E6EEB7 /* AVCVideo.h */,
+				78093D4428153CEC00E6EEB7 /* AVCVideoConfig.h */,
+				78093D4528153CEC00E6EEB7 /* AlivcVideoDataBase.m */,
+				78093D4628153CEC00E6EEB7 /* DownloadManager.m */,
+				78093D4728153CEC00E6EEB7 /* AVCVideo.m */,
+				78093D4828153CEC00E6EEB7 /* AVCVideoConfig.m */,
+			);
+			path = AlivcVideoPlayModel;
+			sourceTree = "<group>";
+		};
 		7839C968241F154B002F6595 /* Course */ = {
 			isa = PBXGroup;
 			children = (
@@ -3993,262 +4248,6 @@
 				787EF0A926C520DF0049E8CB /* ShopMainListCell.m */,
 			);
 			path = ShopViews;
-			sourceTree = "<group>";
-		};
-		787F1DF7247381A300108F7B /* AlivcVideoPlay */ = {
-			isa = PBXGroup;
-			children = (
-				787F1DF8247381A300108F7B /* AlivcVideoPlayView */,
-				787F1E4C247381A300108F7B /* AlivcVideoPlayController */,
-				787F1E54247381A300108F7B /* readMe_videoPlay.txt */,
-				787F1E55247381A300108F7B /* AlivcVideoPlayResource */,
-				787F1E59247381A300108F7B /* AlivcVideoPlayModel */,
-			);
-			name = AlivcVideoPlay;
-			path = "../../../../../../v5测试文件合集/阿里云视频播放器/AlivcVideoPlay";
-			sourceTree = "<group>";
-		};
-		787F1DF8247381A300108F7B /* AlivcVideoPlayView */ = {
-			isa = PBXGroup;
-			children = (
-				787F1DF9247381A300108F7B /* Other */,
-				787F1E0B247381A300108F7B /* AlivcAbstractionView */,
-			);
-			path = AlivcVideoPlayView;
-			sourceTree = "<group>";
-		};
-		787F1DF9247381A300108F7B /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				787F1DFA247381A300108F7B /* AVCLogView.h */,
-				787F1DFB247381A300108F7B /* AlivcVideoPlayThumbnailView.h */,
-				787F1DFE247381A300108F7B /* AlivcPlayListsView.h */,
-				787F1DFF247381A300108F7B /* AVCVideoDownloadTCell.h */,
-				787F1E00247381A300108F7B /* AlivcVideoPlayerListsTableViewCell.m */,
-				787F1E01247381A300108F7B /* AVCSlider.m */,
-				787F1E02247381A300108F7B /* AVCSelectSharpnessView.m */,
-				787F1E03247381A300108F7B /* AlivcVideoPlayThumbnailView.m */,
-				787F1E04247381A300108F7B /* AVCLogView.m */,
-				787F1E05247381A300108F7B /* AlivcVideoPlayerListsTableViewCell.h */,
-				787F1E06247381A300108F7B /* AVCVideoDownloadTCell.m */,
-				787F1E07247381A300108F7B /* AlivcPlayListsView.m */,
-				787F1E08247381A300108F7B /* AVCVideoDownloadTCell.xib */,
-				787F1E09247381A300108F7B /* AVCSelectSharpnessView.h */,
-				787F1E0A247381A300108F7B /* AVCSlider.h */,
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
-		787F1E0B247381A300108F7B /* AlivcAbstractionView */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E0C247381A300108F7B /* Public */,
-				787F1E11247381A300108F7B /* Private */,
-			);
-			path = AlivcAbstractionView;
-			sourceTree = "<group>";
-		};
-		787F1E0C247381A300108F7B /* Public */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E0D247381A300108F7B /* AliyunVodPlayerView.m */,
-				787F1E0E247381A300108F7B /* AliyunVodPlayerViewSDK.h */,
-				787F1E0F247381A300108F7B /* AliyunVodPlayerViewDefine.h */,
-				787F1E10247381A300108F7B /* AliyunVodPlayerView.h */,
-			);
-			path = Public;
-			sourceTree = "<group>";
-		};
-		787F1E11247381A300108F7B /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E12247381A300108F7B /* Util */,
-				787F1E1F247381A300108F7B /* AliyunPrivateDefine.h */,
-				787F1E20247381A300108F7B /* PopLayer */,
-				787F1E25247381A300108F7B /* ControlLayer */,
-				787F1E3B247381A300108F7B /* GlobalView */,
-			);
-			path = Private;
-			sourceTree = "<group>";
-		};
-		787F1E12247381A300108F7B /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E13247381A300108F7B /* dataSource */,
-				787F1E16247381A300108F7B /* AliyunUtil.m */,
-				787F1E17247381A300108F7B /* log */,
-				787F1E1A247381A300108F7B /* AliyunUtil.h */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		787F1E13247381A300108F7B /* dataSource */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E14247381A300108F7B /* AliyunDataSource.h */,
-				787F1E15247381A300108F7B /* AliyunDataSource.m */,
-			);
-			path = dataSource;
-			sourceTree = "<group>";
-		};
-		787F1E17247381A300108F7B /* log */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E18247381A300108F7B /* AliyunLog.m */,
-				787F1E19247381A300108F7B /* AliyunLog.h */,
-			);
-			path = log;
-			sourceTree = "<group>";
-		};
-		787F1E20247381A300108F7B /* PopLayer */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E21247381A300108F7B /* AliyunPlayerViewPopLayer.m */,
-				787F1E22247381A300108F7B /* AliyunPlayerViewErrorView.m */,
-				787F1E23247381A300108F7B /* AliyunPlayerViewErrorView.h */,
-				787F1E24247381A300108F7B /* AliyunPlayerViewPopLayer.h */,
-			);
-			path = PopLayer;
-			sourceTree = "<group>";
-		};
-		787F1E25247381A300108F7B /* ControlLayer */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E26247381A300108F7B /* top */,
-				787F1E29247381A300108F7B /* AliyunPlayerViewControlView.m */,
-				787F1E2A247381A300108F7B /* gesture */,
-				787F1E31247381A300108F7B /* AliyunPlayerViewControlView.h */,
-				787F1E32247381A300108F7B /* bottom */,
-			);
-			path = ControlLayer;
-			sourceTree = "<group>";
-		};
-		787F1E26247381A300108F7B /* top */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E27247381A300108F7B /* AliyunPlayerViewTopView.h */,
-				787F1E28247381A300108F7B /* AliyunPlayerViewTopView.m */,
-			);
-			path = top;
-			sourceTree = "<group>";
-		};
-		787F1E2A247381A300108F7B /* gesture */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E2B247381A300108F7B /* AliyunPlayerViewSeekPopupView.m */,
-				787F1E2C247381A300108F7B /* AliyunPlayerViewGestureView.h */,
-				787F1E2D247381A300108F7B /* AliyunGestureModel.h */,
-				787F1E2E247381A300108F7B /* AliyunPlayerViewSeekPopupView.h */,
-				787F1E2F247381A300108F7B /* AliyunPlayerViewGestureView.m */,
-				787F1E30247381A300108F7B /* AliyunGestureModel.m */,
-			);
-			path = gesture;
-			sourceTree = "<group>";
-		};
-		787F1E32247381A300108F7B /* bottom */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E33247381A300108F7B /* AliyunPlayerViewProgressView.h */,
-				787F1E34247381A300108F7B /* AliyunPlayerViewQualityListView.h */,
-				787F1E35247381A300108F7B /* AliyunPlayerViewBottomView.h */,
-				787F1E36247381A300108F7B /* AliyunPlayerViewSlider.h */,
-				787F1E37247381A300108F7B /* AliyunPlayerViewProgressView.m */,
-				787F1E38247381A300108F7B /* AliyunPlayerViewBottomView.m */,
-				787F1E39247381A300108F7B /* AliyunPlayerViewQualityListView.m */,
-				787F1E3A247381A300108F7B /* AliyunPlayerViewSlider.m */,
-			);
-			path = bottom;
-			sourceTree = "<group>";
-		};
-		787F1E3B247381A300108F7B /* GlobalView */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E3C247381A300108F7B /* loading */,
-				787F1E41247381A300108F7B /* more */,
-				787F1E44247381A300108F7B /* speedView */,
-				787F1E49247381A300108F7B /* guideView */,
-			);
-			path = GlobalView;
-			sourceTree = "<group>";
-		};
-		787F1E3C247381A300108F7B /* loading */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E3D247381A300108F7B /* AliyunPlayerViewGifView.h */,
-				787F1E3E247381A300108F7B /* AlilyunViewLoadingView.m */,
-				787F1E3F247381A300108F7B /* AlilyunViewLoadingView.h */,
-				787F1E40247381A300108F7B /* AliyunPlayerViewGifView.m */,
-			);
-			path = loading;
-			sourceTree = "<group>";
-		};
-		787F1E41247381A300108F7B /* more */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E42247381A300108F7B /* AliyunViewMoreView.m */,
-				787F1E43247381A300108F7B /* AliyunViewMoreView.h */,
-			);
-			path = more;
-			sourceTree = "<group>";
-		};
-		787F1E44247381A300108F7B /* speedView */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E45247381A300108F7B /* AliyunSpeedButton.m */,
-				787F1E46247381A300108F7B /* AliyunPlayerViewSpeedView.h */,
-				787F1E47247381A300108F7B /* AliyunSpeedButton.h */,
-				787F1E48247381A300108F7B /* AliyunPlayerViewSpeedView.m */,
-			);
-			path = speedView;
-			sourceTree = "<group>";
-		};
-		787F1E49247381A300108F7B /* guideView */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E4A247381A300108F7B /* AliyunPlayerViewFirstStartGuideView.m */,
-				787F1E4B247381A300108F7B /* AliyunPlayerViewFirstStartGuideView.h */,
-			);
-			path = guideView;
-			sourceTree = "<group>";
-		};
-		787F1E4C247381A300108F7B /* AlivcVideoPlayController */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E4D247381A300108F7B /* AVC_VP_PlaySettingVC.xib */,
-				787F1E4E247381A300108F7B /* AVC_VP_BaseViewController.m */,
-				787F1E4F247381A300108F7B /* AVC_VP_VideoPlayViewController.m */,
-				787F1E50247381A300108F7B /* AVC_VP_PlaySettingVC.h */,
-				787F1E51247381A300108F7B /* AVC_VP_BaseViewController.h */,
-				787F1E52247381A300108F7B /* AVC_VP_VideoPlayViewController.h */,
-				787F1E53247381A300108F7B /* AVC_VP_PlaySettingVC.m */,
-			);
-			path = AlivcVideoPlayController;
-			sourceTree = "<group>";
-		};
-		787F1E55247381A300108F7B /* AlivcVideoPlayResource */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E56247381A300108F7B /* AVC_VP_Main.storyboard */,
-				787F1E57247381A300108F7B /* AliyunImageSource.bundle */,
-				787F1E58247381A300108F7B /* encryptedApp.dat */,
-			);
-			path = AlivcVideoPlayResource;
-			sourceTree = "<group>";
-		};
-		787F1E59247381A300108F7B /* AlivcVideoPlayModel */ = {
-			isa = PBXGroup;
-			children = (
-				787F1E5A247381A300108F7B /* AVCDownloadVideo.h */,
-				787F1E5B247381A300108F7B /* DownloadManager.h */,
-				787F1E5C247381A300108F7B /* AlivcVideoDataBase.h */,
-				787F1E5D247381A300108F7B /* AVCVideo.h */,
-				787F1E5E247381A300108F7B /* AVCVideoConfig.h */,
-				787F1E5F247381A300108F7B /* AlivcVideoDataBase.m */,
-				787F1E60247381A300108F7B /* DownloadManager.m */,
-				787F1E61247381A300108F7B /* AVCVideo.m */,
-				787F1E62247381A300108F7B /* AVCVideoConfig.m */,
-			);
-			path = AlivcVideoPlayModel;
 			sourceTree = "<group>";
 		};
 		787F1E912479196000108F7B /* TeacherPage */ = {
@@ -6370,13 +6369,13 @@
 		78C54882241B642A00A33FC4 /* AlivcSDK */ = {
 			isa = PBXGroup;
 			children = (
+				78093CE328153CEB00E6EEB7 /* AlivcVideoPlay */,
 				78A3A49925A414CF00F40705 /* LocalResources */,
 				78C549AD241B674E00A33FC4 /* Categories */,
 				78C5499C241B674E00A33FC4 /* Config */,
 				78C54982241B674D00A33FC4 /* Helpers */,
 				78C5498C241B674E00A33FC4 /* Utilites */,
 				78C54901241B642B00A33FC4 /* AlivcAbstraction */,
-				787F1DF7247381A300108F7B /* AlivcVideoPlay */,
 				78C548FA241B642B00A33FC4 /* AlivcFramework */,
 			);
 			path = AlivcSDK;
@@ -6775,7 +6774,6 @@
 				78B118EC2733881C00A3B8CB /* 归档.zip in Resources */,
 				788E9572253FE24E0089251E /* EEMessageViewCell.xib in Resources */,
 				78B1193B2733881D00A3B8CB /* 连麦中关麦@3x.png in Resources */,
-				787F1E8B247381A400108F7B /* AliyunImageSource.bundle in Resources */,
 				78B119222733881D00A3B8CB /* photo2@2x.png in Resources */,
 				78B1190F2733881C00A3B8CB /* document_touch@2x.png in Resources */,
 				78B115EF272A439900A3B8CB /* gift_loading_gif@3x.gif in Resources */,
@@ -6784,7 +6782,6 @@
 				78A3A4A425A414CF00F40705 /* readMe_Resources.txt in Resources */,
 				78B1191B2733881D00A3B8CB /* hands_touch@2x.png in Resources */,
 				788E955A253FE24E0089251E /* BCStudentVideoView.xib in Resources */,
-				787F1E8A247381A400108F7B /* AVC_VP_Main.storyboard in Resources */,
 				78B119132733881D00A3B8CB /* ligature@2x.png in Resources */,
 				788E955E253FE24E0089251E /* EETeacherVideoView.xib in Resources */,
 				78B1162B272A439900A3B8CB /* noble_background_image@2x.png in Resources */,
@@ -6797,15 +6794,17 @@
 				78A16C862452F7C100391430 /* Notes in Resources */,
 				788E9570253FE24E0089251E /* EEPageControlView.xib in Resources */,
 				78B119422733881D00A3B8CB /* start_rec@2x.png in Resources */,
+				78093D6D28153CEC00E6EEB7 /* encryptedApp.dat in Resources */,
 				788E9564253FE24E0089251E /* MCStudentViewCell.xib in Resources */,
 				78B119192733881D00A3B8CB /* document@3x.png in Resources */,
 				784E5CE824A9802D00646916 /* LanchAnimationVC.xib in Resources */,
 				78B119282733881D00A3B8CB /* handsup_touch@3x.png in Resources */,
 				78B119182733881D00A3B8CB /* set@3x.png in Resources */,
-				787F1E89247381A400108F7B /* readMe_videoPlay.txt in Resources */,
 				78B1160D272A439900A3B8CB /* Emotion.bundle in Resources */,
+				78093D6628153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.xib in Resources */,
 				78B1190C2733881C00A3B8CB /* document@2x.png in Resources */,
 				78C549C5241B674E00A33FC4 /* readMe_Helpers.txt in Resources */,
+				78093D6C28153CEC00E6EEB7 /* AliyunImageSource.bundle in Resources */,
 				78B119082733881C00A3B8CB /* set_touch@3x.png in Resources */,
 				788E95C6253FE24F0089251E /* Replay.storyboard in Resources */,
 				78B1192C2733881D00A3B8CB /* 连麦中点击@3x.png in Resources */,
@@ -6829,17 +6828,15 @@
 				788E9574253FE24E0089251E /* EEWhiteboardTool.xib in Resources */,
 				788E956D253FE24E0089251E /* EEColorShowView.xib in Resources */,
 				78B115ED272A439900A3B8CB /* gift_loading_gif@2x.gif in Resources */,
-				787F1E8C247381A400108F7B /* encryptedApp.dat in Resources */,
 				78B119482733881D00A3B8CB /* queuing@3x.png in Resources */,
 				78B119092733881C00A3B8CB /* start@2x.png in Resources */,
 				78B1193C2733881D00A3B8CB /* message_touch@2x.png in Resources */,
+				78093D6B28153CEC00E6EEB7 /* AVC_VP_Main.storyboard in Resources */,
 				78B119392733881D00A3B8CB /* setvc@2x.png in Resources */,
 				78B1192D2733881D00A3B8CB /* 连麦中关麦点击@2x.png in Resources */,
-				787F1E6C247381A400108F7B /* AVCVideoDownloadTCell.xib in Resources */,
 				78B1192E2733881D00A3B8CB /* 连麦中关麦点击@3x.png in Resources */,
 				78B119432733881D00A3B8CB /* queuing_touch@2x.png in Resources */,
 				78B1193D2733881D00A3B8CB /* mute@2x.png in Resources */,
-				787F1E85247381A400108F7B /* AVC_VP_PlaySettingVC.xib in Resources */,
 				78B1192A2733881D00A3B8CB /* photo2_touch@3x.png in Resources */,
 				78B119142733881D00A3B8CB /* roll2_touch@2x.png in Resources */,
 				788E95C1253FE24F0089251E /* ReplayControlView.xib in Resources */,
@@ -6847,6 +6844,7 @@
 				78B119462733881D00A3B8CB /* pause_rec@3x.png in Resources */,
 				78B119172733881D00A3B8CB /* document_touch@3x.png in Resources */,
 				78B115F5272A439900A3B8CB /* gif_audio@2x.gif in Resources */,
+				78093D5028153CEC00E6EEB7 /* AVCVideoDownloadTCell.xib in Resources */,
 				7879561D240DE7AE0013F95F /* Assets.xcassets in Resources */,
 				788E957E253FE24E0089251E /* OTOStudentView.xib in Resources */,
 				78B119362733881D00A3B8CB /* 连麦中关麦@2x.png in Resources */,
@@ -6858,6 +6856,7 @@
 				78B119442733881D00A3B8CB /* queuing_touch@3x.png in Resources */,
 				78B1190D2733881C00A3B8CB /* set@2x.png in Resources */,
 				78B1192F2733881D00A3B8CB /* 连麦中点击@2x.png in Resources */,
+				78093D6A28153CEC00E6EEB7 /* readMe_videoPlay.txt in Resources */,
 				788E957C253FE24E0089251E /* OTOTeacherView.xib in Resources */,
 				78B119152733881D00A3B8CB /* start_touch@2x.png in Resources */,
 				78B119372733881D00A3B8CB /* ligature_touch@3x.png in Resources */,
@@ -6974,9 +6973,9 @@
 				78B11667272A439A00A3B8CB /* PhotoNotPermissionVC.m in Sources */,
 				78B119032733881C00A3B8CB /* PopoverAction.m in Sources */,
 				784FC8E224ACA2CD00CAE7A6 /* MyMenberCell.m in Sources */,
+				78093D6828153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.m in Sources */,
 				782FE41D27D9F85600F2648C /* ExamNewMainCateListVC.m in Sources */,
 				78795737240FA3840013F95F /* ZLPhotoPickerCollectionViewCell.m in Sources */,
-				787F1E8E247381A400108F7B /* DownloadManager.m in Sources */,
 				78B11655272A439900A3B8CB /* UIImage+animatedGIF.m in Sources */,
 				788E9581253FE24E0089251E /* JsonParseUtil.m in Sources */,
 				78795729240FA3840013F95F /* ZLPhotoPickerBrowserPhotoImageView.m in Sources */,
@@ -6987,11 +6986,11 @@
 				784D648826D38CDF00461A21 /* ScoreListCell.m in Sources */,
 				78B11683272A439A00A3B8CB /* CCPublicChatModel.m in Sources */,
 				78C5497D241B642B00A33FC4 /* AlivcLiveBeautifySettingsViewController.m in Sources */,
-				787F1E69247381A400108F7B /* AVCLogView.m in Sources */,
 				788E9588253FE24E0089251E /* zip.c in Sources */,
 				787E19B124566FAE00E2E016 /* OrderCell.m in Sources */,
 				789DB050246BC68C001302B4 /* ScoreCell.m in Sources */,
 				78C549D8241B674F00A33FC4 /* UIView+AlivcHelper.m in Sources */,
+				78093D6728153CEC00E6EEB7 /* AVC_VP_BaseViewController.m in Sources */,
 				78B11648272A439900A3B8CB /* TextFieldUserInfo.m in Sources */,
 				789DB038246943E1001302B4 /* StudyCourseCell.m in Sources */,
 				78B119682733881D00A3B8CB /* CCSignManger.m in Sources */,
@@ -7001,23 +7000,23 @@
 				78793A4F26522115000554C8 /* OrderScreenViewController.m in Sources */,
 				78E5B2582664B6FA0053F63F /* CircleDetailViewController.m in Sources */,
 				78E5B255265B74D20053F63F /* UploadImageModel.m in Sources */,
+				78093D5328153CEC00E6EEB7 /* AliyunUtil.m in Sources */,
 				782AC43D25BC1DFD009130F9 /* ZhuangXiangModelManager.m in Sources */,
 				78C5497A241B642B00A33FC4 /* AlivcPushBeautyDataManager.m in Sources */,
 				78793A52265252BA000554C8 /* PromotionCourseCell.m in Sources */,
 				78A16C892452F7C100391430 /* TICRecorder.mm in Sources */,
 				78B115FC272A439900A3B8CB /* HDPlayerBaseBarrageView.m in Sources */,
-				787F1E68247381A400108F7B /* AlivcVideoPlayThumbnailView.m in Sources */,
 				78447C5226351C5E00CCC6D2 /* ExamResultDetailViewController.m in Sources */,
 				78B1197F2734FDA800A3B8CB /* GCPrePermissions.m in Sources */,
 				788E9596253FE24E0089251E /* SSZipArchive.m in Sources */,
 				78B11621272A439900A3B8CB /* CALayer+OCBarrage.m in Sources */,
-				787F1E7E247381A400108F7B /* AliyunPlayerViewSlider.m in Sources */,
 				78AA13A62446B7EB007087F7 /* PersonalInformationVC.m in Sources */,
 				78B11633272A439900A3B8CB /* CCLockView.m in Sources */,
 				78B118C02733881C00A3B8CB /* CCVoteView.m in Sources */,
 				78BCF95324D7C2A1002F691C /* QuestionChatLeftCell.m in Sources */,
 				78D4EC3A26E7471D002E9493 /* HomePageDiscountCell.m in Sources */,
 				788E959F253FE24E0089251E /* ReplayManagerModel.m in Sources */,
+				78093D6528153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.m in Sources */,
 				78BF92932710324900D9A75D /* mask.c in Sources */,
 				7887451224E13B1300257029 /* FeedBackViewController.m in Sources */,
 				78795660240E60320013F95F /* HomeRootViewController.m in Sources */,
@@ -7028,7 +7027,6 @@
 				788E95A4253FE24E0089251E /* WhiteReplayManager.m in Sources */,
 				78B119552733881D00A3B8CB /* CCUserGuideViewController.m in Sources */,
 				78B11647272A439900A3B8CB /* VoteViewResult.m in Sources */,
-				787F1E75247381A400108F7B /* AliyunPlayerViewErrorView.m in Sources */,
 				788E95D22546A3100089251E /* LiveCourseListVC.m in Sources */,
 				78B1165D272A439900A3B8CB /* CCDownloadModel.m in Sources */,
 				78795722240FA3840013F95F /* ZLCameraImageView.m in Sources */,
@@ -7044,7 +7042,6 @@
 				78F94D0B27F3F86E0010ED35 /* MyCertificateListVC.m in Sources */,
 				7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */,
 				78795752240FAA7A0013F95F /* UIViewController+HUD.m in Sources */,
-				787F1E6B247381A400108F7B /* AlivcPlayListsView.m in Sources */,
 				787EF0AA26C520DF0049E8CB /* ShopMainListCell.m in Sources */,
 				788E95BD253FE24F0089251E /* SignalManager.m in Sources */,
 				78A16C842452F7C100391430 /* TICReport.m in Sources */,
@@ -7052,6 +7049,7 @@
 				78C5482D2412259C00A33FC4 /* EdlineV5_Color.m in Sources */,
 				789DB065246D26EC001302B4 /* NSObject+PYThemeExtension.m in Sources */,
 				78AAFF0725FB0E79002CD197 /* CourseActivityView.m in Sources */,
+				78093D5928153CEC00E6EEB7 /* AliyunPlayerViewSeekPopupView.m in Sources */,
 				788E9599253FE24E0089251E /* SignalShareScreenModel.m in Sources */,
 				78B11675272A439A00A3B8CB /* QuestionnaireSurveyPopUp.m in Sources */,
 				7839C97A241F7B3E002F6595 /* CourseDownView.m in Sources */,
@@ -7072,10 +7070,10 @@
 				78C936D2248FBC5400D5F1ED /* UserListCell.m in Sources */,
 				78BBB394262024CB009F5D10 /* QuestionListCell.m in Sources */,
 				784FC90024AF5DEF00CAE7A6 /* MessageDetailVC.m in Sources */,
-				787F1E82247381A400108F7B /* AliyunSpeedButton.m in Sources */,
 				78B118D12733881C00A3B8CB /* CCChangeScrollBtn.m in Sources */,
 				789DB02124658C8D001302B4 /* OrderFinalCell.m in Sources */,
 				78C549D3241B674F00A33FC4 /* AlivcImage.m in Sources */,
+				78093D5128153CEC00E6EEB7 /* AliyunVodPlayerView.m in Sources */,
 				78C54977241B642B00A33FC4 /* AlivcLivePresentationController.m in Sources */,
 				78B11663272A439A00A3B8CB /* CCPunchView.m in Sources */,
 				78C548792418CC7400A33FC4 /* TYViewStorage.m in Sources */,
@@ -7105,8 +7103,8 @@
 				78B11602272A439900A3B8CB /* YYWeakProxy.m in Sources */,
 				78AF5354264533ED0058B55E /* QuestionPostViewController.m in Sources */,
 				78C5496F241B642B00A33FC4 /* AlivcProfile.m in Sources */,
+				78093D6928153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.m in Sources */,
 				78B11640272A439900A3B8CB /* HDPlayerBaseInfoView.m in Sources */,
-				787F1E84247381A400108F7B /* AliyunPlayerViewFirstStartGuideView.m in Sources */,
 				78B118EE2733881C00A3B8CB /* STDebugFoundation.m in Sources */,
 				78C549DB241B674F00A33FC4 /* UIApplication+AlivcHelper.m in Sources */,
 				78B115F1272A439900A3B8CB /* CCPlayLoginController.m in Sources */,
@@ -7116,6 +7114,7 @@
 				78B1163C272A439900A3B8CB /* HDPortraitToolAudioModeView.m in Sources */,
 				7839C98324206B72002F6595 /* CourseCouponView.m in Sources */,
 				782FE42027DAF4A400F2648C /* ExamNewMainListCell.m in Sources */,
+				78093D5E28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.m in Sources */,
 				78B1166E272A439A00A3B8CB /* NewLotteryInfomationCell.m in Sources */,
 				78795618240DE7A50013F95F /* ViewController.m in Sources */,
 				78781D4F260B2EEF000DF351 /* CheckUserInfoViewController.m in Sources */,
@@ -7168,7 +7167,6 @@
 				788E959C253FE24E0089251E /* SignalRoomModel.m in Sources */,
 				78B115FB272A439900A3B8CB /* HDPlayerBaseView.m in Sources */,
 				78B118CE2733881C00A3B8CB /* CCTipsView.m in Sources */,
-				787F1E6A247381A400108F7B /* AVCVideoDownloadTCell.m in Sources */,
 				789DB053246BCF46001302B4 /* ScoreDetailVC.m in Sources */,
 				7853165824513A2E007E239E /* LiveRoomPersonCell.m in Sources */,
 				78B119622733881D00A3B8CB /* CCPushViewController.m in Sources */,
@@ -7191,7 +7189,6 @@
 				78B1160A272A439900A3B8CB /* YYFPSLabel.m in Sources */,
 				788E955C253FE24E0089251E /* EETeacherVideoView.m in Sources */,
 				78AA138924406009007087F7 /* HomePageTeacherCell.m in Sources */,
-				787F1E83247381A400108F7B /* AliyunPlayerViewSpeedView.m in Sources */,
 				7887451F24E3C73900257029 /* UITableView+EmptyData.m in Sources */,
 				78B1196B2733881D00A3B8CB /* CCSettingTwoTableViewCell.m in Sources */,
 				7839C9A6242368A2002F6595 /* CourseCatalogCell.m in Sources */,
@@ -7235,6 +7232,7 @@
 				78795612240DE7A50013F95F /* AppDelegate.m in Sources */,
 				78B1196E2733881D00A3B8CB /* CCActionCollectionViewCell.m in Sources */,
 				78AA137E2440543D007087F7 /* SDCycleScrollView.m in Sources */,
+				78093D4B28153CEC00E6EEB7 /* AVCSelectSharpnessView.m in Sources */,
 				788E95B5253FE24E0089251E /* RTCManager.m in Sources */,
 				78B11685272A439A00A3B8CB /* CCPrivateChatView.m in Sources */,
 				78B1167B272A439A00A3B8CB /* LianmaiView.m in Sources */,
@@ -7251,7 +7249,6 @@
 				785A3E1E2498F65900298054 /* TeacherCategoryVC.m in Sources */,
 				78BF92922710324900D9A75D /* qrinput.c in Sources */,
 				780F95BB25551FED0070EB1F /* LivePageControlView.m in Sources */,
-				787F1E88247381A400108F7B /* AVC_VP_PlaySettingVC.m in Sources */,
 				782333BE2599CA2C0076DD85 /* ExamPointSelectVC.m in Sources */,
 				78C549D2241B674E00A33FC4 /* AlivcUIConfig.m in Sources */,
 				78AA138C2440710B007087F7 /* HomePageCourseTypeOneCell.m in Sources */,
@@ -7262,6 +7259,7 @@
 				788E95AD253FE24E0089251E /* ReplayModel.m in Sources */,
 				785A3E152497A16B00298054 /* TeacherApplyVC.m in Sources */,
 				78C5497F241B642B00A33FC4 /* AlivcBeautySettingUIDefine.m in Sources */,
+				78093D6428153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.m in Sources */,
 				78447C58263666F500CCC6D2 /* ExamPaperErrorTestAgainVC.m in Sources */,
 				78795623240DE7AE0013F95F /* main.m in Sources */,
 				78B119532733881D00A3B8CB /* CCLoginViewController.m in Sources */,
@@ -7278,6 +7276,7 @@
 				78B11622272A439900A3B8CB /* OCBarrageManager.m in Sources */,
 				788E9587253FE24E0089251E /* unzip.c in Sources */,
 				78B1197C2734DD1900A3B8CB /* Dialogue.m in Sources */,
+				78093D5F28153CEC00E6EEB7 /* AliyunPlayerViewSlider.m in Sources */,
 				78C5497E241B642B00A33FC4 /* _AlivcLiveBeautifyNavigationView.m in Sources */,
 				788E95B1253FE24E0089251E /* LogParamsModel.m in Sources */,
 				788E95BC253FE24E0089251E /* SignalModel.m in Sources */,
@@ -7291,7 +7290,6 @@
 				78B11612272A439900A3B8CB /* PPSticker.m in Sources */,
 				78B11650272A439900A3B8CB /* NSString+Extension.m in Sources */,
 				78C5482A2412229900A33FC4 /* AreaNumListVC.m in Sources */,
-				787F1E87247381A400108F7B /* AVC_VP_VideoPlayViewController.m in Sources */,
 				78793A55265252EB000554C8 /* PromotionUserCell.m in Sources */,
 				7839C99D2423044A002F6595 /* CourseRecordCell.m in Sources */,
 				78A16C832452F7C100391430 /* TICDef.m in Sources */,
@@ -7325,11 +7323,10 @@
 				78AA138F24407197007087F7 /* HomePageCourseTypeTwoCell.m in Sources */,
 				78A16C822452F7C100391430 /* TICWeakProxy.m in Sources */,
 				788E955F253FE24E0089251E /* BCSegmentedView.m in Sources */,
+				78093D5728153CEC00E6EEB7 /* AliyunPlayerViewTopView.m in Sources */,
 				78B11603272A439900A3B8CB /* NSDictionary+Log.m in Sources */,
 				78B1194E2733881D00A3B8CB /* CCLiveStudentSetController.m in Sources */,
 				78B119052733881C00A3B8CB /* PopoverViewCell.m in Sources */,
-				787F1E6F247381A400108F7B /* AliyunUtil.m in Sources */,
-				787F1E79247381A400108F7B /* AliyunPlayerViewGestureView.m in Sources */,
 				78B119662733881D00A3B8CB /* CCSettingOneTableViewCell.m in Sources */,
 				789DB056246C168F001302B4 /* MyCollectCourseVC.m in Sources */,
 				78D4EC4026FB06A6002E9493 /* NewStudyRecentView.m in Sources */,
@@ -7340,7 +7337,6 @@
 				78B118AD2733881C00A3B8CB /* CCBaseTableViewController.m in Sources */,
 				78B119672733881D00A3B8CB /* CCLianMaiModeTableViewController.m in Sources */,
 				78C5497C241B642B00A33FC4 /* _AlivcLiveBeautifyLevelView.m in Sources */,
-				787F1E6E247381A400108F7B /* AliyunDataSource.m in Sources */,
 				78AAFF0A25FB3E0E002CD197 /* GroupListPopViewController.m in Sources */,
 				7839C975241F5C57002F6595 /* StarEvaluator.m in Sources */,
 				78B11608272A439900A3B8CB /* CCProxy.m in Sources */,
@@ -7349,6 +7345,7 @@
 				78B11615272A439900A3B8CB /* PPEmojiPreviewView.m in Sources */,
 				78B1164D272A439900A3B8CB /* UIImage+Extension.m in Sources */,
 				78C549C8241B674E00A33FC4 /* AlivcScanViewController.m in Sources */,
+				78093D4E28153CEC00E6EEB7 /* AVCVideoDownloadTCell.m in Sources */,
 				78B11623272A439900A3B8CB /* OCBarrageTrackInfo.m in Sources */,
 				789DB01E2465785C001302B4 /* MyScoreVC.m in Sources */,
 				7853BDD9242DF82800F096EC /* ShopCarCell.m in Sources */,
@@ -7357,6 +7354,7 @@
 				78B115F8272A439900A3B8CB /* HDPlayerBaseLineView.m in Sources */,
 				7898F93A24B40D3400C9A1F7 /* MenberRecordVC.m in Sources */,
 				78C54974241B642B00A33FC4 /* _AlivcLiveBeautifyDetailView.m in Sources */,
+				78093D7128153CEC00E6EEB7 /* AVCVideoConfig.m in Sources */,
 				78531653245131AF007E239E /* LiveRoomViewController.m in Sources */,
 				78B11669272A439A00A3B8CB /* NewLotteryInfomationCellModel.m in Sources */,
 				788E95C0253FE24F0089251E /* SliderView.m in Sources */,
@@ -7376,6 +7374,7 @@
 				788E9578253FE24E0089251E /* EEChatTextFiled.m in Sources */,
 				78B1165B272A439900A3B8CB /* OfflinePlayBackViewController.m in Sources */,
 				78B118F22733881C00A3B8CB /* SelPlaybackControls.m in Sources */,
+				78093D6128153CEC00E6EEB7 /* AliyunPlayerViewGifView.m in Sources */,
 				788E9562253FE24E0089251E /* MCTeacherVideoView.m in Sources */,
 				789DB018245A76A1001302B4 /* ShopCarModel.m in Sources */,
 				78B11687272A439A00A3B8CB /* PrivateChatViewForOne.m in Sources */,
@@ -7407,19 +7406,20 @@
 				784D648B26D399FB00461A21 /* ScoreListModel.m in Sources */,
 				787E19A62455379A00E2E016 /* OrderSureViewController.m in Sources */,
 				789DB01524593041001302B4 /* CouponModel.m in Sources */,
+				78093D4F28153CEC00E6EEB7 /* AlivcPlayListsView.m in Sources */,
 				78795724240FA3840013F95F /* ZLCameraView.m in Sources */,
 				78C549E0241B674F00A33FC4 /* UIImage+AlivcHelper.m in Sources */,
+				78093D5B28153CEC00E6EEB7 /* AliyunGestureModel.m in Sources */,
 				7839C972241F174D002F6595 /* LBHTableView.m in Sources */,
 				788E9591253FE24E0089251E /* sha1.c in Sources */,
 				7839C96C241F1571002F6595 /* CourseMainViewController.m in Sources */,
 				78B118DC2733881C00A3B8CB /* CCStreamerView.m in Sources */,
 				784E5CDA24A8450700646916 /* ZiXunDetailVC.m in Sources */,
 				788E95AF253FE24E0089251E /* CommonModel.m in Sources */,
+				78093D6228153CEC00E6EEB7 /* AliyunViewMoreView.m in Sources */,
 				788E9590253FE24E0089251E /* fileenc.c in Sources */,
 				78B1167F272A439A00A3B8CB /* CCLiveImageView.m in Sources */,
 				78B11610272A439900A3B8CB /* UIScrollView+PPAddition.m in Sources */,
-				787F1E90247381A400108F7B /* AVCVideoConfig.m in Sources */,
-				787F1E65247381A400108F7B /* AlivcVideoPlayerListsTableViewCell.m in Sources */,
 				788E95D52546A4360089251E /* LiveCourseListCell.m in Sources */,
 				78B115EE272A439900A3B8CB /* LotteryView.m in Sources */,
 				78795650240E3FB60013F95F /* EdulineV5_Tool.m in Sources */,
@@ -7436,6 +7436,7 @@
 				78C549CB241B674E00A33FC4 /* AlivcAppInfoViewController.m in Sources */,
 				78B1165E272A439900A3B8CB /* NSURLSession+CCCorrectedResumeData.m in Sources */,
 				788DAC882754B5AF0038303A /* VideoCaptureDevice.m in Sources */,
+				78093D5828153CEC00E6EEB7 /* AliyunPlayerViewControlView.m in Sources */,
 				7839C971241F174D002F6595 /* LBHProgressView.m in Sources */,
 				78C54976241B642B00A33FC4 /* AlivcLiveBeautifySettingsView.m in Sources */,
 				782AC44325BFEDB8009130F9 /* AnswerSheetViewController.m in Sources */,
@@ -7445,7 +7446,6 @@
 				78795725240FA3840013F95F /* ZLPhotoPickerBrowserPhoto.m in Sources */,
 				7839C98624209FAF002F6595 /* CourseCommentViewController.m in Sources */,
 				784E5CEB24A9802D00646916 /* HcdGuideViewCell.m in Sources */,
-				787F1E7A247381A400108F7B /* AliyunGestureModel.m in Sources */,
 				788E95B3253FE24E0089251E /* RoomAllModel.m in Sources */,
 				78B11638272A439900A3B8CB /* HDPortraitToolQualityView.m in Sources */,
 				78B1164B272A439900A3B8CB /* UILabel+Extension.m in Sources */,
@@ -7470,13 +7470,13 @@
 				78B11634272A439900A3B8CB /* MySlider.m in Sources */,
 				788E9592253FE24E0089251E /* aes_ni.c in Sources */,
 				78B118C12733881C00A3B8CB /* CCSignView.m in Sources */,
-				787F1E77247381A400108F7B /* AliyunPlayerViewControlView.m in Sources */,
 				788E95C3253FE24F0089251E /* EduButton.m in Sources */,
 				78B118F12733881C00A3B8CB /* STDPingServices.m in Sources */,
 				78B1166D272A439A00A3B8CB /* NewLotteryView.m in Sources */,
 				78B115FA272A439900A3B8CB /* HDPlayerBaseRateView.m in Sources */,
 				78B118CC2733881C00A3B8CB /* CCRewardView.m in Sources */,
 				788E945A25305F9C0089251E /* NSData+Base64.m in Sources */,
+				78093D6F28153CEC00E6EEB7 /* DownloadManager.m in Sources */,
 				786CD55325EF638200172B88 /* ExamRecordCell.m in Sources */,
 				78B118C42733881C00A3B8CB /* Utility.m in Sources */,
 				789DB047246ABF2F001302B4 /* LearnRecordVC.m in Sources */,
@@ -7486,7 +7486,9 @@
 				787F1E9A24791A6300108F7B /* TeacherListCell.m in Sources */,
 				7853BDC8242AEB1E00F096EC /* CourseDetailPlayVC.m in Sources */,
 				78B11659272A439900A3B8CB /* SelectMenuView.m in Sources */,
+				78093D4A28153CEC00E6EEB7 /* AVCSlider.m in Sources */,
 				78C54972241B642B00A33FC4 /* AlivcVideoPlayListModel.m in Sources */,
+				78093D6028153CEC00E6EEB7 /* AlilyunViewLoadingView.m in Sources */,
 				7876573324370560008F475D /* playAnimationView.m in Sources */,
 				78B119502733881D00A3B8CB /* CCScanViewController.m in Sources */,
 				78C549D6241B674F00A33FC4 /* AlivcBaseNavigationController.m in Sources */,
@@ -7498,9 +7500,11 @@
 				7839C9A32423655B002F6595 /* CourseListVC.m in Sources */,
 				78B11629272A439900A3B8CB /* OCBarrageWalkBannerCell.m in Sources */,
 				78C936C9248F816D00D5F1ED /* TeacherIntroVC.m in Sources */,
+				78093D5428153CEC00E6EEB7 /* AliyunLog.m in Sources */,
 				78BCF95624D7C2B7002F691C /* QuestionChatTimeCell.m in Sources */,
 				78B11673272A439A00A3B8CB /* AnnouncementView.m in Sources */,
 				78B118E72733881C00A3B8CB /* CustomTextField.m in Sources */,
+				78093D5C28153CEC00E6EEB7 /* AliyunPlayerViewProgressView.m in Sources */,
 				7853BDD0242D8F4300F096EC /* ShitikaViewController.m in Sources */,
 				78B118DE2733881C00A3B8CB /* CCStreamModeTeach_Teacher.m in Sources */,
 				7839C9892420CA15002F6595 /* CourseCommentTopView.m in Sources */,
@@ -7509,7 +7513,6 @@
 				78B11656272A439900A3B8CB /* CCQuestionView.m in Sources */,
 				787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */,
 				78D4EC46270053DF002E9493 /* CourseTestListVC.m in Sources */,
-				787F1E7B247381A400108F7B /* AliyunPlayerViewProgressView.m in Sources */,
 				78C549C7241B674E00A33FC4 /* AlivcLiveUserCountTool.m in Sources */,
 				78B118B12733881C00A3B8CB /* HDSTool.m in Sources */,
 				78AAFEFB25F774EE002CD197 /* ExamCollectCell.m in Sources */,
@@ -7541,7 +7544,6 @@
 				78B1163F272A439900A3B8CB /* HDPortraitToolBaseView.m in Sources */,
 				78B1163A272A439900A3B8CB /* HDPortraitToolDynamicView.m in Sources */,
 				788E9589253FE24E0089251E /* ioapi.c in Sources */,
-				787F1E8D247381A400108F7B /* AlivcVideoDataBase.m in Sources */,
 				788E955D253FE24E0089251E /* BCStudentVideoView.m in Sources */,
 				78C548772418CC7400A33FC4 /* TYLinkTextStorage.m in Sources */,
 				788E9571253FE24E0089251E /* EEMessageView.m in Sources */,
@@ -7552,7 +7554,6 @@
 				78C549D0241B674E00A33FC4 /* AlivcDefine.m in Sources */,
 				78B1168B272A439A00A3B8CB /* CCPlayBackInteractionView.m in Sources */,
 				78C549CE241B674E00A33FC4 /* AliyunReachability.m in Sources */,
-				787F1E6D247381A400108F7B /* AliyunVodPlayerView.m in Sources */,
 				78C548802418CC7400A33FC4 /* TYTextContainer.m in Sources */,
 				788E9598253FE24E0089251E /* SignalInfoModel.m in Sources */,
 				78C549DE241B674F00A33FC4 /* UIButton+AliyunBlock.m in Sources */,
@@ -7576,11 +7577,11 @@
 				78C549DA241B674F00A33FC4 /* NSString+AlivcHelper.m in Sources */,
 				78F7C5D324EFC2AF0010F1E9 /* XLCardSwitchFlowLayout.m in Sources */,
 				7853BDBC2428A14500F096EC /* CourseSearchListVC.m in Sources */,
+				78093D5A28153CEC00E6EEB7 /* AliyunPlayerViewGestureView.m in Sources */,
 				782FE42327DB352F00F2648C /* ExamNewSecendTypeVC.m in Sources */,
 				789DB02D2468E82A001302B4 /* CardInterVC.m in Sources */,
 				78AAFF1025FF2D6D002CD197 /* GroupDetailViewController.m in Sources */,
 				788E957F253FE24E0089251E /* KeyCenter.m in Sources */,
-				787F1E74247381A400108F7B /* AliyunPlayerViewPopLayer.m in Sources */,
 				782AC43025BAA6D4009130F9 /* TaoJuanDetailListCell.m in Sources */,
 				789DB03524692C1D001302B4 /* StudyLatestCell.m in Sources */,
 				78AA13832440543D007087F7 /* TAAnimatedDotView.m in Sources */,
@@ -7591,8 +7592,7 @@
 				788E9561253FE24E0089251E /* BCViewController.m in Sources */,
 				788E957A253FE24E0089251E /* OneToOneViewController.m in Sources */,
 				78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */,
-				787F1E81247381A400108F7B /* AliyunViewMoreView.m in Sources */,
-				787F1E78247381A400108F7B /* AliyunPlayerViewSeekPopupView.m in Sources */,
+				78093D5528153CEC00E6EEB7 /* AliyunPlayerViewPopLayer.m in Sources */,
 				7853BE002433352E00F096EC /* LingquanViewController.m in Sources */,
 				78B118C92733881C00A3B8CB /* CCTickeResultView.m in Sources */,
 				788E9595253FE24E0089251E /* aestab.c in Sources */,
@@ -7611,6 +7611,7 @@
 				78B119512733881D00A3B8CB /* CCScanOverViewController.m in Sources */,
 				78C549CD241B674E00A33FC4 /* AlivcAlertView.m in Sources */,
 				784FC8EE24ADD59D00CAE7A6 /* ZixunCommmentDetailVC.m in Sources */,
+				78093D4D28153CEC00E6EEB7 /* AVCLogView.m in Sources */,
 				788E95B0253FE24E0089251E /* UserModel.m in Sources */,
 				78B118D52733881C00A3B8CB /* HyPopMenuView.m in Sources */,
 				78B118DD2733881C00A3B8CB /* CCStreamModeSingle.m in Sources */,
@@ -7618,6 +7619,7 @@
 				78B1194F2733881D00A3B8CB /* CCManagerTool.m in Sources */,
 				78AA139D2445AE58007087F7 /* MyCenterUserInfoView.m in Sources */,
 				7853BDB92428957600F096EC /* CourseListModel.m in Sources */,
+				78093D6328153CEC00E6EEB7 /* AliyunSpeedButton.m in Sources */,
 				789DB044246A4499001302B4 /* MycouponsListVC.m in Sources */,
 				787E19B4245685E100E2E016 /* OrderTypeViewController.m in Sources */,
 				78BBB39A26243E2B009F5D10 /* QuestionDetailListViewController.m in Sources */,
@@ -7639,12 +7641,13 @@
 				78B119652733881D00A3B8CB /* CCStudentActionManager.m in Sources */,
 				784D648E26D490A400461A21 /* MyScoreNewVC.m in Sources */,
 				78B118E62733881C00A3B8CB /* CCDrawMenuView.m in Sources */,
-				787F1E66247381A400108F7B /* AVCSlider.m in Sources */,
+				78093D5D28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.m in Sources */,
 				782AC44925C3E7BD009130F9 /* ExamSheetModel.m in Sources */,
 				78B118F82733881C00A3B8CB /* SULogger.m in Sources */,
 				78B118E92733881C00A3B8CB /* HDAlertView+Customization.m in Sources */,
 				78795721240FA3840013F95F /* ZLCameraViewController.m in Sources */,
 				78C5487E2418CC7400A33FC4 /* TYAttributedLabel.m in Sources */,
+				78093D4C28153CEC00E6EEB7 /* AlivcVideoPlayThumbnailView.m in Sources */,
 				78D980B224BD48A6000DE0E4 /* MyTeachingRootVC.m in Sources */,
 				788DAC85275485860038303A /* FaceVerifyViewController.m in Sources */,
 				78B11653272A439900A3B8CB /* UIButton+Extension.m in Sources */,
@@ -7656,7 +7659,6 @@
 				78795739240FA3840013F95F /* ZLPhotoPickerImageView.m in Sources */,
 				78BBB39D26256D84009F5D10 /* QuestionAnswerReplyListCell.m in Sources */,
 				787657302435DC81008F475D /* SearchHistoryListCell.m in Sources */,
-				787F1E7D247381A400108F7B /* AliyunPlayerViewQualityListView.m in Sources */,
 				78AA13812440543D007087F7 /* TADotView.m in Sources */,
 				7839C97D24206AD1002F6595 /* CourseContentView.m in Sources */,
 				788E95A1253FE24E0089251E /* RTCVideoSessionModel.m in Sources */,
@@ -7671,7 +7673,6 @@
 				780F95BE255520190070EB1F /* LiveBoardToolView.m in Sources */,
 				78F94D0227F192290010ED35 /* HomeExamCell.m in Sources */,
 				784E5CD724A8340A00646916 /* ZiXunListVC.m in Sources */,
-				787F1E86247381A400108F7B /* AVC_VP_BaseViewController.m in Sources */,
 				7839C9972421CB1C002F6595 /* CommentBaseView.m in Sources */,
 				78AA13A9244708B6007087F7 /* SetingViewController.m in Sources */,
 				782AC43725BC125B009130F9 /* ZhuangXiangListTreeTableVC.m in Sources */,
@@ -7694,7 +7695,9 @@
 				78B1160F272A439900A3B8CB /* UIScreen+PPAddition.m in Sources */,
 				78C5487C2418CC7400A33FC4 /* TYImageCache.m in Sources */,
 				78AAFEFE25F7753D002CD197 /* ExamCollectCellModel.m in Sources */,
+				78093D6E28153CEC00E6EEB7 /* AlivcVideoDataBase.m in Sources */,
 				78B118DF2733881C00A3B8CB /* CCStreamModeTeach.m in Sources */,
+				78093D4928153CEC00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.m in Sources */,
 				782AC42D25BAA3E1009130F9 /* TaojuanDetailListViewController.m in Sources */,
 				78B119722733881D00A3B8CB /* HRewardView.m in Sources */,
 				78B118AF2733881C00A3B8CB /* UIButton+UserInfo.m in Sources */,
@@ -7713,6 +7716,7 @@
 				787ED6F5255A341E00906846 /* BCLiveRoomViewController.m in Sources */,
 				785A3E232499C1AE00298054 /* TeacherCategoryModel.m in Sources */,
 				78D4EC3D26FB054D002E9493 /* NewStudyTimeView.m in Sources */,
+				78093D5228153CEC00E6EEB7 /* AliyunDataSource.m in Sources */,
 				788E95B4253FE24E0089251E /* MinEducationManager.m in Sources */,
 				78B11626272A439900A3B8CB /* ObjectExtension.m in Sources */,
 				78B119742733881D00A3B8CB /* CCTemplateViewController.m in Sources */,
@@ -7730,22 +7734,19 @@
 				7853BDDC2431A1AE00F096EC /* ShopCarManagerVC.m in Sources */,
 				78B115F6272A439900A3B8CB /* CCPlayerView.m in Sources */,
 				788E958C253FE24E0089251E /* minishared.c in Sources */,
-				787F1E7F247381A400108F7B /* AlilyunViewLoadingView.m in Sources */,
 				78795754240FAA7A0013F95F /* NSString+Valid.m in Sources */,
 				7879575A240FAA7A0013F95F /* UIResponder+Router.m in Sources */,
 				78C549D7241B674F00A33FC4 /* AlivcBaseNavigationController+aliyun_autorotate.m in Sources */,
 				78BBB3A0262572AE009F5D10 /* QuestionAnswerReplyListViewController.m in Sources */,
-				787F1E7C247381A400108F7B /* AliyunPlayerViewBottomView.m in Sources */,
-				787F1E80247381A400108F7B /* AliyunPlayerViewGifView.m in Sources */,
 				788E9575253FE24E0089251E /* EENavigationView.m in Sources */,
 				78AA135C243C22B8007087F7 /* CourseScreenVC.m in Sources */,
 				78795735240FA3840013F95F /* ZLPhotoPickerViewController.m in Sources */,
 				787F1E9D247925AD00108F7B /* InstitutionListVC.m in Sources */,
+				78093D7028153CEC00E6EEB7 /* AVCVideo.m in Sources */,
 				78B118E02733881C00A3B8CB /* CCStreamerModeTile.m in Sources */,
 				789DB06F246D7E04001302B4 /* TeacherCourseListHeaderView.m in Sources */,
 				78B115F7272A439900A3B8CB /* CCDocView.m in Sources */,
 				78B11632272A439900A3B8CB /* CellHeight.m in Sources */,
-				787F1E67247381A400108F7B /* AVCSelectSharpnessView.m in Sources */,
 				78B11624272A439900A3B8CB /* OCBarrageRenderView.m in Sources */,
 				78B119042733881C00A3B8CB /* PopoverView.m in Sources */,
 				788E95BE253FE24F0089251E /* AgoraLoadingView.m in Sources */,
@@ -7757,7 +7758,6 @@
 				788E9573253FE24E0089251E /* EEPageControlView.m in Sources */,
 				78A16C8C2452F7C100391430 /* TICRenderView.m in Sources */,
 				78B1166F272A439A00A3B8CB /* NewLotteryInfomationView.m in Sources */,
-				787F1E70247381A400108F7B /* AliyunLog.m in Sources */,
 				78C549E2241B674F00A33FC4 /* NSData+AlivcHelper.m in Sources */,
 				78B118EB2733881C00A3B8CB /* HDAlertView.m in Sources */,
 				78B115F4272A439900A3B8CB /* CCInteractionView.m in Sources */,
@@ -7772,13 +7772,12 @@
 				78B118C62733881C00A3B8CB /* CCStreamCheck.m in Sources */,
 				786E736026C50297006864DE /* ShopMainViewController.m in Sources */,
 				78B11651272A439900A3B8CB /* UIView+GetVC.m in Sources */,
+				78093D5628153CEC00E6EEB7 /* AliyunPlayerViewErrorView.m in Sources */,
 				78B119642733881D00A3B8CB /* CCDocSkipViewController.m in Sources */,
 				788E956B253FE24E0089251E /* EEMessageViewCell.m in Sources */,
 				788E9582253FE24E0089251E /* UIColor+Addition.m in Sources */,
 				78A16C852452F7C100391430 /* NSDate+NetworkClock.m in Sources */,
-				787F1E8F247381A400108F7B /* AVCVideo.m in Sources */,
 				7839C9942421B996002F6595 /* CourseCommentDetailVC.m in Sources */,
-				787F1E76247381A400108F7B /* AliyunPlayerViewTopView.m in Sources */,
 				7876572324347DB2008F475D /* FindListCell.m in Sources */,
 				78B11635272A439900A3B8CB /* InformationShowView.m in Sources */,
 				7879564A240E35CE0013F95F /* Net_API.m in Sources */,

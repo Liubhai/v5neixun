@@ -16,7 +16,6 @@
 #import "MyRootViewController.h"
 #import "V5_Constant.h"
 #import "AppDelegate.h"
-#import "AVC_VP_VideoPlayViewController.h"
 #import "CourseSearchListVC.h"
 #import "NSObject+PYThemeExtension.h"
 #import "UIImage+Util.h"

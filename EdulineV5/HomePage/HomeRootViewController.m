@@ -10,7 +10,6 @@
 #import "AliyunVodPlayerView.h"
 #import "AliyunUtil.h"
 #import "CourseMainViewController.h"
-#import "AVC_VP_VideoPlayViewController.h"
 #import "CourseSearchListVC.h"
 #import "CourseSearchHistoryVC.h"
 #import "IntendedCourseVC.h"
