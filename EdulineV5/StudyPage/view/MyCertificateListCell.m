@@ -51,7 +51,7 @@
     _datelineLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImage.right + 12, 123 - 14 - 12, _whiteView.width - (_faceImage.right + 12), 12)];
     _datelineLabel.font = SYSTEMFONT(11);
     _datelineLabel.textColor = EdlineV5_Color.textThirdColor;
-    _datelineLabel.text = @"有效期：2022-01-12至2023-01-12";
+//    _datelineLabel.text = @"有效期：2022-01-12至2023-01-12";
 //    [_whiteView addSubview:_datelineLabel];
     
     _getTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_faceImage.right + 12, _datelineLabel.top - 4 - 12, _whiteView.width - (_faceImage.right + 12), 12)];

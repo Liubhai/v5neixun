@@ -137,17 +137,6 @@
     _percentlabel.numberOfLines = 0;
     [self.view addSubview:_percentlabel];
     
-    NSString *score = [NSString stringWithFormat:@"%@",@"90"];
-    NSString *fullScore = [NSString stringWithFormat:@"%@ 分\n总分100分",score];
-    NSRange scoreRange = NSMakeRange(0, score.length);
-    // 40 20 14
-    NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:fullScore];
-    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(32)} range:scoreRange];
-    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(17)} range:NSMakeRange(scoreRange.length, 1)];
-    [att addAttributes:@{NSFontAttributeName:SYSTEMFONT(13)} range:NSMakeRange(scoreRange.length + 1, fullScore.length - scoreRange.length - 1)];
-    _percentlabel.textColor = [UIColor whiteColor];
-    _percentlabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:att];
-    
     _circleView.hidden = NO;
     _percentlabel.hidden = NO;
     
