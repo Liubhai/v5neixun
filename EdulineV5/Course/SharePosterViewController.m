@@ -459,6 +459,12 @@ UIGraphicsEndImageContext();
 
 return image;
     
+//    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0.0);
+//    [view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:NO];
+//    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    return image;
+    
 }
 
 //不需要改变父窗口则不需要重写此协议

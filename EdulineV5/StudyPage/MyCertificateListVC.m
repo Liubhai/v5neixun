@@ -11,6 +11,7 @@
 #import "Net_Path.h"
 #import "OrderScreenViewController.h"
 #import "MyCertificateListCell.h"
+#import "CertificateDetailVC.h"
 
 @interface MyCertificateListVC ()<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, OrderScreenViewControllerDelegate> {
     NSInteger page;
@@ -118,7 +119,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    CertificateDetailVC *vc = [[CertificateDetailVC alloc] init];
+    vc.certificateId = [NSString stringWithFormat:@"%@",_dataSource[indexPath.row][@"id"]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)getOrderList {

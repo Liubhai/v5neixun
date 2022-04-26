@@ -262,6 +262,7 @@
 		7888A350249C8D1B00DB078D /* InstitutionApplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A34F249C8D1B00DB078D /* InstitutionApplyVC.m */; };
 		7888A35324A1D3CF00DB078D /* WkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35224A1D3CF00DB078D /* WkWebViewController.m */; };
 		7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7888A35524A1DB1800DB078D /* WKWebIntroview.m */; };
+		788A61D52817A3F400A3E966 /* CertificateDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 788A61D42817A3F400A3E966 /* CertificateDetailVC.m */; };
 		788D35C025B1758500C70D58 /* SharePosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D35BF25B1758500C70D58 /* SharePosterViewController.m */; };
 		788D4E9A259046C300D024AC /* SHPasswordTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E99259046C300D024AC /* SHPasswordTextView.m */; };
 		788D4E9D259046D500D024AC /* SHLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 788D4E9C259046D500D024AC /* SHLineView.m */; };
@@ -1509,6 +1510,8 @@
 		7888A35224A1D3CF00DB078D /* WkWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WkWebViewController.m; sourceTree = "<group>"; };
 		7888A35424A1DB1800DB078D /* WKWebIntroview.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebIntroview.h; sourceTree = "<group>"; };
 		7888A35524A1DB1800DB078D /* WKWebIntroview.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebIntroview.m; sourceTree = "<group>"; };
+		788A61D32817A3F400A3E966 /* CertificateDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CertificateDetailVC.h; sourceTree = "<group>"; };
+		788A61D42817A3F400A3E966 /* CertificateDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CertificateDetailVC.m; sourceTree = "<group>"; };
 		788D35BE25B1758500C70D58 /* SharePosterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharePosterViewController.h; sourceTree = "<group>"; };
 		788D35BF25B1758500C70D58 /* SharePosterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharePosterViewController.m; sourceTree = "<group>"; };
 		788D4E98259046C300D024AC /* SHPasswordTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHPasswordTextView.h; sourceTree = "<group>"; };
@@ -3617,6 +3620,8 @@
 				789DB03D24698EE8001302B4 /* JoinCourseTypeVC.m */,
 				78F94D0927F3F86E0010ED35 /* MyCertificateListVC.h */,
 				78F94D0A27F3F86E0010ED35 /* MyCertificateListVC.m */,
+				788A61D32817A3F400A3E966 /* CertificateDetailVC.h */,
+				788A61D42817A3F400A3E966 /* CertificateDetailVC.m */,
 				789DB02E246924AC001302B4 /* view */,
 			);
 			path = StudyPage;
@@ -7604,6 +7609,7 @@
 				786CD55C25EF6F7B00172B88 /* ExamRecordList.m in Sources */,
 				78B119542733881D00A3B8CB /* CCServerListViewController.m in Sources */,
 				78AA13802440543D007087F7 /* SDCollectionViewCell.m in Sources */,
+				788A61D52817A3F400A3E966 /* CertificateDetailVC.m in Sources */,
 				78B118E22733881C00A3B8CB /* ModelView.m in Sources */,
 				78C5483424124B4000A33FC4 /* AreaTableViewCell.m in Sources */,
 				78B118D02733881C00A3B8CB /* CCBrainView.m in Sources */,
