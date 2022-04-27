@@ -38,6 +38,7 @@
     
     _posterImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 530)];
     [_posterImageView sd_setImageWithURL:EdulineUrlString(_certificateInfo[@"cert_info"][@"background_url"])];
+    _posterImageView.userInteractionEnabled = YES;
     [self.view addSubview:_posterImageView];
     
     _saveButton = [[UIButton alloc] initWithFrame:CGRectMake(15, MainScreenHeight - MACRO_UI_SAFEAREA - 40 - 11, MainScreenWidth - 30, 40)];
@@ -83,6 +84,7 @@
     _mainScrollView.layer.borderWidth = 1;
     _mainScrollView.backgroundColor = [UIColor clearColor];
     [_posterImageView addSubview:_mainScrollView];
+    _mainScrollView.userInteractionEnabled = YES;
     
     [self makeCourseHourseUI:[NSMutableArray arrayWithArray:_certificateInfo[@"course_list"]]];
     
@@ -102,8 +104,10 @@
     // 【right-top\right-bottom】
     if ([official_seal_place isEqualToString:@"right-top"]) {
         _commonSealTop.hidden = NO;
-    } else {
+    } else if([official_seal_place isEqualToString:@"right-bottom"]) {
         _commonSealBottom.hidden = NO;
+    } else {
+        
     }
     
 }
