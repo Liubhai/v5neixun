@@ -54,6 +54,7 @@
     _certificateTitle = [[UILabel alloc] initWithFrame:CGRectMake(76, 54, _posterImageView.width - 76 * 2, 20)];
     _certificateTitle.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];
     _certificateTitle.textAlignment = NSTextAlignmentCenter;
+    _certificateTitle.numberOfLines = 0;
     _certificateTitle.textColor = EdlineV5_Color.textFirstColor;
     _certificateTitle.backgroundColor = [UIColor clearColor];
     [_posterImageView addSubview:_certificateTitle];
@@ -175,8 +176,9 @@
 - (void)makeCourseHourseUI:(NSMutableArray *)courseArray {
     if (_mainScrollView) {
         [_mainScrollView removeAllSubviews];
+        CGFloat YY = 0;
         for (int i = 0; i<courseArray.count; i++) {
-            UIView *courseView = [[UIView alloc] initWithFrame:CGRectMake(0, 21 * i, _mainScrollView.width, 21)];
+            UIView *courseView = [[UIView alloc] initWithFrame:CGRectMake(0, YY, _mainScrollView.width, 21)];
             courseView.backgroundColor = [UIColor clearColor];
             [_mainScrollView addSubview:courseView];
             
@@ -185,16 +187,23 @@
             courseLabel.textColor = EdlineV5_Color.textFirstColor;
             courseLabel.textAlignment = NSTextAlignmentCenter;
             courseLabel.text = [NSString stringWithFormat:@"%@",courseArray[i][@"title"]];
+            courseLabel.numberOfLines = 0;
             courseLabel.backgroundColor = [UIColor clearColor];
             [courseView addSubview:courseLabel];
+            [courseLabel sizeToFit];
+            courseLabel.frame = CGRectMake(0, 0, courseView.width, courseLabel.height);
             
-            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 20, courseView.width, 1)];
+            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, courseLabel.height - 1, courseView.width, 1)];
             line.backgroundColor = HEXCOLOR(0xB7BAC1);
             [courseView addSubview:line];
+            [courseView setHeight:line.bottom];
+            YY = YY + courseView.height;
+            if (i == (courseArray.count - 1)) {
+                _mainScrollView.contentSize = CGSizeMake(0, courseView.bottom);
+                [_mainScrollView setHeight:MIN(courseView.bottom, _mainScrollView.height)];
+            }
         }
         _mainScrollView.hidden = SWNOTEmptyArr(courseArray) ? NO : YES;
-        _mainScrollView.contentSize = CGSizeMake(0, courseArray.count * 21);
-        [_mainScrollView setHeight:MIN(courseArray.count * 21, _mainScrollView.height)];
     }
 }
 
