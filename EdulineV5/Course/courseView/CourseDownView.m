@@ -203,14 +203,9 @@
     if (SWNOTEmptyDictionary(courseInfo)) {
         if ([[NSString stringWithFormat:@"%@",courseInfo[@"course_type"]] isEqualToString:@"4"]) {
 //            "study_status": 0, //报名状态【0：未报名；1：已报名，待审核；2：审核通过；3：审核未通过；】
+//            is_buy和studey_status 这两个字段共同判断课程按钮状态；is_buy=1的时候，按钮就显示为“开始学习”；is_buy=0，study_staus=0/3,按钮显示“我要报名”；is_buy=0，study_staus=1；已报名
             NSString *study_status = [NSString stringWithFormat:@"%@",courseInfo[@"study_status"]];
-            if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
-                [_joinStudyButton setTitle:@"我要报名" forState:0];
-                _joinStudyButton.hidden = NO;
-            } else if ([study_status isEqualToString:@"1"]) {
-                [_joinStudyButton setTitle:@"已报名" forState:0];
-                _joinStudyButton.hidden = NO;
-            } else if ([study_status isEqualToString:@"2"]) {
+            if ([[courseInfo objectForKey:@"is_buy"] boolValue]) {
                 [_joinStudyButton setTitle:@"开始学习" forState:0];
                 _joinStudyButton.hidden = NO;
                 if ([courseInfo objectForKey:@"recent_learn"]) {
@@ -220,7 +215,32 @@
                         }
                     }
                 }
+            } else {
+                if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
+                    [_joinStudyButton setTitle:@"我要报名" forState:0];
+                    _joinStudyButton.hidden = NO;
+                } else if ([study_status isEqualToString:@"1"]) {
+                    [_joinStudyButton setTitle:@"已报名" forState:0];
+                    _joinStudyButton.hidden = NO;
+                }
             }
+//            if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
+//                [_joinStudyButton setTitle:@"我要报名" forState:0];
+//                _joinStudyButton.hidden = NO;
+//            } else if ([study_status isEqualToString:@"1"]) {
+//                [_joinStudyButton setTitle:@"已报名" forState:0];
+//                _joinStudyButton.hidden = NO;
+//            } else if ([study_status isEqualToString:@"2"]) {
+//                [_joinStudyButton setTitle:@"开始学习" forState:0];
+//                _joinStudyButton.hidden = NO;
+//                if ([courseInfo objectForKey:@"recent_learn"]) {
+//                    if (SWNOTEmptyDictionary([courseInfo objectForKey:@"recent_learn"])) {
+//                        if (SWNOTEmptyDictionary([[courseInfo objectForKey:@"recent_learn"] objectForKey:@"section_data"])) {
+//                            [_joinStudyButton setTitle:@"继续学习" forState:0];
+//                        }
+//                    }
+//                }
+//            }
         } else {
             if ([[courseInfo objectForKey:@"is_buy"] boolValue]) {
                 _joinShopCarButton.hidden = YES;

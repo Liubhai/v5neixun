@@ -1183,11 +1183,7 @@
         if ([[NSString stringWithFormat:@"%@",_dataSource[@"course_type"]] isEqualToString:@"4"]) {
 //            "study_status": 0, //报名状态【0：未报名；1：已报名，待审核；2：审核通过；3：审核未通过；】
             NSString *study_status = [NSString stringWithFormat:@"%@",_dataSource[@"study_status"]];
-            if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
-                [self joinApplyTip];
-            } else if ([study_status isEqualToString:@"1"]) {
-                [self showHudInView:self.view showHint:@"已报名，待审核"];
-            } else if ([study_status isEqualToString:@"2"]) {
+            if ([[_dataSource objectForKey:@"is_buy"] boolValue]) {
                 if ([ShowUserFace isEqualToString:@"1"]) {
                     self.userFaceVerifyResult = ^(BOOL result) {
                         CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
@@ -1241,7 +1237,72 @@
                     }
                     [self.navigationController pushViewController:vc animated:YES];
                 }
+            } else {
+                if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
+                    [self joinApplyTip];
+                } else if ([study_status isEqualToString:@"1"]) {
+                    [self showHudInView:self.view showHint:@"已报名，待审核"];
+                }
             }
+//            if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
+//                [self joinApplyTip];
+//            } else if ([study_status isEqualToString:@"1"]) {
+//                [self showHudInView:self.view showHint:@"已报名，待审核"];
+//            } else if ([study_status isEqualToString:@"2"]) {
+//                if ([ShowUserFace isEqualToString:@"1"]) {
+//                    self.userFaceVerifyResult = ^(BOOL result) {
+//                        CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+//                        vc.ID = _ID;
+//                        vc.courselayer = _courselayer;
+//                        vc.isLive = _isLive;
+//                        vc.courseType = _courseType;
+//                        if ([_dataSource objectForKey:@"recent_learn"]) {
+//                            if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+//                                NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+//                                if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+//                                    vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
+//                                    vc.shouldContinueLearn = YES;
+//                                }
+//                            }
+//                        }
+//                        [self.navigationController pushViewController:vc animated:YES];
+//                    };
+//                    if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+//                        if ([_dataSource objectForKey:@"recent_learn"]) {
+//                            if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+//                                NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+//                                if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+//                                    [self faceCompareTip:section_id sourceType:@"course_section"];
+//                                } else {
+//                                    [self faceCompareTip:_ID sourceType:@"course"];
+//                                }
+//                            } else {
+//                                [self faceCompareTip:_ID sourceType:@"course"];
+//                            }
+//                        } else {
+//                            [self faceCompareTip:_ID sourceType:@"course"];
+//                        }
+//                    } else {
+//                        [self faceVerifyTip];
+//                    }
+//                } else {
+//                    CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
+//                    vc.ID = _ID;
+//                    vc.courselayer = _courselayer;
+//                    vc.isLive = _isLive;
+//                    vc.courseType = _courseType;
+//                    if ([_dataSource objectForKey:@"recent_learn"]) {
+//                        if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
+//                            NSString *section_id = [NSString stringWithFormat:@"%@",[[_dataSource objectForKey:@"recent_learn"] objectForKey:@"section_id"]];
+//                            if (SWNOTEmptyStr(section_id) && ![section_id isEqualToString:@"<null>"]) {
+//                                vc.recent_learn_Source = [NSDictionary dictionaryWithDictionary:[_dataSource objectForKey:@"recent_learn"]];
+//                                vc.shouldContinueLearn = YES;
+//                            }
+//                        }
+//                    }
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                }
+//            }
             return;
         }
         
