@@ -10,7 +10,7 @@
 #import "V5_Constant.h"
 #import "Net_Path.h"
 
-@interface CertificateDetailVC ()
+@interface CertificateDetailVC ()<WKUIDelegate, WKNavigationDelegate>
 
 @property (strong, nonatomic) NSDictionary *certificateInfo;
 
@@ -21,7 +21,7 @@
 @property (strong, nonatomic) UIImageView *commonSealTop;
 @property (strong, nonatomic) UIImageView *commonSealBottom;
 @property (strong, nonatomic) UILabel *certificateTitle;
-@property (strong, nonatomic) UITextView *certificateContent;
+@property (strong, nonatomic) WKWebView *certificateContent;
 
 @end
 
@@ -36,7 +36,7 @@
 
 - (void)makeCertificateUI {
     
-    _posterImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 530)];
+    _posterImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, 530*MainScreenHeight/750)];
     [_posterImageView sd_setImageWithURL:EdulineUrlString(_certificateInfo[@"cert_info"][@"background_url"])];
     _posterImageView.userInteractionEnabled = YES;
     [self.view addSubview:_posterImageView];
@@ -63,31 +63,34 @@
     [_certificateTitle sizeToFit];
     _certificateTitle.frame = CGRectMake(76, 54, _posterImageView.width - 76 * 2, _certificateTitle.height);
     
-    _certificateContent = [[UITextView alloc] initWithFrame:CGRectMake(48, _certificateTitle.bottom + 15, _posterImageView.width - 48 * 2, 20)];
-    _certificateContent.showsVerticalScrollIndicator = NO;
-    _certificateContent.showsHorizontalScrollIndicator = NO;
-    _certificateContent.editable = NO;
-    _certificateContent.scrollEnabled = NO;
-    _certificateContent.font = SYSTEMFONT(9);
-    _certificateContent.textColor = EdlineV5_Color.textFirstColor;
+    _certificateContent = [[WKWebView alloc] initWithFrame:CGRectMake(48, _certificateTitle.bottom + 15, _posterImageView.width - 48 * 2, 1)];
     _certificateContent.backgroundColor = [UIColor clearColor];
+    _certificateContent.scrollView.backgroundColor = [UIColor clearColor];
+    [_certificateContent setOpaque:NO];
+    _certificateContent.scrollView.scrollEnabled = NO;
+    _certificateContent.UIDelegate = self;
+    _certificateContent.navigationDelegate = self;
     [_posterImageView addSubview:_certificateContent];
     
-    NSMutableAttributedString *attrString = [self changeCertificateContentStringToMutA:[NSString stringWithFormat:@"%@",_certificateInfo[@"cert_info"][@"content"]]];
-    [attrString addAttributes:@{NSFontAttributeName:SYSTEMFONT(9)} range:NSMakeRange(0, attrString.length)];
-    _certificateContent.attributedText = [[NSAttributedString alloc] initWithAttributedString:attrString];
-    [_certificateContent sizeToFit];
-    _certificateContent.frame = CGRectMake(48, _certificateTitle.bottom + 15, _posterImageView.width - 48 * 2, _certificateContent.height);
+    if (@available(iOS 11.0, *)) {
+        _certificateContent.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        _certificateContent.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        _certificateContent.scrollView.scrollIndicatorInsets = _certificateContent.scrollView.contentInset;
+    }
     
-    _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(49, _certificateContent.bottom + 10, _posterImageView.width - 49 * 2, _posterImageView.height - (_certificateContent.bottom + 10 + 52))];
-    _mainScrollView.layer.masksToBounds = YES;
-    _mainScrollView.layer.borderColor = HEXCOLOR(0xB7BAC1).CGColor;
-    _mainScrollView.layer.borderWidth = 1;
-    _mainScrollView.backgroundColor = [UIColor clearColor];
-    [_posterImageView addSubview:_mainScrollView];
-    _mainScrollView.userInteractionEnabled = YES;
+    NSString *content = [NSString stringWithFormat:@"%@",_certificateInfo[@"cert_info"][@"content"]];
+    if (content.length>2) {
+        NSString *str2 = [content substringWithRange:NSMakeRange(0, 3)];
+        if ([str2 isEqualToString:@"<p>"]) {
+            content = [content substringFromIndex:3];
+        }
+        if ([content containsString:@"</p>"]) {
+            content = [content stringByReplacingOccurrencesOfString:@"</p>" withString:@""];
+        }
+    }
     
-    [self makeCourseHourseUI:[NSMutableArray arrayWithArray:_certificateInfo[@"course_list"]]];
+    NSString *str = [NSString stringWithFormat:@"<HTML><HEAD><TITLE></TITLE></HEAD><BODY background:#fff;background-color:transparent;>%@</BODY></HTML>",content];
+    [_certificateContent loadHTMLString:str baseURL:nil];
     
     _commonSealTop = [[UIImageView alloc] initWithFrame:CGRectMake(_posterImageView.width - 66 - 15, 53, 66, 66)];
     [_commonSealTop sd_setImageWithURL:EdulineUrlString(_certificateInfo[@"cert_info"][@"official_seal_url"])];
@@ -110,7 +113,28 @@
     } else {
         
     }
-    
+}
+
+-(void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
+    [webView evaluateJavaScript:@"document.body.scrollHeight" completionHandler:^(id _Nullable heigh, NSError * _Nullable error) {
+        NSString *height = [NSString stringWithFormat:@"%@", heigh];
+        _certificateContent.frame = CGRectMake(48, _certificateTitle.bottom + 15, _posterImageView.width - 48 * 2, ([height floatValue] / 3.0)*2/3.0);
+        _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(49, _certificateContent.bottom + 10, _posterImageView.width - 49 * 2, _posterImageView.height - (_certificateContent.bottom + 10 + 52))];
+        _mainScrollView.layer.masksToBounds = YES;
+        _mainScrollView.layer.borderColor = HEXCOLOR(0xB7BAC1).CGColor;
+        _mainScrollView.layer.borderWidth = 1;
+        _mainScrollView.backgroundColor = [UIColor clearColor];
+        [_posterImageView addSubview:_mainScrollView];
+        _mainScrollView.userInteractionEnabled = YES;
+        
+        [self makeCourseHourseUI:[NSMutableArray arrayWithArray:_certificateInfo[@"course_list"]]];
+        [_posterImageView bringSubviewToFront:_commonSealTop];
+        [_posterImageView bringSubviewToFront:_commonSealBottom];
+    }];
+}
+
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation{
+    NSLog(@"加载失败");
 }
 
 - (void)getCertificateInfoNet {
