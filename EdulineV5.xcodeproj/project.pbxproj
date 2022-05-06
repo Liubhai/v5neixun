@@ -3052,20 +3052,20 @@
 			isa = PBXGroup;
 			children = (
 				78093CE628153CEB00E6EEB7 /* AVCLogView.h */,
-				78093CE728153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.h */,
-				78093CE828153CEB00E6EEB7 /* AlivcPlayListsView.h */,
-				78093CE928153CEB00E6EEB7 /* AVCVideoDownloadTCell.h */,
-				78093CEA28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.m */,
-				78093CEB28153CEB00E6EEB7 /* AVCSlider.m */,
-				78093CEC28153CEB00E6EEB7 /* AVCSelectSharpnessView.m */,
-				78093CED28153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.m */,
 				78093CEE28153CEB00E6EEB7 /* AVCLogView.m */,
-				78093CEF28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.h */,
-				78093CF028153CEB00E6EEB7 /* AVCVideoDownloadTCell.m */,
+				78093CE728153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.h */,
+				78093CED28153CEB00E6EEB7 /* AlivcVideoPlayThumbnailView.m */,
+				78093CE828153CEB00E6EEB7 /* AlivcPlayListsView.h */,
 				78093CF128153CEB00E6EEB7 /* AlivcPlayListsView.m */,
+				78093CE928153CEB00E6EEB7 /* AVCVideoDownloadTCell.h */,
+				78093CF028153CEB00E6EEB7 /* AVCVideoDownloadTCell.m */,
 				78093CF228153CEB00E6EEB7 /* AVCVideoDownloadTCell.xib */,
-				78093CF328153CEB00E6EEB7 /* AVCSelectSharpnessView.h */,
+				78093CEF28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.h */,
+				78093CEA28153CEB00E6EEB7 /* AlivcVideoPlayerListsTableViewCell.m */,
 				78093CF428153CEB00E6EEB7 /* AVCSlider.h */,
+				78093CEB28153CEB00E6EEB7 /* AVCSlider.m */,
+				78093CF328153CEB00E6EEB7 /* AVCSelectSharpnessView.h */,
+				78093CEC28153CEB00E6EEB7 /* AVCSelectSharpnessView.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -3082,10 +3082,10 @@
 		78093CF628153CEB00E6EEB7 /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				78093CFA28153CEB00E6EEB7 /* AliyunVodPlayerView.h */,
 				78093CF728153CEB00E6EEB7 /* AliyunVodPlayerView.m */,
 				78093CF828153CEB00E6EEB7 /* AliyunVodPlayerViewSDK.h */,
 				78093CF928153CEB00E6EEB7 /* AliyunVodPlayerViewDefine.h */,
-				78093CFA28153CEB00E6EEB7 /* AliyunVodPlayerView.h */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -3093,8 +3093,8 @@
 		78093CFB28153CEB00E6EEB7 /* Private */ = {
 			isa = PBXGroup;
 			children = (
-				78093CFC28153CEB00E6EEB7 /* Util */,
 				78093D0528153CEB00E6EEB7 /* AliyunPrivateDefine.h */,
+				78093CFC28153CEB00E6EEB7 /* Util */,
 				78093D0628153CEB00E6EEB7 /* PopLayer */,
 				78093D0B28153CEB00E6EEB7 /* ControlLayer */,
 				78093D2128153CEC00E6EEB7 /* GlobalView */,
@@ -3105,10 +3105,10 @@
 		78093CFC28153CEB00E6EEB7 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				78093CFD28153CEB00E6EEB7 /* dataSource */,
-				78093D0028153CEB00E6EEB7 /* AliyunUtil.m */,
-				78093D0128153CEB00E6EEB7 /* log */,
 				78093D0428153CEB00E6EEB7 /* AliyunUtil.h */,
+				78093D0028153CEB00E6EEB7 /* AliyunUtil.m */,
+				78093CFD28153CEB00E6EEB7 /* dataSource */,
+				78093D0128153CEB00E6EEB7 /* log */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -3125,8 +3125,8 @@
 		78093D0128153CEB00E6EEB7 /* log */ = {
 			isa = PBXGroup;
 			children = (
-				78093D0228153CEB00E6EEB7 /* AliyunLog.m */,
 				78093D0328153CEB00E6EEB7 /* AliyunLog.h */,
+				78093D0228153CEB00E6EEB7 /* AliyunLog.m */,
 			);
 			path = log;
 			sourceTree = "<group>";
@@ -3134,10 +3134,10 @@
 		78093D0628153CEB00E6EEB7 /* PopLayer */ = {
 			isa = PBXGroup;
 			children = (
-				78093D0728153CEB00E6EEB7 /* AliyunPlayerViewPopLayer.m */,
-				78093D0828153CEB00E6EEB7 /* AliyunPlayerViewErrorView.m */,
-				78093D0928153CEB00E6EEB7 /* AliyunPlayerViewErrorView.h */,
 				78093D0A28153CEB00E6EEB7 /* AliyunPlayerViewPopLayer.h */,
+				78093D0728153CEB00E6EEB7 /* AliyunPlayerViewPopLayer.m */,
+				78093D0928153CEB00E6EEB7 /* AliyunPlayerViewErrorView.h */,
+				78093D0828153CEB00E6EEB7 /* AliyunPlayerViewErrorView.m */,
 			);
 			path = PopLayer;
 			sourceTree = "<group>";
@@ -3145,10 +3145,10 @@
 		78093D0B28153CEB00E6EEB7 /* ControlLayer */ = {
 			isa = PBXGroup;
 			children = (
-				78093D0C28153CEB00E6EEB7 /* top */,
-				78093D0F28153CEB00E6EEB7 /* AliyunPlayerViewControlView.m */,
-				78093D1028153CEB00E6EEB7 /* gesture */,
 				78093D1728153CEC00E6EEB7 /* AliyunPlayerViewControlView.h */,
+				78093D0F28153CEB00E6EEB7 /* AliyunPlayerViewControlView.m */,
+				78093D0C28153CEB00E6EEB7 /* top */,
+				78093D1028153CEB00E6EEB7 /* gesture */,
 				78093D1828153CEC00E6EEB7 /* bottom */,
 			);
 			path = ControlLayer;
@@ -3166,11 +3166,11 @@
 		78093D1028153CEB00E6EEB7 /* gesture */ = {
 			isa = PBXGroup;
 			children = (
+				78093D1428153CEB00E6EEB7 /* AliyunPlayerViewSeekPopupView.h */,
 				78093D1128153CEB00E6EEB7 /* AliyunPlayerViewSeekPopupView.m */,
 				78093D1228153CEB00E6EEB7 /* AliyunPlayerViewGestureView.h */,
-				78093D1328153CEB00E6EEB7 /* AliyunGestureModel.h */,
-				78093D1428153CEB00E6EEB7 /* AliyunPlayerViewSeekPopupView.h */,
 				78093D1528153CEB00E6EEB7 /* AliyunPlayerViewGestureView.m */,
+				78093D1328153CEB00E6EEB7 /* AliyunGestureModel.h */,
 				78093D1628153CEB00E6EEB7 /* AliyunGestureModel.m */,
 			);
 			path = gesture;
@@ -3180,12 +3180,12 @@
 			isa = PBXGroup;
 			children = (
 				78093D1928153CEC00E6EEB7 /* AliyunPlayerViewProgressView.h */,
-				78093D1A28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.h */,
-				78093D1B28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.h */,
-				78093D1C28153CEC00E6EEB7 /* AliyunPlayerViewSlider.h */,
 				78093D1D28153CEC00E6EEB7 /* AliyunPlayerViewProgressView.m */,
-				78093D1E28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.m */,
+				78093D1A28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.h */,
 				78093D1F28153CEC00E6EEB7 /* AliyunPlayerViewQualityListView.m */,
+				78093D1B28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.h */,
+				78093D1E28153CEC00E6EEB7 /* AliyunPlayerViewBottomView.m */,
+				78093D1C28153CEC00E6EEB7 /* AliyunPlayerViewSlider.h */,
 				78093D2028153CEC00E6EEB7 /* AliyunPlayerViewSlider.m */,
 			);
 			path = bottom;
@@ -3206,9 +3206,9 @@
 			isa = PBXGroup;
 			children = (
 				78093D2328153CEC00E6EEB7 /* AliyunPlayerViewGifView.h */,
-				78093D2428153CEC00E6EEB7 /* AlilyunViewLoadingView.m */,
-				78093D2528153CEC00E6EEB7 /* AlilyunViewLoadingView.h */,
 				78093D2628153CEC00E6EEB7 /* AliyunPlayerViewGifView.m */,
+				78093D2528153CEC00E6EEB7 /* AlilyunViewLoadingView.h */,
+				78093D2428153CEC00E6EEB7 /* AlilyunViewLoadingView.m */,
 			);
 			path = loading;
 			sourceTree = "<group>";
@@ -3216,8 +3216,8 @@
 		78093D2728153CEC00E6EEB7 /* more */ = {
 			isa = PBXGroup;
 			children = (
-				78093D2828153CEC00E6EEB7 /* AliyunViewMoreView.m */,
 				78093D2928153CEC00E6EEB7 /* AliyunViewMoreView.h */,
+				78093D2828153CEC00E6EEB7 /* AliyunViewMoreView.m */,
 			);
 			path = more;
 			sourceTree = "<group>";
@@ -3225,9 +3225,9 @@
 		78093D2A28153CEC00E6EEB7 /* speedView */ = {
 			isa = PBXGroup;
 			children = (
+				78093D2D28153CEC00E6EEB7 /* AliyunSpeedButton.h */,
 				78093D2B28153CEC00E6EEB7 /* AliyunSpeedButton.m */,
 				78093D2C28153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.h */,
-				78093D2D28153CEC00E6EEB7 /* AliyunSpeedButton.h */,
 				78093D2E28153CEC00E6EEB7 /* AliyunPlayerViewSpeedView.m */,
 			);
 			path = speedView;
@@ -3236,8 +3236,8 @@
 		78093D2F28153CEC00E6EEB7 /* guideView */ = {
 			isa = PBXGroup;
 			children = (
-				78093D3028153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.m */,
 				78093D3128153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.h */,
+				78093D3028153CEC00E6EEB7 /* AliyunPlayerViewFirstStartGuideView.m */,
 			);
 			path = guideView;
 			sourceTree = "<group>";
@@ -3245,13 +3245,13 @@
 		78093D3228153CEC00E6EEB7 /* AlivcVideoPlayController */ = {
 			isa = PBXGroup;
 			children = (
-				78093D3328153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.xib */,
+				78093D3728153CEC00E6EEB7 /* AVC_VP_BaseViewController.h */,
 				78093D3428153CEC00E6EEB7 /* AVC_VP_BaseViewController.m */,
+				78093D3828153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.h */,
 				78093D3528153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.m */,
 				78093D3628153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.h */,
-				78093D3728153CEC00E6EEB7 /* AVC_VP_BaseViewController.h */,
-				78093D3828153CEC00E6EEB7 /* AVC_VP_VideoPlayViewController.h */,
 				78093D3928153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.m */,
+				78093D3328153CEC00E6EEB7 /* AVC_VP_PlaySettingVC.xib */,
 			);
 			path = AlivcVideoPlayController;
 			sourceTree = "<group>";
@@ -3271,13 +3271,13 @@
 			children = (
 				78093D4028153CEC00E6EEB7 /* AVCDownloadVideo.h */,
 				78093D4128153CEC00E6EEB7 /* DownloadManager.h */,
-				78093D4228153CEC00E6EEB7 /* AlivcVideoDataBase.h */,
-				78093D4328153CEC00E6EEB7 /* AVCVideo.h */,
-				78093D4428153CEC00E6EEB7 /* AVCVideoConfig.h */,
-				78093D4528153CEC00E6EEB7 /* AlivcVideoDataBase.m */,
 				78093D4628153CEC00E6EEB7 /* DownloadManager.m */,
+				78093D4328153CEC00E6EEB7 /* AVCVideo.h */,
 				78093D4728153CEC00E6EEB7 /* AVCVideo.m */,
+				78093D4428153CEC00E6EEB7 /* AVCVideoConfig.h */,
 				78093D4828153CEC00E6EEB7 /* AVCVideoConfig.m */,
+				78093D4228153CEC00E6EEB7 /* AlivcVideoDataBase.h */,
+				78093D4528153CEC00E6EEB7 /* AlivcVideoDataBase.m */,
 			);
 			path = AlivcVideoPlayModel;
 			sourceTree = "<group>";
