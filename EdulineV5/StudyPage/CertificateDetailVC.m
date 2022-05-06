@@ -68,6 +68,8 @@
     _certificateContent.scrollView.backgroundColor = [UIColor clearColor];
     [_certificateContent setOpaque:NO];
     _certificateContent.scrollView.scrollEnabled = NO;
+    _certificateContent.scrollView.showsVerticalScrollIndicator = NO;
+    _certificateContent.scrollView.showsHorizontalScrollIndicator = NO;
     _certificateContent.UIDelegate = self;
     _certificateContent.navigationDelegate = self;
     [_posterImageView addSubview:_certificateContent];
@@ -118,7 +120,7 @@
 -(void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
     [webView evaluateJavaScript:@"document.body.scrollHeight" completionHandler:^(id _Nullable heigh, NSError * _Nullable error) {
         NSString *height = [NSString stringWithFormat:@"%@", heigh];
-        _certificateContent.frame = CGRectMake(48, _certificateTitle.bottom + 15, _posterImageView.width - 48 * 2, ([height floatValue] / 3.0)*2/3.0);
+        _certificateContent.frame = CGRectMake(48, _certificateTitle.bottom + 15, _posterImageView.width - 48 * 2, (([height floatValue] / 3.0)*2/3.0)*1.3);
         _mainScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(49, _certificateContent.bottom + 10, _posterImageView.width - 49 * 2, _posterImageView.height - (_certificateContent.bottom + 10 + 52))];
         _mainScrollView.layer.masksToBounds = YES;
         _mainScrollView.layer.borderColor = HEXCOLOR(0xB7BAC1).CGColor;
