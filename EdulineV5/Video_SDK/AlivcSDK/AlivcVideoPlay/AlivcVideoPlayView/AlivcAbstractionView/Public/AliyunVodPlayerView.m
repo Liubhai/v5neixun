@@ -874,6 +874,16 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
  */
 - (void)onPlayerStatusChanged:(AliPlayer*)player oldStatus:(AVPStatus)oldStatus newStatus:(AVPStatus)newStatus {
     
+    if (_delegate && [_delegate respondsToSelector:@selector(justUpdatePlayerNewStatus:oldStatus:)]) {
+        [_delegate justUpdatePlayerNewStatus:newStatus oldStatus:oldStatus];
+    }
+    
+    if (newStatus == AVPStatusStarted) {
+        if (!self.faceVerifyCanPlay) {
+            return;
+        }
+    }
+    
     _currentPlayStatus = newStatus;
     NSString *playStatusString = @"other";
     if (newStatus == AVPStatusPaused) {

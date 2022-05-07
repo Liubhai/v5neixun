@@ -96,6 +96,8 @@
 
 - (void)onClickedBarrageBtnWithVodPlayerView:(AliyunVodPlayerView *)playerView;
 
+- (void)justUpdatePlayerNewStatus:(AVPStatus)status oldStatus:(AVPStatus)oldStatus;
+
 @end
 
 /*
