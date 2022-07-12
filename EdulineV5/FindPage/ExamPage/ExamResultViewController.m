@@ -15,7 +15,10 @@
 #import "ExamPaperErrorTestAgainVC.h"
 #import "ExamPaperDetailViewController.h"
 
-@interface ExamResultViewController ()
+@interface ExamResultViewController () {
+    NSString *can_exam;
+    BOOL showReload;
+}
 
 @property (strong, nonatomic) UIButton *leftBtn;
 @property (strong, nonatomic) UILabel *examTitleLabel;
@@ -59,11 +62,20 @@
 
 @implementation ExamResultViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (showReload) {
+        [self getExamPaperResultInfo];
+    }
+    showReload = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.titleImage.hidden = YES;
-    
+    can_exam = @"0";
+    showReload = NO;
     [self makeTopView];
     
     _examArray = [NSMutableArray new];
@@ -83,7 +95,7 @@
     
 //    [self makeExamSheetUI];
     
-    [self makeBottomView];
+//    [self makeBottomView];
     
 }
 
@@ -272,6 +284,9 @@
 }
 
 - (void)makeBottomView {
+    [_bottomView removeAllSubviews];
+    [_bottomView removeFromSuperview];
+    _bottomView = nil;
     _bottomView = [[UIButton alloc] initWithFrame:CGRectMake(0, MainScreenHeight - (MACRO_UI_SAFEAREA + 44), MainScreenWidth, MACRO_UI_SAFEAREA + 44)];
     _bottomView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_bottomView];
@@ -284,22 +299,32 @@
     [_bottomView addSubview:_resetButton];
     
     _allAnalysisButton = [[UIButton alloc] initWithFrame:CGRectMake(_resetButton.right, 0, MainScreenWidth / 3.0, 44)];
-    [_allAnalysisButton setTitle:@"查看解析" forState:0];
-    [_allAnalysisButton setImage:[Image(@"examresult_up") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateNormal];
-    [_allAnalysisButton setImage:[Image(@"examresult_down") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateSelected];
+    [_allAnalysisButton setTitle:[can_exam isEqualToString:@"1"]?@"查看解析":@"全部解析" forState:0];
+    if ([can_exam isEqualToString:@"1"]) {
+        [_allAnalysisButton setImage:[Image(@"examresult_up") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateNormal];
+        [_allAnalysisButton setImage:[Image(@"examresult_down") converToOtherColor:EdlineV5_Color.themeColor] forState:UIControlStateSelected];
+    }
     [_allAnalysisButton setTitleColor:EdlineV5_Color.themeColor forState:0];
     _allAnalysisButton.backgroundColor = EdlineV5_Color.buttonDisableColor;
     _allAnalysisButton.titleLabel.font = SYSTEMFONT(16);
-    [EdulineV5_Tool dealButtonImageAndTitleUI:_allAnalysisButton];
-    [_allAnalysisButton addTarget:self action:@selector(makeChangeTypeBackView) forControlEvents:UIControlEventTouchUpInside];
+    if ([can_exam isEqualToString:@"1"]) {
+        [EdulineV5_Tool dealButtonImageAndTitleUI:_allAnalysisButton];
+        [_allAnalysisButton addTarget:self action:@selector(makeChangeTypeBackView) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [_allAnalysisButton addTarget:self action:@selector(allAnalysisButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    }
     [_bottomView addSubview:_allAnalysisButton];
     
     _sureButton = [[UIButton alloc] initWithFrame:CGRectMake(_allAnalysisButton.right, 0, MainScreenWidth / 3.0, 44)];
-    [_sureButton setTitle:@"重新考试" forState:0];
+    [_sureButton setTitle:[can_exam isEqualToString:@"1"]?@"重新考试":@"错题解析" forState:0];
     [_sureButton setTitleColor:[UIColor whiteColor] forState:0];
     _sureButton.backgroundColor = EdlineV5_Color.themeColor;
     _sureButton.titleLabel.font = SYSTEMFONT(16);
-    [_sureButton addTarget:self action:@selector(examAgain) forControlEvents:UIControlEventTouchUpInside];
+    if ([can_exam isEqualToString:@"1"]) {
+        [_sureButton addTarget:self action:@selector(examAgain) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [_sureButton addTarget:self action:@selector(sureButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    }
     [_bottomView addSubview:_sureButton];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth / 3.0, 1)];
@@ -347,6 +372,7 @@
 
 // MARK: - 重新考试
 - (void)examAgain {
+    showReload = YES;
     ExamPaperDetailViewController *vc = [[ExamPaperDetailViewController alloc] init];
     NSString *rollId = [NSString stringWithFormat:@"%@",[_resultDict objectForKey:@"rollup_id"]];
     if ([rollId isEqualToString:@"0"]) {
@@ -495,10 +521,12 @@
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _resultDict = [NSDictionary dictionaryWithDictionary:responseObject[@"data"]];
+                    can_exam = [NSString stringWithFormat:@"%@",[_resultDict objectForKey:@"can_exam"]];
                     [self setTopInfoData];
                     [_examArray removeAllObjects];
                     [_examArray addObjectsFromArray:[ExamSheetModel mj_objectArrayWithKeyValuesArray:[[responseObject objectForKey:@"data"] objectForKey:@"paper_parts"]]];
                     [self makeExamSheetUI];
+                    [self makeBottomView];
                     
                 }
             }
