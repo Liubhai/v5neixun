@@ -1238,7 +1238,7 @@
                     [self.navigationController pushViewController:vc animated:YES];
                 }
             } else {
-                if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
+                if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"] || [study_status isEqualToString:@"2"]) {
                     [self joinApplyTip];
                 } else if ([study_status isEqualToString:@"1"]) {
                     [self showHudInView:self.view showHint:@"已报名，待审核"];

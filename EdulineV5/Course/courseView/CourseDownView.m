@@ -216,7 +216,7 @@
                     }
                 }
             } else {
-                if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"]) {
+                if ([study_status isEqualToString:@"0"] || [study_status isEqualToString:@"3"] || [study_status isEqualToString:@"2"]) {
                     [_joinStudyButton setTitle:@"我要报名" forState:0];
                     _joinStudyButton.hidden = NO;
                 } else if ([study_status isEqualToString:@"1"]) {
