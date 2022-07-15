@@ -80,7 +80,7 @@
     _rightRateLabel.textColor = EdlineV5_Color.textThirdColor;
     _rightRateLabel.text = @"正确率：13%";
     _rightRateLabel.textAlignment = NSTextAlignmentRight;
-    [self.contentView addSubview:_rightRateLabel];
+//    [self.contentView addSubview:_rightRateLabel];
     
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(MainScreenWidth - (100 + 14 + 82 + 15), 0, 100, 21)];
     _priceLabel.font = SYSTEMFONT(15);
