@@ -184,7 +184,13 @@
     } else {
         _userFaceImageView.image = DefaultUserImage;
         _nameLabel.centerY = _userFaceImageView.centerY;
-        _nameLabel.text = @"登录/注册";
+        _nameLabel.text = @"登录";
+        NSString *openRegString = [[NSUserDefaults standardUserDefaults] objectForKey:@"open_reg"];
+        if (SWNOTEmptyStr(openRegString)) {
+            if ([openRegString isEqualToString:@"1"]) {
+                _nameLabel.text = @"登录/注册";
+            }
+        }
         _introLabel.hidden = YES;
         _levelImageView.hidden = YES;
         CGFloat nameWidth = [_nameLabel.text sizeWithFont:_nameLabel.font].width + 4;

@@ -892,6 +892,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"login_config"] forKey:@"login_config"];
                 [[NSUserDefaults standardUserDefaults] setObject:[[responseObject objectForKey:@"data"] objectForKey:@"register_agre"] forKey:@"register_agre"];
                 [[NSUserDefaults standardUserDefaults] setObject:[[[responseObject objectForKey:@"data"] objectForKey:@"ios_bconf"] objectForKey:@"title"] forKey:@"ios_bconf_title"];
+                [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"open_reg"]] forKey:@"open_reg"];
                 
                 // 接口新加字段
                 if (SWNOTEmptyDictionary(responseObject[@"data"])) {

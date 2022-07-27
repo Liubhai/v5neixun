@@ -100,7 +100,12 @@
     [_registerBtn setTitle:@"注册" forState:0];
     _registerBtn.titleLabel.font = SYSTEMFONT(14);
     [_registerBtn addTarget:self action:@selector(registerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_registerBtn];
+    NSString *openRegString = [[NSUserDefaults standardUserDefaults] objectForKey:@"open_reg"];
+    if (SWNOTEmptyStr(openRegString)) {
+        if ([openRegString isEqualToString:@"1"]) {
+            [self.view addSubview:_registerBtn];
+        }
+    }
     
     _loginBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, _forgetPwBtn.bottom + 40, 280, 40)];
     _loginBtn.centerX = MainScreenWidth / 2.0;
