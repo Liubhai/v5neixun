@@ -130,6 +130,7 @@
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHomePageInfo) name:@"changeFavoriteCourse" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHomePageInfo) name:@"reloadHomePageData" object:nil];
 }
 
 - (void)makeTopSearch {

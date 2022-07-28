@@ -19,7 +19,7 @@
     }
     return self;
 }
-
+// MARK: - 构建子视图
 - (void)makeSubView {
     
     _backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 325 + MACRO_UI_LIUHAI_HEIGHT)];//234
@@ -109,18 +109,21 @@
     }
 }
 
+// MARK: - 设置按钮点击事件
 - (void)setBtnClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(goToSetingVC)]) {
         [_delegate goToSetingVC];
     }
 }
 
+// MARK: - 用户圈子入口
 - (void)leftClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(goToUserCircleListVC)]) {
         [_delegate goToUserCircleListVC];
     }
 }
 
+// MARK: - 消息按钮点击事件
 - (void)rightClick:(UIButton *)sender {
     if (_delegate && [_delegate respondsToSelector:@selector(goToMessageVC)]) {
         [_delegate goToMessageVC];
@@ -133,6 +136,7 @@
     }
 }
 
+// MARK: - 设置用户信息
 - (void)setUserInfo:(NSDictionary *)info {
     if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
         [_userFaceImageView sd_setImageWithURL:EdulineUrlString([V5_UserModel avatar]) placeholderImage:DefaultUserImage];

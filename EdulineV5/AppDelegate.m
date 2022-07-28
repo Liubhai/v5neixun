@@ -294,6 +294,7 @@
     self.tabbar.selectedIndex = [self.tabbar.childViewControllers count] - 1;
     [self.tabbar rootVcIndexWithNum:[self.tabbar.childViewControllers count]];
     self.window.rootViewController = self.tabbar;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadHomePageData" object:nil];
 }
 
 - (void)changeThemeColor {
@@ -310,6 +311,8 @@
 
 - (void)didFinishLogin {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadUserInfo" object:nil];
+    // 刷新首页
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadHomePageData" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"requestActivityDetailInfo" object:nil];
 }
 
