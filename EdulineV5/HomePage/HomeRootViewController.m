@@ -166,6 +166,7 @@
     return NO;
 }
 
+// MARK: - 构建数据列表
 - (void)makeTableView {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, MACRO_UI_UPHEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - MACRO_UI_TABBAR_HEIGHT) style:UITableViewStyleGrouped];
     _tableView.delegate = self;
@@ -180,6 +181,7 @@
     [_tableView.mj_header beginRefreshing];
 }
 
+// MARK: - 构建头部视图
 - (void)makeHeaderView {
     if (!_headerView) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidth, 0.01)];
@@ -189,6 +191,7 @@
     [_headerView removeAllSubviews];
 }
 
+// MARK: - 构建轮播图
 - (void)makeBannerView {
     if (!_imageBannerBackView) {
         _imageBannerBackView = [[UIView alloc] initWithFrame:CGRectMake(0, SWNOTEmptyArr(_bannerImageArray) ? 15 : 0, MainScreenWidth, 0)];
@@ -212,6 +215,7 @@
     [_headerView addSubview:_imageBannerBackView];
 }
 
+// MARK: - 构建分类视图
 - (void)makeCateView {
     if (_cateScrollView == nil) {
         _cateScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _imageBannerBackView.bottom, MainScreenWidth, 0)];
