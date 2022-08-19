@@ -14,7 +14,7 @@
 //#define HeaderUrl_V5 @"https://api.51eduline.com"// 单机构
 //#define HeaderUrl_V5 @"https://saas-api.51eduline.com"//saas版本
 //#define HeaderUrl_V5 @"https://tv5-api.51eduline.com"//saas测试版本
-#define HeaderUrl_V5 @"http://qipei.api.51eduline.com"//内训版
+#define HeaderUrl_V5 @"https://qipei.api.51eduline.com"//内训版
 
 
 // 用户相关

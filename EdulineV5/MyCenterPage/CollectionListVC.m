@@ -292,7 +292,9 @@
     }
     
     NSMutableDictionary *param = [NSMutableDictionary new];
-    [param setObject:_courseType forKey:@"source_type"];
+    if ([_courseType isEqualToString:@"classes"]) {
+        [param setObject:_courseType forKey:@"source_type"];
+    }
     [param setObject:course_ids forKey:@"ids"];
     
     [Net_API requestDeleteWithURLStr:[Net_Path unCollectNet] paramDic:param Api_key:nil finish:^(id  _Nonnull responseObject) {

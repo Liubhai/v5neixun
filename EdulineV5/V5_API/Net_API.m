@@ -14,7 +14,7 @@
 //#define HeaderUrl_V5_Api @"https://api.51eduline.com"// 单机构
 //#define HeaderUrl_V5_Api @"https://saas-api.51eduline.com"//saas版本
 //#define HeaderUrl_V5_Api @"https://tv5-api.51eduline.com"//saas测试版本
-#define HeaderUrl_V5_Api @"http://qipei.api.51eduline.com"//内训版
+#define HeaderUrl_V5_Api @"https://qipei.api.51eduline.com"//内训版
 
 #define VUE_APP_ID @"BPvfj1SI5tU50lgLEx"
 #define VUE_APP_KEY @"OtKFHXHAzCLpNzWL6k"
