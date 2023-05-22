@@ -16,14 +16,14 @@ PODS:
     - AFNetworking/NSURLSession
   - AgoraRtcEngine_iOS (2.9.0.102)
   - AgoraRtm_iOS (1.2.2.1)
-  - AlipaySDK-iOS (15.7.9)
-  - AliyunOSSiOS (2.10.9)
+  - AlipaySDK-iOS (15.8.11)
+  - AliyunOSSiOS (2.10.16)
   - Bugly (2.5.90)
   - CCLivePlaySDK (3.17.2):
     - HDBaseUtils
-  - CocoaLumberjack (3.7.2):
-    - CocoaLumberjack/Core (= 3.7.2)
-  - CocoaLumberjack/Core (3.7.2)
+  - CocoaLumberjack (3.7.4):
+    - CocoaLumberjack/Core (= 3.7.4)
+  - CocoaLumberjack/Core (3.7.4)
   - dsBridge (3.0.6)
   - FMDB (2.7):
     - FMDB/standard (= 2.7)
@@ -112,11 +112,11 @@ DEPENDENCIES:
   - AFNetworking (= 3.2.1)
   - AgoraRtcEngine_iOS (= 2.9.0.102)
   - AgoraRtm_iOS (~> 1.2.2)
-  - AlipaySDK-iOS
-  - AliyunOSSiOS
+  - AlipaySDK-iOS (= 15.8.11)
+  - AliyunOSSiOS (= 2.10.16)
   - Bugly
   - CCLivePlaySDK (~> 3.17.2)
-  - CocoaLumberjack
+  - CocoaLumberjack (= 3.7.4)
   - FMDB (from `https://github.com/ccgus/fmdb.git`, tag `2.7`)
   - HDVideoClass (= 6.9.3)
   - JSONModel (~> 1.7.0)
@@ -193,11 +193,11 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   AgoraRtcEngine_iOS: 9755a9dcd45ab1d177ece9fe15dea23124d63d50
   AgoraRtm_iOS: 8cccab7a000beefedb737d5e822b9d4a73f925fb
-  AlipaySDK-iOS: 94ff4c0e17c5e7d126b8207596d5033006534c25
-  AliyunOSSiOS: 13173e9eaf05d3816315319876025de3028ea31d
+  AlipaySDK-iOS: a07b6eafa847a5b29acb6c150ea16d9792d5d167
+  AliyunOSSiOS: d624effdd24535da414a2bacf0027bedf64cc90e
   Bugly: 88bc32c0acc6fef7b74d610f0319ee7560d6b9fe
   CCLivePlaySDK: ddba889540a14ca6c607bce9df483467532bd836
-  CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
+  CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
   FMDB: 115114e988a7c92a5191f1334c46c99b0a477700
   HDBaseUtils: 9f2b3a5435575963ab75626b05c55789e2e5028f
@@ -224,6 +224,6 @@ SPEC CHECKSUMS:
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 6e4df5ff7f996d89185389875fbaedb08c07cd1c
+PODFILE CHECKSUM: bf5c878091af4118b6fd6aaf6fe7d45ca3647494
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2

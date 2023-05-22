@@ -819,7 +819,6 @@
 		78B119732733881D00A3B8CB /* CCLiveVideoAndAudioViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B118AA2733881B00A3B8CB /* CCLiveVideoAndAudioViewController.m */; };
 		78B119742733881D00A3B8CB /* CCTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B118AB2733881B00A3B8CB /* CCTemplateViewController.m */; };
 		78B119772733B44F00A3B8CB /* CCLiveSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B119762733B44F00A3B8CB /* CCLiveSettingViewController.m */; };
-		78B119792733BBE800A3B8CB /* AgoraLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78B119782733BBE700A3B8CB /* AgoraLoadingView.xib */; };
 		78B1197C2734DD1900A3B8CB /* Dialogue.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B1197B2734DD1900A3B8CB /* Dialogue.m */; };
 		78B1197F2734FDA800A3B8CB /* GCPrePermissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B1197E2734FDA800A3B8CB /* GCPrePermissions.m */; };
 		78B11983273509A600A3B8CB /* CCMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78B11982273509A600A3B8CB /* CCMenuView.xib */; };
@@ -950,6 +949,7 @@
 		78D980B824BDB385000DE0E4 /* NewClassCourseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980B724BDB385000DE0E4 /* NewClassCourseModel.m */; };
 		78D980BB24BDB737000DE0E4 /* NewClassCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */; };
 		78DC9FBE261312860025C962 /* KanjiaListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DC9FBD261312860025C962 /* KanjiaListCell.m */; };
+		78E4635C2A1B215800935223 /* AgoraLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78E4635B2A1B215700935223 /* AgoraLoadingView.xib */; };
 		78E5B255265B74D20053F63F /* UploadImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B254265B74D20053F63F /* UploadImageModel.m */; };
 		78E5B2582664B6FA0053F63F /* CircleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B2572664B6FA0053F63F /* CircleDetailViewController.m */; };
 		78E5B25B2664B9E00053F63F /* CircleDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 78E5B25A2664B9E00053F63F /* CircleDetailCommentCell.m */; };
@@ -2657,7 +2657,6 @@
 		78B118AC2733881B00A3B8CB /* CCSettingOneTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSettingOneTableViewCell.h; sourceTree = "<group>"; };
 		78B119752733B44E00A3B8CB /* CCLiveSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLiveSettingViewController.h; sourceTree = "<group>"; };
 		78B119762733B44F00A3B8CB /* CCLiveSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCLiveSettingViewController.m; sourceTree = "<group>"; };
-		78B119782733BBE700A3B8CB /* AgoraLoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AgoraLoadingView.xib; path = "../../../../../../../声网/Agora_edu_sdk/Replay/Widget/AgoraLoadingView.xib"; sourceTree = "<group>"; };
 		78B1197A2734DBF000A3B8CB /* Dialogue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dialogue.h; sourceTree = "<group>"; };
 		78B1197B2734DD1900A3B8CB /* Dialogue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dialogue.m; sourceTree = "<group>"; };
 		78B1197D2734FDA700A3B8CB /* GCPrePermissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCPrePermissions.h; sourceTree = "<group>"; };
@@ -2898,6 +2897,7 @@
 		78D980BA24BDB737000DE0E4 /* NewClassCourseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewClassCourseCell.m; sourceTree = "<group>"; };
 		78DC9FBC261312860025C962 /* KanjiaListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KanjiaListCell.h; sourceTree = "<group>"; };
 		78DC9FBD261312860025C962 /* KanjiaListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KanjiaListCell.m; sourceTree = "<group>"; };
+		78E4635B2A1B215700935223 /* AgoraLoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AgoraLoadingView.xib; sourceTree = "<group>"; };
 		78E5B253265B74D20053F63F /* UploadImageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UploadImageModel.h; sourceTree = "<group>"; };
 		78E5B254265B74D20053F63F /* UploadImageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UploadImageModel.m; sourceTree = "<group>"; };
 		78E5B2562664B6FA0053F63F /* CircleDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleDetailViewController.h; sourceTree = "<group>"; };
@@ -4807,7 +4807,7 @@
 		788E954A253FE24D0089251E /* Widget */ = {
 			isa = PBXGroup;
 			children = (
-				78B119782733BBE700A3B8CB /* AgoraLoadingView.xib */,
+				78E4635B2A1B215700935223 /* AgoraLoadingView.xib */,
 				788E954B253FE24D0089251E /* AgoraLoadingView.m */,
 				788E954C253FE24D0089251E /* ReplayControlView.m */,
 				788E954D253FE24D0089251E /* SliderView.m */,
@@ -6826,6 +6826,7 @@
 				788E9560253FE24E0089251E /* BCNavigationView.xib in Resources */,
 				78C54970241B642B00A33FC4 /* AlivcAbstraction.txt in Resources */,
 				78B1191D2733881D00A3B8CB /* set_touch@2x.png in Resources */,
+				78E4635C2A1B215800935223 /* AgoraLoadingView.xib in Resources */,
 				78C549CF241B674E00A33FC4 /* readMe_Utilites.txt in Resources */,
 				781A9C89273E116A00131E17 /* Main.storyboard in Resources */,
 				78B119102733881C00A3B8CB /* start_touch@3x.png in Resources */,
@@ -6890,7 +6891,6 @@
 				78C54831241246E400A33FC4 /* AreaNumCode.plist in Resources */,
 				781A9C93274230B200131E17 /* DocUI.bundle in Resources */,
 				78B11694273387DD00A3B8CB /* handclap.mp3 in Resources */,
-				78B119792733BBE800A3B8CB /* AgoraLoadingView.xib in Resources */,
 				78B1190A2733881C00A3B8CB /* hands_touch@3x.png in Resources */,
 				78B1192B2733881D00A3B8CB /* handsup@3x.png in Resources */,
 			);
@@ -8536,9 +8536,11 @@
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_ENTITLEMENTS = "EdulineV5/Eduline网校.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 2VGCGZZ87Y;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2VGCGZZ87Y;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8577,6 +8579,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seition.edulineV5;
 				PRODUCT_NAME = Eduline;
 				PROVISIONING_PROFILE_SPECIFIER = tongyongDisr;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = tongyongDisr;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
