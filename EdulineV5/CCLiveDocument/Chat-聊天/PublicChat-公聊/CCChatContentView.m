@@ -143,8 +143,35 @@
     self.keyboardHidden = [userInfo[@"keyBorad_hidden"] boolValue];
 }
 - (void)sendAction{
+    if([self isEmpty:_textView.text]){
+        [_informationView removeFromSuperview];
+       _informationView = [[InformationShowView alloc] initWithLabel:ALERT_EMPTYMESSAGE];
+       [APPDelegate.window addSubview:_informationView];
+       [_informationView mas_makeConstraints:^(MASConstraintMaker *make) {
+           make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 200, 0));
+       }];
+        
+       [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(informationViewRemove) userInfo:nil repeats:NO];
+        return;
+    }
     self.sendMessageBlock();
 //    [self sendBtnEnable:NO];
+}
+
+- (BOOL)isEmpty:(NSString *) str
+{
+    if (!str){
+        return true;
+    }else{
+        NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        NSString *trimedString = [str stringByTrimmingCharactersInSet:set];
+        if ([trimedString length] == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
 //键盘将要出现
 - (void)keyboardWillShow:(NSNotification *)noti {
@@ -201,6 +228,14 @@
     //超过300文字
     if (range.length == 0) {
         if(textView.text.length > maxInputLength) {
+            [_informationView removeFromSuperview];
+            _informationView = [[InformationShowView alloc] initWithLabel:ALERT_INPUTLIMITATION];
+            [APPDelegate.window addSubview:_informationView];
+            [_informationView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 140, 0));
+            }];
+            
+            [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(informationViewRemove) userInfo:nil repeats:NO];
             return NO;
         }
     }
@@ -269,6 +304,7 @@
         _textView.layer.borderWidth = 0.5;
         _textView.layer.borderColor = [UIColor colorWithRed:221/255.0 green:221/255.0 blue:221/255.0 alpha:1].CGColor;
 //        _textView.inputAccessoryView = self.rightView;
+        _textView.inputAccessoryView = [self addToolbar];
         /**
          iOS11以上,UITextView的NSTextAttachment 默认是可以进行拖拽交互的,但是却导致拖动光标时很容易触发这个交互.textDragInteraction设置为NO,就能禁止掉NSTextAttachment的拖拽交互
          */
@@ -278,10 +314,37 @@
     }
     return _textView;
 }
+
+- (UIToolbar *)addToolbar
+{
+    CGFloat kWidth = [UIScreen mainScreen].bounds.size.width;
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, kWidth, 35)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"收起" style:UIBarButtonItemStylePlain target:self action:@selector(hiddenKeyboard)];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [toolbar setItems:@[space,item]];
+    return toolbar;
+}
+
+- (void)hiddenKeyboard {
+    [_textView resignFirstResponder];
+}
+
 #pragma mark - PPStickerKeyboardDelegate
 
 - (void)stickerKeyboard:(PPStickerKeyboard *)stickerKeyboard didClickEmoji:(PPEmoji *)emoji
 {
+    if (self.plainText.length > maxInputLength) {
+        [_informationView removeFromSuperview];
+        _informationView = [[InformationShowView alloc] initWithLabel:ALERT_INPUTLIMITATION];
+        [APPDelegate.window addSubview:_informationView];
+        [_informationView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 200, 0));
+        }];
+        
+        [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(informationViewRemove) userInfo:nil repeats:NO];
+        return;
+    }
+    
     if (!emoji) {
         return;
     }

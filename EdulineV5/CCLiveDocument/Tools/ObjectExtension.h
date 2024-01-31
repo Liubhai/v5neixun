@@ -10,6 +10,15 @@
 
 @interface NSString (ObjectExtension)
 
+//提示框
+-(void)showAlert;
+
+//过滤emoji
+-(NSString *)filterEmoji;
+
+//是否包含emoji
+-(BOOL)isContainsEmoji;
+
 //计算文本大小
 -(CGSize)calculateRectWithSize:(CGSize)size Font:(UIFont *)font WithLineSpace:(CGFloat)lineSpace;
 

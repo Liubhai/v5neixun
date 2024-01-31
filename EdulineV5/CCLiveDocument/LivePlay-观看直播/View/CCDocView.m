@@ -42,10 +42,19 @@
     }
 }
 -(void)setSmallVideoUI{
+    /// 3.17.3 new
+    _hdContentView = [[UIView alloc]init];
+    [self addSubview:_hdContentView];
+    
     //文档小窗
     CGRect rect = [UIScreen mainScreen].bounds;
     CGRect smallVideoRect = CGRectMake(rect.size.width - 110, HDGetRealHeight + 41 +(IS_IPHONE_X? 44:20), 100, 75);
     self.frame = smallVideoRect;
+    /// 3.17.3 new
+    _hdContentView.frame = self.bounds;
+    _headerView = [[UIView alloc]initWithFrame:self.bounds];
+    [self addSubview:_headerView];
+    
     self.backgroundColor = [UIColor lightGrayColor];
     self.layer.borderWidth = 0.5;
     self.layer.borderColor = [UIColor colorWithHexString:@"dddddd" alpha:1.0f].CGColor;

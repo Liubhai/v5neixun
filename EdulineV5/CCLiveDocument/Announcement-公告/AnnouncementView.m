@@ -124,6 +124,7 @@
     if(!StrNotEmpty(str)) {//如果为空,提示暂无公告
         str = NOANNOUNCEMENT;
     }
+    _announcementStr = str;
     CGSize size = CGSizeZero;
     CGSize sizeOfContent = CGSizeZero;
     size = [self getTitleSizeByFont:str width:SCREEN_WIDTH - 30 font:[UIFont systemFontOfSize:FontSize_30]];

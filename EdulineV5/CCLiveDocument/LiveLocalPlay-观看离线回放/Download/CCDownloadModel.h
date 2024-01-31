@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, CCDownloadState) {
 // 进度更新block
 typedef void (^CCDownloadProgressBlock)(CCDownloadProgress *progress,CCDownloadModel *downloadModel);
 // 状态更新block
-typedef void (^DWDownloadStateBlock)(CCDownloadModel *downloadModel, NSError *error);
+typedef void (^DWLiveDownloadStateBlock)(CCDownloadModel *downloadModel, NSError *error);
 
 
 /**
@@ -80,7 +80,7 @@ typedef void (^DWDownloadStateBlock)(CCDownloadModel *downloadModel, NSError *er
 /// 下载进度更新block
 @property (nonatomic, copy) CCDownloadProgressBlock progressBlock;
 /// 下载状态更新block
-@property (nonatomic, copy) DWDownloadStateBlock stateBlock;
+@property (nonatomic, copy) DWLiveDownloadStateBlock stateBlock;
 
 @end
 

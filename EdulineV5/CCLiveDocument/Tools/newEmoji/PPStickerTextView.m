@@ -146,6 +146,14 @@
     return frame;
 }
 
+//创建子类重写UITextView方法
+- (CGRect)caretRectForPosition:(UITextPosition *)position
+{
+    CGRect originalRect = [super caretRectForPosition:position];
+    originalRect.size.height = 21;
+    return originalRect;
+}
+
 - (UIEdgeInsets)retainedContentInsets
 {
     return UIEdgeInsetsMake(8, 4, 8, 4);

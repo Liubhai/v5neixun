@@ -171,12 +171,6 @@ typedef void (^cleanVoteAndTestBlock)(NSInteger type);
  *    @brief    当主讲全体禁言时，你再发消息，会出发此代理方法，information是禁言提示信息
  */
 - (void)information:(NSString *)information;
-
-/**
- *    @brief    更新竖屏随堂测与答题卡状态
- *    @param    completion  更新回调
- */
-- (void)updateVoteAndTestWithPortraitWithCompletion:(void (^)(BOOL result))completion;
 /**
  *    @brief    随堂测状态控制
  */

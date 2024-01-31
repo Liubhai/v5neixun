@@ -18,6 +18,7 @@
 #import "CCLockView.h"//锁屏
 //#endif
 #import <AVFoundation/AVFoundation.h>
+#import "AppDelegate.h"
 
 #define kHDOfflineRecordHistory @"HDOfflinePlayBackRecordHistoryPlayTime"
 
@@ -65,6 +66,9 @@
 @property (nonatomic, assign)double                     videoTotalDuration;
 /** 来电处理*/
 @property (nonatomic, strong)CTCallCenter               *callCenter;// 来电状态判断
+/// 房间模板类型
+@property (nonatomic, assign) NSInteger                 templateType;
+@property (nonatomic, assign) NSInteger                 docOrVideoFlag;
 
 @end
 
@@ -108,12 +112,11 @@
     parameter.security = NO;//是否开启https,建议开启
     parameter.PPTScalingMode = 2;//ppt展示模式,建议值为2
     parameter.pauseInBackGround = _pauseInBackGround;//后台是否暂停
-    parameter.defaultColor = @"FFFFFF";//ppt默认底色，不写默认为白色
+    parameter.defaultColor = @"#FFFFFF";//ppt默认底色，不写默认为白色
     parameter.scalingMode = 1;//屏幕适配方式
-//    parameter.pptInteractionEnabled = !_isSmallDocView;//是否开启ppt滚动
     parameter.pptInteractionEnabled = YES;
     parameter.destination = self.destination;
-    
+    parameter.specifyOfflineFileDirType = SpecifyOfflineFileDirTypeDocuments;
     _pptScaleMode = parameter.PPTScalingMode;
     
     _offlinePlayBack = [[OfflinePlayBack alloc] initWithParameter:parameter];
@@ -121,7 +124,7 @@
     [_offlinePlayBack startPlayAndDecompress];
     
     /** 开启防录屏功能 */
-    [_offlinePlayBack setAntiRecordScreen:YES];
+    [_offlinePlayBack setAntiRecordScreen:NO];
     /* 设置playerView */
     [self.playerView showLoadingView];//显示视频加载中提示
 }
@@ -130,7 +133,7 @@
  *    @brief    请求成功
  */
 -(void)requestSucceed {
-    //NSLog(@"请求成功！");
+    
 }
 
 /**
@@ -143,7 +146,6 @@
     } else {
         message = reason;
     }
-    //NSLog(@"请求失败:%@", message);
     CCAlertView *alertView = [[CCAlertView alloc] initWithAlertTitle:message sureAction:ALERT_SURE cancelAction:nil sureBlock:nil];
     [APPDelegate.window addSubview:alertView];
 }
@@ -154,7 +156,7 @@
  */
 - (void)HDMediaPlaybackIsPreparedToPlayDidChange:(NSDictionary *)dict
 {
-
+    
 }
 /**
  *    @brief    视频状态改变
@@ -168,13 +170,23 @@
  */
 - (void)HDMoviePlayBackStateDidChange:(HDMoviePlaybackState)state
 {
+    self.playerView.pauseButton.selected = state == HDMoviePlaybackStatePlaying ? NO : YES;
     switch (state)
     {
         case HDMoviePlaybackStateStopped: {
- 
+
             break;
         }
         case HDMoviePlaybackStatePlaying:{
+            //#ifdef LockView
+            if (_pauseInBackGround == NO && _roomName) {//后台支持播放
+                [self setLockView];//设置锁屏界面
+            }
+            //#endif
+            if (self.isPlayDone == YES) {
+                self.playerView.playDone = NO;
+                self.isPlayDone = NO;
+            }
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 if (_isShowRecordHistory == NO) {
                     int time = [self readRecordHistoryPlayTime];
@@ -190,12 +202,6 @@
                 [_offlinePlayBack pausePlayer];
             }
             if(self.playerView.loadingView && ![self.playerView.timer isValid]) {
-                //                NSLog(@"__test 重新开始播放视频, slider.value = %f", _playerView.slider.value);
-                //#ifdef LockView
-                if (_pauseInBackGround == NO && _roomName) {//后台支持播放
-                    [self setLockView];//设置锁屏界面
-                }
-                //#endif
                 [self.playerView removeLoadingView];//移除加载视图
                 /*      保存日志     */
                 [[SaveLogUtil sharedInstance] saveLog:@"" action:SAVELOG_ALERT];
@@ -224,11 +230,12 @@
  *    @param    state   播放状态
  *              HDMovieLoadStateUnknown         未知状态
  *              HDMovieLoadStatePlayable        视频未完成全部缓存，但已缓存的数据可以进行播放
- *              HDMovieLoadStatePlaythroughOK   完成缓存
- *              HDMovieLoadStateStalled         数据缓存已经停止，播放将暂停
+ *              HDMovieLoadStatePlaythroughOK   缓冲已经完成
+ *              HDMovieLoadStateStalled         缓冲已经开始
  */
 - (void)HDMovieLoadStateDidChange:(HDMovieLoadState)state
 {
+    self.playerView.pauseButton.selected = YES;
     switch (state)
     {
         case HDMovieLoadStateUnknown:
@@ -255,6 +262,7 @@
     switch (reason) {
         case HDMovieFinishReasonPlaybackEnded:
         {
+            [self playDone];
             self.playerView.playDone = YES;
         }
             break;
@@ -275,70 +283,64 @@
         [self.playerView removeLoadingView];
     }
     
-    if (self.recordHistoryTime < currentTime - 5 || self.recordHistoryTime - 5 > currentTime) {
-        self.recordHistoryCount = 0;
-        self.recordHistoryTime = currentTime;
-    }else {
-        if (currentTime != 0) {
-            self.recordHistoryCount++;
-        }
-    }
     //持续播放5s进行记录并存储
     if (self.recordHistoryCount == 5) {
         self.recordHistoryTime = currentTime;
         [self saveRecordHistoryPlayTime];
         self.recordHistoryCount = 0;
+    }else {
+        if (currentTime != 0) {
+            self.recordHistoryCount++;
+        }
     }
     
+    WS(weakSelf)
     dispatch_async(dispatch_get_main_queue(), ^{
         //获取当前播放时间和视频总时长
         NSTimeInterval position = (int)round(currentTime);
         NSTimeInterval duration = (int)round(totalTime);
         if (position != 0 && duration > 0 && position >= duration) {
-            self.playerView.playDone = YES;
+            [weakSelf playDone];
+            weakSelf.playerView.playDone = YES;
         }
-        //存在播放器最后一点不播放的情况，所以把进度条的数据对到和最后一秒想同就可以了
-//        if(duration - position == 1 && (self.playerView.sliderValue == position || self.playerView.sliderValue == duration)) {
-//            position = duration;
-//        }
         
         //设置plaerView的滑块和右侧时间Label
-        self.playerView.slider.maximumValue = (int)duration;
-        self.playerView.rightTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", (int)(duration / 60), (int)(duration) % 60];
+        weakSelf.playerView.slider.maximumValue = (int)duration;
+        weakSelf.playerView.rightTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", (int)(duration / 60), (int)(duration) % 60];
         
         //校对SDK当前播放时间
-        if(position == 0 && self.playerView.sliderValue != 0) {
-            self.offlinePlayBack.currentPlaybackTime = self.playerView.sliderValue;
-            self.playerView.slider.value = self.playerView.sliderValue;
+        if(position == 0 && weakSelf.playerView.sliderValue != 0) {
+            weakSelf.offlinePlayBack.currentPlaybackTime = weakSelf.playerView.sliderValue;
+            weakSelf.playerView.slider.value = weakSelf.playerView.sliderValue;
         } else {
-            self.playerView.slider.value = position;
-            self.playerView.sliderValue = self.playerView.slider.value;
-            if (self.videoTotalDuration - position <= 2) {
-                self.playerView.slider.value = ceil(self.videoTotalDuration);
-                self.playerView.sliderValue = ceil(self.videoTotalDuration);
+            weakSelf.playerView.slider.value = position;
+            weakSelf.playerView.sliderValue = weakSelf.playerView.slider.value;
+            if (weakSelf.videoTotalDuration - position <= 2) {
+                weakSelf.playerView.slider.value = ceil(weakSelf.videoTotalDuration);
+                weakSelf.playerView.sliderValue = ceil(weakSelf.videoTotalDuration);
             }
         }
         
         //校对本地显示速率和播放器播放速率
-        if(self.offlinePlayBack.ijkPlayer.playbackRate != self.playerView.playBackRate) {
-            self.offlinePlayBack.ijkPlayer.playbackRate = self.playerView.playBackRate;
+        if(weakSelf.offlinePlayBack.ijkPlayer.playbackRate != weakSelf.playerView.playBackRate) {
+            weakSelf.offlinePlayBack.ijkPlayer.playbackRate = weakSelf.playerView.playBackRate;
             //#ifdef LockView
             //校对锁屏播放器播放速率
-            [self.lockView updatePlayBackRate:self.offlinePlayBack.ijkPlayer.playbackRate];
+            [weakSelf.lockView updatePlayBackRate:weakSelf.offlinePlayBack.ijkPlayer.playbackRate];
             //#endif
         }
-        if(self.playerView.pauseButton.selected == NO && self.offlinePlayBack.ijkPlayer.playbackState == IJKMPMoviePlaybackStatePaused) {
+        if(weakSelf.playerView.pauseButton.selected == NO && weakSelf.offlinePlayBack.ijkPlayer.playbackState == IJKMPMoviePlaybackStatePaused) {
             //开启播放视频
-            [self.offlinePlayBack startPlayer];
+            [weakSelf.offlinePlayBack startPlayer];
         }
         
         /*  加载聊天数据 */
-        [self parseChatOnTime:(int)self.playerView.sliderValue];
+        [weakSelf parseChatOnTime:(int)weakSelf.playerView.sliderValue];
         //更新左侧label
-        self.playerView.leftTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", (int)(self.playerView.sliderValue / 60), (int)(self.playerView.sliderValue) % 60];
+        weakSelf.playerView.leftTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", (int)(weakSelf.playerView.sliderValue / 60), (int)(weakSelf.playerView.sliderValue) % 60];
         //#ifdef LockView
         /*  校对锁屏播放器进度 */
-        [self.lockView updateCurrentDurtion:_offlinePlayBack.currentPlaybackTime];
+        [weakSelf.lockView updateCurrentDurtion:_offlinePlayBack.currentPlaybackTime];
         //#endif
     });
 }
@@ -350,12 +352,6 @@
  *    name 用户名
  */
 -(void)setMyViewerInfo:(NSDictionary *) infoDic{
-    //如果没有groupId这个字段,设置groupId为空(为空时默认显示所有聊天)
-    //    if([[infoDic allKeys] containsObject:@"groupId"]){
-    //        _groupId = infoDic[@"groupId"];
-    //    }else{
-    //        _groupId = @"";
-    //    }
     _groupId = @"";
     _interactionView.groupId = _groupId;
 }
@@ -406,10 +402,16 @@
     [userDefaults synchronize];
 }
 
+/// 房间配置信息
+/// @param dic 配置信息
+- (void)offline_roomConfiguration:(NSDictionary *)dic {
+    
+}
+
 /**
- *    @brief  房间信息
+ *    @brief  房间信息 (已废弃)
  */
--(void)offline_roomInfo:(NSDictionary *)dic{
+-(void)offline_roomInfo:(NSDictionary *)dic {
     // 3.17.0 new
     if ([dic.allKeys containsObject:@"recordInfo"]) {
         NSDictionary *recordInfo = dic[@"recordInfo"];
@@ -479,7 +481,7 @@
 }
 
 - (void)offline_loadVideoFail {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"视频错误,请重新下载" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"视频品文件损坏播放错误,请重新下载" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDestructive handler:nil];
@@ -526,7 +528,7 @@
 - (void)setupUI {
     
     //添加视频播放视图
-    _playerView = [[CCPlayBackView alloc] initWithFrame:CGRectMake(0, SCREEN_STATUS, SCREEN_WIDTH, HDGetRealHeight) docViewType:_isSmallDocView];
+    _playerView = [[CCPlayBackView alloc] initWithFrame:CGRectZero docViewType:_isSmallDocView];
     _playerView.isOffline = YES;
     _playerView.delegate = self;
     
@@ -542,9 +544,15 @@
             weakSelf.playerView = nil;
         }];
     };
+    
+    _playerView.replayBtnTapClosure = ^{
+        [weakSelf.offlinePlayBack replayPlayer];
+    };
+    
     //滑块滑动完成回调
     _playerView.sliderCallBack = ^(int duration) {
         // 拖动至视频结尾,视频播放完成
+        weakSelf.recordHistoryCount = 0;
         if (duration >= self.videoTotalDuration) {
             weakSelf.offlinePlayBack.currentPlaybackTime = duration-2;
             [weakSelf.offlinePlayBack startPlayer];
@@ -581,12 +589,23 @@
         }
     };
     [self.view addSubview:self.playerView];;
+    [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(SCREEN_STATUS);
+        make.left.right.equalTo(self.view);
+        make.height.mas_equalTo(HDGetRealHeight);
+    }];
+    [_playerView layoutIfNeeded];
     
     //添加互动视图
-    CGFloat y = HDGetRealHeight + SCREEN_STATUS;
-    CGFloat h = SCREEN_HEIGHT - y;
-    self.interactionView = [[CCPlayBackInteractionView alloc] initWithFrame:CGRectMake(0, y, SCREEN_WIDTH,h) docViewType:_isSmallDocView];
+    self.interactionView = [[CCPlayBackInteractionView alloc] initWithFrame:CGRectZero docViewType:_isSmallDocView];
     [self.view addSubview:self.interactionView];
+    CGFloat h = self.view.frame.size.height - CGRectGetMaxY(_playerView.frame);
+    [self.interactionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.playerView.mas_bottom);
+        make.left.right.mas_equalTo(self.view);
+        make.height.mas_equalTo(h);
+    }];
+    [_interactionView layoutIfNeeded];
 }
 //#ifdef LockView
 /**
@@ -635,13 +654,15 @@
  @param tag 1视频为主，2文档为主
  */
 -(void)quanpingBtnClicked:(NSInteger)tag{
-    if (tag == 1) {
-        [_offlinePlayBack changePlayerFrame:self.view.frame];
-    } else {
-        [_offlinePlayBack changeDocFrame:self.view.frame];
-    }
-    //隐藏互动视图
-    [self hiddenInteractionView:YES];
+    self.docOrVideoFlag = tag;
+    [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+//    if (tag == 1) {
+//        [_offlinePlayBack changePlayerFrame:self.view.frame];
+//    } else {
+//        [_offlinePlayBack changeDocFrame:self.view.frame];
+//    }
+//    //隐藏互动视图
+//    [self hiddenInteractionView:YES];
 }
 /**
  返回按钮点击代理
@@ -649,13 +670,15 @@
  @param tag 1.视频为主，2.文档为主
  */
 -(void)backBtnClicked:(NSInteger)tag{
-    if (tag == 1) {
-        [_offlinePlayBack changePlayerFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
-    } else {
-        [_offlinePlayBack changeDocFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
-    }
-    //显示互动视图
-    [self hiddenInteractionView:NO];
+    self.docOrVideoFlag = tag;
+    [self interfaceOrientation:UIInterfaceOrientationPortrait];
+//    if (tag == 1) {
+//        [_offlinePlayBack changePlayerFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+//    } else {
+//        [_offlinePlayBack changeDocFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+//    }
+//    //显示互动视图
+//    [self hiddenInteractionView:NO];
 }
 /**
  切换视频/文档按钮点击回调
@@ -668,16 +691,14 @@
         [_offlinePlayBack changeDocParent:self.playerView];
         [_offlinePlayBack changePlayerParent:self.playerView.smallVideoView];
         [_offlinePlayBack changePlayerFrame:CGRectMake(0, 0, self.playerView.smallVideoView.frame.size.width, self.playerView.smallVideoView.frame.size.height)];
-        
-        [_offlinePlayBack changeDocFrame:CGRectMake(0, 0,self.playerView.frame.size.width, self.playerView.frame.size.height)];
+        [_offlinePlayBack changeDocFrame:self.playerView.bounds];
         
     }else{
         
         [_offlinePlayBack changeDocParent:self.playerView.smallVideoView];
         [_offlinePlayBack changePlayerParent:self.playerView];
         [_offlinePlayBack changePlayerFrame:CGRectMake(0, 0,self.playerView.frame.size.width, self.playerView.frame.size.height)];
-        
-        [_offlinePlayBack changeDocFrame:CGRectMake(0, 0, self.playerView.smallVideoView.frame.size.width, self.playerView.smallVideoView.frame.size.height)];
+        [_offlinePlayBack changeDocFrame:self.playerView.smallVideoView.bounds];
     }
 }
 /**
@@ -742,11 +763,12 @@
     //#ifdef LockView
     /*  当视频播放被打断时，重新加载视频  */
     if (!self.offlinePlayBack.ijkPlayer.playbackState && self.isPlayDone != YES) {
-        [self.offlinePlayBack replayPlayer];
+        //[self.offlinePlayBack replayPlayer];
         [self.lockView updateLockView];
     }
     //#endif
     if (self.playerView.pauseButton.selected == NO && self.isPlayDone != YES) {
+
     }
 }
 
@@ -792,34 +814,128 @@
 - (void)applicationDidBecomeActiveNotification {
     if (_enterBackGround == NO && ![_offlinePlayBack isPlaying]) {
         /*  如果当前视频不处于播放状态，重新进行播放,初始化播放状态 */
-        [_offlinePlayBack replayPlayer];
-        [_playerView showLoadingView];
+        if (_isPlayDone == NO) {
+            [_offlinePlayBack replayPlayer];
+            [_playerView showLoadingView];
+        }
         //#ifdef LockView
         [_lockView updateLockView];
         //#endif
     }
+    if (![_offlinePlayBack isPlaying] && _isPlayDone == NO) {
+        [_offlinePlayBack startPlayer];
+    }
 }
 #pragma mark - 横竖屏旋转设置
-//旋转方向
-- (BOOL)shouldAutorotate{
-    if (self.playerView.isScreenLandScape == YES) {
-        return YES;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    BOOL isLaunchScreen = NO;
+    NSLog(@"发生改变:%@", NSStringFromCGSize(size));
+    if (@available(iOS 16.0, *)) {
+        NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
+        UIWindowScene *scene = [array firstObject];
+        isLaunchScreen = scene.interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+    } else {
+        isLaunchScreen = [UIDevice currentDevice].orientation == UIDeviceOrientationLandscapeLeft;
     }
-    return NO;
-}
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationPortrait;
+    NSLog(@"将要%@", isLaunchScreen ? @"横屏" : @"竖屏");
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginChange:) object:nil];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"isLaunchScreen"] = @(isLaunchScreen);
+    [self performSelector:@selector(beginChange:) withObject:param afterDelay:0.25];
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
-//    return UIInterfaceOrientationMaskAllButUpsideDown;
-    if (self.playerView.isScreenLandScape == YES) {
-        return UIInterfaceOrientationMaskAllButUpsideDown;
+/**
+ *    @brief    强制转屏
+ *    @param    orientation   旋转方向
+ */
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation {
+    BOOL isLaunchScreen = orientation != UIInterfaceOrientationPortrait ? YES : NO;
+    AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    if (isLaunchScreen) {
+        // 全屏操作
+        appdelegate._allowRotation = YES;
+    } else {
+        // 退出全屏操作
+        appdelegate._allowRotation = NO;
     }
-    return UIInterfaceOrientationMaskPortrait;
+       
+    if (@available(iOS 16.0, *)) {
+        
+        void (^errorHandler)(NSError *error) = ^(NSError *error) {
+            NSLog(@"强制%@错误:%@", isLaunchScreen ? @"横屏" : @"竖屏", error);
+        };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        SEL supportedInterfaceSelector = NSSelectorFromString(@"setNeedsUpdateOfSupportedInterfaceOrientations");
+        [self performSelector:supportedInterfaceSelector];
+        NSArray *array = [[UIApplication sharedApplication].connectedScenes allObjects];
+        UIWindowScene *scene = (UIWindowScene *)[array firstObject];
+        Class UIWindowSceneGeometryPreferencesIOS = NSClassFromString(@"UIWindowSceneGeometryPreferencesIOS");
+        if (UIWindowSceneGeometryPreferencesIOS) {
+            SEL initWithInterfaceOrientationsSelector = NSSelectorFromString(@"initWithInterfaceOrientations:");
+            UIInterfaceOrientationMask orientation = isLaunchScreen ? UIInterfaceOrientationMaskLandscapeRight : UIInterfaceOrientationMaskPortrait;
+            id geometryPreferences = [[UIWindowSceneGeometryPreferencesIOS alloc] performSelector:initWithInterfaceOrientationsSelector withObject:@(orientation)];
+            if (geometryPreferences) {
+                SEL requestGeometryUpdateWithPreferencesSelector = NSSelectorFromString(@"requestGeometryUpdateWithPreferences:errorHandler:");
+                if ([scene respondsToSelector:requestGeometryUpdateWithPreferencesSelector]) {
+                    [scene performSelector:requestGeometryUpdateWithPreferencesSelector withObject:geometryPreferences withObject:errorHandler];
+                }
+            }
+        }
+        #pragma clang diagnostic pop
+    } else {
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector  = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            int val = orientation;
+            // 从2开始是因为0 1 两个参数已经被selector和target占用
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
+    }
 }
+
+- (void)beginChange:(NSDictionary *)param {
+    BOOL isLaunchScreen = [[param objectForKey:@"isLaunchScreen"] boolValue];
+    [self updateSubViewConstraints:isLaunchScreen];
+}
+
+- (void)updateSubViewConstraints:(BOOL)isLaunchScreen {
+    if (isLaunchScreen == YES) {
+        
+        [self.playerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(self.view);
+        }];
+        [_playerView layoutIfNeeded];
+        
+        if (self.docOrVideoFlag == 1) {
+            [_offlinePlayBack changePlayerFrame:self.view.frame];
+        } else {
+            [_offlinePlayBack changeDocFrame:self.view.frame];
+        }
+        //隐藏互动视图
+        [self hiddenInteractionView:YES];
+    } else {
+        
+        [self.playerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(SCREEN_STATUS);
+            make.left.right.equalTo(self.view);
+            make.height.mas_equalTo(HDGetRealHeight);
+        }];
+        [_playerView layoutIfNeeded];
+        
+        if (self.docOrVideoFlag == 1) {
+            [_offlinePlayBack changePlayerFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+        } else {
+            [_offlinePlayBack changeDocFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+        }
+        //显示互动视图
+        [self hiddenInteractionView:NO];
+    }
+}
+
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
     

@@ -17,7 +17,7 @@
  value为图片的size,格式为width_height,使用时用"_"隔开
  */
 @property (nonatomic, strong) NSMutableDictionary *downloadDic;
-
+@property(nonatomic, strong)NSLock *lock;
 @end
 
 #define IMGURL @"[img_"
@@ -29,6 +29,7 @@
     dispatch_once(&onceToken, ^{
         if (!_sharedManager) {
             _sharedManager = [[self alloc] init];
+            _sharedManager.lock = [[NSLock alloc] init];
         }
     });
     return _sharedManager;
@@ -63,7 +64,7 @@
             model.useravatar = dic[@"userAvatar"];
             model.time = dic[@"time"];
             model.myViwerId = viewerId;
-            model.status = dic[@"status"];
+            model.status = [NSString stringWithFormat:@"%@",dic[@"status"]];
             model.chatId = dic[@"chatId"];
             
             if([userDic objectForKey:model.userid] == nil) {
@@ -112,6 +113,7 @@
 //处理聊天数据
 -(void)dealWithPlayBackChatArr:(NSArray *)objectArr groupId:(NSString *)groupId{
     if (self == nil || objectArr == nil) return;
+    [self.lock lock];
     for(NSDictionary *dic in objectArr) {
         //通过groupId过滤数据------
         NSString *msgGroupId = dic[@"groupId"];
@@ -134,13 +136,14 @@
             }
             model.useravatar = dic[@"userAvatar"];
             model.time = dic[@"time"];
-            model.status = dic[@"status"];
+            model.status = [NSString stringWithFormat:@"%@",dic[@"status"]];
             model.chatId = dic[@"chatId"];
             
             [self dealWithModel:model];//处理model
             [self.publicChatArray addObject:model];
         }
     }
+    [self.lock unlock];
 }
 //收到公聊时，调用此方法
 //返回一个处理过的数组,交给tableView去渲染
@@ -179,7 +182,7 @@
         model.useravatar = dic[@"useravatar"];
         model.time = dic[@"time"];
         model.myViwerId = viewerId;
-        model.status = dic[@"status"];
+        model.status = [NSString stringWithFormat:@"%@",dic[@"status"]];
         model.chatId = dic[@"chatId"];
         
         

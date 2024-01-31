@@ -98,7 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param progress 下载进度回调
  @param state 下载状态变动回调
  */
--(void)startWithDownloadModel:(CCDownloadModel *)downloadModel progress:(CCDownloadProgressBlock)progress state:(DWDownloadStateBlock)state;
+-(void)startWithDownloadModel:(CCDownloadModel *)downloadModel progress:(CCDownloadProgressBlock)progress state:(DWLiveDownloadStateBlock)state;
 
 /**
  暂停下载任务

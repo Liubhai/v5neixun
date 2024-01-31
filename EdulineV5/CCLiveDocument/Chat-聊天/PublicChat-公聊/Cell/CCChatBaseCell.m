@@ -9,7 +9,7 @@
 #import "CCChatBaseCell.h"
 #import "Utility.h"
 #import "UIImage+animatedGIF.h"
-
+#import <SDWebImage/UIButton+WebCache.h>
 #import "CCChatViewDataSourceManager.h"
 
 #define BGColor [UIColor colorWithHexString:@"#f5f5f5" alpha:1.0f]
@@ -79,7 +79,7 @@
     _contentLabel.userInteractionEnabled = NO;
     [_bgBtn addSubview:_contentLabel];
     
-//    _smallImageView = [[CCLiveImageView alloc] init];
+//    _smallImageView = [[CCImageView alloc] init];
 //    [_bgBtn addSubview:_smallImageView];
 }
 
@@ -183,17 +183,22 @@
 }
 
 - (BOOL)isURL:(NSString *)url {
-    if(url.length < 1) return NO;
-    if (url.length>4 && [[url substringToIndex:4] isEqualToString:@"www."]) {
-        url = [NSString stringWithFormat:@"http://%@",url];
-        
+    if ([[url lowercaseString] hasPrefix:@"http"] == YES || [[url lowercaseString] hasPrefix:@"https"] == YES) {
+        return YES;
     } else {
-        url = url;
-        
+        return NO;
     }
-    NSString *urlRegex = @"(https|http|ftp|rtsp|igmp|file|rtspt|rtspu)://((((25[0-5]|2[0-4]\\d|1?\\d?\\d)\\.){3}(25[0-5]|2[0-4]\\d|1?\\d?\\d))|([0-9a-z_!~*'()-]*\\.?))([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\.([a-z]{2,6})(:[0-9]{1,4})?([a-zA-Z/?_=]*)\\.\\w{1,5}";
-    NSPredicate* urlTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", urlRegex];
-    return [urlTest evaluateWithObject:url];
+//    if(url.length < 1) return NO;
+//    if (url.length>4 && [[url substringToIndex:4] isEqualToString:@"www."]) {
+//        url = [NSString stringWithFormat:@"http://%@",url];
+//
+//    } else {
+//        url = url;
+//
+//    }
+//    NSString *urlRegex = @"(https|http|ftp|rtsp|igmp|file|rtspt|rtspu)://((((25[0-5]|2[0-4]\\d|1?\\d?\\d)\\.){3}(25[0-5]|2[0-4]\\d|1?\\d?\\d))|([0-9a-z_!~*'()-]*\\.?))([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\.([a-z]{2,6})(:[0-9]{1,4})?([a-zA-Z/?_=]*)\\.\\w{1,5}";
+//    NSPredicate* urlTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", urlRegex];
+//    return [urlTest evaluateWithObject:url];
     
 }
 - (NSArray*)getURLFromStr:(NSString *)string { NSError *error; //可以识别url的正则表达式
@@ -222,22 +227,13 @@
         [_headBtn addTarget:self action:@selector(headBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     //判断用户是否有头像，如果有,用网络头像，如果没有,用本地头像
+    NSString *headerUrl = @"";
     if(StrNotEmpty(model.useravatar) && [model.useravatar containsString:@"http"]) {
-        [self.queue addOperationWithBlock: ^{
-               NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:model.useravatar]]; //得到图像数据
-               UIImage *image = [UIImage imageWithData:imgData];
-        
-               //在主线程中更新UI
-               [[NSOperationQueue mainQueue] addOperationWithBlock: ^{
-                   //通过修改模型, 来修改数据
-                   [_headBtn setBackgroundImage:image forState:UIControlStateNormal];
-                   //刷新指定表格行
-//                   [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-               }];
-           }];
-    } else {
-        [_headBtn setBackgroundImage:[UIImage imageNamed:model.headImgName] forState:UIControlStateNormal];
+        headerUrl = model.useravatar;
+    }else {
+        headerUrl = model.headImgName;
     }
+    [_headBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:headerUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"lottery_icon_nor"]];
     [_headBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self).offset(15);
         make.top.mas_equalTo(self).offset(15);

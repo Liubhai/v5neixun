@@ -69,7 +69,8 @@ static NSString *cellID = @"cellID";
 - (void)updateTableViewFrameWithQualityArrayCount:(NSInteger)count {
     CGFloat h = count * rowH + (count - 1) * rowMargin;
     if (h != _rateView.frame.size.height && h >= rowH) {
-        h = self.height - h < maxMargin ? self.height - h : h;
+//        h = self.height - h < maxMargin ? self.height - h : h;
+        h = h < maxMargin ? maxMargin : h;
         CGFloat y = (self.height - h) / 2;
         CGFloat x = 0;
         CGFloat w = self.width;

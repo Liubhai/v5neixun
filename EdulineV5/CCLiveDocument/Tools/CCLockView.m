@@ -39,11 +39,20 @@
 #pragma mark 设置锁屏信息显示
 - (void)setLockScreenDisplay
 {
+    // fix crash CCLockView setLockScreenDisplay
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
-    [info setObject:_roomName forKey:MPMediaItemPropertyTitle];//标题
+    if (MPMediaItemPropertyTitle != nil) {
+        [info setObject:_roomName forKey:MPMediaItemPropertyTitle];//标题
+    }
 //    [info setObject:@"作者" forKey:MPMediaItemPropertyArtist];//作者
 //    [info setObject:@"专辑作者" forKey:MPMediaItemPropertyAlbumArtist];//专辑作者
-    [info setObject:[[MPMediaItemArtwork alloc]initWithImage:[UIImage imageNamed:@"LockIcon"]] forKey:MPMediaItemPropertyArtwork];//显示的图片
+
+    UIImage *img = [UIImage imageNamed:@"LockIcon"];
+    if (img != nil) {
+        [info setObject:[[MPMediaItemArtwork alloc]initWithImage:img] forKey:MPMediaItemPropertyArtwork];
+    }
+//    [info setObject:[[MPMediaItemArtwork alloc]initWithImage:[UIImage imageNamed:@"LockIcon"]] forKey:MPMediaItemPropertyArtwork];//显示的图片
+
     [info setObject:[NSNumber numberWithDouble:_duration] forKey:MPMediaItemPropertyPlaybackDuration];//总时长
     [info setObject:[NSNumber numberWithDouble:0] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];//当前播放时间
     [info setObject:[NSNumber numberWithFloat:1.0] forKey:MPNowPlayingInfoPropertyPlaybackRate];//播放速率

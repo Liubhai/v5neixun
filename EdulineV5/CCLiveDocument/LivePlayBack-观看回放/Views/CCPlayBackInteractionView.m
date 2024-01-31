@@ -18,6 +18,9 @@
 @property (nonatomic, assign)BOOL                   isDoneAllData; //加载完所有数据
 /** 查看历史问答翻页标记已添加回复 */
 @property (nonatomic,strong)NSMutableDictionary     *QADicFlag;
+@property(nonatomic, strong)NSLock *lock;
+
+@property (nonatomic, strong) dispatch_queue_t chatParserQueue;
 @end
 
 @implementation CCPlayBackInteractionView
@@ -30,6 +33,8 @@
         _isDoneAllData = NO;// 是否加载完所有数据
         _replayCurrentPage = 0; //加载当前页
         _isSmallDocView = isSmallDocView;
+        _lock = [[NSLock alloc] init];
+        _chatParserQueue = dispatch_queue_create("chat-parse-queue", NULL);
         [self setUpUI];
     }
     return self;
@@ -63,7 +68,7 @@
         make.bottom.equalTo(self.shadowView);
     }];
     //UIScrollView分块,聊天,问答,简介均添加在这里
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 41, self.frame.size.width , SCREEN_HEIGHT - (HDGetRealHeight + 40)-SCREEN_STATUS)];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 41, SCREEN_WIDTH , SCREEN_HEIGHT - (HDGetRealHeight + 40)-SCREEN_STATUS)];
     _scrollView.backgroundColor = [UIColor whiteColor];
     _scrollView.pagingEnabled = YES;
     _scrollView.scrollEnabled = NO;
@@ -145,16 +150,23 @@
             }
         }
     }
+    
+    if ([dic.allKeys containsObject:@"description"]) {
+        desc = dic[@"description"];
+    }
+    
     self.introductionView.roomDesc = desc.length == 0 ? EMPTYINTRO : desc;
     self.introductionView.roomName = _roomName;
-//    self.introductionView.roomDesc = dic[@"desc"];
-//    if(!StrNotEmpty(dic[@"desc"])) {
-//        self.introductionView.roomDesc = EMPTYINTRO;
-//    }
-//    self.introductionView.roomName = dic[@"name"];
     
     CGFloat shadowViewY = self.segment.frame.origin.y+self.segment.frame.size.height-2;
-    _templateType = [dic[@"templateType"] integerValue];
+    if ([dic.allKeys containsObject:@"templateType"]) {
+        _templateType = [dic[@"templateType"] integerValue];
+    }else if ([dic.allKeys containsObject:@"template"]) {
+        NSDictionary *templateDic = dic[@"template"];
+        if ([templateDic.allKeys containsObject:@"type"]) {
+            _templateType = [templateDic[@"type"] integerValue];
+        }
+    }
     //    @"文档",@"聊天",@"问答",@"简介"
     if (_templateType == 1) {
         //聊天互动： 无 直播文档： 无 直播问答： 无
@@ -273,51 +285,56 @@
 /**
  *    @brief    通过传入时间获取聊天信息
  */
--(void)parseChatOnTime:(int)time{
+-(void)parseChatOnTime:(int)time {
     if ([self.publicChatArray count] == 0) {
         return;
     }
-    long count = [self.publicChatArray count];
-    int preIndex = self.currentChatIndex;
-    if(time < self.currentChatTime) {
-        for(int i = 0;i < count;i++) {
-            Dialogue *dialogue = [self.publicChatArray objectAtIndex:i];
-            if(i == 0 && [dialogue.time integerValue] > time) {
-                _currentChatTime = 0;
-                _currentChatIndex = -1;
-            }
-            if([dialogue.time integerValue] <= time) {
-                self.currentChatIndex = i;
-                if(self.currentChatIndex == count-1) {
+//    [self.lock lock];
+    /// 聊天解析偶现坏指针崩溃，改为串行解析尝试修复
+    dispatch_barrier_sync(self.chatParserQueue, ^{
+        long count = [self.publicChatArray count];
+        int preIndex = self.currentChatIndex;
+        if(time < self.currentChatTime) {
+            for(int i = 0;i < count;i++) {
+                Dialogue *dialogue = [self.publicChatArray objectAtIndex:i];
+                if(i == 0 && [dialogue.time integerValue] > time) {
+                    _currentChatTime = 0;
+                    _currentChatIndex = -1;
+                }
+                if([dialogue.time integerValue] <= time) {
+                    self.currentChatIndex = i;
+                    if(self.currentChatIndex == count-1) {
+                        NSArray *array = [self.publicChatArray subarrayWithRange:NSMakeRange(0, self.currentChatIndex + 1)];
+                        [self.chatView reloadPublicChatArray:[NSMutableArray arrayWithArray:array]];
+                        self.currentChatTime = time;
+                    }
+                } else {
                     NSArray *array = [self.publicChatArray subarrayWithRange:NSMakeRange(0, self.currentChatIndex + 1)];
                     [self.chatView reloadPublicChatArray:[NSMutableArray arrayWithArray:array]];
                     self.currentChatTime = time;
+                    break;
                 }
-            } else {
-                NSArray *array = [self.publicChatArray subarrayWithRange:NSMakeRange(0, self.currentChatIndex + 1)];
-                [self.chatView reloadPublicChatArray:[NSMutableArray arrayWithArray:array]];
-                self.currentChatTime = time;
-                break;
             }
-        }
-    } else if(time >= self.currentChatTime) {
-        for(int i = preIndex + 1;i < count;i++) {
-            Dialogue *dialogue = [self.publicChatArray objectAtIndex:i];
-            if([dialogue.time integerValue] <= time) {
-                self.currentChatIndex = i;
-                if(self.currentChatIndex == count-1) {
+        } else if(time >= self.currentChatTime) {
+            for(int i = preIndex + 1;i < count;i++) {
+                Dialogue *dialogue = [self.publicChatArray objectAtIndex:i];
+                if([dialogue.time integerValue] <= time) {
+                    self.currentChatIndex = i;
+                    if(self.currentChatIndex == count-1) {
+                        NSArray *array = [self.publicChatArray subarrayWithRange:NSMakeRange(preIndex + 1, self.currentChatIndex - (preIndex + 1) + 1)];
+                        [self.chatView addPublicChatArray:[NSMutableArray arrayWithArray:array]];
+                        self.currentChatTime = time;
+                    }
+                } else if(preIndex + 1 <= self.currentChatIndex){
                     NSArray *array = [self.publicChatArray subarrayWithRange:NSMakeRange(preIndex + 1, self.currentChatIndex - (preIndex + 1) + 1)];
                     [self.chatView addPublicChatArray:[NSMutableArray arrayWithArray:array]];
                     self.currentChatTime = time;
+                    break;
                 }
-            } else if(preIndex + 1 <= self.currentChatIndex){
-                NSArray *array = [self.publicChatArray subarrayWithRange:NSMakeRange(preIndex + 1, self.currentChatIndex - (preIndex + 1) + 1)];
-                [self.chatView addPublicChatArray:[NSMutableArray arrayWithArray:array]];
-                self.currentChatTime = time;
-                break;
             }
         }
-    }
+    });
+//    [self.lock unlock];
 }
 #pragma mark- 问答
 /**

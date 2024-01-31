@@ -101,7 +101,9 @@ static int flagCount = 0; //计数器
         _isSmallDocView = isSmallDocView;
         [self.remindDataArray removeAllObjects];
         [self addObserver];
-        [self setUpUI];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self setUpUI];
+        });
         // 开启定时器
         [self startTimer];
         self.isShowRemindView = NO;
@@ -216,60 +218,20 @@ static int flagCount = 0; //计数器
     if (_templateType != 1) {
         [self addSubview:self.cleanTestBtn];
         [self.cleanTestBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self).offset(self.frame.size.height - 120 - kScreenBottom);
-            make.left.mas_equalTo(self).offset(SCREEN_WIDTH - 95);
+            make.bottom.mas_equalTo(self.mas_bottom).offset(-84);
+            make.right.mas_equalTo(self).offset(-53);
             make.width.height.mas_equalTo(35);
         }];
         
         [self addSubview:self.cleanVoteBtn];
         [self.cleanVoteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self).offset(self.frame.size.height - 120 - kScreenBottom);
-            make.left.mas_equalTo(self).offset(SCREEN_WIDTH - 95);
+            make.bottom.mas_equalTo(self).offset(-84);
+            make.right.mas_equalTo(self).offset(-53);
             make.width.height.mas_equalTo(35);
         }];
     }
 }
 
-/**
- *    @brief    更新随堂测&测试隐藏按钮布局(竖屏)
- *    @param    completion  更新回调
- */
-- (void)updateVoteAndTestWithPortraitWithCompletion:(void (^)(BOOL))completion
-{
-    if (self.cleanVoteBtn.hidden == YES) {
-        if (!self.cleanTestBtn || self.cleanTestBtn.hidden == YES) return;
-        [self.cleanTestBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self).offset(SCREEN_WIDTH - 95);
-            make.top.mas_equalTo(self).offset(self.frame.size.height - 120 - kScreenBottom);
-            make.width.height.mas_equalTo(35);
-        }];
-    }else {
-        if (!self.cleanTestBtn || self.cleanTestBtn.hidden == YES) return;
-        [self.cleanTestBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self).offset(SCREEN_WIDTH - 75);
-            make.top.mas_equalTo(self).offset(self.frame.size.height - 120 - kScreenBottom);
-            make.width.height.mas_equalTo(35);
-        }];
-    }
-    if (self.cleanTestBtn.hidden == YES) {
-        if (!self.cleanVoteBtn || self.cleanVoteBtn.hidden == YES) return;
-        [self.cleanVoteBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self).offset(SCREEN_WIDTH - 95);
-            make.top.mas_equalTo(self).offset(self.frame.size.height - 120 - kScreenBottom);
-            make.width.height.mas_equalTo(35);
-        }];
-    }else {
-        if (!self.cleanVoteBtn || self.cleanVoteBtn.hidden == YES) return;
-        [self.cleanVoteBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self).offset(SCREEN_WIDTH - 75);
-            make.top.mas_equalTo(self).offset(self.frame.size.height - 120 - kScreenBottom);
-            make.width.height.mas_equalTo(35);
-        }];
-    }
-    if (completion != nil) {
-        completion(NO);
-    }
-}
 /**
  *    @brief    答题卡状态更改
  */
@@ -553,14 +515,14 @@ static int flagCount = 0; //计数器
                 if (weakSelf.remindDataArray.count > 0) {
                     [weakSelf.remindDataArray removeObjectAtIndex:0];
                 }
-//                NSLog(@"---remind0-%@%@%@---%zd",model.prefixContent,model.userName,model.suffixContent,weakSelf.remindDataArray.count);
+//                //NSLog(@"---remind0-%@%@%@---%zd",model.prefixContent,model.userName,model.suffixContent,weakSelf.remindDataArray.count);
             }else {
                 weakSelf.isShowRemindView = NO;
                 return;
             }
         };
     });
-//    NSLog(@"---remind1-%@%@%@---%zd",model.prefixContent,model.userName,model.suffixContent,self.remindDataArray.count);
+//    //NSLog(@"---remind1-%@%@%@---%zd",model.prefixContent,model.userName,model.suffixContent,self.remindDataArray.count);
 }
 
 #pragma mark - 聊天管理
@@ -584,7 +546,7 @@ static int flagCount = 0; //计数器
             //找到消息的位置
             NSUInteger index = [self.manager.publicChatArray indexOfObject:model];
             //更改消息的状态码
-            model.status = manageDic[@"status"];
+            model.status = [NSString stringWithFormat:@"%@",manageDic[@"status"]];
             //更新公聊数组状态
             [newPublicChatArr replaceObjectAtIndex:index withObject:model];
             //记录更改状态的模型下标
@@ -1318,6 +1280,7 @@ static int flagCount = 0; //计数器
             }
         };
         _chatView.backgroundColor = CCRGBColor(250,250,250);
+        _chatView.isChatActionKeyboard = _isChatActionKeyboard;
     }
     return _chatView;
 }

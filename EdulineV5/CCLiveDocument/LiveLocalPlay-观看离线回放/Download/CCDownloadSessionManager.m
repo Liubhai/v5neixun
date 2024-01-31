@@ -315,7 +315,7 @@
     return nil;
 }
 
-- (void)startWithDownloadModel:(CCDownloadModel *)downloadModel progress:(CCDownloadProgressBlock)progress state:(DWDownloadStateBlock)state
+- (void)startWithDownloadModel:(CCDownloadModel *)downloadModel progress:(CCDownloadProgressBlock)progress state:(DWLiveDownloadStateBlock)state
 {
     downloadModel.progressBlock = progress;
     downloadModel.stateBlock = state;

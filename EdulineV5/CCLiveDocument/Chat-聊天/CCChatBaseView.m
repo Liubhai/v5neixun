@@ -99,17 +99,19 @@
     @autoreleasepool {
         NSMutableArray *array = [NSMutableArray array];
         NSString *userName = model.userName;
-        if (model.userName.length > 4) {
+        if ( model.userName != nil && model.userName.length > 4) {
            userName = [userName substringToIndex:4];
            userName = [userName stringByAppendingString:@"..."];
         }
-        NSString *string = [[NSString alloc]initWithFormat:@"%@【%@】%@",model.prefixContent,userName,model.suffixContent];
-        [array addObject:string];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.userRemindView.textDataArr = [array copy];
-            self.userRemindView.hidden = NO;
-        });
+        if (model.prefixContent != nil && model.suffixContent != nil) {
+            NSString *string = [[NSString alloc]initWithFormat:@"%@【%@】%@",model.prefixContent,userName,model.suffixContent];
+            [array addObject:string];
+        }
         WS(weakSelf)
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.userRemindView.textDataArr = [array copy];
+            weakSelf.userRemindView.hidden = NO;
+        });
         self.userRemindView.showOrHiddenRemindView = ^(BOOL result) {
             if (weakSelf.ShowOrHiddenRemindBlock) {
                 weakSelf.ShowOrHiddenRemindBlock(result);
@@ -592,8 +594,8 @@
 - (HDUserRemindView *)userRemindView
 {
     if (!_userRemindView) {
-        _userRemindView.hidden = YES;
         _userRemindView = [[HDUserRemindView alloc]init];
+        _userRemindView.hidden = YES;
     }
     return _userRemindView;
 }

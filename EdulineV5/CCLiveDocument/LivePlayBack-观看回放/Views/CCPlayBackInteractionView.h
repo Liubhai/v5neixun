@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CCPlayBackView.h"//视频视图
-#import "CCLoadingView.h"//加载
+#import "LoadingView.h"//加载
 #import "InformationShowView.h"//提示
 #import "CCSDK/SaveLogUtil.h"//日志
 #import "CCIntroductionView.h"//简介
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)UIButton                    * changeButton;//切换窗口
 @property (nonatomic,assign)NSInteger                     sliderValue;//滑动值
 @property (nonatomic,assign)NSInteger                     templateType;
-@property (nonatomic,strong)CCLoadingView                 * loadingView;//加载视图
+@property (nonatomic,strong)LoadingView                 * loadingView;//加载视图
 @property (nonatomic,strong)UIScrollView                * scrollView;
 @property (nonatomic,strong)UISegmentedControl          * segment;//功能切换,文档,聊天等
 

@@ -55,7 +55,7 @@
     [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(ws).offset(24);
         make.centerY.mas_equalTo(ws);
-        make.width.mas_equalTo(75);
+        make.width.mas_equalTo(80);
     }];
     [_titleLabel layoutIfNeeded];
     

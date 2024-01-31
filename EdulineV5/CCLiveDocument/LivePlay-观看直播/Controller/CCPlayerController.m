@@ -29,7 +29,9 @@
 #import "CCCupView.h"//奖杯
 #import "CCPunchView.h"
 #import "HDPlayerBaseInfoView.h" //播放器信息view
-#import "HDAudioModeView.h"
+#import "AppDelegate.h"
+/// 3.17.3 new
+#import "HDSSupportView.h"
 //#ifdef LockView
 #import "CCLockView.h"//锁屏界面
 //#endif
@@ -130,12 +132,22 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
 @property (nonatomic,assign)NSInteger                audioLineNum;//音频线路
 /** 视音频模式 */
 @property (nonatomic,assign)BOOL                     isAudioMode;
-
-@property (nonatomic, strong) HDAudioModeView        *audioModeView;
 /** 是否需要显示提示view */
 @property (nonatomic, assign) BOOL                   isShowBaseInfoView;
 /** 当前线路下标 */
 @property (nonatomic, assign) NSInteger              currentLineIndex;
+/// 3.17.3 new  视频区辅助视图
+@property (nonatomic, strong) HDSSupportView        *supportView;
+/// 3.17.3 new  播放器父视图
+@property (nonatomic, strong) UIView                *kPlayerParent;
+/// 3.17.3 new  辅助视图类型
+@property (nonatomic, assign) HDSSupportViewBaseType kSupportBaseType;
+
+@property (nonatomic, assign) NSInteger              docOrVideoFlag;
+
+@property (nonatomic, copy) NSString *errorTip;
+/// 3.19.0 new 全体禁言/接触全体禁言 使用
+@property (nonatomic, assign) BOOL                  isAllowPublicChat;
 
 @end
 @implementation CCPlayerController
@@ -157,6 +169,10 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     _isLivePlay = NO;
     _qualityIndex = 0;//默认清晰度下标
     _currentLineIndex = 0;
+    /// 3.17.3 new
+    _kSupportBaseType = HDSSupportViewBaseTypeNone;
+    // 3.19.0 new
+    self.isAllowPublicChat = YES;
     [self setupUI];//创建UI
     [self integrationSDK];//集成SDK
     [self addObserver];//添加通知
@@ -171,6 +187,9 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     [self removeObserver];//移除通知
 }
 
+- (void)getDocAspectRatioOfWidth:(CGFloat)width height:(CGFloat)height {
+
+}
 /**
  *    @brief    创建UI
  */
@@ -180,13 +199,19 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     //视频视图
     [self.view addSubview:self.playerView];
     [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(SCREEN_STATUS);
         make.left.right.equalTo(self.view);
         make.height.mas_equalTo(HDGetRealHeight);
-        make.top.equalTo(self.view).offset(SCREEN_STATUS);
     }];
-    
+    [_playerView layoutIfNeeded];
     //添加互动视图
     [self.view addSubview:self.contentView];
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.playerView.mas_bottom);
+        make.left.right.mas_equalTo(self.view);
+        make.bottom.mas_equalTo(self.view).offset(-kScreenBottom);
+    }];
+    [_contentView layoutIfNeeded];
     
     self.playerView.isChatActionKeyboard = YES;
     self.contentView.isChatActionKeyboard = YES;
@@ -195,12 +220,9 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *    @brief    集成sdk
  */
 - (void)integrationSDK {
-    UIView *docView = _isSmallDocView ? self.playerView.smallVideoView : self.contentView.docView;
+    
+    UIView *docView = _isSmallDocView ? self.playerView.smallVideoView.hdContentView : self.contentView.docView.hdContentView;
     PlayParameter *parameter = [[PlayParameter alloc] init];
-//    parameter.userId = @"56761A7379431808";
-//    parameter.roomId = @"BBC10038C0C26ECD9C33DC5901307461";
-//    parameter.viewerName = @"普通人";//观看者昵称
-//    parameter.token = [NSString stringWithFormat:@"%@:%@",[V5_UserModel oauthToken],[V5_UserModel oauthTokenSecret]];//@"524550";//登陆密码
     parameter.userId = GetFromUserDefaults(WATCH_USERID);//userId
     parameter.roomId = GetFromUserDefaults(WATCH_ROOMID);//roomId
     parameter.viewerName = GetFromUserDefaults(WATCH_USERNAME);//用户名
@@ -213,19 +235,36 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     parameter.docFrame = CGRectMake(0,0,self.playerView.frame.size.width, self.playerView.frame.size.height);//视频位置,ps:起始位置为视频视图坐标
     parameter.security = YES;//是否使用https(已弃用!)
     parameter.PPTScalingMode = 4;//ppt展示模式,建议值为4
-    parameter.defaultColor = @"FFFFFF";//ppt默认底色，不写默认为白色
+    parameter.defaultColor = @"#FFFFFF";//ppt默认底色，不写默认为白色
     parameter.scalingMode = 1;//屏幕适配方式
     parameter.pauseInBackGround = _pauseInBackGround;//后台是否暂停
     parameter.viewerCustomua = @"viewercustomua";//自定义参数,没有的话这么写就可以
+//    parameter.pptInteractionEnabled = !_isSmallDocView;//是否开启ppt滚动
     parameter.pptInteractionEnabled = YES;
     parameter.DocModeType = 0;//设置当前的文档模式
+//    parameter.DocShowType = 1;
     parameter.groupid = _contentView.groupId;//用户的groupId
     parameter.tpl = 20;
     _pptScaleMode = parameter.PPTScalingMode;
     _requestData = [[RequestData alloc] initWithParameter:parameter];
     _requestData.delegate = self;
     /** 开启防录屏功能 */
-    [_requestData setAntiRecordScreen:YES];
+    [_requestData setAntiRecordScreen:NO];
+    
+    /// 3.17.3 new 记录播放父视图
+    UIView *headerView = _isSmallDocView ? self.playerView.smallVideoView.headerView : self.contentView.docView.headerView;
+    _kPlayerParent = headerView;
+    if (_supportView) {
+        [_supportView removeFromSuperview];
+        _supportView = nil;
+    }
+    WS(weakSelf)
+    _supportView = [[HDSSupportView alloc]initWithFrame:_kPlayerParent.bounds actionClosure:^{
+        [weakSelf.requestData reloadVideo:NO];
+    }];
+    [_supportView setSupportBaseType:_kSupportBaseType boardView:_kPlayerParent];
+    [_kPlayerParent addSubview:_supportView];
+    _playerView.headerView.hidden = YES;
 }
 
 #pragma mark - 私有方法
@@ -270,20 +309,13 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     });
 }
 
-/**
- *    @brief    更新音频视图UI
- */
-- (void)updateUIWithAudioMode {
-    if (_isAudioMode != YES) return;
-    if (self.audioModeView) {
-        [self.audioModeView removeFromSuperview];
-        self.audioModeView = nil;
+// MARK: - 视频区辅助视图
+/// 3.17.3 new 更新辅助视图
+- (void)updateSupportView {
+    if (_supportView.hidden == YES) {
+        _supportView.hidden = NO;
     }
-    if (self.requestData.ijkPlayer) {
-        self.audioModeView = [[HDAudioModeView alloc]initWithFrame:self.requestData.ijkPlayer.view.bounds];
-        [self.requestData.ijkPlayer.view addSubview:self.audioModeView];
-        [self.requestData.ijkPlayer.view bringSubviewToFront:self.audioModeView];
-    }
+    [_supportView setSupportBaseType:_kSupportBaseType boardView:_kPlayerParent];
 }
 /**
  *    The New Method (3.14.0)
@@ -338,15 +370,19 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
             NSInteger result = [results[@"success"] integerValue];
             [ws showTextWithIndex:result];
             [ws.playerView updateUITier];
-            [ws updateUIWithAudioMode];
+            /// 3.17.3 new
+            ws.kSupportBaseType = HDSSupportViewBaseTypeAudio;
         }];
     }else {
         [_requestData changePlayMode:PLAY_MODE_TYEP_VIDEO completion:^(NSDictionary *results) {
             NSInteger result = [results[@"success"] integerValue];
             [ws showTextWithIndex:result];
             [ws.playerView updateUITier];
+            /// 3.17.3 new
+            ws.kSupportBaseType = HDSSupportViewBaseTypeNone;
         }];
     }
+    [self updateSupportView];
 }
 /**
  *    @brief    切换线路
@@ -358,8 +394,10 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
         NSInteger result = [results[@"success"] integerValue];
         [ws showTextWithIndex:result];
         [ws.playerView updateUITier];
+        /// 3.17.3 new
         if (ws.isAudioMode == YES) {
-            [ws updateUIWithAudioMode];
+            ws.kSupportBaseType = HDSSupportViewBaseTypeAudio;
+            [ws updateSupportView];
         }
     }];
 }
@@ -423,23 +461,28 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *    @param    tag    1为视频为主，2为文档为主
  */
 - (void)changeBtnClicked:(NSInteger)tag {
+    self.playerView.isVideoMainScreen = tag == 1 ? YES : NO;
     if (tag == 2) {
         [_requestData changeDocParent:self.playerView.hdContentView];
-        [_requestData changePlayerParent:self.playerView.smallVideoView];
+        [_requestData changePlayerParent:self.playerView.smallVideoView.hdContentView];
         [_requestData changePlayerFrame:CGRectMake(0, 0, self.playerView.smallVideoView.frame.size.width, self.playerView.smallVideoView.frame.size.height)];
         [_requestData changeDocFrame:CGRectMake(0, 0,self.playerView.frame.size.width, self.playerView.frame.size.height)];
+        /// 3.17.3 new
+        _playerView.headerView.hidden = YES;
+        _kPlayerParent = _playerView.smallVideoView.headerView;
     }else{
-        [_requestData changeDocParent:self.playerView.smallVideoView];
+        [_requestData changeDocParent:self.playerView.smallVideoView.hdContentView];
         [_requestData changePlayerParent:self.playerView.hdContentView];
         [_requestData changePlayerFrame:CGRectMake(0, 0,self.playerView.frame.size.width, self.playerView.frame.size.height)];
         [_requestData changeDocFrame:CGRectMake(0, 0, self.playerView.smallVideoView.frame.size.width, self.playerView.smallVideoView.frame.size.height)];
+        /// 3.17.3 new
+        _playerView.headerView.hidden = NO;
+        _kPlayerParent = _playerView.headerView;
     }
-    [self.playerView bringSubviewToFront:self.marqueeView];
+    [self.playerView.hdContentView bringSubviewToFront:self.marqueeView];
     [self.playerView updateUITier];
-    [self updateUIWithAudioMode];
-    if (self.requestData.ijkPlayer) {
-        [self updatePlayerBaseInfoViewWithCompletion:nil];
-    }
+    /// 3.17.3 new
+    [self updateSupportView];
 }
 /**
  *    @brief    点击全屏按钮代理
@@ -449,29 +492,30 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     [self.view endEditing:YES];
     [APPDelegate.window endEditing:YES];
     [self.contentView.chatView resignFirstResponder];
+    self.docOrVideoFlag = tag;
     [self othersViewHidden:YES];
-    if (tag == 1) {
-        [_requestData changePlayerFrame:self.view.frame];
-    } else {
-        [_requestData changeDocFrame:self.view.frame];
-    }
-    if (self.requestData.ijkPlayer) {
-        [self updatePlayerBaseInfoViewWithCompletion:nil];
-    }
-    [self updateUIWithAudioMode];
-    WS(ws)
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [ws.marqueeView startMarquee];
-    });
-    self.screenLandScape = YES;
-    if (self.playerView.templateType != 1) {    
-        [self.playerView updateVoteWithLandScapeWithCompletion:^(BOOL result) {
-            [ws.voteView updateUIWithScreenLandScape:result];
-        }];
-        [self.playerView updateTestWithLandScapeWithCompletion:^(BOOL result) {
-            [ws.testView updateTestViewWithScreenlandscape:result];
-        }];
-    }
+//    if (tag == 1) {
+//        [_requestData changePlayerFrame:self.view.frame];
+//        /// 3.17.3 new
+//        _kPlayerParent.frame = self.view.frame;
+//    } else {
+//        [_requestData changeDocFrame:self.view.frame];
+//    }
+//    /// 3.17.3 new
+//    [self updateSupportView];
+//    WS(ws)
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [ws.marqueeView startMarquee];
+//    });
+//    self.screenLandScape = YES;
+//    if (self.playerView.templateType != 1) {
+//        [self.playerView updateVoteWithLandScapeWithCompletion:^(BOOL result) {
+//            [ws.voteView updateUIWithScreenLandScape:result];
+//        }];
+//        [self.playerView updateTestWithLandScapeWithCompletion:^(BOOL result) {
+//            [ws.testView updateTestViewWithScreenlandscape:result];
+//        }];
+//    }
 }
 /**
  *    @brief    点击退出按钮(返回竖屏或者结束直播)
@@ -480,29 +524,24 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  */
 - (void)backButtonClick:(UIButton *)sender changeBtnTag:(NSInteger)tag{
     WS(ws)
+    self.docOrVideoFlag = tag;
     if (sender.tag == 2) {//横屏返回竖屏
         self.screenLandScape = NO;
         [self othersViewHidden:NO];
-        if (tag == 1) {
-            [_requestData changePlayerFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
-        } else {
-            [_requestData changeDocFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
-        }
-        if (self.playerView.templateType != 1) {
-            [self.contentView updateVoteAndTestWithPortraitWithCompletion:^(BOOL result) {
-                [ws.testView updateTestViewWithScreenlandscape:result];
-                [ws.voteView updateUIWithScreenLandScape:result];
-            }];
-        }
-        if (self.requestData.ijkPlayer) {
-            [self updatePlayerBaseInfoViewWithCompletion:nil];
-        }
-        WS(ws)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.playerView.backButton.userInteractionEnabled = YES;
-            [ws.marqueeView startMarquee];
-        });
-        [self updateUIWithAudioMode];
+//        if (tag == 1) {
+//            [_requestData changePlayerFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+//            /// 3.17.3 new
+//            _kPlayerParent.frame = CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight);
+//        } else {
+//            [_requestData changeDocFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+//        }
+//        /// 3.17.3 new
+//        [self updateSupportView];
+//        WS(ws)
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            self.playerView.backButton.userInteractionEnabled = YES;
+//            [ws.marqueeView startMarquee];
+//        });
     }else if( sender.tag == 1){//结束直播
         [self creatAlertController_alert];
     }
@@ -514,9 +553,10 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
 - (void)othersViewHidden:(BOOL)hidden {
     self.screenLandScape = hidden;//设置横竖屏
     self.contentView.chatView.ccPrivateChatView.hidden = hidden;//隐藏聊天视图
-    self.isScreenLandScape = YES;//支持旋转
+    //self.isScreenLandScape = YES;//支持旋转
+    self.isScreenLandScape = hidden;
     [self interfaceOrientation:hidden? UIInterfaceOrientationLandscapeRight : UIInterfaceOrientationPortrait];
-    self.isScreenLandScape = NO;//不支持旋转
+    //self.isScreenLandScape = NO;//不支持旋转
     self.contentView.hidden = hidden;//隐藏互动视图
     [self.menuView hiddenMenuViews:hidden];
     self.announcementView.hidden = hidden;//隐藏公告视图
@@ -549,6 +589,7 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *    @brief    退出直播
  */
 - (void)exitPlayLive {
+    
     [self stopTimer];
     [self.requestData requestCancel];
     self.requestData = nil;
@@ -565,6 +606,13 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
         [self.menuView removeFromSuperview];
         [self.menuView removeAllInformationView];
     }
+    /// 3.17.3 new
+    if (_supportView) {
+        [_supportView kRelease];
+        [_supportView removeFromSuperview];
+        _supportView = nil;
+    }
+    
     //#ifdef LIANMAI_WEBRTC
     if (_playerView.lianMaiView) {
         [_playerView removeLianMaiView];
@@ -586,7 +634,7 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *    @brief    请求成功
  */
 - (void)requestSucceed {
-
+    NSLog(@"%s",__func__);
 }
 /**
  *    @brief    登录请求失败
@@ -598,8 +646,11 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     } else {
         message = reason;
     }
-    // 添加提示窗,提示message
-    [self addBanAlertView:message];
+    if (![message isEqualToString:self.errorTip]) {
+        // 添加提示窗,提示message
+        [self addBanAlertView:message];
+        self.errorTip = message;
+    }
 }
 
 #pragma mark- 功能代理方法 用哪个实现哪个-----
@@ -630,12 +681,11 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
             self.isPlayerLoadStateStalled = NO; //重试卡顿状态
             self.isShowBaseInfoView = NO;
             self.isPlayFailed = NO; //重置播放失败状态
-//            [self.playerBaseInfoView showTipStrWithType:HDPlayerBaseInfoViewTypeHidden withTipStr:@""];
-            if (self.playerBaseInfoView) {
-                [self.playerBaseInfoView removeFromSuperview];
-                self.playerBaseInfoView = nil;
+            /// 3.17.3 new
+            if (_supportView && _supportView.hidden == NO && !_isAudioMode) {
+                _kSupportBaseType = HDSSupportViewBaseTypeNone;
+                _supportView.hidden = YES;
             }
-            
             if (_playerView.loadingView) {
                 [_playerView.loadingView removeFromSuperview];
             }
@@ -672,8 +722,8 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *    @param    state   播放状态
  *              HDMovieLoadStateUnknown         未知状态
  *              HDMovieLoadStatePlayable        视频未完成全部缓存，但已缓存的数据可以进行播放
- *              HDMovieLoadStatePlaythroughOK   完成缓存
- *              HDMovieLoadStateStalled         数据缓存已经停止，播放将暂停
+ *              HDMovieLoadStatePlaythroughOK   缓冲已经完成
+ *              HDMovieLoadStateStalled         缓冲已经开始
  */
 - (void)HDMovieLoadStateDidChange:(HDMovieLoadState)state
 {
@@ -686,7 +736,8 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
         case HDMovieLoadStatePlaythroughOK:
             break;
         case HDMovieLoadStateStalled:{
-            self.isPlayerLoadStateStalled = YES;
+            /// 3.17.3 new
+            _isPlayerLoadStateStalled = YES;
         }break;
         default:
             break;
@@ -701,13 +752,13 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *  @param dictionary 翻页信息
  */
 - (void)onPageChange:(NSDictionary *)dictionary {
- 
+    
 }
 /**
  *    @brief     获取所有文档列表 需要调用getDocsList
  */
 - (void)receivedDocsList:(NSDictionary *)listDic {
-
+    
 }
 /**
  *    @brief    双击PPT
@@ -716,7 +767,7 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     if (_isLivePlay == NO) return;
     if (_screenLandScape) {//如果是横屏状态下
         _screenLandScape = NO;
-        _isScreenLandScape = YES;
+        //_isScreenLandScape = YES;
         // 新增方法 --> 处理全屏双击PPT退出全屏操作，统一由PlayView管理
         // 注：该方法不影响连麦操作
         [_playerView backBtnClickWithTag:2];
@@ -731,10 +782,10 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
         //#endif
     }else{
         _screenLandScape = YES;
-        _isScreenLandScape = YES;
-        [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
-        [UIApplication sharedApplication].statusBarHidden = YES;
-        _isScreenLandScape = NO;
+        //_isScreenLandScape = YES;
+//        [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+//        [UIApplication sharedApplication].statusBarHidden = YES;
+//        _isScreenLandScape = NO;
         // 新增方法 --> 处理双击PPT进入全屏操作，统一由PlayView管理
         // 注：该方法不影响连麦操作
         [_playerView quanpingBtnClick];
@@ -799,8 +850,9 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
         _playerView.menuView = _menuView;
     }else {
         if (_menuView) {
-            [_menuView removeFromSuperview];
-            _menuView = nil;
+            _menuView.hidden = YES;
+//            [_menuView removeFromSuperview];
+//            _menuView = nil;
         }
         return;
     }
@@ -826,8 +878,9 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *    @brief    收到在线人数
  */
 - (void)onUserCount:(NSString *)count {
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.playerView.userCountLabel.text = count;
+        [weakSelf.playerView updateRoomUserCount:[NSString stringWithFormat:@"%@",count]];
     });
 }
 
@@ -1126,6 +1179,7 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *    @brief  主讲开始推流
  */
 - (void)onLiveStatusChangeStart {
+    _isLivePlay = YES;
     [_playerView onLiveStatusChangeStart];
 }
 /**
@@ -1152,7 +1206,7 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
 {
     WS(ws)
     /** 1.抽奖1.0存在 移除抽奖1.0 */
-    if (_lotteryView) {
+    if (_lotteryView && model.haveLottery) {
         [_lotteryView removeFromSuperview];
     }
     /** 2.当前没有正在进行的抽奖,并且当前不在抽奖完成页面 */
@@ -1267,18 +1321,16 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  */
 - (void)play_loadVideoFail {
     self.isPlayFailed = YES;
-    WS(ws)
-    if (self.playerBaseInfoView) {
-        [self.playerBaseInfoView removeFromSuperview];
-        self.playerBaseInfoView = nil;
+    /// 3.17.3 new
+    _kSupportBaseType = HDSSupportViewBaseTypePlayError;
+    [self updateSupportView];
+}
+// MARK: - 直播间封禁
+- (void)theRoomWasBanned {
+    if (_requestData) {
+        [_requestData shutdownPlayer];
     }
-    self.isShowBaseInfoView = YES;
-    [self updatePlayerBaseInfoViewWithCompletion:^(BOOL result) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSString *type = ws.isAudioMode == YES ? AUDIO_ERROR : PLAY_ERROR;
-            [ws.playerBaseInfoView showTipStrWithType:HDPlayerBaseInfoViewTypeWithError withTipStr:type];
-        });
-    }];
+    [self.playerView theRoomWasBanned];
 }
 #pragma mark - 聊天禁言
 /**
@@ -1287,6 +1339,10 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  */
 - (void)onBanChat:(NSDictionary *) modeDic {
     NSInteger mode = [modeDic[@"mode"] integerValue];
+    if (mode == 2 && self.isAllowPublicChat == NO) {
+        return;
+    }
+    self.isAllowPublicChat = NO;
     NSString *str = ALERT_BANCHAT(mode == 1);
     //添加禁言弹窗
     [self addBanAlertView:str];
@@ -1304,6 +1360,10 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  */
 - (void)onUnBanChat:(NSDictionary *) modeDic {
     NSInteger mode = [modeDic[@"mode"] integerValue];
+    if (mode == 2 && self.isAllowPublicChat == YES) {
+        return;
+    }
+    self.isAllowPublicChat = YES;
     NSString *str = ALERT_UNBANCHAT(mode == 1);
     //添加禁言弹窗
     [self addBanAlertView:str];
@@ -1352,9 +1412,16 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
  *  isMain  1为视频为主,0为文档为主"
  */
 - (void)onSwitchVideoDoc:(BOOL)isMain {
-    if (_isSmallDocView) {
-        [_playerView onSwitchVideoDoc:isMain];
-    }
+    /// 修复大屏模版视频无画面
+    if (self.playerView.isOnlyVideoMode == YES) return;
+    __weak typeof(self) weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (isMain == YES) {
+            [weakSelf changeBtnClicked:1];
+        } else {
+            [weakSelf changeBtnClicked:2];
+        }
+    });
 }
 #pragma mark - 抽奖
 /**
@@ -1520,9 +1587,9 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
         [ws.requestData reply_vote_multiple:indexArray];
         ws.mySelectIndexArray = [indexArray mutableCopy];
     } singleNOSubmit:^(NSInteger index) {
-
+//        ws.mySelectIndex = index;
     } multipleNOSubmit:^(NSMutableArray *indexArray) {
-        
+//        ws.mySelectIndexArray = [indexArray mutableCopy];
     } isScreenLandScape:self.screenLandScape];
     //收起按钮
     voteView.cleanBlock = ^(BOOL result) {
@@ -1707,18 +1774,16 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
 - (void)onBufferSpeed:(NSString *)speed
 {
     if (self.isPlayerLoadStateStalled == YES && self.isPlayFailed != YES) {
-        self.isShowBaseInfoView = YES;
-        if (self.playerBaseInfoView) {
-            [self.playerBaseInfoView removeFromSuperview];
-            self.playerBaseInfoView = nil;
+        /// 3.17.3 new
+        if (_supportView) {
+            if (_supportView.hidden == YES) {
+                _supportView.hidden = NO;
+            }
+            [_supportView setSpeed:[NSString stringWithFormat:@"%@%@",PLAY_LOADING,speed]];
         }
-        if (self.requestData.ijkPlayer) {        
-            self.playerBaseInfoView = [[HDPlayerBaseInfoView alloc]initWithFrame:self.requestData.ijkPlayer.view.frame];
-            [self.requestData.ijkPlayer.view addSubview:self.playerBaseInfoView];
-            [self.requestData.ijkPlayer.view bringSubviewToFront:self.playerBaseInfoView];
-            NSString *type = self.isAudioMode == YES ? AUDIO_LOADING : PLAY_LOADING;
-            speed = speed.length > 0 ? speed : DEFAULT_LOADING_SPEED;
-            [self.playerBaseInfoView showTipStrWithType:HDPlayerBaseInfoViewTypeWithOther withTipStr:[NSString stringWithFormat:@"%@%@",type,speed]];
+    }else {
+        if (_supportView) {
+            [_supportView hiddenSpeed];
         }
     }
 }
@@ -1967,6 +2032,14 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
 - (void)allowSpeakInteraction:(BOOL)isAllow {
     [self.playerView allowSpeakInteraction:isAllow];
 }
+
+//- (void)onMediaCallUpStreamQuality:(HDSMediaNetworkQuality)quality {
+//
+//}
+//
+//- (void)onMediaCallDownStreamQuality:(NSString *)userID quality:(HDSMediaNetworkQuality)quality {
+//
+//}
 //#endif
 #pragma mark - 添加通知
 -(void)addObserver
@@ -2039,7 +2112,7 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
 -(CCPlayerView *)playerView{
     if (!_playerView) {
         //视频视图
-        _playerView = [[CCPlayerView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight) docViewType:_isSmallDocView];
+        _playerView = [[CCPlayerView alloc] initWithFrame:CGRectZero docViewType:_isSmallDocView];
         _playerView.delegate = self;
         WS(weakSelf)
         //切换音视频线路
@@ -2087,9 +2160,9 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
 -(CCInteractionView *)contentView{
     if (!_contentView) {
         WS(ws)
-        CGFloat y = HDGetRealHeight+SCREEN_STATUS;
-        CGFloat h = SCREEN_HEIGHT - y;
-        _contentView = [[CCInteractionView alloc] initWithFrame:CGRectMake(0, y, SCREEN_WIDTH,h) hiddenMenuView:^{
+//        CGFloat y = HDGetRealHeight+SCREEN_STATUS;
+//        CGFloat h = SCREEN_HEIGHT - y;
+        _contentView = [[CCInteractionView alloc] initWithFrame:CGRectZero hiddenMenuView:^{
             [ws hiddenMenuView];
         } chatBlock:^(NSString * _Nonnull msg) {
             [ws.requestData chatMessage:msg];
@@ -2220,38 +2293,132 @@ UIScrollViewDelegate,UITextFieldDelegate,CCPlayerViewDelegate>
     }];
 }
 #pragma mark - 屏幕旋转
-/**
- *    @brief    旋转方向
- *    @return   是否允许转屏
- */
-- (BOOL)shouldAutorotate {
-    if (self.isScreenLandScape == YES) {
-        return YES;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    BOOL isLaunchScreen = NO;
+    NSLog(@"  view 发生改变:%@", NSStringFromCGSize(size));
+    if (@available(iOS 16.0, *)) {
+        NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
+        UIWindowScene *scene = [array firstObject];
+        isLaunchScreen = scene.interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+    } else {
+        isLaunchScreen = [UIDevice currentDevice].orientation == UIDeviceOrientationLandscapeLeft;
     }
-    return NO;
+    NSLog(@"  将要%@", isLaunchScreen ? @"横屏" : @"竖屏");
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginChange:) object:nil];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"isLaunchScreen"] = @(isLaunchScreen);
+    [self performSelector:@selector(beginChange:) withObject:param afterDelay:0.25];
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return UIInterfaceOrientationPortrait;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAllButUpsideDown;
-}
 /**
  *    @brief    强制转屏
  *    @param    orientation   旋转方向
  */
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation {
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector  = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val = orientation;
-        // 从2开始是因为0 1 两个参数已经被selector和target占用
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
+    NSLog(@"  %s",__func__);
+    BOOL isLaunchScreen = orientation != UIInterfaceOrientationPortrait ? YES : NO;
+    AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    if (isLaunchScreen) {
+        // 全屏操作
+        appdelegate._allowRotation = YES;
+    } else {
+        // 退出全屏操作
+        appdelegate._allowRotation = NO;
+    }
+       
+    if (@available(iOS 16.0, *)) {
+        
+        void (^errorHandler)(NSError *error) = ^(NSError *error) {
+            NSLog(@"  强制%@错误:%@", isLaunchScreen ? @"横屏" : @"竖屏", error);
+        };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        SEL supportedInterfaceSelector = NSSelectorFromString(@"setNeedsUpdateOfSupportedInterfaceOrientations");
+        [self performSelector:supportedInterfaceSelector];
+        NSArray *array = [[UIApplication sharedApplication].connectedScenes allObjects];
+        UIWindowScene *scene = (UIWindowScene *)[array firstObject];
+        Class UIWindowSceneGeometryPreferencesIOS = NSClassFromString(@"UIWindowSceneGeometryPreferencesIOS");
+        if (UIWindowSceneGeometryPreferencesIOS) {
+            SEL initWithInterfaceOrientationsSelector = NSSelectorFromString(@"initWithInterfaceOrientations:");
+            UIInterfaceOrientationMask orientation = isLaunchScreen ? UIInterfaceOrientationMaskLandscapeRight : UIInterfaceOrientationMaskPortrait;
+            id geometryPreferences = [[UIWindowSceneGeometryPreferencesIOS alloc] performSelector:initWithInterfaceOrientationsSelector withObject:@(orientation)];
+            if (geometryPreferences) {
+                SEL requestGeometryUpdateWithPreferencesSelector = NSSelectorFromString(@"requestGeometryUpdateWithPreferences:errorHandler:");
+                if ([scene respondsToSelector:requestGeometryUpdateWithPreferencesSelector]) {
+                    [scene performSelector:requestGeometryUpdateWithPreferencesSelector withObject:geometryPreferences withObject:errorHandler];
+                }
+            }
+        }
+    } else {
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector  = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            int val = orientation;
+            // 从2开始是因为0 1 两个参数已经被selector和target占用
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
+    }
+}
+
+- (void)beginChange:(NSDictionary *)param {
+    BOOL isLaunchScreen = [[param objectForKey:@"isLaunchScreen"] boolValue];
+    [self updateSubViewConstraints:isLaunchScreen];
+}
+
+- (void)updateSubViewConstraints:(BOOL)isLaunchScreen {
+    if (isLaunchScreen == YES) {
+        [self.playerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(self.view);
+        }];
+        [_playerView layoutIfNeeded];
+        
+        if (self.docOrVideoFlag == 1) {
+            [_requestData changePlayerFrame:self.playerView.bounds];
+            /// 3.17.3 new
+            _kPlayerParent.frame = self.playerView.bounds;
+        } else {
+            [_requestData changeDocFrame:self.playerView.bounds];
+        }
+        /// 3.17.3 new
+        [self updateSupportView];
+        WS(ws)
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [ws.marqueeView startMarquee];
+        });
+        self.screenLandScape = YES;
+        if (self.playerView.templateType != 1) {
+            [self.playerView updateVoteWithLandScapeWithCompletion:^(BOOL result) {
+                [ws.voteView updateUIWithScreenLandScape:result];
+            }];
+            [self.playerView updateTestWithLandScapeWithCompletion:^(BOOL result) {
+                [ws.testView updateTestViewWithScreenlandscape:result];
+            }];
+        }
+    } else {
+        [self.playerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(SCREEN_STATUS);
+            make.left.right.equalTo(self.view);
+            make.height.mas_equalTo(HDGetRealHeight);
+        }];
+        [_playerView layoutIfNeeded];
+        
+        if (self.docOrVideoFlag == 1) {
+            [_requestData changePlayerFrame:self.playerView.bounds];
+            /// 3.17.3 new
+            _kPlayerParent.frame = self.playerView.bounds;
+        } else {
+            [_requestData changeDocFrame:self.playerView.bounds];
+        }
+        /// 3.17.3 new
+        [self updateSupportView];
+        WS(ws)
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.playerView.backButton.userInteractionEnabled = YES;
+            [ws.marqueeView startMarquee];
+        });
     }
 }
 

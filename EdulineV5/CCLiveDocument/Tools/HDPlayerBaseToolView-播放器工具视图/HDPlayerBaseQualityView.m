@@ -14,7 +14,7 @@
 
 static NSString *cellID = @"cellID";
 
-#define rowH 50
+#define rowH 75
 #define rowMargin 10    // 行间距
 #define maxMargin 40   // 最大间距
 
@@ -72,13 +72,16 @@ static NSString *cellID = @"cellID";
  */
 - (void)updateTableViewFrameWithQualityArrayCount:(NSInteger)count {
     CGFloat h = count * rowH + (count - 1) * rowMargin;
-    if (h != _qualityView.frame.size.height && h >= rowH) {
-        h = SCREEN_HEIGHT - h < maxMargin ? self.height - h : h;
-        CGFloat y = (SCREEN_HEIGHT - h) / 2;
-        CGFloat x = 0;
-        CGFloat w = self.frame.size.width;
-        _qualityView.frame = CGRectMake(x,y,w,h);
+    CGFloat y = 0;
+    CGFloat x = 0;
+    CGFloat w = self.frame.size.width;
+    if (h < SCREEN_HEIGHT) {
+        if (h < rowH) {
+            h = rowH;
+        }
+        y = (SCREEN_HEIGHT - h) / 2;
     }
+    _qualityView.frame = CGRectMake(x,y,w,h);
     [_qualityView reloadData];
     if (_qualityView.hidden == NO) {
         return;
@@ -104,15 +107,6 @@ static NSString *cellID = @"cellID";
     }
     cell.model = self.dataArray[indexPath.section];
     return cell;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return [[UIView alloc]init];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) return 0;
-    return rowMargin;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

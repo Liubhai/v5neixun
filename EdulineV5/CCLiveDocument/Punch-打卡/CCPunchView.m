@@ -241,6 +241,7 @@
     NSString *tipString = @"各位同学开始打卡";
     if ([[self.punchDict allKeys] containsObject:@"tips"]) {
         tipString = self.punchDict[@"tips"];
+        tipString = [tipString stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     }
     
     NSMutableAttributedString *string1 = [[NSMutableAttributedString alloc] initWithString:tipString attributes:@{NSFontAttributeName: [UIFont fontWithName:@"PingFang SC" size: 15],NSForegroundColorAttributeName: [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]}];

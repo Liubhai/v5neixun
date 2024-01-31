@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy)void(^hiddenSmallVideoBlock)(void);
 @property (nonatomic, copy)void(^changeDocView)(BOOL isScreenLandscape);
+
+/// 3.17.3 new
+@property (nonatomic, strong) UIView   *hdContentView;
+@property (nonatomic, strong) UIView   *headerView;
+
 /**
  初始化方法
 

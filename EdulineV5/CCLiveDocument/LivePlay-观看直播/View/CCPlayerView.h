@@ -10,7 +10,7 @@
 #import "CustomTextField.h"
 #import "InformationShowView.h"//提示框
 #import "SelectMenuView.h"//更多菜单
-#import "CCLoadingView.h"//加载
+#import "LoadingView.h"//加载
 #import "CCSDK/PlayParameter.h"
 //#ifdef LIANMAI_WEBRTC
 #import "LianmaiView.h"//连麦
@@ -69,7 +69,7 @@ typedef void (^cleanVoteAndTestBlock)(NSInteger type);//收起随堂测/答题�
 @property(nonatomic,strong)SelectMenuView               *menuView;//选择菜单视图
 @property (nonatomic,strong)CCDocView                   *smallVideoView;//文档或者小图
 
-@property (nonatomic,strong)CCLoadingView                 *loadingView;//加载视图
+@property (nonatomic,strong)LoadingView                 *loadingView;//加载视图
 @property (nonatomic,assign)BOOL                        endNormal;//是否直播结束
 @property (nonatomic,assign)NSInteger                   templateType;//房间类型
 @property (nonatomic,strong)InformationShowView         *informationViewPop;
@@ -83,6 +83,10 @@ typedef void (^cleanVoteAndTestBlock)(NSInteger type);//收起随堂测/答题�
 @property(nonatomic,copy) cleanVoteAndTestBlock         cleanVoteAndTestBlock;
 
 @property (nonatomic, strong) UIView                    *hdContentView;
+/// 3.17.3 new
+@property (nonatomic, strong) UIView                    *headerView;
+/// 3.19.0 new 视频为主
+@property (nonatomic, assign) BOOL                      isVideoMainScreen;
 
 //#ifdef LIANMAI_WEBRTC
 @property(nonatomic,strong)LianmaiView              *lianMaiView;//连麦
@@ -112,6 +116,9 @@ typedef void (^cleanVoteAndTestBlock)(NSInteger type);//收起随堂测/答题�
  *    @param    selected   是否显示连麦
  */
 -(void)menuViewSelected:(BOOL)selected;
+
+/// 直播间封禁
+- (void)theRoomWasBanned;
 
 #pragma mark - 直播状态相关代理
 /**
@@ -215,6 +222,10 @@ typedef void (^cleanVoteAndTestBlock)(NSInteger type);//收起随堂测/答题�
  *               4.主动调用切换音视频模式回调
  */
 - (void)HDReceivedVideoAudioLines:(NSDictionary *)dict;
+
+/// 3.19.0 new 更新直播间用户人数
+/// @param userCount 直播间人数
+- (void)updateRoomUserCount:(NSString *)userCount;
 
 //#ifdef LIANMAI_WEBRTC
 #pragma mark - 连麦相关

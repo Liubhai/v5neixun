@@ -59,7 +59,7 @@
     self = [super init];
     if (self) {
         self.frame = [UIScreen mainScreen].bounds;
-        self.titleLabel.text = title;
+        self.titleLabel.text = [NSString stringWithFormat:@"%@",title];
         self.alertStyle = CCAlertStyleActionAlert;
         if (sure != nil) {
             self.sureText = sure;//初始化确认字样

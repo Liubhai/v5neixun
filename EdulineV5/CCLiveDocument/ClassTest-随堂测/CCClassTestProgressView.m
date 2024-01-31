@@ -73,10 +73,21 @@
 -(void)updateWithResultDic:(NSDictionary *)resultDic isScreen:(BOOL)isScreen{
     int i = 0;
     _resultDic = resultDic;
-    
+    float percent = 0;
     float originY = isScreen?27:34;
     for (NSDictionary *dic in _resultDic[@"practice"][@"options"]) {
-        float percent = [dic[@"percent"] floatValue];
+        NSString *percentStr = [NSString stringWithFormat:@"%@",dic[@"percent"]];
+        if ([percentStr hasSuffix:@"%"]) {
+            NSString *temp = [percentStr stringByReplacingOccurrencesOfString:@"%" withString:@""];
+            percent = [temp floatValue] / 100;
+        } else {
+            percent = [percentStr floatValue];
+        }
+        if (percent < 0) {
+            percent = 0;
+        }else if (percent > 1) {
+            percent = 1;
+        }
         //取出text
         UILabel *textLabel = (UILabel *)_viewArr[i][0];
         textLabel.frame = CGRectMake(16, i * originY, 22, 12);
@@ -87,7 +98,7 @@
         
         //取出bgView
         CALayer *progressLayer = (CALayer *)_viewArr[i][2];
-        progressLayer.frame = CGRectMake(43, i * originY, 239 * percent / 100, 15);
+        progressLayer.frame = CGRectMake(43, i * originY, 239 * percent, 15);
         
         //取出countLabel
         UILabel *countLabel = (UILabel *)_viewArr[i][3];

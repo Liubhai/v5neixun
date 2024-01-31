@@ -64,6 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor blackColor];
     
     //设置导航栏
     self.navigationItem.leftBarButtonItem=self.leftBarBtn;
@@ -126,7 +127,10 @@
     _preview.frame =self.view.layer.bounds;
     [self.view.layer insertSublayer:_preview atIndex:0];
     //开始扫描
-    [_session startRunning];
+    __weak typeof(self) ws = self;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [ws.session startRunning];
+    });
     //添加扫描视图
     [self addScanViews];
     
@@ -146,7 +150,7 @@
     //添加中间视图
     [_overView addSubview:self.centerView];
     [_centerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.view).offset(87.5);
+        make.centerX.mas_equalTo(self.view).offset(0);
         make.top.mas_equalTo(self.view).offset(199);
         make.size.mas_equalTo(CGSizeMake(200, 200));
     }];
@@ -169,7 +173,7 @@
     //添加中间视图
     [_overView addSubview:self.centerView];
     [_centerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.view).offset(87.5);
+        make.centerX.mas_equalTo(self.view).offset(0);
         make.top.mas_equalTo(self.view).offset(199);
         make.size.mas_equalTo(CGSizeMake(200, 200));
     }];
@@ -339,31 +343,50 @@
             //扫描失败
             [self scanFailed];
         } else {
-            NSString *roomId = [result substringWithRange:NSMakeRange(rangeRoomId.location + rangeRoomId.length, rangeUserId.location - 1 - (rangeRoomId.location + rangeRoomId.length))];
-            if(self.index == 1) {//我要直播
-                NSString *userId = [result substringFromIndex:rangeUserId.location + rangeUserId.length];
-        //            NSLog(@"roomId = %@,userId = %@",roomId,userId);
-                SaveToUserDefaults(LIVE_USERID,userId);
-                SaveToUserDefaults(LIVE_ROOMID,roomId);
-            } else if(self.index == 2) {//观看直播
-                NSString *userId = [result substringFromIndex:rangeUserId.location + rangeUserId.length];
-        //            NSLog(@"roomId = %@,userId = %@",roomId,userId);
-                SaveToUserDefaults(WATCH_USERID,userId);
-                SaveToUserDefaults(WATCH_ROOMID,roomId);
-            } else if(self.index == 3) {//观看回放
-                [self parseCodeWithPlayBackStr:result roomId:roomId];
-            } else if(self.index == 4) { //观看离线回放
-        //            NSString *userId = [result substringWithRange:NSMakeRange(rangeUserId.location + rangeUserId.length, rangeLiveId.location - 1 - (rangeUserId.location + rangeUserId.length))];
-        //            NSString *liveId = [result substringFromIndex:rangeLiveId.location + rangeLiveId.length];
-        //            SaveToUserDefaults(PLAYBACK_USERID,userId);
-        //            SaveToUserDefaults(PLAYBACK_ROOMID,roomId);
-        //            SaveToUserDefaults(PLAYBACK_LIVEID,liveId);
-                SaveToUserDefaults(@"SCAN_RESULT",result);
-            }
+            [self hds_parseCodeWithPlayBackStr:result];
         }
     }
     [ws.navigationController popViewControllerAnimated:NO];
 }
+
+//MARK: - NewParseCodeMethod
+- (void)hds_parseCodeWithPlayBackStr:(NSString *)result {
+    
+    NSRange ra = [result rangeOfString:@"?"];
+    NSString *newUrl = [result substringFromIndex:(ra.location + 1)];
+    NSArray *array = [newUrl componentsSeparatedByString:@"&"];
+    for (NSInteger i = 0;i < array.count; i++ ) {
+        NSString *s = array[i];
+        /// 修复keyName为空导致崩溃问题
+        NSString *keyName = @"UNKNOW";
+        if ([s containsString:@"roomid"]) {
+            if (self.index == 1) {
+                keyName = LIVE_ROOMID;
+            } else if (self.index == 2) {
+                keyName = WATCH_ROOMID;
+            } else if (self.index == 3) {
+                keyName = PLAYBACK_ROOMID;
+            }
+        } else if ([s containsString:@"userid"]) {
+            if (self.index == 1) {
+                keyName = LIVE_USERID;
+            } else if (self.index == 2) {
+                keyName = WATCH_USERID;
+            } else if (self.index == 3) {
+                keyName = PLAYBACK_USERID;
+            }
+        } else if ([s containsString:@"recordid"]) {
+            if (self.index == 3) {
+                keyName = PLAYBACK_RECORDID;
+            }
+        } else {
+            keyName = @"UNKNOW";
+        }
+        s = [s substringFromIndex:([s rangeOfString:@"="].location + 1)];
+        SaveToUserDefaults(keyName,s);
+    }
+}
+
 //扫描失败
 -(void)scanFailed{
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:SCAN_FAILED message:SCAN_FAILED_MESSAGE preferredStyle:(UIAlertControllerStyleAlert)];

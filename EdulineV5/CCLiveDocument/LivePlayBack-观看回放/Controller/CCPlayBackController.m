@@ -11,10 +11,11 @@
 #import "CCSDK/RequestDataPlayBack.h"//sdk
 #import "CCSDK/SaveLogUtil.h"//日志
 #import "CCPlayBackInteractionView.h"//回放互动视图
-#import "HDPlayerBaseInfoView.h" //播放器信息view
-#import "HDAudioModeView.h"
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
+#import "HDSSupportView.h"
+#import "AppDelegate.h"
+
 //#ifdef LockView
 #import "CCLockView.h"//锁屏
 //#endif
@@ -28,6 +29,7 @@
  *  2.删除 #ifdef LockView 至 #endif之间的代码            *
  *******************************************************
  */
+
 
 @interface CCPlayBackController ()<RequestDataPlayBackDelegate,UIScrollViewDelegate, CCPlayBackViewDelegate>
 
@@ -68,8 +70,6 @@
 @property (nonatomic, assign)BOOL                       isShowRecordHistory;
 /** 视频总时长 */
 @property (nonatomic, assign)double                     videoTotalDuration;
-/** 播放器信息view */
-@property (nonatomic,strong)HDPlayerBaseInfoView    *playerBaseInfoView;
 /** 是否是在卡顿 */
 @property (nonatomic,assign)BOOL                    isPlayerLoadStateStalled;
 /** 播放失败 */
@@ -78,14 +78,23 @@
 @property (nonatomic,strong)InformationShowView      *tipView;
 /** 视音频模式 */
 @property (nonatomic,assign)BOOL                     isAudioMode;
-/** 音频模式 */
-@property (nonatomic, strong) HDAudioModeView        *audioModeView;
-/** 是否需要显示提示view */
-@property (nonatomic, assign) BOOL                   isShowBaseInfoView;
+
 /** 来电处理*/
 @property (nonatomic, strong)CTCallCenter            *callCenter;// 来电状态判断
 /** 是否已加载总时长 */
 @property (nonatomic, assign)BOOL                    isLoadedTotalTime;
+
+/// 流媒体辅助父视图
+@property (nonatomic, strong)UIView                     *hds_headerView;
+/// 流媒体辅助视图
+@property (nonatomic, strong)HDSSupportView             *supportView;
+/// 流媒体辅助视图类型
+@property (nonatomic, assign)HDSSupportViewBaseType     supportBaseType;
+
+/// 上次播放时间
+@property (nonatomic, assign) NSTimeInterval            lastPlayTime;
+@property (nonatomic, assign) NSInteger                 docOrVideoFlag;
+@property (nonatomic, assign) BOOL                      isLogout;
 
 @end
 
@@ -107,8 +116,10 @@
     
     _recordHistoryTime = 0;
     _recordHistoryCount = 0;
+    _lastPlayTime = 0;
     _isShowRecordHistory = NO;
     _isLoadedTotalTime = NO;
+    _supportBaseType = HDSSupportViewBaseTypeNone;//辅助视图类型
     
     [self setupUI];//设置UI布局 
     [self addObserver];//添加通知
@@ -116,6 +127,7 @@
 
     [self callCenterObserver];
 }
+
 
 /**
  *    @brief   回放翻页数据列表
@@ -139,7 +151,7 @@
 }
 
 - (void)videoStateChangeWithString:(NSString *)result {
-//    NSLog(@"---状态是%@",result);
+    
 }
 
 /**
@@ -189,7 +201,9 @@
 
 //集成SDK
 - (void)integrationSDK {
-    UIView *docView = _isSmallDocView ? _playerView.smallVideoView : _interactionView.docView;
+    
+    UIView *docView = _isSmallDocView ? _playerView.smallVideoView.hdContentView : _interactionView.docView;
+    self.hds_headerView = self.isSmallDocView ? self.playerView.smallVideoView.headerView : self.playerView.headerView;     //辅助父视图
     _parameter = [[PlayParameter alloc] init];
     _parameter.userId = GetFromUserDefaults(PLAYBACK_USERID);//userId
     _parameter.roomId = GetFromUserDefaults(PLAYBACK_ROOMID);//roomId
@@ -198,27 +212,52 @@
     _parameter.token = GetFromUserDefaults(PLAYBACK_PASSWORD);//密码
     _parameter.playerParent = docView;//视频视图
     // 1.默认视频小窗显示
-    _parameter.playerFrame = CGRectMake(0, 0, docView.frame.size.width, docView.frame.size.height);//文档小窗大小
-    _parameter.docParent = self.playerView;//文档小窗
+    _parameter.playerFrame = docView.bounds;//文档小窗大小
+    _parameter.docParent = self.playerView.contentView;//文档小窗
     // 2.默认文档大窗显示
-    _parameter.docFrame = CGRectMake(0, 0,self.playerView.frame.size.width, self.playerView.frame.size.height);//视频位置,ps:起始位置为视频视图坐标
+    _parameter.docFrame = self.playerView.contentView.bounds;//视频位置,ps:起始位置为视频视图坐标
     _parameter.security = YES;//是否开启https,建议开启
     _parameter.PPTScalingMode = 4;//ppt展示模式,建议值为4
     _parameter.pauseInBackGround = _pauseInBackGround;//后台是否暂停
     _parameter.defaultColor = @"#FFFFFF";//ppt默认底色，不写默认为白色
     _parameter.scalingMode = 1;//屏幕适配方式
-//    parameter.pptInteractionEnabled = !_isSmallDocView;//是否开启ppt滚动
     _parameter.pptInteractionEnabled = YES;
-//        parameter.groupid = self.groupId;//用户的groupId
+    _parameter.playbackCoreType = PlaybackCoreTypeDefualt;//设置核心播放器
     _requestDataPlayBack = [[RequestDataPlayBack alloc] initWithParameter:_parameter];
     _requestDataPlayBack.delegate = self;
     _parameter.tpl = 20;
     _pptScaleMode = _parameter.PPTScalingMode;
     /** 开启防录屏功能 */
-    [_requestDataPlayBack setAntiRecordScreen:YES];
+    [_requestDataPlayBack setAntiRecordScreen:NO];
     /* 设置playerView */
     [self.playerView showLoadingView];//显示视频加载中提示
+    
+    [self setupSupportView];//设置辅助视图
+    _playerView.headerView.hidden = YES;
 }
+
+// MARK: - 辅助视图
+/// 设置辅助视图
+- (void)setupSupportView {
+    WS(weakSelf)
+    if (_supportView) {
+        [_supportView removeFromSuperview];
+        _supportView = nil;
+    }
+    self.supportView = [[HDSSupportView alloc]initWithFrame:self.hds_headerView.bounds actionClosure:^{
+        [weakSelf.requestDataPlayBack retryReplay];
+    }];
+    [self.supportView setSupportBaseType:_supportBaseType boardView:self.hds_headerView];
+}
+
+/// 更新辅助视图
+- (void)updateSupportView {
+    if (_supportView.hidden) {
+        _supportView.hidden = NO;
+    }
+    [_supportView setSupportBaseType:_supportBaseType boardView:self.hds_headerView];
+}
+
 #pragma mark- 必须实现的代理方法
 /**
  *    @brief    请求回放地址成功 （已废弃）
@@ -244,7 +283,7 @@
     } else {
         message = reason;
     }
-    //  NSLog(@"请求失败:%@", message);
+
     NSArray *subviews = [APPDelegate.window subviews];
     
     // 如果没有子视图就直接返回
@@ -265,7 +304,7 @@
  *    @brief    播放器初始化完成 (会多次回调)
  */
 - (void)HDMediaPlaybackIsPreparedToPlayDidChange:(NSDictionary *)dict {
-    [self updatePlayerBaseInfoViewWithCompletion:nil];
+    
 }
 /**
  *    @brief    视频状态改变
@@ -279,23 +318,38 @@
  */
 - (void)HDMoviePlayBackStateDidChange:(HDMoviePlaybackState)state
 {
+    self.playerView.pauseButton.selected = state == HDMoviePlaybackStatePlaying ? NO : YES;
     switch (state)
     {
         case HDMoviePlaybackStateStopped: {
-            if (self.playerBaseInfoView) {
-                [self.playerBaseInfoView removeFromSuperview];
-                self.playerBaseInfoView = nil;
+            if (self.playerView.pauseButton.selected == NO) {
+                
             }
             break;
         }
         case HDMoviePlaybackStatePlaying:
         {
+            //#ifdef LockView
+            if (_pauseInBackGround == NO) {//后台支持播放
+                [self setLockView];//设置锁屏界面
+            }
+            //#endif
+            if (self.isPlayDone == YES) {
+                self.playerView.playDone = NO;
+                self.isPlayDone = NO;
+            }
+            if (self.playerView.pauseButton.selected == YES) {
+                
+            }
+            self.lastPlayTime = 0;
             self.isPlayerLoadStateStalled = NO;
-            self.isShowBaseInfoView = NO;
             self.isPlayFailed = NO;
-            if (self.playerBaseInfoView) {
-                [self.playerBaseInfoView removeFromSuperview];
-                self.playerBaseInfoView = nil;
+            if (_supportView && _supportView.hidden == NO && !_isAudioMode) {
+                _supportBaseType = HDSSupportViewBaseTypeNone;
+                _supportView.hidden = YES;
+            }
+            if (_playerView.loadingView) {
+                [_playerView.loadingView removeFromSuperview];
             }
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{            
                 if (_isShowRecordHistory == NO) {
@@ -309,31 +363,32 @@
             break;
         }
         case HDMoviePlaybackStatePaused: {
-
+            if (self.playerView.pauseButton.selected == NO) {
+                
+            }
             if(self.playerView.pauseButton.selected == YES && [_requestDataPlayBack isPlaying]) {
                 [_requestDataPlayBack pausePlayer];
             }
             if(self.playerView.loadingView && ![self.playerView.timer isValid]) {
-                //#ifdef LockView
-                if (_pauseInBackGround == NO) {//后台支持播放
-                    [self setLockView];//设置锁屏界面
-                }
-                //#endif
                 [self.playerView removeLoadingView];//移除加载视图
                 /* 当视频被打断时，重新开启视频需要校对时间 */
                 if (_playerView.slider.value != 0) {
                     _requestDataPlayBack.currentPlaybackTime = _playerView.slider.value;
-                    
+                
                     return;
                 }
+                
             }
             break;
         }
         case HDMoviePlaybackStateInterrupted:
+
             break;
         case HDMoviePlaybackStateSeekingForward:
+
             break;
         case HDMoviePlaybackStateSeekingBackward:
+
             break;
         default:
             break;
@@ -344,21 +399,27 @@
  *    @param    state   播放状态
  *              HDMovieLoadStateUnknown         未知状态
  *              HDMovieLoadStatePlayable        视频未完成全部缓存，但已缓存的数据可以进行播放
- *              HDMovieLoadStatePlaythroughOK   完成缓存
- *              HDMovieLoadStateStalled         数据缓存已经停止，播放将暂停
+ *              HDMovieLoadStatePlaythroughOK   缓冲已经完成
+ *              HDMovieLoadStateStalled         缓冲已经开始
  */
 - (void)HDMovieLoadStateDidChange:(HDMovieLoadState)state
 {
+    self.playerView.pauseButton.selected = YES;
     switch (state)
     {
         case HDMovieLoadStateUnknown:
+
             break;
         case HDMovieLoadStatePlayable:
+
             break;
         case HDMovieLoadStatePlaythroughOK:
+
             break;
         case HDMovieLoadStateStalled:{
+
             self.isPlayerLoadStateStalled = YES;
+            //[self onBufferSpeed:@""];
         }
             break;
         default:
@@ -378,23 +439,22 @@
         case HDMovieFinishReasonPlaybackEnded:
         {
             self.playerView.playDone = YES;
+            self.isPlayerLoadStateStalled = NO;
+            if (_supportView && _supportView.hidden == NO && !_isAudioMode) {
+                _supportBaseType = HDSSupportViewBaseTypeNone;
+                _supportView.hidden = YES;
+            }
         }
+
             break;
         case HDMovieFinishReasonUserExited:
+
             break;
         case HDMovieFinishReasonPlaybackError:{
-            if (self.playerBaseInfoView) {
-                [self.playerBaseInfoView removeFromSuperview];
-                self.playerBaseInfoView = nil;
-            }
-            WS(ws)
-            [self updatePlayerBaseInfoViewWithCompletion:^(BOOL result) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    ws.isPlayFailed = YES;
-                    NSString *type = ws.isAudioMode == YES ? AUDIO_ERROR : PLAY_ERROR;
-                    [ws.playerBaseInfoView showTipStrWithType:HDPlayerBaseInfoViewTypeWithError withTipStr:type];
-                });
-            }];
+            
+//            self.isPlayFailed = YES;
+//            self.supportBaseType = HDSSupportViewBaseTypePlayError;
+//            [self updateSupportView];
         }
             break;
         default:
@@ -408,18 +468,15 @@
 - (void)playback_loadVideoFail
 {
     self.isPlayFailed = YES;
-    self.isShowBaseInfoView = YES;
-    if (self.playerBaseInfoView) {
-        [self.playerBaseInfoView removeFromSuperview];
-        self.playerBaseInfoView = nil;
-    }
-    WS(ws)
-    [self updatePlayerBaseInfoViewWithCompletion:^(BOOL result) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSString *type = ws.isAudioMode == YES ? AUDIO_ERROR : PLAY_ERROR;
-            [ws.playerBaseInfoView showTipStrWithType:HDPlayerBaseInfoViewTypeWithError withTipStr:type];
-        });
-    }];
+    self.supportBaseType = HDSSupportViewBaseTypePlayError;
+    [self updateSupportView];
+}
+
+/// 3.21.0 new
+/// 回调单个聊天文件数据 （会多次回调）
+/// @param chats 聊天数组
+- (void)didReceiveChatMessage:(NSArray *)chats {
+    
 }
 
 /**
@@ -476,26 +533,27 @@
  */
 - (void)HDPlayerCurrentTime:(NSTimeInterval)currentTime totalTime:(NSTimeInterval)totalTime
 {
+    if (self.isLogout) return;
+    
     // 记录视频总时长
     self.videoTotalDuration = totalTime;
     if([_requestDataPlayBack isPlaying]) {
         [self.playerView removeLoadingView];
     }
     
-    if (self.recordHistoryTime < currentTime - 5 || self.recordHistoryTime - 5 > currentTime) {
-        self.recordHistoryCount = 0;
-        self.recordHistoryTime = currentTime;
-    }else {
-        if (currentTime != 0) {
-            self.recordHistoryCount++;
-        }
-    }
-    //持续播放5s进行记录并存储
     if (self.recordHistoryCount == 5) {
         self.recordHistoryTime = currentTime;
+        
         [self saveRecordHistoryPlayTime];
         self.recordHistoryCount = 0;
+    }else {
+        
+        if (currentTime != 0) {
+            self.recordHistoryCount++;
+            
+        }
     }
+    
     WS(ws)
     dispatch_async(dispatch_get_main_queue(), ^{
         //获取当前播放时间和视频总时长
@@ -504,10 +562,6 @@
         if (position != 0 && duration > 0 && position >= duration) {
             ws.playerView.playDone = YES;
         }
-        //存在播放器最后一点不播放的情况，所以把进度条的数据对到和最后一秒想同就可以了
-//        if(duration - position == 1 && (self.playerView.sliderValue == position || self.playerView.sliderValue == duration)) {
-//            position = duration;
-//        }
         /** 设置plaerView的滑块 */
         ws.playerView.slider.maximumValue = (int)duration;
         /** 更新播放总时长 */
@@ -517,11 +571,10 @@
             [ws.playerView updateUITier];
         }
         
-        ws.playTime = currentTime;
         //校对SDK当前播放时间
         if(position == 0 && ws.playerView.sliderValue != 0) {
-            ws.requestDataPlayBack.currentPlaybackTime = ws.playerView.sliderValue;
-            ws.playerView.slider.value = ws.playerView.sliderValue;
+//            ws.requestDataPlayBack.currentPlaybackTime = ws.playerView.sliderValue;
+//            ws.playerView.slider.value = ws.playerView.sliderValue;
         } else {
             ws.playerView.slider.value = position;
             ws.playerView.sliderValue = ws.playerView.slider.value;
@@ -532,21 +585,22 @@
         }
         
         //校对本地显示速率和播放器播放速率
-        if(ws.requestDataPlayBack.ijkPlayer.playbackRate != ws.playerView.playBackRate) {
-            ws.requestDataPlayBack.ijkPlayer.playbackRate = ws.playerView.playBackRate;
+        if ([ws.requestDataPlayBack getMediaRate] != ws.playerView.playBackRate) {
+            [ws.requestDataPlayBack setMediaRate:ws.playerView.playBackRate];
             //#ifdef LockView
             //校对锁屏播放器播放速率
-            [ws.lockView updatePlayBackRate:ws.requestDataPlayBack.ijkPlayer.playbackRate];
+            [ws.lockView updatePlayBackRate:[ws.requestDataPlayBack getMediaRate]];
             //#endif
-            //[self.playerView startTimer];
         }
-        if(ws.playerView.pauseButton.selected == NO && ws.requestDataPlayBack.ijkPlayer.playbackState == IJKMPMoviePlaybackStatePaused) {
+        
+        if (ws.playerView.pauseButton.selected == NO && [ws.requestDataPlayBack getMediaRate] == HDMoviePlaybackStatePaused) {
             //开启播放视频
             [ws.requestDataPlayBack startPlayer];
         }
         
         /*  加载聊天数据 */
         [ws parseChatOnTime:(int)ws.playerView.sliderValue];
+        ws.lastPlayTime = ws.playerView.sliderValue;
         //更新左侧label
         ws.playerView.leftTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", (int)(ws.playerView.sliderValue / 60), (int)(ws.playerView.sliderValue) % 60];
         //#ifdef LockView
@@ -573,13 +627,13 @@
     if (_playerView.quanpingButton.selected) {//如果是横屏状态下
         /* 横屏转竖屏 */
         _playerView.quanpingButton.selected = NO;
-        [_playerView turnPortrait];
+        //[_playerView turnPortrait];
         _interactionView.hidden = NO;
         [_playerView backBtnClickWithTag:2];
     }else{
         /* 竖屏转横屏 */
         _playerView.quanpingButton.selected = YES;
-        [_playerView turnRight];
+        //[_playerView turnRight];
         _interactionView.hidden = YES;
         [_playerView quanpingBtnClick];
     }
@@ -683,21 +737,6 @@
 - (void)HDReceivedVideoAudioLines:(NSDictionary *)dict {
     [self.playerView HDReceivedVideoAudioLines:dict];
 }
-/**
- *    @brief    更新音频视图UI
- */
-- (void)updateUIWithAudioMode {
-    if (_isAudioMode != YES) return;
-    if (self.audioModeView) {
-        [self.audioModeView removeFromSuperview];
-        self.audioModeView = nil;
-    }
-    if (self.requestDataPlayBack.ijkPlayer) {
-        self.audioModeView = [[HDAudioModeView alloc]initWithFrame:self.requestDataPlayBack.ijkPlayer.view.bounds];
-        [self.requestDataPlayBack.ijkPlayer.view addSubview:self.audioModeView];
-        [self.requestDataPlayBack.ijkPlayer.view bringSubviewToFront:self.audioModeView];
-    }
-}
 
 - (void)changePlayMode:(BOOL)isAudio {
     _isAudioMode = isAudio == YES ? YES : NO;
@@ -707,15 +746,17 @@
             NSInteger result = [results[@"success"] integerValue];
             [ws showTextWithIndex:result];
             [ws.playerView updateUITier];
-            [ws updateUIWithAudioMode];
+            ws.supportBaseType = HDSSupportViewBaseTypeAudio;
         }];
     }else {
         [_requestDataPlayBack changePlayMode:PLAY_MODE_TYEP_VIDEO completion:^(NSDictionary *results) {
             NSInteger result = [results[@"success"] integerValue];
             [ws showTextWithIndex:result];
             [ws.playerView updateUITier];
+            ws.supportBaseType = HDSSupportViewBaseTypeNone;
         }];
     }
+    [self updateSupportView];
 }
 
 /**
@@ -729,8 +770,10 @@
         [ws showTextWithIndex:result];
         [ws.playerView updateUITier];
         if (ws.isAudioMode == YES) {
-            [ws updateUIWithAudioMode];
+            ws.supportBaseType = HDSSupportViewBaseTypeAudio;
+            [ws updateSupportView];
         }
+
     }];
 }
 /**
@@ -869,7 +912,8 @@
 - (void)docLoadCompleteWithIndex:(NSInteger)index {
     WS(weakSelf)
     if (index == 0) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
             [weakSelf.playerView addSubview:weakSelf.marqueeView];
             [weakSelf.marqueeView startMarquee];
         });
@@ -888,18 +932,15 @@
 - (void)onBufferSpeed:(NSString *)speed
 {
     if (self.isPlayerLoadStateStalled == YES && self.isPlayFailed != YES) {
-        self.isShowBaseInfoView = YES;
-        if (self.playerBaseInfoView) {
-            [self.playerBaseInfoView removeFromSuperview];
-            self.playerBaseInfoView = nil;
+        if (_supportView) {
+            if (_supportView.hidden == YES) {
+                _supportView.hidden = NO;
+            }
+            [_supportView setSpeed:[NSString stringWithFormat:@"%@%@",PLAY_LOADING,speed]];
         }
-        if (self.requestDataPlayBack.ijkPlayer) {
-            self.playerBaseInfoView = [[HDPlayerBaseInfoView alloc]initWithFrame:self.requestDataPlayBack.ijkPlayer.view.frame];
-            [self.requestDataPlayBack.ijkPlayer.view addSubview:self.playerBaseInfoView];
-            [self.requestDataPlayBack.ijkPlayer.view bringSubviewToFront:self.playerBaseInfoView];
-            NSString *type = self.isAudioMode == YES ? AUDIO_LOADING : PLAY_LOADING;
-            speed = speed.length > 0 ? speed : DEFAULT_LOADING_SPEED;
-            [self.playerBaseInfoView showTipStrWithType:HDPlayerBaseInfoViewTypeWithOther withTipStr:[NSString stringWithFormat:@"%@%@",type,speed]];
+    }else {
+        if (_supportView) {
+            [_supportView hiddenSpeed];
         }
     }
 }
@@ -915,6 +956,13 @@
     [self.interactionView onParserChat:chatArr];
 }
 
+- (void)receivePracticeWithDic:(NSDictionary *)resultDic {
+
+}
+
+- (void)broadcastHistory_msg:(NSArray *)array {
+
+}
 #pragma mark- 问答
 /**
  *    @brief  收到提问&回答
@@ -931,7 +979,6 @@
         _requestDataPlayBack = nil;
     }
     [self removeObserver];
-
 }
 #pragma mark - 设置UI
 /**
@@ -956,15 +1003,17 @@
  */
 - (void)setupUI {
     //添加视频播放视图
-    _playerView = [[CCPlayBackView alloc] initWithFrame:CGRectMake(0, SCREEN_STATUS, SCREEN_WIDTH, HDGetRealHeight) docViewType:_isSmallDocView];
+    _playerView = [[CCPlayBackView alloc] initWithFrame:CGRectZero docViewType:_isSmallDocView];
     _playerView.delegate = self;
     
     //退出直播间回调
     WS(weakSelf)
     _playerView.exitCallBack = ^{
-        [weakSelf.requestDataPlayBack requestCancel];
-        weakSelf.requestDataPlayBack = nil;
+        weakSelf.isLogout = YES;
+        [weakSelf.requestDataPlayBack cancleTask];
         [weakSelf dismissViewControllerAnimated:YES completion:^{
+            [weakSelf.requestDataPlayBack requestCancel];
+            weakSelf.requestDataPlayBack = nil;
             weakSelf.playerView.delegate = nil;
             weakSelf.requestDataPlayBack.delegate = nil;
             [weakSelf.interactionView removeFromSuperview];
@@ -973,8 +1022,20 @@
             weakSelf.playerView = nil;
         }];
     };
+    
+    
+    _playerView.replayBtnTapClosure = ^{
+        [weakSelf.requestDataPlayBack replayPlayer];
+    };
+    
     //滑块滑动完成回调
     _playerView.sliderCallBack = ^(int duration) {
+        if (weakSelf.isPlayFailed == YES) {
+            weakSelf.playerView.slider.value = weakSelf.lastPlayTime;
+            weakSelf.playerView.sliderValue = weakSelf.lastPlayTime;
+            weakSelf.playerView.leftTimeLabel.text = [NSString stringWithFormat:@"%02d:%02d", (int)(weakSelf.playerView.sliderValue / 60), (int)(weakSelf.playerView.sliderValue) % 60];
+            return;
+        }
         // 拖动至视频结尾,视频播放完成
         if (duration >= self.videoTotalDuration) {
             weakSelf.requestDataPlayBack.currentPlaybackTime = duration-2;
@@ -987,30 +1048,29 @@
         /*  校对锁屏播放器进度 */
         [weakSelf.lockView updateCurrentDurtion:weakSelf.requestDataPlayBack.currentPlaybackTime];
 //#endif
-        if (weakSelf.requestDataPlayBack.ijkPlayer.playbackState != IJKMPMoviePlaybackStatePlaying) {
+        if ([weakSelf.requestDataPlayBack getMediaPlayStatus] != HDMoviePlaybackStatePlaying) {
             [weakSelf.requestDataPlayBack startPlayer];
-            //[weakSelf.playerView startTimer];
         }
         //隐藏历史播放记录view
         [weakSelf.playerView hiddenRecordHistoryPlayView];
     };
+    
     //滑块移动回调
     _playerView.sliderMoving = ^{
-        if (weakSelf.requestDataPlayBack.ijkPlayer.playbackState != IJKMPMoviePlaybackStatePaused) {
+        if ([weakSelf.requestDataPlayBack getMediaPlayStatus] != HDMoviePlaybackStatePaused) {
             [weakSelf.requestDataPlayBack pausePlayer];
         }
     };
+    
     //更改播放器速率回调
     _playerView.changeRate = ^(float rate) {
-        weakSelf.requestDataPlayBack.ijkPlayer.playbackRate = rate;
+        [weakSelf.requestDataPlayBack setMediaRate:rate];
     };
     //暂停/开始播放回调
     _playerView.pausePlayer = ^(BOOL pause) {
         if (pause) {
-            
             [weakSelf.requestDataPlayBack pausePlayer];
         }else{
-            
             [weakSelf.requestDataPlayBack startPlayer];
         }
     };
@@ -1029,12 +1089,24 @@
     };
     
     [self.view addSubview:self.playerView];
+    [self.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(SCREEN_STATUS);
+        make.left.right.equalTo(self.view);
+        make.height.mas_equalTo(HDGetRealHeight);
+    }];
+    [_playerView layoutIfNeeded];
     
     //添加互动视图
     CGFloat y = HDGetRealHeight+SCREEN_STATUS;
     CGFloat h = SCREEN_HEIGHT - y;
     self.interactionView = [[CCPlayBackInteractionView alloc] initWithFrame:CGRectMake(0, y, SCREEN_WIDTH,h) docViewType:_isSmallDocView];
     [self.view addSubview:self.interactionView];
+    [self.interactionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.playerView.mas_bottom);
+        make.left.right.mas_equalTo(self.view);
+        make.height.mas_equalTo(h);
+    }];
+    [_interactionView layoutIfNeeded];
 }
 //#ifdef LockView
 /**
@@ -1044,9 +1116,9 @@
     if (_lockView) {//如果当前已经初始化，return;
         return;
     }
-    _lockView = [[CCLockView alloc] initWithRoomName:_roomName duration:_requestDataPlayBack.ijkPlayer.duration];
+    _lockView = [[CCLockView alloc] initWithRoomName:_roomName duration:[_requestDataPlayBack playerDuration]];
     [self.view addSubview:_lockView];
-    [_requestDataPlayBack.ijkPlayer setPauseInBackground:self.pauseInBackGround];
+    [_requestDataPlayBack setpauseInBackGround:self.pauseInBackGround];
 }
 //#endif
 #pragma mark - playViewDelegate
@@ -1056,18 +1128,22 @@
  @param tag 1视频为主，2文档为主
  */
 -(void)quanpingBtnClicked:(NSInteger)tag{
-    if (tag == 1) {
-        [_requestDataPlayBack changePlayerFrame:self.view.frame];
-    } else {
-        [_requestDataPlayBack changeDocFrame:self.view.frame];
-    }
-    [self updateUIWithAudioMode];
-    //隐藏互动视图
-    [self hiddenInteractionView:YES];
-    [self updatePlayerBaseInfoViewWithCompletion:nil];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.marqueeView startMarquee];
-    });
+    
+    self.docOrVideoFlag = tag;
+    [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+//    if (tag == 1) {
+//        [_requestDataPlayBack changePlayerFrame:self.view.frame];
+//        self.hds_headerView.frame = self.view.bounds;
+//    } else {
+//        [_requestDataPlayBack changeDocFrame:self.view.frame];
+//    }
+//
+//    //隐藏互动视图
+//    [self hiddenInteractionView:YES];
+//    [self updateSupportView];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self.marqueeView startMarquee];
+//    });
 }
 /**
  返回按钮点击代理
@@ -1075,18 +1151,21 @@
  @param tag 1.视频为主，2.文档为主
  */
 -(void)backBtnClicked:(NSInteger)tag{
-    if (tag == 1) {
-        [_requestDataPlayBack changePlayerFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
-    } else {
-        [_requestDataPlayBack changeDocFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
-    }
-    //显示互动视图
-    [self hiddenInteractionView:NO];
-    [self updatePlayerBaseInfoViewWithCompletion:nil];
-    [self updateUIWithAudioMode];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.marqueeView startMarquee];
-    });
+    self.docOrVideoFlag = tag;
+    [self interfaceOrientation:UIInterfaceOrientationPortrait];
+    
+//    if (tag == 1) {
+//        [_requestDataPlayBack changePlayerFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+//        self.hds_headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight);
+//    } else {
+//        [_requestDataPlayBack changeDocFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+//    }
+//    //显示互动视图
+//    [self hiddenInteractionView:NO];
+//    [self updateSupportView];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self.marqueeView startMarquee];
+//    });
 }
 /**
  切换视频/文档按钮点击回调
@@ -1096,50 +1175,25 @@
 -(void)changeBtnClicked:(NSInteger)tag{
     if (tag == 2) {
         
-        [_requestDataPlayBack changeDocParent:self.playerView];
-        [_requestDataPlayBack changePlayerParent:self.playerView.smallVideoView];
-        [_requestDataPlayBack changeDocFrame:CGRectMake(0, 0,self.playerView.frame.size.width, self.playerView.frame.size.height)];
-        [_requestDataPlayBack changePlayerFrame:CGRectMake(0, 0, self.playerView.smallVideoView.frame.size.width, self.playerView.smallVideoView.frame.size.height)];
+        [_requestDataPlayBack changeDocParent:self.playerView.contentView];
+        [_requestDataPlayBack changeDocFrame:self.playerView.contentView.bounds];
+        [_requestDataPlayBack changePlayerParent:self.playerView.smallVideoView.hdContentView];
+        [_requestDataPlayBack changePlayerFrame:self.playerView.smallVideoView.hdContentView.bounds];
+        self.hds_headerView = self.playerView.smallVideoView.headerView;
+        self.playerView.headerView.hidden = YES; //修复文档适应宽度情况下文档无法滚动的问题
     }else{
-        [_requestDataPlayBack changeDocParent:self.playerView.smallVideoView];
-        [_requestDataPlayBack changePlayerParent:self.playerView];
-        [_requestDataPlayBack changePlayerFrame:CGRectMake(0, 0,self.playerView.frame.size.width, self.playerView.frame.size.height)];
-        [_requestDataPlayBack changeDocFrame:CGRectMake(0, 0, self.playerView.smallVideoView.frame.size.width, self.playerView.smallVideoView.frame.size.height)];
+        [_requestDataPlayBack changeDocParent:self.playerView.smallVideoView.hdContentView];
+        [_requestDataPlayBack changePlayerParent:self.playerView.contentView];
+        [_requestDataPlayBack changePlayerFrame:self.playerView.contentView.bounds];
+        [_requestDataPlayBack changeDocFrame:self.playerView.smallVideoView.hdContentView.bounds];
+        self.hds_headerView = self.playerView.headerView;
+        self.playerView.headerView.hidden = NO; //修复文档适应宽度情况下文档无法滚动的问题
     }
     [self.playerView bringSubviewToFront:self.marqueeView];
     [self.playerView updateUITier];
-    [self updateUIWithAudioMode];
-    if (self.requestDataPlayBack.ijkPlayer) {
-        [self updatePlayerBaseInfoViewWithCompletion:nil];
-    }
+    [self updateSupportView];
 }
-/**
- *    @brief    更新视频状态提示view
- */
-- (void)updatePlayerBaseInfoViewWithCompletion:(void (^)(BOOL result))completion
-{
-    if (self.isAudioMode == YES || self.isShowBaseInfoView != YES || !self.requestDataPlayBack.ijkPlayer) return;
-    if (self.playerBaseInfoView && self.playerBaseInfoView.superview != nil) {
-        [self.playerBaseInfoView updatePlayerBaseInfoViewWithFrame:self.requestDataPlayBack.ijkPlayer.view.bounds];
-    }else {
-        if (self.playerBaseInfoView) {
-            [self.playerBaseInfoView removeFromSuperview];
-            self.playerBaseInfoView = nil;
-        }
-        self.playerBaseInfoView = [[HDPlayerBaseInfoView alloc]initWithFrame:self.requestDataPlayBack.ijkPlayer.view.bounds];
-        [self.requestDataPlayBack.ijkPlayer.view addSubview:self.playerBaseInfoView];
-        [self.requestDataPlayBack.ijkPlayer.view bringSubviewToFront:self.playerBaseInfoView];
-        WS(weakSelf)
-        self.playerBaseInfoView.actionBtnClickBlock = ^(NSString * _Nonnull string) {
-            weakSelf.isShowBaseInfoView = YES;
-            [weakSelf.playerBaseInfoView showTipStrWithType:HDPlayerBaseInfoViewTypeWithhRetry withTipStr:PLAY_RETRY];
-            [weakSelf.requestDataPlayBack retryReplay];
-        };
-    }
-    if (completion) {
-        completion(YES);
-    }
-}
+
 /**
  隐藏互动视图
 
@@ -1204,16 +1258,10 @@
         _enterBackGround = NO;
     });
 //#ifdef LockView
-    /*  当视频播放被打断时，重新加载视频  */
-    if (!self.requestDataPlayBack.ijkPlayer.playbackState && self.isPlayDone != YES) {
-        [self.requestDataPlayBack replayPlayer];
+    if (self.isPlayDone == NO) {
         [self.lockView updateLockView];
     }
 //#endif
-    if (self.playerView.pauseButton.selected == NO && self.isPlayDone != YES) {
-        
-    }
-    
 }
 
 /**
@@ -1237,9 +1285,9 @@
         self.lockView.pauseCallBack = ^(BOOL pause) {
             weakSelf.playerView.pauseButton.selected = pause;
             if (pause) {
-                [weakSelf.requestDataPlayBack.ijkPlayer pause];
+                [weakSelf.requestDataPlayBack pausePlayer];
             }else{
-                [weakSelf.requestDataPlayBack.ijkPlayer play];
+                [weakSelf.requestDataPlayBack startPlayer];
             }
         };
         /*     快进/快退回调     */
@@ -1257,36 +1305,132 @@
  */
 - (void)applicationDidBecomeActiveNotification {
     
-    if (_enterBackGround == NO && ![_requestDataPlayBack isPlaying]) {
-        /*  如果当前视频不处于播放状态，重新进行播放,初始化播放状态 */
-        [_requestDataPlayBack replayPlayer];
+    if (_enterBackGround == NO) {
 //#ifdef LockView
         [_lockView updateLockView];
 //#endif
-    }else if (_enterBackGround == YES && ![_requestDataPlayBack isPlaying]) {
-        /** 开启后台暂停播放,重新进入前台后开始播放 */
-        [_requestDataPlayBack startPlayer];
     }
 }
 #pragma mark - 横竖屏旋转设置
-//旋转方向
-- (BOOL)shouldAutorotate {
-    if (self.playerView.isScreenLandScape == YES) {
-        return YES;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    BOOL isLaunchScreen = NO;
+    NSLog(@"view 发生改变:%@", NSStringFromCGSize(size));
+    if (@available(iOS 16.0, *)) {
+        NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
+        UIWindowScene *scene = [array firstObject];
+        isLaunchScreen = scene.interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+    } else {
+        isLaunchScreen = [UIDevice currentDevice].orientation == UIDeviceOrientationLandscapeLeft;
     }
-    return NO;
-}
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationPortrait;
+    NSLog(@"将要%@", isLaunchScreen ? @"横屏" : @"竖屏");
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginChange:) object:nil];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"isLaunchScreen"] = @(isLaunchScreen);
+    [self performSelector:@selector(beginChange:) withObject:param afterDelay:0.25];
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
-    if (self.playerView.isScreenLandScape == YES) {
-        return UIInterfaceOrientationMaskAllButUpsideDown;
+/**
+ *    @brief    强制转屏
+ *    @param    orientation   旋转方向
+ */
+- (void)interfaceOrientation:(UIInterfaceOrientation)orientation {
+    NSLog(@"%s",__func__);
+    BOOL isLaunchScreen = orientation != UIInterfaceOrientationPortrait ? YES : NO;
+    AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    if (isLaunchScreen) {
+        // 全屏操作
+        appdelegate._allowRotation = YES;
+    } else {
+        // 退出全屏操作
+        appdelegate._allowRotation = NO;
     }
-    return UIInterfaceOrientationMaskPortrait;
+       
+    if (@available(iOS 16.0, *)) {
+        
+        void (^errorHandler)(NSError *error) = ^(NSError *error) {
+            NSLog(@"强制%@错误:%@", isLaunchScreen ? @"横屏" : @"竖屏", error);
+        };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        SEL supportedInterfaceSelector = NSSelectorFromString(@"setNeedsUpdateOfSupportedInterfaceOrientations");
+        [self performSelector:supportedInterfaceSelector];
+        NSArray *array = [[UIApplication sharedApplication].connectedScenes allObjects];
+        UIWindowScene *scene = (UIWindowScene *)[array firstObject];
+        Class UIWindowSceneGeometryPreferencesIOS = NSClassFromString(@"UIWindowSceneGeometryPreferencesIOS");
+        if (UIWindowSceneGeometryPreferencesIOS) {
+            SEL initWithInterfaceOrientationsSelector = NSSelectorFromString(@"initWithInterfaceOrientations:");
+            UIInterfaceOrientationMask orientation = isLaunchScreen ? UIInterfaceOrientationMaskLandscapeRight : UIInterfaceOrientationMaskPortrait;
+            id geometryPreferences = [[UIWindowSceneGeometryPreferencesIOS alloc] performSelector:initWithInterfaceOrientationsSelector withObject:@(orientation)];
+            if (geometryPreferences) {
+                SEL requestGeometryUpdateWithPreferencesSelector = NSSelectorFromString(@"requestGeometryUpdateWithPreferences:errorHandler:");
+                if ([scene respondsToSelector:requestGeometryUpdateWithPreferencesSelector]) {
+                    [scene performSelector:requestGeometryUpdateWithPreferencesSelector withObject:geometryPreferences withObject:errorHandler];
+                }
+            }
+        }
+        #pragma clang diagnostic pop
+    } else {
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector  = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            int val = orientation;
+            // 从2开始是因为0 1 两个参数已经被selector和target占用
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
+    }
+}
+
+- (void)beginChange:(NSDictionary *)param {
+    BOOL isLaunchScreen = [[param objectForKey:@"isLaunchScreen"] boolValue];
+    [self updateSubViewConstraints:isLaunchScreen];
+}
+
+- (void)updateSubViewConstraints:(BOOL)isLaunchScreen {
+    if (isLaunchScreen == YES) {
+        
+        [self.playerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(self.view);
+        }];
+        [_playerView layoutIfNeeded];
+        
+        if (self.docOrVideoFlag == 1) {
+            [_requestDataPlayBack changePlayerFrame:self.view.frame];
+            self.hds_headerView.frame = self.view.bounds;
+        } else {
+            [_requestDataPlayBack changeDocFrame:self.view.frame];
+        }
+        
+        //隐藏互动视图
+        [self hiddenInteractionView:YES];
+        [self updateSupportView];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.marqueeView startMarquee];
+        });
+    } else {
+        
+        [self.playerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).offset(SCREEN_STATUS);
+            make.left.right.equalTo(self.view);
+            make.height.mas_equalTo(HDGetRealHeight);
+        }];
+        [_playerView layoutIfNeeded];
+        
+        if (self.docOrVideoFlag == 1) {
+            [_requestDataPlayBack changePlayerFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+            self.hds_headerView.frame = CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight);
+        } else {
+            [_requestDataPlayBack changeDocFrame:CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight)];
+        }
+        //显示互动视图
+        [self hiddenInteractionView:NO];
+        [self updateSupportView];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.marqueeView startMarquee];
+        });
+    }
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
@@ -1310,7 +1454,7 @@
             
             if ([call.callState isEqualToString:CTCallStateDisconnected]) {
                 [weakSelf.playerView.pauseButton setSelected:NO];
-                [weakSelf.requestDataPlayBack retryReplay];
+                [weakSelf.requestDataPlayBack startPlayer];
             }
         });
     };

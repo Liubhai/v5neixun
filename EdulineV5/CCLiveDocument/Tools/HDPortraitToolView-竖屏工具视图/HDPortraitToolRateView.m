@@ -49,7 +49,7 @@
     
     CGFloat mainTitleX = 24;
     CGFloat mainTitleY = 0;
-    CGFloat mainTitleW = 75;
+    CGFloat mainTitleW = 80;
     CGFloat mainTitleH = 50;
     _mainTitle = [[UILabel alloc]initWithFrame:CGRectMake(mainTitleX, mainTitleY, mainTitleW, mainTitleH)];
     _mainTitle.font = [UIFont systemFontOfSize:15];

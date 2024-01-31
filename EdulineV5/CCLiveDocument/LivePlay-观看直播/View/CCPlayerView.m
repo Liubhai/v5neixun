@@ -108,6 +108,7 @@
 @property (nonatomic, weak) MASConstraint               *userCountLabelConstraint;
 /// 连麦
 @property (nonatomic, assign) BOOL                      isWebRTCConnecting;
+
 @end
 
 @implementation CCPlayerView
@@ -188,9 +189,15 @@
     self.hdContentView.backgroundColor = [UIColor clearColor];
     [self addSubview:self.hdContentView];
     [self.hdContentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(ws);
+        make.left.right.width.height.mas_equalTo(ws);
     }];
-    [self.hdContentView layoutIfNeeded];
+    
+    self.headerView = [[UIView alloc]init];
+    self.headerView.hidden = YES;
+    [self addSubview:self.headerView];
+    [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.width.height.mas_equalTo(ws);
+    }];
     
     /** 上面阴影 */
     self.topShadowView =[[UIView alloc] init];
@@ -216,17 +223,7 @@
         make.width.height.mas_equalTo(44);
     }];
     [self.backButton addTarget:self action:@selector(backBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    /** 房间标题 */
-    UILabel * titleLabel = [[UILabel alloc] init];
-    _titleLabel = titleLabel;
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.font = [UIFont systemFontOfSize:FontSize_30];
-    [self.topShadowView addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(ws.backButton.mas_right);
-        make.centerY.equalTo(ws.backButton);
-        make.width.mas_lessThanOrEqualTo(ws.frame.size.width * 2 / 3); // 设置最小宽度
-    }];
+
     /** 更多按钮 */
     self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.moreBtn setImage:[UIImage imageNamed:@"player_top_more"] forState:UIControlStateNormal];
@@ -241,12 +238,13 @@
     UILabel *userCountLabel = [[UILabel alloc] init];
     _userCountLabel = userCountLabel;
     userCountLabel.textColor = [UIColor whiteColor];
+    userCountLabel.textAlignment = NSTextAlignmentCenter;
     userCountLabel.font = [UIFont systemFontOfSize:FontSize_24];
     [self.topShadowView addSubview:userCountLabel];
     [userCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(ws.backButton);
-        ws.userCountLabelConstraint = make.right.equalTo(ws).offset(-60).priorityHigh();
-        make.width.mas_lessThanOrEqualTo(50);
+        make.right.equalTo(ws.moreBtn.mas_left);
+        make.width.mas_equalTo(10);
     }];
     /** 在线人数logo */
     UIImageView * userCountLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"video_dis_people"]];
@@ -258,6 +256,19 @@
         make.centerY.mas_equalTo(ws.backButton);
         make.width.height.mas_equalTo(12);
     }];
+    
+    /** 房间标题 */
+    UILabel * titleLabel = [[UILabel alloc] init];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont systemFontOfSize:FontSize_30];
+    [self.topShadowView addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(ws.backButton.mas_right);
+        make.centerY.mas_equalTo(ws.backButton);
+        make.right.mas_equalTo(userCountLogo.mas_left).offset(-5);
+    }];
+    [_titleLabel layoutIfNeeded];
+    _titleLabel = titleLabel;
     /** 下阴影 */
     self.bottomShadowView =[[UIView alloc] init];
     UIImageView *bottomShadow = [[UIImageView alloc] init];
@@ -277,7 +288,7 @@
     [self.bottomShadowView addSubview:_quanpingButton];
     [self.quanpingButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(ws.bottomShadowView);
-        make.right.equalTo(ws.bottomShadowView.mas_right).offset(-5);
+        make.right.equalTo(ws).offset(-5);
         make.width.height.mas_equalTo(44);
     }];
     [self.quanpingButton addTarget:self action:@selector(quanpingBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -406,7 +417,7 @@
     self.liveUnStart = [[UIImageView alloc] init];
     self.liveUnStart.image = [UIImage imageNamed:@"live_streaming_unstart_bg"];
     [self addSubview:self.liveUnStart];
-    self.liveUnStart.frame = CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight);
+    //self.liveUnStart.frame = CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight);
     self.liveUnStart.hidden = YES;
     /** 直播未开始图片 */
     UIImageView * alarmClock = [[UIImageView alloc] init];
@@ -425,14 +436,33 @@
     self.unStart.font = [UIFont systemFontOfSize:FontSize_30];
     self.unStart.text = PLAY_UNSTART;
     [self.liveUnStart addSubview:self.unStart];
-    self.unStart.frame = CGRectMake(SCREEN_WIDTH/2-50, 135.5, 100, 30);
+    //self.unStart.frame = CGRectMake(20, 135.5, SCREEN_WIDTH - 40, 30);
     self.unStart1 = [[UILabel alloc] init];
     self.unStart1.textColor = [UIColor whiteColor];
     self.unStart1.alpha = 0.6f;
     self.unStart1.textAlignment = NSTextAlignmentCenter;
     self.unStart1.font = [UIFont systemFontOfSize:FontSize_30];
     [self.liveUnStart addSubview:self.unStart1];
-    self.unStart1.frame = CGRectMake(SCREEN_WIDTH/2-100, 160, 200, 30);
+    //self.unStart1.frame = CGRectMake(20, 160, SCREEN_WIDTH - 40, 30);
+    
+    [self.liveUnStart mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(ws);
+    }];
+    
+    [self.unStart mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(alarmClock.mas_bottom).offset(10);
+        make.left.mas_equalTo(ws.liveUnStart).offset(20);
+        make.right.mas_equalTo(ws.liveUnStart).offset(-20);
+        make.height.mas_equalTo(30);
+    }];
+    
+    [self.unStart1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(ws.unStart.mas_bottom).offset(10);
+        make.left.mas_equalTo(ws.liveUnStart).offset(20);
+        make.right.mas_equalTo(ws.liveUnStart).offset(-20);
+        make.height.mas_equalTo(30);
+    }];
+    
     /** 隐藏导航 */
     [self stopPlayerTimer];
     CCProxy *weakObject = [CCProxy proxyWithWeakObject:self];
@@ -440,7 +470,7 @@
     /** 视频小窗 */
     [self setSmallVideoView];
     /** 初始化弹幕 */
-    self.barrageView = [[CCBarrage alloc] initWithVideoView:self barrageStyle:NomalBarrageStyle ReferenceView:self];
+    self.barrageView = [[CCBarrage alloc] initWithVideoView:self.hdContentView barrageStyle:NomalBarrageStyle ReferenceView:self];
     /** 根据模板类型显示 收起答题卡/随堂测按钮 */
     if (_templateType != 1) {
         [self addSubview:self.cleanTestBtn];
@@ -506,6 +536,10 @@
  *    @brief    更多按钮点击事件
  */
 - (void)moreBtnClick:(UIButton *)sender {
+    if (_endNormal) {
+        // 直播未开始不能点击
+        return;
+    }
     if (self.touchupEvent) {
         self.touchupEvent();
     }
@@ -879,6 +913,11 @@
  */
 - (void)layouUI:(BOOL)screenLandScape {
     _screenLandScape = screenLandScape;
+    if (self.moreBtn.hidden == NO) {
+        [self updateMoreBtnConstraints:NO];
+    } else {
+        [self updateMoreBtnConstraints:YES];
+    }
     WS(ws)
     if (screenLandScape == YES) {
         /*  实现横屏状态下切换线路功能，将self.qingXiButton.hidden 设置为NO */
@@ -903,10 +942,10 @@
             make.height.mas_equalTo(64);
         }];
         if (self.changeButton.hidden != YES) {
-            [self.changeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.right.mas_equalTo(ws.bottomShadowView.mas_right).offset(-(10+offset));
-                make.centerY.mas_equalTo(ws.bottomShadowView);
-            }];
+//            [self.changeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                make.right.mas_equalTo(ws.bottomShadowView.mas_right).offset(-(10+offset));
+//                make.centerY.mas_equalTo(ws.bottomShadowView);
+//            }];
         }
 
         if (_isOnlyVideoMode == YES && self.qingXiButton.hidden != YES) {
@@ -916,11 +955,6 @@
         }
         /** 更新弹幕状态 */
         [self updataBarrageStatus];
-        
-        [self.moreBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(ws.topShadowView.mas_right).offset(-(offset+10));
-        }];
-        [self.moreBtn layoutIfNeeded];
         
         [self.backButton mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(ws.topShadowView.mas_left).offset(offset);
@@ -938,21 +972,10 @@
             make.centerY.mas_equalTo(ws.bottomShadowView);
         }];
         
-//        [self.contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(ws.danMuSettingBtn.mas_right).offset(10);
-//            make.centerY.mas_equalTo(ws.bottomShadowView);
-//        }];
-        
-        [self.userCountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(ws.moreBtn.mas_left).offset(-10);
-            make.centerY.mas_equalTo(ws.backButton);
-        }];
-        [self.userCountLabel layoutIfNeeded];
-        
         [self layoutIfNeeded];
         self.liveUnStart.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        self.unStart.frame = CGRectMake(SCREEN_WIDTH/2-50, 190, 100, 30);
-        self.unStart1.frame = CGRectMake(SCREEN_WIDTH/2-100, 210, 200, 30);
+        self.unStart.frame = CGRectMake(20, 190, SCREEN_WIDTH - 40, 30);
+        self.unStart1.frame = CGRectMake(20, 210, SCREEN_WIDTH - 40, 30);
     } else {
         self.isShowToolView = NO;
         self.cleanVoteBtn.hidden = YES;
@@ -973,11 +996,11 @@
         [self.bottomShadowView layoutIfNeeded]; //:横屏隐藏按钮不显示bug修复
         
         if (self.changeButton.hidden != YES) {
-            [self.changeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.right.mas_equalTo(ws.quanpingButton.mas_left).offset(-10);
-                make.centerY.mas_equalTo(ws.quanpingButton);
-            }];
-            [self.changeButton layoutIfNeeded];
+//            [self.changeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                make.right.mas_equalTo(ws.quanpingButton.mas_left).offset(-10);
+//                make.centerY.mas_equalTo(ws.quanpingButton);
+//            }];
+//            [self.changeButton layoutIfNeeded];
         }
         
         /*  关闭弹幕  */
@@ -988,23 +1011,60 @@
         }];
         [self.backButton layoutIfNeeded];
         
-        [self.moreBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(ws.topShadowView.mas_right).offset(-10);
-        }];
-        [self.moreBtn layoutIfNeeded];
-        
-        [self.userCountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(ws.moreBtn.mas_left).offset(-10);
-            make.centerY.mas_equalTo(ws.backButton);
-        }];
-        [self.userCountLabel layoutIfNeeded];
-        
         [self layoutIfNeeded];
         
         self.liveUnStart.frame = CGRectMake(0, 0, SCREEN_WIDTH, HDGetRealHeight);
-        self.unStart.frame = CGRectMake(SCREEN_WIDTH/2-50, 135.5, 100, 30);
-        self.unStart1.frame = CGRectMake(SCREEN_WIDTH/2-100, 160, 200, 30);
+        self.unStart.frame = CGRectMake(20, 135.5, SCREEN_WIDTH - 40, 30);
+        self.unStart1.frame = CGRectMake(20, 160, SCREEN_WIDTH - 40, 30);
     }
+}
+// MARK: - update
+/// 更新直播间在线人数
+/// @param userCount 在线人数
+- (void)updateRoomUserCount:(NSString *)userCount {
+    CGFloat width = userCount.length * 9;
+    if (width < 9) {
+        width = 9;
+    }
+    if (width > 45) {
+        width = 45;
+    }
+    CGFloat rightOffset = -10;
+    if (self.moreBtn.hidden == NO) {
+        rightOffset = -54;
+    }
+    _userCountLabel.text = [NSString stringWithFormat:@"%@",userCount];
+    [_userCountLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(width);
+    }];
+    [_userCountLabel layoutIfNeeded];
+}
+
+/// 更新更多按钮约束
+/// @param isHidden 是否隐藏
+- (void)updateMoreBtnConstraints:(BOOL)isHidden {
+    CGFloat offset = -10;
+    if (IS_IPHONE_X) {
+        offset = _screenLandScape == YES ? -54 : -10;
+    }
+    if (isHidden) {
+        __weak typeof(self) weakSelf = self;
+        [_moreBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(0);
+            make.right.mas_equalTo(weakSelf).offset(offset);
+        }];
+    } else {
+        __weak typeof(self) weakSelf = self;
+        [_moreBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(44);
+            make.right.mas_equalTo(weakSelf).offset(offset);
+        }];
+    }
+}
+
+- (void)setIsVideoMainScreen:(BOOL)isVideoMainScreen {
+    _isVideoMainScreen = isVideoMainScreen;
+    self.changeButton.tag = _isVideoMainScreen == YES ? 1 : 2;
 }
 
 /**
@@ -1326,9 +1386,10 @@
             self.setRemoteView(self.remoteView.frame);
         }
     //#endif
-    CGRect rect = [UIScreen mainScreen].bounds;
     if (_isSmallDocView) {
-        [self.smallVideoView setFrame:CGRectMake(rect.size.width -110, HDGetRealHeight+41+(IS_IPHONE_X? 44:20), 100, 75)];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{            
+            [self.smallVideoView setFrame:CGRectMake(self.frame.size.width -110, HDGetRealHeight+41+(IS_IPHONE_X? 44:20), 100, 75)];
+        });
     }
     [self layouUI:NO];
     //#ifdef LIANMAI_WEBRTC
@@ -1545,6 +1606,12 @@
             _showShadowCountFlag = 0;
         }
         return [super  hitTest:point withEvent:event];
+    }else if (point.y <= selfH / 2 + 40 && point.y >= selfH / 2 && point.x <= SCREEN_WIDTH / 2 + 20 && point.x >= SCREEN_WIDTH / 2 - 20) {
+        if (_showShadowCountFlag == 2) {
+            _showShadowCountFlag = 0;
+        }
+        UIButton *tes = (UIButton *)[self viewWithTag:1000];
+        return tes;
     }else {
         if (_showShadowCountFlag == 2) {
             _isShowShadowView = _isShowShadowView == YES ? NO : YES;
@@ -1678,9 +1745,11 @@
         _endNormal = YES;
         self.quanpingButton.hidden = YES;
         self.moreBtn.hidden = YES;
-        [self userCountChangePriority:NO];
+        [self updateMoreBtnConstraints:YES];
     } else {
         _endNormal = NO;
+        self.moreBtn.hidden = NO;
+        [self updateMoreBtnConstraints:NO];
         self.smallVideoView.hidden = NO;
         self.liveUnStart.hidden = YES;
         [self switchVideoDoc:_isMain];
@@ -1701,6 +1770,32 @@
         }
     }
 }
+// MARK: - 直播间封禁
+- (void)theRoomWasBanned {
+    if (_smallVideoView) {
+        _smallVideoView.hidden = YES;
+    }
+    if (_liveUnStart) {
+        _liveUnStart.hidden = NO;
+    }
+    if (_unStart) {
+        _unStart.hidden = NO;
+//        _unStart.text = ROOM_IS_BAN;
+    }
+    if (_unStart1) {
+        _unStart1.hidden = YES;
+    }
+    if (_quanpingButton) {
+        _quanpingButton.hidden = YES;
+    }
+    if (_changeButton) {
+        _changeButton.hidden = YES;
+    }
+    if (_moreBtn) {
+        _moreBtn.hidden = YES;
+        [self updateMoreBtnConstraints:YES];
+    }
+}
 
 /**
  *    @brief  主讲开始推流
@@ -1710,15 +1805,16 @@
     _endNormal = NO;
     if (_loadingView) {
         [_loadingView removeFromSuperview];
-        //    _loadingView = nil;
     }
-//    _loadingView = nil;
     self.moreBtn.hidden = NO;
-    [self userCountChangePriority:YES];
+    [self updateMoreBtnConstraints:NO];
     self.liveUnStart.hidden = YES;
     if ((_templateType == 4 || _templateType == 5) && _isSmallDocView) {
-        [self.smallVideoView removeFromSuperview];
-        [self addSmallView];
+        if (_smallVideoView) {
+            _smallVideoView.hidden = NO;
+        }else {
+            [self addSmallView];
+        }
         self.changeButton.hidden = NO;
     }
     if (_endNormal == NO) {
@@ -1735,9 +1831,9 @@
     _endNormal = endNormal;
     self.liveUnStart.hidden = endNormal == YES ? NO : YES;
     self.moreBtn.hidden = YES;
-    [self userCountChangePriority:NO];
+    [self updateMoreBtnConstraints:YES];
     if (self.smallVideoView) {
-        [self.smallVideoView removeFromSuperview];
+        self.smallVideoView.hidden = YES;
     }
     self.changeButton.hidden = YES;
     self.unStart.text = PLAY_OVER;
@@ -1746,22 +1842,6 @@
     self.qingXiButton.hidden = YES;
     [self bringSubviewToFront:_liveUnStart];
     [_loadingView removeFromSuperview];
-}
-
-// MARK: - 动态更新约束
-/// 动态更新房间人数约束
-/// @param isHigh 优先级 直播中优先级高 结束直播优先级低
-- (void)userCountChangePriority:(BOOL)isHigh {
-    WS(ws)
-    [self.userCountLabelConstraint uninstall];
-    [self.userCountLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        if (isHigh) {
-            ws.userCountLabelConstraint = make.right.equalTo(ws).offset(-60).priorityHigh();
-        } else {
-            ws.userCountLabelConstraint = make.right.equalTo(ws).offset(-10).priorityLow();
-        }
-    }];
-    [self.userCountLabel layoutIfNeeded];
 }
 
 #pragma mark- 视频或者文档大窗

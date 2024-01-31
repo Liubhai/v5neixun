@@ -183,6 +183,10 @@
  */
 - (void)durationSliderDone:(UISlider *)sender
 {
+    if (_playDone) {
+        return;
+    }
+    
     UIImage *image2 = [UIImage imageNamed:@"progressBar"];//图片模式，不设置的话会被压缩
     [_slider setThumbImage:image2 forState:UIControlStateNormal];//设置图片
     
@@ -198,10 +202,6 @@
     //滑块完成回调
     self.sliderCallBack(duration);
     
-    //更新播放按钮状态
-    _pauseButton.selected = NO;
-    [_pauseButton setImage:[UIImage imageNamed:@"video_pause"] forState:UIControlStateNormal];
-    
     _isUserTouching = NO; //拖拽结束 用户移除点击事件
     [self resetReplayState];//重置重播状态
     [self showOrHiddenShadowView];
@@ -214,14 +214,20 @@
     //当前有用户触摸事件
     _isUserTouching = YES;
     //重置重播状态
-    [self resetReplayState];
+    if (_playDone == NO) {
+        [self resetReplayState];
+    } else {
+        return;
+    }
     //更新当前时间
     int duration = (int)sender.value;
     _leftTimeLabel.text = [NSString stringWithFormat:@"%@",[self timeFormatted:duration]];
 //    NSLog(@"---滑动中时间:%@",_leftTimeLabel.text);
     //更新播放按钮状态
-    _pauseButton.selected = YES;
-    [_pauseButton setImage:[UIImage imageNamed:@"video_play"] forState:UIControlStateSelected];
+    if (_pauseButton.selected == NO) {
+        _pauseButton.selected = YES;
+        [_pauseButton setImage:[UIImage imageNamed:@"video_play"] forState:UIControlStateSelected];
+    }
     
     _slider.value = duration;
     //滑块移动回调
@@ -288,6 +294,24 @@
 
 - (void)newSetupUI {
     WS(weakSelf)
+    
+    /// 需要传给SDK用的视图
+    self.contentView = [[UIView alloc]init];
+    self.contentView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.contentView];
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.mas_equalTo(weakSelf);
+    }];
+    [self.contentView layoutIfNeeded];
+    
+    /// 顶部视图（展示辅助视图）
+    self.headerView = [[UIView alloc]init];
+    [self addSubview:self.headerView];
+    [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(weakSelf.contentView);
+    }];
+    [self.headerView layoutIfNeeded];
+    
     /** 控制层 */
     self.controlView = [[UIView alloc]init];
     [self addSubview:self.controlView];
@@ -315,6 +339,18 @@
         make.width.height.mas_equalTo(44);
     }];
     [self.backButton layoutIfNeeded];
+
+    /** 更多按钮 */
+    self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.moreBtn setImage:[UIImage imageNamed:TOP_MOREBTN_IMAGE] forState:UIControlStateNormal];
+    [self.controlView addSubview:self.moreBtn];
+    [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(weakSelf.topShadow.mas_right).offset(-10);
+        make.centerY.mas_equalTo(weakSelf.backButton.mas_centerY);
+        make.width.height.mas_equalTo(44);
+    }];
+    [self.moreBtn layoutIfNeeded];
+    
     /** 房间标题 */
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.textColor = [UIColor whiteColor];
@@ -323,20 +359,9 @@
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(weakSelf.backButton.mas_right);
         make.centerY.mas_equalTo(weakSelf.backButton);
-        make.right.mas_equalTo(weakSelf.topShadow.mas_right).offset(-100);
+        make.right.mas_equalTo(weakSelf.moreBtn.mas_left);
     }];
     [self.titleLabel layoutIfNeeded];
-    /** 更多按钮 */
-    self.moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.moreBtn setImage:[UIImage imageNamed:TOP_MOREBTN_IMAGE] forState:UIControlStateNormal];
-    self.moreBtn.hidden = self.isOffline == YES ? YES : NO;
-    [self.controlView addSubview:self.moreBtn];
-    [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(weakSelf.topShadow.mas_right).offset(-10);
-        make.centerY.mas_equalTo(weakSelf.backButton.mas_centerY);
-        make.width.height.mas_equalTo(44);
-    }];
-    [self.moreBtn layoutIfNeeded];
     
     /** 下阴影 */
     self.bottomShadow = [[UIImageView alloc] init];
@@ -611,10 +636,16 @@
     WS(weakSelf)
     self.isShowLandRate = screenLandScape;
     self.quanpingButton.hidden = screenLandScape;
+    if (_isOffline == YES && screenLandScape == YES) {
+        self.moreBtn.hidden = YES;
+        [self updateMoreBtnConstraints:YES];
+    }else {
+        self.moreBtn.hidden = NO;
+        [self updateMoreBtnConstraints:NO];
+    }
     if (screenLandScape == YES) { /// 横屏
         self.speedButton.hidden = NO;
         if (self.isOffline == YES) {
-            self.moreBtn.hidden = YES;
             self.qualityBtn.hidden = self.isOffline == YES ? YES : NO;
         }else {
             self.qualityBtn.hidden = self.isSound == YES ? YES : NO;
@@ -646,11 +677,6 @@
             make.left.mas_equalTo(weakSelf.topShadow.mas_left).offset(offset);
         }];
         [self.backButton layoutIfNeeded];
-        
-        [self.moreBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(weakSelf.topShadow.mas_right).offset(-offset);
-        }];
-        [self.moreBtn layoutIfNeeded];
         
         self.liveEnd.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         self.unStart.frame = CGRectMake(SCREEN_WIDTH/2-50, 200, 100, 30);
@@ -759,11 +785,6 @@
         }];
         [self.slider layoutIfNeeded];
         
-        [self.moreBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(weakSelf.topShadow.mas_right).offset(-10);
-        }];
-        [self.moreBtn layoutIfNeeded];
-        
         [self.changeButton mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(weakSelf.pauseButton);
             make.right.mas_equalTo(weakSelf.quanpingButton.mas_left).offset(-5);
@@ -789,6 +810,36 @@
         });
     }
 }
+
+// MARK: - update
+- (void)updateMoreBtnConstraints:(BOOL)isHidden {
+    CGFloat offset = -10;
+    if (IS_IPHONE_X) {
+        offset = _isShowLandRate == YES ? -54 : -10;
+    }
+    if (isHidden) {
+        __weak typeof(self) weakSelf = self;
+        [_moreBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(0);
+            make.right.mas_equalTo(weakSelf).offset(offset);
+        }];
+    } else {
+        __weak typeof(self) weakSelf = self;
+        [_moreBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(44);
+            make.right.mas_equalTo(weakSelf).offset(offset);
+        }];
+    }
+}
+
+- (void)setIsOffline:(BOOL)isOffline {
+    _isOffline = isOffline;
+    if (_isOffline == YES && _isShowLandRate == YES) {
+        self.moreBtn.hidden = YES;
+        [self updateMoreBtnConstraints:YES];
+    }
+}
+
 #pragma mark - 更多工具
 /**
  *    @brief    更多按钮点击事件
@@ -867,7 +918,7 @@
         }
     }else if (model.type == HDPortraitToolTypeWithRate) {
         HDPlayerBaseModel *baseModel = [[HDPlayerBaseModel alloc]init];
-        baseModel.func = HDPlayerBaseToolViewTypeRate;
+        baseModel.func = HDPlayerBaseRate;
         baseModel.index = model.index;
         baseModel.desc = model.desc;
         baseModel.value = model.value;
@@ -907,7 +958,7 @@
             _playBackRate = 1.5;
             newModel.value = @"1.5x";
             self.changeRate(_playBackRate);
-        } else if([title isEqualToString:@"1.5x"]) {
+        }else if([title isEqualToString:@"1.5x"]) {
             [self.speedButton setTitle:@"0.5x" forState:UIControlStateNormal];
             _playBackRate = 0.5;
             newModel.value = @"0.5x";
@@ -1019,10 +1070,10 @@
         _playBackRate = 1.25;
         self.changeRate(_playBackRate);
     } else if([rate isEqualToString:@"1.5x"]) {
-           [self.speedButton setTitle:@"1.5x" forState:UIControlStateNormal];
-           _playBackRate = 1.5;
-           self.changeRate(_playBackRate);
-       } else if([rate isEqualToString:@"0.5x"]) {
+        [self.speedButton setTitle:@"1.5x" forState:UIControlStateNormal];
+        _playBackRate = 1.5;
+        self.changeRate(_playBackRate);
+    } else if([rate isEqualToString:@"0.5x"]) {
         [self.speedButton setTitle:@"0.5x" forState:UIControlStateNormal];
         _playBackRate = 0.5;
         self.changeRate(_playBackRate);
@@ -1332,6 +1383,7 @@
 - (void)setPlayDone:(BOOL)playDone
 {
     _playDone = playDone;
+    _slider.userInteractionEnabled = playDone == YES ? NO : YES;
     if (_replayView.hidden == YES && playDone == YES) {
         // 播放完成回调控制器 已播放完成
         if ([self.delegate respondsToSelector:@selector(playDone)]) {
@@ -1341,6 +1393,10 @@
         _replayView.hidden = NO;
         [self bringSubviewToFront:_replayView];
         [self bringSubviewToFront:_controlView];
+    }else {
+        _replayView.hidden = playDone == YES ? NO : YES;
+        _pauseButton.selected = NO;
+        [_pauseButton setImage:[UIImage imageNamed:@"video_pause"] forState:UIControlStateNormal];
     }
 }
 /**
@@ -1356,8 +1412,11 @@
     NSString *seekTimeStr = [self timeFormatted:_dragTime];
     _leftTimeLabel.text = [NSString stringWithFormat:@"%@",seekTimeStr];
     //滑块完成回调
-    self.sliderCallBack(_dragTime);
-    [_pauseButton setImage:[UIImage imageNamed:@"video_pause"] forState:UIControlStateNormal];
+//    self.sliderCallBack(_dragTime);
+    if (self.replayBtnTapClosure) {
+        self.replayBtnTapClosure();
+    }
+    //[_pauseButton setImage:[UIImage imageNamed:@"video_pause"] forState:UIControlStateNormal];
     //重置重播状态
     [self resetReplayState];
 }
@@ -1439,8 +1498,10 @@
         //更新底部工具栏当前显示时间
         _leftTimeLabel.text = [NSString stringWithFormat:@"%@",seekTimeStr];
         //重设暂停按钮状态
-        _pauseButton.selected = YES;
-        [_pauseButton setImage:[UIImage imageNamed:@"video_play"] forState:UIControlStateSelected];
+        if (_pauseButton.selected == NO) {
+            _pauseButton.selected = YES;
+            [_pauseButton setImage:[UIImage imageNamed:@"video_play"] forState:UIControlStateSelected];
+        }
         
         _slider.value = _dragTime;
         //滑块移动回调
@@ -1472,8 +1533,9 @@
         
         _isDragging = NO;
         //重设暂停按钮状态
-        _pauseButton.selected = NO;
-        [_pauseButton setImage:[UIImage imageNamed:@"video_pause"] forState:UIControlStateNormal];
+        //_pauseButton.selected = NO;
+        //NSLog(@"♦️ -- %s --> selected = NO",__func__);
+        //[_pauseButton setImage:[UIImage imageNamed:@"video_pause"] forState:UIControlStateNormal];
         [self showOrHiddenShadowView];
     }
 }
@@ -1528,21 +1590,21 @@
         }
     }
 }
-/**
- *    @brief    强制转屏
- */
-- (void)interfaceOrientation:(UIInterfaceOrientation)orientation {
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector  = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val = orientation;
-        // 从2开始是因为0 1 两个参数已经被selector和target占用
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
-    }
-}
+///**
+// *    @brief    强制转屏
+// */
+//- (void)interfaceOrientation:(UIInterfaceOrientation)orientation {
+//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+//        SEL selector  = NSSelectorFromString(@"setOrientation:");
+//        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+//        [invocation setSelector:selector];
+//        [invocation setTarget:[UIDevice currentDevice]];
+//        int val = orientation;
+//        // 从2开始是因为0 1 两个参数已经被selector和target占用
+//        [invocation setArgument:&val atIndex:2];
+//        [invocation invoke];
+//    }
+//}
 
 /**
  *    @brief    点击全屏按钮
@@ -1552,11 +1614,6 @@
     if (!sender.selected) {
         sender.selected = YES;
         sender.tag = 2;
-        self.isScreenLandScape = YES;
-        [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
-        self.isScreenLandScape = NO;
-        [UIApplication sharedApplication].statusBarHidden = YES;
-        [self turnRight];
         [self quanpingBtnClick];
     } else {
         sender.selected = NO;
@@ -1647,7 +1704,7 @@
     if (sender.tag == 2) {//横屏返回竖屏
         sender.tag = 1;
         [self endEditing:NO];
-        [self turnPortrait];
+//        [self turnPortrait];
         self.quanpingButton.selected = NO;
         if (self.delegate) {
             [self.delegate backBtnClicked:_changeButton.tag];
@@ -1658,8 +1715,9 @@
             make.top.mas_equalTo(view).offset(SCREEN_STATUS);
         }];
         [self layoutIfNeeded];
-        CGRect rect = view.frame;
-        [self.smallVideoView setFrame:CGRectMake(rect.size.width - 110, HDGetRealHeight + 41 + (IS_IPHONE_X ? 44 : 20), 100, 75)];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.smallVideoView setFrame:CGRectMake(self.frame.size.width - 110, HDGetRealHeight + 41 + (IS_IPHONE_X ? 44 : 20), 100, 75)];
+        });
         [self layoutUI:NO];
     }else if( sender.tag == 1){//结束直播
         [self creatAlertController_alert];
@@ -1720,6 +1778,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf exitPlayBack];
             weakSelf.backButton.enabled = NO;
+            [weakSelf.recordHistoryPlayView removeFromSuperview];
         });
     }];
     [APPDelegate.window addSubview:alertView];
@@ -1748,7 +1807,7 @@
     if (_loadingView) {
         return;
     }
-    _loadingView = [[CCLoadingView alloc] initWithLabel:PLAY_LOADING centerY:YES];
+    _loadingView = [[LoadingView alloc] initWithLabel:PLAY_LOADING centerY:YES];
     [self addSubview:_loadingView];
     [_loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(UIEdgeInsetsMake(50, 0, 0, 0));
@@ -1819,7 +1878,7 @@
     WS(weakSelf)
     _recordHistoryTime = time;
     NSString *timeStr = [self timeFormatted:time];
-    [self addSubview:self.recordHistoryPlayView];
+    [[UIApplication sharedApplication].keyWindow addSubview:self.recordHistoryPlayView];
     _recordHistoryPlayView.hidden = NO;
     CGFloat offset = _isShowLandRate == YES ? (IS_IPHONE_X ? 44 : 0) : 0;
     [self.recordHistoryPlayView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1872,22 +1931,22 @@
 //    [self.changeButton setTitle:title forState:UIControlStateNormal];
 }
 #pragma mark - 横竖屏旋转
-/**
- *    @brief    转为横屏
- */
-- (void)turnRight {
-    self.isScreenLandScape = YES;
-    [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
-    self.isScreenLandScape = NO;
-    [UIApplication sharedApplication].statusBarHidden = YES;
-}
-/**
- *    @brief    转为竖屏
- */
-- (void)turnPortrait {
-    self.isScreenLandScape = YES;
-    [self interfaceOrientation:UIInterfaceOrientationPortrait];
-    [UIApplication sharedApplication].statusBarHidden = NO;
-    self.isScreenLandScape = NO;
-}
+///**
+// *    @brief    转为横屏
+// */
+//- (void)turnRight {
+//    self.isScreenLandScape = YES;
+//    [self interfaceOrientation:UIInterfaceOrientationLandscapeRight];
+//    self.isScreenLandScape = NO;
+//    [UIApplication sharedApplication].statusBarHidden = YES;
+//}
+///**
+// *    @brief    转为竖屏
+// */
+//- (void)turnPortrait {
+//    self.isScreenLandScape = YES;
+//    [self interfaceOrientation:UIInterfaceOrientationPortrait];
+//    [UIApplication sharedApplication].statusBarHidden = NO;
+//    self.isScreenLandScape = NO;
+//}
 @end

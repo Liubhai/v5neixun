@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MySlider.h"
-#import "CCLoadingView.h"//加载
+#import "LoadingView.h"//加载
 #import "CCDocView.h"//文档视图
 #import "CCButton.h"
 #import "CCSDK/PlayParameter.h"
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong)NSTimer                     * timer;//计时器
 @property (nonatomic,strong)CCDocView                   * smallVideoView;//文档或者小图
 @property (nonatomic, strong)UIButton                   * smallCloseBtn;//小窗关闭按钮
-@property (nonatomic,strong)CCLoadingView                 * loadingView;//加载视图
+@property (nonatomic,strong)LoadingView                 * loadingView;//加载视图
 @property (nonatomic, weak)id<CCPlayBackViewDelegate>     delegate;//代理
 
 @property (nonatomic, strong)UILabel                    * titleLabel;//房间标题
@@ -77,6 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
 /** 视频缓存速度 */
 @property (nonatomic, copy) NSString                    * bufferSpeed;
 
+/// 内容视图
+@property (nonatomic, strong) UIView                    * contentView;
+/// 顶部视图
+@property (nonatomic, strong) UIView                    * headerView;
+
 @property (nonatomic,copy) void(^exitCallBack)(void);//退出直播间回调
 @property (nonatomic,copy) void(^sliderCallBack)(int);//滑块回调
 @property (nonatomic,copy) void(^sliderMoving)(void);//滑块移动回调
@@ -86,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) void(^selectedRod)(NSInteger);//切换线路
 @property (nonatomic,copy) void(^switchAudio)(BOOL);//切换音频模式 yes 音频 no 视频
 @property (nonatomic,copy) void(^selectedQuality)(NSString *quality);//切换清晰度
-
+@property (nonatomic,copy) void(^replayBtnTapClosure)(void);//重播
 
 
 /**
@@ -118,9 +123,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hiddenRecordHistoryPlayView;
 #pragma mark - 屏幕旋转
 //转为横屏
--(void)turnRight;
+//-(void)turnRight;
 //转为竖屏
--(void)turnPortrait;
+//-(void)turnPortrait;
 //添加小窗
 - (void)addSmallView;
 

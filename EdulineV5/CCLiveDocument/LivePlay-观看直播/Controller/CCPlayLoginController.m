@@ -12,10 +12,10 @@
 #import "CCSDK/RequestData.h"
 #import <AVFoundation/AVFoundation.h>
 #import "ScanViewController.h"
-#import "PrefixHeader.pch"
+//#import "CCLiveCloud.pch"
 #import <UIKit/UIKit.h>
 #import "CCPlayerController.h"
-#import "CCLoadingView.h"
+#import "LoadingView.h"
 #import "InformationShowView.h"
 
 @interface CCPlayLoginController ()<UITextFieldDelegate,RequestDataDelegate>
@@ -23,7 +23,7 @@
 @property (nonatomic, copy)NSString               * roomName;//房间名
 @property (nonatomic, strong)UILabel              * informationLabel;//直播间信息
 @property (nonatomic, strong)UIButton             * loginBtn;//登录按钮
-@property (nonatomic, strong)CCLoadingView          * loadingView;//加载视图
+@property (nonatomic, strong)LoadingView          * loadingView;//加载视图
 @property (nonatomic, strong)UIBarButtonItem      * rightBarBtn;//扫码
 @property (nonatomic, strong)UIBarButtonItem      * leftBarBtn;//返回
 @property (nonatomic, strong)TextFieldUserInfo    * textFieldUserId;//UserId
@@ -32,7 +32,6 @@
 @property (nonatomic, strong)TextFieldUserInfo    * textFieldUserPassword;//密码
 @property (nonatomic, strong)InformationShowView  * informationView;//提示
 @property (nonatomic, assign)BOOL                  isShowTipView;//是否已显示输入过长提示框
-
 @end
 
 @implementation CCPlayLoginController
@@ -142,7 +141,11 @@
  *    @brief    添加正在登录提示视图
  */
 -(void)showLoadingView{
-    _loadingView = [[CCLoadingView alloc] initWithLabel:LOGIN_LOADING centerY:NO];
+    if (_loadingView) {
+        [_loadingView removeFromSuperview];
+        _loadingView = nil;
+    }
+    _loadingView = [[LoadingView alloc] initWithLabel:LOGIN_LOADING];
     [self.view addSubview:_loadingView];
     
     [_loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -167,7 +170,6 @@
     playForPCVC.modalPresentationStyle = 0;
     [self presentViewController:playForPCVC animated:YES completion:^{
     }];
-//    [self.navigationController pushViewController:playForPCVC animated:YES];
 }
 /**
  *    @brief    登录请求失败
@@ -253,7 +255,6 @@
     _informationView = nil;
 }
 //监听touch事件
-// majiadeshiqing xianglaidoushinvrenshuolesuan chufeitashinvren xindiligandaofennuxiaoqingshuodao
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
 }
@@ -291,7 +292,7 @@
         [self handleTextFieldCharLength:textField];
     }
 }
-// linfengde zhangbei haonanguya
+
 - (void)handleTextFieldCharLength:(UITextField *)textField
 {
     NSString *toBeString = textField.text;
@@ -372,7 +373,7 @@
 }
 //键盘将要隐藏
 - (void)keyboardWillHide:(NSNotification *)notif {
-    // jiangherixia zaiguoneiyeshicunbunanxing talakaifangmen xianshengqing wojiagupo jiuzaitingnei shoulinazheyigedongxi shengaoyimiqibudao toufayoudianhuibai
+    
 }
 
 /**

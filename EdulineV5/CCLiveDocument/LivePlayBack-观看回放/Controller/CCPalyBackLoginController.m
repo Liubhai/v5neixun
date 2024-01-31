@@ -13,14 +13,14 @@
 #import "CCSDK/CCLiveUtil.h"
 #import "CCSDK/RequestDataPlayBack.h"
 #import "InformationShowView.h"
-#import "CCLoadingView.h"
+#import "LoadingView.h"
 #import "CCPlayBackController.h"
 #import "CCSDK/SaveLogUtil.h"
 @interface CCPalyBackLoginController ()<UITextFieldDelegate,RequestDataPlayBackDelegate>
 
 @property(nonatomic,strong)UILabel                      * informationLabel;//直播间信息
 @property(nonatomic,strong)UIButton                     * loginBtn;//登录
-@property(nonatomic,strong)CCLoadingView                  * loadingView;//加载视图
+@property(nonatomic,strong)LoadingView                  * loadingView;//加载视图
 @property(nonatomic,strong)UIBarButtonItem              * leftBarBtn;//返回按钮
 @property(nonatomic,strong)UIBarButtonItem              * rightBarBtn;//扫码
 @property(nonatomic,strong)TextFieldUserInfo            * textFieldUserId;//UserId
@@ -151,7 +151,7 @@
  添加正在登录提示视图
  */
 -(void)showLoadingView{
-    _loadingView = [[CCLoadingView alloc] initWithLabel:LOGIN_LOADING centerY:NO];
+    _loadingView = [[LoadingView alloc] initWithLabel:LOGIN_LOADING centerY:NO];
     [self.view addSubview:_loadingView];
     
     [_loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -422,6 +422,7 @@
     //添加通知
     [self addObserver];
 }
+
 #pragma mark - 懒加载
 //userId输入框
 -(TextFieldUserInfo *)textFieldUserId {

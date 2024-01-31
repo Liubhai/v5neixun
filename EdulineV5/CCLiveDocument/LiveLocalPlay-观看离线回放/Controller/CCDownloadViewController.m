@@ -14,7 +14,7 @@
 #import "MyTableViewCell.h"
 #import "AddUrlViewController.h"
 #import "OfflinePlayBackViewController.h"
-#import "CCLoadingView.h"
+#import "LoadingView.h"
 #import "Reachability.h"
 #import "CCProxy.h"
 #import "TextFieldUserInfo.h"
@@ -26,7 +26,7 @@
 @property(nonatomic,strong)UITableView                  * tableView;//下载列表
 @property(nonatomic,strong)CCDownloadModel              * downloadModel;//下载对象模型
 @property(nonatomic,strong)OfflinePlayBack              * offlinePlayBack;//解压
-@property(nonatomic,strong)CCLoadingView                  * loadingView;//加载视图
+@property(nonatomic,strong)LoadingView                  * loadingView;//加载视图
 
 @property(nonatomic,strong)NSTimer                      * timer;//定时器
 @property(nonatomic,assign)BOOL                           isNetwork;//网络状态
@@ -137,7 +137,7 @@
             } else {
                 downloadModel.decompressionState = 3;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.informationLabel.text = @"解压失败\t请重新下载";
+                    cell.informationLabel.text = @"数据包损坏，解压失败\t请重新下载";
                 });
             }
             
@@ -182,7 +182,6 @@
         cell.progressView.backgroundColor = CCRGBColor(255,0,23);
         [[CCDownloadSessionManager manager] resumeWithDownloadModel:model];
     } else if (model.state == CCDownloadStateCompleted) {
-//        cell.informationLabel.text = @"解压完成\t可播放";
         [cell updateUIToFull];
         cell.downloadImageView.image = [UIImage imageNamed:@"play"];
         if (model.decompressionState != 2) {
@@ -207,7 +206,7 @@
                     } else {
                         model.decompressionState = 3;
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            cell.informationLabel.text = @"解压失败\t请重新下载";
+                            cell.informationLabel.text = @"数据包损坏，解压失败\t请重新下载";
                         });
                     }
                     
@@ -241,7 +240,7 @@
  添加正在登录提示视图
  */
 -(void)showLoadingView{
-    _loadingView = [[CCLoadingView alloc] initWithLabel:@"" centerY:NO];
+    _loadingView = [[LoadingView alloc] initWithLabel:@"" centerY:NO];
     [self.view addSubview:_loadingView];
     
     [_loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -336,7 +335,7 @@
             }else if (model.decompressionState == 0) {
                 cell.informationLabel.text = @"点击解压";
             }else{
-                cell.informationLabel.text = @"解压失败";
+                cell.informationLabel.text = @"数据包损坏，解压失败";
             }
 
         }
@@ -435,13 +434,10 @@
 - (void)timerfunc
 {
     BOOL isNetwork = [self isExistenceNetwork];
-    _isNetwork = isNetwork;
-    if (isNetwork == NO) { //无网络暂停定时器并提示网络已断开
-        //NSLog(@"网络已断开");
-    }else {
-        //NSLog(@"网络正常");
+    if (_isNetwork != isNetwork) {
+        [self.tableView reloadData];
+        _isNetwork = isNetwork;
     }
-    [self.tableView reloadData];
 }
 
 #pragma mark - 懒加载

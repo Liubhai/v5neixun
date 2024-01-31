@@ -9,6 +9,7 @@
 #import "CCChatBaseImageCell.h"
 #import "Utility.h"
 #import "UIImage+animatedGIF.h"
+#import <SDWebImage/UIButton+WebCache.h>
 
 #import "CCChatViewDataSourceManager.h"
 
@@ -183,22 +184,13 @@
         [_headBtn addTarget:self action:@selector(headBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     //判断用户是否有头像，如果有,用网络头像，如果没有,用本地头像
+    NSString *headerUrl = @"";
     if(StrNotEmpty(model.useravatar) && [model.useravatar containsString:@"http"]) {
-        [self.queue addOperationWithBlock: ^{
-               NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:model.useravatar]]; //得到图像数据
-               UIImage *image = [UIImage imageWithData:imgData];
-        
-               //在主线程中更新UI
-               [[NSOperationQueue mainQueue] addOperationWithBlock: ^{
-                   //通过修改模型, 来修改数据
-                   [_headBtn setBackgroundImage:image forState:UIControlStateNormal];
-                   //刷新指定表格行
-//                   [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-               }];
-           }];
-    } else {
-        [_headBtn setBackgroundImage:[UIImage imageNamed:model.headImgName] forState:UIControlStateNormal];
+        headerUrl = model.useravatar;
+    }else {
+        headerUrl = model.headImgName;
     }
+    [_headBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:headerUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"lottery_icon_nor"]];
     [_headBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self).offset(15);
         make.top.mas_equalTo(self).offset(15);

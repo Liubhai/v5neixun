@@ -37,6 +37,7 @@
         self.layer.cornerRadius = 2;
         self.layer.masksToBounds = YES;
         self.rightView = self.rightView;
+        self.inputAccessoryView = [self addToolbar];
     }
     return self;
 }
@@ -50,6 +51,20 @@
 - (CGRect)leftViewRectForBounds:(CGRect)bounds {
     CGRect inset = CGRectMake(bounds.origin.x+5 , bounds.origin.y, 45, bounds.size.height);
     return inset;
+}
+
+- (UIToolbar *)addToolbar
+{
+    CGFloat kWidth = [UIScreen mainScreen].bounds.size.width;
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, kWidth, 35)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"收起" style:UIBarButtonItemStylePlain target:self action:@selector(hiddenKeyboard)];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [toolbar setItems:@[space,item]];
+    return toolbar;
+}
+
+- (void)hiddenKeyboard {
+    [self resignFirstResponder];
 }
 
 //- (CGRect)rightViewRectForBounds:(CGRect)bounds {

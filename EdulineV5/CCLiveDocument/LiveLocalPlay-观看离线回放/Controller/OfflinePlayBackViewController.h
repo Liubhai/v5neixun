@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OfflinePlayBackViewController : UIViewController
+
 /** 文件名 */
 @property (nonatomic, copy)NSString *fileName;
 
