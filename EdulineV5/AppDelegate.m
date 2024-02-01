@@ -23,10 +23,6 @@
 #import "Net_Path.h"
 #import "SurePwViewController.h"
 
-// 直播
-#import "TICManager.h"
-#import "TICConfig.h"
-
 #import "LanchAnimationVC.h"
 #import "HcdGuideView.h"
 #import "InstitutionsChooseVC.h"
@@ -66,7 +62,7 @@
 //                  别人笑我忒疯癫，我笑自己命太贱；
 //                  不见满街漂亮妹，哪个归得程序员？
 
-@interface AppDelegate ()<BuglyDelegate,TICStatusListener,UIAlertViewDelegate,WXApiDelegate>
+@interface AppDelegate ()<BuglyDelegate,UIAlertViewDelegate,WXApiDelegate>
 
 @property (weak, nonatomic) NTESQuickLoginManager *quickLoginManager;
 
@@ -974,25 +970,10 @@
                 }
                 [[NSUserDefaults standardUserDefaults] synchronize];
             } else {
-                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
-                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
-                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowCourseUserFace"];
-                [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowExamUserFace"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
             }
         } else {
-            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
-            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
-            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowCourseUserFace"];
-            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowExamUserFace"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     } enError:^(NSError * _Nonnull error) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseComment"];
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowCourseNote"];
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowCourseUserFace"];
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"ShowExamUserFace"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }];
 }
 
@@ -1063,20 +1044,6 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"ShowAudit"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
-}
-
-// MARK: - 初始化TX直播
-- (void)intTXSDK {
-    __weak typeof(self) weakSelf = self;
-    if (SWNOTEmptyStr(TXSDKID)) {
-        int sdkAppid = [TXSDKID intValue];
-        [[TICManager sharedInstance] init:sdkAppid callback:^(TICModule module, int code, NSString *desc) {
-            if(code == 0){
-                [[TICManager sharedInstance] addStatusListener:self];
-                weakSelf.configTXSDK(@"1");
-            }
-        }];
-    }
 }
 
 // 设备号快速注册登录

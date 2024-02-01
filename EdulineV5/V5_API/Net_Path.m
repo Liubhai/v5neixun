@@ -922,4 +922,9 @@
     return [Net_Path fullPath:@"user/exam/student" repalce:@"" byReplece:@""];
 }
 
+/** 课程弹题接口 */
++ (NSString *)courseExamPopInfoNet:(NSString *)courseId {
+    return [Net_Path fullPath:@"course/base/{id}/question" repalce:@"{id}" byReplece:courseId];
+}
+
 @end

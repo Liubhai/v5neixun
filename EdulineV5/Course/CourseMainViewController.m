@@ -57,6 +57,7 @@
     NSTimer *eventTimer;
     
     BOOL hasTest;//是否有考试
+    BOOL currentCourseHasFace;// 当前课程是否开启了人脸识别防挂机功能
 }
 
 /**三大子页面*/
@@ -1184,7 +1185,7 @@
 //            "study_status": 0, //报名状态【0：未报名；1：已报名，待审核；2：审核通过；3：审核未通过；】
             NSString *study_status = [NSString stringWithFormat:@"%@",_dataSource[@"study_status"]];
             if ([[_dataSource objectForKey:@"is_buy"] boolValue]) {
-                if ([ShowUserFace isEqualToString:@"1"]) {
+                if (currentCourseHasFace && ([_courseType isEqualToString:@"1"] || [_courseType isEqualToString:@"4"])) {
                     self.userFaceVerifyResult = ^(BOOL result) {
                         CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
                         vc.ID = _ID;
@@ -1492,7 +1493,7 @@
         return;
     }
     
-    if ([ShowUserFace isEqualToString:@"1"] && [cell.listFinalModel.model.course_type isEqualToString:@"1"]) {
+    if (currentCourseHasFace && [cell.listFinalModel.model.course_type isEqualToString:@"1"]) {
         self.userFaceVerifyResult = ^(BOOL result) {
             CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
             vc.ID = _ID;
@@ -1550,7 +1551,7 @@
         return;
     }
     
-    if ([ShowUserFace isEqualToString:@"1"] && [model.course_type isEqualToString:@"1"]) {
+    if (currentCourseHasFace && [model.course_type isEqualToString:@"1"]) {
         self.userFaceVerifyResult = ^(BOOL result) {
             CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
             vc.ID = _ID;
@@ -1584,6 +1585,13 @@
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                    /**
+                     "look_need_login": 0, //试看是否需要登录 [1:是 0:否]
+                     "is_marquee": 1, //是否开启跑马灯 [1:是 0:否]
+                     "onhook_type": 2, //防挂机 [0:不开启 1:弹窗 2:弹题 3:人脸]
+                     */
+                    NSString *onhook_type = [NSString stringWithFormat:@"%@",_dataSource[@"onhook_type"]];
+                    currentCourseHasFace = [onhook_type isEqualToString:@"3"];
                     _courselayer = [NSString stringWithFormat:@"%@",_dataSource[@"section_level"]];
                     [_courseTestLietArray removeAllObjects];
                     [_courseTestLietArray addObjectsFromArray:_dataSource[@"exam"]];

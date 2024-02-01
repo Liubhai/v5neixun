@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MessageModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,10 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *nameLabel;
 @property (strong, nonatomic) UIView *contentBackView;
 @property (strong, nonatomic) UILabel *contentLabel;
-@property (nonatomic, copy) MessageInfoModel *messageModel;
 
 - (void)setQuestionChatLeftInfo:(NSDictionary *)info;
-- (void)setQuestionChatLeftModel:(MessageInfoModel *)info;
 
 @end
 

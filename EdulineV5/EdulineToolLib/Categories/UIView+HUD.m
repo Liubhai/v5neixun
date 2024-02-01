@@ -39,7 +39,7 @@ static const void *HttpRequestHUDKey = &HttpRequestHUDKey;
     hud.mode = MBProgressHUDModeText;
     hud.label.text = hint;
     hud.margin = 10.f;
-    hud.yOffset = 150.f;
+    hud.offset = CGPointMake(0.f, 150.f);
     hud.removeFromSuperViewOnHide = YES;
     [hud hideAnimated:YES afterDelay:1];
 }

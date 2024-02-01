@@ -35,6 +35,7 @@ typedef enum {
 @property (nonatomic,copy)   UIColor * textColor;
 
 @property (nonatomic,assign) CGFloat speed;
+@property (nonatomic,assign) CGFloat rightTimeInterval;
 
 @property (nonatomic,assign) LMJTextScrollMode moveMode;
 @property (nonatomic,assign) LMJTextScrollMoveDirection moveDirection;

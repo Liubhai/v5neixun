@@ -108,4 +108,7 @@
 
 + (NSString *)reviseString: (NSString *)str;
 
+/** 字符串颜色转色值 */
++ (UIColor *)colorWithHexString:(NSString *)hexColor alpha:(float)opacity;
+
 @end

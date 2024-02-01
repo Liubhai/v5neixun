@@ -16,12 +16,20 @@ typedef void(^userFaceCourseNewDetailVerify)(BOOL result);
 typedef void(^userFaceCourseRecordDetailVerify)(BOOL result);
 typedef void(^userFaceCourseAutoDetailVerify)(BOOL result);
 
+typedef void(^userAlertCourseRecordDetailVerify)(BOOL result);
+
+typedef void(^userExamPopCourseRecordDetailVerify)(BOOL result);
+
 @interface CourseDetailPlayVC : BaseViewController
 
 @property (nonatomic, strong) userFaceCourseDetailVerify userFaceCourseDetailVerifyResult;
 @property (nonatomic, strong) userFaceCourseNewDetailVerify userFaceCourseNewDetailVerifyResult;
 @property (nonatomic, strong) userFaceCourseRecordDetailVerify userFaceCourseRecordDetailVerifyResult;
 @property (nonatomic, strong) userFaceCourseAutoDetailVerify userFaceCourseAutoDetailVerifyResult;
+
+@property (nonatomic, strong) userAlertCourseRecordDetailVerify userAlertCourseRecordDetailVerifyResult;
+
+@property (nonatomic, strong) userExamPopCourseRecordDetailVerify userExamPopCourseRecordDetailVerifyResult;
 
 @property (assign, nonatomic) BOOL isLive;//是不是直播  区分直播详情页和其他类型详情页
 

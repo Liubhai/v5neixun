@@ -22,6 +22,9 @@
 #import "CourseTreeListViewController.h"
 #import "OrderViewController.h"
 #import "WkWebViewController.h"
+#import "CourseExamPopViewController.h"
+
+#import "HorizontalScrollText.h"
 
 //
 #import "CourseListModelFinal.h"
@@ -30,18 +33,10 @@
 #import "AliyunVodPlayerView.h"
 #import "AliyunUtil.h"
 #import "AlivcVideoPlayListModel.h"
-#import "AppDelegate.h"
 
-// 直播测试
-#import "TICManager.h"
-#import "TICConfig.h"
 
-// 声网直播测试
-#import "LiveRoomViewController.h"
-#import "BCLiveRoomViewController.h"
-#import "OneToOneLiveRoomVC.h"
-//#import "AgoraRtm.h"
 #import "V5_UserModel.h"
+#import "AppDelegate.h"
 // 分享
 #import <UShareUI/UShareUI.h>
 #import <TencentOpenAPI/TencentOAuth.h>
@@ -88,6 +83,8 @@
 
 #import "FaceVerifyViewController.h"
 
+#import "VideoMarqueeViewController.h"
+
 #define FacePlayImageHeight 207
 
 //清晰度【FD(流畅)，LD(标清)，SD(高清)，HD(超清)，OD(原画)，2K(2K)，4K(4K)。】
@@ -99,6 +96,8 @@
     BOOL     isWebViewBig;//文档 是否放大
     BOOL isFullS;//当前是否全屏
     BOOL shouldLoad;
+    
+    BOOL isSameClassHourseID;// 是否是同一个课时ID
     
     NSInteger wordMax;
     CGFloat keyHeight;
@@ -116,6 +115,13 @@
     
     
     BOOL isPlayRecord;// 是否该用课程详情的最近在学来播放音视频课时(区别处理从课程详情页点击课时进入播放页)
+    
+    NSString *courseTypeTemp;// 课时类型中间变量(班级课切换点播课和直播课的时候)
+    NSDictionary *marqueeInfo;
+    
+    NSString *alert_popup_content;// 防挂机弹框内容
+    BOOL currentCourseHasFace;// 当前课程是否开启了人脸识别防挂机功能
+    NSString *onhook_type;
 }
 
 @property (strong, nonatomic) UIButton *zanButton;
@@ -177,9 +183,6 @@
 @property (strong, nonatomic) PDFView *pdfV;
 @property (strong, nonatomic) NSTimer *recordTimer;
 
-// 声网直播
-@property (nonatomic, strong) BaseEducationManager *educationManager;
-
 // 图文播放时候切换全屏或者半屏按钮
 @property (strong, nonatomic) UIButton *tuwenFullButton;
 
@@ -222,6 +225,18 @@
 /** 防止block里面引用时候无法释放控制器 */
 @property (strong, nonatomic) CourseListModelFinal *currentCourseFinalModel;
 @property (assign, nonatomic) BOOL freeLook;
+
+/** 防挂机弹框点击确认按钮验证 */
+@property (strong, nonatomic) UIView *popupBackView;
+@property (strong, nonatomic) UIView *popupWhiteView;
+@property (strong, nonatomic) UILabel *popuptipLabel;
+@property (strong, nonatomic) UILabel *popupContentLabel;
+@property (strong, nonatomic) UIButton *popupSureButton;
+
+@property (strong, nonatomic) UILabel *righttipLabel;
+
+@property (strong, nonatomic) HorizontalScrollText *noticeText;
+
 @end
 
 @implementation CourseDetailPlayVC
@@ -292,6 +307,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    // 防挂机类型
+    onhook_type = @"0"; //防挂机 [0:不开启 1:弹窗 2:弹题 3:人脸]
+    
     _faceVerifyBeforeId = @"";
     playerCanPlay = YES;
     wordMax = 400;
@@ -423,7 +442,7 @@
         UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
         if (orientation == UIInterfaceOrientationPortrait ) {
             width = ScreenWidth;
-            height = ScreenWidth * 9 / 16.0;
+            height = 207;//ScreenWidth * 9 / 16.0;
             topHeight = 0;
         }else{
             width = ScreenWidth;
@@ -447,8 +466,38 @@
         _playerView.fixedPortrait = false;
         _playerView.hidden = YES;
         _playerView.faceVerifyCanPlay = YES;
+        if (SWNOTEmptyDictionary(marqueeInfo)) {
+            NSString *open = [NSString stringWithFormat:@"%@",marqueeInfo[@"open"]];
+            NSString *open_user_name = [NSString stringWithFormat:@"%@",marqueeInfo[@"user_name"]];
+            NSString *open_phone = [NSString stringWithFormat:@"%@",marqueeInfo[@"phone"]];
+            if ([open_phone isEqualToString:@"1"] || [open_user_name isEqualToString:@"1"]) {
+                if ([wekself.currentCourseFinalModel.model.section_data.data_type isEqualToString:@"1"]) {
+                    [self addVideoMarqueeView];
+                }
+            }
+        }
     }
     return _playerView;
+}
+
+- (void)addVideoMarqueeView {
+    NSString *open_user_name = [NSString stringWithFormat:@"%@",marqueeInfo[@"username"]];
+    NSString *open_phone = [NSString stringWithFormat:@"%@",marqueeInfo[@"phone"]];
+    NSString *font_color = [NSString stringWithFormat:@"%@",marqueeInfo[@"font_color"]];
+    NSString *font_size = [NSString stringWithFormat:@"%@",marqueeInfo[@"font_size"]];
+    NSString *font_opacity = [NSString stringWithFormat:@"%@",marqueeInfo[@"font_opacity"]];
+    NSString *marqueejiange = [NSString stringWithFormat:@"%@",marqueeInfo[@"frequency"]];
+    NSString *marqueeNameString = [NSString stringWithFormat:@"%@",[V5_UserModel uname]];
+    NSString *marqueePhoneString = [NSString stringWithFormat:@"%@",[V5_UserModel userPhone]];
+    if ([open_phone isEqualToString:@"1"] || [open_user_name isEqualToString:@"1"]) {
+        marqueeNameString = [NSString stringWithFormat:@"%@%@",([open_user_name isEqualToString:@"1"] ? marqueeNameString : @""),([open_phone isEqualToString:@"1"] ? marqueePhoneString : @"")];
+        if(!SWNOTEmptyStr(marqueeNameString)) {
+            return;
+        }
+        VideoMarqueeViewController *vc = [[VideoMarqueeViewController alloc] initWithDict:@{@"content":marqueeNameString,@"show":@"10",@"times":marqueejiange,@"font_color":font_color,@"font_size":font_size,@"font_opacity":font_opacity}];
+        [_playerView addSubview:vc.view];
+        [self addChildViewController:vc];
+    }
 }
 
 - (void)makeWkWebView {
@@ -1243,8 +1292,14 @@
 - (void)aliyunVodPlayerView:(AliyunVodPlayerView *)playerView fullScreen:(BOOL)isFullScreen{
     NSLog(@"isfullScreen --%d",isFullScreen);
     isFullS = isFullScreen;
-    if (![AppDelegate delegate]._allowRotation) {
-        return;
+    if (@available(iOS 16, *)) {
+        AppDelegate *app = [AppDelegate delegate];
+        app._allowRotation = isFullScreen;
+        [self setNeedsUpdateOfSupportedInterfaceOrientations];
+    } else {
+        if (![AppDelegate delegate]._allowRotation) {
+            return;
+        }
     }
 //    _tableView.scrollEnabled = YES;
     if (isFullScreen) {
@@ -1285,7 +1340,7 @@
         _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
         [_buyCourseButton setTop:_freeLabel.bottom + 12];
         [_buyhourseButton setTop:_freeLabel.bottom + 12];
-        _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - ([_currentCourseFinalModel.model.course_type isEqualToString:@"2"] ? 0 : 50) - MACRO_UI_LIUHAI_HEIGHT);
+        _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - (([_currentCourseFinalModel.model.course_type isEqualToString:@"2"] || [ShowCourseNote isEqualToString:@"0"]) ? 0 : 50) - MACRO_UI_LIUHAI_HEIGHT);
         _titleImage.hidden = NO;
         [self.headerView bringSubviewToFront:self.titleImage];
         self.playerView.controlView.topView.backButton.hidden = YES;
@@ -1300,14 +1355,39 @@
 // MARK: - 处理强制竖屏
 - (void)changeOrientation:(UIInterfaceOrientation)orientation
 {
-    int val = orientation;
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
+    if (@available(iOS 16.0, *)) {
+        @try {
+            NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
+            UIWindowScene *ws = (UIWindowScene *)array[0];
+            Class GeometryPreferences = NSClassFromString(@"UIWindowSceneGeometryPreferencesIOS");
+            id geometryPreferences = [[GeometryPreferences alloc]init];
+            UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskLandscapeRight;
+            if (!isFullS) {
+                orientationMask = UIInterfaceOrientationMaskPortrait;
+            }
+            
+            [geometryPreferences setValue:@(orientationMask) forKey:@"interfaceOrientations"];
+            SEL sel_method = NSSelectorFromString(@"requestGeometryUpdateWithPreferences:errorHandler:");
+            void (^ErrorBlock)(NSError *err) = ^(NSError *err){
+                NSLog(@"屏幕旋转出错:%@", [err debugDescription]);
+            };
+            if ([ws respondsToSelector:sel_method]) {
+                (((void (*)(id, SEL,id,id))[ws methodForSelector:sel_method])(ws, sel_method,geometryPreferences,ErrorBlock));
+            }
+        } @catch (NSException *exception) {
+            NSLog(@"屏幕旋转出错:%@", exception.reason);
+        } @finally {
+        }
+    } else {
+        int val = orientation;
+        if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+            SEL selector = NSSelectorFromString(@"setOrientation:");
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIDevice currentDevice]];
+            [invocation setArgument:&val atIndex:2];
+            [invocation invoke];
+        }
     }
 }
 
@@ -1328,6 +1408,13 @@
         
         CourseListModelFinal *currentt = model;
         _currentCourseFinalModel = currentt;
+        
+        if (SWNOTEmptyStr(_faceVerifyBeforeId) && [_faceVerifyBeforeId isEqualToString:_currentCourseFinalModel.model.classHourId]) {
+            isSameClassHourseID = YES;
+        } else {
+            isSameClassHourseID = NO;
+        }
+        _faceVerifyBeforeId = _currentCourseFinalModel.model.classHourId;
         
         wekself.freeLookView.hidden = YES;
         
@@ -1358,7 +1445,7 @@
             } else if ([cell.listFinalModel.model.section_live.live_type isEqualToString:@"3"]) {
                 [self parseCodeStr:@""];
             } else {
-                [self getShengwangLiveInfo:model.model.classHourId courselistModel:model.model];
+                //
             }
         } else if (cell.listFinalModel.model.live_rate.status == 957) {
             [self showHudInView:self.view showHint:cell.listFinalModel.model.live_rate.status_text];
@@ -1388,7 +1475,7 @@
     
     // 先在这里处理入口验证
     // 有试看时长并且没有购买课时 = 试看
-    if ([ShowUserFace isEqualToString:@"1"] && !(model.model.audition>0 && !model.model.is_buy)) {
+    if (currentCourseHasFace && !(model.model.audition>0 && !model.model.is_buy)) {
         wekself.userFaceCourseDetailVerifyResult = ^(BOOL result) {
             if (result) {
 
@@ -1443,6 +1530,14 @@
                 }
 
                 if (cell.listFinalModel.model.audition <= 0 && !cell.listFinalModel.model.is_buy) {
+                    
+                    if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                        isSameClassHourseID = YES;
+                    } else {
+                        isSameClassHourseID = NO;
+                    }
+                    wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+                    
                     if ([cell.listFinalModel.model.price floatValue] > 0) {
                         OrderViewController *vc = [[OrderViewController alloc] init];
                         vc.orderTypeString = [wekself.courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
@@ -1457,6 +1552,10 @@
                 }
 
                 [wekself.playFileUrlArray removeAllObjects];
+                
+                // 重置跑马灯数据
+                marqueeInfo = nil;
+                [self dealCopyRight];
 
                 [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:wekself.ID pid:cell.listFinalModel.model.classHourId] WithAuthorization:[wekself.courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil paramDic:nil finish:^(id  _Nonnull responseObject) {
 
@@ -1529,11 +1628,21 @@
                                             }
                                         }
                                     }
+                                    if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                        isSameClassHourseID = YES;
+                                    } else {
+                                        isSameClassHourseID = NO;
+                                    }
+                                    wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
                                     [wekself tuwenStartTimer];
                                     return;
                                 }
                             } else {
                                 [wekself.playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                                
+                                // 获取跑马灯配置
+                                marqueeInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"marquee"]];
+                                [self dealCopyRight];
                                 if (!SWNOTEmptyArr(wekself.playFileUrlArray)) {
                                     [wekself.courseListVC.tableView reloadData];
                                     [wekself showHudInView:wekself.view showHint:@"该课时内容无效"];
@@ -1547,6 +1656,11 @@
                                             CourseListModelFinal *parentmodel = supermodel.child[panrentCellIndex.row];
                                             CourseListModelFinal *model = parentmodel.child[cellIndex.row];
                                             model.isPlaying = YES;
+                                            
+                                            model.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                                            model.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                                            model.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                                            
                                             CourseListModelFinal *curent = model;
                                             wekself.currentCourseFinalModel = curent;
                                             [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
@@ -1558,6 +1672,11 @@
                                                 CourseListModelFinal *parentmodel = wekself.courseListVC.courseListArray[panrentCellIndex.row];
                                                 CourseListModelFinal *model = parentmodel.child[cellIndex.row];
                                                 model.isPlaying = YES;
+                                                
+                                                model.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                                                model.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                                                model.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                                                
                                                 CourseListModelFinal *curent = model;
                                                 wekself.currentCourseFinalModel = curent;
                                                 [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
@@ -1567,6 +1686,11 @@
                                                 if (cellIndex) {
                                                     CourseListModelFinal *model = wekself.courseListVC.courseListArray[cellIndex.row];
                                                     model.isPlaying = YES;
+                                                    
+                                                    model.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                                                    model.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                                                    model.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                                                    
                                                     CourseListModelFinal *curent = model;
                                                     wekself.currentCourseFinalModel = curent;
                                                     [wekself.courseListVC.courseListArray replaceObjectAtIndex:cellIndex.row withObject:model];
@@ -1574,6 +1698,13 @@
                                                 }
                                             }
                                         }
+                                        
+                                        if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                            isSameClassHourseID = YES;
+                                        } else {
+                                            isSameClassHourseID = NO;
+                                        }
+                                        wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
 
                                         if (wekself.currentCourseFinalModel.model.audition > 0 && !wekself.currentCourseFinalModel.model.is_buy) {
                                             wekself.freeLook = YES;
@@ -1665,6 +1796,14 @@
         }
         
         if (cell.listFinalModel.model.audition <= 0 && !cell.listFinalModel.model.is_buy) {
+            
+            if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                isSameClassHourseID = YES;
+            } else {
+                isSameClassHourseID = NO;
+            }
+            wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+            
             if ([cell.listFinalModel.model.price floatValue] > 0) {
                 OrderViewController *vc = [[OrderViewController alloc] init];
                 vc.orderTypeString = [_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
@@ -1679,6 +1818,10 @@
         }
         
         [_playFileUrlArray removeAllObjects];
+        
+        // 重置跑马灯数据
+        marqueeInfo = nil;
+        [self dealCopyRight];
         
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:_ID pid:cell.listFinalModel.model.classHourId] WithAuthorization:[_courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil paramDic:nil finish:^(id  _Nonnull responseObject) {
             
@@ -1751,11 +1894,23 @@
                                     }
                                 }
                             }
+                            
+                            if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                isSameClassHourseID = YES;
+                            } else {
+                                isSameClassHourseID = NO;
+                            }
+                            wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+                            
                             [self tuwenStartTimer];
                             return;
                         }
                     } else {
                         [_playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                        
+                        // 获取跑马灯配置
+                        marqueeInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"marquee"]];
+                        [self dealCopyRight];
                         if (!SWNOTEmptyArr(_playFileUrlArray)) {
                             [_courseListVC.tableView reloadData];
                             [self showHudInView:wekself.view showHint:@"该课时内容无效"];
@@ -1769,6 +1924,11 @@
                                     CourseListModelFinal *parentmodel = supermodel.child[panrentCellIndex.row];
                                     CourseListModelFinal *model = parentmodel.child[cellIndex.row];
                                     model.isPlaying = YES;
+                                    
+                                    model.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                                    model.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                                    model.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                                    
                                     CourseListModelFinal *curent = model;
                                     _currentCourseFinalModel = curent;
                                     [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
@@ -1780,6 +1940,11 @@
                                         CourseListModelFinal *parentmodel = _courseListVC.courseListArray[panrentCellIndex.row];
                                         CourseListModelFinal *model = parentmodel.child[cellIndex.row];
                                         model.isPlaying = YES;
+                                        
+                                        model.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                                        model.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                                        model.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                                        
                                         CourseListModelFinal *curent = model;
                                         _currentCourseFinalModel = curent;
                                         [parentmodel.child replaceObjectAtIndex:cellIndex.row withObject:model];
@@ -1789,6 +1954,11 @@
                                         if (cellIndex) {
                                             CourseListModelFinal *model = _courseListVC.courseListArray[cellIndex.row];
                                             model.isPlaying = YES;
+                                            
+                                            model.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                                            model.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                                            model.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                                            
                                             CourseListModelFinal *curent = model;
                                             _currentCourseFinalModel = curent;
                                             [_courseListVC.courseListArray replaceObjectAtIndex:cellIndex.row withObject:model];
@@ -1797,6 +1967,12 @@
                                     }
                                 }
                                 
+                                if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                    isSameClassHourseID = YES;
+                                } else {
+                                    isSameClassHourseID = NO;
+                                }
+                                wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
                                 if (_currentCourseFinalModel.model.audition > 0 && !_currentCourseFinalModel.model.is_buy) {
                                     wekself.freeLook = YES;
                                 }
@@ -1884,6 +2060,13 @@
         curent.model = model;
         _currentCourseFinalModel = curent;
         
+        if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+            isSameClassHourseID = YES;
+        } else {
+            isSameClassHourseID = NO;
+        }
+        wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+        
         [wekself stopRecordTimer];
         [wekself stopTuwenTimer];
         [wekself destroyPlayVideo];
@@ -1908,7 +2091,7 @@
             } else if ([model.section_live.live_type isEqualToString:@"3"]) {
                 [self parseCodeStr:@""];
             } else {
-                [self getShengwangLiveInfo:model.classHourId courselistModel:model];
+                //
             }
         } else if (model.live_rate.status == 957) {
             [self showHudInView:self.view showHint:model.live_rate.status_text];
@@ -1937,7 +2120,7 @@
         return;
     }
     
-    if ([ShowUserFace isEqualToString:@"1"] && !(model.audition>0 && !model.is_buy)) {
+    if (currentCourseHasFace && !(model.audition>0 && !model.is_buy)) {
         wekself.userFaceCourseNewDetailVerifyResult = ^(BOOL result) {
             if (result) {
                 
@@ -2003,6 +2186,14 @@
                 }
                 
                 if (model.audition <= 0 && !model.is_buy) {
+                    
+                    if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                        isSameClassHourseID = YES;
+                    } else {
+                        isSameClassHourseID = NO;
+                    }
+                    wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+                    
                     if ([model.price floatValue] > 0) {
                         OrderViewController *vc = [[OrderViewController alloc] init];
                         vc.orderTypeString = [wekself.currentCourseFinalModel.model.course_type isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";//[_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
@@ -2026,6 +2217,10 @@
                     pmodel = pmodel.parentItem;
                 }
                 
+                // 重置跑马灯数据
+                marqueeInfo = nil;
+                [self dealCopyRight];
+                
                 [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:courseId pid:model.classHourId] WithAuthorization:nil paramDic:[wekself.courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil finish:^(id  _Nonnull responseObject) {
                     
                     if (SWNOTEmptyDictionary(responseObject)) {
@@ -2039,6 +2234,12 @@
                                 if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
                                     [wekself.courseTreeListVC.tableView reloadData];
                                     [wekself showHudInView:wekself.view showHint:@"该课时内容无效"];
+                                    if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                        isSameClassHourseID = YES;
+                                    } else {
+                                        isSameClassHourseID = NO;
+                                    }
+                                    wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
                                     return;
                                 } else {
                                     wekself.wkWebView.hidden = NO;
@@ -2062,12 +2263,24 @@
                                     curent.model = newClassCurrentModel;
                                     wekself.currentCourseFinalModel = curent;
                                     
+                                    if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                        isSameClassHourseID = YES;
+                                    } else {
+                                        isSameClassHourseID = NO;
+                                    }
+                                    wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+                                    
                                     [wekself tuwenStartTimer];
                                     
                                     return;
                                 }
                             } else {
                                 [wekself.playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                                
+                                // 获取跑马灯配置
+                                marqueeInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"marquee"]];
+                                [self dealCopyRight];
+                                
                                 if (!SWNOTEmptyArr(wekself.playFileUrlArray)) {
                                     [wekself.courseTreeListVC.tableView reloadData];
                                     [wekself showHudInView:wekself.view showHint:@"该课时内容无效"];
@@ -2079,9 +2292,20 @@
                                         CourseListModel *newClassCurrentModel = model;
                                         newClassCurrentModel.isPlaying = YES;
                                         
+                                        model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                                        model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                                        model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                                        
                                         CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
                                         curent.model = newClassCurrentModel;
                                         wekself.currentCourseFinalModel = curent;
+                                        
+                                        if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                            isSameClassHourseID = YES;
+                                        } else {
+                                            isSameClassHourseID = NO;
+                                        }
+                                        wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
                                         
                                         if (model.audition > 0 && !model.is_buy) {
                                             wekself.freeLook = YES;
@@ -2187,6 +2411,13 @@
         }
         
         if (model.audition <= 0 && !model.is_buy) {
+            
+            if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                isSameClassHourseID = YES;
+            } else {
+                isSameClassHourseID = NO;
+            }
+            wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
             if ([model.price floatValue] > 0) {
                 OrderViewController *vc = [[OrderViewController alloc] init];
                 vc.orderTypeString = [_currentCourseFinalModel.model.course_type isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";//[_courseType isEqualToString:@"2"] ? @"liveHourse" : @"courseHourse";
@@ -2210,6 +2441,10 @@
             pmodel = pmodel.parentItem;
         }
         
+        // 重置跑马灯数据
+        marqueeInfo = nil;
+        [self dealCopyRight];
+        
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:courseId pid:model.classHourId] WithAuthorization:nil paramDic:[_courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil finish:^(id  _Nonnull responseObject) {
             
             if (SWNOTEmptyDictionary(responseObject)) {
@@ -2223,6 +2458,12 @@
                         if (!SWNOTEmptyStr(responseObject[@"data"][@"fileurl_string"])) {
                             [_courseTreeListVC.tableView reloadData];
                             [self showHudInView:wekself.view showHint:@"该课时内容无效"];
+                            if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                isSameClassHourseID = YES;
+                            } else {
+                                isSameClassHourseID = NO;
+                            }
+                            wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
                             return;
                         } else {
                             _wkWebView.hidden = NO;
@@ -2242,16 +2483,30 @@
                             CourseListModel *newClassCurrentModel = model;
                             newClassCurrentModel.isPlaying = YES;
                             
+                            model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                            model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                            model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                            
                             CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
                             curent.model = newClassCurrentModel;
                             _currentCourseFinalModel = curent;
                             
+                            if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                isSameClassHourseID = YES;
+                            } else {
+                                isSameClassHourseID = NO;
+                            }
+                            wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
                             [self tuwenStartTimer];
                             
                             return;
                         }
                     } else {
                         [_playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                        
+                        // 获取跑马灯配置
+                        marqueeInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"marquee"]];
+                        [self dealCopyRight];
                         if (!SWNOTEmptyArr(_playFileUrlArray)) {
                             [_courseTreeListVC.tableView reloadData];
                             [self showHudInView:wekself.view showHint:@"该课时内容无效"];
@@ -2266,6 +2521,13 @@
                                 CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
                                 curent.model = newClassCurrentModel;
                                 _currentCourseFinalModel = curent;
+                                
+                                if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                    isSameClassHourseID = YES;
+                                } else {
+                                    isSameClassHourseID = NO;
+                                }
+                                wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
                                 
                                 if (model.audition > 0 && !model.is_buy) {
                                     wekself.freeLook = YES;
@@ -2413,6 +2675,13 @@
         curent.model = model;
         _currentCourseFinalModel = curent;
         
+        if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+            isSameClassHourseID = YES;
+        } else {
+            isSameClassHourseID = NO;
+        }
+        wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+        
         [wekself stopRecordTimer];
         [wekself stopTuwenTimer];
         [wekself destroyPlayVideo];
@@ -2425,7 +2694,7 @@
             } else if ([model.section_live.live_type isEqualToString:@"3"]) {
                 [self parseCodeStr:@""];
             } else {
-                [self getShengwangLiveInfo:model.classHourId courselistModel:model];
+                //
             }
         } else if (model.live_rate.status == 957) {
             [self showHudInView:self.view showHint:model.live_rate.status_text];
@@ -2501,8 +2770,12 @@
     [_tableView reloadData];
     _freeLook = NO;
     if ([_currentCourseFinalModel.model.course_type isEqualToString:@"2"]) {
-//        [self getLiveCourseHourseInfo:model.classHourId courseHourseModel:model];
-//        [self getShengwangLiveInfo:model.classHourId courselistModel:model];
+        if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+            isSameClassHourseID = YES;
+        } else {
+            isSameClassHourseID = NO;
+        }
+        wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
         return;
     }
     _previousHourseId = _currentHourseId;
@@ -2537,6 +2810,10 @@
         pmodel = pmodel.parentItem;
     }
     
+    // 重置跑马灯数据
+    marqueeInfo = nil;
+    [self dealCopyRight];
+    
     [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:courseId pid:model.classHourId] WithAuthorization:nil paramDic:[_courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil finish:^(id  _Nonnull responseObject) {
         
         if (SWNOTEmptyDictionary(responseObject)) {
@@ -2544,6 +2821,8 @@
                 NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"][@"position"]];
                 NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"][@"position"]];
                 wekself.currentCourseFinalModel.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                wekself.currentCourseFinalModel.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                wekself.currentCourseFinalModel.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
                 if (_courseListVC) {
                     _courseListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
                     _courseListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
@@ -2586,6 +2865,10 @@
                     }
                 } else {
                     [_playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                    
+                    // 获取跑马灯配置
+                    marqueeInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"marquee"]];
+                    [self dealCopyRight];
                     if (!SWNOTEmptyArr(_playFileUrlArray)) {
                         [_courseTreeListVC.tableView reloadData];
                         [self showHudInView:wekself.view showHint:@"该课时内容无效"];
@@ -2597,18 +2880,30 @@
                             CourseListModel *newClassCurrentModel = model;
                             newClassCurrentModel.isPlaying = YES;
                             newClassCurrentModel.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                            newClassCurrentModel.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                            newClassCurrentModel.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
                             
                             CourseListModelFinal *curent = [[CourseListModelFinal alloc] init];
                             curent.model = newClassCurrentModel;
                             _currentCourseFinalModel = curent;
                             
+                            if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                                isSameClassHourseID = YES;
+                            } else {
+                                isSameClassHourseID = NO;
+                            }
+                            wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+                            
                             if (_courseListVC) {
                                 for (int i = 0; i<_courseListVC.courseListArray.count; i++) {
-                                    CourseListModelFinal *model = (CourseListModelFinal *)_courseListVC.courseListArray[i];
+                                    CourseListModelFinal *model1 = (CourseListModelFinal *)_courseListVC.courseListArray[i];
                                     // _currentCourseFinalModel.model.classHourId
-                                    if ([model.model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[0]]]) {
-                                        model.isPlaying = YES;
-                                        [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model];
+                                    if ([model1.model.classHourId isEqualToString:[NSString stringWithFormat:@"%@",current_position[0]]]) {
+                                        model1.isPlaying = YES;
+                                        model1.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                                        model1.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                                        model1.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
+                                        [_courseListVC.courseListArray replaceObjectAtIndex:i withObject:model1];
                                         break;
                                     }
                                 }
@@ -2826,6 +3121,12 @@
         
     } else {
         __weak CourseDetailPlayVC *wekself = self;
+        
+        if (isFullS) {
+            [self changeOrientation:UIInterfaceOrientationPortrait];
+            [self justUpdateVCUI];
+        }
+        
         _titleImage.hidden = NO;
         [wekself.playerView setUIStatusToReplay];
         [wekself stopRecordTimer];
@@ -3095,307 +3396,6 @@
     wekself.recordTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:wekself selector:@selector(addLearnRecord) userInfo:nil repeats:YES];
     [wekself.recordTimer fire];
     faceVerifyCount = _currentCourseFinalModel.model.face_data.need_verify_number;
-}
-
-// MARK: - 直播相关
-// 直播相关测试
-- (void)loginLiveRoom:(NSDictionary *)liveInfo courseHourseModel:(CourseListModel *)model {
-    __weak CourseDetailPlayVC *wekself = self;
-    AppDelegate *app = [AppDelegate delegate];
-    app.configTXSDK = ^(NSString *success) {
-        NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
-        NSString *userSig = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_sig"]];
-        [[TICManager sharedInstance] login:userId userSig:userSig callback:^(TICModule module, int code, NSString *desc) {
-            if(code == 0){
-                [self joinLiveRoom:liveInfo courseHourseModel:model];
-            }
-            else{
-                [self showHudInView:wekself.view showHint:[NSString stringWithFormat:@"登录失败: %d,%@",code, desc]];
-            }
-        }];
-    };
-    [app intTXSDK];
-}
-
-- (void)joinLiveRoom:(NSDictionary *)liveInfo courseHourseModel:(CourseListModel *)model {
-    NSString *classId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"room_no"]];
-    NSString *userId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"user_id"]];
-    if (classId.length <= 0) {
-        return;
-    }
-
-    LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
-    vc.course_live_type = [NSString stringWithFormat:@"%@",_dataSource[@"course_live_type"]];
-    vc.classId = classId;
-    vc.userId = userId;
-    vc.teacherId = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"teacher_id"]];
-    vc.liveTitle = model.title;
-    vc.userIdentify = [NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]];
-    
-    TICClassroomOption *option = [[TICClassroomOption alloc] init];
-    option.classId = [classId intValue];
-    TEduBoardInitParam *initParam = [[TEduBoardInitParam alloc] init];
-    if ([[NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]] integerValue]) {
-        initParam.drawEnable = YES;
-    } else {
-        initParam.drawEnable = NO;
-    }
-    option.boardInitParam = initParam;
-    
-    [[TICManager sharedInstance] addMessageListener:vc];
-    [[TICManager sharedInstance] addEventListener:vc];
-    
-    __weak CourseDetailPlayVC *wekself = self;
-    [[TICManager sharedInstance] joinClassroom:option callback:^(TICModule module, int code, NSString *desc) {
-        if(code == 0){
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        else{
-            if(code == 10015){
-                if ([[NSString stringWithFormat:@"%@",[liveInfo objectForKey:@"identity"]] integerValue]) {
-                    [[TICManager sharedInstance] createClassroom:[classId intValue] classScene:TIC_CLASS_SCENE_VIDEO_CALL callback:^(TICModule module, int code, NSString *desc) {
-                        if(code == 0){
-                            [self showHudInView:self.view showHint:@"创建课堂成功，请\"加入课堂\""];
-                            [Net_API requestPOSTWithURLStr:[Net_Path noteLiveSucNet] WithAuthorization:nil paramDic:@{@"room_no":classId} finish:^(id  _Nonnull responseObject) {
-                                
-                            } enError:^(NSError * _Nonnull error) {
-                                
-                            }];
-                            // 这里说的是直接进入直播间
-                            [[TICManager sharedInstance] joinClassroom:option callback:^(TICModule module, int code, NSString *desc) {
-                                if(code == 0){
-                                    [self.navigationController pushViewController:vc animated:YES];
-                                }
-                                else{
-                                    if(code == 10015){
-                                    }
-                                    else{
-                                        [self showHudInView:self.view showHint:[NSString stringWithFormat:@"加入课堂失败：%d %@", code, desc]];
-                                    }
-                                }
-                            }];
-                        }
-                        else{
-                            if(code == 10021){
-                                [self showHudInView:self.view showHint:@"该课堂已被他人创建，请\"加入课堂\""];
-                            }
-                            else if(code == 10025){
-                                [self showHudInView:self.view showHint:@"该课堂已创建，请\"加入课堂\""];
-                            }
-                            else{
-                                [self showHudInView:self.view showHint:[NSString stringWithFormat:@"创建课堂失败：%d %@", code, desc]];
-                            }
-                        }
-                    }];
-                } else {
-                    [self showHudInView:self.view showHint:@"课堂不存在，请\"创建课堂\""];
-                }
-            }
-            else{
-                [self showHudInView:self.view showHint:[NSString stringWithFormat:@"加入课堂失败：%d %@", code, desc]];
-            }
-        }
-    }];
-}
-
-// MARK: - 获取直播课时相关信息
-- (void)getLiveCourseHourseInfo:(NSString *)liveHourseSectionId courseHourseModel:(CourseListModel *)model {
-    if (SWNOTEmptyStr(liveHourseSectionId)) {
-        __weak typeof(self) ws = self;
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path liveLoginInfo] WithAuthorization:nil paramDic:@{@"section_id":liveHourseSectionId} finish:^(id  _Nonnull responseObject) {
-            if (SWNOTEmptyDictionary(responseObject)) {
-                if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"sdk_appid"]] forKey:@"sdk_appid"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    [self loginLiveRoom:[responseObject objectForKey:@"data"] courseHourseModel:model];
-                }
-            }
-        } enError:^(NSError * _Nonnull error) {
-            
-        }];
-    }
-}
-
-// MARK: - 声网直播
-
-- (void)getShengwangLiveInfo:(NSString *)sectionId courselistModel:(CourseListModel *)model {
-    if (SWNOTEmptyStr(sectionId)) {
-        WEAK(self);
-        [weakself showHudInView:weakself.view hint:@"直播信息获取中..."];
-        [Net_API requestGETSuperAPIWithURLStr:[Net_Path shengwangLiveInfo:sectionId] WithAuthorization:nil paramDic:nil finish:^(id  _Nonnull responseObject) {
-            if (SWNOTEmptyDictionary(responseObject)) {
-                if ([[responseObject objectForKey:@"code"] integerValue]) {
-                    [self enterShengwangLive:responseObject[@"data"][@"info"] courselistModel:model];
-                } else {
-                    [weakself hideHud];
-                }
-            } else {
-                [weakself hideHud];
-            }
-        } enError:^(NSError * _Nonnull error) {
-            [weakself hideHud];
-        }];
-    }
-}
-
-- (void)enterShengwangLive:(NSDictionary *)liveInfo courselistModel:(CourseListModel *)model {
-    
-    
-    WEAK(self);
-    
-    NSString *liveType = [NSString stringWithFormat:@"%@",liveInfo[@"course_live_type"]];
-    NSString *userUuid = [NSString stringWithFormat:@"%@",liveInfo[@"user_id"]];
-    NSString *roomUuid = [NSString stringWithFormat:@"%@",liveInfo[@"room_no"]];
-    NSString *roomName = [NSString stringWithFormat:@"%@",liveInfo[@"section_name"]];
-//    【1：大班课；2：小班课；3：1对1】
-    SceneType sceneType;
-    if ([liveType isEqualToString:@"3"]) {
-        sceneType = SceneType1V1;
-        self.educationManager = [OneToOneEducationManager new];
-    } else if ([liveType isEqualToString:@"1"]) {
-        sceneType = SceneTypeBig;
-        self.educationManager = [BigEducationManager new];
-    } else if ([liveType isEqualToString:@"2"]) {
-        sceneType = SceneTypeSmall;
-        self.educationManager = [MinEducationManager new];
-    } else {
-        [weakself hideHud];
-        return;
-    }
-    
-    [weakself hideHud];
-    
-    [weakself showHudInView:weakself.view hint:@"进入直播间中..."];
-    
-    EduConfigModel.shareInstance.className = roomName;
-    EduConfigModel.shareInstance.userName = [V5_UserModel uname];
-    EduConfigModel.shareInstance.sceneType = sceneType;
-    
-    
-    [weakself getConfigWithSuccessBolck:^{
-        [weakself getEntryInfoWithUserUuid:userUuid roomUuid:roomUuid successBolck:^{
-            [weakself getWhiteInfoWithSuccessBolck:^{
-                [weakself getRoomInfoWithSuccessBlock:^{
-                    [weakself setupSignalWithSuccessBlock:^{
-                        [weakself hideHud];
-                        [weakself showHudInView:self.view showHint:@"开始进入直播间"];
-                        // 请求一次学习记录
-//                        [weakself requestOnceStudyRecord:model.classHourId];
-                        if (sceneType == SceneTypeBig) {
-                            BCLiveRoomViewController *vc = [[BCLiveRoomViewController alloc] init];
-                            vc.classId = weakself.currentHourseId;
-                            vc.educationManager = (BigEducationManager *)weakself.educationManager;
-                            [weakself.navigationController pushViewController:vc animated:YES];
-                        } else if (sceneType == SceneTypeSmall) {
-                            LiveRoomViewController *vc = [[LiveRoomViewController alloc] init];
-                            vc.classId = weakself.currentHourseId;
-                            vc.educationManager = (MinEducationManager *)weakself.educationManager;
-                            [weakself.navigationController pushViewController:vc animated:YES];
-                        } else if (sceneType == SceneType1V1) {
-                            OneToOneLiveRoomVC *vc = [[OneToOneLiveRoomVC alloc] init];
-                            vc.classId = weakself.currentHourseId;
-                            vc.educationManager = (OneToOneEducationManager *)weakself.educationManager;
-                            [weakself.navigationController pushViewController:vc animated:YES];
-                        }
-                    }];
-                }];
-            }];
-        }];
-    }];
-    
-}
-
-#pragma mark EnterClassProcess
-- (void)getConfigWithSuccessBolck:(void (^)(void))successBlock {
-    
-    WEAK(self);
-    [BaseEducationManager getConfigWithSuccessBolck:^{
-        if(successBlock != nil){
-            successBlock();
-        } else {
-            [weakself hideHud];
-        }
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-        [weakself hideHud];
-    }];
-}
-
-- (void)getEntryInfoWithUserUuid:(NSString *)userUuid roomUuid:(NSString *)roomUuid successBolck:(void (^)(void))successBlock {
-    WEAK(self);
-    
-    NSString *userName = EduConfigModel.shareInstance.userName;
-    NSString *className = EduConfigModel.shareInstance.className;
-    SceneType sceneType = EduConfigModel.shareInstance.sceneType;
-    
-    [BaseEducationManager enterShengwangRoomWithUserName:userName roomName:className sceneType:sceneType userUuid:userUuid roomUuid:roomUuid successBolck:^{
-        if(successBlock != nil){
-            successBlock();
-        } else {
-            [weakself hideHud];
-        }
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-        [weakself hideHud];
-    }];
-//
-//    [BaseEducationManager enterRoomWithUserName:userName roomName:className sceneType:sceneType successBolck:^{
-//        if(successBlock != nil){
-//            successBlock();
-//        }
-//
-//    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-//    }];
-}
-
-- (void)getWhiteInfoWithSuccessBolck:(void (^)(void))successBlock {
-    WEAK(self);
-    [self.educationManager getWhiteInfoCompleteSuccessBlock:^{
-        if(successBlock != nil){
-            successBlock();
-        } else {
-            [weakself hideHud];
-        }
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-        [weakself hideHud];
-    }];
-}
-
-- (void)getRoomInfoWithSuccessBlock:(void (^)(void))successBlock {
-    WEAK(self);
-    [self.educationManager getRoomInfoCompleteSuccessBlock:^(RoomInfoModel * _Nonnull roomInfoModel) {
-        if(successBlock != nil){
-            successBlock();
-        } else {
-            [weakself hideHud];
-        }
-    } completeFailBlock:^(NSString * _Nonnull errMessage) {
-        [weakself hideHud];
-    }];
-}
-
-- (void)setupSignalWithSuccessBlock:(void (^)(void))successBlock {
-
-    NSString *appid = EduConfigModel.shareInstance.appId;
-    NSString *appToken = EduConfigModel.shareInstance.rtmToken;
-    NSString *uid = @(EduConfigModel.shareInstance.uid).stringValue;
-    
-    WEAK(self);
-    [self.educationManager initSignalWithAppid:appid appToken:appToken userId:uid dataSourceDelegate:nil completeSuccessBlock:^{
-        
-        NSString *channelName = EduConfigModel.shareInstance.channelName;
-        [weakself.educationManager joinSignalWithChannelName:channelName completeSuccessBlock:^{
-            if(successBlock != nil){
-                successBlock();
-            } else {
-                [weakself hideHud];
-            }
-        } completeFailBlock:^(NSInteger errorCode) {
-            [weakself hideHud];
-            NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"JoinSignalFailedText", nil), (long)errorCode];
-        }];
-    } completeFailBlock:^(NSInteger errorCode){
-        [weakself hideHud];
-        NSString *errMsg = [NSString stringWithFormat:@"%@:%ld", NSLocalizedString(@"InitSignalFailedText", nil), (long)errorCode];
-    }];
 }
 
 // MARK: - 请求一次学习记录
@@ -3807,7 +3807,7 @@
 
 - (void)autoPlayNextCourseHourse:(CourseListModelFinal *)model {
     __weak CourseDetailPlayVC *wekself = self;
-    if ([ShowUserFace isEqualToString:@"1"] && !(model.model.audition>0 && !model.model.is_buy)) {
+    if (currentCourseHasFace && !(model.model.audition>0 && !model.model.is_buy)) {
         wekself.userFaceCourseAutoDetailVerifyResult = ^(BOOL result) {
             if (result) {
                 
@@ -3823,6 +3823,13 @@
                 
                 CourseListModelFinal *currentt = model;
                 wekself.currentCourseFinalModel = currentt;
+                
+                if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+                    isSameClassHourseID = YES;
+                } else {
+                    isSameClassHourseID = NO;
+                }
+                wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
                 
                 wekself.freeLookView.hidden = YES;
                 
@@ -3865,6 +3872,10 @@
                 
                 [wekself.playFileUrlArray removeAllObjects];
                 
+                // 重置跑马灯数据
+                marqueeInfo = nil;
+                [self dealCopyRight];
+                
                 [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:model.model.course_id pid:model.model.classHourId] WithAuthorization:nil paramDic:[wekself.courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil finish:^(id  _Nonnull responseObject) {
                     
                     if (SWNOTEmptyDictionary(responseObject)) {
@@ -3872,6 +3883,8 @@
                             NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"][@"position"]];
                             NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"][@"position"]];
                             wekself.currentCourseFinalModel.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                            wekself.currentCourseFinalModel.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                            wekself.currentCourseFinalModel.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
                             if (wekself.courseListVC) {
                                 wekself.courseListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
                                 wekself.courseListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
@@ -3917,6 +3930,10 @@
                                 }
                             } else {
                                 [wekself.playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                                
+                                // 获取跑马灯配置
+                                marqueeInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"marquee"]];
+                                [self dealCopyRight];
                                 if (!SWNOTEmptyArr(wekself.playFileUrlArray)) {
                                     [wekself.courseListVC.tableView reloadData];
                                     [wekself showHudInView:wekself.view showHint:@"该课时内容无效"];
@@ -3982,6 +3999,13 @@
         CourseListModelFinal *currentt = model;
         _currentCourseFinalModel = currentt;
         
+        if (SWNOTEmptyStr(wekself.faceVerifyBeforeId) && [wekself.faceVerifyBeforeId isEqualToString:wekself.currentCourseFinalModel.model.classHourId]) {
+            isSameClassHourseID = YES;
+        } else {
+            isSameClassHourseID = NO;
+        }
+        wekself.faceVerifyBeforeId = wekself.currentCourseFinalModel.model.classHourId;
+        
         wekself.freeLookView.hidden = YES;
         
         wekself.freeLook = NO;
@@ -4037,12 +4061,19 @@
         
         [_playFileUrlArray removeAllObjects];
         
+        // 重置跑马灯数据
+        marqueeInfo = nil;
+        [self dealCopyRight];
+        
         [Net_API requestGETSuperAPIWithURLStr:[Net_Path courseHourseUrlNet:model.model.course_id pid:model.model.classHourId] WithAuthorization:nil paramDic:[_courseType isEqualToString:@"4"] ? @{@"class_id":wekself.ID} : nil finish:^(id  _Nonnull responseObject) {
             
             if (SWNOTEmptyDictionary(responseObject)) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     NSMutableArray *current_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"curr_position"][@"position"]];
                     NSMutableArray *next_position = [NSMutableArray arrayWithArray:responseObject[@"data"][@"next_position"][@"position"]];
+                    wekself.currentCourseFinalModel.model.face_data = [section_face_data mj_objectWithKeyValues:responseObject[@"data"][@"face_data"]];
+                    wekself.currentCourseFinalModel.model.onhook = [section_alert_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook"]];
+                    wekself.currentCourseFinalModel.model.onhook_exam = [section_exam_data mj_objectWithKeyValues:responseObject[@"data"][@"onhook_exam"]];
                     if (_courseListVC) {
                         _courseListVC.current_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"curr_position"]];
                         _courseListVC.next_position = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"next_position"]];
@@ -4088,6 +4119,10 @@
                         }
                     } else {
                         [_playFileUrlArray addObjectsFromArray:responseObject[@"data"][@"fileurl_array"]];
+                        
+                        // 获取跑马灯配置
+                        marqueeInfo = [NSDictionary dictionaryWithDictionary:responseObject[@"data"][@"marquee"]];
+                        [self dealCopyRight];
                         if (!SWNOTEmptyArr(_playFileUrlArray)) {
                             [_courseListVC.tableView reloadData];
                             [self showHudInView:wekself.view showHint:@"该课时内容无效"];
@@ -4253,7 +4288,7 @@
     } else if ([_currentCourseFinalModel.model.section_live.identify isEqualToString:@"assistant"]) {
         result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/assistant/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",_currentCourseFinalModel.model.section_live.cc_room_id,_currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
     } else if ([_currentCourseFinalModel.model.section_live.identify isEqualToString:@"talker"]) {
-        result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/talker/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",_currentCourseFinalModel.model.section_live.cc_room_id,_currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
+        result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/talker/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true&template=32",_currentCourseFinalModel.model.section_live.cc_room_id,_currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
     } else if ([_currentCourseFinalModel.model.section_live.identify isEqualToString:@"inspector"]) {
         result = [NSString stringWithFormat:@"https://class.csslcloud.net/index/inspector/?roomid=%@&userid=%@&username=%@&password=%@&autoLogin=true",_currentCourseFinalModel.model.section_live.cc_room_id,_currentCourseFinalModel.model.section_live.cc_userid,[V5_UserModel uname],ak];
     } else if ([_currentCourseFinalModel.model.section_live.identify isEqualToString:@"view"]) {
@@ -4277,11 +4312,18 @@
         NSString *roomId = roomInfo[@"roomid"];
         NSString *userId = roomInfo[@"userid"];
         NSInteger mode = [roomInfo[@"template"]integerValue];
+        
+        NSInteger autoLogin = [roomInfo[@"autoLogin"]boolValue];
+        NSString *password = roomInfo[@"password"];
+        NSString *username = roomInfo[@"username"];
 
         HDSTool *tool = [HDSTool sharedTool];
         tool.rid = roomId;
         tool.uid = userId;
         tool.roomMode = mode;
+        tool.autoLogin = autoLogin;
+        tool.password = password;
+        tool.username = username;
 
         if (!roomId || !userId) {
             return;
@@ -4364,6 +4406,8 @@
     SaveToUserDefaults(SET_USER_PWD, ak);//@"671309"
     SaveToUserDefaults(LIVE_USERID, userId);
     SaveToUserDefaults(LIVE_ROOMID, roomId);
+    
+    SaveToUserDefaults(LIVE_ROLE, @(role1));
 
     NSString *isp = GetFromUserDefaults(SERVER_AREA_NAME);
 
@@ -4371,9 +4415,21 @@
     
     NSString *upwd = ak;//@"671309"//(liveVCNeedPassword ? ak : @"");;
 
+    NSString *roleString = [NSString stringWithFormat:@"%@", @(self.role)];
+    
     __weak typeof(self) weakSelf = self;
     __block NSString *sessionStr = nil;
-    [[CCStreamerBasic sharedStreamer] authWithRoomId:roomId accountId:userId role:self.ccClassRoomrole password:upwd nickName:uname completion:^(BOOL result, NSError *error, id info) {
+    
+    NSDictionary *authInfo = @{
+        @"roomid": roomId,    //房间id
+        @"userid": userId,    //账户id
+        @"role": roleString,       //角色    //'0': 教师 '1': 互动者 '2': 旁听者
+        @"password": upwd,         //密码。
+        @"name": uname,            //昵称/用户名
+        @"custominfo":@"ios"       //自定义字段
+    };
+    // authWithRoomId:roomId accountId:userId role:self.ccClassRoomrole password:upwd nickName:uname
+    [[CCStreamerBasic sharedStreamer] authWithInfo:authInfo completion:^(BOOL result, NSError *error, id info) {
         if (!result)
         {
             [CCTool showMessageError:error];
@@ -4395,10 +4451,20 @@
             weakSelf.sessionID = sessionStr;
             CCEncodeConfig *config = [[CCEncodeConfig alloc] init];
             config.reslution = CCResolution_240;
-            [weakSelf initVC];
-
+            
             NSString *accountid = userId;
             NSString *sessionid = self.sessionID;
+            
+            [weakSelf initVC];
+            
+            HDSTool *tool = [HDSTool sharedTool];
+            if (tool.roomMode == 32) {
+//                [weakSelf.loadingView removeFromSuperview];
+
+                [weakSelf streamLoginSuccess:@{}];
+                return;
+            }
+            
             [[CCStreamerBasic sharedStreamer] joinWithAccountID:accountid sessionID:sessionid roomId:roomId config:config areaCode:isp events:@[] updateRtmpLayout:NO completion:^(BOOL result, NSError *error, id info) {
                 BOOL modeGravity = [HDSDocManager sharedDoc].isPreviewGravityFollow;
                 [[CCStreamerBasic sharedStreamer]setPreviewGravityFollow:modeGravity];
@@ -4626,19 +4692,23 @@
 - (void)initVC {
     HDSTool *tool = [HDSTool sharedTool];
     if (tool.roomMode == 32) {
+        self.liveVC = [HSLiveViewController sharedLiveRoom];
         if (tool.roomSubMode == 1) {
-            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_1V1_16_9];
+//            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_1V1_16_9];
+            [self.liveVC setLiveRoomType:HSRoomType_1V1_16_9];
         }else if (tool.roomSubMode == 2) {
-            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_1V1_4_3];
+//            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_1V1_4_3];
+            [self.liveVC setLiveRoomType:HSRoomType_1V1_4_3];
         } else {
-            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_saas];
+//            self.liveVC = [HSLiveViewController createLiveController:HSRoomType_saas];
+            [self.liveVC setLiveRoomType:HSRoomType_saas];
         }
-        self.liveVC.allowTakePhotoInLibrary = YES;
-        
-        HSRoomConfig *roomInfo = [[HSRoomConfig alloc]init];
-        roomInfo.bleLicense = @"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiID8+CjxsaWNlbnNlIHZlcnNpb249InYxLjAiIGlkPSI2MDU5YTE3Y2I1YmE3ZDhmMjExZmUyODAiPgogICAgPG93bmVyPuWIm+ebm+inhuiBlOaVsOeggeenkeaKgO+8iOWMl+S6rO+8ieaciemZkOWFrOWPuDwvb3duZXI+CiAgICA8dXNlcj5jaGVuZnk8L3VzZXI+CiAgICA8ZW1haWw+Y2hlbmZ5QGJva2VjYy5jb208L2VtYWlsPgogICAgPGJ1bmRsZUlkPmNvbS5jbGFzcy5yb29tPC9idW5kbGVJZD4KICAgIDxhcHBOYW1lPmNjPC9hcHBOYW1lPgogICAgPGRyaXZlclR5cGVzPgogICAgICAgIDxkcml2ZXJUeXBlPklPUzwvZHJpdmVyVHlwZT4KICAgIDwvZHJpdmVyVHlwZXM+CiAgICA8cGVuVHlwZXM+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iQURQXzEwMSIgSUQ9IjUiIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iRU5fQURQXzYwMSIgSUQ9IjYiIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iRU5fQVBEXzYxMSIgSUQ9IjciIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iVEVfMzAxIiBJRD0iOCIgLz4KICAgICAgICA8cGVuVHlwZSBwZW5OYW1lPSJURV8zMDIiIElEPSI5IiAvPgogICAgICAgIDxwZW5UeXBlIHBlbk5hbWU9IlREXzEwMiIgSUQ9IjEwIiAvPgogICAgPC9wZW5UeXBlcz4KICAgIDxsaWNlbnNlZERhdGU+MTk3MDAxMDE8L2xpY2Vuc2VkRGF0ZT4KICAgIDxleHBpcmVkRGF0ZT45OTk5MTIzMTwvZXhwaXJlZERhdGU+CiAgICA8YXV0aElkPjYwNTk5YzQwYjViYTdkOGYyMTFmZTI3ZjwvYXV0aElkPgogICAgPHNlY3JldD5jU0VoY3kxQU1pTTRmaVFvY0g1ZU1USjJlVzEwWkNseUl6RnlJemN4TWw0PTwvc2VjcmV0PgogICAgPHBhZ2VBZGRyZXNzIHN0YXJ0PSI3MC4wLjE3LjAiIGVuZD0iNzAuMC4xNy4xOSIgcGFnZUNvdW50PSIyMCIgLz4KICAgIDxhdXRob3JpemVyIGNvbXBhbnk9IuWMl+S6rOaLk+aAneW+t+enkeaKgOaciemZkOWFrOWPuCIgd2Vic2l0ZT0iaHR0cDovL3d3dy50c3R1ZHkuY29tLmNuIiAvPgo8L2xpY2Vuc2U+Cg==";
-        roomInfo.bleSignature = @"57E8A02D4FB158106F27FD1ECE5063753FAC2E096E49CB8A53B48B58DDA03A6CC9901865D0BC6DB313AE3AE8CEEFDCC426313ED5FDE8904DB5BACA83658A3F6AC6B360BF676D1EE7C47E9D6471540D8ECF4948680D30C54DC9766960516A7DE2F64594A25A0CF6C74A4872C765E7FC57ED076B8376EAE16682C5A94A432612EA";
-        [ self.liveVC setLiveRoomConfig:roomInfo];
+//        self.liveVC.allowTakePhotoInLibrary = YES;
+//
+//        HSRoomConfig *roomInfo = [[HSRoomConfig alloc]init];
+//        roomInfo.bleLicense = @"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiID8+CjxsaWNlbnNlIHZlcnNpb249InYxLjAiIGlkPSI2MDU5YTE3Y2I1YmE3ZDhmMjExZmUyODAiPgogICAgPG93bmVyPuWIm+ebm+inhuiBlOaVsOeggeenkeaKgO+8iOWMl+S6rO+8ieaciemZkOWFrOWPuDwvb3duZXI+CiAgICA8dXNlcj5jaGVuZnk8L3VzZXI+CiAgICA8ZW1haWw+Y2hlbmZ5QGJva2VjYy5jb208L2VtYWlsPgogICAgPGJ1bmRsZUlkPmNvbS5jbGFzcy5yb29tPC9idW5kbGVJZD4KICAgIDxhcHBOYW1lPmNjPC9hcHBOYW1lPgogICAgPGRyaXZlclR5cGVzPgogICAgICAgIDxkcml2ZXJUeXBlPklPUzwvZHJpdmVyVHlwZT4KICAgIDwvZHJpdmVyVHlwZXM+CiAgICA8cGVuVHlwZXM+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iQURQXzEwMSIgSUQ9IjUiIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iRU5fQURQXzYwMSIgSUQ9IjYiIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iRU5fQVBEXzYxMSIgSUQ9IjciIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iVEVfMzAxIiBJRD0iOCIgLz4KICAgICAgICA8cGVuVHlwZSBwZW5OYW1lPSJURV8zMDIiIElEPSI5IiAvPgogICAgICAgIDxwZW5UeXBlIHBlbk5hbWU9IlREXzEwMiIgSUQ9IjEwIiAvPgogICAgPC9wZW5UeXBlcz4KICAgIDxsaWNlbnNlZERhdGU+MTk3MDAxMDE8L2xpY2Vuc2VkRGF0ZT4KICAgIDxleHBpcmVkRGF0ZT45OTk5MTIzMTwvZXhwaXJlZERhdGU+CiAgICA8YXV0aElkPjYwNTk5YzQwYjViYTdkOGYyMTFmZTI3ZjwvYXV0aElkPgogICAgPHNlY3JldD5jU0VoY3kxQU1pTTRmaVFvY0g1ZU1USjJlVzEwWkNseUl6RnlJemN4TWw0PTwvc2VjcmV0PgogICAgPHBhZ2VBZGRyZXNzIHN0YXJ0PSI3MC4wLjE3LjAiIGVuZD0iNzAuMC4xNy4xOSIgcGFnZUNvdW50PSIyMCIgLz4KICAgIDxhdXRob3JpemVyIGNvbXBhbnk9IuWMl+S6rOaLk+aAneW+t+enkeaKgOaciemZkOWFrOWPuCIgd2Vic2l0ZT0iaHR0cDovL3d3dy50c3R1ZHkuY29tLmNuIiAvPgo8L2xpY2Vuc2U+Cg==";
+//        roomInfo.bleSignature = @"57E8A02D4FB158106F27FD1ECE5063753FAC2E096E49CB8A53B48B58DDA03A6CC9901865D0BC6DB313AE3AE8CEEFDCC426313ED5FDE8904DB5BACA83658A3F6AC6B360BF676D1EE7C47E9D6471540D8ECF4948680D30C54DC9766960516A7DE2F64594A25A0CF6C74A4872C765E7FC57ED076B8376EAE16682C5A94A432612EA";
+//        [ self.liveVC setLiveRoomConfig:roomInfo];
 
         return;
     }
@@ -4677,16 +4747,92 @@
 //    }
 }
 
+-(void)landscapeRight:(BOOL)isLandscapeRight {
+    BOOL willland = isLandscapeRight;
+    UIInterfaceOrientation org = willland ? UIInterfaceOrientationLandscapeRight : UIInterfaceOrientationPortrait;
+    AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    appdelegate._allowRotation = willland;
+
+    
+    
+    if (@available(iOS 16.0, *)) {
+        
+        void (^errorHandler)(NSError *error) = ^(NSError *error) {
+            NSLog(@"  强制%@错误:%@", willland ? @"横屏" : @"竖屏", error);
+        };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        SEL supportedInterfaceSelector = NSSelectorFromString(@"setNeedsUpdateOfSupportedInterfaceOrientations");
+        [self performSelector:supportedInterfaceSelector];
+        NSArray *array = [[UIApplication sharedApplication].connectedScenes allObjects];
+        UIWindowScene *scene = (UIWindowScene *)[array firstObject];
+        Class UIWindowSceneGeometryPreferencesIOS = NSClassFromString(@"UIWindowSceneGeometryPreferencesIOS");
+        if (UIWindowSceneGeometryPreferencesIOS) {
+            SEL initWithInterfaceOrientationsSelector = NSSelectorFromString(@"initWithInterfaceOrientations:");
+            UIInterfaceOrientationMask orientation = willland ? UIInterfaceOrientationMaskLandscapeRight : UIInterfaceOrientationMaskPortrait;
+            id geometryPreferences = [[UIWindowSceneGeometryPreferencesIOS alloc] performSelector:initWithInterfaceOrientationsSelector withObject:@(orientation)];
+            if (geometryPreferences) {
+                SEL requestGeometryUpdateWithPreferencesSelector = NSSelectorFromString(@"requestGeometryUpdateWithPreferences:errorHandler:");
+                if ([scene respondsToSelector:requestGeometryUpdateWithPreferencesSelector]) {
+                    [scene performSelector:requestGeometryUpdateWithPreferencesSelector withObject:geometryPreferences withObject:errorHandler];
+                }
+            }
+        }
+    } else {
+        int por = (int)org;
+        NSNumber *orientationTarget = [NSNumber numberWithInt:por];
+        [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:UIDeviceOrientationDidChangeNotification object:nil];
+    }
+}
+
+- (void)hsLiveControllerLeaveCallBack {
+    AppDelegate *app = [AppDelegate delegate];
+    app._allowRotation = NO;
+    if (self.liveVC) {
+        [self.liveVC dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }
+}
+
+- (void)hsLiveControllerJoinStatusCallBack:(BOOL)joined info:(NSDictionary *)info {
+    if (joined) return;
+    [self landscapeRight:NO];
+}
+
 // MARK: - 推流成功
 - (void)streamLoginSuccess:(NSDictionary *)info {
     HDSTool *tool = [HDSTool sharedTool];
     if (tool.roomMode == 32) {
-//        [self landscapeRight:YES];
-        self.liveVC.version_info = info;
-        self.liveVC.openUrl = @"itms-apps://itunes.apple.com/app/id1239642978";
-        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:self.class]) {
-            [self.navigationController pushViewController:self.liveVC animated:YES];
-        }
+        [self landscapeRight:YES];
+        
+        HSRoomConfig *roomInfo = [[HSRoomConfig alloc]init];
+        roomInfo.bleLicense = @"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiID8+CjxsaWNlbnNlIHZlcnNpb249InYxLjAiIGlkPSI2MDU5YTE3Y2I1YmE3ZDhmMjExZmUyODAiPgogICAgPG93bmVyPuWIm+ebm+inhuiBlOaVsOeggeenkeaKgO+8iOWMl+S6rO+8ieaciemZkOWFrOWPuDwvb3duZXI+CiAgICA8dXNlcj5jaGVuZnk8L3VzZXI+CiAgICA8ZW1haWw+Y2hlbmZ5QGJva2VjYy5jb208L2VtYWlsPgogICAgPGJ1bmRsZUlkPmNvbS5jbGFzcy5yb29tPC9idW5kbGVJZD4KICAgIDxhcHBOYW1lPmNjPC9hcHBOYW1lPgogICAgPGRyaXZlclR5cGVzPgogICAgICAgIDxkcml2ZXJUeXBlPklPUzwvZHJpdmVyVHlwZT4KICAgIDwvZHJpdmVyVHlwZXM+CiAgICA8cGVuVHlwZXM+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iQURQXzEwMSIgSUQ9IjUiIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iRU5fQURQXzYwMSIgSUQ9IjYiIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iRU5fQVBEXzYxMSIgSUQ9IjciIC8+CiAgICAgICAgPHBlblR5cGUgcGVuTmFtZT0iVEVfMzAxIiBJRD0iOCIgLz4KICAgICAgICA8cGVuVHlwZSBwZW5OYW1lPSJURV8zMDIiIElEPSI5IiAvPgogICAgICAgIDxwZW5UeXBlIHBlbk5hbWU9IlREXzEwMiIgSUQ9IjEwIiAvPgogICAgPC9wZW5UeXBlcz4KICAgIDxsaWNlbnNlZERhdGU+MTk3MDAxMDE8L2xpY2Vuc2VkRGF0ZT4KICAgIDxleHBpcmVkRGF0ZT45OTk5MTIzMTwvZXhwaXJlZERhdGU+CiAgICA8YXV0aElkPjYwNTk5YzQwYjViYTdkOGYyMTFmZTI3ZjwvYXV0aElkPgogICAgPHNlY3JldD5jU0VoY3kxQU1pTTRmaVFvY0g1ZU1USjJlVzEwWkNseUl6RnlJemN4TWw0PTwvc2VjcmV0PgogICAgPHBhZ2VBZGRyZXNzIHN0YXJ0PSI3MC4wLjE3LjAiIGVuZD0iNzAuMC4xNy4xOSIgcGFnZUNvdW50PSIyMCIgLz4KICAgIDxhdXRob3JpemVyIGNvbXBhbnk9IuWMl+S6rOaLk+aAneW+t+enkeaKgOaciemZkOWFrOWPuCIgd2Vic2l0ZT0iaHR0cDovL3d3dy50c3R1ZHkuY29tLmNuIiAvPgo8L2xpY2Vuc2U+Cg==";
+        roomInfo.bleSignature = @"57E8A02D4FB158106F27FD1ECE5063753FAC2E096E49CB8A53B48B58DDA03A6CC9901865D0BC6DB313AE3AE8CEEFDCC426313ED5FDE8904DB5BACA83658A3F6AC6B360BF676D1EE7C47E9D6471540D8ECF4948680D30C54DC9766960516A7DE2F64594A25A0CF6C74A4872C765E7FC57ED076B8376EAE16682C5A94A432612EA";
+        roomInfo.version_info = info;
+        roomInfo.allowTakePhotoInLibrary = YES;
+        roomInfo.openUrl = @"tms-apps://itunes.apple.com/app/id1537062148";//@"itms-apps://itunes.apple.com/app/id1239642978";
+        
+        roomInfo.r_accountId = GetFromUserDefaults(LIVE_USERID);
+        roomInfo.r_roomId = GetFromUserDefaults(LIVE_ROOMID);
+        roomInfo.r_sessionId = self.sessionID;
+        CCEncodeConfig *config = [[CCEncodeConfig alloc] init];
+        config.reslution = CCResolution_240;
+        roomInfo.r_config = config;
+        
+        self.liveVC.delegate = self;
+        self.liveVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self.liveVC joinLiveRoom:roomInfo WithPresent:self animated:YES completion:^{
+            
+        }];
+//        [self.liveVC joinLiveRoom:roomInfo withPush:self.navigationController animated:YES];
+        
+//        self.liveVC.version_info = info;
+//        self.liveVC.openUrl = @"itms-apps://itunes.apple.com/app/id1239642978";
+//        if ([[self.navigationController.viewControllers lastObject] isKindOfClass:self.class]) {
+//            [self.navigationController pushViewController:self.liveVC animated:YES];
+//        }
         return;
     }
     //存储用户名、密码
@@ -4818,7 +4964,7 @@
 
 // MARK: - 人脸识别提示
 - (void)faceCompareTip:(NSString *)courseHourseId sourceType:(NSString *)type sceneType:(NSString *)sceneType lastCanPlay:(BOOL)lastCanPlay faceType:(NSString *)faceType {
-//    _faceVerifyBeforeId = courseHourseId;
+
     __weak typeof(self) weakSelf = self;
     if (weakSelf.recordTimer) {
         [weakSelf.recordTimer setFireDate:[NSDate distantFuture]];
@@ -4833,7 +4979,7 @@
         
         if (isFullS) {
             [self changeOrientation:UIInterfaceOrientationPortrait];
-            [self aliyunVodPlayerView:_playerView fullScreen:NO];
+            [self justUpdateVCUI];
         }
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
@@ -4845,7 +4991,6 @@
             vc.verifyResult = ^(BOOL result) {
                 if (result) {
                     self->playerCanPlay = YES;
-                    faceVerifyCount = faceVerifyCount - 1;
                     if (weakSelf.playerView) {
                         weakSelf.playerView.faceVerifyCanPlay = YES;
                     }
@@ -4856,6 +5001,7 @@
                         weakSelf.userFaceCourseNewDetailVerifyResult(result);
                     }
                     if ([faceType isEqualToString:@"3"]) {
+                        faceVerifyCount = faceVerifyCount - 1;
                         weakSelf.userFaceCourseRecordDetailVerifyResult(result);
                     }
                     if ([faceType isEqualToString:@"4"]) {
@@ -4887,6 +5033,346 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self presentViewController:alertController animated:YES completion:nil];
     });
+}
+
+// MARK: - 弹框验证防挂机确认按钮点击事件
+- (void)popupSureButtonClick:(UIButton *)sender {
+    
+    // 先清楚弹框所有视图 并且置空
+    [_popupWhiteView removeAllSubviews];
+    [_popupWhiteView removeFromSuperview];
+    _popupWhiteView = nil;
+    [_popupBackView removeAllSubviews];
+    [_popupBackView removeFromSuperview];
+    _popupBackView = nil;
+    
+    __weak typeof(self) weakSelf = self;
+    
+    self->playerCanPlay = YES;
+    
+    if (weakSelf.playerView) {
+        weakSelf.playerView.faceVerifyCanPlay = YES;
+    }
+    faceVerifyCount = faceVerifyCount - 1;
+    weakSelf.userAlertCourseRecordDetailVerifyResult(YES);
+}
+
+// MARK: - 弹框验证防挂机
+- (void)alertOnhookdealWithLastCanPlay:(BOOL)lastCanPlay {
+    __weak typeof(self) weakSelf = self;
+    if (weakSelf.recordTimer) {
+        [weakSelf.recordTimer setFireDate:[NSDate distantFuture]];
+    }
+    if (weakSelf.playerView) {
+        [weakSelf.playerView pause];
+    }
+    
+    self->playerCanPlay = NO;
+    weakSelf.playerView.faceVerifyCanPlay = NO;
+    alert_popup_content = _currentCourseFinalModel.model.onhook.alert_content;
+    
+    if (isFullS) {
+        [self changeOrientation:UIInterfaceOrientationPortrait];
+        [self justUpdateVCUI];
+        
+        [UIView animateWithDuration:0.2 delay:1.5 options:0 animations:^{
+            
+        } completion:^(BOOL finished) {
+            [weakSelf.view addSubview:weakSelf.popupBackView];
+        }];
+        return;
+    }
+    [weakSelf.view addSubview:weakSelf.popupBackView];
+}
+
+// MARK: - 考试答题防挂机弹框
+- (void)popExamUIDealWithLastCanPlay:(BOOL)lastCanPlay {
+    __weak typeof(self) weakSelf = self;
+    if (weakSelf.recordTimer) {
+        [weakSelf.recordTimer setFireDate:[NSDate distantFuture]];
+    }
+    if (weakSelf.playerView) {
+        [weakSelf.playerView pause];
+    }
+    
+    self->playerCanPlay = NO;
+    weakSelf.playerView.faceVerifyCanPlay = NO;
+    
+    if (isFullS) {
+        [self changeOrientation:UIInterfaceOrientationPortrait];
+        [self justUpdateVCUI];
+        
+        [UIView animateWithDuration:0.2 delay:1.5 options:0 animations:^{
+            
+        } completion:^(BOOL finished) {
+            CourseExamPopViewController *vc = [[CourseExamPopViewController alloc] init];
+            vc.course_ID = weakSelf.ID;
+            if ([weakSelf.courseType isEqualToString:@"4"]) {
+                NSString *courseId = weakSelf.currentCourseFinalModel.model.course_id;
+                CourseListModel *parentModel  = weakSelf.currentCourseFinalModel.model.parentItem;
+                while (parentModel) {
+                    courseId = parentModel.course_id;
+                    parentModel = parentModel.parentItem;
+                }
+                vc.course_ID = courseId;
+                vc.course_classId = weakSelf.ID;
+            }
+            vc.examPopSucceseResult = ^(BOOL result) {
+                if (result) {
+                    // 处理播放器相关
+                    self->playerCanPlay = YES;
+                    
+                    if (weakSelf.playerView) {
+                        weakSelf.playerView.faceVerifyCanPlay = YES;
+                    }
+                    faceVerifyCount = faceVerifyCount - 1;
+                    weakSelf.userExamPopCourseRecordDetailVerifyResult(YES);
+                    [vc.view removeFromSuperview];
+                    [vc removeFromParentViewController];
+                }
+            };
+            
+            [weakSelf.view addSubview:vc.view];
+            [weakSelf addChildViewController:vc];
+        }];
+        return;
+    }
+    
+    CourseExamPopViewController *vc = [[CourseExamPopViewController alloc] init];
+    vc.course_ID = weakSelf.ID;
+    if ([weakSelf.courseType isEqualToString:@"4"]) {
+        NSString *courseId = weakSelf.currentCourseFinalModel.model.course_id;
+        CourseListModel *parentModel  = weakSelf.currentCourseFinalModel.model.parentItem;
+        while (parentModel) {
+            courseId = parentModel.course_id;
+            parentModel = parentModel.parentItem;
+        }
+        vc.course_ID = courseId;
+        vc.course_classId = weakSelf.ID;
+    }
+    vc.examPopSucceseResult = ^(BOOL result) {
+        if (result) {
+            // 处理播放器相关
+            self->playerCanPlay = YES;
+            
+            if (weakSelf.playerView) {
+                weakSelf.playerView.faceVerifyCanPlay = YES;
+            }
+            faceVerifyCount = faceVerifyCount - 1;
+            weakSelf.userExamPopCourseRecordDetailVerifyResult(YES);
+            [vc.view removeFromSuperview];
+            [vc removeFromParentViewController];
+        }
+    };
+    
+    [weakSelf.view addSubview:vc.view];
+    [weakSelf addChildViewController:vc];
+}
+
+// MARK: - 全屏时候弹框人脸的时候强制横屏再去人脸识别
+- (void)justUpdateVCUI {
+    isFullS = NO;
+    
+    _playerView.controlView.topView.hidden = NO;
+    _playerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight);
+    _headerView.frame = CGRectMake(0, 0, MainScreenWidth, FacePlayImageHeight + 90);
+    _freeLookView.frame = _playerView.frame;
+    if ([_currentCourseFinalModel.model.price floatValue]>0) {
+        [_buyCourseButton setRight:_playerView.width / 2.0 - 10];
+        [_buyhourseButton setLeft:_playerView.width / 2.0 + 10];
+    } else {
+        _buyCourseButton.centerX = _playerView.width / 2.0;
+    }
+    if (([_freeLookView superview] && !_freeLookView.hidden) || [_currentCourseFinalModel.model.course_type isEqualToString:@"2"]) {
+        _titleImage.hidden = isFullS;
+    }
+    _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
+    [_buyCourseButton setTop:_freeLabel.bottom + 12];
+    [_buyhourseButton setTop:_freeLabel.bottom + 12];
+    _tableView.frame = CGRectMake(0, MACRO_UI_LIUHAI_HEIGHT, MainScreenWidth, MainScreenHeight - MACRO_UI_SAFEAREA - (([_currentCourseFinalModel.model.course_type isEqualToString:@"2"] || [ShowCourseNote isEqualToString:@"0"]) ? 0 : 50) - MACRO_UI_LIUHAI_HEIGHT);
+    _titleImage.hidden = isFullS;
+    [self.headerView bringSubviewToFront:self.titleImage];
+    self.playerView.controlView.topView.backButton.hidden = YES;
+    
+    _tableView.tableHeaderView = _headerView;
+    [_tableView reloadData];
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+// MARK: - 优化学习记录处理
+- (void)newClassCourseRecordNet {
+    
+    NSLog(@"提交学习记录次数");
+    
+    if (shouldStopRecordTimer) {
+        return;
+    }
+    if (!_currentCourseFinalModel) {
+        return;
+    }
+    
+    __weak CourseDetailPlayVC *wekself = self;
+    if (!SWNOTEmptyStr(wekself.ID)) {
+        return;
+    }
+    
+    if (_freeLook) {
+        long currentTime = (long) (wekself.playerView.controlView.currentTime/1000);
+        long duration = (long) (wekself.playerView.controlView.duration/1000);
+        if (currentTime * 100 / duration >= _currentCourseFinalModel.model.audition) {
+            [wekself stopRecordTimer];
+            [wekself stopTuwenTimer];
+            [wekself.playerView stop];
+            if ([wekself.freeLookView superview]) {
+                [wekself.headerView bringSubviewToFront:wekself.freeLookView];
+                wekself.freeLookView.frame = wekself.playerView.frame;
+                wekself.freeLookView.hidden = NO;
+                if ([_currentCourseFinalModel.model.price floatValue]>0) {
+                    [_buyCourseButton setRight:wekself.playerView.width / 2.0 - 10];
+                    [_buyhourseButton setLeft:wekself.playerView.width / 2.0 + 10];
+                    _buyCourseButton.hidden = NO;
+                    _buyhourseButton.hidden = NO;
+                } else {
+                    _buyCourseButton.centerX = wekself.playerView.width / 2.0;
+                    _buyCourseButton.hidden = NO;
+                    _buyhourseButton.hidden = YES;
+                }
+            } else {
+                wekself.freeLookView.frame = wekself.playerView.frame;
+                [wekself.headerView addSubview:wekself.freeLookView];
+                if ([_currentCourseFinalModel.model.price floatValue]>0) {
+                    [_buyCourseButton setRight:wekself.playerView.width / 2.0 - 10];
+                    [_buyhourseButton setLeft:wekself.playerView.width / 2.0 + 10];
+                    _buyCourseButton.hidden = NO;
+                    _buyhourseButton.hidden = NO;
+                } else {
+                    _buyCourseButton.centerX = wekself.playerView.width / 2.0;
+                    _buyCourseButton.hidden = NO;
+                    _buyhourseButton.hidden = YES;
+                }
+            }
+
+            _freeLabel.center = CGPointMake(self.playerView.width / 2.0, self.playerView.height / 2.0 - 64 / 2.0 + 22 / 2.0);
+            [_buyCourseButton setTop:_freeLabel.bottom + 12];
+            [_buyhourseButton setTop:_freeLabel.bottom + 12];
+            
+            _titleImage.hidden = isFullS;
+            return;
+        }
+    }
+    
+    // -10 0
+    // -10 0
+    currentFaceTime = currentFaceTime + 10;
+    if (currentCourseHasFace && !(_currentCourseFinalModel.model.audition>0 && !_currentCourseFinalModel.model.is_buy)) {
+        if (faceVerifyCount>0) {
+            if (currentFaceTime>=(previousFaceTime + 1 + (arc4random() % 10) + _currentCourseFinalModel.model.face_data.verify_timespan * 60)) {
+                previousFaceTime = currentFaceTime;
+                wekself.userFaceCourseRecordDetailVerifyResult = ^(BOOL result) {
+                    isSameClassHourseID = YES;
+                    if (result) {
+                        if (wekself.recordTimer) {
+                            [wekself.recordTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+                        }
+                        if (wekself.playerView) {
+                            [wekself.playerView resume];
+                        }
+                    }
+                };
+                [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:NO faceType:@"3"];
+            }
+        }
+    }
+    
+    if ([_courseType isEqualToString:@"4"]) {
+        
+        NSString *courseId = _currentCourseFinalModel.model.course_id;
+        CourseListModel *parentModel  = _currentCourseFinalModel.model.parentItem;
+        
+        while (parentModel) {
+            courseId = parentModel.course_id;
+            parentModel = parentModel.parentItem;
+        }
+        
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":courseId,@"section_id":_currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    } else {
+        [Net_API requestPOSTWithURLStr:[Net_Path addRecord] WithAuthorization:nil paramDic:@{@"course_id":wekself.ID,@"section_id":_currentCourseFinalModel.model.classHourId,@"current_time":@((long) (wekself.playerView.controlView.currentTime/1000))} finish:^(id  _Nonnull responseObject) {
+            NSLog(@"%@",responseObject);
+        } enError:^(NSError * _Nonnull error) {
+            
+        }];
+    }
+}
+
+//- (void)getHoursLockStatus:(NSString *)courseId hoursPid:(NSString *)pid hoursId:(NSString *)hoursID {
+//    __weak CourseDetailPlayVC *weakself = self;
+//    NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
+//    [param setObject:hoursID forKey:@"section_id"];
+//    [param setObject:courseId forKey:@"course_id"];
+//    if (![_ID isEqualToString:courseId]) {
+//        // 班级课
+//        [param setObject:_ID forKey:@"class_id"];
+//    }
+//
+//    [Net_API requestGETSuperAPIWithURLStr:[Net_Path classHourseIsLockNet] WithAuthorization:nil paramDic:param finish:^(id  _Nonnull responseObject) {
+//        if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
+//            if ([[responseObject objectForKey:@"code"] integerValue]) {
+//                if ([[responseObject objectForKey:@"data"] integerValue]) {
+//                    // 解锁
+//                    weakself.courseHoursDetailLockStatus(YES);
+//
+//                } else {
+//                    // 未解锁
+//                    weakself.courseHoursDetailLockStatus(NO);
+//                    [self showHudInView:self.view showHint:@"课时未解锁"];
+//                }
+//            }
+//        }
+//    } enError:^(NSError * _Nonnull error) {
+//        [self showHudInView:self.view showHint:@"课时解锁状态查询失败"];
+//    }];
+//}
+
+// MARK: - 版权显示
+- (void)dealCopyRight {
+    if SWNOTEmptyDictionary(marqueeInfo) {
+        NSString *copyRightOn = [NSString stringWithFormat:@"%@",marqueeInfo[@"copyright"]];
+        NSString *copyRightContent = [NSString stringWithFormat:@"%@",marqueeInfo[@"copyright_content"]];
+        if ([copyRightOn isEqualToString:@"1"] && SWNOTEmptyStr(copyRightContent)) {
+//            _righttipLabel.text = copyRightContent;
+//            _righttipLabel.hidden = NO;
+            
+            _noticeText.text = copyRightContent;
+            _noticeText.hidden = NO;
+            _noticeText.rightTimeInterval = [[NSString stringWithFormat:@"%@",marqueeInfo[@"frequency"]] floatValue];
+            [_noticeText move];
+        } else {
+//            _righttipLabel.text = @"";
+//            _righttipLabel.hidden = YES;
+            
+            _noticeText.text = @"";
+            _noticeText.hidden = YES;
+            [_noticeText stop];
+        }
+    } else {
+//        _righttipLabel.text = @"";
+//        _righttipLabel.hidden = YES;
+        
+        _noticeText.text = @"";
+        _noticeText.hidden = YES;
+        [_noticeText stop];
+    }
+}
+
+// MARK: - 当前及时处理横屏权限
+- (void)dealFull {
+    if (@available(iOS 16.0, *)) {
+        [self setNeedsUpdateOfSupportedInterfaceOrientations];
+    }
 }
 
 @end

@@ -184,7 +184,7 @@
     _contentLabel1.font            = self.textFont;
     _contentLabel1.textColor       = self.textColor;
     _contentLabel1.tag             = 1001;
-    _contentLabel1.backgroundColor = [UIColor clearColor];
+    _contentLabel1.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.2];//[UIColor clearColor];
     [self addSubview:_contentLabel1];
     
     if (_contentLabel2) {
@@ -200,7 +200,7 @@
     _contentLabel2.font            = self.textFont;
     _contentLabel2.textColor       = self.textColor;
     _contentLabel2.tag             = 1002;
-    _contentLabel2.backgroundColor = [UIColor clearColor];
+    _contentLabel2.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.2];//[UIColor clearColor];
     [self addSubview:_contentLabel2];
 }
 
@@ -317,7 +317,7 @@
     if (self.moveDirection == LMJTextScrollMoveLeft) {
         _contentLabel1.frame = CGRectMake(_contentLabel1.frame.origin.x -1, 0, _textWidth, _selfHeight);
         if (_contentLabel1.frame.origin.x < -_textWidth) {
-            _contentLabel1.frame = CGRectMake(_selfWidth, 0, _textWidth, _selfHeight);
+            _contentLabel1.frame = CGRectMake(_selfWidth + (1/_speed) * _rightTimeInterval, 0, _textWidth, _selfHeight);
         }
     }else{
         _contentLabel1.frame = CGRectMake(_contentLabel1.frame.origin.x +1, 0, _textWidth, _selfHeight);

@@ -17,7 +17,6 @@ typedef void (^configTXSDK)(NSString *success);
     
 }
 
-@property (strong ,nonatomic) configTXSDK configTXSDK;
 @property (strong, nonatomic) UIWindow *window;
 
 @property (assign, nonatomic) BOOL _allowRotation;

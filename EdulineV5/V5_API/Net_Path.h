@@ -656,6 +656,9 @@ struct NetWorkUrl {
 /** 分配的考试 */
 + (NSString *)userOwnExamListNet;
 
+/** 课程弹题接口 */
++ (NSString *)courseExamPopInfoNet:(NSString *)courseId;
+
 @end
 
 NS_ASSUME_NONNULL_END

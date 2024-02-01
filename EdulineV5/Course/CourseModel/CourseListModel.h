@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class CourseListModel,section_data_model,section_rate_model,live_rate_model,section_CCLive,section_face_data;
+@class CourseListModel,section_data_model,section_rate_model,live_rate_model,section_CCLive,section_face_data,section_alert_data,section_exam_data;
 
 @interface CourseListModel : NSObject
 
@@ -59,6 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) live_rate_model *live_rate;
 @property (strong, nonatomic) section_CCLive *section_live;
 @property (strong, nonatomic) section_face_data *face_data;
+@property (strong, nonatomic) section_alert_data *onhook;
+@property (strong, nonatomic) section_exam_data *onhook_exam;
 
 @property (nonatomic, weak)   CourseListModel *parentItem;
 @property (nonatomic, strong) NSMutableArray<CourseListModel *> *childItems;
@@ -168,6 +170,29 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) unsigned int verified_count;//已经验证次数
 @property (assign, nonatomic) unsigned int need_verify_number;//还需要验证人脸次数
 @property (assign, nonatomic) unsigned int verify_timespan;//分钟数
+
+@end
+
+@interface section_alert_data : NSObject
+
+@property (strong, nonatomic) NSString *alert_content;//弹框内容
+@property (assign, nonatomic) unsigned int alert_max_number;//弹框次数
+@property (assign, nonatomic) unsigned int alert_time_interval;//弹框间隔
+
+@end
+
+@interface section_exam_data : NSObject
+
+/**
+ "answer_max_number": 2, //弹题次数
+ "answer_time_interval": 5, //弹题时间间隔
+ "answer_pass": 1 //开关 [1:开 0:关] (开启表示作答后不论对错即可继续学习)
+ "answer_max_count": 12, //最大连续错题次数
+ */
+@property (assign, nonatomic) BOOL answer_pass;
+@property (assign, nonatomic) unsigned int answer_max_number;//弹框次数
+@property (assign, nonatomic) unsigned int answer_time_interval;//弹框间隔
+@property (assign, nonatomic) unsigned int answer_max_count;//最大连续错题次数
 
 @end
 
