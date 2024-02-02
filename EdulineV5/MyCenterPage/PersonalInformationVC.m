@@ -189,7 +189,7 @@
     
     NSArray *userFace = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"userFaceArray"]];
     
-    if (SWNOTEmptyArr(userFace)) {
+//    if (SWNOTEmptyArr(userFace)) {
         _faceVerifyTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line5.bottom, _faceTitle.width, 50)];
         _faceVerifyTitle.text = @"人脸认证";
         _faceVerifyTitle.textColor = EdlineV5_Color.textFirstColor;
@@ -212,9 +212,9 @@
         _line6 = [[UIView alloc] initWithFrame:CGRectMake(_faceTitle.left, _faceVerifyTitle.bottom, MainScreenWidth - 15, 0.5)];
         _line6.backgroundColor = EdlineV5_Color.fengeLineColor;
         [_mainScrollView addSubview:_line6];
-    }
+//    }
     
-    _sexTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, SWNOTEmptyArr(userFace) ?  _line6.bottom : _line5.bottom, _faceTitle.width, 50)];
+    _sexTitle = [[UILabel alloc] initWithFrame:CGRectMake(_faceTitle.left, _line6.bottom, _faceTitle.width, 50)];//SWNOTEmptyArr(userFace) ?  _line6.bottom : _line5.bottom
     _sexTitle.text = @"性别";
     _sexTitle.textColor = EdlineV5_Color.textFirstColor;
     _sexTitle.font = SYSTEMFONT(15);

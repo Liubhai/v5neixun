@@ -20,4 +20,6 @@
 
 - (void)showHudInView:(UIView *)view showHint:(NSString *)hint;
 
+- (void)showHudInView:(UIView *)view showHint:(NSString *)hint timeInt:(NSTimeInterval)timeInt;
+
 @end

@@ -25,6 +25,7 @@
 #import "RootV5VC.h"
 #import "SetingCell.h"
 #import "Net_Path.h"
+#import "AddressListViewController.h"
 
 @interface SetingViewController ()<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, SetingCellDelegate>
 
@@ -255,6 +256,14 @@
         } else {
             [self showHudInView:self.view showHint:@"请先在个人信息里面绑定手机号"];
         }
+    } else if ([[_dataSource[indexPath.section][indexPath.row] objectForKey:@"type"] isEqualToString:@"address"]) {
+        if (!SWNOTEmptyStr([V5_UserModel oauthToken])) {
+            [AppDelegate presentLoginNav:self];
+            return;
+        }
+        AddressListViewController *vc = [[AddressListViewController alloc] init];
+        vc.fromCenter = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -475,21 +484,21 @@
     if (SWNOTEmptyStr([V5_UserModel oauthToken])) {
         if ([Show_Config isEqualToString:@"1"]) {
             if (show) {
-                [_dataSource addObjectsFromArray:@[@[@{@"title":@"登录密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"}],
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"登录密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},@{@"title":@"地址管理",@"type":@"address",@"rightTitle":@"",@"status":@"off"}],
                 @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
                 @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
             } else {
-                [_dataSource addObjectsFromArray:@[@[@{@"title":@"登录密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"}],
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"登录密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},@{@"title":@"地址管理",@"type":@"address",@"rightTitle":@"",@"status":@"off"}],
                 @[@{@"title":@"机构切换",@"type":@"institution",@"rightTitle":@"",@"status":@"off"},@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
                 @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
             }
         } else {
             if (show) {
-                [_dataSource addObjectsFromArray:@[@[@{@"title":@"登录密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"}],
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"登录密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},@{@"title":@"地址管理",@"type":@"address",@"rightTitle":@"",@"status":@"off"}],
                 @[@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
                 @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
             } else {
-                [_dataSource addObjectsFromArray:@[@[@{@"title":@"登录密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"}],
+                [_dataSource addObjectsFromArray:@[@[@{@"title":@"登录密码",@"type":@"password",@"rightTitle":@"",@"status":@"off"},@{@"title":@"地址管理",@"type":@"address",@"rightTitle":@"",@"status":@"off"}],
                 @[@{@"title":@"允许3G/4G网络播放视频、音频",@"type":@"switchPlay",@"rightTitle":@"",@"status":@"off"},@{@"title":@"清除应用缓存",@"type":@"memory",@"rightTitle":@"",@"status":@"off"},@{@"title":@"关于",@"type":@"about",@"rightTitle":@"",@"status":@"off"}],
                 @[@{@"title":@"退出账号",@"type":@"logout",@"rightTitle":@"",@"status":@"off"}]]];
             }

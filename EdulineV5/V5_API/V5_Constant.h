@@ -70,6 +70,9 @@
 #define PROFILELAYOUT [[NSUserDefaults standardUserDefaults] objectForKey:@"profile"] == nil ? @"1" : [[NSUserDefaults standardUserDefaults] objectForKey:@"profile"]
 #define COURSELAYOUT [[NSUserDefaults standardUserDefaults] objectForKey:@"course"]
 
+// 考试切屏次数
+#define screen_cut_string [[NSUserDefaults standardUserDefaults] objectForKey:@"screen_cut"] == nil ? @"0" : [[NSUserDefaults standardUserDefaults] objectForKey:@"screen_cut"]
+
 #define LoginInvalid_TXT @"账号已在另一台设备登录,\n请重新登录。"
 
 #define MainScreenHeight [EdulineV5_Tool sharedInstance].tsShowWindowsHeight

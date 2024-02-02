@@ -927,4 +927,75 @@
     return [Net_Path fullPath:@"course/base/{id}/question" repalce:@"{id}" byReplece:courseId];
 }
 
+/** 课表接口 */
++ (NSString *)classScheduleListNet {
+    return [Net_Path fullPath:@"user/course/schedule/daily" repalce:@"" byReplece:@""];
+}
+
+/** 区间课表接口 */
++ (NSString *)classSrctionListNet {
+    return [Net_Path fullPath:@"user/course/schedule/period" repalce:@"" byReplece:@""];
+}
+
+/**
+ category 末级分类ID
+ title 商品名称，模糊搜索
+ page 当前页
+ count 每页条数
+ */
+/** 商城列表 */
++ (NSString *)shopMainList {
+    return [Net_Path fullPath:@"mall/product/list" repalce:@"" byReplece:@""];
+}
+
+/** 商城详情 */
++ (NSString *)shopDetailInfo:(NSString *)productId {
+    return [Net_Path fullPath:@"mall/product/{id}" repalce:@"{id}" byReplece:productId];
+}
+
+/** 商城热门搜索 */
++ (NSString *)shopHotSearch {
+    return [Net_Path fullPath:@"mall/product/hotsearch" repalce:@"" byReplece:@""];
+}
+
+/** 地址增加 */
++ (NSString *)addressAddNet {
+    return [Net_Path fullPath:@"mall/address/add" repalce:@"" byReplece:@""];
+}
+
+/** 收货地址列表 */
++ (NSString *)addressListNet {
+    return [Net_Path fullPath:@"mall/address/list" repalce:@"" byReplece:@""];
+}
+
+/** 地址修改 */
++ (NSString *)addressUpdateNet {
+    return [Net_Path fullPath:@"mall/address/update" repalce:@"" byReplece:@""];
+}
+
+/** 收货地址默认 */
++ (NSString *)addressSetDefaultNet {
+    return [Net_Path fullPath:@"mall/address/default" repalce:@"" byReplece:@""];
+}
+
+/** 收货地址删除 */
++ (NSString *)addressDelateNet {
+    return [Net_Path fullPath:@"mall/address/del" repalce:@"" byReplece:@""];
+}
+
+/** 商品订单详情 */
++ (NSString *)shopOrderInfoNet {
+    return [Net_Path fullPath:@"mall/order/fetch" repalce:@"" byReplece:@""];
+}
+
+/** 商品订单生产 */
++ (NSString *)shopOrderCreate {
+    return [Net_Path fullPath:@"mall/order/submit" repalce:@"" byReplece:@""];
+}
+
+/** 订单详情 */
++ (NSString *)orderDetailPageNet:(NSString *)orderNum {
+    return [Net_Path fullPath:@"user/order/info/{order_no}" repalce:@"{order_no}" byReplece:orderNum];
+}
+
 @end

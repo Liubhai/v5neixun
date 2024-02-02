@@ -659,6 +659,45 @@ struct NetWorkUrl {
 /** 课程弹题接口 */
 + (NSString *)courseExamPopInfoNet:(NSString *)courseId;
 
+/** 课表接口 */
++ (NSString *)classScheduleListNet;
+
+/** 区间课表接口 */
++ (NSString *)classSrctionListNet;
+
+/** 商城列表 */
++ (NSString *)shopMainList;
+
+/** 商城详情 */
++ (NSString *)shopDetailInfo:(NSString *)productId;
+
+/** 商城热门搜索 */
++ (NSString *)shopHotSearch;
+
+/** 地址增加 */
++ (NSString *)addressAddNet;
+
+/** 收货地址列表 */
++ (NSString *)addressListNet;
+
+/** 地址修改 */
++ (NSString *)addressUpdateNet;
+
+/** 收货地址默认 */
++ (NSString *)addressSetDefaultNet;
+
+/** 收货地址删除 */
++ (NSString *)addressDelateNet;
+
+/** 商品订单详情 */
++ (NSString *)shopOrderInfoNet;
+
+/** 商品订单生产 */
++ (NSString *)shopOrderCreate;
+
+/** 订单详情 */
++ (NSString *)orderDetailPageNet:(NSString *)orderNum;
+
 @end
 
 NS_ASSUME_NONNULL_END

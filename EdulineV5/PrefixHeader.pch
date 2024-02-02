@@ -242,6 +242,10 @@ tmp;\
 #import "YUNLanguage.h"
 #import "UIImage+yunImage.h"
 
+#define TitleFont(fontSize)   ([UIFont fontWithName:@"PingFangSC-Regular" size:(fontSize)])
+#define DWFont(font)   [UIFont systemFontOfSize:font];
+#define DWBoldFont(font) [UIFont boldSystemFontOfSize:font];
+
 #pragma mark -- 组件化 | 白板
 #define SCREEN_HEIGHT   ([[UIScreen mainScreen]bounds].size.height)
 /*******************************/

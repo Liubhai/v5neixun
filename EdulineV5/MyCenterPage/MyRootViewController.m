@@ -31,6 +31,7 @@
 #import "ClassCourseListVC.h"
 #import "MyTeachingRootVC.h"
 #import "RegisterAndForgetPwVC.h"
+#import "ClassScheduleListVC.h"
 
 // 个人圈子主页
 #import "MyCirclePageVC.h"
@@ -507,6 +508,9 @@
     } else if ([iconKey isEqualToString:@"my_exams"]) {
         MyExamPage *vc = [[MyExamPage alloc] init];
         vc.sortTypeFromFind = @{@"title":@"考试记录",@"id":@"examRecord"};
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([iconKey isEqualToString:@"schedule"]) {
+        ClassScheduleListVC *vc = [[ClassScheduleListVC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

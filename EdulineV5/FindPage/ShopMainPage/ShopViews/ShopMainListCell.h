@@ -10,12 +10,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol ShopMainListCellDelegate <NSObject>
+
+@optional
+- (void)exchangeNowButton:(NSDictionary *)shopInfo;
+
+@end
+
 @interface ShopMainListCell : UICollectionViewCell
 
-@property (strong, nonatomic) UIImageView *backImageView;
-@property (strong, nonatomic) UIImageView *typeIcon;
-@property (strong, nonatomic) UILabel *typeTitle;
+@property (nonatomic, weak) id<ShopMainListCellDelegate> delegate;
+@property (strong, nonatomic) UIView *whiteBackView;
+@property (strong, nonatomic) UIImageView *faceImageView;
+@property (strong, nonatomic) UILabel *shopTitle;
 @property (strong, nonatomic) UILabel *priceLabel;
+@property (strong, nonatomic) UILabel *numLabel;
+@property (strong, nonatomic) UILabel *originPriceLabel;
+@property (strong, nonatomic) UIButton *exchangeButton;
+@property (strong, nonatomic) NSDictionary *shopInfoDt;
 
 - (void)setShopMainListInfo:(NSDictionary *)info cellIndex:(NSIndexPath *)cellIndex;
 

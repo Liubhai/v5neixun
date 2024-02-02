@@ -21,6 +21,8 @@
 
 #import "FaceVerifyViewController.h"
 
+#import "AppDelegate.h"
+
 @interface ExamPaperDetailViewController ()<UITableViewDelegate, UITableViewDataSource, ExamAnswerCellDelegate> {
     NSInteger examCount;//整套试卷的总题数
     NSInteger currentExamRow;// 当前答题是第几道题
@@ -106,6 +108,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userTextViewChange:) name:UITextViewTextDidChangeNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paperTimerStopOrStart:) name:@"pauseAndResumeExamTime" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(examSrceenTipNotice:) name:@"examScreenNotice" object:nil];
 }
 
 - (void)makeTopView {
@@ -847,6 +851,18 @@
                     
                     // 考试试卷
                     _currentExamPaperDetailModel = [ExamPaperDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
+                    
+                    // 切屏次数
+                    if ([_examType isEqualToString:@"4"] || [_examType isEqualToString:@"3"]) {
+                        
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",_currentExamPaperDetailModel.screen_cut] forKey:@"screen_cut"];
+                        
+                        // 初始化切屏次数
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%@",_currentExamPaperDetailModel.screen_cut] forKey:@"screen_cut_copy"];
+                        
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                    
                     if ([_currentExamPaperDetailModel.total_time isEqualToString:@"0"]) {
                         // 正序计时
                         remainTime = 0;
@@ -2167,6 +2183,8 @@
         [paperTimer invalidate];
         paperTimer = nil;
     }
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"screen_cut_copy"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)didMoveToParentViewController:(UIViewController*)parent{
@@ -2174,6 +2192,8 @@
     if (!parent) {
         [paperTimer invalidate];
         paperTimer = nil;
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"screen_cut_copy"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
@@ -2250,6 +2270,18 @@
         if (paperTimer) {
             [paperTimer setFireDate:[NSDate distantFuture]];
         }
+    }
+}
+
+// 切屏通知
+- (void)examSrceenTipNotice:(NSNotification *)notice {
+    NSDictionary *tipInfo = [NSDictionary dictionaryWithDictionary:notice.userInfo];
+    if ([[tipInfo objectForKey:@"type"] isEqualToString:@"0"]) {
+        // 0 自动交卷
+        [self putExamAnswer];
+    } else if ([[tipInfo objectForKey:@"type"] isEqualToString:@"1"]) {
+        // 弹框提示下次自动交卷
+        [self showHudInView:[AppDelegate delegate].window showHint:[NSString stringWithFormat:@"你已经切屏%@次，下次切屏系统会自动交卷",screen_cut_string] timeInt:2];
     }
 }
 

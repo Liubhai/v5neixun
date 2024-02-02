@@ -181,6 +181,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *unique_code;
 @property (strong, nonatomic) NSArray *parts;
 @property (strong, nonatomic) section_face_data *face_data;
+@property (strong, nonatomic) NSString *screen_cut;
 
 @end
 

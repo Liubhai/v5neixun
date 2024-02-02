@@ -11,6 +11,7 @@
 #import "Net_Path.h"
 #import "ScoreNewCell.h"
 #import "CourseSearchListVC.h"
+#import "ShopMainViewController.h"
 
 @interface MyScoreNewVC ()<UITableViewDelegate, UITableViewDataSource> {
     NSInteger page;
@@ -86,7 +87,7 @@
     [_signButton addTarget:self action:@selector(signButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [_headerView addSubview:_signButton];
     
-    _methodBackImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _signButton.bottom + 24, MainScreenWidth - 30, 280)];
+    _methodBackImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _signButton.bottom + 24, MainScreenWidth - 30, 280 + (36 + 30))];
     _methodBackImageView.image = Image(@"integral_center_bg");
     _methodBackImageView.userInteractionEnabled = YES;
     [_headerView addSubview:_methodBackImageView];
@@ -97,15 +98,15 @@
     _methodTipLabel.text = @"积分获取";
     [_methodBackImageView addSubview:_methodTipLabel];
     
-    _methodWhiteBackView = [[UIView alloc] initWithFrame:CGRectMake(7.5, 46, _methodBackImageView.width - 15, 220)];
+    _methodWhiteBackView = [[UIView alloc] initWithFrame:CGRectMake(7.5, 46, _methodBackImageView.width - 15, 220 + (36 + 30))];
     _methodWhiteBackView.backgroundColor = [UIColor whiteColor];
     _methodWhiteBackView.layer.masksToBounds = YES;
     _methodWhiteBackView.layer.cornerRadius = 10;
     [_methodBackImageView addSubview:_methodWhiteBackView];
     
-    NSArray *methodIcon1 = @[@"integral_buy_icon",@"integral_comment_icon",@"integral_share_icon"];
-    NSArray *methodTitle = @[@"购买课程",@"评论课程",@"分享课程"];
-    NSArray *methodIcon2 = @[@"buy_button_neixun",@"comment_button_score",@"share_button_score"];
+    NSArray *methodIcon1 = @[@"integral_buy_icon",@"integral_comment_icon",@"integral_share_icon",@"integral_buy_icon"];
+    NSArray *methodTitle = @[@"购买课程",@"评论课程",@"分享课程",@"兑换商品"];
+    NSArray *methodIcon2 = @[@"buy_button_neixun",@"comment_button_score",@"share_button_score",@"buy_button_neixun"];
     
     for (int i = 0; i < methodIcon1.count; i++) {
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 26 + (36 + 30) * i, 36, 36)];
@@ -275,6 +276,9 @@
         [self makeCommentGuideViewUI];
     } else if (sender.tag == 68) {
         [self makeShareGuideViewUI];
+    } else if (sender.tag == 69) {
+        ShopMainViewController *vc = [[ShopMainViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
         CourseSearchListVC *vc = [[CourseSearchListVC alloc] init];
         vc.isSearch = YES;

@@ -161,10 +161,33 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"stopWKVoicePlay" object:nil];
+    
+    // 检测切屏次数
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"screen_cut_copy"]) {
+        NSString *screen_cut = [NSString stringWithFormat:[[NSUserDefaults standardUserDefaults] objectForKey:@"screen_cut_copy"]];
+        screen_cut = [NSString stringWithFormat:@"%@",@([screen_cut integerValue] - 1)];
+        [[NSUserDefaults standardUserDefaults] setObject:screen_cut forKey:@"screen_cut_copy"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    
+    // 发送切屏提示或者交卷通知
+    if (![screen_cut_string isEqualToString:@"0"]) {
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"screen_cut_copy"]) {
+            NSString *screen_cut = [NSString stringWithFormat:[[NSUserDefaults standardUserDefaults] objectForKey:@"screen_cut_copy"]];
+            if ([screen_cut isEqualToString:@"0"]) {
+                // 发送提示
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"examScreenNotice" object:nil userInfo:@{@"type":@"1"}];
+            } else if ([screen_cut isEqualToString:@"-1"]) {
+                // 发送交卷通知
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"examScreenNotice" object:nil userInfo:@{@"type":@"0"}];
+            }
+        }
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"continueWKVoicePlay" object:nil];
     
     [self judgePastBoardInfo];

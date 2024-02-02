@@ -10,6 +10,7 @@
 #import "V5_Constant.h"
 #import "MyTeachListVC.h"
 #import "LBHScrollView.h"
+#import "ClassScheduleListVC.h"
 
 @interface MyTeachingRootVC ()<UIScrollViewDelegate>
 
@@ -34,6 +35,11 @@
     _titleLabel.text = @"我的教学";
     _lineTL.backgroundColor = EdlineV5_Color.fengeLineColor;
     _lineTL.hidden = NO;
+    
+    _rightButton.hidden = NO;
+    [_rightButton setImage:nil forState:0];
+    [_rightButton setTitle:@"课表" forState:0];
+    [_rightButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     
     _typeArray = [NSMutableArray new];
     [_typeArray addObjectsFromArray:@[@{@"title":@"点播",@"type":@"video"},@{@"title":@"直播",@"type":@"live"}]];//@{@"title":@"面授",@"type":@"offline"}@{@"title":@"班级",@"type":@"calss"}
@@ -144,6 +150,12 @@
 
 - (void)topButtonClick:(UIButton *)sender {
     [self.mainScrollView setContentOffset:CGPointMake(MainScreenWidth * sender.tag, 0) animated:YES];
+}
+
+- (void)rightButtonClick:(id)sender {
+    ClassScheduleListVC *vc = [[ClassScheduleListVC alloc] init];
+    vc.isTeacher = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
