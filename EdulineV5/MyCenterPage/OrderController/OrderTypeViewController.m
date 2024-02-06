@@ -13,8 +13,9 @@
 #import "Net_Path.h"
 #import "OrderSureViewController.h"
 #import "CourseMainViewController.h"
+#import "OrderDetailVC.h"
 
-@interface OrderTypeViewController ()<UITableViewDelegate, UITableViewDataSource> {
+@interface OrderTypeViewController ()<UITableViewDelegate, UITableViewDataSource, OrderFinalCellDelegate> {
     NSInteger page;
 }
 
@@ -70,7 +71,8 @@
         cell = [[OrderFinalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
     }
     NSString *statusString = [NSString stringWithFormat:@"%@",_dataSource[indexPath.section][@"status"]];
-    [cell setOrderFinalInfo:_dataSource[indexPath.section][@"products"][indexPath.row] orderStatus:statusString];
+    [cell setOrderFinalInfo:_dataSource[indexPath.section][@"products"][indexPath.row] orderStatus:statusString cellInfo:_dataSource[indexPath.section]];
+    cell.delegate = self;
     return cell;
 }
 
@@ -133,7 +135,22 @@
     truePriceLabel.centerY = timeLabel.centerY;
     truePriceLabel.textColor = EdlineV5_Color.faildColor;
     truePriceLabel.font = SYSTEMFONT(14);
-    truePriceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_dataSource[section][@"payment"]];
+    if ([[NSString stringWithFormat:@"%@",_dataSource[section][@"order_type"]] isEqualToString:@"11"]) {
+        NSString *showCredit = [NSString stringWithFormat:@"%@",_dataSource[section][@"credit"][@"credit"]];
+        NSString *singlePrice = [NSString stringWithFormat:@"%@",_dataSource[section][@"payment"]];
+        if ([showCredit isEqualToString:@"0"] && ([singlePrice isEqualToString:@"0.00"] || [singlePrice isEqualToString:@"0.0"] || [singlePrice isEqualToString:@"0"])) {
+            truePriceLabel.text = @"免费";
+            truePriceLabel.textColor = EdlineV5_Color.priceFreeColor;
+        } else if ([showCredit isEqualToString:@"0"]) {
+            truePriceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,singlePrice];
+        } else if ([singlePrice isEqualToString:@"0.00"] || [singlePrice isEqualToString:@"0.0"] || [singlePrice isEqualToString:@"0"]) {
+            truePriceLabel.text = [NSString stringWithFormat:@"%@积分",showCredit];
+        } else {
+            truePriceLabel.text = [NSString stringWithFormat:@"%@积分+%@%@",_dataSource[section][@"credit"][@"credit"],IOSMoneyTitle,_dataSource[section][@"payment"]];
+        }
+    } else {
+        truePriceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_dataSource[section][@"payment"]];
+    }
     truePriceLabel.textAlignment = NSTextAlignmentRight;
     [view addSubview:truePriceLabel];
     
@@ -230,6 +247,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    OrderDetailVC *vc = [[OrderDetailVC alloc] init];
+    vc.orderNum = [NSString stringWithFormat:@"%@",_dataSource[indexPath.section][@"order_no"]];
+    [self.navigationController pushViewController:vc animated:YES];
+    return;
+    
     NSDictionary *pass = _dataSource[indexPath.section][@"products"][indexPath.row];
     
     NSString *typeString = [NSString stringWithFormat:@"%@",[pass objectForKey:@"type_id"]];
@@ -429,6 +453,13 @@
 //            [_tableView.mj_header beginRefreshing];
 //        }
     }
+}
+
+// MARK: - 订单号复制
+- (void)getPastLogisticNum:(NSString *)LogisticNum {
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = [LogisticNum substringFromIndex:[LogisticNum rangeOfString:@"："].location + 1];
+    [self showHudInView:self.view showHint:@"快递单号复制成功"];
 }
 
 @end

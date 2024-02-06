@@ -196,6 +196,8 @@
 		787957622410E1F40013F95F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957612410E1F40013F95F /* LoginViewController.m */; };
 		787957672410E7700013F95F /* LoginPwView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957662410E7700013F95F /* LoginPwView.m */; };
 		7879576A2410F96A0013F95F /* ThirdLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787957692410F96A0013F95F /* ThirdLoginView.m */; };
+		787B27EF2B6F2C1000FFCEC5 /* OrderDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787B27EE2B6F2C0F00FFCEC5 /* OrderDetailVC.m */; };
+		787B27F22B6F2CB700FFCEC5 /* OrderDetailAsCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 787B27F12B6F2CB700FFCEC5 /* OrderDetailAsCellView.m */; };
 		787E19A62455379A00E2E016 /* OrderSureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19A52455379A00E2E016 /* OrderSureViewController.m */; };
 		787E19A9245576E000E2E016 /* PWResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19A8245576E000E2E016 /* PWResetViewController.m */; };
 		787E19AE24566F0300E2E016 /* OrderRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 787E19AD24566F0300E2E016 /* OrderRootVC.m */; };
@@ -1270,6 +1272,10 @@
 		787957662410E7700013F95F /* LoginPwView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginPwView.m; sourceTree = "<group>"; };
 		787957682410F96A0013F95F /* ThirdLoginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThirdLoginView.h; sourceTree = "<group>"; };
 		787957692410F96A0013F95F /* ThirdLoginView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdLoginView.m; sourceTree = "<group>"; };
+		787B27ED2B6F2C0F00FFCEC5 /* OrderDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderDetailVC.h; sourceTree = "<group>"; };
+		787B27EE2B6F2C0F00FFCEC5 /* OrderDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderDetailVC.m; sourceTree = "<group>"; };
+		787B27F02B6F2CB700FFCEC5 /* OrderDetailAsCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderDetailAsCellView.h; sourceTree = "<group>"; };
+		787B27F12B6F2CB700FFCEC5 /* OrderDetailAsCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderDetailAsCellView.m; sourceTree = "<group>"; };
 		787E19A42455379A00E2E016 /* OrderSureViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderSureViewController.h; sourceTree = "<group>"; };
 		787E19A52455379A00E2E016 /* OrderSureViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderSureViewController.m; sourceTree = "<group>"; };
 		787E19A7245576E000E2E016 /* PWResetViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PWResetViewController.h; sourceTree = "<group>"; };
@@ -3642,6 +3648,8 @@
 			children = (
 				787E19AC24566F0300E2E016 /* OrderRootVC.h */,
 				787E19AD24566F0300E2E016 /* OrderRootVC.m */,
+				787B27ED2B6F2C0F00FFCEC5 /* OrderDetailVC.h */,
+				787B27EE2B6F2C0F00FFCEC5 /* OrderDetailVC.m */,
 				787E19B2245685E100E2E016 /* OrderTypeViewController.h */,
 				787E19B3245685E100E2E016 /* OrderTypeViewController.m */,
 				78793A4D26522115000554C8 /* OrderScreenViewController.h */,
@@ -5563,6 +5571,8 @@
 				787E19B024566FAE00E2E016 /* OrderCell.m */,
 				789DB01F24658C8D001302B4 /* OrderFinalCell.h */,
 				789DB02024658C8D001302B4 /* OrderFinalCell.m */,
+				787B27F02B6F2CB700FFCEC5 /* OrderDetailAsCellView.h */,
+				787B27F12B6F2CB700FFCEC5 /* OrderDetailAsCellView.m */,
 				78AA13AA24470EB2007087F7 /* SetingCell.h */,
 				78AA13AB24470EB2007087F7 /* SetingCell.m */,
 				788EB1C3250220B000E30D79 /* OtherTypeBindCell.h */,
@@ -6175,6 +6185,7 @@
 				782AC43A25BC1C92009130F9 /* ZhuanXiangModel.m in Sources */,
 				789116682B6A536900040A86 /* CCSettingTwoTableViewCell.m in Sources */,
 				78795727240FA3840013F95F /* ZLPhotoPickerBrowserViewController+SignlePhotoBrowser.m in Sources */,
+				787B27F22B6F2CB700FFCEC5 /* OrderDetailAsCellView.m in Sources */,
 				78F94D0B27F3F86E0010ED35 /* MyCertificateListVC.m in Sources */,
 				789109EA2B6A3C5D00040A86 /* HDPortraitToolManager.m in Sources */,
 				7888A35624A1DB1800DB078D /* WKWebIntroview.m in Sources */,
@@ -6667,6 +6678,7 @@
 				78910A212B6A3C5E00040A86 /* NewLotteryInfomationView.m in Sources */,
 				789116002B6A536800040A86 /* PopoverView.m in Sources */,
 				7891166D2B6A536900040A86 /* CCDocListViewController.m in Sources */,
+				787B27EF2B6F2C1000FFCEC5 /* OrderDetailVC.m in Sources */,
 				78AA13832440543D007087F7 /* TAAnimatedDotView.m in Sources */,
 				78060FA9255E836900009171 /* ExamMainViewController.m in Sources */,
 				78C548782418CC7400A33FC4 /* TYDrawStorage.m in Sources */,

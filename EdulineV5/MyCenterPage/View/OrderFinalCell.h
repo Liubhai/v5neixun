@@ -10,8 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol OrderFinalCellDelegate <NSObject>
+
+@optional
+- (void)getPastLogisticNum:(NSString *)LogisticNum;
+
+@end
+
+
 @interface OrderFinalCell : UITableViewCell
 
+@property (assign, nonatomic) id<OrderFinalCellDelegate> delegate;
 @property (strong, nonatomic) UIImageView *faceImageView;
 @property (strong, nonatomic) UIImageView *courseTypeImage;
 @property (strong, nonatomic) UILabel *theme;
@@ -20,8 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UILabel *dateLine;
 @property (strong, nonatomic) UILabel *countLabel;
 
+@property (strong, nonatomic) UIView *logisticsView;// 物流信息
+@property (strong, nonatomic) UILabel *logisticsLabel;
+@property (strong, nonatomic) UIButton *logisticsButton;
 
-- (void)setOrderFinalInfo:(NSDictionary *)OrderFinalInfo orderStatus:(NSString *)orderStatus;
+
+- (void)setOrderFinalInfo:(NSDictionary *)OrderFinalInfo orderStatus:(NSString *)orderStatus cellInfo:(NSDictionary *)info;
 
 @end
 

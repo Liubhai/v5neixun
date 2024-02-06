@@ -58,7 +58,6 @@
     _courseTypeImage.layer.masksToBounds = YES;
     _courseTypeImage.layer.cornerRadius = 2;
     [_backView addSubview:_courseTypeImage];
-    _courseTypeImage.hidden = YES;
     
     _theme = [[UILabel alloc] initWithFrame:CGRectMake(_faceImageView.right + 10, _faceImageView.top, _backView.width - _faceImageView.right - 64 - 10, 24)];
     _theme.font = SYSTEMFONT(15);

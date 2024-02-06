@@ -173,6 +173,8 @@
 //                break;
 //            }
 //        }
+        vc.notHiddenNav = NO;
+        vc.hiddenNavDisappear = YES;
         vc.screenTitle = screenTitle;
         vc.screenType = screenType;
         vc.view.frame = CGRectMake(0, MACRO_UI_UPHEIGHT + 45, MainScreenWidth, MainScreenHeight - MACRO_UI_UPHEIGHT - 45);
