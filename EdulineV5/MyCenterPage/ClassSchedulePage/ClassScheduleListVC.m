@@ -293,6 +293,7 @@
 
 - (void)backToToday {
     [_calendar selectDate:[NSDate date]];
+    [self calendar:_calendar didSelectDate:[NSDate date] atMonthPosition:FSCalendarMonthPositionCurrent];
 }
 
 - (void)getClassSectionList {

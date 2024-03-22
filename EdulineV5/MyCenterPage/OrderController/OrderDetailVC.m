@@ -110,7 +110,7 @@
 - (void)makeOrderInfoView {
     
     if (!_orderInfoBackView) {
-        _orderInfoBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _productInfoBackView.bottom + 8, MainScreenWidth - 30, 180)];
+        _orderInfoBackView = [[UIView alloc] initWithFrame:CGRectMake(15, _productInfoBackView.bottom + 8, MainScreenWidth - 30, 120)];
         _orderInfoBackView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
         _orderInfoBackView.layer.cornerRadius = 10;
         _orderInfoBackView.layer.shadowColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.0800].CGColor;
@@ -119,7 +119,7 @@
         _orderInfoBackView.layer.shadowRadius = 12;
         [_mainScrollView addSubview:_orderInfoBackView];
     }
-    _orderInfoBackView.frame = CGRectMake(15, _productInfoBackView.bottom + 8, MainScreenWidth - 30, 180);
+    _orderInfoBackView.frame = CGRectMake(15, _productInfoBackView.bottom + 8, MainScreenWidth - 30, 120);
     [_orderInfoBackView removeAllSubviews];
     
     NSString *orderNum = [NSString stringWithFormat:@"%@",_orderDetailDict[@"order_no"]];
@@ -131,6 +131,8 @@
         userMethod = @"支付宝";
     } else if ([userMethod isEqualToString:@"wxpay"]) {
         userMethod = @"微信";
+    } else if ([userMethod isEqualToString:@"credit"]) {
+        userMethod = @"积分";
     } else if ([userMethod isEqualToString:@"<null>"] || [userMethod isEqualToString:@"null"] || !SWNOTEmptyStr(userMethod)) {
         userMethod = @"";
     }
@@ -156,11 +158,11 @@
     
     NSMutableArray *orderInfoArray = [NSMutableArray arrayWithArray:@[@{@"tip":@"订单编号：",@"valueString":orderNum},
                          @{@"tip":@"购买者手机号：",@"valueString":userPhone},
-                         @{@"tip":@"支付方式：",@"valueString":userMethod},
                          @{@"tip":@"下单时间：",@"valueString":orderTime},
-                         @{@"tip":@"支付时间：",@"valueString":dealTime},
-                         @{@"tip":@"机构：",@"valueString":institution}
+                         @{@"tip":@"支付时间：",@"valueString":dealTime}
                          ]];
+    
+    _orderInfoBackView.frame = CGRectMake(15, _productInfoBackView.bottom + 8, MainScreenWidth - 30, 16 * 2 + orderInfoArray.count * (18 + 8) - 8);
     
     for (int i = 0; i<orderInfoArray.count; i++) {
         // 订单编号
@@ -181,7 +183,7 @@
             [orderNumLabel sizeToFit];
             [orderNumLabel setHeight:orderNumLabel.height];
             // 这里要判断最终高度
-            [_orderInfoBackView setHeight:(orderNumLabel.bottom + 16 > 180) ? (orderNumLabel.bottom + 16) : 180];
+            [_orderInfoBackView setHeight:(orderNumLabel.bottom + 16 > (16 * 2 + orderInfoArray.count * (18 + 8) - 8)) ? (orderNumLabel.bottom + 16) : (16 * 2 + orderInfoArray.count * (18 + 8) - 8)];
         } else {
             CGFloat orderNumLabelWidth = [orderNumLabel.text sizeWithFont:orderNumLabel.font].width;
             [orderNumLabel setWidth:orderNumLabelWidth];
@@ -321,27 +323,27 @@
     if ([statusString isEqualToString:@"11"]) {
         
         NSArray *product = [NSArray arrayWithArray:_orderDetailDict[@"products"]];
-        NSString *carriage = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,product[0][@"carriage"]];
+        NSString *carriage = [NSString stringWithFormat:@"%@%@",product[0][@"carriage"],IOSMoneyTitle];
         NSString *singlePrice = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:_orderDetailDict[@"ext_data"][@"cash_price"]]];
         NSString *singleCredit = [NSString stringWithFormat:@"%@",_orderDetailDict[@"ext_data"][@"credit_price"]];
         NSString *productCount = [NSString stringWithFormat:@"%@",_orderDetailDict[@"ext_data"][@"num"]];
-        productTotal = [NSString stringWithFormat:@"%@积分+%@%@",@([productCount integerValue] * [singleCredit integerValue]),IOSMoneyTitle,[self dealShopPrice:@([singlePrice floatValue] * [productCount integerValue])]];
+        productTotal = [NSString stringWithFormat:@"%@积分+%@%@",@([productCount integerValue] * [singleCredit integerValue]),[self dealShopPrice:@([singlePrice floatValue] * [productCount integerValue])],IOSMoneyTitle];
         
         if ([singleCredit isEqualToString:@"0"] && ([singlePrice isEqualToString:@"0.00"] || [singlePrice isEqualToString:@"0.0"] || [singlePrice isEqualToString:@"0"])) {
             productTotal = @"免费";
         } else if ([singleCredit isEqualToString:@"0"]) {
-            productTotal = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[self dealShopPrice:@([singlePrice floatValue] * [productCount integerValue])]];
+            productTotal = [NSString stringWithFormat:@"%@%@",[self dealShopPrice:@([singlePrice floatValue] * [productCount integerValue])],IOSMoneyTitle];
         } else if ([singlePrice isEqualToString:@"0.00"] || [singlePrice isEqualToString:@"0.0"] || [singlePrice isEqualToString:@"0"]) {
             productTotal = [NSString stringWithFormat:@"%@积分",@([productCount integerValue] * [singleCredit integerValue])];
         }
         
         NSString *finalCredit = [NSString stringWithFormat:@"%@",_orderDetailDict[@"credit"][@"credit"]];
         NSString *finalPayment = [NSString stringWithFormat:@"%@",[EdulineV5_Tool reviseString:_orderDetailDict[@"payment"]]];
-        finalPrice = [NSString stringWithFormat:@"%@积分+%@%@",finalCredit,IOSMoneyTitle,finalPayment];
+        finalPrice = [NSString stringWithFormat:@"%@积分+%@%@",finalCredit,finalPayment,IOSMoneyTitle];
         if (([finalCredit isEqualToString:@"0"] && ([finalPayment isEqualToString:@"0.00"] || [finalPayment isEqualToString:@"0.0"] || [finalPayment isEqualToString:@"0"]))) {
             finalPrice = @"免费";
         } else if ([finalCredit isEqualToString:@"0"]) {
-            finalPrice = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,finalPayment];
+            finalPrice = [NSString stringWithFormat:@"%@%@",finalPayment,IOSMoneyTitle];
         } else if ([finalPayment isEqualToString:@"0.00"] || [finalPayment isEqualToString:@"0.0"] || [finalPayment isEqualToString:@"0"]) {
             finalPrice = [NSString stringWithFormat:@"%@积分",finalCredit];
         }
@@ -353,16 +355,17 @@
                                           @{@"tip":@"",@"valueString":finalPriceString}]];
     } else {
         
-        NSString *courseTtotal = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:_orderDetailDict[@"total_price"]]];
-        NSString *youhui = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_orderDetailDict[@"fee_price"]];
+        NSString *courseTtotal = [NSString stringWithFormat:@"%@%@",[EdulineV5_Tool reviseString:_orderDetailDict[@"total_price"]],IOSMoneyTitle];
+        NSString *youhui = [NSString stringWithFormat:@"%@%@",_orderDetailDict[@"fee_price"],IOSMoneyTitle];
         
-        NSString *payment = [NSString stringWithFormat:@"%@%@%@",tipString,IOSMoneyTitle,_orderDetailDict[@"payment"]];
+        NSString *payment = [NSString stringWithFormat:@"%@%@%@",tipString,_orderDetailDict[@"payment"],IOSMoneyTitle];
         orderInfoArray = [NSMutableArray arrayWithArray:
                           @[@{@"tip":@"课程总价",@"valueString":courseTtotal},
-                            @{@"tip":@"优惠价格",@"valueString":youhui},
                             @{@"tip":@"",@"valueString":payment},
                           ]];
     }
+    
+    _priceInfoBackView.frame = CGRectMake(15, _logisticsInfoBackView.bottom + 8, MainScreenWidth - 30, 16 * 2 + orderInfoArray.count * (18 + 8) - 8);
     
     for (int i = 0; i<orderInfoArray.count; i++) {
         // 订单编号
@@ -523,7 +526,7 @@
 - (void)button2Click:(UIButton *)sender {
     OrderSureViewController *vc = [[OrderSureViewController alloc] init];
     vc.order_no = [NSString stringWithFormat:@"%@",_orderDetailDict[@"order_no"]];
-    vc.payment = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_orderDetailDict[@"payment"]];
+    vc.payment = [NSString stringWithFormat:@"%@%@",_orderDetailDict[@"payment"],IOSMoneyTitle];
     vc.orderTypeString = @"orderDetail";
     [self.navigationController pushViewController:vc animated:YES];
 }

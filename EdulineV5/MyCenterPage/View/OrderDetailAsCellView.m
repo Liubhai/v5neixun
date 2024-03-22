@@ -206,8 +206,8 @@
             _priceLabel.text = [NSString stringWithFormat:@"%@积分",[NSString stringWithFormat:@"%@",info[@"ext_data"][@"credit_price"]]];
             _priceLabel.frame = CGRectMake(OrderDetailCellWidth - 12 - 100, _faceImageView.top, 100, 24);
         } else {
-            _priceLabel.text = [NSString stringWithFormat:@"%@积分\n+%@%@",[NSString stringWithFormat:@"%@",info[@"ext_data"][@"credit_price"]],IOSMoneyTitle,[NSString stringWithFormat:@"%@",info[@"ext_data"][@"cash_price"]]];
-            _priceLabel.frame = CGRectMake(OrderDetailCellWidth - 12 - 100, _faceImageView.top, 100, 40);
+            _priceLabel.text = [NSString stringWithFormat:@"%@积分",[NSString stringWithFormat:@"%@",info[@"ext_data"][@"credit_price"]]];
+            _priceLabel.frame = CGRectMake(OrderDetailCellWidth - 12 - 100, _faceImageView.top, 100, 24);
         }
         _countLabel.hidden = NO;
         _countLabel.text = [NSString stringWithFormat:@"x%@",info[@"ext_data"][@"num"]];

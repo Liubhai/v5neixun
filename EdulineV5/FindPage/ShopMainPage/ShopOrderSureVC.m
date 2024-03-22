@@ -286,7 +286,7 @@
         if (SWNOTEmptyDictionary(addressInfo)) {
             [_shopFaceView sd_setImageWithURL:EdulineUrlString(addressInfo[@"cover_url"]) placeholderImage:DefaultImage];
             _shopTitleLabel.text = [NSString stringWithFormat:@"%@",addressInfo[@"title"]];
-            _yunfeiLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,addressInfo[@"carriage"]];
+            _yunfeiLabel.text = [NSString stringWithFormat:@"%@%@",addressInfo[@"carriage"],IOSMoneyTitle];
             
             
             NSString *showCredit = [NSString stringWithFormat:@"%@",addressInfo[@"credit_price"]];
@@ -297,10 +297,10 @@
                 _shopPriceLabel.text = @"免费";
                 _shopPriceLabel.textColor = EdlineV5_Color.priceFreeColor;
             } else if ([showCredit isEqualToString:@"0"]) {
-                NSString *showPrice = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,addressInfo[@"cash_price"]];
+                NSString *showPrice = [NSString stringWithFormat:@"%@%@",addressInfo[@"cash_price"],IOSMoneyTitle];
                 
                 NSMutableAttributedString *showPriceAtt = [[NSMutableAttributedString alloc] initWithString:showPrice];
-                [showPriceAtt addAttributes:@{NSFontAttributeName:SYSTEMFONT(11)} range:NSMakeRange(0, [iosMoney length])];
+                [showPriceAtt addAttributes:@{NSFontAttributeName:SYSTEMFONT(11)} range:NSMakeRange(singlePrice.length, [iosMoney length])];
                 _shopPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:showPriceAtt];
                 
             } else if ([singlePrice isEqualToString:@"0.00"] || [singlePrice isEqualToString:@"0.0"] || [singlePrice isEqualToString:@"0"]) {
@@ -310,7 +310,7 @@
                 [showPriceAtt addAttributes:@{NSFontAttributeName:SYSTEMFONT(11)} range:NSMakeRange(showPrice.length - 2, 2)];
                 _shopPriceLabel.attributedText = [[NSAttributedString alloc] initWithAttributedString:showPriceAtt];
             } else {
-                NSString *showPrice = [NSString stringWithFormat:@"%@积分+%@%@",addressInfo[@"credit_price"],IOSMoneyTitle,addressInfo[@"cash_price"]];
+                NSString *showPrice = [NSString stringWithFormat:@"%@积分+%@%@",addressInfo[@"credit_price"],addressInfo[@"cash_price"],IOSMoneyTitle];
                 
                 NSMutableAttributedString *showPriceAtt = [[NSMutableAttributedString alloc] initWithString:showPrice];
                 [showPriceAtt addAttributes:@{NSFontAttributeName:SYSTEMFONT(11)} range:NSMakeRange(showCredit.length, [[NSString stringWithFormat:@"积分+%@",IOSMoneyTitle] length])];
@@ -328,18 +328,18 @@
     [_mainScrollView addSubview:_scoreBackView];
     [_scoreBackView removeAllSubviews];
     
-    _scoreRulerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15 + 30 + 5 + 12 + 15, 50)];
+    _scoreRulerButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15 + 30 + 15, 50)];//+ 5 + 12
     [_scoreRulerButton setTitle:@"积分" forState:0];
-    [_scoreRulerButton setImage:Image(@"explain_icon") forState:0];
+//    [_scoreRulerButton setImage:Image(@"explain_icon") forState:0];
     _scoreRulerButton.titleLabel.font = SYSTEMFONT(14);
     [_scoreRulerButton setTitleColor:EdlineV5_Color.textFirstColor forState:0];
     
-    CGFloat imageWith = _scoreRulerButton.imageView.frame.size.width;
-    CGFloat labelWidth = _scoreRulerButton.titleLabel.intrinsicContentSize.width;
-    _scoreRulerButton.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+5/2.0, 0, -labelWidth-5/2.0);
-    _scoreRulerButton.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith-5/2.0, 0, imageWith+5/2.0);
+//    CGFloat imageWith = _scoreRulerButton.imageView.frame.size.width;
+//    CGFloat labelWidth = _scoreRulerButton.titleLabel.intrinsicContentSize.width;
+//    _scoreRulerButton.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth+5/2.0, 0, -labelWidth-5/2.0);
+//    _scoreRulerButton.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith-5/2.0, 0, imageWith+5/2.0);
     
-    [_scoreRulerButton addTarget:self action:@selector(rulerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [_scoreRulerButton addTarget:self action:@selector(rulerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_scoreBackView addSubview:_scoreRulerButton];
     
     _scoreChooseLabel = [[UILabel alloc] initWithFrame:CGRectMake(_scoreBackView.width - 50 - 200, 0, 200, 50)];
@@ -357,10 +357,12 @@
 //    [_scoreBackView addSubview:_scoreTipLabel];
     
     _scoreRightIcon = [[UIButton alloc] initWithFrame:CGRectMake(_scoreBackView.width - 50, 0, 50, 50)];
-    [_scoreRightIcon setImage:Image(@"checkbox_def") forState:0];
-    [_scoreRightIcon setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
-    [_scoreRightIcon addTarget:self action:@selector(scoreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_scoreRightIcon setImage:[Image(@"checkbox_blue") converToMainColor] forState:0];
+//    [_scoreRightIcon setImage:Image(@"checkbox_def") forState:0];
+//    [_scoreRightIcon setImage:[Image(@"checkbox_blue") converToMainColor] forState:UIControlStateSelected];
+//    [_scoreRightIcon addTarget:self action:@selector(scoreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_scoreBackView addSubview:_scoreRightIcon];
+    _scoreRightIcon.selected = YES;
     
     if (SWNOTEmptyDictionary(_shopInfoDict)) {
         [self dealPriceUI];
@@ -484,15 +486,16 @@
 
 // MARK: - 处理页面价格UI
 - (void)dealPriceUI {
-    _scoreChooseLabel.text = [NSString stringWithFormat:@"共%@，本次可用%@",_shopInfoDict[@"credit"][@"user_credit"],userScore >= (shopScore * [_numLabel.text integerValue]) ? @(shopScore * [_numLabel.text integerValue]) : @(userScore)];
+    NSString *carriage = [NSString stringWithFormat:@"%@",_shopInfoDict[@"product"][@"carriage"]];
+    _scoreChooseLabel.text = [NSString stringWithFormat:@"共%@，本次可用%@",_shopInfoDict[@"credit"][@"user_credit"],userScore >= (shopScore * [_numLabel.text integerValue] + [carriage floatValue]) ? @(shopScore * [_numLabel.text integerValue] + [carriage floatValue]) : @(userScore)];
     if (_scoreRightIcon.selected) {
 //        NSString *ratio = [NSString stringWithFormat:@"%@",_shopInfoDict[@"credit"][@"ratio"]];
-        NSString *carriage = [NSString stringWithFormat:@"%@",_shopInfoDict[@"product"][@"carriage"]];
-        _finalPriceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,userScore >= (shopScore * [_numLabel.text integerValue]) ? [self dealShopPrice:@(shopPrice * [_numLabel.text integerValue] + [carriage floatValue])] : [self dealShopPrice:@(shopPrice * [_numLabel.text integerValue] + ((shopScore * [_numLabel.text integerValue]) - userScore) + [carriage floatValue])]];
+//        NSString *carriage = [NSString stringWithFormat:@"%@",_shopInfoDict[@"product"][@"carriage"]];
+        _finalPriceLabel.text = [NSString stringWithFormat:@"%@%@",userScore >= (shopScore * [_numLabel.text integerValue] + [carriage floatValue]) ? [self dealShopPrice:@(shopPrice * [_numLabel.text integerValue])] : [self dealShopPrice:@(shopPrice * [_numLabel.text integerValue] + ((shopScore * [_numLabel.text integerValue]) - userScore) + [carriage floatValue])],IOSMoneyTitle];
     } else {
 //        NSString *ratio = [NSString stringWithFormat:@"%@",_shopInfoDict[@"credit"][@"ratio"]];
-        NSString *carriage = [NSString stringWithFormat:@"%@",_shopInfoDict[@"product"][@"carriage"]];
-        _finalPriceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[self dealShopPrice:@(shopPrice * [_numLabel.text integerValue] + ((shopScore * [_numLabel.text integerValue]) - 0) + [carriage floatValue])]];
+//        NSString *carriage = [NSString stringWithFormat:@"%@",_shopInfoDict[@"product"][@"carriage"]];
+        _finalPriceLabel.text = [NSString stringWithFormat:@"%@%@",[self dealShopPrice:@(shopPrice * [_numLabel.text integerValue] + ((shopScore * [_numLabel.text integerValue]) - 0) + [carriage floatValue])],IOSMoneyTitle];
     }
 }
 

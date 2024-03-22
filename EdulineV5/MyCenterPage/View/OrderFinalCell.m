@@ -142,9 +142,9 @@
         _courseTypeImage.hidden = YES;
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[OrderFinalInfo objectForKey:@"user_price"]]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",[EdulineV5_Tool reviseString:[OrderFinalInfo objectForKey:@"user_price"]],IOSMoneyTitle];
     if ([courseType isEqualToString:@"101"] || [courseType isEqualToString:@"102"] || [courseType isEqualToString:@"103"] || [courseType isEqualToString:@"104"]) {
-        _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[OrderFinalInfo objectForKey:@"price"]];
+        _priceLabel.text = [NSString stringWithFormat:@"%@%@",[OrderFinalInfo objectForKey:@"price"],IOSMoneyTitle];
     }
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     _priceLabel.frame = CGRectMake(MainScreenWidth - 12 - priceWidth, _faceImageView.top, priceWidth, 24);

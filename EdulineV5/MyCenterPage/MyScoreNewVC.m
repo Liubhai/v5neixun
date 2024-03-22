@@ -106,7 +106,7 @@
     
     NSArray *methodIcon1 = @[@"integral_buy_icon",@"integral_comment_icon",@"integral_share_icon",@"integral_buy_icon"];
     NSArray *methodTitle = @[@"购买课程",@"评论课程",@"分享课程",@"兑换商品"];
-    NSArray *methodIcon2 = @[@"buy_button_neixun",@"comment_button_score",@"share_button_score",@"buy_button_neixun"];
+    NSArray *methodIcon2 = @[@"buy_button_neixun",@"comment_button_score",@"share_button_score",@"share_button"];
     
     for (int i = 0; i < methodIcon1.count; i++) {
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 26 + (36 + 30) * i, 36, 36)];

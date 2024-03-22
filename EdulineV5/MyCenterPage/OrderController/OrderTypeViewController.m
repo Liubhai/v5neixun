@@ -142,14 +142,14 @@
             truePriceLabel.text = @"免费";
             truePriceLabel.textColor = EdlineV5_Color.priceFreeColor;
         } else if ([showCredit isEqualToString:@"0"]) {
-            truePriceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,singlePrice];
+            truePriceLabel.text = [NSString stringWithFormat:@"%@%@",singlePrice,IOSMoneyTitle];
         } else if ([singlePrice isEqualToString:@"0.00"] || [singlePrice isEqualToString:@"0.0"] || [singlePrice isEqualToString:@"0"]) {
             truePriceLabel.text = [NSString stringWithFormat:@"%@积分",showCredit];
         } else {
-            truePriceLabel.text = [NSString stringWithFormat:@"%@积分+%@%@",_dataSource[section][@"credit"][@"credit"],IOSMoneyTitle,_dataSource[section][@"payment"]];
+            truePriceLabel.text = [NSString stringWithFormat:@"%@积分+%@%@",_dataSource[section][@"credit"][@"credit"],_dataSource[section][@"payment"],IOSMoneyTitle];
         }
     } else {
-        truePriceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_dataSource[section][@"payment"]];
+        truePriceLabel.text = [NSString stringWithFormat:@"%@%@",_dataSource[section][@"payment"],IOSMoneyTitle];
     }
     truePriceLabel.textAlignment = NSTextAlignmentRight;
     [view addSubview:truePriceLabel];
@@ -405,7 +405,7 @@
 - (void)button2Click:(UIButton *)sender {
     OrderSureViewController *vc = [[OrderSureViewController alloc] init];
     vc.order_no = [NSString stringWithFormat:@"%@",_dataSource[sender.tag][@"order_no"]];
-    vc.payment = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,_dataSource[sender.tag][@"payment"]];
+    vc.payment = [NSString stringWithFormat:@"%@%@",_dataSource[sender.tag][@"payment"],IOSMoneyTitle];
     vc.orderTypeString = @"orderList";
     [self.navigationController pushViewController:vc animated:YES];
 }
