@@ -304,6 +304,63 @@
     }
 }
 
+// MARK: - 构建弹框防挂机点击确认按钮视图
+- (UIView *)popupBackView {
+    if (!_popupBackView) {
+        CGFloat width = 0;
+        CGFloat height = 0;
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (orientation == UIInterfaceOrientationPortrait ) {
+            width = ScreenWidth;
+            height = ScreenHeight;
+        }else{
+            width = ScreenWidth;
+            height = ScreenHeight;
+        }
+        _popupBackView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+        _popupBackView.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3000].CGColor;
+
+        // 白色框和文字按钮等控件
+        _popupWhiteView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 270, 135)];
+        _popupWhiteView.layer.masksToBounds = YES;
+        _popupWhiteView.layer.cornerRadius = 7;
+        _popupWhiteView.backgroundColor = [UIColor whiteColor];
+        [_popupBackView addSubview:_popupWhiteView];
+        _popupWhiteView.center = CGPointMake(width / 2.0, height / 2.0);
+        
+        _popuptipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 26, _popupWhiteView.width, 18)];
+        _popuptipLabel.text = @"防挂机验证";
+        _popuptipLabel.textColor = EdlineV5_Color.textFirstColor;
+        _popuptipLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:15];
+        _popuptipLabel.textAlignment = NSTextAlignmentCenter;
+        [_popupWhiteView addSubview:_popuptipLabel];
+        
+        _popupContentLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _popuptipLabel.bottom + 4, _popupWhiteView.width - 30, 18)];
+        _popupContentLabel.text = SWNOTEmptyStr(alert_popup_content) ? alert_popup_content : @"为确认您没有挂机，请点击下方确认按钮";
+        _popupContentLabel.textColor = EdlineV5_Color.textThirdColor;
+        _popupContentLabel.font = SYSTEMFONT(12);
+        _popupContentLabel.textAlignment = NSTextAlignmentCenter;
+        _popupContentLabel.numberOfLines = 0;
+        [_popupContentLabel sizeToFit];
+        _popupContentLabel.frame = CGRectMake(15, _popuptipLabel.bottom, _popupWhiteView.width - 30, MAX(_popupContentLabel.height, 18));
+        [_popupWhiteView addSubview:_popupContentLabel];
+        
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, _popupContentLabel.bottom + 19, _popupWhiteView.width, 1)];
+        line.backgroundColor = EdlineV5_Color.backColor;
+        [_popupWhiteView addSubview:line];
+        
+        _popupSureButton = [[UIButton alloc] initWithFrame:CGRectMake(0, line.bottom, _popupWhiteView.width, 50)];
+        [_popupSureButton setTitle:@"确认" forState:0];
+        [_popupSureButton setTitleColor:EdlineV5_Color.themeColor forState:0];
+        [_popupSureButton addTarget:self action:@selector(popupSureButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_popupWhiteView addSubview:_popupSureButton];
+        
+        [_popupWhiteView setHeight:_popupSureButton.bottom + 7];
+        
+    }
+    return _popupBackView;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -400,6 +457,17 @@
     
 //    sectionHeight = MainScreenHeight - MACRO_UI_SAFEAREA - MACRO_UI_UPHEIGHT - (_isLive ? 0 : 50);
     [self makeTableView];
+    
+    _noticeText = [[HorizontalScrollText alloc] initWithFrame:CGRectMake(_titleLabel.left, _titleLabel.top, _titleLabel.width, _titleLabel.height)];
+    _noticeText.layer.backgroundColor = [UIColor clearColor].CGColor;//[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.2].CGColor;
+    _noticeText.textColor          = [UIColor whiteColor];
+    _noticeText.textFont           = _titleLabel.font;
+    _noticeText.speed              = 0.03;
+    _noticeText.moveDirection      = LMJTextScrollMoveLeft;
+    _noticeText.moveMode           = LMJTextScrollFromOutside;
+    _noticeText.hidden = YES;
+    [self.view addSubview:_noticeText];
+    
     [self.view bringSubviewToFront:_titleImage];
     _titleImage.backgroundColor = [UIColor clearColor];
     _titleLabel.hidden = YES;
@@ -1226,6 +1294,15 @@
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
                 if ([[responseObject objectForKey:@"code"] integerValue]) {
                     _dataSource = [NSDictionary dictionaryWithDictionary:[responseObject objectForKey:@"data"]];
+                    
+                    /**
+                     "look_need_login": 0, //试看是否需要登录 [1:是 0:否]
+                     "is_marquee": 1, //是否开启跑马灯 [1:是 0:否]
+                     "onhook_type": 2, //防挂机 [0:不开启 1:弹窗 2:弹题 3:人脸]
+                     */
+                    onhook_type = [NSString stringWithFormat:@"%@",_dataSource[@"onhook_type"]];
+                    currentCourseHasFace = [onhook_type isEqualToString:@"3"];
+                    
                     _courselayer = [NSString stringWithFormat:@"%@",_dataSource[@"section_level"]];
                     if ([_dataSource objectForKey:@"recent_learn"]) {
                         if (SWNOTEmptyDictionary([_dataSource objectForKey:@"recent_learn"])) {
@@ -1322,6 +1399,7 @@
         _tableView.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidth);
         _tableView.contentOffset = CGPointMake(0, 0);
         self.playerView.controlView.topView.backButton.hidden = NO;
+        _noticeText.frame = CGRectMake(_leftButton.right, 48, MainScreenHeight - _leftButton.right - _rightButton.width, _titleLabel.height);
 //        [self tableViewCanNotScroll];
     } else {
         _playerView.controlView.topView.hidden = NO;
@@ -1344,6 +1422,7 @@
         _titleImage.hidden = NO;
         [self.headerView bringSubviewToFront:self.titleImage];
         self.playerView.controlView.topView.backButton.hidden = YES;
+        _noticeText.frame = CGRectMake(_titleLabel.left, _titleLabel.top, _titleLabel.width, _titleLabel.height);
 //        [self tableViewCanScroll];
     }
 
@@ -3224,21 +3303,67 @@
     // -10 0
     // -10 0
     currentFaceTime = currentFaceTime + 10;
-    if ([ShowUserFace isEqualToString:@"1"] && !(_currentCourseFinalModel.model.audition>0 && !_currentCourseFinalModel.model.is_buy)) {
-        if (faceVerifyCount>0) {
-            if (currentFaceTime>=(previousFaceTime + 20 + (arc4random() % 10) + _currentCourseFinalModel.model.face_data.verify_timespan * 60)) {
-                previousFaceTime = currentFaceTime;
-                wekself.userFaceCourseRecordDetailVerifyResult = ^(BOOL result) {
-                    if (result) {
-                        if (wekself.recordTimer) {
-                            [wekself.recordTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+    
+    if ([onhook_type isEqualToString:@"3"]) {
+        if (currentCourseHasFace && !(_currentCourseFinalModel.model.audition>0 && !_currentCourseFinalModel.model.is_buy)) {
+            if (faceVerifyCount>0) {
+                if (currentFaceTime>=(previousFaceTime + 1 + (arc4random() % 10) + _currentCourseFinalModel.model.face_data.verify_timespan * 60)) {
+                    previousFaceTime = currentFaceTime;
+                    wekself.userFaceCourseRecordDetailVerifyResult = ^(BOOL result) {
+                        isSameClassHourseID = YES;
+                        if (result) {
+                            if (wekself.recordTimer) {
+                                [wekself.recordTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+                            }
+                            if (wekself.playerView) {
+                                [wekself.playerView resume];
+                            }
                         }
-                        if (wekself.playerView) {
-                            [wekself.playerView resume];
+                    };
+                    [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:NO faceType:@"3"];
+                }
+            }
+        }
+    } else if ([onhook_type isEqualToString:@"2"]) {
+        // 弹题
+        if (!(_currentCourseFinalModel.model.audition>0 && !_currentCourseFinalModel.model.is_buy)) {
+            if (faceVerifyCount>0) {
+                if (currentFaceTime>=(previousFaceTime + 1 + (arc4random() % 10) + _currentCourseFinalModel.model.onhook_exam.answer_time_interval * 60)) {
+                    previousFaceTime = currentFaceTime;
+                    wekself.userExamPopCourseRecordDetailVerifyResult = ^(BOOL result) {
+                        isSameClassHourseID = YES;
+                        if (result) {
+                            if (wekself.recordTimer) {
+                                [wekself.recordTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+                            }
+                            if (wekself.playerView) {
+                                [wekself.playerView resume];
+                            }
                         }
-                    }
-                };
-                [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:NO faceType:@"3"];
+                    };
+                    [wekself popExamUIDealWithLastCanPlay:NO];
+                }
+            }
+        }
+    } else if ([onhook_type isEqualToString:@"1"]) {
+        // 弹框
+        if (!(_currentCourseFinalModel.model.audition>0 && !_currentCourseFinalModel.model.is_buy)) {
+            if (faceVerifyCount>0) {
+                if (currentFaceTime>=(previousFaceTime + 1 + (arc4random() % 10) + _currentCourseFinalModel.model.onhook.alert_time_interval * 60)) {
+                    previousFaceTime = currentFaceTime;
+                    wekself.userAlertCourseRecordDetailVerifyResult = ^(BOOL result) {
+                        isSameClassHourseID = YES;
+                        if (result) {
+                            if (wekself.recordTimer) {
+                                [wekself.recordTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+                            }
+                            if (wekself.playerView) {
+                                [wekself.playerView resume];
+                            }
+                        }
+                    };
+                    [wekself alertOnhookdealWithLastCanPlay:NO];
+                }
             }
         }
     }
@@ -3369,7 +3494,11 @@
     [wekself.recordTimer invalidate];
     wekself.recordTimer = nil;
     shouldStopRecordTimer = YES;
-    faceVerifyCount = 0;
+    if (isSameClassHourseID) {
+        
+    } else {
+        faceVerifyCount = 0;
+    }
     currentFaceTime = -10;
     previousFaceTime = -10;
 }
@@ -3395,7 +3524,17 @@
     shouldStopRecordTimer = NO;
     wekself.recordTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:wekself selector:@selector(addLearnRecord) userInfo:nil repeats:YES];
     [wekself.recordTimer fire];
-    faceVerifyCount = _currentCourseFinalModel.model.face_data.need_verify_number;
+    if (isSameClassHourseID) {
+        faceVerifyCount = faceVerifyCount;
+    } else {
+        if ([onhook_type isEqualToString:@"1"]) {
+            faceVerifyCount = _currentCourseFinalModel.model.onhook.alert_max_number;
+        } else if ([onhook_type isEqualToString:@"2"]) {
+            faceVerifyCount = _currentCourseFinalModel.model.onhook_exam.answer_max_number;
+        } else if ([onhook_type isEqualToString:@"3"]) {
+            faceVerifyCount = _currentCourseFinalModel.model.face_data.need_verify_number;
+        }
+    }
 }
 
 // MARK: - 请求一次学习记录
@@ -4980,43 +5119,81 @@
         if (isFullS) {
             [self changeOrientation:UIInterfaceOrientationPortrait];
             [self justUpdateVCUI];
+            
+            [UIView animateWithDuration:0.2 delay:1.5 options:0 animations:^{
+                
+            } completion:^(BOOL finished) {
+                FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+                vc.isVerify = NO;
+                vc.verifyed = YES;
+                vc.sourceType = type;
+                vc.sourceId = courseHourseId;
+                vc.scene_type = sceneType;
+                vc.verifyResult = ^(BOOL result) {
+                    if (result) {
+                        self->playerCanPlay = YES;
+                        if (weakSelf.playerView) {
+                            weakSelf.playerView.faceVerifyCanPlay = YES;
+                        }
+                        if ([faceType isEqualToString:@"1"]) {
+                            weakSelf.userFaceCourseDetailVerifyResult(result);
+                        }
+                        if ([faceType isEqualToString:@"2"]) {
+                            weakSelf.userFaceCourseNewDetailVerifyResult(result);
+                        }
+                        if ([faceType isEqualToString:@"3"]) {
+                            faceVerifyCount = faceVerifyCount - 1;
+                            weakSelf.userFaceCourseRecordDetailVerifyResult(result);
+                        }
+                        if ([faceType isEqualToString:@"4"]) {
+                            weakSelf.userFaceCourseAutoDetailVerifyResult(result);
+                        }
+                    } else {
+                        // 相同就不能看; 不相同就能看
+                        self->playerCanPlay = lastCanPlay;
+                        if (weakSelf.playerView) {
+                            weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
+                        }
+                    }
+                };
+                [self.navigationController pushViewController:vc animated:YES];
+            }];
+            return;
         }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
-            vc.isVerify = NO;
-            vc.verifyed = YES;
-            vc.sourceType = type;
-            vc.sourceId = courseHourseId;
-            vc.scene_type = sceneType;
-            vc.verifyResult = ^(BOOL result) {
-                if (result) {
-                    self->playerCanPlay = YES;
-                    if (weakSelf.playerView) {
-                        weakSelf.playerView.faceVerifyCanPlay = YES;
-                    }
-                    if ([faceType isEqualToString:@"1"]) {
-                        weakSelf.userFaceCourseDetailVerifyResult(result);
-                    }
-                    if ([faceType isEqualToString:@"2"]) {
-                        weakSelf.userFaceCourseNewDetailVerifyResult(result);
-                    }
-                    if ([faceType isEqualToString:@"3"]) {
-                        faceVerifyCount = faceVerifyCount - 1;
-                        weakSelf.userFaceCourseRecordDetailVerifyResult(result);
-                    }
-                    if ([faceType isEqualToString:@"4"]) {
-                        weakSelf.userFaceCourseAutoDetailVerifyResult(result);
-                    }
-                } else {
-                    // 相同就不能看; 不相同就能看
-                    self->playerCanPlay = lastCanPlay;
-                    if (weakSelf.playerView) {
-                        weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
-                    }
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = NO;
+        vc.verifyed = YES;
+        vc.sourceType = type;
+        vc.sourceId = courseHourseId;
+        vc.scene_type = sceneType;
+        vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                self->playerCanPlay = YES;
+                if (weakSelf.playerView) {
+                    weakSelf.playerView.faceVerifyCanPlay = YES;
                 }
-            };
-            [self.navigationController pushViewController:vc animated:YES];
-        });
+                if ([faceType isEqualToString:@"1"]) {
+                    weakSelf.userFaceCourseDetailVerifyResult(result);
+                }
+                if ([faceType isEqualToString:@"2"]) {
+                    weakSelf.userFaceCourseNewDetailVerifyResult(result);
+                }
+                if ([faceType isEqualToString:@"3"]) {
+                    faceVerifyCount = faceVerifyCount - 1;
+                    weakSelf.userFaceCourseRecordDetailVerifyResult(result);
+                }
+                if ([faceType isEqualToString:@"4"]) {
+                    weakSelf.userFaceCourseAutoDetailVerifyResult(result);
+                }
+            } else {
+                // 相同就不能看; 不相同就能看
+                self->playerCanPlay = lastCanPlay;
+                if (weakSelf.playerView) {
+                    weakSelf.playerView.faceVerifyCanPlay = lastCanPlay;
+                }
+            }
+        };
+        [self.navigationController pushViewController:vc animated:YES];
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
