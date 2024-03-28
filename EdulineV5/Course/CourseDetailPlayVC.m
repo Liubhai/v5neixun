@@ -468,7 +468,7 @@
         _playerView.faceVerifyCanPlay = YES;
         if (SWNOTEmptyDictionary(marqueeInfo)) {
             NSString *open = [NSString stringWithFormat:@"%@",marqueeInfo[@"open"]];
-            NSString *open_user_name = [NSString stringWithFormat:@"%@",marqueeInfo[@"user_name"]];
+            NSString *open_user_name = [NSString stringWithFormat:@"%@",marqueeInfo[@"username"]];
             NSString *open_phone = [NSString stringWithFormat:@"%@",marqueeInfo[@"phone"]];
             if ([open_phone isEqualToString:@"1"] || [open_user_name isEqualToString:@"1"]) {
                 if ([wekself.currentCourseFinalModel.model.section_data.data_type isEqualToString:@"1"]) {
