@@ -29,6 +29,8 @@
 #import "CourseMainViewController.h"
 #import "GroupDetailViewController.h"
 
+#import "CCSDK/HDSPreserve.h"
+
 //
 //                       _oo0oo_
 //                      o8888888o
@@ -80,6 +82,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    //设置全局AVAudioSession
+    NSError *categoryError = nil;
+    BOOL success = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&categoryError];
+    if (!success)
+    {
+        NSLog(@"Error setting audio session category: %@", categoryError);
+    }
+    NSError *activeError = nil;
+    success = [[AVAudioSession sharedInstance] setActive:YES error:&activeError];
+    if (!success)
+    {
+        NSLog(@"Error setting audio session active: %@", activeError);
+    }
+    
+    [[HDSPreserve shared] HDSApplicationDidFinishLaunching];
     
     [V5_UserModel saveAuth_scope:@"app"];
     
