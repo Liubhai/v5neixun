@@ -1823,7 +1823,11 @@
                 }];
             }
         };
-        [wekself faceCompareTip:model.model.classHourId sourceType:@"course_section" sceneType:@"1" lastCanPlay:playerCanPlay faceType:@"1"];
+        if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+            [wekself faceCompareTip:model.model.classHourId sourceType:@"course_section" sceneType:@"1" lastCanPlay:playerCanPlay faceType:@"1"];
+        } else {
+            [wekself faceVerifyTip];
+        }
     } else {
         
         if (_courseListVC) {
@@ -2425,7 +2429,11 @@
                 }];
             }
         };
-        [wekself faceCompareTip:model.classHourId sourceType:@"course_section" sceneType:@"1" lastCanPlay:playerCanPlay faceType:@"2"];
+        if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+            [wekself faceCompareTip:model.classHourId sourceType:@"course_section" sceneType:@"1" lastCanPlay:playerCanPlay faceType:@"2"];
+        } else {
+            [wekself faceVerifyTip];
+        }
     } else {
         
         if (_courseTreeListVC) {
@@ -3172,7 +3180,11 @@
                 [wekself starRecordTimer];
             }
         } else {
-            [self faceCompareTip:_currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:playerCanPlay faceType:@"3"];
+            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                [self faceCompareTip:_currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:playerCanPlay faceType:@"3"];
+            } else {
+                [self faceVerifyTip];
+            }
         }
 
     }
@@ -3181,7 +3193,11 @@
 - (void)justUpdatePlayerNewStatus:(AVPStatus)status oldStatus:(AVPStatus)oldStatus {
     if (!playerCanPlay) {
         if (status == AVPStatusStarted) {
-            [self faceCompareTip:_currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:playerCanPlay faceType:@"3"];
+            if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                [self faceCompareTip:_currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:playerCanPlay faceType:@"3"];
+            } else {
+                [self faceVerifyTip];
+            }
         }
     } else {
         if (status == AVPStatusStarted) {
@@ -3320,7 +3336,11 @@
                             }
                         }
                     };
-                    [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:NO faceType:@"3"];
+                    if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                        [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:NO faceType:@"3"];
+                    } else {
+                        [wekself faceVerifyTip];
+                    }
                 }
             }
         }
@@ -4122,7 +4142,11 @@
                 }];
             }
         };
-        [wekself faceCompareTip:model.model.classHourId sourceType:@"course_section" sceneType:@"1" lastCanPlay:playerCanPlay faceType:@"4"];
+        if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+            [wekself faceCompareTip:model.model.classHourId sourceType:@"course_section" sceneType:@"1" lastCanPlay:playerCanPlay faceType:@"4"];
+        } else {
+            [wekself faceVerifyTip];
+        }
     } else {
         
         if (_courseListVC) {
@@ -5073,21 +5097,42 @@
 
 // MARK: - 人脸未认证提示
 - (void)faceVerifyTip {
+    
+    __weak typeof(self) weakSelf = self;
+    if (weakSelf.recordTimer) {
+        [weakSelf.recordTimer setFireDate:[NSDate distantFuture]];
+    }
+    if (weakSelf.playerView) {
+        [weakSelf.playerView pause];
+    }
+    self->playerCanPlay = NO;
+    weakSelf.playerView.faceVerifyCanPlay = NO;
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"未完成人脸认证\n请先去认证" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *commentAction = [UIAlertAction actionWithTitle:@"去认证" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
         if (isFullS) {
             [self changeOrientation:UIInterfaceOrientationPortrait];
             [self aliyunVodPlayerView:_playerView fullScreen:NO];
+            
+            [UIView animateWithDuration:0.2 delay:1.5 options:0 animations:^{
+                
+            } completion:^(BOOL finished) {
+                FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+                vc.isVerify = YES;
+                vc.verifyed = NO;
+                vc.verifyResult = ^(BOOL result) {
+                };
+                [self.navigationController pushViewController:vc animated:YES];
+            }];
+            return;
         }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
-            vc.isVerify = YES;
-            vc.verifyed = NO;
-            vc.verifyResult = ^(BOOL result) {
-            };
-            [self.navigationController pushViewController:vc animated:YES];
-        });
+        FaceVerifyViewController *vc = [[FaceVerifyViewController alloc] init];
+        vc.isVerify = YES;
+        vc.verifyed = NO;
+        vc.verifyResult = ^(BOOL result) {
+        };
+        [self.navigationController pushViewController:vc animated:YES];
         }];
     [commentAction setValue:EdlineV5_Color.themeColor forKey:@"_titleTextColor"];
     [alertController addAction:commentAction];
@@ -5456,7 +5501,11 @@
                         }
                     }
                 };
-                [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:NO faceType:@"3"];
+                if ([[V5_UserModel userFaceVerify] isEqualToString:@"1"]) {
+                    [wekself faceCompareTip:wekself.currentCourseFinalModel.model.classHourId sourceType:@"course_section" sceneType:@"2" lastCanPlay:NO faceType:@"3"];
+                } else {
+                    [wekself faceVerifyTip];
+                }
             }
         }
     }
