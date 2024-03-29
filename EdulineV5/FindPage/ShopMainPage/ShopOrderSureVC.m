@@ -491,7 +491,8 @@
     if (_scoreRightIcon.selected) {
 //        NSString *ratio = [NSString stringWithFormat:@"%@",_shopInfoDict[@"credit"][@"ratio"]];
 //        NSString *carriage = [NSString stringWithFormat:@"%@",_shopInfoDict[@"product"][@"carriage"]];
-        _finalPriceLabel.text = [NSString stringWithFormat:@"%@%@",userScore >= (shopScore * [_numLabel.text integerValue] + [carriage floatValue]) ? [self dealShopPrice:@(shopPrice * [_numLabel.text integerValue])] : [self dealShopPrice:@(shopPrice * [_numLabel.text integerValue] + ((shopScore * [_numLabel.text integerValue]) - userScore) + [carriage floatValue])],IOSMoneyTitle];
+        _finalPriceLabel.text = [NSString stringWithFormat:@"%@%@",[self dealShopPrice:@(shopScore * [_numLabel.text integerValue] + [carriage floatValue])],IOSMoneyTitle];
+        // userScore >= (shopScore * [_numLabel.text integerValue] + [carriage floatValue]) ? [self dealShopPrice:@(shopPrice * [_numLabel.text integerValue])] : [self dealShopPrice:@(shopPrice * [_numLabel.text integerValue] + ((shopScore * [_numLabel.text integerValue]) - userScore) + [carriage floatValue])]
     } else {
 //        NSString *ratio = [NSString stringWithFormat:@"%@",_shopInfoDict[@"credit"][@"ratio"]];
 //        NSString *carriage = [NSString stringWithFormat:@"%@",_shopInfoDict[@"product"][@"carriage"]];

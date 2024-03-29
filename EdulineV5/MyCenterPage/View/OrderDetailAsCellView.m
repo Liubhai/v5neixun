@@ -124,9 +124,9 @@
         _courseTypeImage.hidden = YES;
     }
     
-    _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[EdulineV5_Tool reviseString:[OrderFinalInfo objectForKey:@"user_price"]]];
+    _priceLabel.text = [NSString stringWithFormat:@"%@%@",[EdulineV5_Tool reviseString:[OrderFinalInfo objectForKey:@"user_price"]],IOSMoneyTitle];
     if ([courseType isEqualToString:@"101"] || [courseType isEqualToString:@"102"] || [courseType isEqualToString:@"103"] || [courseType isEqualToString:@"104"]) {
-        _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[OrderFinalInfo objectForKey:@"price"]];
+        _priceLabel.text = [NSString stringWithFormat:@"%@%@",[OrderFinalInfo objectForKey:@"price"],IOSMoneyTitle];
     }
     CGFloat priceWidth = [_priceLabel.text sizeWithFont:_priceLabel.font].width + 4;
     _priceLabel.frame = CGRectMake(OrderDetailCellWidth - 12 - priceWidth, _faceImageView.top, priceWidth, 24);
@@ -200,7 +200,7 @@
             _priceLabel.textColor = EdlineV5_Color.priceFreeColor;
             _priceLabel.frame = CGRectMake(OrderDetailCellWidth - 12 - 100, _faceImageView.top, 100, 24);
         } else if ([showCredit isEqualToString:@"0"]) {
-            _priceLabel.text = [NSString stringWithFormat:@"%@%@",IOSMoneyTitle,[NSString stringWithFormat:@"%@",info[@"ext_data"][@"cash_price"]]];
+            _priceLabel.text = [NSString stringWithFormat:@"%@%@",[NSString stringWithFormat:@"%@",info[@"ext_data"][@"cash_price"]],IOSMoneyTitle];
             _priceLabel.frame = CGRectMake(OrderDetailCellWidth - 12 - 100, _faceImageView.top, 100, 24);
         } else if ([singlePrice isEqualToString:@"0.00"] || [singlePrice isEqualToString:@"0.0"] || [singlePrice isEqualToString:@"0"]) {
             _priceLabel.text = [NSString stringWithFormat:@"%@积分",[NSString stringWithFormat:@"%@",info[@"ext_data"][@"credit_price"]]];

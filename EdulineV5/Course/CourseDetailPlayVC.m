@@ -461,7 +461,7 @@
     _noticeText = [[HorizontalScrollText alloc] initWithFrame:CGRectMake(_titleLabel.left, _titleLabel.top, _titleLabel.width, _titleLabel.height)];
     _noticeText.layer.backgroundColor = [UIColor clearColor].CGColor;//[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.2].CGColor;
     _noticeText.textColor          = [UIColor whiteColor];
-    _noticeText.textFont           = _titleLabel.font;
+    _noticeText.textFont           = SYSTEMFONT(12);
     _noticeText.speed              = 0.03;
     _noticeText.moveDirection      = LMJTextScrollMoveLeft;
     _noticeText.moveMode           = LMJTextScrollFromOutside;
