@@ -414,6 +414,11 @@
     [_zanButton addTarget:self action:@selector(zanButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_titleImage addSubview:_zanButton];
     
+    [_titleLabel setWidth:_titleLabel.width - (_titleLabel.right - _zanButton.left)];
+    _titleLabel.font = SYSTEMFONT(12);
+    [_titleLabel setHeight:26];
+    _titleLabel.centerY = _rightButton.centerY;
+    
     [self makeHeaderView];
     [self makeSubViews];
 //    self.playerView.hidden = YES;
