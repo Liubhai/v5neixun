@@ -104,8 +104,8 @@
     _methodWhiteBackView.layer.cornerRadius = 10;
     [_methodBackImageView addSubview:_methodWhiteBackView];
     
-    NSArray *methodIcon1 = @[@"integral_buy_icon",@"integral_comment_icon",@"integral_share_icon",@"integral_buy_icon"];
-    NSArray *methodTitle = @[@"购买课程",@"评论课程",@"分享课程",@"兑换商品"];
+    NSArray *methodIcon1 = @[@"integral_buy_icon",@"integral_comment_icon",@"integral_share_icon",@"integral_commodity_icon"];
+    NSArray *methodTitle = @[@"报名课程",@"评论课程",@"分享课程",@"兑换商品"];
     NSArray *methodIcon2 = @[@"buy_button_neixun",@"comment_button_score",@"share_button_score",@"share_button"];
     
     for (int i = 0; i < methodIcon1.count; i++) {
@@ -115,7 +115,7 @@
         
         UILabel *methodLabel = [[UILabel alloc] initWithFrame:CGRectMake(icon.right + 11, 0, 100, 36)];
         methodLabel.centerY = icon.centerY;
-        methodLabel.font = SYSTEMFONT(16);
+        methodLabel.font = [UIFont fontWithName:@"PingFangSC-Medium" size:16];
         methodLabel.textColor = EdlineV5_Color.textFirstColor;
         methodLabel.text = methodTitle[i];
         [_methodWhiteBackView addSubview:methodLabel];
