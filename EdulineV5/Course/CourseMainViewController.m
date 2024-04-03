@@ -1308,7 +1308,7 @@
         }
         
         if ([[_dataSource objectForKey:@"is_buy"] boolValue]) {
-            if ([ShowUserFace isEqualToString:@"1"] && ([_courseType isEqualToString:@"1"] || [_courseType isEqualToString:@"4"])) {
+            if (currentCourseHasFace && ([_courseType isEqualToString:@"1"] || [_courseType isEqualToString:@"4"])) {
                 self.userFaceVerifyResult = ^(BOOL result) {
                     CourseDetailPlayVC *vc = [[CourseDetailPlayVC alloc] init];
                     vc.ID = _ID;

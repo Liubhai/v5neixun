@@ -5127,6 +5127,12 @@
                 vc.isVerify = YES;
                 vc.verifyed = NO;
                 vc.verifyResult = ^(BOOL result) {
+                    if (result) {
+                        self->playerCanPlay = YES;
+                        if (weakSelf.playerView) {
+                            weakSelf.playerView.faceVerifyCanPlay = YES;
+                        }
+                    }
                 };
                 [self.navigationController pushViewController:vc animated:YES];
             }];
@@ -5136,6 +5142,12 @@
         vc.isVerify = YES;
         vc.verifyed = NO;
         vc.verifyResult = ^(BOOL result) {
+            if (result) {
+                self->playerCanPlay = YES;
+                if (weakSelf.playerView) {
+                    weakSelf.playerView.faceVerifyCanPlay = YES;
+                }
+            }
         };
         [self.navigationController pushViewController:vc animated:YES];
         }];
